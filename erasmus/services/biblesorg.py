@@ -31,7 +31,7 @@ class BiblesOrg(Service):
             # Add a period after verse numbers
             number.string = f'{number.string}.'
 
-        return soup.get_text(' ', strip=True).replace('\n', '').replace('  ', ' ')
+        return soup.get_text(' ', strip=True).replace('\n', ' ').replace('  ', ' ')
 
     async def _process_response(self, response):
         obj = await response.json()

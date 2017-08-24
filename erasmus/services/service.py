@@ -11,10 +11,10 @@ class Service:
         self.config = config
 
     async def get_verse(self, version: str, book: str, chapter: int, verse_min: int, verse_max: int = -1) -> str:
-        raise NotImplemented
+        raise NotImplementedError
 
     async def _process_response(self, response):
-        raise NotImplemented
+        raise NotImplementedError
 
     async def _get_url(self, url: str, **session_options):
         async with aiohttp.ClientSession(**session_options) as session:
