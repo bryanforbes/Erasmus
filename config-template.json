@@ -1,0 +1,30 @@
+{
+  "api_key": "<discord api key here>",
+  "services": {
+    "BiblesOrg": {
+      "api_key": "<bibles.org api key here>"
+    }
+  },
+  "bibles": {
+    "esv": {
+      "name": "English Standard Version",
+      "service": "BiblesOrg",
+      "service_version": "eng-ESV"
+    },
+    "kjv": {
+      "name": "King James Version",
+      "service": "BiblesOrg",
+      "service_version": "eng-KJV"
+    },
+    "kjva": {
+      "name": "King James Version with Apocrypha",
+      "service": "BiblesOrg",
+      "service_version": "eng-KJVA"
+    },
+    "nasb": {
+      "name": "New American Standard Bible",
+      "service": "BiblesOrg",
+      "service_version": "eng-NASB"
+    }
+  }
+}
