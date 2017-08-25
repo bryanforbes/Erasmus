@@ -25,6 +25,16 @@
       "name": "New American Standard Bible",
       "service": "BiblesOrg",
       "service_version": "eng-NASB"
+    },
+    "sbl": {
+      "name": "SBL Greek New Testament",
+      "service": "BibleGateway",
+      "service_version": "SBLGNT"
+    },
+    "niv": {
+      "name": "New International Version",
+      "service": "BibleGateway",
+      "service_version": "NIV"
     }
   }
 }

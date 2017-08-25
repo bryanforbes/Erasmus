@@ -3,11 +3,13 @@ from collections import OrderedDict
 from importlib import import_module
 
 from .config import ConfigObject
-from .services import Service
+from .service import Service, Passage
 from .exceptions import BibleNotSupportedError, ServiceNotSupportedError
 from . import services
 
-class Bible:
+class Bible(object):
+    __slots__ = ('name', 'service', 'version')
+
     name: str
     service: Service
     version: str
@@ -17,8 +19,8 @@ class Bible:
         self.service = service
         self.version = version
 
-    async def get_verse(self, *args, **kwargs) -> str:
-        return await self.service.get_verse(self.version, *args, **kwargs)
+    async def get_passage(self, passage: Passage) -> str:
+        return await self.service.get_passage(self.version, passage)
 
 class BibleManager:
     config: ConfigObject
@@ -49,10 +51,13 @@ class BibleManager:
     def get_versions(self) -> List[Tuple[str, str]]:
         return [ (key, bible.name) for key, bible in self.bible_map.items()]
 
-    async def get_verse(self, version: str, *args) -> str:
+    # TODO: Verse parsing to a known format (specifically book name) should probably go here and
+    # then pass it to services for service-specific modifications
+    async def get_passage(self, version: str, book: str, chapter: int, verse_start: int, verse_end: int = -1) -> str:
         bible = self.bible_map.get(version, None)
 
         if bible is None:
             raise BibleNotSupportedError(version)
 
-        return await bible.get_verse(*args)
+        passage = Passage(book, chapter, verse_start, verse_end)
+        return await bible.get_passage(passage)

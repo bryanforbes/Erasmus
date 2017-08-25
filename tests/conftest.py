@@ -11,14 +11,11 @@ class AsyncMock(Mock):
 def AsyncWithMock(*args, **kwargs):
     mock = Mock(*args, **kwargs)
 
-    _type = type(mock)
-
-    setattr(_type, '__aenter__', AsyncMock())
-
     def exit(*args, **kwargs):
         pass
 
-    setattr(_type, '__aexit__', AsyncMock(side_effect=exit))
+    setattr(type(mock), '__aenter__', AsyncMock())
+    setattr(type(mock), '__aexit__', AsyncMock(side_effect=exit))
 
     return mock
 

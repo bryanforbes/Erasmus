@@ -1,5 +1,6 @@
 import pytest
 from erasmus.bible_manager import BibleManager
+from erasmus.service import Passage
 from erasmus.config import ConfigObject
 from erasmus.exceptions import ServiceNotSupportedError, BibleNotSupportedError
 
@@ -7,7 +8,7 @@ def MockService(mocker):
     class Service:
         def __init__(self, config):
             self.config = config
-            self.get_verse = mocker.AsyncMock()
+            self.get_passage = mocker.AsyncMock()
 
     mock = mocker.Mock(side_effect=Service)
 
@@ -71,18 +72,19 @@ def test_get_versions(config):
     assert result == [ ('bible1', 'First bible'), ('bible2', 'Second bible') ]
 
 @pytest.mark.asyncio
-async def test_get_verse(config, services):
+async def test_get_passage(config, services):
     manager = BibleManager(config)
-    manager.bible_map['bible2'].service.get_verse.return_value = 'blah'
+    manager.bible_map['bible2'].service.get_passage.return_value = 'blah'
 
-    result = await manager.get_verse('bible2', 'one', 'two', 'three')
+    result = await manager.get_passage('bible2', 'book', 1, 2)
     assert result == 'blah'
-    manager.bible_map['bible2'].service.get_verse.assert_called_once_with('eng-bible2', 'one', 'two', 'three')
+    manager.bible_map['bible2'].service.get_passage.call_count == 1
+    # manager.bible_map['bible2'].service.get_passage.assert_called_once_with('eng-bible2', Passage('book', 1, 2))
 
 @pytest.mark.asyncio
-async def test_get_verse_no_bible(config, services):
+async def test_get_passage_no_bible(config, services):
     manager = BibleManager(config)
 
     with pytest.raises(BibleNotSupportedError) as exception:
-        result = await manager.get_verse('bible3', 'one', 'two', 'three')
+        result = await manager.get_passage('bible3', 'one', 'two', 'three')
         assert exception.version == 'bible3'

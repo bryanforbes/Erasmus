@@ -1,5 +1,6 @@
 import pytest
 from erasmus.services import BiblesOrg
+from erasmus.service import Passage
 from erasmus.exceptions import DoNotUnderstandError
 
 @pytest.fixture
@@ -43,23 +44,23 @@ def test_init():
     assert service._auth.password == 'X'
 
 @pytest.mark.parametrize('args,expected', [
-    (['esv', 'John', 1, 2, 3], 'John+1:2-3&version=esv'),
-    (['nasb', 'Mark', 5, 20], 'Mark+5:20&version=nasb')
+    (['esv', Passage('John', 1, 2, 3)], 'John+1:2-3&version=esv'),
+    (['nasb', Passage('Mark', 5, 20)], 'Mark+5:20&version=nasb')
 ])
 @pytest.mark.asyncio
-async def test_get_verse(args, expected, mocker, good_mock_response, mock_client_session):
+async def test_get_passage(args, expected, mocker, good_mock_response, mock_client_session):
     class Config:
         api_key = 'foo bar baz'
 
     config = Config()
     service = BiblesOrg(config)
 
-    response = await service.get_verse(*args)
+    response = await service.get_passage(*args)
     assert mock_client_session.get.call_args == mocker.call(f'https://bibles.org/v2/passages.js?q[]={expected}')
     assert response == '1. This is the text'
 
 @pytest.mark.asyncio
-async def test_get_verse_no_passages(bad_mock_response):
+async def test_get_passage_no_passages(bad_mock_response):
     class Config:
         api_key = 'foo bar baz'
 
@@ -67,4 +68,4 @@ async def test_get_verse_no_passages(bad_mock_response):
     service = BiblesOrg(config)
 
     with pytest.raises(DoNotUnderstandError):
-        await service.get_verse('esv', 'John', 1, 2, 3)
+        await service.get_passage('esv', Passage('John', 1, 2, 3))

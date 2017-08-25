@@ -52,7 +52,7 @@ class Erasmus(commands.Bot):
 
             version = match.group('version')
             try:
-                verse = await self.bible_manager.get_verse(
+                verse = await self.bible_manager.get_passage(
                     version,
                     match.group('book'),
                     int(match.group('chapter')),
