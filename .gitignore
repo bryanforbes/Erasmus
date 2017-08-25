@@ -1,7 +1,9 @@
 .cache/
 __pycache__/
 bin/
+htmlcov/
 lib/
+.coverage
 pip-selfcheck.json
 pyvenv.cfg
 config.json

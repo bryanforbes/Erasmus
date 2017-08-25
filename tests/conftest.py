@@ -3,17 +3,10 @@ import aiohttp
 import asyncio
 from unittest.mock import Mock
 
-def AsyncMock(*args, **kwargs):
-    mock = Mock(*args, **kwargs)
-
-    _type = type(mock)
-
-    async def call_mock(*args, **kwargs):
-        return Mock.__call__(mock, *args, **kwargs)
-
-    setattr(_type, '__call__', call_mock)
-
-    return mock
+class AsyncMock(Mock):
+    async def __call__(_mock_self, *args, **kwargs):
+        _mock_self._mock_check_sig(*args, **kwargs)
+        return _mock_self._mock_call(*args, **kwargs)
 
 def AsyncWithMock(*args, **kwargs):
     mock = Mock(*args, **kwargs)

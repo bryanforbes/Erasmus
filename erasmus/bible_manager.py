@@ -5,6 +5,7 @@ from importlib import import_module
 from .config import ConfigObject
 from .services import Service
 from .exceptions import BibleNotSupportedError, ServiceNotSupportedError
+from . import services
 
 class Bible:
     name: str
@@ -29,7 +30,7 @@ class BibleManager:
         service_map = {}
 
         for key, config in config.services.items():
-            service_map[key] = import_module('.services', __package__).__dict__.get(key)(config)
+            service_map[key] = services.__dict__.get(key)(config)
 
         self.bible_map = OrderedDict()
 

@@ -1,5 +1,6 @@
 import pytest
 from erasmus.services import BiblesOrg
+from erasmus.exceptions import DoNotUnderstandError
 
 @pytest.fixture
 def good_mock_response(mocker, mock_response):
@@ -20,6 +21,13 @@ def good_mock_response(mocker, mock_response):
 @pytest.fixture
 def bad_mock_response(mocker, mock_response):
     mocker.patch.object(mock_response, 'json', new_callable=mocker.AsyncMock, return_value={
+        'response': {
+            'search': {
+                'result': {
+                    'passages': []
+                }
+            }
+        }
     })
 
     return mock_response
@@ -34,13 +42,29 @@ def test_init():
     assert service._auth.login == 'foo bar baz'
     assert service._auth.password == 'X'
 
+@pytest.mark.parametrize('args,expected', [
+    (['esv', 'John', 1, 2, 3], 'John+1:2-3&version=esv'),
+    (['nasb', 'Mark', 5, 20], 'Mark+5:20&version=nasb')
+])
 @pytest.mark.asyncio
-async def test_get_verse(good_mock_response):
+async def test_get_verse(args, expected, mocker, good_mock_response, mock_client_session):
     class Config:
         api_key = 'foo bar baz'
 
     config = Config()
     service = BiblesOrg(config)
 
-    response = await service.get_verse('esv', 'John', 1, 2, 3)
+    response = await service.get_verse(*args)
+    assert mock_client_session.get.call_args == mocker.call(f'https://bibles.org/v2/passages.js?q[]={expected}')
     assert response == '1. This is the text'
+
+@pytest.mark.asyncio
+async def test_get_verse_no_passages(bad_mock_response):
+    class Config:
+        api_key = 'foo bar baz'
+
+    config = Config()
+    service = BiblesOrg(config)
+
+    with pytest.raises(DoNotUnderstandError):
+        await service.get_verse('esv', 'John', 1, 2, 3)
