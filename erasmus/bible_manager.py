@@ -49,7 +49,9 @@ class BibleManager:
             )
 
     def get_versions(self) -> List[Tuple[str, str]]:
-        return [ (key, bible.name) for key, bible in self.bible_map.items()]
+        return [
+            (key, bible.name) for key, bible in sorted(self.bible_map.items(), key=lambda item: item[0])
+        ]
 
     # TODO: Verse parsing to a known format (specifically book name) should probably go here and
     # then pass it to services for service-specific modifications
