@@ -1,9 +1,29 @@
+from typing import List
 from bs4 import BeautifulSoup
-from ..service import Service, Passage
+import re
+
+from ..service import Service, Passage, SearchResults
 
 # TODO: Error handling
 
+total_re = re.compile(r'^(?P<total>\d+)')
+
 class BibleGateway(Service):
+    async def search(self, version: str, terms: List[str]) -> SearchResults:
+        quicksearch = '+'.join(terms)
+        url = f'https://www.biblegateway.com/quicksearch/?quicksearch={quicksearch}&qs_version={version}&limit=20&interface=print'
+        response = await self._get_url(url)
+
+        soup = BeautifulSoup(response, 'html.parser')
+
+        verse_nodes = soup.select('.search-result-list .bible-item .bible-item-title')
+        verses = [ Passage.from_string(node.string) for node in verse_nodes ]
+
+        total_node = soup.select_one('.search-total-results')
+        match = total_re.match(total_node.get_text(' ', strip=True))
+
+        return SearchResults(verses, int(match.group('total')))
+
     async def _get_passage(self, version: str, passage: str) -> str:
         url = f'https://www.biblegateway.com/passage/?search={passage}&version={version}&interface=print'
         response = await self._get_url(url)

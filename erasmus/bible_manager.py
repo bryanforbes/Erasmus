@@ -3,7 +3,7 @@ from collections import OrderedDict
 from importlib import import_module
 
 from .config import ConfigObject
-from .service import Service, Passage
+from .service import Service, Passage, SearchResults
 from .exceptions import BibleNotSupportedError, ServiceNotSupportedError
 from . import services
 
@@ -21,6 +21,9 @@ class Bible(object):
 
     async def get_passage(self, passage: Passage) -> str:
         return await self.service.get_passage(self.version, passage)
+
+    async def search(self, terms: List[str]) -> SearchResults:
+        return await self.service.search(self.version, terms)
 
 class BibleManager:
     config: ConfigObject
@@ -53,13 +56,20 @@ class BibleManager:
             (key, bible.name) for key, bible in sorted(self.bible_map.items(), key=lambda item: item[0])
         ]
 
-    # TODO: Verse parsing to a known format (specifically book name) should probably go here and
-    # then pass it to services for service-specific modifications
+    # TODO: Book parsing should go here and then pass it to services for service-specific modifications
     async def get_passage(self, version: str, book: str, chapter: int, verse_start: int, verse_end: int = -1) -> str:
+        bible = self._get_bible(version)
+        passage = Passage(book, chapter, verse_start, verse_end)
+        return await bible.get_passage(passage)
+
+    async def search(self, version: str, terms: List[str]) -> SearchResults:
+        bible = self._get_bible(version)
+        return await bible.search(terms)
+
+    def _get_bible(self, version: str) -> Bible:
         bible = self.bible_map.get(version, None)
 
         if bible is None:
             raise BibleNotSupportedError(version)
 
-        passage = Passage(book, chapter, verse_start, verse_end)
-        return await bible.get_passage(passage)
+        return bible

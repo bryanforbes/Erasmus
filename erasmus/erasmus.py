@@ -18,14 +18,22 @@ class Erasmus(commands.Bot):
         self.bible_manager = BibleManager(self.config)
 
         for name, description in self.bible_manager.get_versions():
-            command = commands.Command(
+            lookup_command = commands.Command(
                 name=name,
-                description=description,
+                description=f'Lookup a verse in {description}',
                 hidden=True,
                 pass_context=True,
                 callback=self._version_lookup
             )
-            self.add_command(command)
+            search_command = commands.Command(
+                name=f's{name}',
+                description=f'Search in {description}',
+                hidden=True,
+                pass_context=True,
+                callback=self._version_search
+            )
+            self.add_command(lookup_command)
+            self.add_command(search_command)
 
         self.add_command(self.versions)
 
@@ -97,5 +105,24 @@ class Erasmus(commands.Bot):
                 await self.say(passage_text)
         else:
             await self.say('I do not understand that request')
+
+    async def _version_search(self, ctx, *terms):
+        version = ctx.command.name[1:]
+
+        try:
+            results = await self.bible_manager.search(version, list(terms))
+        except BibleNotSupportedError:
+            await self.say(f'~{version} is not supported')
+        else:
+            verses = ', '.join([ str(verse) for verse in results.verses ])
+            matches = 'match'
+
+            if results.total == 0 or results.total > 1:
+                matches = 'matches'
+
+            if results.total <= 20:
+                await self.say(f'I have found {results.total} {matches} to your search:\n{verses}')
+            else:
+                await self.say(f'I have found {results.total} {matches} to your search. Here are the first 20 {matches}:\n{verses}')
 
 __all__ = [ 'Erasmus' ]

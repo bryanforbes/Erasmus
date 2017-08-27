@@ -1,7 +1,8 @@
+from typing import List
 from aiohttp import BasicAuth
 from bs4 import BeautifulSoup
 
-from ..service import Service, Passage
+from ..service import Service, Passage, SearchResults
 from ..exceptions import DoNotUnderstandError
 
 # TODO: Better error handling
@@ -11,6 +12,19 @@ class BiblesOrg(Service):
         super().__init__(*args, **kwargs)
 
         self._auth = BasicAuth(self.config.api_key, 'X')
+
+    async def search(self, version: str, terms: List[str]) -> SearchResults:
+        keyword = '+'.join(terms)
+        url = f'https://bibles.org/v2/verses.js?keyword={keyword}&precision=all&version={version}&sort_order=canonical&limit=20'
+        response = await self._get_url(url, auth=self._auth)
+        result = response.get('search', {}).get('result')
+
+        if result is None or 'summary' not in result or 'verses' not in result:
+            raise DoNotUnderstandError
+
+        verses = [ Passage.from_string(verse['reference']) for verse in result['verses'] ]
+
+        return SearchResults(verses, result['summary']['total'])
 
     async def _get_passage(self, version: str, passage: str) -> str:
         url = f'https://bibles.org/v2/passages.js?q[]={passage}&version={version}'
