@@ -5,7 +5,7 @@ from .bible_manager import BibleManager
 from .exceptions import DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError
 from .config import load, ConfigObject
 
-chapterAndVerse_re = re.compile(r'^(?P<chapter>\d+):(?P<verse_start>\d+)(?:-(?P<verse_end>\d+))?$')
+chapter_and_verse_re = re.compile(r'^(?P<chapter>\d+):(?P<verse_start>\d+)(?:-(?P<verse_end>\d+))?$')
 
 class Erasmus(commands.Bot):
     bible_manager: BibleManager
@@ -67,17 +67,20 @@ class Erasmus(commands.Bot):
         for version, description in self.bible_manager.get_versions():
             version = f'{version}:'.ljust(6)
             lines.append(f'  ~{version} {description}')
+
+        lines.append('\nYou can search any version by prefixing the version command with \'s\' (ex. ~sesv [terms...])')
+
         output = '\n'.join(lines)
         await self.say(f'\n{output}\n')
 
-    async def _version_lookup(self, ctx, book: str, chapterAndVerse: str, *args):
+    async def _version_lookup(self, ctx, book: str, chapter_and_verse: str, *args):
         version = ctx.command.name
 
         if len(args) > 0:
-            book = f'{book}{chapterAndVerse}'
-            chapterAndVerse = args[0]
+            book = f'{book}{chapter_and_verse}'
+            chapter_and_verse = args[0]
 
-        match = chapterAndVerse_re.match(chapterAndVerse)
+        match = chapter_and_verse_re.match(chapter_and_verse)
         if match is not None:
             verse_end = match.group('verse_end')
             if verse_end is None:

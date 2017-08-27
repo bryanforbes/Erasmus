@@ -3,7 +3,8 @@
   "services": {
     "BiblesOrg": {
       "api_key": "<bibles.org api key here>"
-    }
+    },
+    "BibleGateway": {}
   },
   "bibles": {
     "esv": {
