@@ -1,12 +1,12 @@
 import pytest
-import aiohttp
-import asyncio
 from unittest.mock import Mock
+
 
 class AsyncMock(Mock):
     async def __call__(_mock_self, *args, **kwargs):
         _mock_self._mock_check_sig(*args, **kwargs)
         return _mock_self._mock_call(*args, **kwargs)
+
 
 def AsyncWithMock(*args, **kwargs):
     mock = Mock(*args, **kwargs)
@@ -19,10 +19,12 @@ def AsyncWithMock(*args, **kwargs):
 
     return mock
 
+
 @pytest.fixture(autouse=True)
 def add_async_mocks(mocker):
     mocker.AsyncMock = AsyncMock
     mocker.AsyncWithMock = AsyncWithMock
+
 
 @pytest.fixture
 def mock_response(mocker):
@@ -31,12 +33,14 @@ def mock_response(mocker):
 
     return response
 
+
 @pytest.fixture
 def mock_client_session(mocker):
     session = mocker.AsyncWithMock()
     session.__aenter__.return_value = session
 
     return session
+
 
 @pytest.fixture
 def MockClientSession(mocker, mock_client_session, mock_response):
@@ -47,6 +51,7 @@ def MockClientSession(mocker, mock_client_session, mock_response):
 
     return ClientSession
 
-@pytest.fixture(autouse=True)
-def aiohttp(mocker, MockClientSession):
+
+@pytest.fixture
+def mock_aiohttp(mocker, MockClientSession):
     mocker.patch('aiohttp.ClientSession', MockClientSession)

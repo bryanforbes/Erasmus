@@ -1,5 +1,5 @@
-import pytest
 from erasmus.config import load, ConfigObject
+
 
 def test_load(mocker):
     mock = mocker.mock_open(read_data='{ "foo": { "bar": "baz" }, "spam": "ham" }')
@@ -10,5 +10,5 @@ def test_load(mocker):
 
     assert type(result) is ConfigObject
     assert hasattr(result, 'foo')
-    assert result.foo == { 'bar': 'baz' }
+    assert result.foo == {'bar': 'baz'}
     assert result.spam == 'ham'

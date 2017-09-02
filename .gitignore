@@ -1,4 +1,5 @@
 .cache/
+.mypy_cache/
 __pycache__/
 bin/
 htmlcov/
@@ -7,3 +8,4 @@ lib/
 pip-selfcheck.json
 pyvenv.cfg
 config.json
+*.pyc

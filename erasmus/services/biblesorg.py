@@ -1,34 +1,38 @@
-from typing import List
-from aiohttp import BasicAuth
+from typing import List, Any, Dict
+from aiohttp import BasicAuth, ClientResponse
 from bs4 import BeautifulSoup
 
+from ..config import ConfigObject
 from ..service import Service, Passage, SearchResults
 from ..exceptions import DoNotUnderstandError
 
-# TODO: Better error handling
 
-class BiblesOrg(Service):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+# TODO: Better error handling
+class BiblesOrg(Service[Dict[str, Any]]):
+    def __init__(self, config: ConfigObject) -> None:
+        super().__init__(config)
 
         self._auth = BasicAuth(self.config.api_key, 'X')
 
     async def search(self, version: str, terms: List[str]) -> SearchResults:
         keyword = '+'.join(terms)
-        url = f'https://bibles.org/v2/verses.js?keyword={keyword}&precision=all&version={version}&sort_order=canonical&limit=20'
-        response = await self._get_url(url, auth=self._auth)
+        url = (f'https://bibles.org/v2/verses.js?keyword={keyword}&precision=all&version={version}&'
+               'sort_order=canonical&limit=20')
+
+        response = await self._get(url, auth=self._auth)
         result = response.get('search', {}).get('result')
 
         if result is None or 'summary' not in result or 'verses' not in result:
             raise DoNotUnderstandError
 
-        verses = [ Passage.from_string(verse['reference']) for verse in result['verses'] ]
+        verses = [Passage.from_string(verse['reference']) for verse in result['verses']]
 
         return SearchResults(verses, result['summary']['total'])
 
     async def _get_passage(self, version: str, passage: str) -> str:
         url = f'https://bibles.org/v2/passages.js?q[]={passage}&version={version}'
-        response = await self._get_url(url, auth=self._auth)
+
+        response = await self._get(url, auth=self._auth)
         passages = response.get('search', {}).get('result', {}).get('passages')
 
         if passages is None or len(passages) == 0:
@@ -52,6 +56,6 @@ class BiblesOrg(Service):
 
         return f'{passage.book}+{passage.chapter}:{verses}'
 
-    async def _process_response(self, response):
+    async def _process_response(self, response: ClientResponse) -> Dict[str, Any]:
         obj = await response.json()
         return obj['response']

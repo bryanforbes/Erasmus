@@ -1,17 +1,22 @@
 from discord.ext import commands
+from discord.message import Message
 import re
 
 from .bible_manager import BibleManager
-from .exceptions import DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError
+from .exceptions import (
+    DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError
+)
 from .config import load, ConfigObject
 
 chapter_and_verse_re = re.compile(r'^(?P<chapter>\d+):(?P<verse_start>\d+)(?:-(?P<verse_end>\d+))?$')
+number_re = re.compile(r'^\d+$')
+
 
 class Erasmus(commands.Bot):
     bible_manager: BibleManager
     config: ConfigObject
 
-    def __init__(self, config_path, *args, **kwargs):
+    def __init__(self, config_path, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
         self.config = load(config_path)
@@ -37,56 +42,56 @@ class Erasmus(commands.Bot):
 
         self.add_command(self.versions)
 
-    def run(self):
-        return super().run(self.config.api_key)
+    def run(self, *args, **kwargs) -> None:
+        super().run(self.config.api_key)
 
-    async def say(self, content=None, *args, **kwargs):
+    async def say(self, content=None, *args, **kwargs) -> Message:
         if content is not None:
             extensions = ('plain_text',)
-            params = { k: kwargs.pop(k, None) for k in extensions }
+            params = {k: kwargs.pop(k, None) for k in extensions}
             plain_text = params.get('plain_text')
 
             if not plain_text:
                 content = f'```{content}```'
 
-        return await super().say(content, *args, **kwargs)
+        return await super().say(content, **kwargs)
 
-    async def on_message(self, message):
+    async def on_message(self, message) -> None:
         if message.author.bot:
             return
 
         await self.process_commands(message)
 
-    async def on_ready(self):
+    async def on_ready(self) -> None:
         print('-----')
         print(f'logged in as {self.user.name} {self.user.id}')
 
     @commands.command()
-    async def versions(self):
+    async def versions(self) -> None:
         lines = ['I support the following Bible versions:', '']
         for version, description in self.bible_manager.get_versions():
             version = f'{version}:'.ljust(6)
             lines.append(f'  ~{version} {description}')
 
-        lines.append('\nYou can search any version by prefixing the version command with \'s\' (ex. ~sesv [terms...])')
+        lines.append("\nYou can search any version by prefixing the version command with 's' (ex. ~sesv [terms...])")
 
         output = '\n'.join(lines)
         await self.say(f'\n{output}\n')
 
-    async def _version_lookup(self, ctx, book: str, chapter_and_verse: str, *args):
+    async def _version_lookup(self, ctx, book: str, chapter_and_verse: str, *args) -> None:
         version = ctx.command.name
 
-        if len(args) > 0:
-            book = f'{book}{chapter_and_verse}'
+        if len(args) > 0 and number_re.match(book) is not None:
+            book = f'{book} {chapter_and_verse}'
             chapter_and_verse = args[0]
 
         match = chapter_and_verse_re.match(chapter_and_verse)
         if match is not None:
             verse_end = match.group('verse_end')
             if verse_end is None:
-                verse_end = -1
+                verse_end_int = -1
             else:
-                verse_end = int(verse_end)
+                verse_end_int = int(verse_end)
 
             await self.type()
 
@@ -96,7 +101,7 @@ class Erasmus(commands.Bot):
                     book,
                     int(match.group('chapter')),
                     int(match.group('verse_start')),
-                    verse_end
+                    verse_end_int
                 )
             except DoNotUnderstandError:
                 await self.say('I do not understand that request')
@@ -109,15 +114,17 @@ class Erasmus(commands.Bot):
         else:
             await self.say('I do not understand that request')
 
-    async def _version_search(self, ctx, *terms):
+    async def _version_search(self, ctx, *terms) -> None:
         version = ctx.command.name[1:]
+
+        await self.type()
 
         try:
             results = await self.bible_manager.search(version, list(terms))
         except BibleNotSupportedError:
-            await self.say(f'~{version} is not supported')
+            await self.say(f'~{ctx.command.name} is not supported')
         else:
-            verses = ', '.join([ str(verse) for verse in results.verses ])
+            verses = ', '.join([str(verse) for verse in results.verses])
             matches = 'match'
 
             if results.total == 0 or results.total > 1:
@@ -126,6 +133,8 @@ class Erasmus(commands.Bot):
             if results.total <= 20:
                 await self.say(f'I have found {results.total} {matches} to your search:\n{verses}')
             else:
-                await self.say(f'I have found {results.total} {matches} to your search. Here are the first 20 {matches}:\n{verses}')
+                await self.say(f'I have found {results.total} {matches} to your search. '
+                               f'Here are the first 20 {matches}:\n{verses}')
 
-__all__ = [ 'Erasmus' ]
+
+__all__ = ['Erasmus']

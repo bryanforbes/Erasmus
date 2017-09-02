@@ -1,11 +1,11 @@
 from typing import Dict, List, Tuple
 from collections import OrderedDict
-from importlib import import_module
 
 from .config import ConfigObject
 from .service import Service, Passage, SearchResults
 from .exceptions import BibleNotSupportedError, ServiceNotSupportedError
 from . import services
+
 
 class Bible(object):
     __slots__ = ('name', 'service', 'version')
@@ -14,7 +14,7 @@ class Bible(object):
     service: Service
     version: str
 
-    def __init__(self, name: str, service: Service, version: str):
+    def __init__(self, name: str, service: Service, version: str) -> None:
         self.name = name
         self.service = service
         self.version = version
@@ -25,11 +25,12 @@ class Bible(object):
     async def search(self, terms: List[str]) -> SearchResults:
         return await self.service.search(self.version, terms)
 
+
 class BibleManager:
     config: ConfigObject
     bible_map: Dict[str, Bible]
 
-    def __init__(self, config: ConfigObject):
+    def __init__(self, config: ConfigObject) -> None:
         self.config = config
 
         service_map = {}
@@ -52,11 +53,11 @@ class BibleManager:
             )
 
     def get_versions(self) -> List[Tuple[str, str]]:
-        return [
-            (key, bible.name) for key, bible in sorted(self.bible_map.items(), key=lambda item: item[0])
-        ]
+        sorted_items = sorted(self.bible_map.items(), key=lambda item: item[0])
+        return [(key, bible.name) for key, bible in sorted_items]
 
-    # TODO: Book parsing should go here and then pass it to services for service-specific modifications
+    # TODO: Book parsing should go here and then pass it to services for
+    # service-specific modifications
     async def get_passage(self, version: str, book: str, chapter: int, verse_start: int, verse_end: int = -1) -> str:
         bible = self._get_bible(version)
         passage = Passage(book, chapter, verse_start, verse_end)
