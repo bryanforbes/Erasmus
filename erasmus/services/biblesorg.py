@@ -1,6 +1,7 @@
 from typing import List, Any, Dict
 from aiohttp import BasicAuth, ClientResponse
 from bs4 import BeautifulSoup
+from urllib.parse import urlencode
 
 from ..config import ConfigObject
 from ..data import Passage, SearchResults
@@ -25,8 +26,10 @@ class BiblesOrg(Service[Dict[str, Any]]):
         return await super().get(url, auth=self._auth)
 
     def _get_passage_url(self, version: str, passage: Passage) -> str:
-        query = str(passage).replace(' ', '+')
-        return f'{self.base_url}/passages.js?q[]={query}&version={version}'
+        return f'{self.base_url}/passages.js?' + urlencode({
+            'q[]': str(passage),
+            'version': version
+        })
 
     def _get_passage_text(self, response: Dict[str, Any]) -> str:
         passages = response.get('search', {}).get('result', {}).get('passages')
@@ -46,9 +49,13 @@ class BiblesOrg(Service[Dict[str, Any]]):
         return soup.get_text(' ', strip=True).replace('\n', ' ').replace('  ', ' ')
 
     def _get_search_url(self, version: str, terms: List[str]) -> str:
-        keyword = '+'.join(terms)
-        return (f'{self.base_url}/verses.js?keyword={keyword}&precision=all&version={version}&'
-                'sort_order=canonical&limit=20')
+        return f'{self.base_url}/verses.js?' + urlencode({
+            'keyword': ' '.join(terms),
+            'precision': 'all',
+            'version': version,
+            'sort_order': 'canonical',
+            'limit': 20
+        })
 
     def _get_search_results(self, response: Dict[str, Any]) -> SearchResults:
         result = response.get('search', {}).get('result')

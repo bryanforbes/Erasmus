@@ -1,6 +1,7 @@
 from typing import List
 from bs4 import BeautifulSoup
 from aiohttp import ClientResponse
+from urllib.parse import urlencode
 import re
 
 from ..data import Passage, SearchResults
@@ -18,8 +19,11 @@ class BibleGateway(Service[str]):
         return await response.text()
 
     def _get_passage_url(self, version: str, passage: Passage) -> str:
-        search = str(passage).replace(' ', '+').replace(':', '%3A')
-        return f'{self.base_url}/passage/?search={search}&version={version}&interface=print'
+        return f'{self.base_url}/passage/?' + urlencode({
+            'search': str(passage),
+            'version': version,
+            'interface': 'print'
+        })
 
     def _get_passage_text(self, response: str) -> str:
         soup = BeautifulSoup(response, 'html.parser')
@@ -43,9 +47,12 @@ class BibleGateway(Service[str]):
         return result
 
     def _get_search_url(self, version: str, terms: List[str]) -> str:
-        quicksearch = '+'.join(terms)
-        return (f'{self.base_url}/quicksearch/?quicksearch={quicksearch}&qs_version={version}&'
-                'limit=20&interface=print')
+        return f'{self.base_url}/quicksearch/?' + urlencode({
+            'quicksearch': ' '.join(terms),
+            'qs_version': version,
+            'limit': 20,
+            'interface': 'print'
+        })
 
     def _get_search_results(self, response: str) -> SearchResults:
         soup = BeautifulSoup(response, 'html.parser')

@@ -1,4 +1,5 @@
 import pytest
+from urllib.parse import urlencode
 from . import ServiceTest
 
 from erasmus.services import BiblesOrg
@@ -51,8 +52,13 @@ class TestBiblesOrg(ServiceTest):
 
     @pytest.fixture
     def search_url(self):
-        return 'https://bibles.org/v2/verses.js?keyword=one+two+three&precision=all&version=esv&' \
-               'sort_order=canonical&limit=20'
+        return 'https://bibles.org/v2/verses.js?' + urlencode({
+            'keyword': 'one two three',
+            'precision': 'all',
+            'version': 'esv',
+            'sort_order': 'canonical',
+            'limit': 20
+        })
 
     @pytest.fixture
     def good_mock_passages(self, mocker, mock_response):
@@ -89,8 +95,10 @@ class TestBiblesOrg(ServiceTest):
         return good_mock_passages
 
     def get_passages_url(self, version: str, passage: Passage) -> str:
-        passage_str = str(passage).replace(' ', '+')
-        return f'https://bibles.org/v2/passages.js?q[]={passage_str}&version={version}'
+        return f'https://bibles.org/v2/passages.js?' + urlencode({
+            'q[]': str(passage),
+            'version': version
+        })
 
     def test_init(self, service):
         super().test_init(service)
