@@ -1,5 +1,5 @@
 from typing import List, Any, Dict
-from aiohttp import BasicAuth
+from aiohttp import BasicAuth, ClientResponse
 from bs4 import BeautifulSoup
 
 from ..config import ConfigObject
@@ -10,19 +10,23 @@ from ..exceptions import DoNotUnderstandError
 
 # TODO: Better error handling
 class BiblesOrg(Service[Dict[str, Any]]):
+    base_url = 'https://bibles.org/v2'
+
     def __init__(self, config: ConfigObject) -> None:
         super().__init__(config)
 
         self._auth = BasicAuth(self.config.api_key, 'X')
 
-    async def get(self, url: str) -> Dict[str, Any]:
-        async with await self._get(url) as response:
-            obj = await response.json()
-            return obj['response']
+    async def _process_response(self, response: ClientResponse) -> Dict[str, Any]:
+        obj = await response.json()
+        return obj['response']
+
+    async def get(self, url: str, **session_options) -> Dict[str, Any]:
+        return await super().get(url, auth=self._auth)
 
     def _get_passage_url(self, version: str, passage: Passage) -> str:
         query = str(passage).replace(' ', '+')
-        return f'https://bibles.org/v2/passages.js?q[]={query}&version={version}'
+        return f'{self.base_url}/passages.js?q[]={query}&version={version}'
 
     def _get_passage_text(self, response: Dict[str, Any]) -> str:
         passages = response.get('search', {}).get('result', {}).get('passages')
@@ -43,7 +47,7 @@ class BiblesOrg(Service[Dict[str, Any]]):
 
     def _get_search_url(self, version: str, terms: List[str]) -> str:
         keyword = '+'.join(terms)
-        return (f'https://bibles.org/v2/verses.js?keyword={keyword}&precision=all&version={version}&'
+        return (f'{self.base_url}/verses.js?keyword={keyword}&precision=all&version={version}&'
                 'sort_order=canonical&limit=20')
 
     def _get_search_results(self, response: Dict[str, Any]) -> SearchResults:

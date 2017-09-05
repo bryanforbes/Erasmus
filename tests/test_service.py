@@ -26,14 +26,6 @@ class TestService(object):
             await service.search('version', ['one', 'two', 'three'])
 
     @pytest.mark.asyncio
-    async def test__get(self, mock_response, mock_client_session):
-        service = Service({})
-
-        async with await service._get('/foo/bar/baz') as session:
-            assert session is mock_response
-            mock_client_session.get.wrap_assert_called_once_with('/foo/bar/baz')
-
-    @pytest.mark.asyncio
     async def test_get(self):
         service = Service({})
 

@@ -19,8 +19,8 @@ class AsyncMagicMock(AsyncMixin, MagicMock):
 def AsyncWithMock(*args, **kwargs):
     mock = Mock(*args, **kwargs)
 
-    setattr(type(mock), '__aenter__', AsyncMagicMock())
-    setattr(type(mock), '__aexit__', AsyncMagicMock())
+    setattr(type(mock), '__aenter__', AsyncMock())
+    setattr(type(mock), '__aexit__', AsyncMock(return_value=False))
 
     return mock
 

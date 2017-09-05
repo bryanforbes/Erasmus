@@ -1,5 +1,6 @@
 from typing import List
 from bs4 import BeautifulSoup
+from aiohttp import ClientResponse
 import re
 
 from ..data import Passage, SearchResults
@@ -11,13 +12,14 @@ total_re = re.compile(r'^(?P<total>\d+)')
 
 # TODO: Error handling
 class BibleGateway(Service[str]):
-    async def get(self, url: str) -> str:
-        async with await self._get(url) as response:
-            return await response.text()
+    base_url = 'https://www.biblegateway.com'
+
+    async def _process_response(self, response: ClientResponse) -> str:
+        return await response.text()
 
     def _get_passage_url(self, version: str, passage: Passage) -> str:
         search = str(passage).replace(' ', '+').replace(':', '%3A')
-        return f'https://www.biblegateway.com/passage/?search={search}&version={version}&interface=print'
+        return f'{self.base_url}/passage/?search={search}&version={version}&interface=print'
 
     def _get_passage_text(self, response: str) -> str:
         soup = BeautifulSoup(response, 'html.parser')
@@ -42,7 +44,7 @@ class BibleGateway(Service[str]):
 
     def _get_search_url(self, version: str, terms: List[str]) -> str:
         quicksearch = '+'.join(terms)
-        return (f'https://www.biblegateway.com/quicksearch/?quicksearch={quicksearch}&qs_version={version}&'
+        return (f'{self.base_url}/quicksearch/?quicksearch={quicksearch}&qs_version={version}&'
                 'limit=20&interface=print')
 
     def _get_search_results(self, response: str) -> SearchResults:
