@@ -2,7 +2,7 @@ import pytest
 from . import ServiceTest
 
 from erasmus.services import BiblesOrg
-from erasmus.service import Passage
+from erasmus.data import Passage
 
 
 class MockConfig:

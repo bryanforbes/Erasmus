@@ -1,5 +1,5 @@
 import pytest
-from erasmus.service import Passage, SearchResults
+from erasmus.data import Passage, SearchResults
 from erasmus.exceptions import DoNotUnderstandError
 
 
@@ -53,8 +53,8 @@ class ServiceTest(object):
             await service.search('esv', ['one', 'two', 'three'])
 
     @pytest.mark.parametrize('args', [
-        ['esv', Passage('John', 1, 2, 3)],
-        ['nasb', Passage('Mark', 5, 20)]
+        ['esv', Passage.from_string('John 1:2-3')],
+        ['nasb', Passage.from_string('Mark 5:20')]
     ])
     @pytest.mark.asyncio
     @pytest.mark.usefixtures('good_mock_passages')
@@ -69,4 +69,4 @@ class ServiceTest(object):
     @pytest.mark.usefixtures('bad_mock_passages')
     async def test_get_passage_no_passages(self, service):
         with pytest.raises(DoNotUnderstandError):
-            await service.get_passage('esv', Passage('John', 1, 2, 3))
+            await service.get_passage('esv', Passage.from_string('John 1:2-3'))

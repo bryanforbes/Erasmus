@@ -2,13 +2,13 @@ from discord.ext import commands
 from discord.message import Message
 import re
 
+from .data import Passage
 from .bible_manager import BibleManager
 from .exceptions import (
     DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError
 )
 from .config import load, ConfigObject
 
-chapter_and_verse_re = re.compile(r'^(?P<chapter>\d+):(?P<verse_start>\d+)(?:-(?P<verse_end>\d+))?$')
 number_re = re.compile(r'^\d+$')
 
 
@@ -85,23 +85,15 @@ class Erasmus(commands.Bot):
             book = f'{book} {chapter_and_verse}'
             chapter_and_verse = args[0]
 
-        match = chapter_and_verse_re.match(chapter_and_verse)
-        if match is not None:
-            verse_end = match.group('verse_end')
-            if verse_end is None:
-                verse_end_int = -1
-            else:
-                verse_end_int = int(verse_end)
+        passage = Passage.from_string(f'{book} {chapter_and_verse}')
 
+        if passage is not None:
             await self.type()
 
             try:
                 passage_text = await self.bible_manager.get_passage(
                     version,
-                    book,
-                    int(match.group('chapter')),
-                    int(match.group('verse_start')),
-                    verse_end_int
+                    passage
                 )
             except DoNotUnderstandError:
                 await self.say('I do not understand that request')

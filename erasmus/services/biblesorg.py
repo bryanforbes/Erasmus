@@ -1,9 +1,10 @@
 from typing import List, Any, Dict
-from aiohttp import BasicAuth, ClientResponse
+from aiohttp import BasicAuth
 from bs4 import BeautifulSoup
 
 from ..config import ConfigObject
-from ..service import Service, Passage, SearchResults
+from ..data import Passage, SearchResults
+from ..service import Service
 from ..exceptions import DoNotUnderstandError
 
 
@@ -14,25 +15,16 @@ class BiblesOrg(Service[Dict[str, Any]]):
 
         self._auth = BasicAuth(self.config.api_key, 'X')
 
-    async def search(self, version: str, terms: List[str]) -> SearchResults:
-        keyword = '+'.join(terms)
-        url = (f'https://bibles.org/v2/verses.js?keyword={keyword}&precision=all&version={version}&'
-               'sort_order=canonical&limit=20')
+    async def get(self, url: str) -> Dict[str, Any]:
+        async with await self._get(url) as response:
+            obj = await response.json()
+            return obj['response']
 
-        response = await self._get(url, auth=self._auth)
-        result = response.get('search', {}).get('result')
+    def _get_passage_url(self, version: str, passage: Passage) -> str:
+        query = str(passage).replace(' ', '+')
+        return f'https://bibles.org/v2/passages.js?q[]={query}&version={version}'
 
-        if result is None or 'summary' not in result or 'verses' not in result:
-            raise DoNotUnderstandError
-
-        verses = [Passage.from_string(verse['reference']) for verse in result['verses']]
-
-        return SearchResults(verses, result['summary']['total'])
-
-    async def _get_passage(self, version: str, passage: str) -> str:
-        url = f'https://bibles.org/v2/passages.js?q[]={passage}&version={version}'
-
-        response = await self._get(url, auth=self._auth)
+    def _get_passage_text(self, response: Dict[str, Any]) -> str:
         passages = response.get('search', {}).get('result', {}).get('passages')
 
         if passages is None or len(passages) == 0:
@@ -49,13 +41,17 @@ class BiblesOrg(Service[Dict[str, Any]]):
 
         return soup.get_text(' ', strip=True).replace('\n', ' ').replace('  ', ' ')
 
-    def _parse_passage(self, passage: Passage) -> str:
-        verses = f'{passage.verse_start}'
-        if passage.verse_end > -1:
-            verses = f'{verses}-{passage.verse_end}'
+    def _get_search_url(self, version: str, terms: List[str]) -> str:
+        keyword = '+'.join(terms)
+        return (f'https://bibles.org/v2/verses.js?keyword={keyword}&precision=all&version={version}&'
+                'sort_order=canonical&limit=20')
 
-        return f'{passage.book}+{passage.chapter}:{verses}'
+    def _get_search_results(self, response: Dict[str, Any]) -> SearchResults:
+        result = response.get('search', {}).get('result')
 
-    async def _process_response(self, response: ClientResponse) -> Dict[str, Any]:
-        obj = await response.json()
-        return obj['response']
+        if result is None or 'summary' not in result or 'verses' not in result:
+            raise DoNotUnderstandError
+
+        verses = [Passage.from_string(verse['reference']) for verse in result['verses']]
+
+        return SearchResults(verses, result['summary']['total'])

@@ -1,7 +1,7 @@
 import pytest
 
 from erasmus.erasmus import Erasmus
-from erasmus.service import SearchResults, Passage
+from erasmus.data import SearchResults, Passage
 from erasmus.exceptions import BibleNotSupportedError
 
 

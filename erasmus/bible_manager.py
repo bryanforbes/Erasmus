@@ -2,7 +2,8 @@ from typing import Dict, List, Tuple
 from collections import OrderedDict
 
 from .config import ConfigObject
-from .service import Service, Passage, SearchResults
+from .data import Passage, SearchResults
+from .service import Service
 from .exceptions import BibleNotSupportedError, ServiceNotSupportedError
 from . import services
 
@@ -58,9 +59,8 @@ class BibleManager:
 
     # TODO: Book parsing should go here and then pass it to services for
     # service-specific modifications
-    async def get_passage(self, version: str, book: str, chapter: int, verse_start: int, verse_end: int = -1) -> str:
+    async def get_passage(self, version: str, passage: Passage) -> str:
         bible = self._get_bible(version)
-        passage = Passage(book, chapter, verse_start, verse_end)
         return await bible.get_passage(passage)
 
     async def search(self, version: str, terms: List[str]) -> SearchResults:

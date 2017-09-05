@@ -1,7 +1,7 @@
 import pytest
 from erasmus.bible_manager import BibleManager
 from erasmus.config import ConfigObject
-from erasmus.service import Passage
+from erasmus.data import Passage
 from erasmus.exceptions import ServiceNotSupportedError, BibleNotSupportedError
 
 
@@ -81,16 +81,19 @@ class TestBibleManager(object):
         manager = BibleManager(config)
         manager.bible_map['bible2'].service.get_passage.return_value = 'blah'
 
-        result = await manager.get_passage('bible2', 'book', 1, 2)
+        result = await manager.get_passage('bible2', Passage.from_string('book 1:2'))
         assert result == 'blah'
-        manager.bible_map['bible2'].service.get_passage.assert_called_once_with('eng-bible2', Passage('book', 1, 2))
+        manager.bible_map['bible2'].service.get_passage.assert_called_once_with(
+            'eng-bible2',
+            Passage.from_string('book 1:2')
+        )
 
     @pytest.mark.asyncio
     async def test_get_passage_no_bible(self, config, services):
         manager = BibleManager(config)
 
         with pytest.raises(BibleNotSupportedError) as exception:
-            await manager.get_passage('bible3', 'one', 'two', 'three')
+            await manager.get_passage('bible3', Passage.from_string('one 2:3'))
             assert exception.version == 'bible3'
 
     @pytest.mark.asyncio

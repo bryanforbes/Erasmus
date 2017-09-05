@@ -2,7 +2,7 @@ import pytest
 from . import ServiceTest
 
 from erasmus.services import BibleGateway
-from erasmus.service import Passage
+from erasmus.data import Passage
 
 
 class TestBibleGateway(ServiceTest):
