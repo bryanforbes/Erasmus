@@ -67,8 +67,15 @@ class TestBiblesOrg(ServiceTest):
                 'search': {
                     'result': {
                         'passages': [
-                            {'text': '<h3>Title</h3><sup class="v">1</sup>This  is the\ntext'
-                                     '<sup class="v">2</sup>This\n is also the text'}
+                            {'text': '<p class=\"p\"><sup id=\"Gal.3.10\" class=\"v\">10</sup>'
+                                     'For as many as are of the works of the Law are under a '
+                                     'curse; for it is written, “C<span class=\"sc\">URSED IS '
+                                     'EVERYONE WHO DOES NOT ABIDE BY ALL THINGS WRITTEN IN THE '
+                                     'BOOK OF THE LAW</span>, <span class=\"sc\">TO '
+                                     'PERFORM THEM</span>.”<sup id=\"Gal.3.11\" class=\"v\">11'
+                                     '</sup>Now that no one is justified by the Law before God '
+                                     'is evident; for, “T<span class=\"sc\">HE RIGHTEOUS MAN '
+                                     'SHALL LIVE BY FAITH</span>.”</p>'}
                         ]
                     }
                 }

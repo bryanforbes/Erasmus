@@ -38,12 +38,14 @@ class BibleGateway(Service[str]):
             node.decompose()
         for number in verse_block.select('span.chapternum'):
             # Replace chapter number with 1.
-            number.string = '1.'
+            number.string = '1. '
+        for small_caps in verse_block.select('.small-caps'):
+            small_caps.string = small_caps.string.upper()
         for number in verse_block.select('sup.versenum'):
             # Add a period after verse numbers
-            number.string = f'{number.string.strip()}.'
+            number.string = f'{number.string.strip()}. '
 
-        result = ' '.join(verse_block.get_text(' ', strip=True).replace('\n', ' ').replace('  ', ' ').split())
+        result = (' '.join(verse_block.get_text('').replace('\n', ' ').split())).strip()
         return result
 
     def _get_search_url(self, version: str, terms: List[str]) -> str:

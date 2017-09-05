@@ -44,9 +44,11 @@ class BiblesOrg(Service[Dict[str, Any]]):
             heading.decompose()
         for number in soup.select('sup.v'):
             # Add a period after verse numbers
-            number.string = f'{number.string}.'
+            number.string = f' {number.string}. '
+        for span in soup.select('span.sc'):
+            span.unwrap()
 
-        return soup.get_text(' ', strip=True).replace('\n', ' ').replace('  ', ' ')
+        return (' '.join(soup.get_text('').replace('\n', ' ').split())).strip()
 
     def _get_search_url(self, version: str, terms: List[str]) -> str:
         return f'{self.base_url}/verses.js?' + urlencode({
