@@ -1,4 +1,5 @@
 from typing import List, Generic, TypeVar
+from abc import abstractmethod
 import aiohttp
 import async_timeout
 
@@ -34,18 +35,23 @@ class Service(Generic[RT]):
     async def search(self, version: str, terms: List[str]) -> SearchResults:
         pass
 
+    @abstractmethod
     def _get_passage_url(self, version: str, passage: Passage) -> str:
         raise NotImplementedError
 
+    @abstractmethod
     def _get_passage_text(self, response: RT) -> str:
         raise NotImplementedError
 
+    @abstractmethod
     def _get_search_url(self, version: str, terms: List[str]) -> str:
         raise NotImplementedError
 
+    @abstractmethod
     def _get_search_results(self, response: RT) -> SearchResults:
         raise NotImplementedError
 
+    @abstractmethod
     async def _process_response(self, response: aiohttp.ClientResponse) -> RT:
         raise NotImplementedError
 

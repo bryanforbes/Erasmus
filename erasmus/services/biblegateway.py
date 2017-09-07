@@ -1,5 +1,5 @@
 from typing import List
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup, Tag
 from aiohttp import ClientResponse
 from urllib.parse import urlencode
 import re
@@ -12,11 +12,12 @@ total_re = re.compile(r'^(?P<total>\d+)')
 
 
 # TODO: Error handling
-class BibleGateway(Service[str]):
+class BibleGateway(Service[Tag]):
     base_url = 'https://www.biblegateway.com'
 
-    async def _process_response(self, response: ClientResponse) -> str:
-        return await response.text()
+    async def _process_response(self, response: ClientResponse) -> Tag:
+        text = await response.text()
+        return BeautifulSoup(text, 'html.parser')
 
     def _get_passage_url(self, version: str, passage: Passage) -> str:
         return f'{self.base_url}/passage/?' + urlencode({
@@ -25,10 +26,8 @@ class BibleGateway(Service[str]):
             'interface': 'print'
         })
 
-    def _get_passage_text(self, response: str) -> str:
-        soup = BeautifulSoup(response, 'html.parser')
-
-        verse_block = soup.select_one('.result-text-style-normal')
+    def _get_passage_text(self, response: Tag) -> str:
+        verse_block = response.select_one('.result-text-style-normal')
 
         if verse_block is None:
             raise DoNotUnderstandError
@@ -56,17 +55,15 @@ class BibleGateway(Service[str]):
             'interface': 'print'
         })
 
-    def _get_search_results(self, response: str) -> SearchResults:
-        soup = BeautifulSoup(response, 'html.parser')
-
-        verse_nodes = soup.select('.search-result-list .bible-item .bible-item-title')
+    def _get_search_results(self, response: Tag) -> SearchResults:
+        verse_nodes = response.select('.search-result-list .bible-item .bible-item-title')
 
         if verse_nodes is None:
             raise DoNotUnderstandError
 
         verses = [Passage.from_string(node.string.strip()) for node in verse_nodes]
 
-        total_node = soup.select_one('.search-total-results')
+        total_node = response.select_one('.search-total-results')
 
         if total_node is None:
             raise DoNotUnderstandError
