@@ -37,13 +37,13 @@ class TestPassage(object):
         passage = Passage('John', verse_start, verse_end)
 
         assert passage.book == 'John'
-        assert passage.verse_start == verse_start
-        assert passage.verse_end == verse_end
+        assert passage.start == verse_start
+        assert passage.end == verse_end
 
         passage = Passage('John', verse_start)
         assert passage.book == 'John'
-        assert passage.verse_start == verse_start
-        assert passage.verse_end is None
+        assert passage.start == verse_start
+        assert passage.end is None
 
     @pytest.mark.parametrize('passage,expected', [
         (Passage('John', Verse(1, 1)), 'John 1:1'),

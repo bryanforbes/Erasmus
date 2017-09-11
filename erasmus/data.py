@@ -32,26 +32,26 @@ class Verse(object):
 
 
 class Passage(object):
-    __slots__ = ('book', 'verse_start', 'verse_end')
+    __slots__ = ('book', 'start', 'end')
 
     book: str
-    verse_start: Verse
-    verse_end: Optional[Verse]
+    start: Verse
+    end: Optional[Verse]
 
-    def __init__(self, book: str, verse_start: Verse, verse_end: Verse = None) -> None:
+    def __init__(self, book: str, start: Verse, end: Verse = None) -> None:
         self.book = book
-        self.verse_start = verse_start
-        self.verse_end = verse_end
+        self.start = start
+        self.end = end
 
     @property
     def verses(self) -> str:
-        verse = str(self.verse_start)
+        verse = str(self.start)
 
-        if self.verse_end is not None:
-            if self.verse_end.chapter == self.verse_start.chapter:
-                verse += f'-{self.verse_end.verse}'
+        if self.end is not None:
+            if self.end.chapter == self.start.chapter:
+                verse += f'-{self.end.verse}'
             else:
-                verse += f'-{self.verse_end}'
+                verse += f'-{self.end}'
 
         return verse
 
@@ -77,25 +77,25 @@ class Passage(object):
             return None
 
         chapter_start_int = int(match.group('chapter_start'))
-        verse_start = Verse(chapter_start_int, int(match.group('verse_start')))
+        start = Verse(chapter_start_int, int(match.group('verse_start')))
 
-        verse_end = None  # type: Optional[Verse]
-        verse_end_str = match.group('verse_end')
+        end = None  # type: Optional[Verse]
+        end_str = match.group('verse_end')
 
-        if verse_end_str is not None:
-            verse_end_int = int(verse_end_str)
+        if end_str is not None:
+            end_int = int(end_str)
             chapter_end_int = chapter_start_int
 
             chapter_end_str = match.group('chapter_end')
             if chapter_end_str is not None:
                 chapter_end_int = int(chapter_end_str)
 
-            verse_end = Verse(chapter_end_int, verse_end_int)
+            end = Verse(chapter_end_int, end_int)
 
         return cls(
             match.group('book'),
-            verse_start,
-            verse_end
+            start,
+            end
         )
 
 
