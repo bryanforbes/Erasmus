@@ -25,7 +25,7 @@ class BiblesOrg(Service[SimpleNamespace]):
         self._auth = BasicAuth(self.config.api_key, 'X')
 
     async def _process_response(self, response: ClientResponse) -> SimpleNamespace:
-        obj = cast(SimpleNamespace, await response.json(loads=loads))
+        obj = cast(SimpleNamespace, await response.json(loads=loads, content_type='application/javascript'))
         return obj.response
 
     async def get(self, url: str, **session_options) -> SimpleNamespace:

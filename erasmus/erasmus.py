@@ -12,6 +12,15 @@ from .config import load, ConfigObject
 number_re = re.compile(r'^\d+$')
 
 
+class Context(commands.Context):
+    async def send(self, content: str = None, *, plain_text: bool = None, **kwargs) -> Message:
+        if content is not None:
+            if not plain_text:
+                content = f'```{content}```'
+
+        return await super().send(content, **kwargs)
+
+
 class Erasmus(commands.Bot):
     bible_manager: BibleManager
     config: ConfigObject
@@ -45,29 +54,19 @@ class Erasmus(commands.Bot):
     def run(self, *args, **kwargs) -> None:
         super().run(self.config.api_key)
 
-    async def say(self, content=None, *args, **kwargs) -> Message:
-        if content is not None:
-            extensions = ('plain_text',)
-            params = {k: kwargs.pop(k, None) for k in extensions}
-            plain_text = params.get('plain_text')
-
-            if not plain_text:
-                content = f'```{content}```'
-
-        return await super().say(content, **kwargs)
-
-    async def on_message(self, message) -> None:
+    async def on_message(self, message: Message) -> None:
         if message.author.bot:
             return
 
-        await self.process_commands(message)
+        ctx = await self.get_context(message, cls=Context)
+        await self.invoke(ctx)
 
     async def on_ready(self) -> None:
         print('-----')
         print(f'logged in as {self.user.name} {self.user.id}')
 
     @commands.command()
-    async def versions(self) -> None:
+    async def versions(self, ctx: Context) -> None:
         lines = ['I support the following Bible versions:', '']
         for version, description in self.bible_manager.get_versions():
             version = f'{version}:'.ljust(6)
@@ -76,9 +75,9 @@ class Erasmus(commands.Bot):
         lines.append("\nYou can search any version by prefixing the version command with 's' (ex. ~sesv [terms...])")
 
         output = '\n'.join(lines)
-        await self.say(f'\n{output}\n')
+        await ctx.send(f'\n{output}\n')
 
-    async def _version_lookup(self, ctx, book: str, chapter_and_verse: str, *args) -> None:
+    async def _version_lookup(self, ctx: Context, book: str, chapter_and_verse: str, *args) -> None:
         version = ctx.command.name
 
         if len(args) > 0 and number_re.match(book) is not None:
@@ -88,45 +87,43 @@ class Erasmus(commands.Bot):
         passage = Passage.from_string(f'{book} {chapter_and_verse}')
 
         if passage is not None:
-            await self.type()
-
-            try:
-                passage_text = await self.bible_manager.get_passage(
-                    version,
-                    passage
-                )
-            except DoNotUnderstandError:
-                await self.say('I do not understand that request')
-            except BibleNotSupportedError:
-                await self.say(f'~{version} is not supported')
-            except ServiceNotSupportedError:
-                await self.say(f'The service configured for ~{version} is not supported')
-            else:
-                await self.say(passage_text)
+            async with ctx.typing():
+                try:
+                    passage_text = await self.bible_manager.get_passage(
+                        version,
+                        passage
+                    )
+                except DoNotUnderstandError:
+                    await ctx.send('I do not understand that request')
+                except BibleNotSupportedError:
+                    await ctx.send(f'~{version} is not supported')
+                except ServiceNotSupportedError:
+                    await ctx.send(f'The service configured for ~{version} is not supported')
+                else:
+                    await ctx.send(passage_text)
         else:
-            await self.say('I do not understand that request')
+            await ctx.send('I do not understand that request')
 
-    async def _version_search(self, ctx, *terms) -> None:
+    async def _version_search(self, ctx: Context, *terms) -> None:
         version = ctx.command.name[1:]
 
-        await self.type()
-
-        try:
-            results = await self.bible_manager.search(version, list(terms))
-        except BibleNotSupportedError:
-            await self.say(f'~{ctx.command.name} is not supported')
-        else:
-            verses = ', '.join([str(verse) for verse in results.verses])
-            matches = 'match'
-
-            if results.total == 0 or results.total > 1:
-                matches = 'matches'
-
-            if results.total <= 20:
-                await self.say(f'I have found {results.total} {matches} to your search:\n{verses}')
+        async with ctx.typing():
+            try:
+                results = await self.bible_manager.search(version, list(terms))
+            except BibleNotSupportedError:
+                await ctx.send(f'~{ctx.command.name} is not supported')
             else:
-                await self.say(f'I have found {results.total} {matches} to your search. '
-                               f'Here are the first 20 {matches}:\n{verses}')
+                verses = ', '.join([str(verse) for verse in results.verses])
+                matches = 'match'
+
+                if results.total == 0 or results.total > 1:
+                    matches = 'matches'
+
+                if results.total <= 20:
+                    await ctx.send(f'I have found {results.total} {matches} to your search:\n{verses}')
+                else:
+                    await ctx.send(f'I have found {results.total} {matches} to your search. '
+                                   f'Here are the first 20 {matches}:\n{verses}')
 
 
 __all__ = ['Erasmus']
