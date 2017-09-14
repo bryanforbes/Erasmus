@@ -3,7 +3,7 @@ from abc import abstractmethod
 import aiohttp
 import async_timeout
 
-from .config import ConfigObject
+from .json import JSONObject
 from .data import Passage, SearchResults
 
 
@@ -22,9 +22,9 @@ def service_call(get_url, transform_response):
 
 
 class Service(Generic[RT]):
-    config: ConfigObject
+    config: JSONObject
 
-    def __init__(self, config: ConfigObject) -> None:
+    def __init__(self, config: JSONObject) -> None:
         self.config = config
 
     @service_call('_get_passage_url', '_get_passage_text')

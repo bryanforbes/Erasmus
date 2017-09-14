@@ -73,6 +73,8 @@ class TestErasmus(object):
 
     @pytest.fixture(autouse=True)
     def mock_load(self, mocker):
+        mock = mocker.mock_open(read_data='{ "foo": { "bar": "baz" }, "spam": "ham" }')
+        mocker.patch('erasmus.erasmus.open', mock)
         return mocker.patch('erasmus.erasmus.load')
 
     @pytest.fixture(autouse=True)

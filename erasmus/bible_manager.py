@@ -1,7 +1,7 @@
 from typing import Dict, List, Tuple
 from collections import OrderedDict
 
-from .config import ConfigObject
+from .json import JSONObject
 from .data import Passage, SearchResults
 from .service import Service
 from .exceptions import BibleNotSupportedError, ServiceNotSupportedError
@@ -28,10 +28,10 @@ class Bible(object):
 
 
 class BibleManager:
-    config: ConfigObject
+    config: JSONObject
     bible_map: Dict[str, Bible]
 
-    def __init__(self, config: ConfigObject) -> None:
+    def __init__(self, config: JSONObject) -> None:
         self.config = config
 
         service_map = {}

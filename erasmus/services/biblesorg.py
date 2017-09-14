@@ -2,33 +2,27 @@ from typing import List, cast
 from aiohttp import BasicAuth, ClientResponse
 from bs4 import BeautifulSoup
 from urllib.parse import urlencode
-from types import SimpleNamespace
-import json
+from ..json import loads, JSONObject
 
-from ..config import ConfigObject
 from ..data import Passage, SearchResults
 from ..service import Service
 from ..exceptions import DoNotUnderstandError
 
 
-def loads(s: str):
-    return json.loads(s, object_hook=lambda d: SimpleNamespace(**d))
-
-
 # TODO: Better error handling
-class BiblesOrg(Service[SimpleNamespace]):
+class BiblesOrg(Service[JSONObject]):
     base_url = 'https://bibles.org/v2'
 
-    def __init__(self, config: ConfigObject) -> None:
+    def __init__(self, config: JSONObject) -> None:
         super().__init__(config)
 
         self._auth = BasicAuth(self.config.api_key, 'X')
 
-    async def _process_response(self, response: ClientResponse) -> SimpleNamespace:
-        obj = cast(SimpleNamespace, await response.json(loads=loads, content_type='application/javascript'))
+    async def _process_response(self, response: ClientResponse) -> JSONObject:
+        obj = cast(JSONObject, await response.json(loads=loads, content_type='application/javascript'))
         return obj.response
 
-    async def get(self, url: str, **session_options) -> SimpleNamespace:
+    async def get(self, url: str, **session_options) -> JSONObject:
         return await super().get(url, auth=self._auth)
 
     def _get_passage_url(self, version: str, passage: Passage) -> str:
@@ -37,14 +31,11 @@ class BiblesOrg(Service[SimpleNamespace]):
             'version': version
         })
 
-    def _get_passage_text(self, response: SimpleNamespace) -> str:
-        try:
-            passages = response.search.result.passages
-        except:
+    def _get_passage_text(self, response: JSONObject) -> str:
+        passages = response.get('search.result.passages')
+
+        if passages is None or len(passages) == 0:
             raise DoNotUnderstandError
-        else:
-            if passages is None or len(passages) == 0:
-                raise DoNotUnderstandError
 
         soup = BeautifulSoup(passages[0].text, 'html.parser')
 
@@ -68,14 +59,11 @@ class BiblesOrg(Service[SimpleNamespace]):
             'limit': 20
         })
 
-    def _get_search_results(self, response: SimpleNamespace) -> SearchResults:
-        try:
-            result = response.search.result
-        except:
+    def _get_search_results(self, response: JSONObject) -> SearchResults:
+        result = response.get('search.result')
+
+        if result is None or 'summary' not in result or 'verses' not in result:
             raise DoNotUnderstandError
-        else:
-            if result is None or not hasattr(result, 'summary') or not hasattr(result, 'verses'):
-                raise DoNotUnderstandError
 
         verses = [Passage.from_string(verse.reference) for verse in result.verses]
 

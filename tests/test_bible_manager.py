@@ -1,6 +1,6 @@
 import pytest
 from erasmus.bible_manager import BibleManager
-from erasmus.config import ConfigObject
+from erasmus.json import JSONObject
 from erasmus.data import Passage
 from erasmus.exceptions import ServiceNotSupportedError, BibleNotSupportedError
 
@@ -31,22 +31,22 @@ class TestBibleManager(object):
 
     @pytest.fixture
     def config(self):
-        return ConfigObject({
-            'services': ConfigObject({
-                'ServiceOne': ConfigObject({
+        return JSONObject({
+            'services': JSONObject({
+                'ServiceOne': JSONObject({
                     'api_key': 'service one api key'
                 }),
-                'ServiceTwo': ConfigObject({
+                'ServiceTwo': JSONObject({
                     'api_key': 'service two api key'
                 })
             }),
-            'bibles': ConfigObject({
-                'bible1': ConfigObject({
+            'bibles': JSONObject({
+                'bible1': JSONObject({
                     'name': 'First bible',
                     'service': 'ServiceOne',
                     'service_version': 'eng-bible1'
                 }),
-                'bible2': ConfigObject({
+                'bible2': JSONObject({
                     'name': 'Second bible',
                     'service': 'ServiceTwo',
                     'service_version': 'eng-bible2'

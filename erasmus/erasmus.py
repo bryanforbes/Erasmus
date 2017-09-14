@@ -4,10 +4,8 @@ import re
 
 from .data import Passage
 from .bible_manager import BibleManager
-from .exceptions import (
-    DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError
-)
-from .config import load, ConfigObject
+from .exceptions import DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError
+from .json import JSONObject, load
 
 number_re = re.compile(r'^\d+$')
 
@@ -23,12 +21,14 @@ class Context(commands.Context):
 
 class Erasmus(commands.Bot):
     bible_manager: BibleManager
-    config: ConfigObject
+    config: JSONObject
 
     def __init__(self, config_path, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
-        self.config = load(config_path)
+        with open(config_path, 'r') as f:
+            self.config = load(f)
+
         self.bible_manager = BibleManager(self.config)
 
         for name, description in self.bible_manager.get_versions():
@@ -58,7 +58,14 @@ class Erasmus(commands.Bot):
         if message.author.bot:
             return
 
+        await self.process_commands(message)
+
+    async def process_commands(self, message: Message) -> None:
         ctx = await self.get_context(message, cls=Context)
+
+        if ctx.command is None:
+            return
+
         await self.invoke(ctx)
 
     async def on_ready(self) -> None:
