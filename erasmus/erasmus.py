@@ -11,12 +11,10 @@ number_re = re.compile(r'^\d+$')
 
 
 class Context(commands.Context):
-    async def send(self, content: str = None, *, plain_text: bool = None, **kwargs) -> Message:
-        if content is not None:
-            if not plain_text:
-                content = f'```{content}```'
+    async def send_to_author(self, text: str) -> Message:
+        content = f'{self.author.mention}\n```{text}```'
 
-        return await super().send(content, **kwargs)
+        return await self.send(content)
 
 
 class Erasmus(commands.Bot):
@@ -82,7 +80,7 @@ class Erasmus(commands.Bot):
         lines.append("\nYou can search any version by prefixing the version command with 's' (ex. ~sesv [terms...])")
 
         output = '\n'.join(lines)
-        await ctx.send(f'\n{output}\n')
+        await ctx.send_to_author(f'\n{output}\n')
 
     async def _version_lookup(self, ctx: Context, book: str, chapter_and_verse: str, *args) -> None:
         version = ctx.command.name
@@ -98,15 +96,15 @@ class Erasmus(commands.Bot):
                 try:
                     passage_text = await self.bible_manager.get_passage(version, passage)
                 except DoNotUnderstandError:
-                    await ctx.send('I do not understand that request')
+                    await ctx.send_to_author('I do not understand that request')
                 except BibleNotSupportedError:
-                    await ctx.send(f'~{version} is not supported')
+                    await ctx.send_to_author(f'~{version} is not supported')
                 except ServiceNotSupportedError:
-                    await ctx.send(f'The service configured for ~{version} is not supported')
+                    await ctx.send_to_author(f'The service configured for ~{version} is not supported')
                 else:
-                    await ctx.send(passage_text)
+                    await ctx.send_to_author(passage_text)
         else:
-            await ctx.send('I do not understand that request')
+            await ctx.send_to_author('I do not understand that request')
 
     async def _version_search(self, ctx: Context, *terms) -> None:
         version = ctx.command.name[1:]
@@ -115,7 +113,7 @@ class Erasmus(commands.Bot):
             try:
                 results = await self.bible_manager.search(version, list(terms))
             except BibleNotSupportedError:
-                await ctx.send(f'~{ctx.command.name} is not supported')
+                await ctx.send_to_author(f'~{ctx.command.name} is not supported')
             else:
                 verses = ', '.join([str(verse) for verse in results.verses])
                 matches = 'match'
@@ -124,10 +122,10 @@ class Erasmus(commands.Bot):
                     matches = 'matches'
 
                 if results.total <= 20:
-                    await ctx.send(f'I have found {results.total} {matches} to your search:\n{verses}')
+                    await ctx.send_to_author(f'I have found {results.total} {matches} to your search:\n{verses}')
                 else:
-                    await ctx.send(f'I have found {results.total} {matches} to your search. '
-                                   f'Here are the first 20 {matches}:\n{verses}')
+                    await ctx.send_to_author(f'I have found {results.total} {matches} to your search. '
+                                             f'Here are the first 20 {matches}:\n{verses}')
 
 
 __all__ = ['Erasmus']

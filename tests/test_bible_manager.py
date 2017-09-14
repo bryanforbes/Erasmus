@@ -43,11 +43,13 @@ class TestBibleManager(object):
             'bibles': JSONObject({
                 'bible1': JSONObject({
                     'name': 'First bible',
+                    'abbr': 'FB1',
                     'service': 'ServiceOne',
                     'service_version': 'eng-bible1'
                 }),
                 'bible2': JSONObject({
                     'name': 'Second bible',
+                    'abbr': 'SB2',
                     'service': 'ServiceTwo',
                     'service_version': 'eng-bible2'
                 })
@@ -81,7 +83,7 @@ class TestBibleManager(object):
         manager.bible_map['bible2'].service.get_passage.return_value = 'blah'
 
         result = await manager.get_passage('bible2', Passage.from_string('book 1:2'))
-        assert result == 'blah'
+        assert result == f'blah\n\nbook 1:2 (SB2)'
         manager.bible_map['bible2'].service.get_passage.assert_called_once_with(
             'eng-bible2',
             Passage.from_string('book 1:2')

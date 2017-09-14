@@ -6,17 +6,21 @@ from erasmus.exceptions import BibleNotSupportedError # noqa
 
 
 class MockUser(object):
-    __slots__ = ('bot', 'id')
+    __slots__ = ('bot', 'id', 'mention')
     bot: bool
+    id: int
+    mention: str
 
-    def __init__(self, *, bot: bool = None, id: int = None) -> None:
+    def __init__(self, *, bot: bool = None, id: int = None, mention: str = None) -> None:
         self.bot = bot
         self.id = id
+        self.mention = mention
 
 
 class MockMessage(object):
     __slots__ = ('author', 'content', '_state')
     author: MockUser
+    content: str
 
     def __init__(self, *, author: MockUser = None, content: str = None) -> None:
         self.author = author
@@ -47,16 +51,12 @@ class TestContext(object):
 
     @pytest.mark.asyncio
     async def test_send(self, mocker, mock_context_send):
-        ctx = Context(prefix='~', message=MockMessage())
+        ctx = Context(prefix='~', message=MockMessage(author=MockUser(mention='user1')))
 
-        await ctx.send(blah='baz')
-        await ctx.send(content='foo bar baz')
-        await ctx.send(content='foo bar baz', plain_text=True, blah='baz')
+        await ctx.send_to_author('baz')
 
         assert mock_context_send.call_args_list == [
-            mocker.call(None, blah='baz'),
-            mocker.call('```foo bar baz```'),
-            mocker.call('foo bar baz', blah='baz')
+            mocker.call('user1\n```baz```')
         ]
 
 
@@ -68,8 +68,8 @@ class TestErasmus(object):
         mocker.patch('discord.ext.commands.Bot.invoke', new_callable=mocker.AsyncMock)
 
     @pytest.fixture
-    def mock_send(self, mocker):
-        return mocker.patch('erasmus.erasmus.Context.send', new_callable=mocker.AsyncMock)
+    def mock_send_to_author(self, mocker):
+        return mocker.patch('erasmus.erasmus.Context.send_to_author', new_callable=mocker.AsyncMock)
 
     @pytest.fixture(autouse=True)
     def mock_load(self, mocker):
@@ -102,7 +102,7 @@ class TestErasmus(object):
         assert bot.add_command.call_args_list[5] == mocker.call(bot.versions)
 
     # @pytest.mark.asyncio
-    # async def test_on_message(self, mocker, mock_send):
+    # async def test_on_message(self, mocker, mock_send_to_author):
     #     bot = Erasmus('foo/bar/baz.json', command_prefix='~')
 
     #     bot_message = MockMessage(author=MockUser(bot=True))
@@ -116,7 +116,7 @@ class TestErasmus(object):
     #     ]
 
     # @pytest.mark.asyncio
-    # async def test_versions(self, mock_send):
+    # async def test_versions(self, mock_send_to_author):
     #     bot = Erasmus('foo/bar/baz.json', command_prefix='~')
 
     #     await bot.versions.callback(bot)
