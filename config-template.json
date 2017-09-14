@@ -9,31 +9,37 @@
   "bibles": {
     "esv": {
       "name": "English Standard Version",
+      "abbr": "ESV",
       "service": "BiblesOrg",
       "service_version": "eng-ESV"
     },
     "kjv": {
       "name": "King James Version",
+      "abbr": "KJV",
       "service": "BiblesOrg",
       "service_version": "eng-KJV"
     },
     "kjva": {
       "name": "King James Version with Apocrypha",
+      "abbr": "KJV w/ Apocrypha",
       "service": "BiblesOrg",
       "service_version": "eng-KJVA"
     },
     "nasb": {
       "name": "New American Standard Bible",
+      "abbr": "NASB",
       "service": "BiblesOrg",
       "service_version": "eng-NASB"
     },
     "sbl": {
       "name": "SBL Greek New Testament",
+      "abbr": "SBL GNT",
       "service": "BibleGateway",
       "service_version": "SBLGNT"
     },
     "niv": {
       "name": "New International Version",
+      "abbr": "NIV",
       "service": "BibleGateway",
       "service_version": "NIV"
     }
