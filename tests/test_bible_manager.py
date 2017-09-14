@@ -73,8 +73,7 @@ class TestBibleManager(object):
 
         result = manager.get_versions()
         assert len(result) == 2
-        assert result == [
-            ('bible1', 'First bible'), ('bible2', 'Second bible')]
+        assert result == [('bible1', 'First bible'), ('bible2', 'Second bible')]
 
     @pytest.mark.asyncio
     async def test_get_passage(self, config, services):

@@ -92,11 +92,7 @@ class Passage(object):
 
             end = Verse(chapter_end_int, end_int)
 
-        return cls(
-            match.group('book'),
-            start,
-            end
-        )
+        return cls(match.group('book'), start, end)
 
 
 class SearchResults(object):

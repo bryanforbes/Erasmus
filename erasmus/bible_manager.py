@@ -47,11 +47,7 @@ class BibleManager:
             if service is None:
                 raise ServiceNotSupportedError(bible_config.service)
 
-            self.bible_map[key] = Bible(
-                bible_config.name,
-                service,
-                bible_config.service_version
-            )
+            self.bible_map[key] = Bible(bible_config.name, service, bible_config.service_version)
 
     def get_versions(self) -> List[Tuple[str, str]]:
         sorted_items = sorted(self.bible_map.items(), key=lambda item: item[0])

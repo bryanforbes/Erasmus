@@ -96,10 +96,7 @@ class Erasmus(commands.Bot):
         if passage is not None:
             async with ctx.typing():
                 try:
-                    passage_text = await self.bible_manager.get_passage(
-                        version,
-                        passage
-                    )
+                    passage_text = await self.bible_manager.get_passage(version, passage)
                 except DoNotUnderstandError:
                     await ctx.send('I do not understand that request')
                 except BibleNotSupportedError:

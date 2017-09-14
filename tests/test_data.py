@@ -92,8 +92,7 @@ class TestSearchResults(object):
 
     @pytest.mark.parametrize('results,expected', [
         (SearchResults([Passage.from_string('book 1:2-3')], 20), None),
-        (SearchResults([Passage.from_string('book 1:2-3')], 20),
-         SearchResults([Passage.from_string('book 1:2-3')], 20))
+        (SearchResults([Passage.from_string('book 1:2-3')], 20), SearchResults([Passage.from_string('book 1:2-3')], 20))
     ])
     def test__eq__(self, results, expected):
         assert results == (expected or results)
@@ -105,5 +104,5 @@ class TestSearchResults(object):
         (SearchResults([Passage.from_string('book 1:2-3')], 20),
          SearchResults([Passage.from_string('book 1:2-4')], 20))
     ])
-    def test_ne__(self, results, expected):
+    def test__ne__(self, results, expected):
         assert results != expected
