@@ -1,10 +1,21 @@
-from typing import Optional, List
+from typing import Optional, List, Dict  # noqa
+from pathlib import Path
+from .json import load
+from .exceptions import BookNotUnderstoodError
 import re
 
 search_reference_re = re.compile(
-    r'^(?P<book>.*) (?P<chapter_start>\d+):(?P<verse_start>\d+)'
+    r'^(?P<book>.*)\.? (?P<chapter_start>\d+):(?P<verse_start>\d+)'
     r'(?:-(?:(?P<chapter_end>\d+):)?(?P<verse_end>\d+))?$'
 )
+
+with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
+    books_data = load(f)
+
+book_input_map = {}  # type: Dict[str, str]
+for book in books_data:
+    for input_string in [book.name, book.osis] + book.alt:  # type: str
+        book_input_map[input_string.lower()] = book.name
 
 
 class Verse(object):
@@ -39,7 +50,11 @@ class Passage(object):
     end: Optional[Verse]
 
     def __init__(self, book: str, start: Verse, end: Verse = None) -> None:
-        self.book = book
+        self.book = book_input_map.get(book.lower(), None)
+
+        if self.book is None:
+            raise BookNotUnderstoodError(book)
+
         self.start = start
         self.end = end
 

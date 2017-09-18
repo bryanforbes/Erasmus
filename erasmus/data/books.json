@@ -1,0 +1,549 @@
+[
+  {
+    "name": "Genesis",
+    "osis": "Gen",
+    "alt": []
+  },
+  {
+    "name": "Exodus",
+    "osis": "Exod",
+    "alt": [ "Ex" ]
+  },
+  {
+    "name": "Leviticus",
+    "osis": "Lev",
+    "alt": []
+  },
+  {
+    "name": "Numbers",
+    "osis": "Num",
+    "alt": []
+  },
+  {
+    "name": "Deuteronomy",
+    "osis": "Deut",
+    "alt": [
+      "Deu"
+    ]
+  },
+  {
+    "name": "Joshua",
+    "osis": "Josh",
+    "alt": [
+      "Jos"
+    ]
+  },
+  {
+    "name": "Judges",
+    "osis": "Judg",
+    "alt": []
+  },
+  {
+    "name": "Ruth",
+    "osis": "Ruth",
+    "alt": [
+      "Ru"
+    ]
+  },
+  {
+    "name": "1 Samuel",
+    "osis": "1Sam",
+    "alt": [
+      "I Samuel",
+      "ISam",
+      "1 Sam"
+    ]
+  },
+  {
+    "name": "2 Samuel",
+    "osis": "2Sam",
+    "alt": [
+      "II Samuel",
+      "IISam",
+      "2 Sam"
+    ]
+  },
+  {
+    "name": "1 Kings",
+    "osis": "1Kgs",
+    "alt": [
+      "1 King",
+      "1 Kgs",
+      "I Kings",
+      "I King",
+      "I Kgs",
+      "IKgs"
+    ]
+  },
+  {
+    "name": "2 Kings",
+    "osis": "2Kgs",
+    "alt": [
+      "2 King",
+      "2 Kgs",
+      "II Kings",
+      "II King",
+      "II Kgs",
+      "IIKgs"
+    ]
+  },
+  {
+    "name": "1 Chronicles",
+    "osis": "1Chr",
+    "alt": [
+      "1 Chron",
+      "1 Chr",
+      "I Chron",
+      "I Chr",
+      "IChr"
+    ]
+  },
+  {
+    "name": "2 Chronicles",
+    "osis": "2Chr",
+    "alt": [
+      "2 Chron",
+      "2 Chr",
+      "II Chron",
+      "II Chr",
+      "IIChr"
+    ]
+  },
+  {
+    "name": "Ezra",
+    "osis": "Ezra",
+    "alt": []
+  },
+  {
+    "name": "Nehemiah",
+    "osis": "Neh",
+    "alt": []
+  },
+  {
+    "name": "Esther",
+    "osis": "Esth",
+    "alt": []
+  },
+  {
+    "name": "Job",
+    "osis": "Job",
+    "alt": []
+  },
+  {
+    "name": "Psalm",
+    "osis": "Ps",
+    "alt": [
+      "Psa",
+      "Psalms"
+    ]
+  },
+  {
+    "name": "Proverbs",
+    "osis": "Prov",
+    "alt": [
+      "Pvb"
+    ]
+  },
+  {
+    "name": "Ecclesiastes",
+    "osis": "Eccl",
+    "alt": []
+  },
+  {
+    "name": "Song of Solomon",
+    "osis": "Song",
+    "alt": []
+  },
+  {
+    "name": "Isaiah",
+    "osis": "Isa",
+    "alt": []
+  },
+  {
+    "name": "Jeremiah",
+    "osis": "Jer",
+    "alt": []
+  },
+  {
+    "name": "Lamentations",
+    "osis": "Lam",
+    "alt": []
+  },
+  {
+    "name": "Ezekiel",
+    "osis": "Ezek",
+    "alt": []
+  },
+  {
+    "name": "Daniel",
+    "osis": "Dan",
+    "alt": []
+  },
+  {
+    "name": "Hosea",
+    "osis": "Hos",
+    "alt": []
+  },
+  {
+    "name": "Joel",
+    "osis": "Joel",
+    "alt": []
+  },
+  {
+    "name": "Amos",
+    "osis": "Amos",
+    "alt": []
+  },
+  {
+    "name": "Obadiah",
+    "osis": "Obad",
+    "alt": []
+  },
+  {
+    "name": "Jonah",
+    "osis": "Jonah",
+    "alt": [
+      "Jnh",
+      "Jon"
+    ]
+  },
+  {
+    "name": "Micah",
+    "osis": "Mic",
+    "alt": []
+  },
+  {
+    "name": "Nahum",
+    "osis": "Nah",
+    "alt": []
+  },
+  {
+    "name": "Habakkuk",
+    "osis": "Hab",
+    "alt": []
+  },
+  {
+    "name": "Zephaniah",
+    "osis": "Zeph",
+    "alt": []
+  },
+  {
+    "name": "Haggai",
+    "osis": "Hag",
+    "alt": [
+      "Hagg"
+    ]
+  },
+  {
+    "name": "Zechariah",
+    "osis": "Zech",
+    "alt": []
+  },
+  {
+    "name": "Malachi",
+    "osis": "Mal",
+    "alt": []
+  },
+  {
+    "name": "Matthew",
+    "osis": "Matt",
+    "alt": [
+      "Mat"
+    ]
+  },
+  {
+    "name": "Mark",
+    "osis": "Mark",
+    "alt": [
+      "Mar"
+    ]
+  },
+  {
+    "name": "Luke",
+    "osis": "Luke",
+    "alt": [
+      "Lk",
+      "Luk"
+    ]
+  },
+  {
+    "name": "John",
+    "osis": "John",
+    "alt": [
+      "Jo"
+    ]
+  },
+  {
+    "name": "Acts",
+    "osis": "Acts",
+    "alt": []
+  },
+  {
+    "name": "Romans",
+    "osis": "Rom",
+    "alt": []
+  },
+  {
+    "name": "1 Corinthians",
+    "osis": "1Cor",
+    "alt": [
+      "1 Cor",
+      "I Cor",
+      "ICor",
+      "I Corinthians"
+    ]
+  },
+  {
+    "name": "2 Corinthians",
+    "osis": "2Cor",
+    "alt": [
+      "2 Cor",
+      "II Cor",
+      "IICor",
+      "II Corinthians"
+    ]
+  },
+  {
+    "name": "Galatians",
+    "osis": "Gal",
+    "alt": []
+  },
+  {
+    "name": "Ephesians",
+    "osis": "Eph",
+    "alt": []
+  },
+  {
+    "name": "Philippians",
+    "osis": "Phil",
+    "alt": []
+  },
+  {
+    "name": "Colossians",
+    "osis": "Col",
+    "alt": []
+  },
+  {
+    "name": "1 Thessalonians",
+    "osis": "1Thess",
+    "alt": [
+      "IThess",
+      "1 Thess",
+      "I Thess",
+      "I Thessalonians"
+    ]
+  },
+  {
+    "name": "2 Thessalonians",
+    "osis": "2Thess",
+    "alt": [
+      "IIThess",
+      "2 Thess",
+      "II Thess",
+      "II Thessalonians"
+    ]
+  },
+  {
+    "name": "1 Timothy",
+    "osis": "1Tim",
+    "alt": [
+      "ITim",
+      "1 Tim",
+      "I Tim",
+      "I Timothy"
+    ]
+  },
+  {
+    "name": "2 Timothy",
+    "osis": "2Tim",
+    "alt": [
+      "IITim",
+      "2 Tim",
+      "II Tim",
+      "II Timothy"
+    ]
+  },
+  {
+    "name": "Titus",
+    "osis": "Titus",
+    "alt": []
+  },
+  {
+    "name": "Philemon",
+    "osis": "Phlm",
+    "alt": []
+  },
+  {
+    "name": "Hebrews",
+    "osis": "Heb",
+    "alt": []
+  },
+  {
+    "name": "James",
+    "osis": "Jas",
+    "alt": [
+      "Jam"
+    ]
+  },
+  {
+    "name": "1 Peter",
+    "osis": "1Pet",
+    "alt": [
+      "IPet",
+      "1 Pet",
+      "I Pet",
+      "I Peter"
+    ]
+  },
+  {
+    "name": "2 Peter",
+    "osis": "2Pet",
+    "alt": [
+      "IIPet",
+      "2 Pet",
+      "II Pet",
+      "II Peter"
+    ]
+  },
+  {
+    "name": "1 John",
+    "osis": "1John",
+    "alt": [
+      "IJohn",
+      "IJo",
+      "I John",
+      "I Jo",
+      "1Jo",
+      "1 Jo"
+    ]
+  },
+  {
+    "name": "2 John",
+    "osis": "2John",
+    "alt": [
+      "IIJohn",
+      "IIJo",
+      "II John",
+      "II Jo",
+      "2Jo",
+      "2 Jo"
+    ]
+  },
+  {
+    "name": "3 John",
+    "osis": "3John",
+    "alt": [
+      "IIIJohn",
+      "IIIJo",
+      "III John",
+      "III Jo",
+      "3Jo",
+      "3 Jo"
+    ]
+  },
+  {
+    "name": "Jude",
+    "osis": "Jude",
+    "alt": []
+  },
+  {
+    "name": "Revelation",
+    "osis": "Rev",
+    "alt": []
+  },
+  {
+    "name": "Tobit",
+    "osis": "Tob",
+    "alt": []
+  },
+  {
+    "name": "Judith",
+    "osis": "Jdt",
+    "alt": []
+  },
+  {
+    "name": "Additions to Esther",
+    "osis": "AddEsth",
+    "alt": []
+  },
+  {
+    "name": "Wisdom",
+    "osis": "Wis",
+    "alt": []
+  },
+  {
+    "name": "Sirach",
+    "osis": "Sir",
+    "alt": []
+  },
+  {
+    "name": "Baruch",
+    "osis": "Bar",
+    "alt": []
+  },
+  {
+    "name": "Letter of Jeremiah",
+    "osis": "EpJer",
+    "alt": []
+  },
+  {
+    "name": "Additions to Daniel",
+    "osis": "AddDan",
+    "alt": []
+  },
+  {
+    "name": "Prayer of Azariah",
+    "osis": "PrAzar",
+    "alt": []
+  },
+  {
+    "name": "Susanna",
+    "osis": "Sus",
+    "alt": []
+  },
+  {
+    "name": "Bel and the Dragon",
+    "osis": "Bel",
+    "alt": []
+  },
+  {
+    "name": "1 Maccabees",
+    "osis": "1Macc",
+    "alt": []
+  },
+  {
+    "name": "2 Maccabees",
+    "osis": "2Macc",
+    "alt": []
+  },
+  {
+    "name": "3 Maccabees",
+    "osis": "3Macc",
+    "alt": []
+  },
+  {
+    "name": "4 Maccabees",
+    "osis": "4Macc",
+    "alt": []
+  },
+  {
+    "name": "Prayer of Manasseh",
+    "osis": "PrMan",
+    "alt": []
+  },
+  {
+    "name": "1 Esdras",
+    "osis": "1Esd",
+    "alt": []
+  },
+  {
+    "name": "2 Esdras",
+    "osis": "2Esd",
+    "alt": []
+  },
+  {
+    "name": "Psalm 151",
+    "osis": "AddPs",
+    "alt": []
+  }
+]

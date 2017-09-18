@@ -26,7 +26,7 @@ class TestService(object):
     @pytest.mark.asyncio
     async def test_get_passage(self, MyService, mock_response, mock_client_session):
         service = MyService({})
-        passage = Passage.from_string('book 1:2-3')
+        passage = Passage.from_string('Leviticus 1:2-3')
 
         service._get_passage_url.return_value = 'http://example.com'
         service._process_response.return_value = 'foo bar baz'

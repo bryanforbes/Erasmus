@@ -9,6 +9,13 @@ class BibleNotSupportedError(Exception):
         self.version = version
 
 
+class BookNotUnderstoodError(Exception):
+    book: str
+
+    def __init__(self, book: str) -> None:
+        self.book = book
+
+
 class ServiceNotSupportedError(Exception):
     service_name: str
 

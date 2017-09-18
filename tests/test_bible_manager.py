@@ -82,11 +82,11 @@ class TestBibleManager(object):
         manager = BibleManager(config)
         manager.bible_map['bible2'].service.get_passage.return_value = 'blah'
 
-        result = await manager.get_passage('bible2', Passage.from_string('book 1:2'))
-        assert result == f'blah\n\nbook 1:2 (SB2)'
+        result = await manager.get_passage('bible2', Passage.from_string('Genesis 1:2'))
+        assert result == f'blah\n\nGenesis 1:2 (SB2)'
         manager.bible_map['bible2'].service.get_passage.assert_called_once_with(
             'eng-bible2',
-            Passage.from_string('book 1:2')
+            Passage.from_string('Genesis 1:2')
         )
 
     @pytest.mark.asyncio
@@ -94,7 +94,7 @@ class TestBibleManager(object):
         manager = BibleManager(config)
 
         with pytest.raises(BibleNotSupportedError) as exception:
-            await manager.get_passage('bible3', Passage.from_string('one 2:3'))
+            await manager.get_passage('bible3', Passage.from_string('Exodus 2:3'))
             assert exception.version == 'bible3'
 
     @pytest.mark.asyncio

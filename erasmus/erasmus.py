@@ -4,7 +4,7 @@ import re
 
 from .data import Passage
 from .bible_manager import BibleManager
-from .exceptions import DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError
+from .exceptions import DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError, BookNotUnderstoodError
 from .json import JSONObject, load
 
 number_re = re.compile(r'^\d+$')
@@ -35,15 +35,13 @@ class Erasmus(commands.Bot):
                 description=f'Lookup a verse in {description}',
                 hidden=True,
                 pass_context=True,
-                callback=self._version_lookup
-            )
+                callback=self._version_lookup)
             search_command = commands.Command(
                 name=f's{name}',
                 description=f'Search in {description}',
                 hidden=True,
                 pass_context=True,
-                callback=self._version_search
-            )
+                callback=self._version_search)
             self.add_command(lookup_command)
             self.add_command(search_command)
 
@@ -89,22 +87,25 @@ class Erasmus(commands.Bot):
             book = f'{book} {chapter_and_verse}'
             chapter_and_verse = args[0]
 
-        passage = Passage.from_string(f'{book} {chapter_and_verse}')
-
-        if passage is not None:
-            async with ctx.typing():
-                try:
-                    passage_text = await self.bible_manager.get_passage(version, passage)
-                except DoNotUnderstandError:
-                    await ctx.send_to_author('I do not understand that request')
-                except BibleNotSupportedError:
-                    await ctx.send_to_author(f'~{version} is not supported')
-                except ServiceNotSupportedError:
-                    await ctx.send_to_author(f'The service configured for ~{version} is not supported')
-                else:
-                    await ctx.send_to_author(passage_text)
+        try:
+            passage = Passage.from_string(f'{book} {chapter_and_verse}')
+        except BookNotUnderstoodError as err:
+            await ctx.send_to_author(f'I do not understand the book "{err.book}"')
         else:
-            await ctx.send_to_author('I do not understand that request')
+            if passage is not None:
+                async with ctx.typing():
+                    try:
+                        passage_text = await self.bible_manager.get_passage(version, passage)
+                    except DoNotUnderstandError:
+                        await ctx.send_to_author('I do not understand that request')
+                    except BibleNotSupportedError as err:
+                        await ctx.send_to_author(f'~{err.version} is not supported')
+                    except ServiceNotSupportedError:
+                        await ctx.send_to_author(f'The service configured for ~{version} is not supported')
+                    else:
+                        await ctx.send_to_author(passage_text)
+            else:
+                await ctx.send_to_author('I do not understand that request')
 
     async def _version_search(self, ctx: Context, *terms) -> None:
         version = ctx.command.name[1:]
