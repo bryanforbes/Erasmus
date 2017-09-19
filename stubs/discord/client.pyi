@@ -1,5 +1,7 @@
 from typing import Coroutine, Any, Union, Callable
 from .user import User
+from .game import Game
+from .enums import Status
 
 
 class Client:
@@ -28,3 +30,5 @@ class Client:
                         Callable[..., Any],
                         Coroutine[Any, Any, Any]
                     ]) -> Coroutine[Any, Any, Any]: ...
+
+    async def change_presence(self, *, game: Game=None, status: Status=None, afk: bool=None) -> None: ...

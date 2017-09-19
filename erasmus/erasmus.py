@@ -1,5 +1,6 @@
 from discord.ext import commands
 from discord.message import Message
+from discord.game import Game
 import re
 
 from .data import Passage
@@ -67,6 +68,8 @@ class Erasmus(commands.Bot):
     async def on_ready(self) -> None:
         print('-----')
         print(f'logged in as {self.user.name} {self.user.id}')
+
+        await self.change_presence(game=Game(name=f'| {self.command_prefix}versions'))
 
     @commands.command()
     async def versions(self, ctx: Context) -> None:

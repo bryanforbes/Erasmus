@@ -10,3 +10,12 @@ class MessageType(Enum):
     channel_icon_change: int
     pins_add: int
     new_member: int
+
+
+class Status(Enum):
+    online: str
+    offline: str
+    idle: str
+    dnd: str
+    do_not_disturb: str
+    invisible: str
