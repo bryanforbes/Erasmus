@@ -9,27 +9,27 @@ from . import services
 
 
 class Bible(object):
-    __slots__ = ('name', 'abbr', 'service', 'version')
+    __slots__ = ('name', 'abbr', 'service', 'service_version')
 
     name: str
     abbr: str
     service: Service
-    version: str
+    service_version: str
 
-    def __init__(self, name: str, abbr: str, service: Service, version: str) -> None:
+    def __init__(self, *, name: str, abbr: str, service: Service, service_version: str, **kwargs) -> None:
         self.name = name
         self.abbr = abbr
         self.service = service
-        self.version = version
+        self.service_version = service_version
 
     async def get_passage(self, passage: Passage) -> str:
-        text = await self.service.get_passage(self.version, passage)
+        text = await self.service.get_passage(self.service_version, passage)
         return f'''{text}
 
 {passage} ({self.abbr})'''
 
     async def search(self, terms: List[str]) -> SearchResults:
-        return await self.service.search(self.version, terms)
+        return await self.service.search(self.service_version, terms)
 
 
 class BibleManager:
@@ -52,10 +52,8 @@ class BibleManager:
             if service is None:
                 raise ServiceNotSupportedError(bible_config.service)
 
-            self.bible_map[key] = Bible(bible_config.name,
-                                        bible_config.abbr,
-                                        service,
-                                        bible_config.service_version)
+            bible_config.service = service
+            self.bible_map[key] = Bible(**bible_config)
 
     def get_versions(self) -> List[Tuple[str, str]]:
         sorted_items = sorted(self.bible_map.items(), key=lambda item: item[0])

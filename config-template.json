@@ -1,5 +1,6 @@
 {
   "api_key": "<discord api key here>",
+  "command_prefix": "~",
   "services": {
     "BiblesOrg": {
       "api_key": "<bibles.org api key here>"

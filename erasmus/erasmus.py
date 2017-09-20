@@ -23,17 +23,19 @@ class Erasmus(commands.Bot):
     config: JSONObject
 
     def __init__(self, config_path, *args, **kwargs) -> None:
-        super().__init__(*args, **kwargs)
-
         with open(config_path, 'r') as f:
             self.config = load(f)
+
+        kwargs['command_prefix'] = self.config.command_prefix
+
+        super().__init__(*args, **kwargs)
 
         self.bible_manager = BibleManager(self.config)
 
         for name, description in self.bible_manager.get_versions():
             lookup_command = commands.Command(
                 name=name,
-                description=f'Lookup a verse in {description}',
+                description=f'Look up a verse in {description}',
                 hidden=True,
                 pass_context=True,
                 callback=self._version_lookup)
@@ -76,22 +78,19 @@ class Erasmus(commands.Bot):
         lines = ['I support the following Bible versions:', '']
         for version, description in self.bible_manager.get_versions():
             version = f'{version}:'.ljust(6)
-            lines.append(f'  ~{version} {description}')
+            lines.append(f'  {self.command_prefix}{version} {description}')
 
-        lines.append("\nYou can search any version by prefixing the version command with 's' (ex. ~sesv terms...)")
+        lines.append("\nYou can search any version by prefixing the version command with 's' "
+                     f"(ex. {self.command_prefix}sesv terms...)")
 
         output = '\n'.join(lines)
         await ctx.send_to_author(f'\n{output}\n')
 
-    async def _version_lookup(self, ctx: Context, book: str, chapter_and_verse: str, *args) -> None:
+    async def _version_lookup(self, ctx: Context, *, reference: str) -> None:
         version = ctx.command.name
 
-        if len(args) > 0 and number_re.match(book) is not None:
-            book = f'{book} {chapter_and_verse}'
-            chapter_and_verse = args[0]
-
         try:
-            passage = Passage.from_string(f'{book} {chapter_and_verse}')
+            passage = Passage.from_string(reference)
         except BookNotUnderstoodError as err:
             await ctx.send_to_author(f'I do not understand the book "{err.book}"')
         else:

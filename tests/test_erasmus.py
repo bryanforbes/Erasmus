@@ -87,9 +87,10 @@ class TestErasmus(object):
         mocker.patch('erasmus.erasmus.BibleManager.get_passage', new_callable=mocker.AsyncMock)
         mocker.patch('erasmus.erasmus.BibleManager.search', new_callable=mocker.AsyncMock)
 
-    def test_init(self, mocker):
-        bot = Erasmus('foo/bar/baz.json', command_prefix='~')
+    def test_init(self, mocker, mock_load):
+        bot = Erasmus('foo/bar/baz.json')
 
+        assert bot.command_prefix == mock_load.return_value.command_prefix
         assert bot.add_command.call_count == 6
         assert bot.add_command.call_args_list[1][0][0].name == 'esv'
         assert bot.add_command.call_args_list[1][0][0].callback == bot._version_lookup

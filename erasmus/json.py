@@ -4,8 +4,11 @@ import json
 
 
 class JSONObject(OrderedDict):
-    def __getattr__(self, name: str):
+    def __getattr__(self, name: str) -> Any:
         return self[name]
+
+    def __setattr__(self, name: str, value: Any) -> None:
+        self[name] = value
 
     def get(self, key: str, fallback: Any = None) -> Any:
         obj = self
