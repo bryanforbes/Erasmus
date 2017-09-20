@@ -78,7 +78,7 @@ class Erasmus(commands.Bot):
             version = f'{version}:'.ljust(6)
             lines.append(f'  ~{version} {description}')
 
-        lines.append("\nYou can search any version by prefixing the version command with 's' (ex. ~sesv [terms...])")
+        lines.append("\nYou can search any version by prefixing the version command with 's' (ex. ~sesv terms...)")
 
         output = '\n'.join(lines)
         await ctx.send_to_author(f'\n{output}\n')

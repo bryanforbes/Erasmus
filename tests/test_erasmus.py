@@ -127,7 +127,7 @@ class TestErasmus(object):
 #   ~esv:   English Standard Version
 #   ~nasb:  New American Standard Bible
 #
-# You can search any version by prefixing the version command with 's' (ex. ~sesv [terms...])
+# You can search any version by prefixing the version command with 's' (ex. ~sesv terms...)
 # '''
 
     #     mock_send.assert_called_once_with(expected)

@@ -509,22 +509,42 @@
   {
     "name": "1 Maccabees",
     "osis": "1Macc",
-    "alt": []
+    "alt": [
+      "1 Macc",
+      "I Macc",
+      "I Maccabees",
+      "IMacc"
+    ]
   },
   {
     "name": "2 Maccabees",
     "osis": "2Macc",
-    "alt": []
+    "alt": [
+      "2 Macc",
+      "II Macc",
+      "II Maccabees",
+      "IIMacc"
+    ]
   },
   {
     "name": "3 Maccabees",
     "osis": "3Macc",
-    "alt": []
+    "alt": [
+      "3 Macc",
+      "III Macc",
+      "III Maccabees",
+      "IIIMacc"
+    ]
   },
   {
     "name": "4 Maccabees",
     "osis": "4Macc",
-    "alt": []
+    "alt": [
+      "4 Macc",
+      "IV Macc",
+      "IV Maccabees",
+      "IVMacc"
+    ]
   },
   {
     "name": "Prayer of Manasseh",
