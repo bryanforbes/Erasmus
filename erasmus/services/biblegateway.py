@@ -26,8 +26,9 @@ class BibleGateway(Service[Tag]):
             'interface': 'print'
         })
 
+    # TODO: Handle RTL text better
     def _get_passage_text(self, response: Tag) -> str:
-        verse_block = response.select_one('.result-text-style-normal')
+        verse_block = response.select_one('.result-text-style-normal, .result-text-style-rtl')
 
         if verse_block is None:
             raise DoNotUnderstandError
