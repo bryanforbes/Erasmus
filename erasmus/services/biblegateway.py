@@ -4,7 +4,7 @@ from aiohttp import ClientResponse
 from urllib.parse import urlencode
 import re
 
-from ..data import Passage, SearchResults
+from ..data import VerseRange, SearchResults
 from ..service import Service
 from ..exceptions import DoNotUnderstandError
 
@@ -19,9 +19,9 @@ class BibleGateway(Service[Tag]):
         text = await response.text()
         return BeautifulSoup(text, 'html.parser')
 
-    def _get_passage_url(self, version: str, passage: Passage) -> str:
+    def _get_passage_url(self, version: str, verses: VerseRange) -> str:
         return f'{self.base_url}/passage/?' + urlencode({
-            'search': str(passage),
+            'search': str(verses),
             'version': version,
             'interface': 'print'
         })
@@ -62,7 +62,7 @@ class BibleGateway(Service[Tag]):
         if verse_nodes is None:
             raise DoNotUnderstandError
 
-        verses = [Passage.from_string(node.string.strip()) for node in verse_nodes]
+        verses = [VerseRange.from_string(node.string.strip()) for node in verse_nodes]
 
         total_node = response.select_one('.search-total-results')
 

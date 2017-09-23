@@ -3,7 +3,7 @@ from discord.message import Message
 from discord.game import Game
 import re
 
-from .data import Passage
+from .data import VerseRange, Passage
 from .bible_manager import BibleManager
 from .exceptions import DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError, BookNotUnderstoodError
 from .json import JSONObject, load
@@ -12,10 +12,17 @@ number_re = re.compile(r'^\d+$')
 
 
 class Context(commands.Context):
-    async def send_to_author(self, text: str) -> Message:
-        content = f'{self.author.mention}\n```{text}```'
+    async def send_passage(self, passage: Passage) -> Message:
+        extra_len = len(self.author.mention) + 7
+        text = str(passage)
 
-        return await self.send(content)
+        if len(text) + extra_len > 2000:
+            text = passage.get_truncated(2000 - extra_len)
+
+        return await self.send_to_author(text)
+
+    async def send_to_author(self, text: str) -> Message:
+        return await self.send(f'{self.author.mention}\n```{text}```')
 
 
 class Erasmus(commands.Bot):
@@ -91,14 +98,14 @@ class Erasmus(commands.Bot):
         version = ctx.command.name
 
         try:
-            passage = Passage.from_string(reference)
+            verses = VerseRange.from_string(reference)
         except BookNotUnderstoodError as err:
             await ctx.send_to_author(f'I do not understand the book "{err.book}"')
         else:
-            if passage is not None:
+            if verses is not None:
                 async with ctx.typing():
                     try:
-                        passage_text = await self.bible_manager.get_passage(version, passage)
+                        passage = await self.bible_manager.get_passage(version, verses)
                     except DoNotUnderstandError:
                         await ctx.send_to_author('I do not understand that request')
                     except BibleNotSupportedError as err:
@@ -106,7 +113,7 @@ class Erasmus(commands.Bot):
                     except ServiceNotSupportedError:
                         await ctx.send_to_author(f'The service configured for ~{version} is not supported')
                     else:
-                        await ctx.send_to_author(passage_text)
+                        await ctx.send_passage(passage)
             else:
                 await ctx.send_to_author('I do not understand that request')
 

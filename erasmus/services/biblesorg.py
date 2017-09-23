@@ -4,7 +4,7 @@ from bs4 import BeautifulSoup
 from urllib.parse import urlencode
 from ..json import loads, JSONObject
 
-from ..data import Passage, SearchResults
+from ..data import VerseRange, SearchResults
 from ..service import Service
 from ..exceptions import DoNotUnderstandError
 
@@ -25,9 +25,9 @@ class BiblesOrg(Service[JSONObject]):
     async def get(self, url: str, **session_options) -> JSONObject:
         return await super().get(url, auth=self._auth)
 
-    def _get_passage_url(self, version: str, passage: Passage) -> str:
+    def _get_passage_url(self, version: str, verses: VerseRange) -> str:
         return f'{self.base_url}/passages.js?' + urlencode({
-            'q[]': str(passage),
+            'q[]': str(verses),
             'version': version
         })
 
@@ -65,6 +65,6 @@ class BiblesOrg(Service[JSONObject]):
         if result is None or 'summary' not in result or 'verses' not in result:
             raise DoNotUnderstandError
 
-        verses = [Passage.from_string(verse.reference) for verse in result.verses]
+        verses = [VerseRange.from_string(verse.reference) for verse in result.verses]
 
         return SearchResults(verses, result.summary.total)

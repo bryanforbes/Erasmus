@@ -1,5 +1,5 @@
 import pytest
-from erasmus.data import Verse, Passage, SearchResults
+from erasmus.data import Verse, VerseRange, Passage, SearchResults
 
 
 class TestVerse(object):
@@ -29,40 +29,40 @@ class TestVerse(object):
         assert verse != expected
 
 
-class TestPassage(object):
+class TestVerseRange(object):
     def test_init(self):
         verse_start = Verse(1, 1)
         verse_end = Verse(1, 4)
 
-        passage = Passage('John', verse_start, verse_end)
+        passage = VerseRange('John', verse_start, verse_end)
 
         assert passage.book == 'John'
         assert passage.start == verse_start
         assert passage.end == verse_end
 
-        passage = Passage('John', verse_start)
+        passage = VerseRange('John', verse_start)
         assert passage.book == 'John'
         assert passage.start == verse_start
         assert passage.end is None
 
     @pytest.mark.parametrize('passage,expected', [
-        (Passage('John', Verse(1, 1)), 'John 1:1'),
-        (Passage('John', Verse(1, 1), Verse(1, 4)), 'John 1:1-4'),
-        (Passage('John', Verse(1, 1), Verse(2, 2)), 'John 1:1-2:2')
+        (VerseRange('John', Verse(1, 1)), 'John 1:1'),
+        (VerseRange('John', Verse(1, 1), Verse(1, 4)), 'John 1:1-4'),
+        (VerseRange('John', Verse(1, 1), Verse(2, 2)), 'John 1:1-2:2')
     ])
     def test__str__(self, passage, expected):
         assert str(passage) == expected
 
     @pytest.mark.parametrize('passage,expected', [
-        (Passage('John', Verse(1, 1)), None),
-        (Passage('John', Verse(1, 1)), Passage('John', Verse(1, 1)))
+        (VerseRange('John', Verse(1, 1)), None),
+        (VerseRange('John', Verse(1, 1)), VerseRange('John', Verse(1, 1)))
     ])
     def test__eq__(self, passage, expected):
         assert passage == (expected or passage)
 
     @pytest.mark.parametrize('passage,expected', [
-        (Passage('John', Verse(1, 1)), {}),
-        (Passage('John', Verse(1, 1)), Passage('John', Verse(1, 2)))
+        (VerseRange('John', Verse(1, 1)), {}),
+        (VerseRange('John', Verse(1, 1)), VerseRange('John', Verse(1, 2)))
     ])
     def test__ne__(self, passage, expected):
         assert passage != expected
@@ -74,7 +74,7 @@ class TestPassage(object):
         ('asdfc083u4r', False),
     ])
     def test_from_string(self, passage_str, should_be_str):
-        passage = Passage.from_string(passage_str)
+        passage = VerseRange.from_string(passage_str)
 
         if should_be_str:
             assert str(passage) == passage_str
@@ -82,28 +82,75 @@ class TestPassage(object):
             assert passage is None
 
 
+class TestPassage(object):
+    def test_init(self):
+        text = 'foo bar baz'
+        range = VerseRange('Exodus', Verse(1, 1))
+        passage = Passage(text, range)
+
+        assert passage.text == text
+        assert passage.range == range
+        assert passage.version is None
+
+    def test_get_truncated(self):
+        text = 'foo bar baz' * 10
+        range = VerseRange('Exodus', Verse(1, 1))
+        passage = Passage(text, range)
+
+        truncated = passage.get_truncated(100)
+
+        assert truncated == f'The passage was too long and has been truncated:\n\n{text[:37]}\u2026\n\nExodus 1:1'
+
+    @pytest.mark.parametrize('passage,expected', [
+        (Passage('foo bar baz', VerseRange.from_string('Genesis 1:2-3')), 'foo bar baz\n\nGenesis 1:2-3'),
+        (Passage('foo bar baz', VerseRange.from_string('Genesis 1:2-3'), 'KJV'), 'foo bar baz\n\nGenesis 1:2-3 (KJV)')
+    ])
+    def test__str__(self, passage, expected):
+        assert str(passage) == expected
+
+    @pytest.mark.parametrize('passage,expected', [
+        (Passage('foo bar baz', VerseRange.from_string('Genesis 1:2-3')), None),
+        (Passage('foo bar baz', VerseRange.from_string('Genesis 1:2-3')),
+         Passage('foo bar baz', VerseRange.from_string('Genesis 1:2-3'))),
+        (Passage('foo bar baz', VerseRange.from_string('Genesis 1:2-3'), 'KJV'),
+         Passage('foo bar baz', VerseRange.from_string('Genesis 1:2-3'), 'KJV'))
+    ])
+    def test__eq__(self, passage, expected):
+        return passage == (expected or passage)
+
+    @pytest.mark.parametrize('passage,expected', [
+        (Passage('foo bar baz', VerseRange.from_string('Genesis 1:2-3')), {}),
+        (Passage('foo bar baz', VerseRange.from_string('Genesis 1:2-3')),
+         Passage('foo bar baz', VerseRange.from_string('Genesis 1:2-4'))),
+        (Passage('foo bar baz', VerseRange.from_string('Genesis 1:2-3'), 'ESV'),
+         Passage('foo bar baz', VerseRange.from_string('Genesis 1:2-3'), 'KJV'))
+    ])
+    def test__ne__(self, passage, expected):
+        return passage != expected
+
+
 class TestSearchResults(object):
     def test_init(self):
-        verses = [Passage('Exodus', Verse(1, 1))]
+        verses = [VerseRange('Exodus', Verse(1, 1))]
         results = SearchResults(verses, 20)
 
         assert results.verses == verses
         assert results.total == 20
 
     @pytest.mark.parametrize('results,expected', [
-        (SearchResults([Passage.from_string('Genesis 1:2-3')], 20), None),
-        (SearchResults([Passage.from_string('Genesis 1:2-3')], 20),
-         SearchResults([Passage.from_string('Genesis 1:2-3')], 20))
+        (SearchResults([VerseRange.from_string('Genesis 1:2-3')], 20), None),
+        (SearchResults([VerseRange.from_string('Genesis 1:2-3')], 20),
+         SearchResults([VerseRange.from_string('Genesis 1:2-3')], 20))
     ])
     def test__eq__(self, results, expected):
         assert results == (expected or results)
 
     @pytest.mark.parametrize('results,expected', [
-        (SearchResults([Passage.from_string('Genesis 1:2-3')], 20), {}),
-        (SearchResults([Passage.from_string('Genesis 1:2-3')], 20),
-         SearchResults([Passage.from_string('Genesis 1:2-3')], 30)),
-        (SearchResults([Passage.from_string('Genesis 1:2-3')], 20),
-         SearchResults([Passage.from_string('Genesis 1:2-4')], 20))
+        (SearchResults([VerseRange.from_string('Genesis 1:2-3')], 20), {}),
+        (SearchResults([VerseRange.from_string('Genesis 1:2-3')], 20),
+         SearchResults([VerseRange.from_string('Genesis 1:2-3')], 30)),
+        (SearchResults([VerseRange.from_string('Genesis 1:2-3')], 20),
+         SearchResults([VerseRange.from_string('Genesis 1:2-4')], 20))
     ])
     def test__ne__(self, results, expected):
         assert results != expected

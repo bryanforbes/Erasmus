@@ -4,21 +4,10 @@ import aiohttp
 import async_timeout
 
 from .json import JSONObject
-from .data import Passage, SearchResults
+from .data import VerseRange, Passage, SearchResults
 
 
 RT = TypeVar('RT')
-
-
-def service_call(get_url, transform_response):
-    def decorator(func):
-        async def operation(self, *args, **kwargs):
-            url = getattr(self, get_url)(*args, **kwargs)
-            response = await self.get(url)
-            return getattr(self, transform_response)(response)
-
-        return operation
-    return decorator
 
 
 class Service(Generic[RT]):
@@ -27,16 +16,20 @@ class Service(Generic[RT]):
     def __init__(self, config: JSONObject) -> None:
         self.config = config
 
-    @service_call('_get_passage_url', '_get_passage_text')
-    async def get_passage(self, version: str, passage: Passage) -> str:
-        pass
+    async def get_passage(self, version: str, verses: VerseRange) -> Passage:
+        url = self._get_passage_url(version, verses)
+        response = await self.get(url)
+        text = self._get_passage_text(response)
 
-    @service_call('_get_search_url', '_get_search_results')
+        return Passage(text, verses)
+
     async def search(self, version: str, terms: List[str]) -> SearchResults:
-        pass
+        url = self._get_search_url(version, terms)
+        response = await self.get(url)
+        return self._get_search_results(response)
 
     @abstractmethod
-    def _get_passage_url(self, version: str, passage: Passage) -> str:
+    def _get_passage_url(self, version: str, verses: VerseRange) -> str:
         raise NotImplementedError
 
     @abstractmethod

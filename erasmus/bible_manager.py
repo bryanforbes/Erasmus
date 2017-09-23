@@ -2,7 +2,7 @@ from typing import Dict, List, Tuple
 from collections import OrderedDict
 
 from .json import JSONObject
-from .data import Passage, SearchResults
+from .data import VerseRange, Passage, SearchResults
 from .service import Service
 from .exceptions import BibleNotSupportedError, ServiceNotSupportedError
 from . import services
@@ -22,11 +22,10 @@ class Bible(object):
         self.service = service
         self.service_version = service_version
 
-    async def get_passage(self, passage: Passage) -> str:
-        text = await self.service.get_passage(self.service_version, passage)
-        return f'''{text}
-
-{passage} ({self.abbr})'''
+    async def get_passage(self, verses: VerseRange) -> Passage:
+        passage = await self.service.get_passage(self.service_version, verses)
+        passage.version = self.abbr
+        return passage
 
     async def search(self, terms: List[str]) -> SearchResults:
         return await self.service.search(self.service_version, terms)
@@ -59,11 +58,9 @@ class BibleManager:
         sorted_items = sorted(self.bible_map.items(), key=lambda item: item[0])
         return [(key, bible.name) for key, bible in sorted_items]
 
-    # TODO: Book parsing should go here and then pass it to services for
-    # service-specific modifications
-    async def get_passage(self, version: str, passage: Passage) -> str:
+    async def get_passage(self, version: str, verses: VerseRange) -> Passage:
         bible = self._get_bible(version)
-        return await bible.get_passage(passage)
+        return await bible.get_passage(verses)
 
     async def search(self, version: str, terms: List[str]) -> SearchResults:
         bible = self._get_bible(version)

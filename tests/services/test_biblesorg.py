@@ -4,7 +4,7 @@ import json
 from . import ServiceTest
 
 from erasmus.services import BiblesOrg
-from erasmus.data import Passage
+from erasmus.data import VerseRange
 
 passage_text = {
     'Galatians 3:10-11': ('<p class=\"p\"><sup id=\"Gal.3.10\" class=\"v\">10</sup>'
@@ -131,9 +131,9 @@ class TestBiblesOrg(ServiceTest):
         mock_passage.json.side_effect = get_json_side_effect(request.param)
         return mock_passage
 
-    def get_passages_url(self, version: str, passage: Passage) -> str:
+    def get_passages_url(self, version: str, verses: VerseRange) -> str:
         return f'https://bibles.org/v2/passages.js?' + urlencode({
-            'q[]': str(passage),
+            'q[]': str(verses),
             'version': version
         })
 

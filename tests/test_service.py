@@ -1,7 +1,7 @@
 import pytest
 from typing import Any
 from erasmus.service import Service
-from erasmus.data import Passage
+from erasmus.data import VerseRange, Passage
 
 
 @pytest.mark.usefixtures('mock_aiohttp')
@@ -26,19 +26,19 @@ class TestService(object):
     @pytest.mark.asyncio
     async def test_get_passage(self, MyService, mock_response, mock_client_session):
         service = MyService({})
-        passage = Passage.from_string('Leviticus 1:2-3')
+        verses = VerseRange.from_string('Leviticus 1:2-3')
 
         service._get_passage_url.return_value = 'http://example.com'
         service._process_response.return_value = 'foo bar baz'
         service._get_passage_text.return_value = 'passage result'
 
-        result = await service.get_passage('version', passage)
+        result = await service.get_passage('version', verses)
 
-        service._get_passage_url.assert_called_once_with('version', passage)
+        service._get_passage_url.assert_called_once_with('version', verses)
         mock_client_session.get.assert_called_once_with('http://example.com')
         service._process_response.assert_called_once_with(mock_response)
         service._get_passage_text.assert_called_once_with('foo bar baz')
-        assert result == 'passage result'
+        assert result == Passage('passage result', verses)
 
     @pytest.mark.asyncio
     async def test_search(self, MyService, mock_response, mock_client_session):

@@ -2,7 +2,7 @@ import pytest
 from . import ServiceTest
 
 from erasmus.services import BibleGateway
-from erasmus.data import Passage
+from erasmus.data import VerseRange
 
 passage_text = {
     'Galatians 3:10-11': '''<html><body>
@@ -121,6 +121,6 @@ class TestBibleGateway(ServiceTest):
 
         return mock_passage
 
-    def get_passages_url(self, version: str, passage: Passage) -> str:
-        passage_str = str(passage).replace(' ', '+').replace(':', '%3A')
+    def get_passages_url(self, version: str, verses: VerseRange) -> str:
+        passage_str = str(verses).replace(' ', '+').replace(':', '%3A')
         return f'https://www.biblegateway.com/passage/?search={passage_str}&version={version}&interface=print'
