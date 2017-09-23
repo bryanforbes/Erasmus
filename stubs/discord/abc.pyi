@@ -7,6 +7,7 @@ from .permissions import PermissionOverwrite, Permissions
 from .context_managers import Typing
 from .voice_client import VoiceClient
 from .member import Member
+from .embeds import Embed
 
 
 class Snowflake:
@@ -47,7 +48,7 @@ class GuildChannel:
 
 
 class Messageable:
-    async def send(self, content: str = None, *, tts: bool = False, embed: object = None,
+    async def send(self, content: str = None, *, tts: bool = False, embed: Embed = None,
                    file: object = None, files: List[object] = None, delete_after: float = None,
                    nonce: int = None) -> Message: ...
 

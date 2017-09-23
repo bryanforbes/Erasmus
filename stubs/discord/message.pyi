@@ -5,6 +5,7 @@ from .channel import TextChannel, DMChannel, GroupChannel
 from .enums import MessageType
 from .member import Member
 from .user import User
+from .embeds import Embed
 
 
 class Attachment:
@@ -16,7 +17,7 @@ class Message:
     type: MessageType
     author: Union[Member, User]
     content: str
-    embeds: List[object]
+    embeds: List[Embed]
     channel: Union[TextChannel, DMChannel, GroupChannel]
     mention_everyone: bool
     mentions: List[Member]
@@ -49,7 +50,7 @@ class Message:
 
     async def delete(self) -> None: ...
 
-    async def edit(self, *, content: Optional[str], embed: Optional[object], delete_after: Optional[float]) -> None: ...
+    async def edit(self, *, content: Optional[str], embed: Optional[Embed], delete_after: Optional[float]) -> None: ...
 
     async def pin(self) -> None: ...
 

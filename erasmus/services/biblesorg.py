@@ -44,7 +44,7 @@ class BiblesOrg(Service[JSONObject]):
             heading.decompose()
         for number in soup.select('sup.v'):
             # Add a period after verse numbers
-            number.string = f' {number.string}. '
+            number.string = f' **{number.string}.** '
         for span in soup.select('span.sc'):
             span.unwrap()
 

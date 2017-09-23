@@ -1,6 +1,7 @@
 from discord.ext import commands
 from discord.message import Message
 from discord.game import Game
+from discord.embeds import Embed
 import re
 
 from .data import VerseRange, Passage
@@ -10,19 +11,29 @@ from .json import JSONObject, load
 
 number_re = re.compile(r'^\d+$')
 
+truncation_warning = '**The passage was too long and has been truncated:**\n\n'
+max_length = 2048 - (len(truncation_warning) + 1)
+
 
 class Context(commands.Context):
     async def send_passage(self, passage: Passage) -> Message:
-        extra_len = len(self.author.mention) + 7
-        text = str(passage)
+        text = passage.text
 
-        if len(text) + extra_len > 2000:
-            text = passage.get_truncated(2000 - extra_len)
+        if len(text) > 2048:
+            text = f'{truncation_warning}{text[:max_length]}\u2026'
 
-        return await self.send_to_author(text)
+        embed = Embed(description=text)
+        embed.set_footer(text=passage.citation)
 
-    async def send_to_author(self, text: str) -> Message:
-        return await self.send(f'{self.author.mention}\n```{text}```')
+        return await self.send_to_author(embed=embed)
+
+    async def send_to_author(self, text: str = None, *, embed: Embed = None) -> Message:
+        if text is not None:
+            if embed is None:
+                embed = Embed()
+            embed.description = text
+
+        return await self.send(self.author.mention, embed=embed)
 
 
 class Erasmus(commands.Bot):
@@ -126,7 +137,7 @@ class Erasmus(commands.Bot):
             except BibleNotSupportedError:
                 await ctx.send_to_author(f'~{ctx.command.name} is not supported')
             else:
-                verses = ', '.join([str(verse) for verse in results.verses])
+                verses = '\n'.join([f'- {verse}' for verse in results.verses])
                 matches = 'match'
 
                 if results.total == 0 or results.total > 1:
@@ -136,7 +147,7 @@ class Erasmus(commands.Bot):
                     await ctx.send_to_author(f'I have found {results.total} {matches} to your search:\n{verses}')
                 else:
                     await ctx.send_to_author(f'I have found {results.total} {matches} to your search. '
-                                             f'Here are the first 20 {matches}:\n{verses}')
+                                             f'Here are the first 20 {matches}:\n\n{verses}')
 
 
 __all__ = ['Erasmus']

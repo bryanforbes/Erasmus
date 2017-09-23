@@ -147,7 +147,7 @@ class Passage(object):
         if other is self:
             return True
         elif type(other) is Passage:
-            return self.range == other.range and self.version == other.version
+            return self.text == other.text and self.range == other.range and self.version == other.version
         else:
             return False
 
