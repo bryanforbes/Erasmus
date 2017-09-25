@@ -2,12 +2,14 @@ from typing import List, Generic, TypeVar
 from abc import abstractmethod
 import aiohttp
 import async_timeout
+import re
 
 from .json import JSONObject
 from .data import VerseRange, Passage, SearchResults
 
 
 RT = TypeVar('RT')
+whitespace_re = re.compile(r'\s+')
 
 
 class Service(Generic[RT]):
@@ -20,6 +22,7 @@ class Service(Generic[RT]):
         url = self._get_passage_url(version, verses)
         response = await self.get(url)
         text = self._get_passage_text(response)
+        text = whitespace_re.sub(' ', text.strip())
 
         return Passage(text, verses)
 

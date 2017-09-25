@@ -45,8 +45,7 @@ class BibleGateway(Service[Tag]):
             # Add a period after verse numbers
             number.string = f'**{number.string.strip()}.** '
 
-        result = (' '.join(verse_block.get_text('').replace('\n', ' ').split())).strip()
-        return result
+        return verse_block.get_text('')
 
     def _get_search_url(self, version: str, terms: List[str]) -> str:
         return f'{self.base_url}/quicksearch/?' + urlencode({

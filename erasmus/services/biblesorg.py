@@ -48,7 +48,7 @@ class BiblesOrg(Service[JSONObject]):
         for span in soup.select('span.sc'):
             span.unwrap()
 
-        return soup.get_text('').replace('\n', ' ').strip()
+        return soup.get_text('')
 
     def _get_search_url(self, version: str, terms: List[str]) -> str:
         return f'{self.base_url}/verses.js?' + urlencode({
