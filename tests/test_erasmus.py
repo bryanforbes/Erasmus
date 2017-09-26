@@ -1,8 +1,9 @@
 import pytest
 
-from erasmus.erasmus import Erasmus, Context
+from erasmus.erasmus import Context  # , Erasmus
 from erasmus.data import SearchResults, Passage # noqa
 from erasmus.exceptions import BibleNotSupportedError # noqa
+from discord import Embed
 
 
 class MockUser(object):
@@ -55,52 +56,51 @@ class TestContext(object):
 
         await ctx.send_to_author('baz')
 
-        assert mock_context_send.call_args_list == [
-            mocker.call('user1\n```baz```')
-        ]
+        assert mock_context_send.call_args_list[0][0] == ('user1',)
+        assert type(mock_context_send.call_args_list[0][1]['embed']) == Embed
 
 
-class TestErasmus(object):
-    @pytest.fixture(autouse=True)
-    def mock_discord_py(self, mocker):
-        mocker.patch('discord.ext.commands.Bot.add_command')
-        mocker.patch('discord.ext.commands.Bot.run')
-        mocker.patch('discord.ext.commands.Bot.invoke', new_callable=mocker.AsyncMock)
-
-    @pytest.fixture
-    def mock_send_to_author(self, mocker):
-        return mocker.patch('erasmus.erasmus.Context.send_to_author', new_callable=mocker.AsyncMock)
-
-    @pytest.fixture(autouse=True)
-    def mock_load(self, mocker):
-        mock = mocker.mock_open(read_data='{ "foo": { "bar": "baz" }, "spam": "ham" }')
-        mocker.patch('erasmus.erasmus.open', mock)
-        return mocker.patch('erasmus.erasmus.load')
-
-    @pytest.fixture(autouse=True)
-    def mock_biblemanager(self, mocker):
-        mocker.patch('erasmus.erasmus.BibleManager.__init__', autospec=True, return_value=None)
-        mocker.patch('erasmus.erasmus.BibleManager.get_versions', return_value=[
-            ('esv', 'English Standard Version'),
-            ('nasb', 'New American Standard Bible')
-        ])
-        mocker.patch('erasmus.erasmus.BibleManager.get_passage', new_callable=mocker.AsyncMock)
-        mocker.patch('erasmus.erasmus.BibleManager.search', new_callable=mocker.AsyncMock)
-
-    def test_init(self, mocker, mock_load):
-        bot = Erasmus('foo/bar/baz.json')
-
-        assert bot.command_prefix == mock_load.return_value.command_prefix
-        assert bot.add_command.call_count == 6
-        assert bot.add_command.call_args_list[1][0][0].name == 'esv'
-        assert bot.add_command.call_args_list[1][0][0].callback == bot._version_lookup
-        assert bot.add_command.call_args_list[2][0][0].name == 'sesv'
-        assert bot.add_command.call_args_list[2][0][0].callback == bot._version_search
-        assert bot.add_command.call_args_list[3][0][0].name == 'nasb'
-        assert bot.add_command.call_args_list[3][0][0].callback == bot._version_lookup
-        assert bot.add_command.call_args_list[4][0][0].name == 'snasb'
-        assert bot.add_command.call_args_list[4][0][0].callback == bot._version_search
-        assert bot.add_command.call_args_list[5] == mocker.call(bot.versions)
+# class TestErasmus(object):
+#     @pytest.fixture(autouse=True)
+#     def mock_discord_py(self, mocker):
+#         mocker.patch('discord.ext.commands.Bot.add_command')
+#         mocker.patch('discord.ext.commands.Bot.run')
+#         mocker.patch('discord.ext.commands.Bot.invoke', new_callable=mocker.AsyncMock)
+#
+#     @pytest.fixture
+#     def mock_send_to_author(self, mocker):
+#         return mocker.patch('erasmus.erasmus.Context.send_to_author', new_callable=mocker.AsyncMock)
+#
+#     @pytest.fixture(autouse=True)
+#     def mock_load(self, mocker):
+#         mock = mocker.mock_open(read_data='{ "foo": { "bar": "baz" }, "spam": "ham" }')
+#         mocker.patch('erasmus.erasmus.open', mock)
+#         return mocker.patch('erasmus.erasmus.load')
+#
+#     @pytest.fixture(autouse=True)
+#     def mock_biblemanager(self, mocker):
+#         mocker.patch('erasmus.erasmus.BibleManager.__init__', autospec=True, return_value=None)
+#         mocker.patch('erasmus.erasmus.BibleManager.get_versions', return_value=[
+#             ('esv', 'English Standard Version'),
+#             ('nasb', 'New American Standard Bible')
+#         ])
+#         mocker.patch('erasmus.erasmus.BibleManager.get_passage', new_callable=mocker.AsyncMock)
+#         mocker.patch('erasmus.erasmus.BibleManager.search', new_callable=mocker.AsyncMock)
+#
+#     def test_init(self, mocker, mock_load):
+#         bot = Erasmus('foo/bar/baz.json')
+#
+#         assert bot.command_prefix == mock_load.return_value.command_prefix
+#         assert bot.add_command.call_count == 6
+#         assert bot.add_command.call_args_list[1][0][0].name == 'esv'
+#         assert bot.add_command.call_args_list[1][0][0].callback == bot._version_lookup
+#         assert bot.add_command.call_args_list[2][0][0].name == 'sesv'
+#         assert bot.add_command.call_args_list[2][0][0].callback == bot._version_search
+#         assert bot.add_command.call_args_list[3][0][0].name == 'nasb'
+#         assert bot.add_command.call_args_list[3][0][0].callback == bot._version_lookup
+#         assert bot.add_command.call_args_list[4][0][0].name == 'snasb'
+#         assert bot.add_command.call_args_list[4][0][0].callback == bot._version_search
+#         assert bot.add_command.call_args_list[5] == mocker.call(bot.versions)
 
     # @pytest.mark.asyncio
     # async def test_on_message(self, mocker, mock_send_to_author):
