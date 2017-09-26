@@ -96,11 +96,10 @@ class Erasmus(commands.Bot):
     async def versions(self, ctx: Context) -> None:
         lines = ['I support the following Bible versions:', '']
         for version, description in self.bible_manager.get_versions():
-            version = f'{version}:'.ljust(6)
-            lines.append(f'  {self.command_prefix}{version} {description}')
+            lines.append(f'  `{self.command_prefix}{version}`: {description}')
 
         lines.append("\nYou can search any version by prefixing the version command with 's' "
-                     f"(ex. {self.command_prefix}sesv terms...)")
+                     f"(ex. `{self.command_prefix}sesv terms...`)")
 
         output = '\n'.join(lines)
         await ctx.send_to_author(f'\n{output}\n')
