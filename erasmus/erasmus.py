@@ -8,6 +8,7 @@ from .data import VerseRange, Passage
 from .bible_manager import BibleManager
 from .exceptions import DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError, BookNotUnderstoodError
 from .json import JSONObject, load
+from .format import pluralizer
 
 number_re = re.compile(r'^\d+$')
 
@@ -34,6 +35,9 @@ class Context(commands.Context):
             embed.description = text
 
         return await self.send(self.author.mention, embed=embed)
+
+
+pluralize_match = pluralizer('match', 'es')
 
 
 class Erasmus(commands.Bot):
@@ -119,9 +123,10 @@ class Erasmus(commands.Bot):
                     except DoNotUnderstandError:
                         await ctx.send_to_author('I do not understand that request')
                     except BibleNotSupportedError as err:
-                        await ctx.send_to_author(f'~{err.version} is not supported')
+                        await ctx.send_to_author(f'{self.command_prefix}{err.version} is not supported')
                     except ServiceNotSupportedError:
-                        await ctx.send_to_author(f'The service configured for ~{version} is not supported')
+                        await ctx.send_to_author(f'The service configured for {self.command_prefix}{version} '
+                                                 'is not supported')
                     else:
                         await ctx.send_passage(passage)
             else:
@@ -134,19 +139,17 @@ class Erasmus(commands.Bot):
             try:
                 results = await self.bible_manager.search(version, list(terms))
             except BibleNotSupportedError:
-                await ctx.send_to_author(f'~{ctx.command.name} is not supported')
+                await ctx.send_to_author(f'`{self.command_prefix}{ctx.invoked_with}` is not supported')
             else:
                 verses = '\n'.join([f'- {verse}' for verse in results.verses])
-                matches = 'match'
-
-                if results.total == 0 or results.total > 1:
-                    matches = 'matches'
+                matches = pluralize_match(results.total)
 
                 if results.total <= 20:
-                    await ctx.send_to_author(f'I have found {results.total} {matches} to your search:\n{verses}')
+                    await ctx.send_to_author(f'I have found {matches} to your search:\n{verses}')
                 else:
-                    await ctx.send_to_author(f'I have found {results.total} {matches} to your search. '
-                                             f'Here are the first 20 {matches}:\n\n{verses}')
+                    limit = pluralize_match(20)
+                    await ctx.send_to_author(f'I have found {matches} to your search. '
+                                             f'Here are the first {limit}:\n\n{verses}')
 
 
 __all__ = ['Erasmus']
