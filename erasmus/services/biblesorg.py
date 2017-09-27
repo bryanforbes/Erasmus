@@ -62,9 +62,13 @@ class BiblesOrg(Service[JSONObject]):
     def _get_search_results(self, response: JSONObject) -> SearchResults:
         result = response.get('search.result')
 
-        if result is None or 'summary' not in result or 'verses' not in result:
+        if result is None or 'summary' not in result or 'total' not in result.summary or \
+                result.summary.total > 0 and 'verses' not in result:
             raise DoNotUnderstandError
 
-        verses = [VerseRange.from_string(verse.reference) for verse in result.verses]
+        if result.summary.total > 0:
+            verses = [VerseRange.from_string(verse.reference) for verse in result.verses]
+        else:
+            verses = []
 
         return SearchResults(verses, result.summary.total)
