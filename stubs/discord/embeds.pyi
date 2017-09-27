@@ -1,6 +1,7 @@
 from datetime import datetime
 from typing import Union, Dict, Any, List
 from .colour import Colour
+from mypy_extensions import TypedDict
 
 
 class _EmptyEmbed:
@@ -16,6 +17,45 @@ class EmbedProxy:
     def __len__(self) -> int: ...
 
     def __getattr__(self, attr: str) -> _EmptyEmbed: ...
+
+
+class FooterData(TypedDict, total=False):
+    text: str
+    icon_url: str
+
+
+class UrlData(TypedDict, total=False):
+    url: str
+
+
+class AuthorDataBase(TypedDict):
+    name: str
+
+
+class AuthorData(AuthorDataBase, UrlData, total=False):
+    icon_url: str
+
+
+class FieldDataBase(TypedDict):
+    name: str
+    value: str
+
+
+class FieldData(FieldDataBase, total=False):
+    inline: bool
+
+
+class EmbedData(UrlData, total=False):
+    color: Union[Colour, int]
+    colour: Union[Colour, int]
+    title: str
+    description: str
+    timestamp: datetime
+    thumbnail: UrlData
+    author: AuthorData
+    fields: Dict[str, FieldData]
+    image: UrlData
+    footer: FooterData
 
 
 class Embed:
@@ -40,7 +80,7 @@ class Embed:
     color = colour
 
     @classmethod
-    def from_data(cls, data: Dict[str, Any]) -> 'Embed': ...
+    def from_data(cls, data: EmbedData) -> 'Embed': ...
 
     @property
     def footer(self) -> EmbedProxy: ...
