@@ -1,6 +1,9 @@
+from typing import Optional
+
+
 class Game:
     name: str
     url: str
     type: int
 
-    def __init__(self, *, name: str=None, url: str=None, type: int=None) -> None: ...
+    def __init__(self, *, name: Optional[str] = ..., url: Optional[str] = ..., type: int = ...) -> None: ...

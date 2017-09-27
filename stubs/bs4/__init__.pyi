@@ -1,9 +1,7 @@
-from .element import (
-    Tag,
-    PageElement
-)
+from typing import Optional
+from .element import Tag, PageElement  # noqa
 
 
 class BeautifulSoup(Tag):
     def __init__(self, markup: str = ...,
-                 features: str = None) -> None: ...
+                 features: Optional[str] = ...) -> None: ...

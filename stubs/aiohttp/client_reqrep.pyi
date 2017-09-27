@@ -1,4 +1,4 @@
-from typing import Any, Dict, Callable
+from typing import Any, Dict, Callable, Optional
 
 
 class ClientResponse:
@@ -10,8 +10,8 @@ class ClientResponse:
 
     def raise_for_status(self) -> None: ...
 
-    async def text(self, encoding: str = None) -> str: ...
+    async def text(self, encoding: Optional[str] = ...) -> str: ...
 
-    async def json(self, encoding: str = None,
+    async def json(self, encoding: Optional[str] = ...,
                    loads: Callable[..., Any] = ...,
                    content_type: str = ...) -> Dict[str, Any]: ...

@@ -1,4 +1,4 @@
-from typing import List, Union, Iterator
+from typing import List, Union, Iterator, Optional
 from datetime import datetime
 
 from .message import Message
@@ -44,13 +44,13 @@ class GuildChannel:
 
     def permissions_for(self, member: Member) -> Permissions: ...
 
-    async def delete(self, *, reason: str = None) -> None: ...
+    async def delete(self, *, reason: Optional[str] = ...) -> None: ...
 
 
 class Messageable:
-    async def send(self, content: str = None, *, tts: bool = False, embed: Embed = None,
-                   file: object = None, files: List[object] = None, delete_after: float = None,
-                   nonce: int = None) -> Message: ...
+    async def send(self, content: Optional[str] = ..., *, tts: bool = ..., embed: Optional[Embed] = ...,
+                   file: Optional[object] = ..., files: Optional[List[object]] = ...,
+                   delete_after: Optional[float] = ..., nonce: Optional[int] = ...) -> Message: ...
 
     async def trigger_typing(self) -> None: ...
 
@@ -60,10 +60,10 @@ class Messageable:
 
     async def pins(self) -> List[Message]: ...
 
-    def history(self, *, limit: int = 100, before: Union[Message, datetime] = None,
-                after: Union[Message, datetime] = None, around: Union[Message, datetime] = None,
-                reverse: bool = None) -> Iterator[Message]: ...
+    def history(self, *, limit: int = ..., before: Optional[Union[Message, datetime]] = ...,
+                after: Optional[Union[Message, datetime]] = ..., around: Optional[Union[Message, datetime]] = ...,
+                reverse: Optional[bool] = ...) -> Iterator[Message]: ...
 
 
 class Connectable:
-    async def connect(self, *, timeout: float = 60.0, reconnect: bool = True) -> VoiceClient: ...
+    async def connect(self, *, timeout: float = ..., reconnect: bool = ...) -> VoiceClient: ...

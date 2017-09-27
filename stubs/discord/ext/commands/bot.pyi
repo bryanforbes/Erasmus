@@ -1,4 +1,4 @@
-from typing import Callable, Union, Awaitable, List, Any, Optional, Dict, Type, TypeVar
+from typing import Callable, Union, Awaitable, List, Any, Optional, Dict, Type
 from .core import GroupMixin
 from .context import Context
 from ...client import Client
@@ -8,8 +8,6 @@ from ...shard import AutoShardedClient
 CommandPrefix = Union[
     str,
     Callable[['Bot', Message], Union[str, Awaitable[str]]]]
-
-ContextType = TypeVar('ContextType', covariant=True)
 
 
 def when_mentioned(bot: 'Bot', msg: Message) -> str: ...
@@ -30,7 +28,7 @@ class BotBase(GroupMixin):
 
     def __init__(self, command_prefix: CommandPrefix, **options) -> None: ...
 
-    async def get_context(self, message: Message, *, cls: Type[Context] = Context) -> Context: ...
+    async def get_context(self, message: Message, *, cls: Type[Context] = ...) -> Context: ...
 
     async def invoke(self, ctx: Context) -> None: ...
 

@@ -1,8 +1,5 @@
 import asyncio
-from typing import (
-    Dict, Mapping, Iterable, Callable, Union,
-    AsyncContextManager
-)
+from typing import Dict, Mapping, Iterable, Callable, Union, AsyncContextManager
 from .connector import BaseConnector
 from .abc import AbstractCookieJar
 from .helpers import BasicAuth
