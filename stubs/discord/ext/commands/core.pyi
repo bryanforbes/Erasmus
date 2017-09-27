@@ -1,7 +1,4 @@
-from typing import (
-    Any, Callable, Dict, Optional, Iterator, Coroutine,
-    Union, Awaitable, Type, ValuesView, List
-)
+from typing import Any, Callable, Dict, Optional, Iterator, Coroutine, Union, Awaitable, Type, ValuesView, List
 
 CallbackType = Union[
     Coroutine[Any, Any, Any],

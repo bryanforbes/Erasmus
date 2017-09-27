@@ -1,19 +1,17 @@
 from typing import Callable, Union, Awaitable, List, Any, Optional, Dict, Type
 from .core import GroupMixin
 from .context import Context
-from ...client import Client
-from ...message import Message
-from ...shard import AutoShardedClient
+import discord
 
 CommandPrefix = Union[
     str,
-    Callable[['Bot', Message], Union[str, Awaitable[str]]]]
+    Callable[['Bot', discord.Message], Union[str, Awaitable[str]]]]
 
 
-def when_mentioned(bot: 'Bot', msg: Message) -> str: ...
+def when_mentioned(bot: 'Bot', msg: discord.Message) -> str: ...
 
 
-def when_mentioned_or(*prefixes) -> Callable[['Bot', Message], List[str]]: ...
+def when_mentioned_or(*prefixes) -> Callable[['Bot', discord.Message], List[str]]: ...
 
 
 class BotBase(GroupMixin):
@@ -28,18 +26,18 @@ class BotBase(GroupMixin):
 
     def __init__(self, command_prefix: CommandPrefix, **options) -> None: ...
 
-    async def get_context(self, message: Message, *, cls: Type[Context] = ...) -> Context: ...
+    async def get_context(self, message: discord.Message, *, cls: Type[Context] = ...) -> Context: ...
 
     async def invoke(self, ctx: Context) -> None: ...
 
-    async def process_commands(self, message: Message) -> None: ...
+    async def process_commands(self, message: discord.Message) -> None: ...
 
-    async def on_message(self, message: Message) -> None: ...
+    async def on_message(self, message: discord.Message) -> None: ...
 
 
-class Bot(BotBase, Client):
+class Bot(BotBase, discord.Client):
     ...
 
 
-class AutoShardedBot(BotBase, AutoShardedClient):
+class AutoShardedBot(BotBase, discord.AutoShardedClient):
     ...

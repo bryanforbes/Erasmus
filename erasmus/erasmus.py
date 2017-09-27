@@ -1,9 +1,9 @@
-from discord.ext import commands
-from discord.message import Message
-from discord.game import Game
-from discord.embeds import Embed
+from typing import cast
+
+import discord
 import re
 
+from discord.ext import commands
 from .data import VerseRange, Passage
 from .bible_manager import BibleManager
 from .exceptions import DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError, BookNotUnderstoodError
@@ -17,21 +17,23 @@ max_length = 2048 - (len(truncation_warning) + 1)
 
 
 class Context(commands.Context):
-    async def send_passage(self, passage: Passage) -> Message:
+    async def send_passage(self, passage: Passage) -> discord.Message:
         text = passage.text
 
         if len(text) > 2048:
             text = f'{truncation_warning}{text[:max_length]}\u2026'
 
-        embed = Embed(description=text)
-        embed.set_footer(text=passage.citation)
+        embed = discord.Embed.from_data({
+            'description': text,
+            'footer': passage.citation
+        })
 
         return await self.send_to_author(embed=embed)
 
-    async def send_to_author(self, text: str = None, *, embed: Embed = None) -> Message:
+    async def send_to_author(self, text: str = None, *, embed: discord.Embed = None) -> discord.Message:
         if text is not None:
             if embed is None:
-                embed = Embed()
+                embed = discord.Embed()
             embed.description = text
 
         return await self.send(self.author.mention, embed=embed)
@@ -75,14 +77,14 @@ class Erasmus(commands.Bot):
     def run(self, *args, **kwargs) -> None:
         super().run(self.config.api_key)
 
-    async def on_message(self, message: Message) -> None:
+    async def on_message(self, message: discord.Message) -> None:
         if message.author.bot:
             return
 
         await self.process_commands(message)
 
-    async def process_commands(self, message: Message) -> None:
-        ctx = await self.get_context(message, cls=Context)
+    async def process_commands(self, message: discord.Message) -> None:
+        ctx = cast(Context, await self.get_context(message))
 
         if ctx.command is None:
             return

@@ -1,18 +1,12 @@
 from typing import Any, Optional, List, Dict, Union
 
-from ...abc import Messageable
+import discord
 from .core import Command
-from ...guild import Guild
-from ...message import Message
 from .bot import Bot
-from ...channel import TextChannel, DMChannel, GroupChannel
-from ...member import Member
-from ...user import User, ClientUser
-from ...voice_client import VoiceClient
 
 
-class Context(Messageable):
-    message: Message
+class Context(discord.abc.Messageable):
+    message: discord.Message
     bot: Bot
     args: List[Any]
     kwargs: Dict[str, Any]
@@ -29,16 +23,16 @@ class Context(Messageable):
     def valid(self) -> bool: ...
 
     @property
-    def guild(self) -> Optional[Guild]: ...
+    def guild(self) -> Optional[discord.Guild]: ...
 
     @property
-    def channel(self) -> Union[TextChannel, DMChannel, GroupChannel]: ...
+    def channel(self) -> Union[discord.TextChannel, discord.DMChannel, discord.GroupChannel]: ...
 
     @property
-    def author(self) -> Union[Member, User]: ...
+    def author(self) -> Union[discord.Member, discord.User]: ...
 
     @property
-    def me(self) -> Union[Member, ClientUser]: ...
+    def me(self) -> Union[discord.Member, discord.ClientUser]: ...
 
     @property
-    def voice_client(self) -> Optional[VoiceClient]: ...
+    def voice_client(self) -> Optional[discord.VoiceClient]: ...

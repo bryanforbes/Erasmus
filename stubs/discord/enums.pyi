@@ -19,3 +19,9 @@ class Status(Enum):
     dnd: str
     do_not_disturb: str
     invisible: str
+
+
+class UserFlags(Enum):
+    staff: int
+    partner: int
+    hypesquad: int

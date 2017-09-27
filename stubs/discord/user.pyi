@@ -1,6 +1,30 @@
-from typing import Union, Optional
+from typing import Optional, NamedTuple, List, Any
 from .abc import User as _User, Messageable
 from .channel import DMChannel
+from .enums import UserFlags
+from datetime import datetime
+
+
+class Profile(NamedTuple):
+    flags: UserFlags
+    user: 'User'
+    mutual_guilds: List[int]
+    connected_accounts: List[Any]
+    premium_since: Optional[datetime]
+
+    @property
+    def nitro(self) -> bool: ...
+
+    premium: bool
+
+    @property
+    def staff(self) -> bool: ...
+
+    @property
+    def hypesquad(self) -> bool: ...
+
+    @property
+    def partner(self) -> bool: ...
 
 
 class BaseUser(_User):
