@@ -95,8 +95,7 @@ class Erasmus(commands.Bot):
         print('-----')
         print(f'logged in as {self.user.name} {self.user.id}')
 
-        if not self.config.get('dev', False):
-            await self.change_presence(game=Game(name=f'| {self.command_prefix}versions'))
+        await self.change_presence(game=discord.Game(name=f'| {self.command_prefix}versions'))
 
     @commands.command()
     async def versions(self, ctx: Context) -> None:
