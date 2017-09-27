@@ -25,7 +25,9 @@ class Context(commands.Context):
 
         embed = discord.Embed.from_data({
             'description': text,
-            'footer': passage.citation
+            'footer': {
+                'text': passage.citation
+            }
         })
 
         return await self.send_to_author(embed=embed)
