@@ -84,7 +84,7 @@ class Erasmus(commands.Bot):
         await self.process_commands(message)
 
     async def process_commands(self, message: discord.Message) -> None:
-        ctx = cast(Context, await self.get_context(message))
+        ctx = cast(Context, await self.get_context(message, cls=Context))
 
         if ctx.command is None:
             return
