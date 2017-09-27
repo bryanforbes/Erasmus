@@ -1,4 +1,4 @@
-from typing import Any, Iterable, Tuple, Generic, TypeVar, Optional
+from typing import Any, Iterable, Tuple, Generic, TypeVar, Optional, Hashable
 
 PT = TypeVar('PT')
 
@@ -173,7 +173,7 @@ class _BasePermission(Generic[PT], Iterable[Tuple[str, PT]]):
     def manage_emojis(self, value: PT) -> None: ...
 
 
-class Permissions(_BasePermission[bool]):
+class Permissions(_BasePermission[bool], Hashable):
     def __init__(self, permissions: int = 0) -> None: ...
 
     def __eq__(self, other: Any) -> bool: ...
@@ -187,8 +187,6 @@ class Permissions(_BasePermission[bool]):
     def __lt__(self, other: Any) -> bool: ...
 
     def __gt__(self, other: Any) -> bool: ...
-
-    def __hash__(self) -> int: ...
 
     def is_subset(self, other: Any) -> bool: ...
 

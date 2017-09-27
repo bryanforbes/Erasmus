@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Hashable
 from .abc import GuildChannel
 from .colour import Colour
 from .message import Message
@@ -17,12 +17,10 @@ class VoiceState:
     channel: VoiceChannel
 
 
-class Member(User):
+class Member(User, Hashable):
     def __eq__(self, other: Any) -> bool: ...
 
     def __ne__(self, other: Any) -> bool: ...
-
-    def __hash__(self) -> int: ...
 
     @property
     def colour(self) -> Colour: ...

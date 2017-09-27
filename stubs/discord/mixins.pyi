@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Hashable as TypingHashable
 
 
 class EqualityComparable:
@@ -7,5 +7,5 @@ class EqualityComparable:
     def __ne__(self, other: Any) -> bool: ...
 
 
-class Hashable(EqualityComparable):
-    def __hash__(self) -> int: ...
+class Hashable(EqualityComparable, TypingHashable):
+    ...

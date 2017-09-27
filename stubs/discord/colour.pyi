@@ -1,12 +1,10 @@
-from typing import Any, Tuple
+from typing import Any, Tuple, Hashable
 
 
-class Colour:
+class Colour(Hashable):
     def __eq__(self, other: Any) -> bool: ...
 
     def __ne__(self, other: Any) -> bool: ...
-
-    def __hash__(self) -> int: ...
 
     @property
     def r(self) -> int: ...
