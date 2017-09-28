@@ -128,8 +128,7 @@ class Unbound(Service[Tag]):
                 'to_verse': str(verses.end.verse)
             })
 
-        result = f'{self.base_url}&' + urlencode(query)
-        return result
+        return f'{self.base_url}&' + urlencode(query)
 
     def _get_passage_text(self, response: Tag) -> str:
         verse_table = response.select_one('table table table')
@@ -137,7 +136,12 @@ class Unbound(Service[Tag]):
         if verse_table is None:
             raise DoNotUnderstandError
 
-        for row in verse_table.select('tr'):
+        rows = verse_table.select('tr')
+
+        if rows[0].get_text('').strip() == 'No Verses Found':
+            raise DoNotUnderstandError
+
+        for row in rows:
             cells = row.select('td')
             if len(cells) != 2 or cells[0].string == '\xa0':
                 row.decompose()
@@ -154,6 +158,9 @@ class Unbound(Service[Tag]):
             raise DoNotUnderstandError
 
         rows = verse_table.select('tr')
+
+        if rows[0].get_text('').strip() == 'No Verses Found':
+            return SearchResults([], 0)
 
         rows[0].decompose()
         rows[-2].decompose()
