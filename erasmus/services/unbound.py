@@ -1,3 +1,5 @@
+# Service for querying Biola's Unbound Bible
+
 from typing import Dict, List  # noqa
 from bs4 import BeautifulSoup, Tag
 from aiohttp import ClientResponse
@@ -31,6 +33,7 @@ book_map = {
     'Esther': '17O',
     'Job': '18O',
     'Psalms': '19O',
+    'Psalm': '19O',
     'Proverbs': '20O',
     'Ecclesiastes': '21O',
     'Song of Solomon': '22O',

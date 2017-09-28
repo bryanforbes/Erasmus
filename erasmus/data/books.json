@@ -565,12 +565,20 @@
   {
     "name": "1 Esdras",
     "osis": "1Esd",
-    "alt": []
+    "alt": [
+      "1 Esd",
+      "1 Esdr",
+      "1Esdr"
+    ]
   },
   {
     "name": "2 Esdras",
     "osis": "2Esd",
-    "alt": []
+    "alt": [
+      "2 Esd",
+      "2 Esdr",
+      "2Esdr"
+    ]
   },
   {
     "name": "Psalm 151",
@@ -581,6 +589,9 @@
     "name": "Greek Esther",
     "osis": "EsthGr",
     "alt": [
+      "GrEsth",
+      "GrkEsth",
+      "EsthGrk",
       "Esther, Greek"
     ]
   },

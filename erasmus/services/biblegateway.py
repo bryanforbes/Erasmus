@@ -1,3 +1,5 @@
+# Service for querying biblegateway.com
+
 from typing import List
 from bs4 import BeautifulSoup, Tag
 from aiohttp import ClientResponse

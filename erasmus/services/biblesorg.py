@@ -1,3 +1,5 @@
+# Service for querying bibles.org
+
 from typing import List, cast
 from aiohttp import BasicAuth, ClientResponse
 from bs4 import BeautifulSoup
