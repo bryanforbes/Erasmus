@@ -1,4 +1,4 @@
-from typing import List, Union, Iterator, Optional
+from typing import List, Union, Iterator, Optional, Tuple, Dict
 from datetime import datetime
 
 from .message import Message
@@ -8,14 +8,25 @@ from .context_managers import Typing
 from .voice_client import VoiceClient
 from .member import Member
 from .embeds import Embed
+from .channel import CategoryChannel
+from .invite import Invite
+from .user import ClientUser
+from .guild import Guild
 
 
 class Snowflake:
+    id: int
+
     @property
     def created_at(self) -> datetime: ...
 
 
 class User:
+    name: str
+    discriminator: str
+    avatar: Optional[str]
+    bot: bool
+
     @property
     def display_name(self) -> str: ...
 
@@ -24,10 +35,14 @@ class User:
 
 
 class PrivateChannel:
-    ...
+    me: ClientUser
 
 
 class GuildChannel:
+    name: str
+    guild: Guild
+    position: int
+
     @property
     def changed_roles(self) -> List[Role]: ...
 
@@ -40,11 +55,22 @@ class GuildChannel:
     def overwrites_for(self, obj: Union[User, Role]) -> PermissionOverwrite: ...
 
     @property
-    def overwrites(self) -> PermissionOverwrite: ...
+    def overwrites(self) -> List[Tuple[Union[Role, Member], PermissionOverwrite]]: ...
+
+    @property
+    def category(self) -> Optional[CategoryChannel]: ...
 
     def permissions_for(self, member: Member) -> Permissions: ...
 
     async def delete(self, *, reason: Optional[str] = ...) -> None: ...
+
+    async def set_permissions(self, target: Union[Member, Role], *, overwrite: Optional[PermissionOverwrite] = ...,
+                              reason: Optional[str] = ..., **permissions: Dict[str, Optional[bool]]) -> None: ...
+
+    async def create_invite(self, *, reason: Optional[str] = ..., max_age: int = ..., max_uses: int = ...,
+                            temporary: bool = ..., unique: bool = ...) -> Invite: ...
+
+    async def invites(self) -> List[Invite]: ...
 
 
 class Messageable:

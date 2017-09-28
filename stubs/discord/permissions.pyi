@@ -4,173 +4,34 @@ PT = TypeVar('PT')
 
 
 class _BasePermission(Generic[PT], Iterable[Tuple[str, PT]]):
-    @property
-    def create_instant_invite(self) -> PT: ...
-
-    @create_instant_invite.setter
-    def create_instant_invite(self, value: PT) -> None: ...
-
-    @property
-    def kick_members(self) -> PT: ...
-
-    @kick_members.setter
-    def kick_members(self, value: PT) -> None: ...
-
-    @property
-    def ban_members(self) -> PT: ...
-
-    @ban_members.setter
-    def ban_members(self, value: PT) -> None: ...
-
-    @property
-    def administrator(self) -> PT: ...
-
-    @administrator.setter
-    def administrator(self, value: PT) -> None: ...
-
-    @property
-    def manage_channels(self) -> PT: ...
-
-    @manage_channels.setter
-    def manage_channels(self, value: PT) -> None: ...
-
-    @property
-    def manage_guild(self) -> PT: ...
-
-    @manage_guild.setter
-    def manage_guild(self, value: PT) -> None: ...
-
-    @property
-    def add_reactions(self) -> PT: ...
-
-    @add_reactions.setter
-    def add_reactions(self, value: PT) -> None: ...
-
-    @property
-    def view_audit_log(self) -> PT: ...
-
-    @view_audit_log.setter
-    def view_audit_log(self, value: PT) -> None: ...
-
-    @property
-    def read_messages(self) -> PT: ...
-
-    @read_messages.setter
-    def read_messages(self, value: PT) -> None: ...
-
-    @property
-    def send_messages(self) -> PT: ...
-
-    @send_messages.setter
-    def send_messages(self, value: PT) -> None: ...
-
-    @property
-    def send_tts_messages(self) -> PT: ...
-
-    @send_tts_messages.setter
-    def send_tts_messages(self, value: PT) -> None: ...
-
-    @property
-    def manage_messages(self) -> PT: ...
-
-    @manage_messages.setter
-    def manage_messages(self, value: PT) -> None: ...
-
-    @property
-    def embed_links(self) -> PT: ...
-
-    @embed_links.setter
-    def embed_links(self, value: PT) -> None: ...
-
-    @property
-    def attach_files(self) -> PT: ...
-
-    @attach_files.setter
-    def attach_files(self, value: PT) -> None: ...
-
-    @property
-    def read_message_history(self) -> PT: ...
-
-    @read_message_history.setter
-    def read_message_history(self, value: PT) -> None: ...
-
-    @property
-    def mention_everyone(self) -> PT: ...
-
-    @mention_everyone.setter
-    def mention_everyone(self, value: PT) -> None: ...
-
-    @property
-    def external_emojis(self) -> PT: ...
-
-    @external_emojis.setter
-    def external_emojis(self, value: PT) -> None: ...
-
-    @property
-    def connect(self) -> PT: ...
-
-    @connect.setter
-    def connect(self, value: PT) -> None: ...
-
-    @property
-    def speak(self) -> PT: ...
-
-    @speak.setter
-    def speak(self, value: PT) -> None: ...
-
-    @property
-    def mute_members(self) -> PT: ...
-
-    @mute_members.setter
-    def mute_members(self, value: PT) -> None: ...
-
-    @property
-    def deafen_members(self) -> PT: ...
-
-    @deafen_members.setter
-    def deafen_members(self, value: PT) -> None: ...
-
-    @property
-    def move_members(self) -> PT: ...
-
-    @move_members.setter
-    def move_members(self, value: PT) -> None: ...
-
-    @property
-    def use_voice_activation(self) -> PT: ...
-
-    @use_voice_activation.setter
-    def use_voice_activation(self, value: PT) -> None: ...
-
-    @property
-    def change_nickname(self) -> PT: ...
-
-    @change_nickname.setter
-    def change_nickname(self, value: PT) -> None: ...
-
-    @property
-    def manage_nickname(self) -> PT: ...
-
-    @manage_nickname.setter
-    def manage_nickname(self, value: PT) -> None: ...
-
-    @property
-    def manage_roles(self) -> PT: ...
-
-    @manage_roles.setter
-    def manage_roles(self, value: PT) -> None: ...
-
-    @property
-    def manage_webhooks(self) -> PT: ...
-
-    @manage_webhooks.setter
-    def manage_webhooks(self, value: PT) -> None: ...
-
-    @property
-    def manage_emojis(self) -> PT: ...
-
-    @manage_emojis.setter
-    def manage_emojis(self, value: PT) -> None: ...
+    create_instant_invite: PT
+    kick_members: PT
+    ban_members: PT
+    administrator: PT
+    manage_channels: PT
+    manage_guild: PT
+    add_reactions: PT
+    view_audit_log: PT
+    read_messages: PT
+    send_messages: PT
+    send_tts_messages: PT
+    manage_messages: PT
+    embed_links: PT
+    attach_files: PT
+    read_message_history: PT
+    mention_everyone: PT
+    external_emojis: PT
+    connect: PT
+    speak: PT
+    mute_members: PT
+    deafen_members: PT
+    move_members: PT
+    use_voice_activation: PT
+    change_nickname: PT
+    manage_nickname: PT
+    manage_roles: PT
+    manage_webhooks: PT
+    manage_emojis: PT
 
 
 class Permissions(_BasePermission[bool], Hashable):
