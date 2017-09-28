@@ -10,11 +10,10 @@ class NavigableString(str, PageElement):
 
 
 class Tag(PageElement):
-    @property
-    def string(self) -> str: ...
+    string: str
 
-    @string.setter
-    def string(self, string) -> None: ...
+    @property
+    def contents(self) -> List['Tag']: ...
 
     @property
     def stripped_strings(self) -> Iterator[str]: ...

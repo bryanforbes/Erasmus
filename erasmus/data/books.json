@@ -147,7 +147,10 @@
   {
     "name": "Ecclesiastes",
     "osis": "Eccl",
-    "alt": []
+    "alt": [
+      "Ecc",
+      "Ecclesiasticus (Sirach)"
+    ]
   },
   {
     "name": "Song of Solomon",
@@ -157,7 +160,9 @@
   {
     "name": "Isaiah",
     "osis": "Isa",
-    "alt": []
+    "alt": [
+      "Is"
+    ]
   },
   {
     "name": "Jeremiah",
@@ -192,7 +197,9 @@
   {
     "name": "Amos",
     "osis": "Amos",
-    "alt": []
+    "alt": [
+      "Amo"
+    ]
   },
   {
     "name": "Obadiah",
@@ -469,7 +476,9 @@
   {
     "name": "Wisdom",
     "osis": "Wis",
-    "alt": []
+    "alt": [
+      "Wisdom of Solomon"
+    ]
   },
   {
     "name": "Sirach",
@@ -484,7 +493,9 @@
   {
     "name": "Letter of Jeremiah",
     "osis": "EpJer",
-    "alt": []
+    "alt": [
+      "Epistle of Jeremiah"
+    ]
   },
   {
     "name": "Additions to Daniel",
@@ -565,5 +576,24 @@
     "name": "Psalm 151",
     "osis": "AddPs",
     "alt": []
+  },
+  {
+    "name": "Greek Esther",
+    "osis": "EsthGr",
+    "alt": [
+      "Esther, Greek"
+    ]
+  },
+  {
+    "name": "Odes",
+    "osis": "Odes",
+    "alt": []
+  },
+  {
+    "name": "Psalms of Solomon",
+    "osis": "PssSol",
+    "alt": [
+      "Psalm of Solomon"
+    ]
   }
 ]

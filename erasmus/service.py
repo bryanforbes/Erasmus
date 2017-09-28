@@ -1,4 +1,4 @@
-from typing import List, Generic, TypeVar
+from typing import List, Generic, TypeVar, Dict, Any
 from abc import abstractmethod
 import aiohttp
 import async_timeout
@@ -55,4 +55,10 @@ class Service(Generic[RT]):
         async with aiohttp.ClientSession(**session_options) as session:
             with async_timeout.timeout(10):
                 async with session.get(url) as response:
+                    return await self._process_response(response)
+
+    async def post(self, url: str, data: Dict[str, Any] = None, **session_options) -> RT:
+        async with aiohttp.ClientSession(**session_options) as session:
+            with async_timeout.timeout(10):
+                async with session.post(url, data=data) as response:
                     return await self._process_response(response)
