@@ -59,25 +59,20 @@ class Erasmus(commands.Bot):
         self.bible_manager = BibleManager(self.config)
 
         for name, description in self.bible_manager.get_versions():
-            lookup_command = commands.Command(
-                name=name,
-                description=f'Look up a verse in {description}',
-                hidden=True,
-                pass_context=True,
-                callback=self._version_lookup)
-            search_command = commands.Command(
-                name=f's{name}',
-                description=f'Search in {description}',
-                hidden=True,
-                pass_context=True,
-                callback=self._version_search)
-            self.add_command(lookup_command)
-            self.add_command(search_command)
+            self.command(name=name,
+                         description=f'Look up a verse in {description}',
+                         hidden=True)(self._version_lookup)
+            self.command(name=f's{name}',
+                         description=f'Search in {description}',
+                         hidden=True)(self._version_search)
 
         self.add_command(self.versions)
 
     def run(self, *args, **kwargs) -> None:
         super().run(self.config.api_key)
+
+    async def get_context(self, message: discord.Message, *, cls=Context) -> Context:
+        return cast(Context, await super().get_context(message, cls=cls))
 
     async def on_message(self, message: discord.Message) -> None:
         if message.author.bot:
@@ -86,7 +81,7 @@ class Erasmus(commands.Bot):
         await self.process_commands(message)
 
     async def process_commands(self, message: discord.Message) -> None:
-        ctx = cast(Context, await self.get_context(message, cls=Context))
+        ctx = await self.get_context(message)
 
         if ctx.command is None:
             return
@@ -102,8 +97,8 @@ class Erasmus(commands.Bot):
     @commands.command()
     async def versions(self, ctx: Context) -> None:
         lines = ['I support the following Bible versions:', '']
-        for version, description in self.bible_manager.get_versions():
-            lines.append(f'  `{self.command_prefix}{version}`: {description}')
+        lines += [f'  `{self.command_prefix}{version}`: {description}'
+                  for version, description in self.bible_manager.get_versions()]
 
         lines.append("\nYou can search any version by prefixing the version command with 's' "
                      f"(ex. `{self.command_prefix}sesv terms...`)")
@@ -112,7 +107,7 @@ class Erasmus(commands.Bot):
         await ctx.send_to_author(f'\n{output}\n')
 
     async def _version_lookup(self, ctx: Context, *, reference: str) -> None:
-        version = ctx.command.name
+        version = ctx.invoked_with
 
         try:
             verses = VerseRange.from_string(reference)
@@ -136,7 +131,7 @@ class Erasmus(commands.Bot):
                 await ctx.send_to_author('I do not understand that request')
 
     async def _version_search(self, ctx: Context, *terms) -> None:
-        version = ctx.command.name[1:]
+        version = ctx.invoked_with[1:]
 
         async with ctx.typing():
             try:
@@ -144,15 +139,18 @@ class Erasmus(commands.Bot):
             except BibleNotSupportedError:
                 await ctx.send_to_author(f'`{self.command_prefix}{ctx.invoked_with}` is not supported')
             else:
-                verses = '\n'.join([f'- {verse}' for verse in results.verses])
                 matches = pluralize_match(results.total)
+                output = f'I have found {matches} to your search'
 
-                if results.total <= 20:
-                    await ctx.send_to_author(f'I have found {matches} to your search:\n{verses}')
-                else:
-                    limit = pluralize_match(20)
-                    await ctx.send_to_author(f'I have found {matches} to your search. '
-                                             f'Here are the first {limit}:\n\n{verses}')
+                if results.total > 0:
+                    verses = '\n'.join([f'- {verse}' for verse in results.verses])
+                    if results.total <= 20:
+                        output = f'{output}:\n\n{verses}'
+                    else:
+                        limit = pluralize_match(20)
+                        output = f'{output}. Here are the first {limit}:\n\n{verses}'
+
+                await ctx.send_to_author(output)
 
 
 __all__ = ['Erasmus']

@@ -45,7 +45,7 @@ class BibleManager:
 
         self.bible_map = OrderedDict()
 
-        for key, bible_config in self.config.bibles.items():
+        for key, bible_config in sorted(self.config.bibles.items(), key=lambda item: item[0]):
             service = service_map.get(bible_config.service, None)
 
             if service is None:
@@ -54,9 +54,11 @@ class BibleManager:
             bible_config.service = service
             self.bible_map[key] = Bible(**bible_config)
 
+    def __contains__(self, item: str) -> bool:
+        return item in self.bible_map
+
     def get_versions(self) -> List[Tuple[str, str]]:
-        sorted_items = sorted(self.bible_map.items(), key=lambda item: item[0])
-        return [(key, bible.name) for key, bible in sorted_items]
+        return [(key, bible.name) for key, bible in self.bible_map.items()]
 
     async def get_passage(self, version: str, verses: VerseRange) -> Passage:
         bible = self._get_bible(version)

@@ -5,7 +5,7 @@ beautifulsoup4==4.6.0
 cchardet==2.1.1
 chardet==3.0.4
 coverage==4.4.1
-discord.py==1.0.0a1364
+discord.py==1.0.0a1379
 flake8==3.4.1
 mccabe==0.6.1
 multidict==3.2.0
