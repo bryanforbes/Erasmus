@@ -1,4 +1,5 @@
 from typing import Coroutine, Any, Union, Callable
+from asyncio import AbstractEventLoop
 from .user import User
 from .game import Game
 from .enums import Status
@@ -6,6 +7,7 @@ from .enums import Status
 
 class Client:
     user: User
+    loop: AbstractEventLoop
 
     async def on_error(self, event_method, *args, **kwargs) -> None: ...
 
