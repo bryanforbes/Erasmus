@@ -177,6 +177,7 @@ class Erasmus(commands.Bot):
         await ctx.send_to_author(f'\n{output}\n')
 
     @commands.command(name='addbib')
+    @commands.guild_only()
     @commands.is_owner()
     @commands.has_permissions(administrator=True, manage_guild=True)
     async def add_guild_version(self, ctx: Context, *, command: str) -> None:
@@ -191,25 +192,27 @@ class Erasmus(commands.Bot):
             await pg.execute(guild_bibles.insert().values(guild_id=ctx.guild.id,
                                                           bible_id=version.id))
         except UniqueViolationError:
-            await ctx.send_to_author(f'Already added `{command}`')
+            await ctx.send_to_author(f'Already added `{command}` to {ctx.guild.name}')
 
-        await ctx.send_to_author(f'Added `{command}` to guild')
+        await ctx.send_to_author(f'Added `{command}` to {ctx.guild.name}')
 
     @commands.command(name='delbib')
+    @commands.guild_only()
     @commands.is_owner()
     @commands.has_permissions(administrator=True, manage_guild=True)
     async def delete_guild_version(self, ctx: Context, *, command: str) -> None:
         version = await pg.fetchrow(guild_bible_select.where(bible_versions.c.command == command))
 
         if not version:
-            await ctx.send_to_author(f'`{command}` doesn\'t exist for guild')
+            await ctx.send_to_author(f'`{command}` doesn\'t exist for this guild')
             return
 
         await pg.execute(guild_bibles.delete().where((guild_bibles.c.guild_id == ctx.guild.id) &
                                                      (guild_bibles.c.bible_id == version.id)))
-        await ctx.send_to_author(f'Removed `{command}` from guild')
+        await ctx.send_to_author(f'Removed `{command}` from {ctx.guild.name}')
 
     @commands.command(name='lsbib')
+    @commands.guild_only()
     @commands.is_owner()
     @commands.has_permissions(administrator=True, manage_guild=True)
     async def list_all_versions(self, ctx: Context) -> None:
@@ -219,8 +222,8 @@ class Erasmus(commands.Bot):
                             .order_by(bible_versions.c.command.asc())) as versions:
             lines += [f'  `{version.command}`: {version.name}' async for version in versions]
 
-        lines.append(f'\nYou can add a version to your guild with `{ctx.prefix}addversion` '
-                     f'(ex. `{ctx.prefix}addversion niv`)')
+        lines.append(f'\nYou can add a version to your guild with `{ctx.prefix}addbib` '
+                     f'(ex. `{ctx.prefix}addbib niv`)')
 
         output = '\n'.join(lines)
         await ctx.send_to_author(f'\n{output}\n')
