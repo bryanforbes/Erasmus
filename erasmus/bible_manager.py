@@ -1,4 +1,4 @@
-from typing import Dict, List, Tuple
+from typing import Dict, List, Tuple, Any
 from collections import OrderedDict
 
 from .json import JSONObject
@@ -35,7 +35,7 @@ class BibleManager:
     config: JSONObject
     bible_map: Dict[str, Bible]
 
-    def __init__(self, config: JSONObject) -> None:
+    def __init__(self, config: JSONObject, bibles: List[Any]) -> None:
         self.config = config
 
         service_map = {}
@@ -45,14 +45,16 @@ class BibleManager:
 
         self.bible_map = OrderedDict()
 
-        for key, bible_config in sorted(self.config.bibles.items(), key=lambda item: item[0]):
-            service = service_map.get(bible_config.service, None)
+        for bible_version in sorted(bibles, key=lambda item: item.command):
+            service = service_map.get(bible_version.service)
 
             if service is None:
-                raise ServiceNotSupportedError(bible_config.service)
+                raise ServiceNotSupportedError(bible_version.service)
 
-            bible_config.service = service
-            self.bible_map[key] = Bible(**bible_config)
+            self.bible_map[bible_version.command] = Bible(name=bible_version.name,
+                                                          abbr=bible_version.abbr,
+                                                          service=service,
+                                                          service_version=bible_version.service_version)
 
     def __contains__(self, item: str) -> bool:
         return item in self.bible_map

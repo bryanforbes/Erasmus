@@ -3,6 +3,9 @@ from typing import cast
 import discord
 import re
 
+from asyncpgsa import pg
+from asyncpg.exceptions import UniqueViolationError
+
 from discord.ext import commands
 from .data import VerseRange
 from .bible_manager import BibleManager
@@ -13,12 +16,31 @@ from .exceptions import (
 from .json import JSONObject, load
 from .format import pluralizer
 from .context import Context
+from .db import bible_versions, guild_bibles, guild_prefs
 
 number_re = re.compile(r'^\d+$')
 pluralize_match = pluralizer('match', 'es')
 
+guild_bible_select = bible_versions.select() \
+    .select_from(bible_versions.join(guild_bibles))
+
+
+async def get_guild_prefix(bot: 'Erasmus', message: discord.Message) -> str:
+    prefix = None
+
+    if message.guild:
+        query = guild_prefs.select() \
+            .where(guild_prefs.c.guild_id == message.guild.id)
+        prefix = await pg.fetchval(query, column=1)
+
+    if not prefix:
+        return bot.default_prefix
+
+    return prefix
+
 
 class Erasmus(commands.Bot):
+    default_prefix: str
     bible_manager: BibleManager
     config: JSONObject
 
@@ -26,24 +48,43 @@ class Erasmus(commands.Bot):
         with open(config_path, 'r') as f:
             self.config = load(f)
 
-        kwargs['command_prefix'] = self.config.command_prefix
+        self.default_prefix = self.config.command_prefix
+
+        kwargs['command_prefix'] = get_guild_prefix
 
         super().__init__(*args, **kwargs)
 
-        self.bible_manager = BibleManager(self.config)
+        # self.bible_manager = BibleManager(self.config)
 
-        for name, description in self.bible_manager.get_versions():
-            self.command(name=name,
-                         description=f'Look up a verse in {description}',
-                         hidden=True)(self._version_lookup)
-            self.command(name=f's{name}',
-                         description=f'Search in {description}',
-                         hidden=True)(self._version_search)
+        # for name, description in self.bible_manager.get_versions():
+        #     self.command(name=name,
+        #                  description=f'Look up a verse in {description}',
+        #                  hidden=True)(self._version_lookup)
+        #     self.command(name=f's{name}',
+        #                  description=f'Search in {description}',
+        #                  hidden=True)(self._version_search)
 
         self.add_command(self.versions)
+        self.add_command(self.add_guild_version)
+        self.add_command(self.delete_guild_version)
+        self.add_command(self.list_all_versions)
 
     def run(self, *args, **kwargs) -> None:
+        self.loop.run_until_complete(pg.init(
+            host='localhost',
+            port=5432,
+            database='erasmus',
+            user='erasmus',
+            password='3kG2xt1exbmRtKuG',
+            min_size=1,
+            max_size=10
+        ))
+
         super().run(self.config.api_key)
+
+    async def close(self) -> None:
+        await pg.pool.close()
+        await super().close()
 
     async def get_context(self, message: discord.Message, *, cls=Context) -> Context:
         return cast(Context, await super().get_context(message, cls=cls))
@@ -63,6 +104,18 @@ class Erasmus(commands.Bot):
         await self.invoke(ctx)
 
     async def on_ready(self) -> None:
+        versions = await pg.fetch(bible_versions.select())
+
+        self.bible_manager = BibleManager(self.config, versions)
+
+        for name, description in self.bible_manager.get_versions():
+            self.command(name=name,
+                         description=f'Look up a verse in {description}',
+                         hidden=True)(self._version_lookup)
+            self.command(name=f's{name}',
+                         description=f'Search in {description}',
+                         hidden=True)(self._version_search)
+
         await self.change_presence(game=discord.Game(name=f'| {self.command_prefix}versions'))
 
         print('-----')
@@ -93,34 +146,113 @@ class Erasmus(commands.Bot):
 
         await ctx.send_error_to_author(message)
 
+    async def on_guild_available(self, guild: discord.Guild) -> None:
+        await self.on_guild_join(guild)
+
+    async def on_guild_join(self, guild: discord.Guild) -> None:
+        prefs = await pg.fetchrow(guild_prefs.select().where(guild_prefs.c.guild_id == guild.id))
+
+        if not prefs:
+            await pg.execute(guild_prefs.insert().values(guild_id=guild.id, prefix=self.default_prefix))
+            await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=1))
+            await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=2))
+            await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=4))
+            await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=5))
+            await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=7))
+
     @commands.command()
+    @commands.guild_only()
     async def versions(self, ctx: Context) -> None:
         lines = ['I support the following Bible versions:', '']
-        lines += [f'  `{self.command_prefix}{version}`: {description}'
-                  for version, description in self.bible_manager.get_versions()]
+
+        async with pg.query(guild_bible_select
+                            .where(guild_bibles.c.guild_id == ctx.guild.id)
+                            .order_by(bible_versions.c.command.asc())) as versions:
+            lines += [f'  `{ctx.prefix}{version.command}`: {version.name}' async for version in versions]
 
         lines.append("\nYou can search any version by prefixing the version command with 's' "
-                     f"(ex. `{self.command_prefix}sesv terms...`)")
+                     f'(ex. `{ctx.prefix}sesv terms...`)')
 
         output = '\n'.join(lines)
         await ctx.send_to_author(f'\n{output}\n')
 
+    @commands.command(name='addbib')
+    @commands.is_owner()
+    @commands.has_permissions(administrator=True, manage_guild=True)
+    async def add_guild_version(self, ctx: Context, *, command: str) -> None:
+        version = await pg.fetchrow(bible_versions.select()
+                                    .where(bible_versions.c.command == command))
+
+        if not version:
+            await ctx.send_to_author(f'Unknown version `{command}`')
+            return
+
+        try:
+            await pg.execute(guild_bibles.insert().values(guild_id=ctx.guild.id,
+                                                          bible_id=version.id))
+        except UniqueViolationError:
+            await ctx.send_to_author(f'Already added `{command}`')
+
+        await ctx.send_to_author(f'Added `{command}` to guild')
+
+    @commands.command(name='delbib')
+    @commands.is_owner()
+    @commands.has_permissions(administrator=True, manage_guild=True)
+    async def delete_guild_version(self, ctx: Context, *, command: str) -> None:
+        version = await pg.fetchrow(guild_bible_select.where(bible_versions.c.command == command))
+
+        if not version:
+            await ctx.send_to_author(f'`{command}` doesn\'t exist for guild')
+            return
+
+        await pg.execute(guild_bibles.delete().where((guild_bibles.c.guild_id == ctx.guild.id) &
+                                                     (guild_bibles.c.bible_id == version.id)))
+        await ctx.send_to_author(f'Removed `{command}` from guild')
+
+    @commands.command(name='lsbib')
+    @commands.is_owner()
+    @commands.has_permissions(administrator=True, manage_guild=True)
+    async def list_all_versions(self, ctx: Context) -> None:
+        lines = ['The following versions are available:', '']
+
+        async with pg.query(bible_versions.select()
+                            .order_by(bible_versions.c.command.asc())) as versions:
+            lines += [f'  `{version.command}`: {version.name}' async for version in versions]
+
+        lines.append(f'\nYou can add a version to your guild with `{ctx.prefix}addversion` '
+                     f'(ex. `{ctx.prefix}addversion niv`)')
+
+        output = '\n'.join(lines)
+        await ctx.send_to_author(f'\n{output}\n')
+
+    @commands.guild_only()
     async def _version_lookup(self, ctx: Context, *, reference: str) -> None:
-        version = ctx.invoked_with
+        version = await pg.fetchrow(guild_bible_select
+                                    .where((guild_bibles.c.guild_id == ctx.guild.id) &
+                                           (bible_versions.c.command == ctx.invoked_with)))
+
+        if not version:
+            return
 
         verses = VerseRange.from_string(reference)
         if verses is not None:
             async with ctx.typing():
-                passage = await self.bible_manager.get_passage(version, verses)
+                passage = await self.bible_manager.get_passage(ctx.invoked_with, verses)
                 await ctx.send_passage(passage)
         else:
             await ctx.send_error_to_author('I do not understand that request')
 
+    @commands.guild_only()
     async def _version_search(self, ctx: Context, *terms) -> None:
-        version = ctx.invoked_with[1:]
+        version = await pg.fetchrow(guild_bible_select
+                                    .where((guild_bibles.c.guild_id == ctx.guild.id) &
+                                           (bible_versions.c.command == ctx.invoked_with[1:])))
+
+        if not version:
+            return
 
         async with ctx.typing():
-            results = await self.bible_manager.search(version, list(terms))
+            results = await self.bible_manager.search(ctx.invoked_with[1:], list(terms))
             matches = pluralize_match(results.total)
             output = f'I have found {matches} to your search'
 
