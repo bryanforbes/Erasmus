@@ -1,8 +1,9 @@
-from typing import Any, Callable, Dict, Optional, Iterator, Coroutine, Union, Awaitable, Type, ValuesView, List
+from typing import Any, Callable, Dict, Optional, Iterator, Union, Awaitable, Type, ValuesView, List
+from .context import Context
+from .cooldowns import BucketType
 
-CallbackType = Union[
-    Coroutine[Any, Any, Any],
-    Callable[..., Awaitable[Any]]]
+CallbackType = Callable[..., Awaitable[Any]]
+ErrorHandlerType = Callable[..., Awaitable[None]]
 
 
 class Command:
@@ -15,6 +16,8 @@ class Command:
     enabled: bool
 
     def __init__(self, name: str, callback: CallbackType, **kwargs) -> None: ...
+
+    def error(self, coro: ErrorHandlerType) -> ErrorHandlerType: ...
 
 
 class GroupMixin:
@@ -39,3 +42,34 @@ class GroupMixin:
 
 
 def command(name: Optional[str] = ..., cls: Optional[Type[Command]] = ..., **kwargs) -> Callable[..., Command]: ...
+
+
+def check(predicate: Union[Callable[[Context], bool],
+                           Callable[[Context], Awaitable[bool]]]): ...
+
+
+def has_role(name: str): ...
+
+
+def has_any_role(*names: str): ...
+
+
+def has_permissions(**perms: bool): ...
+
+
+def bot_has_role(*names: List[str]): ...
+
+
+def bot_has_permissions(**perms: bool): ...
+
+
+def guild_only(): ...
+
+
+def is_owner(): ...
+
+
+def is_nsfw(): ...
+
+
+def cooldown(rate: int, per: float, type: BucketType = ...): ...

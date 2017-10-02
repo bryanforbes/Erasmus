@@ -1,9 +1,8 @@
-import pytest
+import pytest  # noqa
 
-from erasmus.erasmus import Context  # , Erasmus
+from erasmus.erasmus import Erasmus  # noqa
 from erasmus.data import SearchResults, Passage # noqa
 from erasmus.exceptions import BibleNotSupportedError # noqa
-from discord import Embed
 
 
 class MockUser(object):
@@ -43,21 +42,6 @@ class MockContext(object):
 
     def __init__(self, command: MockCommand) -> None:
         self.command = command
-
-
-class TestContext(object):
-    @pytest.fixture
-    def mock_context_send(self, mocker):
-        return mocker.patch('discord.ext.commands.Context.send', new_callable=mocker.AsyncMock)
-
-    @pytest.mark.asyncio
-    async def test_send(self, mocker, mock_context_send):
-        ctx = Context(prefix='~', message=MockMessage(author=MockUser(mention='user1')))
-
-        await ctx.send_to_author('baz')
-
-        assert mock_context_send.call_args_list[0][0] == ('user1',)
-        assert type(mock_context_send.call_args_list[0][1]['embed']) == Embed
 
 
 # class TestErasmus(object):

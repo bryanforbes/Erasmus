@@ -4,43 +4,14 @@ import discord
 import re
 
 from discord.ext import commands
-from .data import VerseRange, Passage
+from .data import VerseRange
 from .bible_manager import BibleManager
 from .exceptions import DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError, BookNotUnderstoodError
 from .json import JSONObject, load
 from .format import pluralizer
+from .context import Context
 
 number_re = re.compile(r'^\d+$')
-
-truncation_warning = '**The passage was too long and has been truncated:**\n\n'
-max_length = 2048 - (len(truncation_warning) + 1)
-
-
-class Context(commands.Context):
-    async def send_passage(self, passage: Passage) -> discord.Message:
-        text = passage.text
-
-        if len(text) > 2048:
-            text = f'{truncation_warning}{text[:max_length]}\u2026'
-
-        embed = discord.Embed.from_data({
-            'description': text,
-            'footer': {
-                'text': passage.citation
-            }
-        })
-
-        return await self.send_to_author(embed=embed)
-
-    async def send_to_author(self, text: str = None, *, embed: discord.Embed = None) -> discord.Message:
-        if text is not None:
-            if embed is None:
-                embed = discord.Embed()
-            embed.description = text
-
-        return await self.send(self.author.mention, embed=embed)
-
-
 pluralize_match = pluralizer('match', 'es')
 
 
@@ -89,10 +60,33 @@ class Erasmus(commands.Bot):
         await self.invoke(ctx)
 
     async def on_ready(self) -> None:
+        await self.change_presence(game=discord.Game(name=f'| {self.command_prefix}versions'))
+
         print('-----')
         print(f'logged in as {self.user.name} {self.user.id}')
 
-        await self.change_presence(game=discord.Game(name=f'| {self.command_prefix}versions'))
+    async def on_command_error(self, ctx: Context, exc: Exception) -> None:
+        message = 'An error occurred'
+        if isinstance(exc, commands.CommandInvokeError):
+            if isinstance(exc.original, BookNotUnderstoodError):
+                message = f'I do not understand the book "{exc.original.book}"'
+            elif isinstance(exc.original, DoNotUnderstandError):
+                message = 'I do not understand that request'
+            elif isinstance(exc.original, BibleNotSupportedError):
+                message = f'{self.command_prefix}{exc.original.version} is not supported'
+            elif isinstance(exc.original, ServiceNotSupportedError):
+                message = f'The service configured for {self.command_prefix}{ctx.invoked_with} is not supported'
+            else:
+                print(exc)
+                message = 'An error occurred'
+        elif isinstance(exc, commands.NoPrivateMessage):
+            message = 'This command is not available in private messages'
+        elif isinstance(exc, commands.MissingRequiredArgument):
+            message = f'The required argument `{exc.param}` is missing'
+        else:
+            print(exc)
+
+        await ctx.send_error_to_author(message)
 
     @commands.command()
     async def versions(self, ctx: Context) -> None:
@@ -109,48 +103,31 @@ class Erasmus(commands.Bot):
     async def _version_lookup(self, ctx: Context, *, reference: str) -> None:
         version = ctx.invoked_with
 
-        try:
-            verses = VerseRange.from_string(reference)
-        except BookNotUnderstoodError as err:
-            await ctx.send_to_author(f'I do not understand the book "{err.book}"')
+        verses = VerseRange.from_string(reference)
+        if verses is not None:
+            async with ctx.typing():
+                passage = await self.bible_manager.get_passage(version, verses)
+                await ctx.send_passage(passage)
         else:
-            if verses is not None:
-                async with ctx.typing():
-                    try:
-                        passage = await self.bible_manager.get_passage(version, verses)
-                    except DoNotUnderstandError:
-                        await ctx.send_to_author('I do not understand that request')
-                    except BibleNotSupportedError as err:
-                        await ctx.send_to_author(f'{self.command_prefix}{err.version} is not supported')
-                    except ServiceNotSupportedError:
-                        await ctx.send_to_author(f'The service configured for {self.command_prefix}{version} '
-                                                 'is not supported')
-                    else:
-                        await ctx.send_passage(passage)
-            else:
-                await ctx.send_to_author('I do not understand that request')
+            await ctx.send_error_to_author('I do not understand that request')
 
     async def _version_search(self, ctx: Context, *terms) -> None:
         version = ctx.invoked_with[1:]
 
         async with ctx.typing():
-            try:
-                results = await self.bible_manager.search(version, list(terms))
-            except BibleNotSupportedError:
-                await ctx.send_to_author(f'`{self.command_prefix}{ctx.invoked_with}` is not supported')
-            else:
-                matches = pluralize_match(results.total)
-                output = f'I have found {matches} to your search'
+            results = await self.bible_manager.search(version, list(terms))
+            matches = pluralize_match(results.total)
+            output = f'I have found {matches} to your search'
 
-                if results.total > 0:
-                    verses = '\n'.join([f'- {verse}' for verse in results.verses])
-                    if results.total <= 20:
-                        output = f'{output}:\n\n{verses}'
-                    else:
-                        limit = pluralize_match(20)
-                        output = f'{output}. Here are the first {limit}:\n\n{verses}'
+            if results.total > 0:
+                verses = '\n'.join([f'- {verse}' for verse in results.verses])
+                if results.total <= 20:
+                    output = f'{output}:\n\n{verses}'
+                else:
+                    limit = pluralize_match(20)
+                    output = f'{output}. Here are the first {limit}:\n\n{verses}'
 
-                await ctx.send_to_author(output)
+            await ctx.send_to_author(output)
 
 
 __all__ = ['Erasmus']

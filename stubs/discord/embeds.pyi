@@ -64,20 +64,14 @@ class Embed:
     description: str
     url: str
     timestamp: Union[datetime, _EmptyEmbed]
+    colour: Union[Colour, _EmptyEmbed, int]
+    color: Union[Colour, _EmptyEmbed, int]
 
     Empty = EmptyEmbed
 
     def __init__(self, *, color: Union[Colour, int] = ..., colour: Union[Colour, int] = ...,
                  title: str = ..., url: str = ..., description: str = ...,
                  timestamp: datetime = ...) -> None: ...
-
-    @property
-    def colour(self) -> Union[Colour, _EmptyEmbed]: ...
-
-    @colour.setter
-    def colour(self, value: Union[Colour, _EmptyEmbed, int]) -> None: ...
-
-    color = colour
 
     @classmethod
     def from_data(cls, data: EmbedData) -> 'Embed': ...
@@ -121,4 +115,4 @@ class Embed:
 
     def set_field_at(self, index: int, *, name: str, value: str, inline: bool = ...) -> 'Embed': ...
 
-    def to_dict(self) -> Dict[str, Any]: ...
+    def to_dict(self) -> EmbedData: ...
