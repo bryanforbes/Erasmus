@@ -5,6 +5,7 @@ import re
 
 from asyncpgsa import pg
 from asyncpg.exceptions import UniqueViolationError
+from configparser import ConfigParser
 
 from discord.ext import commands
 from .data import VerseRange
@@ -13,7 +14,6 @@ from .exceptions import (
     DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError,
     BookNotUnderstoodError, ReferenceNotUnderstoodError
 )
-from .json import JSONObject, load
 from .format import pluralizer
 from .context import Context
 from .db import bible_versions, guild_bibles, guild_prefs
@@ -55,13 +55,13 @@ def dm_only():
 class Erasmus(commands.Bot):
     default_prefix: str
     service_manager: ServiceManager
-    config: JSONObject
+    config: ConfigParser
 
-    def __init__(self, config_path, *args, **kwargs) -> None:
-        with open(config_path, 'r') as f:
-            self.config = load(f)
+    def __init__(self, config_path: str, *args, **kwargs) -> None:
+        self.config = ConfigParser(default_section='erasmus')
+        self.config.read(config_path)
 
-        self.default_prefix = self.config.command_prefix
+        self.default_prefix = self.config.get('erasmus', 'command_prefix', fallback='$')
         self.service_manager = ServiceManager(self.config)
 
         kwargs['command_prefix'] = get_guild_prefix
@@ -74,12 +74,12 @@ class Erasmus(commands.Bot):
 
     def run(self, *args, **kwargs) -> None:
         self.loop.run_until_complete(pg.init(
-            self.config['db_url'],
+            self.config.get('erasmus', 'db_url'),
             min_size=1,
             max_size=10
         ))
 
-        super().run(self.config.api_key)
+        super().run(self.config.get('erasmus', 'discord_api_key'))
 
     async def close(self) -> None:
         await pg.pool.close()
@@ -107,7 +107,7 @@ class Erasmus(commands.Bot):
             async for version in versions:
                 self._add_bible_commands(version.command, version.name)
 
-        await self.change_presence(game=discord.Game(name=f'| {self.command_prefix}versions'))
+        await self.change_presence(game=discord.Game(name=f'| {self.default_prefix}versions'))
 
         print('-----')
         print(f'logged in as {self.user.name} {self.user.id}')
@@ -122,9 +122,9 @@ class Erasmus(commands.Bot):
             elif isinstance(exc.original, ReferenceNotUnderstoodError):
                 message = f'I do not understand the reference {exc.original.reference}'
             elif isinstance(exc.original, BibleNotSupportedError):
-                message = f'{self.command_prefix}{exc.original.version} is not supported'
+                message = f'{self.default_prefix}{exc.original.version} is not supported'
             elif isinstance(exc.original, ServiceNotSupportedError):
-                message = f'The service configured for {self.command_prefix}{ctx.invoked_with} is not supported'
+                message = f'The service configured for {self.default_prefix}{ctx.invoked_with} is not supported'
             else:
                 print(exc)
                 message = 'An error occurred'

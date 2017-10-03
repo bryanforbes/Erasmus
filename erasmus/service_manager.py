@@ -1,6 +1,6 @@
 from typing import Dict, List
+from configparser import ConfigParser
 
-from .json import JSONObject
 from .data import VerseRange, Passage, SearchResults
 from .service import Service
 from . import services
@@ -21,13 +21,20 @@ class ServiceManager(object):
 
     service_map: Dict[str, Service]
 
-    def __init__(self, config: JSONObject) -> None:
+    def __init__(self, config: ConfigParser) -> None:
         self.service_map = {}
+
+        config_sections = config.sections()
 
         for name, cls in services.__dict__.items():
             if callable(cls):
-                service_config = config.services.get(name, {})
-                self.service_map[name] = cls(service_config)
+                section_name = f'services:{name}'
+                section = None
+
+                if section_name in config_sections:
+                    section = config[section_name]
+
+                self.service_map[name] = cls(section)
 
     def __contains__(self, key: str) -> bool:
         return self.service_map.__contains__(key)
