@@ -14,6 +14,9 @@ class Command:
     usage: str
     aliases: List[str]
     enabled: bool
+    parent: Optional['Command']
+    description: str
+    hidden: bool
 
     def __init__(self, name: str, callback: CallbackType, **kwargs) -> None: ...
 
