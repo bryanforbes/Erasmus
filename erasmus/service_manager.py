@@ -29,6 +29,9 @@ class ServiceManager(object):
                 service_config = config.services.get(name, {})
                 self.service_map[name] = cls(service_config)
 
+    def __contains__(self, key: str) -> bool:
+        return self.service_map.__contains__(key)
+
     async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
         service = self.service_map.get(bible.service)
         passage = await service.get_passage(bible.service_version, verses)

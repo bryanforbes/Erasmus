@@ -57,6 +57,12 @@ def upgrade():
              service='BibleGateway', service_version='NET'),
         dict(command='nrsv', name='New Revised Standard Version', abbr='NRSV',
              service='BibleGateway', service_version='NRSV'),
+        dict(command='gnt', name='Good News Translation', abbr='GNT',
+             service='BiblesOrg', service_version='eng-GNTD'),
+        dict(command='msg', name='The Message', abbr='MSG',
+             service='BiblesOrg', service_version='eng-MSG'),
+        dict(command='amp', name='Amplified Bible', abbr='AMP',
+             service='BiblesOrg', service_version='eng-AMP'),
     ])
 
 

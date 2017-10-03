@@ -3,6 +3,9 @@ from alembic import context
 from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
 
+from pathlib import Path
+import json
+
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
@@ -50,10 +53,15 @@ def run_migrations_online():
     and associate a connection with the context.
 
     """
+
+    with (Path(__file__).resolve().parent.parent / 'config.json').open() as f:
+        json_config = json.load(f)
+
     connectable = engine_from_config(
         config.get_section(config.config_ini_section),
         prefix='sqlalchemy.',
-        poolclass=pool.NullPool)
+        poolclass=pool.NullPool,
+        url=json_config['db_url'])
 
     with connectable.connect() as connection:
         context.configure(
