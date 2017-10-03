@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, NamedTuple
 from configparser import ConfigParser
 
 from .data import VerseRange, Passage, SearchResults
@@ -6,9 +6,7 @@ from .service import Service
 from . import services
 
 
-class Bible(object):
-    __slots__ = ('command', 'name', 'abbr', 'service', 'service_version')
-
+class Bible(NamedTuple):
     command: str
     name: str
     abbr: str
@@ -38,6 +36,9 @@ class ServiceManager(object):
 
     def __contains__(self, key: str) -> bool:
         return self.service_map.__contains__(key)
+
+    def __len__(self) -> int:
+        return self.service_map.__len__()
 
     async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
         service = self.service_map.get(bible.service)

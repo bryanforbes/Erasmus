@@ -1,5 +1,5 @@
-from sqlalchemy import MetaData, Table, Column, Integer, String, ForeignKey
-import sqlalchemy.types as types
+from sqlalchemy import MetaData, Table, Column, Integer, String, ForeignKey  # type: ignore
+import sqlalchemy.types as types  # type: ignore
 
 
 class Snowflake(types.TypeDecorator):

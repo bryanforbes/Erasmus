@@ -3,8 +3,8 @@ from typing import cast
 import discord
 import re
 
-from asyncpgsa import pg
-from asyncpg.exceptions import UniqueViolationError
+from asyncpgsa import pg  # type: ignore
+from asyncpg.exceptions import UniqueViolationError  # type: ignore
 from configparser import ConfigParser
 
 from discord.ext import commands
@@ -53,9 +53,9 @@ def dm_only():
 
 
 class Erasmus(commands.Bot):
-    default_prefix: str
     service_manager: ServiceManager
     config: ConfigParser
+    default_prefix: str  # noqa
 
     def __init__(self, config_path: str, *args, **kwargs) -> None:
         self.config = ConfigParser(default_section='erasmus')
