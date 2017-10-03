@@ -1,5 +1,6 @@
 from typing import List, Union, Iterator, Optional, Tuple, Dict
 from datetime import datetime
+from abc import ABCMeta
 
 from .message import Message
 from .role import Role
@@ -14,14 +15,14 @@ from .user import ClientUser
 from .guild import Guild
 
 
-class Snowflake:
+class Snowflake(metaclass=ABCMeta):
     id: int
 
     @property
     def created_at(self) -> datetime: ...
 
 
-class User:
+class User(metaclass=ABCMeta):
     name: str
     discriminator: str
     avatar: Optional[str]
@@ -34,7 +35,7 @@ class User:
     def mention(self) -> str: ...
 
 
-class PrivateChannel:
+class PrivateChannel(metaclass=ABCMeta):
     me: ClientUser
 
 
@@ -73,7 +74,7 @@ class GuildChannel:
     async def invites(self) -> List[Invite]: ...
 
 
-class Messageable:
+class Messageable(metaclass=ABCMeta):
     async def send(self, content: Optional[str] = ..., *, tts: bool = ..., embed: Optional[Embed] = ...,
                    file: Optional[object] = ..., files: Optional[List[object]] = ...,
                    delete_after: Optional[float] = ..., nonce: Optional[int] = ...) -> Message: ...
@@ -91,5 +92,5 @@ class Messageable:
                 reverse: Optional[bool] = ...) -> Iterator[Message]: ...
 
 
-class Connectable:
+class Connectable(metaclass=ABCMeta):
     async def connect(self, *, timeout: float = ..., reconnect: bool = ...) -> VoiceClient: ...

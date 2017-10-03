@@ -1,3 +1,4 @@
+from typing import Optional
 from .mixins import Hashable
 from .guild import Guild
 from .user import User
@@ -16,3 +17,11 @@ class Invite(Hashable):
     max_uses: int
     inviter: User
     channel: GuildChannel
+
+    @property
+    def id(self) -> str: ...
+
+    @property
+    def url(self) -> str: ...
+
+    async def delete(self, *, reason: Optional[str] = ...) -> None: ...

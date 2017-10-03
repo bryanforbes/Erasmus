@@ -8,9 +8,9 @@ from .member import VoiceState
 
 
 class CallMessage:
-    message: Message
-    participants: Optional[List[User]]
     ended_timestamp: Optional[datetime]
+    participants: Optional[List[User]]
+    message: Message
 
     def __init__(self, message: Message, *, ended_timestamp: Optional[datetime] = ...,
                  participants: Optional[List[User]] = ...) -> None: ...
