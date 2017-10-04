@@ -61,10 +61,10 @@ class Erasmus(commands.Bot):
         self.config = ConfigParser(default_section='erasmus')
         self.config.read(config_path)
 
-        self.default_prefix = self.config.get('erasmus', 'command_prefix', fallback='$')
+        self.default_prefix = kwargs['command_prefix'] = self.config.get('erasmus', 'command_prefix', fallback='$')
         self.service_manager = ServiceManager(self.config)
 
-        kwargs['command_prefix'] = get_guild_prefix
+        # kwargs['command_prefix'] = get_guild_prefix
 
         super().__init__(*args, **kwargs)
 
@@ -73,11 +73,13 @@ class Erasmus(commands.Bot):
         self.add_command(self.delete_bible)
 
     def run(self, *args, **kwargs) -> None:
-        self.loop.run_until_complete(pg.init(
-            self.config.get('erasmus', 'db_url'),
-            min_size=1,
-            max_size=10
-        ))
+        self.loop.run_until_complete(
+            pg.init(
+                self.config.get('erasmus', 'db_url'),
+                min_size=1,
+                max_size=10
+            )
+        )
 
         super().run(self.config.get('erasmus', 'discord_api_key'))
 

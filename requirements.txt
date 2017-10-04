@@ -7,7 +7,6 @@ asyncpgsa==0.17.0
 beautifulsoup4==4.6.0
 cchardet==2.1.1
 chardet==3.0.4
-multidict==3.2.0
 discord.py==1.0.0a1386
 Mako==1.0.7
 MarkupSafe==1.0
