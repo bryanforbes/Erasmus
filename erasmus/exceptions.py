@@ -16,6 +16,13 @@ class BookNotUnderstoodError(Exception):
         self.book = book
 
 
+class ReferenceNotUnderstoodError(Exception):
+    reference: str
+
+    def __init__(self, reference: str) -> None:
+        self.reference = reference
+
+
 class ServiceNotSupportedError(Exception):
     service_name: str
 

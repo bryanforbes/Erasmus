@@ -6,7 +6,10 @@ import re
 from discord.ext import commands
 from .data import VerseRange
 from .bible_manager import BibleManager
-from .exceptions import DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError, BookNotUnderstoodError
+from .exceptions import (
+    DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError,
+    BookNotUnderstoodError, ReferenceNotUnderstoodError
+)
 from .json import JSONObject, load
 from .format import pluralizer
 from .context import Context
@@ -72,6 +75,8 @@ class Erasmus(commands.Bot):
                 message = f'I do not understand the book "{exc.original.book}"'
             elif isinstance(exc.original, DoNotUnderstandError):
                 message = 'I do not understand that request'
+            elif isinstance(exc.original, ReferenceNotUnderstoodError):
+                message = f'I do not understand the reference {exc.original.reference}'
             elif isinstance(exc.original, BibleNotSupportedError):
                 message = f'{self.command_prefix}{exc.original.version} is not supported'
             elif isinstance(exc.original, ServiceNotSupportedError):

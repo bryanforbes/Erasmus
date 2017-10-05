@@ -1,16 +1,39 @@
 from typing import Optional, List, Dict  # noqa
 from pathlib import Path
+from itertools import chain
 from .json import load
-from .exceptions import BookNotUnderstoodError
-import re
-
-search_reference_re = re.compile(
-    r'^(?P<book>.*)\.? (?P<chapter_start>\d+):(?P<verse_start>\d+)'
-    r'(?:-(?:(?P<chapter_end>\d+):)?(?P<verse_end>\d+))?$'
-)
+from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
+from . import re
 
 with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
     books_data = load(f)
+
+# Inspired by https://github.com/TehShrike/verse-reference-regex/blob/master/create-regex.js
+_book_re = re.compile(
+    re.named_group('book')(
+        re.either(*chain.from_iterable(
+            [[book.name, book.osis] + book.alt for book in books_data]
+        ))
+    ),
+    re.optional(re.DOT)
+)
+
+_search_reference_re = re.compile(
+    re.START,
+    _book_re,
+    re.one_or_more(re.WHITESPACE),
+    re.named_group('chapter_start')(re.one_or_more(re.DIGIT)),
+    ':',
+    re.named_group('verse_start')(re.one_or_more(re.DIGIT)),
+    re.optional(re.group(
+        re.any_number_of(re.WHITESPACE), re.DASH, re.any_number_of(re.WHITESPACE),
+        re.optional(re.group(
+            re.named_group('chapter_end')(re.one_or_more(re.DIGIT)), ':'
+        )),
+        re.named_group('verse_end')(re.one_or_more(re.DIGIT))
+    )),
+    flags=re.IGNORECASE
+)
 
 book_input_map = {}  # type: Dict[str, str]
 for book in books_data:
@@ -87,10 +110,10 @@ class VerseRange(object):
 
     @classmethod
     def from_string(cls, verse: str) -> 'VerseRange':
-        match = search_reference_re.match(verse)
+        match = _search_reference_re.match(verse)
 
         if match is None:
-            return None
+            raise ReferenceNotUnderstoodError(verse)
 
         chapter_start_int = int(match.group('chapter_start'))
         start = Verse(chapter_start_int, int(match.group('verse_start')))

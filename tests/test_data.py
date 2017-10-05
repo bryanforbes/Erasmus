@@ -1,5 +1,6 @@
 import pytest
 from erasmus.data import Verse, VerseRange, Passage, SearchResults
+from erasmus.exceptions import ReferenceNotUnderstoodError
 
 
 class TestVerse(object):
@@ -67,19 +68,28 @@ class TestVerseRange(object):
     def test__ne__(self, passage, expected):
         assert passage != expected
 
-    @pytest.mark.parametrize('passage_str,should_be_str', [
-        ('1 John 1:1', True),
-        ('Mark 2:1-4', True),
-        ('Acts 3:5-6:7', True),
-        ('asdfc083u4r', False),
+    @pytest.mark.parametrize('passage_str,expected,raises', [
+        ('1 John 1:1', None, False),
+        ('Mark 2:1-4', None, False),
+        ('Acts 3:5-6:7', None, False),
+        ('asdfc083u4r', None, True),
+        ('1 Pet. 3:1', '1 Peter 3:1', False),
+        ('1Pet. 3:1 - 4', '1 Peter 3:1-4', False),
+        ('1Pet. 3:1- 4', '1 Peter 3:1-4', False),
+        ('1Pet 3:1 - 4:5', '1 Peter 3:1-4:5', False),
+        ('Isa   54:2   - 23', 'Isaiah 54:2-23', False),
     ])
-    def test_from_string(self, passage_str, should_be_str):
-        passage = VerseRange.from_string(passage_str)
+    def test_from_string(self, passage_str, expected, raises):
+        if expected is None:
+            expected = passage_str
 
-        if should_be_str:
-            assert str(passage) == passage_str
+        if not raises:
+            passage = VerseRange.from_string(passage_str)
+            assert passage is not None
+            assert str(passage) == expected
         else:
-            assert passage is None
+            with pytest.raises(ReferenceNotUnderstoodError):
+                passage = VerseRange.from_string(passage_str)
 
 
 class TestPassage(object):

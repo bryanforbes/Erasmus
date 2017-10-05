@@ -1,4 +1,4 @@
-from typing import List, Union, Iterator, Optional, Tuple, Dict
+from typing import List, Union, Iterator, Optional, Tuple
 from datetime import datetime
 from abc import ABCMeta
 
@@ -66,7 +66,7 @@ class GuildChannel:
     async def delete(self, *, reason: Optional[str] = ...) -> None: ...
 
     async def set_permissions(self, target: Union[Member, Role], *, overwrite: Optional[PermissionOverwrite] = ...,
-                              reason: Optional[str] = ..., **permissions: Dict[str, Optional[bool]]) -> None: ...
+                              reason: Optional[str] = ..., **permissions: Optional[bool]) -> None: ...
 
     async def create_invite(self, *, reason: Optional[str] = ..., max_age: int = ..., max_uses: int = ...,
                             temporary: bool = ..., unique: bool = ...) -> Invite: ...

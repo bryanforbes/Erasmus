@@ -1,4 +1,4 @@
-from typing import AsyncIterator as TypingAsyncIterator, TypeVar, Any, List, Dict, Optional, Union
+from typing import AsyncIterator as TypingAsyncIterator, TypeVar, Any, List, Optional, Union
 from datetime import datetime
 from .user import User
 from .message import Message
@@ -13,7 +13,7 @@ _T = TypeVar('_T')
 
 
 class _AsyncIterator(TypingAsyncIterator[_T]):
-    def get(self, **attrs: Dict[str, Any]) -> _T: ...
+    def get(self, **attrs: Any) -> _T: ...
 
     async def find(self, predicate: Any) -> _T: ...
 
