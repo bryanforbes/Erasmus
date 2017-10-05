@@ -18,20 +18,28 @@ _book_re = re.compile(
     re.optional(re.DOT)
 )
 
+_chapter_start_group = re.named_group('chapter_start')
+_chapter_end_group = re.named_group('chapter_end')
+_verse_start_group = re.named_group('verse_start')
+_verse_end_group = re.named_group('verse_end')
+_one_or_more_digit = re.one_or_more(re.DIGIT)
+_colon = re.combine(re.any_number_of(re.WHITESPACE), ':', re.any_number_of(re.WHITESPACE))
+
 _search_reference_re = re.compile(
     re.START,
     _book_re,
     re.one_or_more(re.WHITESPACE),
-    re.named_group('chapter_start')(re.one_or_more(re.DIGIT)),
-    ':',
-    re.named_group('verse_start')(re.one_or_more(re.DIGIT)),
+    _chapter_start_group(_one_or_more_digit),
+    _colon,
+    _verse_start_group(_one_or_more_digit),
     re.optional(re.group(
         re.any_number_of(re.WHITESPACE), re.DASH, re.any_number_of(re.WHITESPACE),
         re.optional(re.group(
-            re.named_group('chapter_end')(re.one_or_more(re.DIGIT)), ':'
+            _chapter_end_group(_one_or_more_digit), _colon
         )),
-        re.named_group('verse_end')(re.one_or_more(re.DIGIT))
+        _verse_end_group(_one_or_more_digit)
     )),
+    re.END,
     flags=re.IGNORECASE
 )
 
