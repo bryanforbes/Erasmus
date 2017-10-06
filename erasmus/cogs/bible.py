@@ -8,7 +8,7 @@ from asyncpg.exceptions import UniqueViolationError  # type: ignore
 from ..db import bible_versions, user_prefs, insert
 from ..data import VerseRange
 from ..format import pluralizer
-from ..service_manager import ServiceManager, Bible
+from ..service_manager import ServiceManager, Bible as BibleObject
 from ..exceptions import OnlyDirectMessage
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -31,7 +31,7 @@ def dm_only():
     return commands.check(predicate)
 
 
-class BibleCog(object):
+class Bible(object):
     __slots__ = ('bot', 'service_manager', '_user_cooldown')
 
     bot: 'Erasmus'
@@ -54,7 +54,8 @@ class BibleCog(object):
             async for version in versions:
                 self._add_bible_commands(version['command'], version['name'])
 
-    @commands.command(aliases=[''])
+    @commands.command(aliases=[''],
+                      brief='Look up a verse in your preferred version')
     async def lookup(self, ctx: 'Context', *, reference: VerseRange) -> None:
         bible = await pg.fetchrow(user_bible_select.where(user_prefs.c.user_id == ctx.author.id))
         if not bible:
@@ -63,7 +64,8 @@ class BibleCog(object):
 
         await self._lookup(ctx, bible, reference)
 
-    @commands.command(aliases=['s'])
+    @commands.command(aliases=['s'],
+                      brief='Search for terms in your preferred version')
     async def search(self, ctx: 'Context', *terms: str) -> None:
         bible = await pg.fetchrow(user_bible_select.where(user_prefs.c.user_id == ctx.author.id))
         if not bible:
@@ -72,7 +74,7 @@ class BibleCog(object):
 
         await self._search(ctx, bible, *terms)
 
-    @commands.command()
+    @commands.command(brief='List which Bible versions are available for lookup and search')
     @commands.cooldown(rate=1, per=60.0, type=commands.BucketType.channel)
     async def versions(self, ctx: 'Context') -> None:
         lines = ['I support the following Bible versions:', '']
@@ -87,7 +89,7 @@ class BibleCog(object):
         output = '\n'.join(lines)
         await ctx.send_to_author(f'\n{output}\n')
 
-    @commands.command()
+    @commands.command(brief='Set your preferred version')
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
     async def setversion(self, ctx: 'Context', version: str) -> None:
         version = version.lower()
@@ -128,7 +130,7 @@ class BibleCog(object):
         except UniqueViolationError:
             await ctx.send_error_to_author(f'`{command}` already exists')
         else:
-            self.bot.get_cog('BibleCog')._add_bible_commands(command, name)
+            self._add_bible_commands(command, name)
             await ctx.send_to_author(f'Added `{command}` as "{name}"')
 
     @commands.command(name='delbible')
@@ -145,7 +147,7 @@ class BibleCog(object):
         await pg.execute(bible_versions.delete()
                          .where(bible_versions.c.command == command))
 
-        self.bot.get_cog('BibleCog')._remove_bible_commands(command)
+        self._remove_bible_commands(command)
 
         await ctx.send_to_author(f'Removed `{command}`')
 
@@ -167,7 +169,7 @@ class BibleCog(object):
 
         await self._search(ctx, bible, *terms)
 
-    async def _lookup(self, ctx: 'Context', bible: Bible, reference: VerseRange) -> None:
+    async def _lookup(self, ctx: 'Context', bible: BibleObject, reference: VerseRange) -> None:
         if reference is not None:
             async with ctx.typing():
                 passage = await self.service_manager.get_passage(bible, reference)
@@ -175,7 +177,7 @@ class BibleCog(object):
         else:
             await ctx.send_error_to_author('I do not understand that request')
 
-    async def _search(self, ctx: 'Context', bible: Bible, *terms: str) -> None:
+    async def _search(self, ctx: 'Context', bible: BibleObject, *terms: str) -> None:
         async with ctx.typing():
             results = await self.service_manager.search(bible, list(terms))
             matches = pluralize_match(results.total)
@@ -208,4 +210,4 @@ class BibleCog(object):
 
 
 def setup(bot: 'Erasmus') -> None:
-    bot.add_cog(BibleCog(bot))
+    bot.add_cog(Bible(bot))

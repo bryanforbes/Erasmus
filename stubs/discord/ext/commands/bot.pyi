@@ -1,6 +1,7 @@
 from typing import Callable, Union, Awaitable, List, Any, Optional, Dict, Type
 from .core import GroupMixin
 from .context import Context
+from .formatter import HelpFormatter
 import discord
 
 CommandPrefix = Union[
@@ -18,6 +19,7 @@ class BotBase(GroupMixin):
     command_prefix: CommandPrefix
     description: str
     self_bot: bool
+    formatter: HelpFormatter  # noqa
     pm_help: Optional[bool]
     help_attrs: Dict[str, Any]
     command_not_found: str

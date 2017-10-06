@@ -13,6 +13,8 @@ from .exceptions import (
     BookNotUnderstoodError, ReferenceNotUnderstoodError, OnlyDirectMessage
 )
 from .context import Context
+from .format import HelpFormatter
+from . import re
 # from .db import guild_prefs
 
 
@@ -34,6 +36,10 @@ extensions = (
     'erasmus.cogs.bible',
 )
 
+_mention_pattern_re = re.compile(
+    '@', re.named_group('target')(re.one_or_more(re.ANY_CHARACTER))
+)
+
 
 class Erasmus(commands.Bot):
     config: ConfigParser
@@ -44,6 +50,7 @@ class Erasmus(commands.Bot):
         self.config.read(config_path)
 
         self.default_prefix = kwargs['command_prefix'] = self.config.get('erasmus', 'command_prefix', fallback='$')
+        kwargs['formatter'] = HelpFormatter()
 
         # kwargs['command_prefix'] = get_guild_prefix
 
@@ -56,6 +63,9 @@ class Erasmus(commands.Bot):
                 max_size=10
             )
         )
+
+        self.remove_command('help')
+        self.add_command(self.help)
 
         for extension in extensions:
             try:
@@ -131,6 +141,28 @@ class Erasmus(commands.Bot):
             traceback.print_exception(type(exc), exc, exc.__traceback__, file=sys.stderr)
 
         await ctx.send_error_to_author(message)
+
+    @commands.command(brief='List commands for this bot or get help for commands')
+    async def help(self, ctx: Context, *commands: str) -> None:
+        bot = ctx.bot
+        destination = ctx.message.author if bot.pm_help else ctx.message.channel
+
+        if len(commands) == 0:
+            pages = await bot.formatter.format_help_for(ctx, bot)
+        elif len(commands) == 1:
+            name = _mention_pattern_re.sub('@\u200b\\g<target>', commands[0])
+            command = bot.all_commands.get(name)
+
+            if command is None:
+                await destination.send(bot.command_not_found.format(name))
+                return
+
+            pages = await bot.formatter.format_help_for(ctx, command)
+        else:
+            pass
+
+        for page in pages:
+            await destination.send(embed=page)
 
     # async def on_guild_available(self, guild: discord.Guild) -> None:
     #     await self.on_guild_join(guild)

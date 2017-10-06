@@ -53,7 +53,7 @@ class EmbedData(UrlData, total=False):
     timestamp: datetime
     thumbnail: UrlData
     author: AuthorData
-    fields: Dict[str, FieldData]
+    fields: List[FieldData]
     image: UrlData
     footer: FooterData
 
