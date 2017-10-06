@@ -1,6 +1,5 @@
 from typing import Callable, List, Iterable, Tuple, Set, TypeVar, Iterator  # noqa
 from discord.ext import commands
-import discord
 
 
 def pluralizer(word: str, suffix: str = 's') -> Callable[[int], str]:

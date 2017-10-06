@@ -99,7 +99,7 @@ class Erasmus(commands.Bot):
         await self.invoke(ctx)
 
     async def on_ready(self) -> None:
-        await self.change_presence(game=discord.Game(name=f'| {self.default_prefix}versions'))
+        await self.change_presence(game=discord.Game(name=f'| {self.default_prefix}help'))
 
         print('-----')
         print(f'logged in as {self.user.name} {self.user.id}')
