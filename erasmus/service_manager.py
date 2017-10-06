@@ -1,4 +1,5 @@
-from typing import Dict, List, NamedTuple
+from typing import Dict, List
+from mypy_extensions import TypedDict
 from configparser import ConfigParser
 
 from .data import VerseRange, Passage, SearchResults
@@ -6,7 +7,7 @@ from .service import Service
 from . import services
 
 
-class Bible(NamedTuple):
+class Bible(TypedDict):
     command: str
     name: str
     abbr: str
@@ -41,11 +42,11 @@ class ServiceManager(object):
         return self.service_map.__len__()
 
     async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
-        service = self.service_map.get(bible.service)
-        passage = await service.get_passage(bible.service_version, verses)
-        passage.version = bible.abbr
+        service = self.service_map.get(bible['service'])
+        passage = await service.get_passage(bible['service_version'], verses)
+        passage.version = bible['abbr']
         return passage
 
     async def search(self, bible: Bible, terms: List[str]) -> SearchResults:
-        service = self.service_map.get(bible.service)
-        return await service.search(bible.service_version, terms)
+        service = self.service_map.get(bible['service'])
+        return await service.search(bible['service_version'], terms)

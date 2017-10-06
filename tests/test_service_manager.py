@@ -35,6 +35,16 @@ class TestServiceManager(object):
         config['services:ServiceTwo'] = {'api_key': 'foo bar baz'}
         return config
 
+    @pytest.fixture
+    def bible1(self):
+        return Bible(command='bible1', name='Bible 1', abbr='BIB1',
+                     service='ServiceOne', service_version='service-BIB1')
+
+    @pytest.fixture
+    def bible2(self):
+        return Bible(command='bible2', name='Bible 2', abbr='BIB2',
+                     service='ServiceTwo', service_version='service-BIB2')
+
     def test_init(self, services, config):
         manager = ServiceManager(config)
 
@@ -52,13 +62,12 @@ class TestServiceManager(object):
         assert len(manager) == 2
 
     @pytest.mark.asyncio
-    async def test_get_passage(self, config):
+    async def test_get_passage(self, config, bible2):
         manager = ServiceManager(config)
         manager.service_map['ServiceTwo'].get_passage.return_value = \
             Passage('blah', VerseRange.from_string('Genesis 1:2'))
 
-        bible = Bible('bible2', 'Bible 2', 'BIB2', 'ServiceTwo', 'service-BIB2')
-        result = await manager.get_passage(bible, VerseRange.from_string('Genesis 1:2'))
+        result = await manager.get_passage(bible2, VerseRange.from_string('Genesis 1:2'))
 
         assert result == Passage('blah', VerseRange.from_string('Genesis 1:2'), 'BIB2')
         manager.service_map['ServiceTwo'].get_passage.assert_called_once_with(
@@ -66,11 +75,10 @@ class TestServiceManager(object):
             VerseRange.from_string('Genesis 1:2'))
 
     @pytest.mark.asyncio
-    async def test_search(self, config):
+    async def test_search(self, config, bible1):
         manager = ServiceManager(config)
         manager.service_map['ServiceOne'].search.return_value = 'blah'
 
-        bible = Bible('bible1', 'Bible 1', 'BIB1', 'ServiceOne', 'service-BIB1')
-        result = await manager.search(bible, ['one', 'two', 'three'])
+        result = await manager.search(bible1, ['one', 'two', 'three'])
         assert result == 'blah'
         manager.service_map['ServiceOne'].search.assert_called_once_with('service-BIB1', ['one', 'two', 'three'])

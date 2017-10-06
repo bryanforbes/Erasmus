@@ -1,9 +1,12 @@
-from typing import Optional, List, Dict  # noqa
+from typing import Optional, List, Dict, TYPE_CHECKING  # noqa
 from pathlib import Path
 from itertools import chain
 from .json import load
 from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
 from . import re
+
+if TYPE_CHECKING:  # pragma: no cover
+    from .context import Context  # noqa
 
 with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
     books_data = load(f)
@@ -140,6 +143,10 @@ class VerseRange(object):
             end = Verse(chapter_end_int, end_int)
 
         return cls(match.group('book'), start, end)
+
+    @classmethod
+    async def convert(cls, ctx: 'Context', argument: str) -> 'VerseRange':
+        return cls.from_string(argument)
 
 
 truncation_warning = 'The passage was too long and has been truncated:\n\n'

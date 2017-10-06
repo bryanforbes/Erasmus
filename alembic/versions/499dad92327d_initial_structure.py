@@ -25,14 +25,9 @@ def upgrade():
                                      sa.Column('service', sa.String),
                                      sa.Column('service_version', sa.String))
 
-    op.create_table('guild_bibles',
-                    sa.Column('guild_id', sa.String, primary_key=True),
-                    sa.Column('bible_id', sa.Integer,
-                              sa.ForeignKey('bible_versions.id'), primary_key=True))
-
-    op.create_table('guild_prefs',
-                    sa.Column('guild_id', sa.String, primary_key=True),
-                    sa.Column('prefix', sa.String(1), default='$'))
+    op.create_table('user_prefs',
+                    sa.Column('user_id', sa.String, primary_key=True),
+                    sa.Column('bible_id', sa.Integer, sa.ForeignKey('bible_versions.id')))
 
     op.bulk_insert(bible_versions, [
         dict(command='esv', name='English Standard Version', abbr='ESV',
@@ -67,6 +62,5 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('guild_prefs')
-    op.drop_table('guild_bibles')
+    op.drop_table('user_prefs')
     op.drop_table('bible_versions')
