@@ -121,7 +121,7 @@ NOTE: Before this command will work, you MUST set your prefered Bible version us
         await self._search(ctx, bible, *terms)
 
     @commands.command(brief='List which Bible versions are available for lookup and search')
-    @commands.cooldown(rate=1, per=60.0, type=commands.BucketType.channel)
+    @commands.cooldown(rate=1, per=30.0, type=commands.BucketType.channel)
     async def versions(self, ctx: 'Context') -> None:
         lines = ['I support the following Bible versions:', '']
 

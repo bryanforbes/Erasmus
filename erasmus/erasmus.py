@@ -143,6 +143,7 @@ class Erasmus(commands.Bot):
         await ctx.send_error_to_author(message)
 
     @commands.command(brief='List commands for this bot or get help for commands')
+    @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
     async def help(self, ctx: Context, *commands: str) -> None:
         bot = ctx.bot
         destination = ctx.message.author if bot.pm_help else ctx.message.channel
@@ -164,7 +165,7 @@ class Erasmus(commands.Bot):
 
             pages = await bot.formatter.format_help_for(ctx, command)
         else:
-            pass
+            pages = []
 
         for page in pages:
             await destination.send(page)
