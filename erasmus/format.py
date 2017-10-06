@@ -73,6 +73,11 @@ class HelpFormatter(commands.HelpFormatter):
                 add_line(self._get_command_title(name, command))
                 add_line('    ' + command.short_doc, empty=True)
 
+            add_line(f'{self.clean_prefix}<version>')
+            add_line(f'    Look up a verse in a specific version (see {self.clean_prefix}versions)', empty=True)
+            add_line(f'{self.clean_prefix}s<version>')
+            add_line(f'    Search for terms in a specific version (see {self.clean_prefix}versions)', empty=True)
+
         add_line()
         add_line(f'''You can type the following for more information on a command:
 
