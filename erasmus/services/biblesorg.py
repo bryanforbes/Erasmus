@@ -34,7 +34,7 @@ class BiblesOrg(Service[JSONObject]):
             'version': version
         })
 
-    def _get_passage_text(self, response: JSONObject) -> str:
+    def _get_passage_text(self, response: JSONObject, rtl: Optional[bool]) -> str:
         passages = response.get('search.result.passages')
 
         if passages is None or len(passages) == 0:
@@ -47,7 +47,10 @@ class BiblesOrg(Service[JSONObject]):
             heading.decompose()
         for number in soup.select('sup.v'):
             # Add a period after verse numbers
-            number.string = f' **{number.string}.** '
+            if rtl:
+                number.string = f' \u202b**{number.string}.**\u202c '
+            else:
+                number.string = f' **{number.string}.** '
         for span in soup.select('span.sc'):
             span.unwrap()
         for br in soup.select('br'):
@@ -64,7 +67,7 @@ class BiblesOrg(Service[JSONObject]):
             'limit': 20
         })
 
-    def _get_search_results(self, response: JSONObject) -> SearchResults:
+    def _get_search_results(self, response: JSONObject, rtl: Optional[bool]) -> SearchResults:
         result = response.get('search.result')
 
         if result is None or 'summary' not in result or 'total' not in result.summary or \

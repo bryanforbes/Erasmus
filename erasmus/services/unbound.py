@@ -1,6 +1,6 @@
 # Service for querying Biola's Unbound Bible
 
-from typing import Dict, List  # noqa
+from typing import Dict, List, Optional  # noqa
 from bs4 import BeautifulSoup, Tag
 from aiohttp import ClientResponse
 from urllib.parse import urlencode
@@ -130,7 +130,7 @@ class Unbound(Service[Tag]):
 
         return f'{self.base_url}&' + urlencode(query)
 
-    def _get_passage_text(self, response: Tag) -> str:
+    def _get_passage_text(self, response: Tag, rtl: Optional[bool]) -> str:
         verse_table = response.select_one('table table table')
 
         if verse_table is None:
@@ -146,12 +146,15 @@ class Unbound(Service[Tag]):
             if len(cells) != 2 or cells[0].string == '\xa0':
                 row.decompose()
 
-        return number_re.sub(r'**\1**', verse_table.get_text(''))
+        if rtl:
+            return number_re.sub('\u202b**\\1**\u202c', verse_table.get_text(''))
+        else:
+            return number_re.sub(r'**\1**', verse_table.get_text(''))
 
     def _get_search_url(self, version: str, terms: List[str]) -> str:
         return self.base_url
 
-    def _get_search_results(self, response: Tag) -> SearchResults:
+    def _get_search_results(self, response: Tag, rtl: Optional[bool]) -> SearchResults:
         verse_table = response.select_one('table table table')
 
         if verse_table is None:
@@ -179,7 +182,7 @@ class Unbound(Service[Tag]):
 
         return SearchResults(verses[:20], len(verses))
 
-    async def search(self, version: str, terms: List[str]) -> SearchResults:
+    async def search(self, version: str, terms: List[str], rtl: Optional[bool]) -> SearchResults:
         url = self._get_search_url(version, terms)
         response = await self.post(url, {
             'search_type': 'advanced_search',
@@ -193,4 +196,4 @@ class Unbound(Service[Tag]):
             'show_illustrations': '0',
             'show_maps': '0'
         })
-        return self._get_search_results(response)
+        return self._get_search_results(response, rtl)

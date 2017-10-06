@@ -18,25 +18,25 @@ class Service(Generic[RT]):
     def __init__(self, config: Optional[SectionProxy]) -> None:
         self.config = config
 
-    async def get_passage(self, version: str, verses: VerseRange) -> Passage:
+    async def get_passage(self, version: str, verses: VerseRange, rtl: Optional[bool]) -> Passage:
         url = self._get_passage_url(version, verses)
         response = await self.get(url)
-        text = self._get_passage_text(response)
+        text = self._get_passage_text(response, rtl)
         text = whitespace_re.sub(' ', text.strip())
 
         return Passage(text, verses)
 
-    async def search(self, version: str, terms: List[str]) -> SearchResults:
+    async def search(self, version: str, terms: List[str], rtl: Optional[bool]) -> SearchResults:
         url = self._get_search_url(version, terms)
         response = await self.get(url)
-        return self._get_search_results(response)
+        return self._get_search_results(response, rtl)
 
     @abstractmethod
     def _get_passage_url(self, version: str, verses: VerseRange) -> str:
         raise NotImplementedError
 
     @abstractmethod
-    def _get_passage_text(self, response: RT) -> str:
+    def _get_passage_text(self, response: RT, rtl: Optional[bool]) -> str:
         raise NotImplementedError
 
     @abstractmethod
@@ -44,7 +44,7 @@ class Service(Generic[RT]):
         raise NotImplementedError
 
     @abstractmethod
-    def _get_search_results(self, response: RT) -> SearchResults:
+    def _get_search_results(self, response: RT, rtl: Optional[bool]) -> SearchResults:
         raise NotImplementedError
 
     @abstractmethod
