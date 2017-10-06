@@ -90,6 +90,7 @@ class BibleCog(object):
     @commands.command()
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
     async def setversion(self, ctx: 'Context', version: str) -> None:
+        version = version.lower()
         if version[0] == ctx.prefix:
             version = version[1:]
 
