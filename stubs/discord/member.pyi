@@ -1,11 +1,11 @@
-from typing import Any, Hashable
-from .abc import GuildChannel
+from typing import Any, Hashable, Optional
+from .abc import User as _BaseUser, Messageable, GuildChannel
 from .colour import Colour
 from .message import Message
 from .role import Role
 from .permissions import Permissions
 from .channel import VoiceChannel
-from .user import User
+from datetime import datetime
 
 
 class VoiceState:
@@ -17,7 +17,42 @@ class VoiceState:
     channel: VoiceChannel
 
 
-class Member(User, Hashable):
+class Member(Messageable, _BaseUser, Hashable):
+    # From BaseUser:
+    name: str
+    id: str
+    discriminator: str
+    avatar: Optional[str]
+    bot: bool
+
+    @property
+    def avatar_url(self) -> str: ...
+
+    def is_avatar_animated(self) -> bool: ...
+
+    def avatar_url_as(self, *, format: Optional[str] = ..., static_format: str = ...,
+                      size: int = ...) -> str: ...
+
+    @property
+    def default_avatar(self) -> str: ...
+
+    @property
+    def default_avatar_url(self) -> str: ...
+
+    @property
+    def mention(self) -> str: ...
+
+    def permissions_in(self, channel: GuildChannel) -> Permissions: ...
+
+    @property
+    def created_at(self) -> datetime: ...
+
+    @property
+    def display_name(self) -> str: ...
+
+    def mentioned_in(self, message: Message) -> bool: ...
+    # End From: BaseUser
+
     def __eq__(self, other: Any) -> bool: ...
 
     def __ne__(self, other: Any) -> bool: ...
@@ -26,10 +61,6 @@ class Member(User, Hashable):
     def colour(self) -> Colour: ...
 
     color = colour
-
-    def mentioned_in(self, message: Message) -> bool: ...
-
-    def permissions_in(self, channel: GuildChannel) -> bool: ...
 
     @property
     def top_role(self) -> Role: ...

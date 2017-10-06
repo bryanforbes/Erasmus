@@ -1,49 +1,75 @@
 from typing import cast
 
 import discord
-import re
+import traceback
+import sys
+
+from asyncpgsa import pg  # type: ignore
+from configparser import ConfigParser
 
 from discord.ext import commands
-from .data import VerseRange
-from .bible_manager import BibleManager
 from .exceptions import (
     DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError,
-    BookNotUnderstoodError, ReferenceNotUnderstoodError
+    BookNotUnderstoodError, ReferenceNotUnderstoodError, OnlyDirectMessage
 )
-from .json import JSONObject, load
-from .format import pluralizer
 from .context import Context
+# from .db import guild_prefs
 
-number_re = re.compile(r'^\d+$')
-pluralize_match = pluralizer('match', 'es')
+
+# async def get_guild_prefix(bot: 'Erasmus', message: discord.Message) -> str:
+#     prefix = None
+
+#     if message.guild:
+#         query = guild_prefs.select() \
+#             .where(guild_prefs.c.guild_id == message.guild.id)
+#         prefix = await pg.fetchval(query, column=1)
+
+#     if not prefix:
+#         return bot.default_prefix
+
+#     return prefix
+
+
+extensions = (
+    'erasmus.cogs.bible',
+)
 
 
 class Erasmus(commands.Bot):
-    bible_manager: BibleManager
-    config: JSONObject
+    config: ConfigParser
+    default_prefix: str  # noqa
 
-    def __init__(self, config_path, *args, **kwargs) -> None:
-        with open(config_path, 'r') as f:
-            self.config = load(f)
+    def __init__(self, config_path: str, *args, **kwargs) -> None:
+        self.config = ConfigParser(default_section='erasmus')
+        self.config.read(config_path)
 
-        kwargs['command_prefix'] = self.config.command_prefix
+        self.default_prefix = kwargs['command_prefix'] = self.config.get('erasmus', 'command_prefix', fallback='$')
+
+        # kwargs['command_prefix'] = get_guild_prefix
 
         super().__init__(*args, **kwargs)
 
-        self.bible_manager = BibleManager(self.config)
+        self.loop.run_until_complete(
+            pg.init(
+                self.config.get('erasmus', 'db_url'),
+                min_size=1,
+                max_size=10
+            )
+        )
 
-        for name, description in self.bible_manager.get_versions():
-            self.command(name=name,
-                         description=f'Look up a verse in {description}',
-                         hidden=True)(self._version_lookup)
-            self.command(name=f's{name}',
-                         description=f'Search in {description}',
-                         hidden=True)(self._version_search)
-
-        self.add_command(self.versions)
+        for extension in extensions:
+            try:
+                self.load_extension(extension)
+            except Exception as e:
+                print(f'Failed to load extension {extension}.', file=sys.stderr)
+                traceback.print_exc()
 
     def run(self, *args, **kwargs) -> None:
-        super().run(self.config.api_key)
+        super().run(self.config.get('erasmus', 'discord_api_key'))
+
+    async def close(self) -> None:
+        await pg.pool.close()
+        await super().close()
 
     async def get_context(self, message: discord.Message, *, cls=Context) -> Context:
         return cast(Context, await super().get_context(message, cls=cls))
@@ -63,76 +89,62 @@ class Erasmus(commands.Bot):
         await self.invoke(ctx)
 
     async def on_ready(self) -> None:
-        await self.change_presence(game=discord.Game(name=f'| {self.command_prefix}versions'))
+        await self.change_presence(game=discord.Game(name=f'| {self.default_prefix}versions'))
 
         print('-----')
         print(f'logged in as {self.user.name} {self.user.id}')
 
     async def on_command_error(self, ctx: Context, exc: Exception) -> None:
         message = 'An error occurred'
+
         if isinstance(exc, commands.CommandInvokeError):
-            if isinstance(exc.original, BookNotUnderstoodError):
-                message = f'I do not understand the book "{exc.original.book}"'
-            elif isinstance(exc.original, DoNotUnderstandError):
-                message = 'I do not understand that request'
-            elif isinstance(exc.original, ReferenceNotUnderstoodError):
-                message = f'I do not understand the reference {exc.original.reference}'
-            elif isinstance(exc.original, BibleNotSupportedError):
-                message = f'{self.command_prefix}{exc.original.version} is not supported'
-            elif isinstance(exc.original, ServiceNotSupportedError):
-                message = f'The service configured for {self.command_prefix}{ctx.invoked_with} is not supported'
-            else:
-                print(exc)
-                message = 'An error occurred'
+            exc = exc.original
+
+        if isinstance(exc, BookNotUnderstoodError):
+            message = f'I do not understand the book "{exc.book}"'
+        elif isinstance(exc, DoNotUnderstandError):
+            message = 'I do not understand that request'
+        elif isinstance(exc, ReferenceNotUnderstoodError):
+            message = f'I do not understand the reference {exc.reference}'
+        elif isinstance(exc, BibleNotSupportedError):
+            message = f'{ctx.prefix}{exc.version} is not supported'
+        elif isinstance(exc, ServiceNotSupportedError):
+            message = f'The service configured for {self.default_prefix}{ctx.invoked_with} is not supported'
         elif isinstance(exc, commands.NoPrivateMessage):
             message = 'This command is not available in private messages'
+        elif isinstance(exc, commands.CommandOnCooldown):
+            message = ''
+            if exc.cooldown.type == commands.BucketType.user:
+                message = f'You have used this command too many times.'
+            elif exc.cooldown.type == commands.BucketType.channel:
+                message = f'`{ctx.prefix}{ctx.invoked_with}` has been used too many times in this channel.'
+            message = f'{message} You can retry again in {exc.retry_after:.2f} seconds.'
+        elif isinstance(exc, OnlyDirectMessage):
+            message = 'This command is only available in private messages'
         elif isinstance(exc, commands.MissingRequiredArgument):
             message = f'The required argument `{exc.param}` is missing'
+        elif isinstance(exc, commands.BadArgument):
+            if exc.__cause__:
+                return await self.on_command_error(ctx, cast(Exception, exc.__cause__))
         else:
-            print(exc)
+            print('Exception occurred in command {}:'.format(ctx.command), file=sys.stderr)
+            traceback.print_exception(type(exc), exc, exc.__traceback__, file=sys.stderr)
 
         await ctx.send_error_to_author(message)
 
-    @commands.command()
-    async def versions(self, ctx: Context) -> None:
-        lines = ['I support the following Bible versions:', '']
-        lines += [f'  `{self.command_prefix}{version}`: {description}'
-                  for version, description in self.bible_manager.get_versions()]
+    # async def on_guild_available(self, guild: discord.Guild) -> None:
+    #     await self.on_guild_join(guild)
 
-        lines.append("\nYou can search any version by prefixing the version command with 's' "
-                     f"(ex. `{self.command_prefix}sesv terms...`)")
+    # async def on_guild_join(self, guild: discord.Guild) -> None:
+    #     prefs = await pg.fetchrow(guild_prefs.select().where(guild_prefs.c.guild_id == guild.id))
 
-        output = '\n'.join(lines)
-        await ctx.send_to_author(f'\n{output}\n')
-
-    async def _version_lookup(self, ctx: Context, *, reference: str) -> None:
-        version = ctx.invoked_with
-
-        verses = VerseRange.from_string(reference)
-        if verses is not None:
-            async with ctx.typing():
-                passage = await self.bible_manager.get_passage(version, verses)
-                await ctx.send_passage(passage)
-        else:
-            await ctx.send_error_to_author('I do not understand that request')
-
-    async def _version_search(self, ctx: Context, *terms) -> None:
-        version = ctx.invoked_with[1:]
-
-        async with ctx.typing():
-            results = await self.bible_manager.search(version, list(terms))
-            matches = pluralize_match(results.total)
-            output = f'I have found {matches} to your search'
-
-            if results.total > 0:
-                verses = '\n'.join([f'- {verse}' for verse in results.verses])
-                if results.total <= 20:
-                    output = f'{output}:\n\n{verses}'
-                else:
-                    limit = pluralize_match(20)
-                    output = f'{output}. Here are the first {limit}:\n\n{verses}'
-
-            await ctx.send_to_author(output)
+    #     if not prefs:
+    #         await pg.execute(guild_prefs.insert().values(guild_id=guild.id, prefix=self.default_prefix))
+    #         # await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=1))
+    #         # await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=2))
+    #         # await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=4))
+    #         # await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=5))
+    #         # await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=7))
 
 
 __all__ = ['Erasmus']

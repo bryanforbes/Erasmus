@@ -1,5 +1,6 @@
 import pytest
 from urllib.parse import urlencode
+from configparser import ConfigParser
 import json
 from . import ServiceTest
 
@@ -20,10 +21,6 @@ passage_text = {
 }
 
 
-class MockConfig:
-    api_key = 'foo bar baz'
-
-
 def get_json_side_effect(return_value):
     def json_side_effect(*, encoding=None, loads=None, content_type=None):
         return loads(json.dumps(return_value))
@@ -33,8 +30,9 @@ def get_json_side_effect(return_value):
 class TestBiblesOrg(ServiceTest):
     @pytest.fixture
     def service(self):
-        config = MockConfig()
-        return BiblesOrg(config)
+        config = ConfigParser(default_section='erasmus')
+        config['services:BiblesOrg'] = {'api_key': 'foo bar baz'}
+        return BiblesOrg(config['services:BiblesOrg'])
 
     @pytest.fixture
     def mock_search(self, mocker, mock_response):

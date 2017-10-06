@@ -1,10 +1,10 @@
-from typing import List, Generic, TypeVar, Dict, Any
+from typing import List, Generic, TypeVar, Dict, Any, Optional
 from abc import abstractmethod
+from configparser import SectionProxy
 import aiohttp
 import async_timeout
 import re
 
-from .json import JSONObject
 from .data import VerseRange, Passage, SearchResults
 
 
@@ -13,9 +13,9 @@ whitespace_re = re.compile(r'\s+')
 
 
 class Service(Generic[RT]):
-    config: JSONObject
+    config: Optional[SectionProxy]
 
-    def __init__(self, config: JSONObject) -> None:
+    def __init__(self, config: Optional[SectionProxy]) -> None:
         self.config = config
 
     async def get_passage(self, version: str, verses: VerseRange) -> Passage:

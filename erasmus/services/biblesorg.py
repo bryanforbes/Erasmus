@@ -1,9 +1,10 @@
 # Service for querying bibles.org
 
-from typing import List, cast
+from typing import List, cast, Optional
 from aiohttp import BasicAuth, ClientResponse
 from bs4 import BeautifulSoup
 from urllib.parse import urlencode
+from configparser import SectionProxy
 from ..json import loads, JSONObject
 
 from ..data import VerseRange, SearchResults
@@ -15,10 +16,10 @@ from ..exceptions import DoNotUnderstandError
 class BiblesOrg(Service[JSONObject]):
     base_url = 'https://bibles.org/v2'
 
-    def __init__(self, config: JSONObject) -> None:
+    def __init__(self, config: Optional[SectionProxy]) -> None:
         super().__init__(config)
 
-        self._auth = BasicAuth(self.config.api_key, 'X')
+        self._auth = BasicAuth(self.config.get('api_key'), 'X')
 
     async def _process_response(self, response: ClientResponse) -> JSONObject:
         obj = cast(JSONObject, await response.json(loads=loads, content_type='application/javascript'))

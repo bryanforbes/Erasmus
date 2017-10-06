@@ -1,3 +1,6 @@
+from discord.ext import commands
+
+
 class DoNotUnderstandError(Exception):
     pass
 
@@ -28,3 +31,7 @@ class ServiceNotSupportedError(Exception):
 
     def __init__(self, service_name: str) -> None:
         self.service_name = service_name
+
+
+class OnlyDirectMessage(commands.CheckFailure):
+    pass
