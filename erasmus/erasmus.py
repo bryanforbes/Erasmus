@@ -150,7 +150,12 @@ class Erasmus(commands.Bot):
         if len(commands) == 0:
             pages = await bot.formatter.format_help_for(ctx, bot)
         elif len(commands) == 1:
-            name = _mention_pattern_re.sub('@\u200b\\g<target>', commands[0])
+            name = commands[0]
+
+            if name[0] == ctx.prefix:
+                name = name[1:]
+
+            name = _mention_pattern_re.sub('@\u200b\\g<target>', name)
             command = bot.all_commands.get(name)
 
             if command is None:
@@ -162,7 +167,7 @@ class Erasmus(commands.Bot):
             pass
 
         for page in pages:
-            await destination.send(embed=page)
+            await destination.send(page)
 
     # async def on_guild_available(self, guild: discord.Guild) -> None:
     #     await self.on_guild_join(guild)

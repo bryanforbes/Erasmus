@@ -15,13 +15,6 @@ def pluralizer(word: str, suffix: str = 's') -> Callable[[int], str]:
     return pluralize
 
 
-def _get_command_title(context: commands.Context, name: str, command: commands.Command) -> str:
-    return ', '.join(map(
-        lambda s: f'{context.prefix}{s}',
-        [name] + command.aliases
-    ))
-
-
 def unique_seen(iterable: Iterable[Tuple[str, commands.Command]]) -> Iterator[Tuple[str, commands.Command]]:
     seen = set()  # type: Set[commands.Command]
     for element in iterable:
@@ -31,40 +24,59 @@ def unique_seen(iterable: Iterable[Tuple[str, commands.Command]]) -> Iterator[Tu
 
 
 class HelpFormatter(commands.HelpFormatter):
+    def _get_command_title(self, name: str, command: commands.Command) -> str:
+        return ', '.join(map(
+            lambda s: f'{self.clean_prefix}{s}',
+            [name] + command.aliases
+        ))
+
     async def filter_command_list(self) -> Iterable[Tuple[str, commands.Command]]:
         iterable = await super().filter_command_list()
         return unique_seen(iterable)
 
-    async def format(self) -> List[discord.Embed]:
-        if isinstance(self.command, commands.Command):
-            embed = discord.Embed.from_data({
-                'title': _get_command_title(self.context, self.command.name, self.command)
-            })
+    async def format(self) -> List[str]:
+        self._paginator = commands.Paginator()
+        add_line = self._paginator.add_line
 
-            description = []  # type: List[str]
+        if isinstance(self.command, commands.Command):
+            if self.command.brief:
+                add_line(self.command.brief, empty=True)
+
+            signature_parts = self.get_command_signature().split(' ')
+
+            if '|' in signature_parts[0]:
+                names = signature_parts[0][2:-1].split('|')
+            else:
+                names = [signature_parts[0][1:]]
+
+            add_line('Usage:')
+            add_line('------')
+
+            for name in names:
+                add_line('    ' + signature_parts[0][0] + name + ' ' + ' '.join(signature_parts[1:]))
 
             if self.command.help:
-                description.append(self.command.help)
+                if self.command.help[0] != '\n':
+                    add_line()
+                add_line(self.command.help.format(prefix=self.clean_prefix))
 
-            description.append('**Usage**')
-            description.append(f'```{self.get_command_signature()}```')
-
-            embed.description = '\n'.join(description)
-
-            return [embed]
+            self._paginator.close_page()
+            return self._paginator.pages
 
         if isinstance(self.command, commands.Bot):
             filtered = await self.filter_command_list()
             filtered = sorted(filtered)
-            embed = discord.Embed.from_data({
-                'title': 'Help',
-                'description': 'The following commands are available:'
-            })
+
+            add_line('Commands:')
+            add_line('---------', empty=True)
+
             for name, command in filtered:
-                embed.add_field(name=_get_command_title(self.context, name, command),
-                                value=command.short_doc or '\u200b',
-                                inline=False)
+                add_line(self._get_command_title(name, command))
+                add_line('    ' + command.short_doc, empty=True)
 
-            return [embed]
+        add_line()
+        add_line(f'''You can type the following for more information on a command:
 
-        return []
+    {self.clean_prefix}{self.context.invoked_with} <command>''')
+
+        return self._paginator.pages
