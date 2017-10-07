@@ -82,7 +82,7 @@ class TestBiblesOrg(ServiceTest):
         return 'https://bibles.org/v2/verses.js?' + urlencode({
             'keyword': 'one two three',
             'precision': 'all',
-            'version': 'esv',
+            'version': 'eng-BIB',
             'sort_order': 'canonical',
             'limit': 20
         })

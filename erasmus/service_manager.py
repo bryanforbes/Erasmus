@@ -1,19 +1,9 @@
 from typing import Dict, List
-from mypy_extensions import TypedDict
 from configparser import ConfigParser
 
-from .data import VerseRange, Passage, SearchResults
+from .data import VerseRange, Passage, SearchResults, Bible
 from .service import Service
 from . import services
-
-
-class Bible(TypedDict):
-    command: str
-    name: str
-    abbr: str
-    service: str
-    service_version: str
-    rtl: bool
 
 
 class ServiceManager(object):
@@ -44,10 +34,10 @@ class ServiceManager(object):
 
     async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
         service = self.service_map.get(bible['service'])
-        passage = await service.get_passage(bible['service_version'], verses, bible['rtl'] or False)
+        passage = await service.get_passage(bible, verses)
         passage.version = bible['abbr']
         return passage
 
     async def search(self, bible: Bible, terms: List[str]) -> SearchResults:
         service = self.service_map.get(bible['service'])
-        return await service.search(bible['service_version'], terms, bible['rtl'] or False)
+        return await service.search(bible, terms)

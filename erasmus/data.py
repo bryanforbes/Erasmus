@@ -1,6 +1,7 @@
 from typing import Optional, List, Dict, TYPE_CHECKING  # noqa
 from pathlib import Path
 from itertools import chain
+from mypy_extensions import TypedDict
 from .json import load
 from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
 from . import re
@@ -50,6 +51,15 @@ book_input_map = {}  # type: Dict[str, str]
 for book in books_data:
     for input_string in [book.name, book.osis] + book.alt:  # type: str
         book_input_map[input_string.lower()] = book.name
+
+
+class Bible(TypedDict):
+    command: str
+    name: str
+    abbr: str
+    service: str
+    service_version: str
+    rtl: bool
 
 
 class Verse(object):

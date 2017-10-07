@@ -6,7 +6,7 @@ from aiohttp import ClientResponse
 from urllib.parse import urlencode
 
 from ..service import Service
-from ..data import VerseRange, SearchResults
+from ..data import VerseRange, SearchResults, Bible
 from ..exceptions import DoNotUnderstandError
 
 import re
@@ -130,7 +130,7 @@ class Unbound(Service[Tag]):
 
         return f'{self.base_url}&' + urlencode(query)
 
-    def _get_passage_text(self, response: Tag, rtl: Optional[bool]) -> str:
+    def _get_passage_text(self, response: Tag) -> str:
         verse_table = response.select_one('table table table')
 
         if verse_table is None:
@@ -146,15 +146,12 @@ class Unbound(Service[Tag]):
             if len(cells) != 2 or cells[0].string == '\xa0':
                 row.decompose()
 
-        if rtl:
-            return number_re.sub('\u202b**\\1**\u202c', verse_table.get_text(''))
-        else:
-            return number_re.sub(r'**\1**', verse_table.get_text(''))
+        return number_re.sub(r'**\1**', verse_table.get_text(''))
 
     def _get_search_url(self, version: str, terms: List[str]) -> str:
         return self.base_url
 
-    def _get_search_results(self, response: Tag, rtl: Optional[bool]) -> SearchResults:
+    def _get_search_results(self, response: Tag) -> SearchResults:
         verse_table = response.select_one('table table table')
 
         if verse_table is None:
@@ -182,11 +179,11 @@ class Unbound(Service[Tag]):
 
         return SearchResults(verses[:20], len(verses))
 
-    async def search(self, version: str, terms: List[str], rtl: Optional[bool]) -> SearchResults:
-        url = self._get_search_url(version, terms)
+    async def search(self, bible: Bible, terms: List[str]) -> SearchResults:
+        url = self._get_search_url(bible['service_version'], terms)
         response = await self.post(url, {
             'search_type': 'advanced_search',
-            'parallel_1': version,
+            'parallel_1': bible['service_version'],
             'displayFormat': 'normalNoHeader',
             'book_section': 'ALL',
             'book': 'ALL',
@@ -196,4 +193,4 @@ class Unbound(Service[Tag]):
             'show_illustrations': '0',
             'show_maps': '0'
         })
-        return self._get_search_results(response, rtl)
+        return self._get_search_results(response)

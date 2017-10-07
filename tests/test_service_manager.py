@@ -71,7 +71,7 @@ class TestServiceManager(object):
 
         assert result == Passage('blah', VerseRange.from_string('Genesis 1:2'), 'BIB2')
         manager.service_map['ServiceTwo'].get_passage.assert_called_once_with(
-            'service-BIB2',
+            bible2,
             VerseRange.from_string('Genesis 1:2'))
 
     @pytest.mark.asyncio
@@ -81,4 +81,4 @@ class TestServiceManager(object):
 
         result = await manager.search(bible1, ['one', 'two', 'three'])
         assert result == 'blah'
-        manager.service_map['ServiceOne'].search.assert_called_once_with('service-BIB1', ['one', 'two', 'three'])
+        manager.service_map['ServiceOne'].search.assert_called_once_with(bible1, ['one', 'two', 'three'])

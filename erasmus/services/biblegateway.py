@@ -1,6 +1,6 @@
 # Service for querying biblegateway.com
 
-from typing import List, Optional
+from typing import List
 from bs4 import BeautifulSoup, Tag
 from aiohttp import ClientResponse
 from urllib.parse import urlencode
@@ -28,8 +28,7 @@ class BibleGateway(Service[Tag]):
             'interface': 'print'
         })
 
-    # TODO: Handle RTL text better
-    def _get_passage_text(self, response: Tag, rtl: Optional[bool]) -> str:
+    def _get_passage_text(self, response: Tag) -> str:
         verse_block = response.select_one('.result-text-style-normal, .result-text-style-rtl')
 
         if verse_block is None:
@@ -39,19 +38,12 @@ class BibleGateway(Service[Tag]):
             # Remove headings and footnotes
             node.decompose()
         for number in verse_block.select('span.chapternum'):
-            # Replace chapter number with 1.
-            if rtl:
-                number.string = '\u202b**1.**\u202c '
-            else:
-                number.string = '**1.** '
+            number.string = '**1.** '
         for small_caps in verse_block.select('.small-caps'):
             small_caps.string = small_caps.string.upper()
         for number in verse_block.select('sup.versenum'):
             # Add a period after verse numbers
-            if rtl:
-                number.string = f'\u202b**{number.string.strip()}.**\u202c '
-            else:
-                number.string = f'**{number.string.strip()}.** '
+            number.string = f'**{number.string.strip()}.** '
         for br in verse_block.select('br'):
             br.replace_with('\n')
         for h4 in verse_block.select('h4'):
@@ -67,7 +59,7 @@ class BibleGateway(Service[Tag]):
             'interface': 'print'
         })
 
-    def _get_search_results(self, response: Tag, rtl: Optional[bool]) -> SearchResults:
+    def _get_search_results(self, response: Tag) -> SearchResults:
         verse_nodes = response.select('.search-result-list .bible-item .bible-item-title')
 
         if verse_nodes is None:
