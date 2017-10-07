@@ -31,6 +31,40 @@ def dm_only():
     return commands.check(predicate)
 
 
+lookup_help = '''
+Arguments:
+----------
+    <reference> - A verse reference in one of the following forms:
+        Book 1:1
+        Book 1:1-2
+        Book 1:1-2:1
+
+Example:
+--------
+    {prefix} John 1:50-2:1
+
+NOTE: Before this command will work, you MUST set your prefered Bible version using {prefix}setversion'''
+
+search_help = '''
+Arguments:
+----------
+    [terms...] - One or more terms to search for
+
+Example:
+--------
+    {prefix}s faith hope
+
+NOTE: Before this command will work, you MUST set your prefered Bible version using {prefix}setversion'''
+
+setversion_help = '''
+Arguments:
+----------
+    <version> - A supported version identifier listed in {prefix}versions
+
+Example:
+--------
+    {prefix}setversion nasb'''
+
 version_lookup_help = '''
 Arguments:
 ----------
@@ -79,19 +113,7 @@ class Bible(object):
 
     @commands.command(aliases=[''],
                       brief='Look up a verse in your preferred version',
-                      help='''
-Arguments:
-----------
-    <reference> - A verse reference in one of the following forms:
-        Book 1:1
-        Book 1:1-2
-        Book 1:1-2:1
-
-Example:
---------
-    {prefix} John 1:50-2:1
-
-NOTE: Before this command will work, you MUST set your prefered Bible version using {prefix}setversion''')
+                      help=lookup_help)
     async def lookup(self, ctx: 'Context', *, reference: VerseRange) -> None:
         bible = await pg.fetchrow(user_bible_select.where(user_prefs.c.user_id == ctx.author.id))
 
@@ -103,16 +125,7 @@ NOTE: Before this command will work, you MUST set your prefered Bible version us
 
     @commands.command(aliases=['s'],
                       brief='Search for terms in your preferred version',
-                      help='''
-Arguments:
-----------
-    [terms...] - One or more terms to search for
-
-Example:
---------
-    {prefix}s faith hope
-
-NOTE: Before this command will work, you MUST set your prefered Bible version using {prefix}setversion''')
+                      help=search_help)
     async def search(self, ctx: 'Context', *terms: str) -> None:
         bible = await pg.fetchrow(user_bible_select.where(user_prefs.c.user_id == ctx.author.id))
         if not bible:
@@ -136,15 +149,7 @@ NOTE: Before this command will work, you MUST set your prefered Bible version us
         output = '\n'.join(lines)
         await ctx.send_to_author(f'\n{output}\n')
 
-    @commands.command(brief='Set your preferred version',
-                      help='''
-Arguments:
-----------
-    <version> - A supported version identifier listed in {prefix}versions
-
-Example:
---------
-    {prefix}setversion nasb''')
+    @commands.command(brief='Set your preferred version', help=setversion_help)
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
     async def setversion(self, ctx: 'Context', version: str) -> None:
         version = version.lower()
