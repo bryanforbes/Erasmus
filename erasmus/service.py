@@ -3,13 +3,14 @@ from abc import abstractmethod
 from configparser import SectionProxy
 import aiohttp
 import async_timeout
-import re
+from . import re
 
-from .data import VerseRange, Passage, SearchResults
+from .data import VerseRange, Passage, SearchResults, Bible
 
 
 RT = TypeVar('RT')
-whitespace_re = re.compile(r'\s+')
+whitespace_re = re.compile(re.one_or_more(re.WHITESPACE))
+number_re = re.compile(re.capture(r'\*\*', re.one_or_more(re.DIGIT), re.DOT, r'\*\*'))
 
 
 class Service(Generic[RT]):
@@ -18,16 +19,20 @@ class Service(Generic[RT]):
     def __init__(self, config: Optional[SectionProxy]) -> None:
         self.config = config
 
-    async def get_passage(self, version: str, verses: VerseRange) -> Passage:
-        url = self._get_passage_url(version, verses)
+    async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
+        url = self._get_passage_url(bible['service_version'], verses)
         response = await self.get(url)
         text = self._get_passage_text(response)
         text = whitespace_re.sub(' ', text.strip())
 
-        return Passage(text, verses)
+        if bible['rtl']:
+            # wrap in [RTL embedding]text[Pop directional formatting]
+            text = number_re.sub('\u202b\\1\u202c', text)
 
-    async def search(self, version: str, terms: List[str]) -> SearchResults:
-        url = self._get_search_url(version, terms)
+        return Passage(text, verses, bible['abbr'])
+
+    async def search(self, bible: Bible, terms: List[str]) -> SearchResults:
+        url = self._get_search_url(bible['service_version'], terms)
         response = await self.get(url)
         return self._get_search_results(response)
 

@@ -94,6 +94,7 @@ Example:
 NOTE: Before this command will work, you MUST set your prefered Bible version using {prefix}setversion''')
     async def lookup(self, ctx: 'Context', *, reference: VerseRange) -> None:
         bible = await pg.fetchrow(user_bible_select.where(user_prefs.c.user_id == ctx.author.id))
+
         if not bible:
             await ctx.send_error_to_author(f'You must first set your default version with `{ctx.prefix}setversion`')
             return
@@ -170,7 +171,7 @@ Example:
     @dm_only()
     @commands.is_owner()
     async def add_bible(self, ctx: 'Context', command: str, name: str, abbr: str, service: str,
-                        service_version: str) -> None:
+                        service_version: str, rtl: bool = False) -> None:
         if service not in self.service_manager:
             await ctx.send_error_to_author(f'`{service}` is not a valid service')
             return
@@ -180,7 +181,8 @@ Example:
                                                             name=name,
                                                             abbr=abbr,
                                                             service=service,
-                                                            service_version=service_version))
+                                                            service_version=service_version,
+                                                            rtl=rtl))
         except UniqueViolationError:
             await ctx.send_error_to_author(f'`{command}` already exists')
         else:

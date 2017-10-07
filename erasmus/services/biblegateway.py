@@ -28,7 +28,6 @@ class BibleGateway(Service[Tag]):
             'interface': 'print'
         })
 
-    # TODO: Handle RTL text better
     def _get_passage_text(self, response: Tag) -> str:
         verse_block = response.select_one('.result-text-style-normal, .result-text-style-rtl')
 
@@ -39,7 +38,6 @@ class BibleGateway(Service[Tag]):
             # Remove headings and footnotes
             node.decompose()
         for number in verse_block.select('span.chapternum'):
-            # Replace chapter number with 1.
             number.string = '**1.** '
         for small_caps in verse_block.select('.small-caps'):
             small_caps.string = small_caps.string.upper()

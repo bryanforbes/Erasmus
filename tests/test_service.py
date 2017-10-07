@@ -1,7 +1,7 @@
 import pytest
 from typing import Any
 from erasmus.service import Service
-from erasmus.data import VerseRange, Passage
+from erasmus.data import VerseRange, Passage, Bible
 
 
 @pytest.mark.usefixtures('mock_aiohttp')
@@ -17,6 +17,15 @@ class TestService(object):
 
         return MyService
 
+    @pytest.fixture
+    def bible(self):
+        return Bible(command='bib',
+                     name='The Bible',
+                     abbr='BIB',
+                     service='MyService',
+                     service_version='eng-BIB',
+                     rtl=False)
+
     def test_init(self):
         config = {}
 
@@ -24,7 +33,7 @@ class TestService(object):
             Service(config)
 
     @pytest.mark.asyncio
-    async def test_get_passage(self, MyService, mock_response, mock_client_session):
+    async def test_get_passage(self, MyService, bible, mock_response, mock_client_session):
         service = MyService({})
         verses = VerseRange.from_string('Leviticus 1:2-3')
 
@@ -32,25 +41,25 @@ class TestService(object):
         service._process_response.return_value = 'foo bar baz'
         service._get_passage_text.return_value = 'passage result'
 
-        result = await service.get_passage('version', verses)
+        result = await service.get_passage(bible, verses)
 
-        service._get_passage_url.assert_called_once_with('version', verses)
+        service._get_passage_url.assert_called_once_with(bible['service_version'], verses)
         mock_client_session.get.assert_called_once_with('http://example.com')
         service._process_response.assert_called_once_with(mock_response)
         service._get_passage_text.assert_called_once_with('foo bar baz')
-        assert result == Passage('passage result', verses)
+        assert result == Passage('passage result', verses, bible['abbr'])
 
     @pytest.mark.asyncio
-    async def test_search(self, MyService, mock_response, mock_client_session):
+    async def test_search(self, MyService, bible, mock_response, mock_client_session):
         service = MyService({})
 
         service._get_search_url.return_value = 'http://example.com'
         service._process_response.return_value = 'foo bar baz'
         service._get_search_results.return_value = 'search result'
 
-        result = await service.search('version', ['one', 'two', 'three'])
+        result = await service.search(bible, ['one', 'two', 'three'])
 
-        service._get_search_url.assert_called_once_with('version', ['one', 'two', 'three'])
+        service._get_search_url.assert_called_once_with(bible['service_version'], ['one', 'two', 'three'])
         mock_client_session.get.assert_called_once_with('http://example.com')
         service._process_response.assert_called_once_with(mock_response)
         service._get_search_results.assert_called_once_with('foo bar baz')

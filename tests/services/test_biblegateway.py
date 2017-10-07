@@ -96,7 +96,7 @@ class TestBibleGateway(ServiceTest):
 
     @pytest.fixture
     def search_url(self):
-        return f'https://www.biblegateway.com/quicksearch/?quicksearch=one+two+three&qs_version=esv&' \
+        return f'https://www.biblegateway.com/quicksearch/?quicksearch=one+two+three&qs_version=eng-BIB&' \
                'limit=20&interface=print'
 
     @pytest.fixture

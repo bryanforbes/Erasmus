@@ -1,12 +1,12 @@
 # Service for querying Biola's Unbound Bible
 
-from typing import Dict, List  # noqa
+from typing import Dict, List, Optional  # noqa
 from bs4 import BeautifulSoup, Tag
 from aiohttp import ClientResponse
 from urllib.parse import urlencode
 
 from ..service import Service
-from ..data import VerseRange, SearchResults
+from ..data import VerseRange, SearchResults, Bible
 from ..exceptions import DoNotUnderstandError
 
 import re
@@ -179,11 +179,11 @@ class Unbound(Service[Tag]):
 
         return SearchResults(verses[:20], len(verses))
 
-    async def search(self, version: str, terms: List[str]) -> SearchResults:
-        url = self._get_search_url(version, terms)
+    async def search(self, bible: Bible, terms: List[str]) -> SearchResults:
+        url = self._get_search_url(bible['service_version'], terms)
         response = await self.post(url, {
             'search_type': 'advanced_search',
-            'parallel_1': version,
+            'parallel_1': bible['service_version'],
             'displayFormat': 'normalNoHeader',
             'book_section': 'ALL',
             'book': 'ALL',
