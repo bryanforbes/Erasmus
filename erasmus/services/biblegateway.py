@@ -46,6 +46,10 @@ class BibleGateway(Service[Tag]):
         for number in verse_block.select('sup.versenum'):
             # Add a period after verse numbers
             number.string = f'**{number.string.strip()}.** '
+        for br in verse_block.select('br'):
+            br.replace_with('\n')
+        for h4 in verse_block.select('h4'):
+            h4.replace_with(f'**{h4.string.strip()}** ')
 
         return verse_block.get_text('')
 

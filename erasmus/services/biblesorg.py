@@ -50,6 +50,8 @@ class BiblesOrg(Service[JSONObject]):
             number.string = f' **{number.string}.** '
         for span in soup.select('span.sc'):
             span.unwrap()
+        for br in soup.select('br'):
+            br.replace_with('\n')
 
         return soup.get_text('')
 

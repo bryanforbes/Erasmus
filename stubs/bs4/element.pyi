@@ -2,7 +2,7 @@ from typing import List, Union, Iterator
 
 
 class PageElement(object):
-    pass
+    def replace_with(self, replace_with: Union[str, 'PageElement']) -> 'PageElement': ...
 
 
 class NavigableString(str, PageElement):
