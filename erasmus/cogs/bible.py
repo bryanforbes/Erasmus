@@ -95,8 +95,6 @@ NOTE: Before this command will work, you MUST set your prefered Bible version us
     async def lookup(self, ctx: 'Context', *, reference: VerseRange) -> None:
         bible = await pg.fetchrow(user_bible_select.where(user_prefs.c.user_id == ctx.author.id))
 
-        print(bible)
-
         if not bible:
             await ctx.send_error_to_author(f'You must first set your default version with `{ctx.prefix}setversion`')
             return
