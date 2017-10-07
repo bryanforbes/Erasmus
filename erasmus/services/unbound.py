@@ -8,10 +8,13 @@ from urllib.parse import urlencode
 from ..service import Service
 from ..data import VerseRange, SearchResults, Bible
 from ..exceptions import DoNotUnderstandError
+from .. import re
 
-import re
-
-number_re = re.compile(r'(\d+\.)')
+number_re = re.compile(
+    re.capture(
+        re.one_or_more(re.DIGITS), re.DOT
+    )
+)
 
 book_map = {
     'Genesis': '01O',

@@ -148,8 +148,7 @@
     "name": "Ecclesiastes",
     "osis": "Eccl",
     "alt": [
-      "Ecc",
-      "Ecclesiasticus (Sirach)"
+      "Ecc"
     ]
   },
   {
@@ -491,7 +490,9 @@
   {
     "name": "Sirach",
     "osis": "Sir",
-    "alt": []
+    "alt": [
+      "Ecclesiasticus (Sirach)"
+    ]
   },
   {
     "name": "Baruch",

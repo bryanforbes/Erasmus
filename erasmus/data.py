@@ -14,11 +14,11 @@ with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
 
 # Inspired by https://github.com/TehShrike/verse-reference-regex/blob/master/create-regex.js
 _book_re = re.compile(
-    re.named_group('book')(
-        re.either(*chain.from_iterable(
-            [[book.name, book.osis] + book.alt for book in books_data]
-        ))
-    ),
+    re.named_group('book')(re.either(
+        *re.escape_all(
+            chain.from_iterable([[book.name, book.osis] + book.alt for book in books_data])
+        )
+    )),
     re.optional(re.DOT)
 )
 

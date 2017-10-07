@@ -4,13 +4,16 @@ from typing import List
 from bs4 import BeautifulSoup, Tag
 from aiohttp import ClientResponse
 from urllib.parse import urlencode
-import re
 
 from ..data import VerseRange, SearchResults
 from ..service import Service
 from ..exceptions import DoNotUnderstandError
+from .. import re
 
-total_re = re.compile(r'^(?P<total>\d+)')
+total_re = re.compile(
+    re.START,
+    re.named_group('total')(re.one_or_more(re.DIGITS))
+)
 
 
 # TODO: Error handling

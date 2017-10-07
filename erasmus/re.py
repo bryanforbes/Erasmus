@@ -1,6 +1,6 @@
 # Inspired by https://github.com/TehShrike/regex-fun
 
-from typing import Callable, Pattern, AnyStr, cast, Union
+from typing import Callable, Pattern, AnyStr, cast, Union, Iterator, Iterable
 from mypy_extensions import VarArg, DefaultNamedArg
 from functools import partial, wraps
 import re
@@ -81,6 +81,17 @@ def at_least(n: int, *args: _ReOrStrType, greedy: bool = True) -> str:
 
 def between(n: int, m: int, *args: _ReOrStrType, greedy: bool = True) -> str:
     return _suffix(*args, suffix=f'{{{n},{m}}}', greedy=greedy)
+
+
+escape = re.escape
+
+
+def escape_all(patterns: Iterable[Union[str, Pattern[AnyStr]]]) -> Iterator[str]:
+    for pattern in patterns:
+        if isinstance(pattern, str):
+            yield re.escape(pattern)
+        else:
+            yield cast(str, pattern.pattern)
 
 
 START = '^'
