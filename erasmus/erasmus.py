@@ -3,6 +3,7 @@ from typing import cast
 import discord
 import traceback
 import sys
+import logging
 
 from asyncpgsa import pg  # type: ignore
 from configparser import ConfigParser
@@ -15,6 +16,7 @@ from .exceptions import (
 from .context import Context
 from .format import HelpFormatter
 from . import re
+
 # from .db import guild_prefs
 
 
@@ -31,6 +33,7 @@ from . import re
 
 #     return prefix
 
+log = logging.getLogger(__name__)
 
 extensions = (
     'erasmus.cogs.bible',
@@ -71,8 +74,7 @@ class Erasmus(commands.Bot):
             try:
                 self.load_extension(extension)
             except Exception as e:
-                print(f'Failed to load extension {extension}.', file=sys.stderr)
-                traceback.print_exc()
+                log.exception('Failed to load extension %s.', extension)
 
     def run(self, *args, **kwargs) -> None:
         super().run(self.config.get('erasmus', 'discord_api_key'))
@@ -101,8 +103,7 @@ class Erasmus(commands.Bot):
     async def on_ready(self) -> None:
         await self.change_presence(game=discord.Game(name=f'| {self.default_prefix}help'))
 
-        print('-----')
-        print(f'logged in as {self.user.name} {self.user.id}')
+        log.info('Erasmus ready. Logged in as %s %s', self.user.name, self.user.id)
 
     async def on_command_error(self, ctx: Context, exc: Exception) -> None:
         message = 'An error occurred'
@@ -137,8 +138,7 @@ class Erasmus(commands.Bot):
             if exc.__cause__:
                 return await self.on_command_error(ctx, cast(Exception, exc.__cause__))
         else:
-            print('Exception occurred in command {}:'.format(ctx.command), file=sys.stderr)
-            traceback.print_exception(type(exc), exc, exc.__traceback__, file=sys.stderr)
+            log.exception('Exception occurred in command %s', ctx.command, exc_info=exc)
 
         await ctx.send_error_to_author(message)
 

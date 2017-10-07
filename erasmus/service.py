@@ -3,6 +3,7 @@ from abc import abstractmethod
 from configparser import SectionProxy
 import aiohttp
 import async_timeout
+import logging
 from . import re
 
 from .data import VerseRange, Passage, SearchResults, Bible
@@ -11,6 +12,8 @@ from .data import VerseRange, Passage, SearchResults, Bible
 RT = TypeVar('RT')
 whitespace_re = re.compile(re.one_or_more(re.WHITESPACE))
 number_re = re.compile(re.capture(r'\*\*', re.one_or_more(re.DIGIT), re.DOT, r'\*\*'))
+
+log = logging.getLogger(__name__)
 
 
 class Service(Generic[RT]):
@@ -21,7 +24,9 @@ class Service(Generic[RT]):
 
     async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
         url = self._get_passage_url(bible['service_version'], verses)
+        log.debug('Getting passage %s', verses)
         response = await self.get(url)
+        log.debug('Got passage %s', verses)
         text = self._get_passage_text(response)
         text = whitespace_re.sub(' ', text.strip())
 
@@ -57,13 +62,17 @@ class Service(Generic[RT]):
         raise NotImplementedError
 
     async def get(self, url: str, **session_options) -> RT:
+        log.debug('GET %s', url)
         async with aiohttp.ClientSession(**session_options) as session:
             with async_timeout.timeout(10):
                 async with session.get(url) as response:
+                    log.debug('Finished GET %s', url)
                     return await self._process_response(response)
 
     async def post(self, url: str, data: Dict[str, Any] = None, **session_options) -> RT:
+        log.debug('POST %s', url)
         async with aiohttp.ClientSession(**session_options) as session:
             with async_timeout.timeout(10):
                 async with session.post(url, data=data) as response:
+                    log.debug('Finished POST %s', url)
                     return await self._process_response(response)
