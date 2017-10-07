@@ -17,8 +17,10 @@ def setup_logging(log_to_console: bool, log_level: str):
         logging.getLogger('discord').setLevel(logging.INFO)
         logging.getLogger('discord.http').setLevel(logging.WARNING)
 
+        logging.getLogger('erasmus').setLevel(getattr(logging, log_level))
+
         log = logging.getLogger()
-        log.setLevel(getattr(logging, log_level))
+        log.setLevel(logging.INFO)
 
         dt_fmt = '%Y-%m-%d %H:%M:%S'
         fmt = logging.Formatter('[{asctime}] [{levelname:<7}] {name}: {message}', dt_fmt, style='{')
