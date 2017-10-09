@@ -1,4 +1,4 @@
-from sqlalchemy import MetaData, Table, Column, Integer, String, ForeignKey, Boolean  # type: ignore
+from sqlalchemy import MetaData, Table, Column, Integer, String, ForeignKey, Boolean, BigInteger  # type: ignore
 import sqlalchemy.types as types  # type: ignore
 from sqlalchemy.dialects.postgresql import insert  # type: ignore
 
@@ -28,7 +28,8 @@ bible_versions = Table('bible_versions', metadata,
                        Column('abbr', String),
                        Column('service', String),
                        Column('service_version', String),
-                       Column('rtl', Boolean, default=False))
+                       Column('rtl', Boolean, default=False),
+                       Column('books', BigInteger, nullable=False))
 
 guild_bibles = Table('guild_bibles', metadata,
                      Column('guild_id', Snowflake, primary_key=True),

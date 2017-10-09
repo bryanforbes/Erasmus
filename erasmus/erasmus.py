@@ -11,7 +11,8 @@ from configparser import ConfigParser
 from discord.ext import commands
 from .exceptions import (
     DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError,
-    BookNotUnderstoodError, ReferenceNotUnderstoodError, OnlyDirectMessage
+    BookNotUnderstoodError, ReferenceNotUnderstoodError, OnlyDirectMessage,
+    BookNotInVersionError
 )
 from .context import Context
 from .format import HelpFormatter
@@ -113,6 +114,8 @@ class Erasmus(commands.Bot):
 
         if isinstance(exc, BookNotUnderstoodError):
             message = f'I do not understand the book "{exc.book}"'
+        if isinstance(exc, BookNotInVersionError):
+            message = f'{exc.version} does not contain {exc.book}'
         elif isinstance(exc, DoNotUnderstandError):
             message = 'I do not understand that request'
         elif isinstance(exc, ReferenceNotUnderstoodError):

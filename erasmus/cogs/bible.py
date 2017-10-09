@@ -9,7 +9,7 @@ from ..db import bible_versions, user_prefs, insert
 from ..data import VerseRange
 from ..format import pluralizer
 from ..service_manager import ServiceManager, Bible as BibleObject
-from ..exceptions import OnlyDirectMessage
+from ..exceptions import OnlyDirectMessage, BookNotInVersionError
 
 if TYPE_CHECKING:  # pragma: no cover
     from ..erasmus import Erasmus  # noqa
@@ -231,6 +231,9 @@ class Bible(object):
         await self._search(ctx, bible, *terms)
 
     async def _lookup(self, ctx: 'Context', bible: BibleObject, reference: VerseRange) -> None:
+        if not (bible['books'] & reference.book_mask):
+            raise BookNotInVersionError(reference.book, bible['name'])
+
         if reference is not None:
             async with ctx.typing():
                 passage = await self.service_manager.get_passage(bible, reference)

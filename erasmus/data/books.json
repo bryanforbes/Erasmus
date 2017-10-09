@@ -2,48 +2,56 @@
   {
     "name": "Genesis",
     "osis": "Gen",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Exodus",
     "osis": "Exod",
-    "alt": [ "Ex" ]
+    "alt": [ "Ex" ],
+    "section": 1
   },
   {
     "name": "Leviticus",
     "osis": "Lev",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Numbers",
     "osis": "Num",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Deuteronomy",
     "osis": "Deut",
     "alt": [
       "Deu"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "Joshua",
     "osis": "Josh",
     "alt": [
       "Jos"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "Judges",
     "osis": "Judg",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Ruth",
     "osis": "Ruth",
     "alt": [
       "Ru"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "1 Samuel",
@@ -52,7 +60,8 @@
       "I Samuel",
       "ISam",
       "1 Sam"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "2 Samuel",
@@ -61,7 +70,8 @@
       "II Samuel",
       "IISam",
       "2 Sam"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "1 Kings",
@@ -73,7 +83,8 @@
       "I King",
       "I Kgs",
       "IKgs"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "2 Kings",
@@ -85,7 +96,8 @@
       "II King",
       "II Kgs",
       "IIKgs"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "1 Chronicles",
@@ -96,7 +108,8 @@
       "I Chron",
       "I Chr",
       "IChr"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "2 Chronicles",
@@ -107,27 +120,32 @@
       "II Chron",
       "II Chr",
       "IIChr"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "Ezra",
     "osis": "Ezra",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Nehemiah",
     "osis": "Neh",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Esther",
     "osis": "Esth",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Job",
     "osis": "Job",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Psalm",
@@ -135,75 +153,88 @@
     "alt": [
       "Psa",
       "Psalms"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "Proverbs",
     "osis": "Prov",
     "alt": [
       "Pvb"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "Ecclesiastes",
     "osis": "Eccl",
     "alt": [
       "Ecc"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "Song of Solomon",
     "osis": "Song",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Isaiah",
     "osis": "Isa",
     "alt": [
       "Is"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "Jeremiah",
     "osis": "Jer",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Lamentations",
     "osis": "Lam",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Ezekiel",
     "osis": "Ezek",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Daniel",
     "osis": "Dan",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Hosea",
     "osis": "Hos",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Joel",
     "osis": "Joel",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Amos",
     "osis": "Amos",
     "alt": [
       "Amo"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "Obadiah",
     "osis": "Obad",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Jonah",
@@ -211,58 +242,68 @@
     "alt": [
       "Jnh",
       "Jon"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "Micah",
     "osis": "Mic",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Nahum",
     "osis": "Nah",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Habakkuk",
     "osis": "Hab",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Zephaniah",
     "osis": "Zeph",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Haggai",
     "osis": "Hag",
     "alt": [
       "Hagg"
-    ]
+    ],
+    "section": 1
   },
   {
     "name": "Zechariah",
     "osis": "Zech",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Malachi",
     "osis": "Mal",
-    "alt": []
+    "alt": [],
+    "section": 1
   },
   {
     "name": "Matthew",
     "osis": "Matt",
     "alt": [
       "Mat"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "Mark",
     "osis": "Mark",
     "alt": [
       "Mar"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "Luke",
@@ -270,24 +311,28 @@
     "alt": [
       "Lk",
       "Luk"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "John",
     "osis": "John",
     "alt": [
       "Jo"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "Acts",
     "osis": "Acts",
-    "alt": []
+    "alt": [],
+    "section": 2
   },
   {
     "name": "Romans",
     "osis": "Rom",
-    "alt": []
+    "alt": [],
+    "section": 2
   },
   {
     "name": "1 Corinthians",
@@ -297,7 +342,8 @@
       "I Cor",
       "ICor",
       "I Corinthians"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "2 Corinthians",
@@ -307,27 +353,32 @@
       "II Cor",
       "IICor",
       "II Corinthians"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "Galatians",
     "osis": "Gal",
-    "alt": []
+    "alt": [],
+    "section": 2
   },
   {
     "name": "Ephesians",
     "osis": "Eph",
-    "alt": []
+    "alt": [],
+    "section": 2
   },
   {
     "name": "Philippians",
     "osis": "Phil",
-    "alt": []
+    "alt": [],
+    "section": 2
   },
   {
     "name": "Colossians",
     "osis": "Col",
-    "alt": []
+    "alt": [],
+    "section": 2
   },
   {
     "name": "1 Thessalonians",
@@ -341,7 +392,8 @@
       "IThes",
       "1 Thes",
       "I Thes"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "2 Thessalonians",
@@ -355,7 +407,8 @@
       "IIThes",
       "2 Thes",
       "II Thes"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "1 Timothy",
@@ -365,7 +418,8 @@
       "1 Tim",
       "I Tim",
       "I Timothy"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "2 Timothy",
@@ -375,29 +429,34 @@
       "2 Tim",
       "II Tim",
       "II Timothy"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "Titus",
     "osis": "Titus",
-    "alt": []
+    "alt": [],
+    "section": 2
   },
   {
     "name": "Philemon",
     "osis": "Phlm",
-    "alt": []
+    "alt": [],
+    "section": 2
   },
   {
     "name": "Hebrews",
     "osis": "Heb",
-    "alt": []
+    "alt": [],
+    "section": 2
   },
   {
     "name": "James",
     "osis": "Jas",
     "alt": [
       "Jam"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "1 Peter",
@@ -407,7 +466,8 @@
       "1 Pet",
       "I Pet",
       "I Peter"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "2 Peter",
@@ -417,7 +477,8 @@
       "2 Pet",
       "II Pet",
       "II Peter"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "1 John",
@@ -429,7 +490,8 @@
       "I Jo",
       "1Jo",
       "1 Jo"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "2 John",
@@ -441,7 +503,8 @@
       "II Jo",
       "2Jo",
       "2 Jo"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "3 John",
@@ -453,78 +516,96 @@
       "III Jo",
       "3Jo",
       "3 Jo"
-    ]
+    ],
+    "section": 2
   },
   {
     "name": "Jude",
     "osis": "Jude",
-    "alt": []
+    "alt": [],
+    "section": 2
   },
   {
     "name": "Revelation",
     "osis": "Rev",
-    "alt": []
+    "alt": [],
+    "section": 2
   },
   {
     "name": "Tobit",
     "osis": "Tob",
-    "alt": []
+    "alt": [],
+    "section": 4
   },
   {
     "name": "Judith",
     "osis": "Jdt",
-    "alt": []
+    "alt": [],
+    "section": 8
   },
   {
     "name": "Additions to Esther",
     "osis": "AddEsth",
-    "alt": []
+    "alt": [],
+    "section": "DC"
   },
   {
     "name": "Wisdom",
     "osis": "Wis",
     "alt": [
       "Wisdom of Solomon"
-    ]
+    ],
+    "section": 16
   },
   {
     "name": "Sirach",
     "osis": "Sir",
     "alt": [
       "Ecclesiasticus (Sirach)"
-    ]
+    ],
+    "section": 32
   },
   {
     "name": "Baruch",
     "osis": "Bar",
-    "alt": []
+    "alt": [],
+    "section": 64
   },
   {
     "name": "Letter of Jeremiah",
     "osis": "EpJer",
     "alt": [
       "Epistle of Jeremiah"
-    ]
+    ],
+    "section": 128
   },
   {
     "name": "Additions to Daniel",
     "osis": "AddDan",
-    "alt": []
+    "alt": [],
+    "section": "DC"
   },
   {
     "name": "Prayer of Azariah",
     "osis": "PrAzar",
-    "alt": []
+    "alt": [
+      "Song of the Three Children",
+      "The Three Holy Children",
+      "Song of Three Young Men"
+    ],
+    "section": 256
   },
   {
     "name": "Susanna",
     "osis": "Sus",
-    "alt": []
+    "alt": [],
+    "section": 512
   },
   {
     "name": "Bel and the Dragon",
     "osis": "Bel",
-    "alt": []
+    "alt": [],
+    "section": 1024
   },
   {
     "name": "1 Maccabees",
@@ -534,7 +615,8 @@
       "I Macc",
       "I Maccabees",
       "IMacc"
-    ]
+    ],
+    "section": 2048
   },
   {
     "name": "2 Maccabees",
@@ -544,7 +626,8 @@
       "II Macc",
       "II Maccabees",
       "IIMacc"
-    ]
+    ],
+    "section": 4096
   },
   {
     "name": "3 Maccabees",
@@ -554,7 +637,8 @@
       "III Macc",
       "III Maccabees",
       "IIIMacc"
-    ]
+    ],
+    "section": 8192
   },
   {
     "name": "4 Maccabees",
@@ -564,12 +648,14 @@
       "IV Macc",
       "IV Maccabees",
       "IVMacc"
-    ]
+    ],
+    "section": 16384
   },
   {
     "name": "Prayer of Manasseh",
     "osis": "PrMan",
-    "alt": []
+    "alt": [],
+    "section": 32768
   },
   {
     "name": "1 Esdras",
@@ -578,7 +664,8 @@
       "1 Esd",
       "1 Esdr",
       "1Esdr"
-    ]
+    ],
+    "section": 65536
   },
   {
     "name": "2 Esdras",
@@ -587,12 +674,14 @@
       "2 Esd",
       "2 Esdr",
       "2Esdr"
-    ]
+    ],
+    "section": 131072
   },
   {
     "name": "Psalm 151",
     "osis": "AddPs",
-    "alt": []
+    "alt": [],
+    "section": 262144
   },
   {
     "name": "Greek Esther",
@@ -602,18 +691,21 @@
       "GrkEsth",
       "EsthGrk",
       "Esther, Greek"
-    ]
+    ],
+    "section": 524288
   },
   {
     "name": "Odes",
     "osis": "Odes",
-    "alt": []
+    "alt": [],
+    "section": 1048576
   },
   {
     "name": "Psalms of Solomon",
     "osis": "PssSol",
     "alt": [
       "Psalm of Solomon"
-    ]
+    ],
+    "section": 2097152
   }
 ]

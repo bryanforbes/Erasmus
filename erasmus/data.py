@@ -47,10 +47,13 @@ _search_reference_re = re.compile(
     flags=re.IGNORECASE
 )
 
+
 book_input_map = {}  # type: Dict[str, str]
+book_mask_map = {}  # type: Dict[str, int]
 for book in books_data:
     for input_string in [book.name, book.osis] + book.alt:  # type: str
         book_input_map[input_string.lower()] = book.name
+        book_mask_map[input_string.lower()] = book.section
 
 
 class Bible(TypedDict):
@@ -60,6 +63,7 @@ class Bible(TypedDict):
     service: str
     service_version: str
     rtl: bool
+    books: int
 
 
 class Verse(object):
@@ -88,14 +92,16 @@ class Verse(object):
 
 
 class VerseRange(object):
-    __slots__ = ('book', 'start', 'end')
+    __slots__ = ('book', 'book_mask', 'start', 'end')
 
     book: str
+    book_mask: int
     start: Verse
     end: Optional[Verse]
 
     def __init__(self, book: str, start: Verse, end: Verse = None) -> None:
         self.book = book_input_map.get(book.lower(), None)
+        self.book_mask = book_mask_map.get(book.lower(), None)
 
         if self.book is None:
             raise BookNotUnderstoodError(book)

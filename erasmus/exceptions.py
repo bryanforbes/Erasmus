@@ -19,6 +19,15 @@ class BookNotUnderstoodError(Exception):
         self.book = book
 
 
+class BookNotInVersionError(Exception):
+    book: str
+    version: str
+
+    def __init__(self, book: str, version: str) -> None:
+        self.book = book
+        self.version = version
+
+
 class ReferenceNotUnderstoodError(Exception):
     reference: str
 
