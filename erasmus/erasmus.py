@@ -1,8 +1,6 @@
 from typing import cast
 
 import discord
-import traceback
-import sys
 import logging
 
 from asyncpgsa import pg  # type: ignore
