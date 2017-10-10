@@ -15,7 +15,7 @@ Mako==1.0.7
 MarkupSafe==1.0
 mccabe==0.6.1
 multidict==3.2.0
-mypy==0.521
+mypy==0.530
 mypy-extensions==0.3.0
 psycopg2==2.7.3.1
 py==1.4.34
