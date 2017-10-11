@@ -1,9 +1,10 @@
-from sqlalchemy import MetaData, Table, Column, Integer, String, ForeignKey, Boolean, BigInteger  # type: ignore
+from sqlalchemy import MetaData, Table, Column, Integer, String, ForeignKey, Boolean, BigInteger, Text  # type: ignore
 import sqlalchemy.types as types  # type: ignore
 from sqlalchemy.dialects.postgresql import insert  # type: ignore
 
 __all__ = ['insert', 'Snowflake', 'metadata', 'bible_versions', 'guild_bibles',
-           'guild_prefs', 'user_prefs']
+           'guild_prefs', 'user_prefs', 'confessions', 'confession_chapters',
+           'confession_paragraphs']
 
 
 class Snowflake(types.TypeDecorator):
@@ -42,3 +43,21 @@ guild_prefs = Table('guild_prefs', metadata,
 user_prefs = Table('user_prefs', metadata,
                    Column('user_id', Snowflake, primary_key=True),
                    Column('bible_id', Integer, ForeignKey('bible_versions.id')))
+
+confessions = Table('confessions', metadata,
+                    Column('id', Integer, primary_key=True),
+                    Column('command', String, unique=True),
+                    Column('name', String))
+
+confession_chapters = Table('confession_chapters', metadata,
+                            Column('id', Integer, primary_key=True),
+                            Column('confession_id', Integer, ForeignKey('confessions.id')),
+                            Column('chapter_number', Integer),
+                            Column('title', String))
+
+confession_paragraphs = Table('confession_paragraphs', metadata,
+                              Column('id', Integer, primary_key=True),
+                              Column('confession_id', Integer, ForeignKey('confessions.id')),
+                              Column('chapter_number', Integer),
+                              Column('paragraph_number', Integer),
+                              Column('text', Text))

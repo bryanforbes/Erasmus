@@ -18,8 +18,7 @@ if TYPE_CHECKING:  # pragma: no cover
 pluralize_match = pluralizer('match', 'es')
 
 user_bible_select = bible_versions.select() \
-    .select_from(bible_versions.join(user_prefs)) \
-    .where(user_prefs.c.bible_id == bible_versions.c.id)
+    .select_from(bible_versions.join(user_prefs))
 
 
 def dm_only():
