@@ -1,27 +1,27 @@
-from .client import Client, AppInfo
-from .user import User, ClientUser, Profile
-from .game import Game
-from .emoji import Emoji, PartialReactionEmoji
+from .client import Client as Client, AppInfo as AppInfo
+from .user import User as User, ClientUser as ClientUser, Profile as Profile
+from .game import Game as Game
+from .emoji import Emoji as Emoji, PartialReactionEmoji as PartialReactionEmoji
 from .channel import *
-from .guild import Guild
-from .member import Member, VoiceState
-from .message import Message, Attachment
+from .guild import Guild as Guild
+from .member import Member as Member, VoiceState as VoiceState
+from .message import Message as Message, Attachment as Attachment
 from .errors import *
-from .calls import CallMessage, GroupCall
-from .permissions import Permissions, PermissionOverwrite
-from .role import Role
-from .file import File
-from .colour import Colour, Color
-from .invite import Invite
-from .object import Object
-from . import abc
+from .calls import CallMessage as CallMessage, GroupCall as GroupCall
+from .permissions import Permissions as Permissions, PermissionOverwrite as PermissionOverwrite
+from .role import Role as Role
+from .file import File as File
+from .colour import Colour as Colour, Color as Color
+from .invite import Invite as Invite
+from .object import Object as Object
+from . import abc as abc
 from .enums import *
 from collections import namedtuple
-from .embeds import Embed
-from .shard import AutoShardedClient
+from .embeds import Embed as Embed
+from .shard import AutoShardedClient as AutoShardedClient
 from .webhook import *
-from .voice_client import VoiceClient
-from .audit_logs import AuditLogChanges, AuditLogEntry, AuditLogDiff
+from .voice_client import VoiceClient as VoiceClient
+from .audit_logs import AuditLogChanges as AuditLogChanges, AuditLogEntry as AuditLogEntry, AuditLogDiff as AuditLogDiff
 from typing import NamedTuple
 
 __title__: str = ...

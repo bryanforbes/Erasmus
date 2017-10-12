@@ -1,5 +1,5 @@
 from typing import Optional
-from .element import Tag, PageElement  # noqa
+from .element import Tag as Tag, PageElement as PageElement  # noqa
 
 
 class BeautifulSoup(Tag):

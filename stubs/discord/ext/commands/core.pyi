@@ -60,12 +60,19 @@ class GroupMixin:
     def group(self, *args, **kwargs) -> Callable[..., Command]: ...
 
 
+class Group(GroupMixin, Command):
+    invoke_without_command: bool
+
+
 FuncType = Callable[..., Any]
 F = TypeVar('F', bound=Union[FuncType, Command])
 DecoratorType = Callable[[F], F]
 
 
 def command(name: Optional[str] = ..., cls: Optional[Type[Command]] = ..., **kwargs) -> Callable[..., Command]: ...
+
+
+def group(name: Optional[str] = ..., cls: Optional[Type[Group]] = ..., **kwargs) -> Callable[..., Group]: ...
 
 
 def check(predicate: CheckType) -> DecoratorType: ...

@@ -7,6 +7,7 @@ from asyncpgsa import pg  # type: ignore
 from configparser import ConfigParser
 
 from discord.ext import commands
+from discord.ext.commands import Group
 from .exceptions import (
     DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError,
     BookNotUnderstoodError, ReferenceNotUnderstoodError, OnlyDirectMessage,
@@ -36,6 +37,7 @@ log = logging.getLogger(__name__)
 
 extensions = (
     'erasmus.cogs.bible',
+    'erasmus.cogs.confession',
 )
 
 _mention_pattern_re = re.compile(
@@ -151,7 +153,7 @@ class Erasmus(commands.Bot):
 
         if len(commands) == 0:
             pages = await bot.formatter.format_help_for(ctx, bot)
-        elif len(commands) == 1:
+        else:
             name = commands[0]
 
             if name[0] == ctx.prefix:
@@ -164,9 +166,21 @@ class Erasmus(commands.Bot):
                 await destination.send(bot.command_not_found.format(name))
                 return
 
+            if len(commands) > 1:
+                group = cast(Group, command)
+                for key in commands[1:]:
+                    try:
+                        key = _mention_pattern_re.sub('@\u200b\\g<target>', key)
+                        command = group.all_commands.get(key)
+
+                        if command is None:
+                            await destination.send(bot.command_not_found.format(key))
+                            return
+                    except AttributeError:
+                        await destination.send(bot.command_has_no_subcommands.format(command, key))
+                        return
+
             pages = await bot.formatter.format_help_for(ctx, command)
-        else:
-            pages = []
 
         for page in pages:
             await destination.send(page)
