@@ -91,12 +91,14 @@ class Confession(object):
         self.bot = bot
 
     @commands.command(brief='Query confessions', help=confess_help)
+    @commands.cooldown(rate=4, per=60.0, type=commands.BucketType.user)
     async def confess(self, ctx: 'Context', confession: str = None, *args: str) -> None:
         if confession is None:
             await self.list(ctx)
             return
 
-        row = await pg.fetchrow(confessions.select().where(confessions.c.command == confession))  # type: ConfessionRow
+        query = confessions.select().where(confessions.c.command == confession.lower())
+        row = await pg.fetchrow(query)  # type: ConfessionRow
 
         if not row:
             await ctx.send_error_to_author(f'`{confession}` is not a valid confession.')
