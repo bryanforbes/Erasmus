@@ -116,6 +116,7 @@ class Confession(object):
 
         query = paragraph_select \
             .where(confessions.c.id == row['id']) \
+            .where(confession_chapters.c.chapter_number == int(match['chapter'])) \
             .where(confession_paragraphs.c.chapter_number == int(match['chapter'])) \
             .where(confession_paragraphs.c.paragraph_number == int(match['paragraph']))
 

@@ -1,8 +1,8 @@
-"""Add WCF
+"""Add Canons of Dort
 
-Revision ID: a1dbd23261c3
-Revises: 69e765223549
-Create Date: 2017-10-11 22:28:26.411628
+Revision ID: 43c0cf2239c4
+Revises: a1dbd23261c3
+Create Date: 2017-10-11 23:43:21.682227
 
 """
 from alembic import op
@@ -13,13 +13,13 @@ from collections import OrderedDict
 
 
 # revision identifiers, used by Alembic.
-revision = 'a1dbd23261c3'
-down_revision = '69e765223549'
+revision = '43c0cf2239c4'
+down_revision = 'a1dbd23261c3'
 branch_labels = None
 depends_on = None
 
-with (Path(__file__).resolve().parent.parent.parent / 'confessions' / 'wcf.json').open() as f:
-    wcf_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
+with (Path(__file__).resolve().parent.parent.parent / 'confessions' / 'dort.json').open() as f:
+    dort_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
 
 metadata = sa.MetaData()
 
@@ -46,11 +46,11 @@ def upgrade():
     conn = op.get_bind()
 
     result = conn.execute(confessions.insert(),
-                          dict(command='wcf', name='The Westminster Confession of Faith'))
+                          dict(command='dort', name='The Canons of Dort'))
 
     confession_id = result.inserted_primary_key[0]
 
-    for chapter_str, chapter in wcf_data['chapters'].items():
+    for chapter_str, chapter in dort_data['chapters'].items():
         chapter_number = int(chapter_str)
         conn.execute(confession_chapters.insert(),
                      dict(confession_id=confession_id, chapter_number=chapter_number,
@@ -65,7 +65,7 @@ def upgrade():
 def downgrade():
     conn = op.get_bind()
 
-    result = conn.execute(confessions.select().where(confessions.c.command == 'wcf'))
+    result = conn.execute(confessions.select().where(confessions.c.command == 'dort'))
     row = result.fetchone()
 
     conn.execute(confession_paragraphs.delete().where(confession_paragraphs.c.confession_id == row['id']))
