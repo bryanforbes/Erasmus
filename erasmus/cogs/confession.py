@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, List, AsyncIterable  # noqa
 from mypy_extensions import TypedDict
 
+import discord
 from discord.ext import commands
 from asyncpgsa import pg  # type: ignore
 import sqlalchemy as sa  # type: ignore
@@ -122,9 +123,8 @@ class Confession(object):
             await ctx.send_error_to_author(f'{row["name"]} does not have a paragraph {args[0]}')
             return
 
-        await ctx.send_to_author(f'''__**{paragraph["chapter_number"]}. {paragraph["title"]}**__
-
-**{paragraph["paragraph_number"]}.** {paragraph["text"]}''')
+        embed = discord.Embed(title=f'__**{paragraph["chapter_number"]}. {paragraph["title"]}**__')
+        await ctx.send_to_author(f'**{paragraph["paragraph_number"]}.** {paragraph["text"]}', embed=embed)
 
     async def list(self, ctx: 'Context') -> None:
         lines = ['I support the following confessions:', '']
@@ -148,7 +148,9 @@ class Confession(object):
         if len(lines) == 0:
             await ctx.send_error_to_author(f'`{confession}` has no chapters')
 
-        await ctx.send_to_author('\n'.join([f'__**{confession["name"]}**__', ''] + lines))
+        embed = discord.Embed(title=f'__**{confession["name"]}**__')
+
+        await ctx.send_to_author('\n'.join(lines), embed=embed)
 
     async def search(self, ctx: 'Context', confession: ConfessionRow, *terms: str) -> None:
         references = []  # type: List[str]
