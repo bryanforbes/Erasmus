@@ -18,7 +18,7 @@ down_revision = 'e7aff6447fbe'
 branch_labels = None
 depends_on = None
 
-with (Path(__file__).resolve().parent.parent.parent / 'confessions' / '1689.json').open() as f:
+with (Path(__file__).resolve().parent / f'{revision}_1689.json').open() as f:
     lbcf_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
 
 

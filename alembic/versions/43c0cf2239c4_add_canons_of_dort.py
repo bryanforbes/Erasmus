@@ -18,7 +18,7 @@ down_revision = 'a1dbd23261c3'
 branch_labels = None
 depends_on = None
 
-with (Path(__file__).resolve().parent.parent.parent / 'confessions' / 'dort.json').open() as f:
+with (Path(__file__).resolve().parent / f'{revision}_dort.json').open() as f:
     dort_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
 
 metadata = sa.MetaData()
