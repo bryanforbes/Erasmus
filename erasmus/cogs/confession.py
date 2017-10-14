@@ -160,7 +160,8 @@ class Confession(object):
 
         query = paragraph_search \
             .where(confessions.c.id == confession['id']) \
-            .where(sa.and_(*[confession_paragraphs.c.text.ilike(f'%{term}%') for term in terms]))
+            .where(sa.func.to_tsvector('english', confession_paragraphs.c.text)
+                   .match(' & '.join(terms), postgresql_regconfig='english'))
 
         async with pg.query(query) as results:  # AsyncIterable[SearchRow]
             references = [f'{result["chapter_number"]}.{result["paragraph_number"]}'
