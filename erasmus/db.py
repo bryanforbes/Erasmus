@@ -1,7 +1,7 @@
-from sqlalchemy import (
+from sqlalchemy import (  # type: ignore
     MetaData, Table, Column, Integer, String, ForeignKey, Boolean, BigInteger,
-    Text, Index, func
-)  # type: ignore
+    Text, Index, func, column
+)
 import sqlalchemy.types as types  # type: ignore
 from sqlalchemy.dialects.postgresql import insert  # type: ignore
 
@@ -64,4 +64,6 @@ confession_paragraphs = Table('confession_paragraphs', metadata,
                               Column('chapter_number', Integer),
                               Column('paragraph_number', Integer),
                               Column('text', Text),
-                              Index('text_idx', func.to_tsvector('english', 'text'), postgresql_using='gin'))
+                              Index('confession_paragraphs_text_idx',
+                                    func.to_tsvector('english', column('text')),
+                                    postgresql_using='gin'))

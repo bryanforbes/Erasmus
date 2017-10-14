@@ -17,9 +17,10 @@ depends_on = None
 
 
 def upgrade():
-    op.create_index('text_idx', 'confession_paragraphs',
-                    [sa.text("to_tsvector('english', 'text')")], postgresql_using='gin')
+    op.create_index('confession_paragraphs_text_idx', 'confession_paragraphs',
+                    [sa.text("to_tsvector('english', text)")],
+                    postgresql_using='gin')
 
 
 def downgrade():
-    op.drop_index('text_idx', 'confession_paragraphs')
+    op.drop_index('confession_paragraphs_text_idx', 'confession_paragraphs')
