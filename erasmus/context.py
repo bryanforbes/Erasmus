@@ -1,3 +1,4 @@
+from typing import List
 import discord
 from discord.ext import commands
 from .data import Passage
@@ -45,3 +46,12 @@ class Context(commands.Context):
             mention = self.author.mention
 
         return await self.send(mention, embed=embed)
+
+    async def send_pages_to_author(self, pages: List[str], *, embed: discord.Embed = None) -> List[discord.Message]:
+        messages = []
+
+        for page in pages:
+            messages.append(await self.send_to_author(page, embed=embed))
+            embed = None
+
+        return messages

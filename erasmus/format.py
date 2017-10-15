@@ -1,10 +1,15 @@
 from typing import Callable, List, Iterable, Tuple, Set, TypeVar, Iterator  # noqa
+from mypy_extensions import Arg, DefaultNamedArg
 from discord.ext import commands
 
 
-def pluralizer(word: str, suffix: str = 's') -> Callable[[int], str]:
-    def pluralize(value: int) -> str:
-        result = f'{value} {word}'
+def pluralizer(word: str, suffix: str = 's') -> \
+        Callable[[Arg(int, 'value'), DefaultNamedArg(bool, 'include_number')], str]:
+    def pluralize(value: int, *, include_number: bool = True) -> str:
+        if include_number:
+            result = f'{value} {word}'
+        else:
+            result = word
 
         if value == 0 or value > 1:
             result = f'{result}{suffix}'

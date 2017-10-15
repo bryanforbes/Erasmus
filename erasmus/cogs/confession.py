@@ -28,7 +28,10 @@ reference_res = {
     ConfessType.QA: re.compile(re.START,
                                re.optional(re.named_group('qa')('[qaQA]')),
                                re.named_group('number')(re.one_or_more(re.DIGITS)),
-                               re.END)
+                               re.END),
+    ConfessType.ARTICLES: re.compile(re.START,
+                                     re.named_group('article')(re.one_or_more(re.DIGITS)),
+                                     re.END)
 }
 
 
@@ -61,6 +64,11 @@ Examples:
         {prefix}confess hc a3
         {prefix}confess hc 3
 '''
+
+
+class Paginator(commands.Paginator):
+    def __init__(self, prefix: str = '', suffix: str = '', max_size: int = 2048) -> None:
+        super().__init__(prefix, suffix, max_size)
 
 
 class Confession(object):
@@ -127,40 +135,43 @@ class Confession(object):
         await ctx.send_to_author(output, embed=embed)
 
     async def list(self, ctx: 'Context') -> None:
-        lines = ['I support the following confessions:', '']
+        paginator = Paginator()
+        paginator.add_line('I support the following confessions:', empty=True)
 
         async with get_confessions() as confs:
-            lines += [f'  `{conf["command"]}`: {conf["name"]}' async for conf in confs]
+            async for conf in confs:
+                paginator.add_line(f'  `{conf["command"]}`: {conf["name"]}')
 
-        output = '\n'.join(lines)
-        await ctx.send_to_author(f'\n{output}\n')
+        await ctx.send_pages_to_author(paginator.pages)
 
     async def chapters(self, ctx: 'Context', confession: ConfessionRow) -> None:
-        lines = []  # type: List[str]
+        paginator = Paginator()
 
         async with get_chapters(confession) as chapters:
-            lines = [f'**{chapter["chapter_number"]}**. {chapter["chapter_title"]}' async for chapter in chapters]
+            async for chapter in chapters:
+                paginator.add_line(f'**{chapter["chapter_number"]}**. {chapter["chapter_title"]}')
 
-        if len(lines) == 0:
+        if len(paginator.pages) == 0:
             await ctx.send_error_to_author(f'`{confession["name"]}` has no chapters')
 
         embed = discord.Embed(title=f'__**{confession["name"]}**__')
 
-        await ctx.send_to_author('\n'.join(lines), embed=embed)
+        await ctx.send_pages_to_author(paginator.pages, embed=embed)
 
     async def questions(self, ctx: 'Context', confession: ConfessionRow) -> None:
         count = await get_question_count(confession)
         question_str = pluralize_question(count)
 
-        await ctx.send_error_to_author(f'`{confession["name"]}` has {question_str}')
+        await ctx.send_to_author(f'`{confession["name"]}` has {question_str}')
 
     async def search(self, ctx: 'Context', confession: ConfessionRow, *terms: str) -> None:
+        references_str = None  # type: str
         references = []  # type: List[str]
         reference_type = None  # type: str
 
         if confession['type'] == ConfessType.CHAPTERS or confession['type'] == ConfessType.ARTICLES:
             if confession['type'] == ConfessType.CHAPTERS:
-                reference_pluralizer = pluralize_question
+                reference_pluralizer = pluralize_paragraph
                 reference_pattern = '{chapter}.{paragraph}'
             else:
                 reference_pluralizer = pluralize_article
@@ -171,22 +182,36 @@ class Confession(object):
                                                        paragraph=result['paragraph_number'])
                               async for result in chapter_results]
 
-            reference_type = reference_pluralizer(len(references))
+            reference_type = reference_pluralizer(len(references), include_number=False)
+            references_str = ', '.join(references)
+
+            matches = pluralize_match(len(references))
+            output = f'I have found {matches}'
+
+            if len(references) > 0:
+                output += f' in the following {reference_type}:\n\n'
+                output += references_str
+
+            await ctx.send_to_author(output)
 
         elif confession['type'] == ConfessType.QA:
+            paginator = Paginator()
             async with search_qas(confession, terms) as qa_results:
-                references = [str(result['question_number']) async for result in qa_results]
+                references = [f'**{result["question_number"]}**. {result["question_text"]}'
+                              async for result in qa_results]
 
-            reference_type = pluralize_question(len(references))
+            matches = pluralize_match(len(references))
+            output = f'I have found {matches}'
 
-        matches = pluralize_match(len(references))
-        output = f'I have found {matches}'
+            if len(references) > 0:
+                output += ' in the following {}:'.format(pluralize_question(len(references), include_number=False))
 
-        if len(references) > 0:
-            output += f' in the following {reference_type}:\n\n'
-            output += ', '.join(references)
+            paginator.add_line(output, empty=True)
 
-        await ctx.send_to_author(output)
+            for reference in references:
+                paginator.add_line(reference)
+
+            await ctx.send_pages_to_author(paginator.pages)
 
 
 def setup(bot: 'Erasmus') -> None:

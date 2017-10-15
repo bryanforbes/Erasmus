@@ -118,8 +118,8 @@ confess_paragraphs = Table('confess_paragraphs', metadata,
                            Column('id', Integer, primary_key=True),
                            Column('confess_id', Integer,
                                   ForeignKey('confesses.id'), nullable=False),
-                           Column('chapter_number', Integer),
-                           Column('paragraph_number', Integer, nullable=False),
+                           Column('chapter_number', Integer, nullable=False),
+                           Column('paragraph_number', Integer),
                            Column('text', Text, nullable=False),
                            Index('confess_paragraphs_text_idx',
                                  func.to_tsvector('english', 'text'),
@@ -151,10 +151,10 @@ class ChapterRow(TypedDict):
 
 class QASearchRow(TypedDict):
     question_number: int
+    question_text: str
 
 
 class QARow(QASearchRow):
-    question_text: str
     answer_text: str
 
 
@@ -175,9 +175,12 @@ class ParagraphRow(ParagraphSearchRow):
 _ACMT = TypeVar('_ACMT')
 AsyncIterableContextManager = AsyncContextManager[AsyncIterable[_ACMT]]
 
+_select_confessions = confesses.select() \
+    .order_by(confesses.c.command.asc())
+
 
 def get_confessions() -> AsyncIterableContextManager[ConfessionRow]:
-    return pg.query(confesses.select().order_by(confesses.c.command.asc()))
+    return pg.query(_select_confessions)
 
 
 _select_confession = select([confesses.c.id,
@@ -225,7 +228,8 @@ async def get_paragraph(confession: ConfessionRow, chapter: int, paragraph: int)
 
 _paragraph_search = select([confess_paragraphs.c.chapter_number,
                             confess_paragraphs.c.paragraph_number]) \
-    .select_from(confess_paragraphs.join(confesses))
+    .select_from(confess_paragraphs.join(confesses)) \
+    .order_by(confess_paragraphs.c.chapter_number.asc())
 
 
 def search_paragraphs(confession: ConfessionRow, terms: Sequence[str]) -> \
@@ -234,6 +238,16 @@ def search_paragraphs(confession: ConfessionRow, terms: Sequence[str]) -> \
                     .where(confesses.c.id == confession['id'])
                     .where(func.to_tsvector('english', confess_paragraphs.c.text)
                            .match(' & '.join(terms), postgresql_regconfig='english')))
+
+
+_questions_select = select([confess_qas.c.question_number,
+                            confess_qas.c.question_text]) \
+    .select_from(confess_qas.join(confesses)) \
+    .order_by(confess_qas.c.question_number.asc())
+
+
+def get_questions(confession: ConfessionRow) -> AsyncIterableContextManager[QASearchRow]:
+    return pg.query(_questions_select.where(confesses.c.id == confession['id']))
 
 
 _questions_count = select([func.count(confess_qas.c.id).label('num_questions')])
@@ -256,8 +270,10 @@ async def get_question(confession: ConfessionRow, question_number: int) -> QARow
                              .where(confess_qas.c.question_number == question_number))
 
 
-_qas_search = select([confess_qas.c.question_number]) \
-    .select_from(confess_qas.join(confesses))
+_qas_search = select([confess_qas.c.question_number,
+                      confess_qas.c.question_text]) \
+    .select_from(confess_qas.join(confesses)) \
+    .order_by(confess_qas.c.question_number.asc())
 
 
 def search_qas(confession: ConfessionRow, terms: Sequence[str]) -> \
