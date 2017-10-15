@@ -1,12 +1,12 @@
-from typing import TYPE_CHECKING, List, AsyncIterable  # noqa
-from mypy_extensions import TypedDict
+from typing import TYPE_CHECKING, List  # noqa
 
 import discord
 from discord.ext import commands
-from asyncpgsa import pg  # type: ignore
-import sqlalchemy as sa  # type: ignore
 
-from ..db import confessions, confession_chapters, confession_paragraphs
+from ..db import (
+    ConfessType, ConfessionRow, get_confessions, get_confession, get_chapters,
+    get_paragraph, search_paragraphs, search_qas, get_question_count, get_question
+)
 from ..format import pluralizer
 from .. import re
 
@@ -15,48 +15,21 @@ if TYPE_CHECKING:  # pragma: no cover
     from ..context import Context  # noqa
 
 pluralize_match = pluralizer('match', 'es')
+pluralize_paragraph = pluralizer('paragraph', 's')
+pluralize_question = pluralizer('question', 's')
+pluralize_article = pluralizer('article', 's')
 
-chapters_select = sa.select([confession_chapters.c.chapter_number,
-                             confession_chapters.c.title]) \
-    .select_from(confession_chapters.join(confessions)) \
-    .order_by(confession_chapters.c.chapter_number.asc())
-
-paragraph_select = sa.select([confession_chapters.c.title,
-                              confession_paragraphs.c.chapter_number,
-                              confession_paragraphs.c.paragraph_number,
-                              confession_paragraphs.c.text]) \
-    .select_from(confession_paragraphs.join(confessions).join(confession_chapters))
-
-paragraph_search = sa.select([confession_paragraphs.c.chapter_number,
-                              confession_paragraphs.c.paragraph_number]) \
-    .select_from(confession_paragraphs.join(confessions))
-
-reference_re = re.compile(re.START,
-                          re.named_group('chapter')(re.one_or_more(re.DIGITS)),
-                          re.DOT,
-                          re.named_group('paragraph')(re.one_or_more(re.DIGITS)),
-                          re.END)
-
-
-class ConfessionRow(TypedDict):
-    id: int
-    command: str
-    name: str
-
-
-class ChapterRow(TypedDict):
-    chapter_number: int
-    title: str
-
-
-class SearchRow(TypedDict):
-    chapter_number: int
-    paragraph_number: int
-
-
-class ParagraphRow(SearchRow):
-    title: str
-    text: str
+reference_res = {
+    ConfessType.CHAPTERS: re.compile(re.START,
+                                     re.named_group('chapter')(re.one_or_more(re.DIGITS)),
+                                     re.DOT,
+                                     re.named_group('paragraph')(re.one_or_more(re.DIGITS)),
+                                     re.END),
+    ConfessType.QA: re.compile(re.START,
+                               re.optional(re.named_group('qa')('[qaQA]')),
+                               re.named_group('number')(re.one_or_more(re.DIGITS)),
+                               re.END)
+}
 
 
 confess_help = '''
@@ -74,11 +47,19 @@ Examples:
     List the chapters of a confession:
         {prefix}confess 1689
 
-    Search for terms in a confession:
+    Show the number of questions in a catechism:
+        {prefix}confess hc
+
+    Search for terms in a confession/catechism:
         {prefix}confess 1689 faith hope
 
     Look up the paragraph of a confession:
         {prefix}confess 1689 2.2
+
+    Look up a question, answer, or both in a catechism:
+        {prefix}confess hc q3
+        {prefix}confess hc a3
+        {prefix}confess hc 3
 '''
 
 
@@ -91,50 +72,64 @@ class Confession(object):
         self.bot = bot
 
     @commands.command(brief='Query confessions', help=confess_help)
-    @commands.cooldown(rate=4, per=60.0, type=commands.BucketType.user)
+    @commands.cooldown(rate=4, per=30.0, type=commands.BucketType.user)
     async def confess(self, ctx: 'Context', confession: str = None, *args: str) -> None:
         if confession is None:
             await self.list(ctx)
             return
 
-        query = confessions.select().where(confessions.c.command == confession.lower())
-        row = await pg.fetchrow(query)  # type: ConfessionRow
+        row = await get_confession(confession)
 
         if not row:
             await ctx.send_error_to_author(f'`{confession}` is not a valid confession.')
             return
 
         if len(args) == 0:
-            await self.chapters(ctx, row)
+            if row['type'] == ConfessType.CHAPTERS:
+                await self.chapters(ctx, row)
+            elif row['type'] == ConfessType.QA:
+                await self.questions(ctx, row)
             return
 
-        match = reference_re.match(args[0])
+        match = reference_res[row['type']].match(args[0])
 
         if not match:
             await self.search(ctx, row, *args)
             return
 
-        query = paragraph_select \
-            .where(confessions.c.id == row['id']) \
-            .where(confession_chapters.c.chapter_number == int(match['chapter'])) \
-            .where(confession_paragraphs.c.chapter_number == int(match['chapter'])) \
-            .where(confession_paragraphs.c.paragraph_number == int(match['paragraph']))
+        embed = None  # type: discord.Embed
+        output = None  # type: str
 
-        paragraph = await pg.fetchrow(query)  # type: ParagraphRow
+        if row['type'] == ConfessType.CHAPTERS:
+            paragraph = await get_paragraph(row, int(match['chapter']), int(match['paragraph']))
+            if not paragraph:
+                await ctx.send_error_to_author(f'{row["name"]} does not have a paragraph {args[0]}')
+                return
 
-        if not paragraph:
-            await ctx.send_error_to_author(f'{row["name"]} does not have a paragraph {args[0]}')
-            return
+            embed = discord.Embed(title=f'__**{paragraph["chapter_number"]}. {paragraph["chapter_title"]}**__')
+            output = f'**{paragraph["paragraph_number"]}.** {paragraph["text"]}'
 
-        embed = discord.Embed(title=f'__**{paragraph["chapter_number"]}. {paragraph["title"]}**__')
-        await ctx.send_to_author(f'**{paragraph["paragraph_number"]}.** {paragraph["text"]}', embed=embed)
+        elif row['type'] == ConfessType.QA:
+            q_or_a = match['qa']
+            question_number = int(match['number'])
+            question = await get_question(row, question_number)
+
+            if q_or_a is None:
+                embed = discord.Embed(title=f'__**{question["question_number"]}. {question["question_text"]}**__')
+                output_str = '{answer_text}'
+            elif q_or_a.lower() == 'q':
+                output_str = '**Q{question_number}**. {question_text}'
+            else:
+                output_str = '**A{question_number}**: {answer_text}'
+
+            output = output_str.format(**question)
+
+        await ctx.send_to_author(output, embed=embed)
 
     async def list(self, ctx: 'Context') -> None:
         lines = ['I support the following confessions:', '']
 
-        query = confessions.select().order_by(confessions.c.command.asc())
-
-        async with pg.query(query) as confs:  # type: AsyncIterable[ConfessionRow]
+        async with get_confessions() as confs:
             lines += [f'  `{conf["command"]}`: {conf["name"]}' async for conf in confs]
 
         output = '\n'.join(lines)
@@ -143,35 +138,52 @@ class Confession(object):
     async def chapters(self, ctx: 'Context', confession: ConfessionRow) -> None:
         lines = []  # type: List[str]
 
-        query = chapters_select.where(confessions.c.id == confession['id'])
-
-        async with pg.query(query) as chapters:  # type: AsyncIterable[ChapterRow]
-            lines = [f'**{chapter["chapter_number"]}**. {chapter["title"]}' async for chapter in chapters]
+        async with get_chapters(confession) as chapters:
+            lines = [f'**{chapter["chapter_number"]}**. {chapter["chapter_title"]}' async for chapter in chapters]
 
         if len(lines) == 0:
-            await ctx.send_error_to_author(f'`{confession}` has no chapters')
+            await ctx.send_error_to_author(f'`{confession["name"]}` has no chapters')
 
         embed = discord.Embed(title=f'__**{confession["name"]}**__')
 
         await ctx.send_to_author('\n'.join(lines), embed=embed)
 
+    async def questions(self, ctx: 'Context', confession: ConfessionRow) -> None:
+        count = await get_question_count(confession)
+        question_str = pluralize_question(count)
+
+        await ctx.send_error_to_author(f'`{confession["name"]}` has {question_str}')
+
     async def search(self, ctx: 'Context', confession: ConfessionRow, *terms: str) -> None:
         references = []  # type: List[str]
+        reference_type = None  # type: str
 
-        query = paragraph_search \
-            .where(confessions.c.id == confession['id']) \
-            .where(sa.func.to_tsvector('english', confession_paragraphs.c.text)
-                   .match(' & '.join(terms), postgresql_regconfig='english'))
+        if confession['type'] == ConfessType.CHAPTERS or confession['type'] == ConfessType.ARTICLES:
+            if confession['type'] == ConfessType.CHAPTERS:
+                reference_pluralizer = pluralize_question
+                reference_pattern = '{chapter}.{paragraph}'
+            else:
+                reference_pluralizer = pluralize_article
+                reference_pattern = '{paragraph}'
 
-        async with pg.query(query) as results:  # AsyncIterable[SearchRow]
-            references = [f'{result["chapter_number"]}.{result["paragraph_number"]}'
-                          async for result in results]
+            async with search_paragraphs(confession, terms) as chapter_results:
+                references = [reference_pattern.format(chapter=result['chapter_number'],
+                                                       paragraph=result['paragraph_number'])
+                              async for result in chapter_results]
+
+            reference_type = reference_pluralizer(len(references))
+
+        elif confession['type'] == ConfessType.QA:
+            async with search_qas(confession, terms) as qa_results:
+                references = [str(result['question_number']) async for result in qa_results]
+
+            reference_type = pluralize_question(len(references))
 
         matches = pluralize_match(len(references))
         output = f'I have found {matches}'
 
         if len(references) > 0:
-            output += ' in the following paragraphs:\n\n'
+            output += f' in the following {reference_type}:\n\n'
             output += ', '.join(references)
 
         await ctx.send_to_author(output)
