@@ -41,7 +41,7 @@ Arguments:
 
 Examples:
 ---------
-    List all confessions:
+    List all confessions/catechisms:
         {prefix}confess
 
     List the chapters of a confession:
