@@ -2,9 +2,11 @@ from typing import Callable, List, Iterable, Tuple, Set, TypeVar, Iterator  # no
 from mypy_extensions import Arg, DefaultNamedArg
 from discord.ext import commands
 
+PluralizerType = Callable[[Arg(int, 'value'),
+                           DefaultNamedArg(bool, 'include_number')], str]
 
-def pluralizer(word: str, suffix: str = 's') -> \
-        Callable[[Arg(int, 'value'), DefaultNamedArg(bool, 'include_number')], str]:
+
+def pluralizer(word: str, suffix: str = 's') -> PluralizerType:
     def pluralize(value: int, *, include_number: bool = True) -> str:
         if include_number:
             result = f'{value} {word}'
@@ -17,6 +19,21 @@ def pluralizer(word: str, suffix: str = 's') -> \
         return result
 
     return pluralize
+
+
+_roman_pairs = (("M", 1000), ("CM", 900), ("D", 500), ("CD", 400),
+                ("C", 100), ("XC", 90), ("L", 50), ("XL", 40), ("X", 10),
+                ("IX", 9), ("V", 5), ("IV", 4), ("I", 1))
+
+
+def romanize(number: int) -> str:
+    numerals = []  # type: List[str]
+
+    for letter, value in _roman_pairs:
+        count, number = divmod(number, value)
+        numerals.append(letter * count)
+
+    return ''.join(numerals)
 
 
 def unique_seen(iterable: Iterable[Tuple[str, commands.Command]]) -> Iterator[Tuple[str, commands.Command]]:
