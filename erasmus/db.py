@@ -36,8 +36,16 @@ class ConfessType(Enum):
         return '<%s.%s>' % (self.__class__.__name__, self.name)
 
 
+class NumberingType(Enum):
+    ARABIC = 'ARABIC'
+    ROMAN = 'ROMAN'
+
+    def __repr__(self):
+        return '<%s.%s>' % (self.__class__.__name__, self.name)
+
+
 class ConfessValue(types.TypeDecorator):
-    impl = types.String
+    impl = types.String(20)
 
     def process_bind_param(self, value, dialect):
         print('here as well')
@@ -105,7 +113,10 @@ confesses = Table('confesses', metadata,
                   Column('command', String, unique=True),
                   Column('name', String, nullable=False),
                   Column('type_id', Integer,
-                         ForeignKey('confess_types.id'), nullable=False))
+                         ForeignKey('confess_types.id'), nullable=False),
+                  Column('numbering_id', Integer,
+                         ForeignKey('confess_article_numberings.id'),
+                         nullable=False))
 
 confess_chapters = Table('confess_chapters', metadata,
                          Column('id', Integer, primary_key=True),
@@ -119,7 +130,7 @@ confess_paragraphs = Table('confess_paragraphs', metadata,
                            Column('confess_id', Integer,
                                   ForeignKey('confesses.id'), nullable=False),
                            Column('chapter_number', Integer, nullable=False),
-                           Column('paragraph_number', Integer),
+                           Column('paragraph_number', Integer, nullable=False),
                            Column('text', Text, nullable=False),
                            Index('confess_paragraphs_text_idx',
                                  func.to_tsvector('english', 'text'),
@@ -135,6 +146,21 @@ confess_qas = Table('confess_qas', metadata,
                     Index('confess_qas_text_idx',
                           func.to_tsvector('english', "question_text || ' ' || answer_text"),
                           postgresql_using='gin'))
+
+confess_article_numberings = Table('confess_article_numberings', metadata,
+                                   Column('id', Integer, primary_key=True),
+                                   Column('numbering', String(20), unique=True, nullable=False))
+
+confess_articles = Table('confess_articles', metadata,
+                         Column('id', Integer, primary_key=True),
+                         Column('confess_id', Integer,
+                                ForeignKey('confesses.id'), nullable=False),
+                         Column('article_number', Integer, nullable=False),
+                         Column('title', String, nullable=False),
+                         Column('text', Text, nullable=False),
+                         Index('confess_paragraphs_text_idx',
+                               func.to_tsvector('english', 'text'),
+                               postgresql_using='gin'))
 
 
 class ConfessionRow(TypedDict):
@@ -169,6 +195,15 @@ class ParagraphSearchRow(TypedDict):
 
 class ParagraphRow(ParagraphSearchRow):
     chapter_title: str
+    text: str
+
+
+class ArticleSearchRow(TypedDict):
+    article_number: int
+    title: str
+
+
+class ArticleRow(ArticleSearchRow):
     text: str
 
 
@@ -282,4 +317,34 @@ def search_qas(confession: ConfessionRow, terms: Sequence[str]) -> \
                     .where(confesses.c.id == confession['id'])
                     .where(func.to_tsvector('english',
                                             confess_qas.c.question_text + ' ' + confess_qas.c.answer_text)
+                           .match(' & '.join(terms), postgresql_regconfig='english')))
+
+
+_articles_select = select([confess_articles.c.article_number,
+                           confess_articles.c.title]) \
+    .select_from(confess_articles.join(confesses)) \
+    .order_by(confess_articles.c.article_number.asc())
+
+
+def get_articles(confession: ConfessionRow) -> AsyncIterableContextManager[ArticleSearchRow]:
+    return pg.query(_articles_select.where(confesses.c.id == confession['id']))
+
+
+_article_select = select([confess_articles.c.article_number,
+                          confess_articles.c.title,
+                          confess_articles.c.text]) \
+    .select_from(confess_articles.join(confesses))
+
+
+async def get_article(confession: ConfessionRow, article_number: int) -> ArticleRow:
+    return await pg.fetchrow(_article_select
+                             .where(confesses.c.id == confession['id'])
+                             .where(confess_articles.c.article_number == article_number))
+
+
+def search_articles(confession: ConfessionRow, terms: Sequence[str]) -> \
+        AsyncIterableContextManager[ArticleSearchRow]:
+    return pg.query(_articles_select
+                    .where(confesses.c.id == confession['id'])
+                    .where(func.to_tsvector('english', confess_articles.c.text)
                            .match(' & '.join(terms), postgresql_regconfig='english')))
