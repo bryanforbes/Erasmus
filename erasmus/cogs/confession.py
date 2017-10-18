@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, List, Callable, Sequence, AsyncContextManager, AsyncIterable, Any  # noqa
+from typing import TYPE_CHECKING, List, Callable, Sequence, AsyncContextManager, AsyncIterable, Any  # noqa: F401
 
 import discord
 from discord.ext import commands
@@ -196,10 +196,10 @@ class Confession(object):
         await ctx.send_pages_to_author(paginator.pages, embed=embed)
 
     async def search(self, ctx: 'Context', confession: ConfessionRow, *terms: str) -> None:
-        pluralize_type = None  # type: PluralizerType
-        references = []  # type: List[str]
-        reference_pattern = None  # type: str
-        search_func = None  # type: Callable[[ConfessionRow, Sequence[str]], AsyncContextManager[AsyncIterable[Any]]]
+        pluralize_type: PluralizerType = None
+        references: List[str] = []
+        reference_pattern: str = None
+        search_func: Callable[[ConfessionRow, Sequence[str]], AsyncContextManager[AsyncIterable[Any]]] = None
         paginate = True
 
         pluralize_type = pluralizers[confession['type']]
