@@ -117,6 +117,8 @@ class Confession(object):
         embed = None  # type: discord.Embed
         output = None  # type: str
 
+        paginator = Paginator()
+
         if row['type'] == ConfessionType.CHAPTERS:
             paragraph = await get_paragraph(row, int(match['chapter']), int(match['paragraph']))
             if not paragraph:
@@ -152,7 +154,18 @@ class Confession(object):
             embed = discord.Embed(title=f'__**{article["article_number"]}. {article["title"]}**__')
             output = article['text']
 
-        await ctx.send_to_author(output, embed=embed)
+        while len(output) > 0:
+            if len(output) > paginator.max_size:
+                index = output.rfind(' ', 0, paginator.max_size)
+                line = output[:index]
+                output = output[index + 1:]
+            else:
+                line = output
+                output = ''
+
+            paginator.add_line(line)
+
+        await ctx.send_pages_to_author(paginator.pages, embed=embed)
 
     async def list(self, ctx: 'Context') -> None:
         paginator = Paginator()
