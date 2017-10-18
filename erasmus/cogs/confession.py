@@ -4,8 +4,8 @@ import discord
 from discord.ext import commands
 
 from ..db import (
-    ConfessType, ConfessionRow, get_confessions, get_confession, get_chapters,
-    get_paragraph, search_paragraphs, search_qas, get_question_count, get_question,
+    ConfessionType, Confession as ConfessionRow, get_confessions, get_confession, get_chapters,
+    get_paragraph, search_paragraphs, search_questions, get_question_count, get_question,
     get_articles, get_article, search_articles
 )
 from ..format import pluralizer, PluralizerType  # noqa
@@ -21,24 +21,24 @@ pluralize_question = pluralizer('question', 's')
 pluralize_article = pluralizer('article', 's')
 
 reference_res = {
-    ConfessType.CHAPTERS: re.compile(re.START,
-                                     re.named_group('chapter')(re.one_or_more(re.DIGITS)),
-                                     re.DOT,
-                                     re.named_group('paragraph')(re.one_or_more(re.DIGITS)),
-                                     re.END),
-    ConfessType.QA: re.compile(re.START,
-                               re.optional(re.named_group('qa')('[qaQA]')),
-                               re.named_group('number')(re.one_or_more(re.DIGITS)),
-                               re.END),
-    ConfessType.ARTICLES: re.compile(re.START,
-                                     re.named_group('article')(re.one_or_more(re.DIGITS)),
-                                     re.END)
+    ConfessionType.CHAPTERS: re.compile(re.START,
+                                        re.named_group('chapter')(re.one_or_more(re.DIGITS)),
+                                        re.DOT,
+                                        re.named_group('paragraph')(re.one_or_more(re.DIGITS)),
+                                        re.END),
+    ConfessionType.QA: re.compile(re.START,
+                                  re.optional(re.named_group('qa')('[qaQA]')),
+                                  re.named_group('number')(re.one_or_more(re.DIGITS)),
+                                  re.END),
+    ConfessionType.ARTICLES: re.compile(re.START,
+                                        re.named_group('article')(re.one_or_more(re.DIGITS)),
+                                        re.END)
 }
 
 pluralizers = {
-    ConfessType.CHAPTERS: pluralizer('paragraph'),
-    ConfessType.ARTICLES: pluralizer('article'),
-    ConfessType.QA: pluralizer('question')
+    ConfessionType.CHAPTERS: pluralizer('paragraph'),
+    ConfessionType.ARTICLES: pluralizer('article'),
+    ConfessionType.QA: pluralizer('question')
 }
 
 
@@ -100,11 +100,11 @@ class Confession(object):
             return
 
         if len(args) == 0:
-            if row['type'] == ConfessType.CHAPTERS:
+            if row['type'] == ConfessionType.CHAPTERS:
                 await self.chapters(ctx, row)
-            elif row['type'] == ConfessType.QA:
+            elif row['type'] == ConfessionType.QA:
                 await self.questions(ctx, row)
-            elif row['type'] == ConfessType.ARTICLES:
+            elif row['type'] == ConfessionType.ARTICLES:
                 await self.articles(ctx, row)
             return
 
@@ -117,7 +117,7 @@ class Confession(object):
         embed = None  # type: discord.Embed
         output = None  # type: str
 
-        if row['type'] == ConfessType.CHAPTERS:
+        if row['type'] == ConfessionType.CHAPTERS:
             paragraph = await get_paragraph(row, int(match['chapter']), int(match['paragraph']))
             if not paragraph:
                 await ctx.send_error_to_author(f'{row["name"]} does not have a paragraph {args[0]}')
@@ -126,7 +126,7 @@ class Confession(object):
             embed = discord.Embed(title=f'__**{paragraph["chapter_number"]}. {paragraph["chapter_title"]}**__')
             output = f'**{paragraph["paragraph_number"]}.** {paragraph["text"]}'
 
-        elif row['type'] == ConfessType.QA:
+        elif row['type'] == ConfessionType.QA:
             q_or_a = match['qa']
             question_number = int(match['number'])
             question = await get_question(row, question_number)
@@ -141,7 +141,7 @@ class Confession(object):
 
             output = output_str.format(**question)
 
-        elif row['type'] == ConfessType.ARTICLES:
+        elif row['type'] == ConfessionType.ARTICLES:
             article_number = int(match['article'])
             article = await get_article(row, article_number)
 
@@ -204,19 +204,19 @@ class Confession(object):
 
         pluralize_type = pluralizers[confession['type']]
 
-        if confession['type'] == ConfessType.ARTICLES:
+        if confession['type'] == ConfessionType.ARTICLES:
             reference_pattern = '**{article_number}**. {title}'
             search_func = search_articles
-        elif confession['type'] == ConfessType.CHAPTERS:
+        elif confession['type'] == ConfessionType.CHAPTERS:
             reference_pattern = '{chapter_number}.{paragraph_number}'
             search_func = search_paragraphs
             paginate = False
-        elif confession['type'] == ConfessType.QA:
+        elif confession['type'] == ConfessionType.QA:
             reference_pattern = '**{question_number}**. {question_text}'
-            search_func = search_qas
+            search_func = search_questions
 
         async with search_func(confession, terms) as results:
-            references = [reference_pattern.format(*result) async for result in results]
+            references = [reference_pattern.format(**result) async for result in results]
 
         matches = pluralize_match(len(references))
         first_line = f'I have found {matches}'

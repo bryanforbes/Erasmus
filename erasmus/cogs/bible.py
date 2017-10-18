@@ -2,10 +2,8 @@ from typing import TYPE_CHECKING
 
 import discord
 from discord.ext import commands
-from asyncpgsa import pg  # type: ignore
-from asyncpg.exceptions import UniqueViolationError  # type: ignore
 
-from ..db import bible_versions, user_prefs, insert
+from ..db import get_bibles, get_bible, get_user_bible, set_user_bible, add_bible, delete_bible, UniqueViolationError
 from ..data import VerseRange
 from ..format import pluralizer
 from ..service_manager import ServiceManager, Bible as BibleObject
@@ -16,9 +14,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from ..context import Context  # noqa
 
 pluralize_match = pluralizer('match', 'es')
-
-user_bible_select = bible_versions.select() \
-    .select_from(bible_versions.join(user_prefs))
 
 
 def dm_only():
@@ -106,7 +101,7 @@ class Bible(object):
         self.bot.loop.run_until_complete(self._init())
 
     async def _init(self) -> None:
-        async with pg.query(bible_versions.select()) as versions:
+        async with get_bibles() as versions:
             async for version in versions:
                 self._add_bible_commands(version['command'], version['name'])
 
@@ -114,7 +109,7 @@ class Bible(object):
                       brief='Look up a verse in your preferred version',
                       help=lookup_help)
     async def lookup(self, ctx: 'Context', *, reference: VerseRange) -> None:
-        bible = await pg.fetchrow(user_bible_select.where(user_prefs.c.user_id == ctx.author.id))
+        bible = await get_user_bible(ctx.author.id)
 
         if not bible:
             await ctx.send_error_to_author(f'You must first set your default version with `{ctx.prefix}setversion`')
@@ -126,7 +121,7 @@ class Bible(object):
                       brief='Search for terms in your preferred version',
                       help=search_help)
     async def search(self, ctx: 'Context', *terms: str) -> None:
-        bible = await pg.fetchrow(user_bible_select.where(user_prefs.c.user_id == ctx.author.id))
+        bible = await get_user_bible(ctx.author.id)
         if not bible:
             await ctx.send_error_to_author(f'You must first set your default version with `{ctx.prefix}setversion`')
             return
@@ -138,8 +133,7 @@ class Bible(object):
     async def versions(self, ctx: 'Context') -> None:
         lines = ['I support the following Bible versions:', '']
 
-        async with pg.query(bible_versions.select()
-                            .order_by(bible_versions.c.command.asc())) as versions:
+        async with get_bibles(ordered=True) as versions:
             lines += [f'  `{ctx.prefix}{version["command"]}`: {version["name"]}' async for version in versions]
 
         lines.append("\nYou can search any version by prefixing the version command with 's' "
@@ -155,19 +149,14 @@ class Bible(object):
         if version[0] == ctx.prefix:
             version = version[1:]
 
-        existing = await pg.fetchrow(bible_versions.select()
-                                     .where(bible_versions.c.command == version))
+        existing = await get_bible(version)
 
         if not existing:
             await ctx.send_error_to_author(f'`{version}` is not a valid version.'
                                            f'Check `{ctx.prefix}versions` for valid versions')
             return
 
-        await pg.execute(insert(user_prefs)
-                         .values(user_id=ctx.author.id,
-                                 bible_id=existing['id'])
-                         .on_conflict_do_update(index_elements=[user_prefs.c.user_id],
-                                                set_=dict(bible_id=existing['id'])))
+        await set_user_bible(ctx.author.id, existing)
 
         await ctx.send_to_author(f'Version set to `{version}`')
 
@@ -181,12 +170,12 @@ class Bible(object):
             return
 
         try:
-            await pg.execute(bible_versions.insert().values(command=command,
-                                                            name=name,
-                                                            abbr=abbr,
-                                                            service=service,
-                                                            service_version=service_version,
-                                                            rtl=rtl))
+            await add_bible(command=command,
+                            name=name,
+                            abbr=abbr,
+                            service=service,
+                            service_version=service_version,
+                            rtl=rtl)
         except UniqueViolationError:
             await ctx.send_error_to_author(f'`{command}` already exists')
         else:
@@ -197,23 +186,20 @@ class Bible(object):
     @dm_only()
     @commands.is_owner()
     async def delete_bible(self, ctx: 'Context', command: str) -> None:
-        existing = await pg.fetchrow(bible_versions.select()
-                                     .where(bible_versions.c.command == command))
+        existing = get_bible(command)
 
         if not existing:
             await ctx.send_error_to_author(f'`{command}` doesn\'t exist')
             return
 
-        await pg.execute(bible_versions.delete()
-                         .where(bible_versions.c.command == command))
+        await delete_bible(command)
 
         self._remove_bible_commands(command)
 
         await ctx.send_to_author(f'Removed `{command}`')
 
     async def _version_lookup(self, ctx: 'Context', *, reference: VerseRange) -> None:
-        bible = await pg.fetchrow(bible_versions.select()
-                                  .where(bible_versions.c.command == ctx.invoked_with))
+        bible = await get_bible(ctx.invoked_with)
 
         if not bible:
             return
@@ -221,8 +207,7 @@ class Bible(object):
         await self._lookup(ctx, bible, reference)
 
     async def _version_search(self, ctx: 'Context', *terms: str) -> None:
-        bible = await pg.fetchrow(bible_versions.select()
-                                  .where(bible_versions.c.command == ctx.invoked_with[1:]))
+        bible = await get_bible(ctx.invoked_with[1:])
 
         if not bible:
             return

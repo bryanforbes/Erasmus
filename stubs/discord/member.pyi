@@ -20,7 +20,7 @@ class VoiceState:
 class Member(Messageable, _BaseUser, Hashable):
     # From BaseUser:
     name: str
-    id: str
+    id: int
     discriminator: str
     avatar: Optional[str]
     bot: bool

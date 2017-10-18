@@ -33,7 +33,7 @@ class BaseUser(_BaseUser, Hashable):
     __slots__ = ('name', 'id', 'discriminator', 'avatar', 'bot', '_state')
 
     name: str
-    id: str
+    id: int
     discriminator: str
     avatar: Optional[str]
     bot: bool
