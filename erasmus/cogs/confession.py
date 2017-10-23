@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, List, Callable, Sequence, AsyncContextManager, AsyncIterable, Any  # noqa: F401
+from typing import TYPE_CHECKING, List, Callable, Sequence, AsyncContextManager, AsyncIterable, Any, Match  # noqa: F401
 
 import discord
 from discord.ext import commands
@@ -6,32 +6,48 @@ from discord.ext import commands
 from ..db import (
     ConfessionType, Confession as ConfessionRow, get_confessions, get_confession, get_chapters,
     get_paragraph, search_paragraphs, search_questions, get_question_count, get_question,
-    get_articles, get_article, search_articles
+    get_articles, get_article, search_articles, NumberingType
 )
-from ..format import pluralizer, PluralizerType  # noqa
+from ..format import pluralizer, PluralizerType, int_to_roman, roman_to_int  # noqa: F401
 from .. import re
 
 if TYPE_CHECKING:  # pragma: no cover
-    from ..erasmus import Erasmus  # noqa
-    from ..context import Context  # noqa
+    from ..erasmus import Erasmus  # noqa: F401
+    from ..context import Context  # noqa: F401
 
 pluralize_match = pluralizer('match', 'es')
-pluralize_paragraph = pluralizer('paragraph', 's')
-pluralize_question = pluralizer('question', 's')
-pluralize_article = pluralizer('article', 's')
+
+_roman_re = re.group(re.between(0, 4, 'M'),
+                     re.either('CM',
+                               'CD',
+                               re.group(re.optional('D'),
+                                        re.between(0, 3, 'C'))),
+                     re.either('XC',
+                               'XL',
+                               re.group(re.optional('L'),
+                                        re.between(0, 3, 'X'))),
+                     re.either('IX',
+                               'IV',
+                               re.group(re.optional('V'),
+                                        re.between(0, 3, 'I'))))
 
 reference_res = {
     ConfessionType.CHAPTERS: re.compile(re.START,
-                                        re.named_group('chapter')(re.one_or_more(re.DIGITS)),
-                                        re.DOT,
-                                        re.named_group('paragraph')(re.one_or_more(re.DIGITS)),
+                                        re.either(re.group(re.named_group('chapter')(re.one_or_more(re.DIGITS)),
+                                                           re.DOT,
+                                                           re.named_group('paragraph')(re.one_or_more(re.DIGITS))),
+                                                  re.group(re.named_group('chapter_roman')(_roman_re),
+                                                           re.DOT,
+                                                           re.named_group('paragraph_roman')(_roman_re))),
                                         re.END),
     ConfessionType.QA: re.compile(re.START,
                                   re.optional(re.named_group('qa')('[qaQA]')),
-                                  re.named_group('number')(re.one_or_more(re.DIGITS)),
+                                  re.either(re.named_group('number')(re.one_or_more(re.DIGITS)),
+                                            re.named_group('number_roman')(_roman_re)),
                                   re.END),
     ConfessionType.ARTICLES: re.compile(re.START,
-                                        re.named_group('article')(re.one_or_more(re.DIGITS)),
+                                        re.either(re.named_group('article')(re.one_or_more(re.DIGITS)),
+                                                  re.named_group('article_roman')(_roman_re)),
                                         re.END)
 }
 
@@ -39,6 +55,11 @@ pluralizers = {
     ConfessionType.CHAPTERS: pluralizer('paragraph'),
     ConfessionType.ARTICLES: pluralizer('article'),
     ConfessionType.QA: pluralizer('question')
+}
+
+number_formatters = {
+    NumberingType.ARABIC: lambda n: str(n),
+    NumberingType.ROMAN: int_to_roman
 }
 
 
@@ -86,7 +107,7 @@ class Confession(object):
     def __init__(self, bot: 'Erasmus') -> None:
         self.bot = bot
 
-    @commands.command(brief='Query confessions', help=confess_help)
+    @commands.command(brief='Query confessions and catechisms', help=confess_help)
     @commands.cooldown(rate=4, per=30.0, type=commands.BucketType.user)
     async def confess(self, ctx: 'Context', confession: str = None, *args: str) -> None:
         if confession is None:
@@ -100,12 +121,7 @@ class Confession(object):
             return
 
         if len(args) == 0:
-            if row['type'] == ConfessionType.CHAPTERS:
-                await self.chapters(ctx, row)
-            elif row['type'] == ConfessionType.QA:
-                await self.questions(ctx, row)
-            elif row['type'] == ConfessionType.ARTICLES:
-                await self.articles(ctx, row)
+            await self.list_contents(ctx, row)
             return
 
         match = reference_res[row['type']].match(args[0])
@@ -114,58 +130,7 @@ class Confession(object):
             await self.search(ctx, row, *args)
             return
 
-        embed = None  # type: discord.Embed
-        output = None  # type: str
-
-        paginator = Paginator()
-
-        if row['type'] == ConfessionType.CHAPTERS:
-            paragraph = await get_paragraph(row, int(match['chapter']), int(match['paragraph']))
-            if not paragraph:
-                await ctx.send_error_to_author(f'{row["name"]} does not have a paragraph {args[0]}')
-                return
-
-            embed = discord.Embed(title=f'__**{paragraph["chapter_number"]}. {paragraph["chapter_title"]}**__')
-            output = f'**{paragraph["paragraph_number"]}.** {paragraph["text"]}'
-
-        elif row['type'] == ConfessionType.QA:
-            q_or_a = match['qa']
-            question_number = int(match['number'])
-            question = await get_question(row, question_number)
-
-            if q_or_a is None:
-                embed = discord.Embed(title=f'__**{question["question_number"]}. {question["question_text"]}**__')
-                output_str = '{answer_text}'
-            elif q_or_a.lower() == 'q':
-                output_str = '**Q{question_number}**. {question_text}'
-            else:
-                output_str = '**A{question_number}**: {answer_text}'
-
-            output = output_str.format(**question)
-
-        elif row['type'] == ConfessionType.ARTICLES:
-            article_number = int(match['article'])
-            article = await get_article(row, article_number)
-
-            if not article:
-                await ctx.send_error_to_author(f'{row["name"]} does not have an article {args[0]}')
-                return
-
-            embed = discord.Embed(title=f'__**{article["article_number"]}. {article["title"]}**__')
-            output = article['text']
-
-        while len(output) > 0:
-            if len(output) > paginator.max_size:
-                index = output.rfind(' ', 0, paginator.max_size)
-                line = output[:index]
-                output = output[index + 1:]
-            else:
-                line = output
-                output = ''
-
-            paginator.add_line(line)
-
-        await ctx.send_pages_to_author(paginator.pages, embed=embed)
+        await self.show_item(ctx, row, match)
 
     async def list(self, ctx: 'Context') -> None:
         paginator = Paginator()
@@ -177,36 +142,48 @@ class Confession(object):
 
         await ctx.send_pages_to_author(paginator.pages)
 
-    async def chapters(self, ctx: 'Context', confession: ConfessionRow) -> None:
-        paginator = Paginator()
+    async def list_contents(self, ctx: 'Context', confession: ConfessionRow) -> None:
+        if confession['type'] == ConfessionType.CHAPTERS or confession['type'] == ConfessionType.ARTICLES:
+            await self.list_sections(ctx, confession)
+        elif confession['type'] == ConfessionType.QA:
+            await self.list_questions(ctx, confession)
 
-        async with get_chapters(confession) as chapters:
-            async for chapter in chapters:
-                paginator.add_line(f'**{chapter["chapter_number"]}**. {chapter["chapter_title"]}')
+    async def list_sections(self, ctx: 'Context', confession: ConfessionRow) -> None:
+        paginator = Paginator()
+        getter: Callable[[ConfessionRow], AsyncContextManager[AsyncIterable[Any]]] = None
+        number_key: str = None
+        title_key: str = None
+        type_str: str = None
+
+        if confession['type'] == ConfessionType.CHAPTERS:
+            getter = get_chapters
+            number_key = 'chapter_number'
+            title_key = 'chapter_title'
+            type_str = 'chapters'
+        elif confession['type'] == ConfessionType.ARTICLES:
+            getter = get_articles
+            number_key = 'article_number'
+            title_key = 'title'
+            type_str = 'articles'
+
+        format_number = number_formatters[confession['numbering']]
+        async with getter(confession) as records:
+            async for record in records:
+                paginator.add_line('**{number}**. {title}'.format(number=format_number(record[number_key]),
+                                                                  title=record[title_key]))
 
         if len(paginator.pages) == 0:
-            await ctx.send_error_to_author(f'`{confession["name"]}` has no chapters')
+            await ctx.send_error_to_author(f'`{confession["name"]}` has no {type_str}')
 
         embed = discord.Embed(title=f'__**{confession["name"]}**__')
 
         await ctx.send_pages_to_author(paginator.pages, embed=embed)
 
-    async def questions(self, ctx: 'Context', confession: ConfessionRow) -> None:
+    async def list_questions(self, ctx: 'Context', confession: ConfessionRow) -> None:
         count = await get_question_count(confession)
-        question_str = pluralize_question(count)
+        question_str = pluralizers[ConfessionType.QA](count)
 
         await ctx.send_to_author(f'`{confession["name"]}` has {question_str}')
-
-    async def articles(self, ctx: 'Context', confession: ConfessionRow) -> None:
-        paginator = Paginator()
-
-        async with get_articles(confession) as articles:
-            async for article in articles:
-                paginator.add_line(f'**{article["article_number"]}**. {article["title"]}')
-
-        embed = discord.Embed(title=f'__**{confession["name"]}**__')
-
-        await ctx.send_pages_to_author(paginator.pages, embed=embed)
 
     async def search(self, ctx: 'Context', confession: ConfessionRow, *terms: str) -> None:
         pluralize_type: PluralizerType = None
@@ -217,13 +194,13 @@ class Confession(object):
 
         pluralize_type = pluralizers[confession['type']]
 
-        if confession['type'] == ConfessionType.ARTICLES:
-            reference_pattern = '**{article_number}**. {title}'
-            search_func = search_articles
-        elif confession['type'] == ConfessionType.CHAPTERS:
+        if confession['type'] == ConfessionType.CHAPTERS:
             reference_pattern = '{chapter_number}.{paragraph_number}'
             search_func = search_paragraphs
             paginate = False
+        elif confession['type'] == ConfessionType.ARTICLES:
+            reference_pattern = '**{article_number}**. {title}'
+            search_func = search_articles
         elif confession['type'] == ConfessionType.QA:
             reference_pattern = '**{question_number}**. {question_text}'
             search_func = search_questions
@@ -253,6 +230,77 @@ class Confession(object):
                 first_line += '\n\n' + ', '.join(references)
 
             await ctx.send_to_author(first_line)
+
+    async def show_item(self, ctx: 'Context', confession: ConfessionRow, match: Match) -> None:
+        embed = None  # type: discord.Embed
+        output = None  # type: str
+
+        paginator = Paginator()
+        format_number = number_formatters[confession['numbering']]
+
+        if confession['type'] == ConfessionType.CHAPTERS:
+            if match['chapter_roman']:
+                chapter_num = roman_to_int(match['chapter_roman'])
+                paragraph_num = roman_to_int(match['paragraph_roman'])
+            else:
+                chapter_num = int(match['chapter'])
+                paragraph_num = int(match['paragraph'])
+            paragraph = await get_paragraph(confession, chapter_num, paragraph_num)
+            if not paragraph:
+                await ctx.send_error_to_author(f'{confession["name"]} does not have a paragraph {match[0]}')
+                return
+
+            paragraph_number = format_number(paragraph['paragraph_number'])
+            chapter_number = format_number(paragraph['chapter_number'])
+            embed = discord.Embed(title=f'__**{chapter_number}. {paragraph["chapter_title"]}**__')
+            output = f'**{paragraph_number}.** {paragraph["text"]}'
+
+        elif confession['type'] == ConfessionType.QA:
+            q_or_a = match['qa']
+            if match['number_roman']:
+                question_number = roman_to_int(match['number_roman'])
+            else:
+                question_number = int(match['number'])
+
+            question = await get_question(confession, question_number)
+            question_number_str = format_number(question_number)
+
+            if q_or_a is None:
+                embed = discord.Embed(title=f'__**{question_number_str}. {question["question_text"]}**__')
+                output_str = '{answer_text}'
+            elif q_or_a.lower() == 'q':
+                output_str = '**Q{question_number_str}**. {question_text}'
+            else:
+                output_str = '**A{question_number_str}**: {answer_text}'
+
+            output = output_str.format(**question)
+
+        elif confession['type'] == ConfessionType.ARTICLES:
+            if match['article_roman']:
+                article_number = roman_to_int(match['article_roman'])
+            else:
+                article_number = int(match['article'])
+            article = await get_article(confession, article_number)
+
+            if not article:
+                await ctx.send_error_to_author(f'{confession["name"]} does not have an article {match[0]}')
+                return
+
+            embed = discord.Embed(title=f'__**{format_number(article_number)}. {article["title"]}**__')
+            output = article['text']
+
+        while len(output) > 0:
+            if len(output) > paginator.max_size:
+                index = output.rfind(' ', 0, paginator.max_size)
+                line = output[:index]
+                output = output[index + 1:]
+            else:
+                line = output
+                output = ''
+
+            paginator.add_line(line)
+
+        await ctx.send_pages_to_author(paginator.pages, embed=embed)
 
 
 def setup(bot: 'Erasmus') -> None:

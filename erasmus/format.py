@@ -21,12 +21,13 @@ def pluralizer(word: str, suffix: str = 's') -> PluralizerType:
     return pluralize
 
 
-_roman_pairs = (("M", 1000), ("CM", 900), ("D", 500), ("CD", 400),
-                ("C", 100), ("XC", 90), ("L", 50), ("XL", 40), ("X", 10),
-                ("IX", 9), ("V", 5), ("IV", 4), ("I", 1))
+_roman_pairs = tuple(zip(
+    ('M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'),
+    (1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
+))
 
 
-def romanize(number: int) -> str:
+def int_to_roman(number: int) -> str:
     numerals = []  # type: List[str]
 
     for letter, value in _roman_pairs:
@@ -34,6 +35,18 @@ def romanize(number: int) -> str:
         numerals.append(letter * count)
 
     return ''.join(numerals)
+
+
+def roman_to_int(numerals: str) -> int:
+    numerals = numerals.upper()
+    index = result = 0
+
+    for letter, value in _roman_pairs:
+        while numerals[index:index + len(letter)] == letter:
+            result += value
+            index += len(letter)
+
+    return result
 
 
 def unique_seen(iterable: Iterable[Tuple[str, commands.Command]]) -> Iterator[Tuple[str, commands.Command]]:

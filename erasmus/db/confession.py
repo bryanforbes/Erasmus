@@ -6,7 +6,8 @@ from enum import Enum
 
 from .types import AIContextManager
 from .tables import (
-    confessions, confession_types, chapters, paragraphs, questions, articles
+    confessions, confession_types, chapters, paragraphs, questions, articles,
+    numbering_types
 )
 
 __all__ = (
@@ -40,6 +41,7 @@ class Confession(TypedDict):
     command: str
     name: str
     type: ConfessionType
+    numbering: NumberingType
 
 
 class Chapter(TypedDict):
@@ -85,8 +87,10 @@ def get_confessions() -> AIContextManager[Confession]:
 _select_confession = select([confessions.c.id,
                              confessions.c.command,
                              confessions.c.name,
-                             confession_types.c.value.label('type')]) \
-    .select_from(confessions.join(confession_types))
+                             confession_types.c.value.label('type'),
+                             numbering_types.c.numbering]) \
+    .select_from(confessions.join(confession_types)
+                 .join(numbering_types))
 
 
 async def get_confession(command: str) -> Confession:
@@ -97,7 +101,8 @@ async def get_confession(command: str) -> Confession:
         return None
 
     return Confession(id=row['id'], command=row['command'],
-                      name=row['name'], type=ConfessionType[row['type']])
+                      name=row['name'], type=ConfessionType[row['type']],
+                      numbering=NumberingType[row['numbering']])
 
 
 _chapters_select = select([chapters.c.chapter_number,
