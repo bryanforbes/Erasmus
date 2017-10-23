@@ -164,7 +164,7 @@ class Bible(object):
     @dm_only()
     @commands.is_owner()
     async def add_bible(self, ctx: 'Context', command: str, name: str, abbr: str, service: str,
-                        service_version: str, rtl: bool = False) -> None:
+                        service_version: str, books: int = 3, rtl: bool = False) -> None:
         if service not in self.service_manager:
             await ctx.send_error_to_author(f'`{service}` is not a valid service')
             return

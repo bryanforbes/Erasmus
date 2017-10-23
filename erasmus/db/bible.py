@@ -59,12 +59,13 @@ _bible_versions_insert = bible_versions.insert()
 
 
 async def add_bible(*, command: str, name: str, abbr: str, service: str,
-                    service_version: str, rtl: bool = False) -> None:
+                    service_version: str, books: int = 3, rtl: bool = False) -> None:
     await pg.execute(_bible_versions_insert.values(command=command,
                                                    name=name,
                                                    abbr=abbr,
                                                    service=service,
                                                    service_version=service_version,
+                                                   books=books,
                                                    rtl=rtl))
 
 
