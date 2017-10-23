@@ -175,7 +175,8 @@ class Bible(object):
                             abbr=abbr,
                             service=service,
                             service_version=service_version,
-                            rtl=rtl)
+                            rtl=rtl,
+                            books=books)
         except UniqueViolationError:
             await ctx.send_error_to_author(f'`{command}` already exists')
         else:
