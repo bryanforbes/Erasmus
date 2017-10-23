@@ -1,8 +1,11 @@
-from typing import List, Union, Iterator
+from typing import List, Union, Iterator, Optional, Dict
 
 
 class PageElement(object):
     def replace_with(self, replace_with: Union[str, 'PageElement']) -> 'PageElement': ...
+
+    def find_next_sibling(self, name: Optional[str] = ..., attrs: Dict[str, str] = ...,
+                          text: Optional[str] = ..., **kwargs) -> 'Tag': ...
 
 
 class NavigableString(str, PageElement):
@@ -10,6 +13,7 @@ class NavigableString(str, PageElement):
 
 
 class Tag(PageElement):
+    name: str
     string: str
 
     @property
