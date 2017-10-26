@@ -72,6 +72,8 @@ class TestVerseRange(object):
         ('1 John 1:1', None),
         ('Mark 2:1-4', None),
         ('Acts 3:5-6:7', None),
+        ('Mark 2:1\u20134', 'Mark 2:1-4'),
+        ('Mark 2:1\u20144', 'Mark 2:1-4'),
         ('1 Pet. 3:1', '1 Peter 3:1'),
         ('1Pet. 3:1 - 4', '1 Peter 3:1-4'),
         ('1Pet. 3:1- 4', '1 Peter 3:1-4'),

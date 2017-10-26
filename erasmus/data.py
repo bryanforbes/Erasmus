@@ -37,7 +37,7 @@ _search_reference_re = re.compile(
     _colon,
     _verse_start_group(_one_or_more_digit),
     re.optional(re.group(
-        re.any_number_of(re.WHITESPACE), re.DASH, re.any_number_of(re.WHITESPACE),
+        re.any_number_of(re.WHITESPACE), '[', re.DASH, '\u2013', '\u2014', ']', re.any_number_of(re.WHITESPACE),
         re.optional(re.group(
             _chapter_end_group(_one_or_more_digit), _colon
         )),
