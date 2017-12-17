@@ -1,13 +1,40 @@
-from typing import List
+from typing import List, Optional, AsyncContextManager, Awaitable, Generator, Any, TYPE_CHECKING
+from asyncpg import Connection
 import discord
 from discord.ext import commands
 from .data import Passage
+
+if TYPE_CHECKING:
+    from .erasmus import Erasmus  # noqa
 
 truncation_warning = '**The passage was too long and has been truncated:**\n\n'
 max_length = 2048 - (len(truncation_warning) + 1)
 
 
+class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection]):
+    __slots__ = ('ctx', 'timeout')
+
+    ctx: 'Context'
+    timeout: float
+
+    def __init__(self, ctx: 'Context', timeout: Optional[float]) -> None:
+        self.ctx = ctx
+        self.timeout = timeout
+
+    def __await__(self) -> Generator[Any, None, Connection]:
+        return self.ctx._acquire(self.timeout).__await__()
+
+    async def __aenter__(self) -> Connection:
+        return await self.ctx._acquire(self.timeout)
+
+    async def __aexit__(self, *args) -> None:
+        await self.ctx.release()
+
+
 class Context(commands.Context):
+    bot: 'Erasmus'
+    db: Optional[Connection] = None
+
     async def send_passage(self, passage: Passage) -> discord.Message:
         text = passage.text
 
@@ -55,3 +82,17 @@ class Context(commands.Context):
             embed = None
 
         return messages
+
+    async def _acquire(self, timeout: Optional[float]) -> Connection:
+        if self.db is None:
+            self.db = await self.bot.pool.acquire(timeout=timeout)
+
+        return self.db
+
+    def acquire(self, *, timeout: Optional[float] = None) -> AquireContextManager:
+        return AquireContextManager(self, timeout)
+
+    async def release(self) -> None:
+        if self.db is not None:
+            await self.bot.pool.release(self.db)
+            self.db = None

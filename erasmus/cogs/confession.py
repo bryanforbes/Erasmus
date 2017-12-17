@@ -1,7 +1,8 @@
-from typing import TYPE_CHECKING, List, Callable, Sequence, AsyncContextManager, AsyncIterable, Any, Match  # noqa: F401
+from typing import TYPE_CHECKING, List, Callable, Sequence, Any, Match, Awaitable  # noqa: F401
 
 import discord
 from discord.ext import commands
+from asyncpg import Connection
 
 from ..db import (
     ConfessionType, Confession as ConfessionRow, get_confessions, get_confession, get_chapters,
@@ -11,7 +12,7 @@ from ..db import (
 from ..format import pluralizer, PluralizerType, int_to_roman, roman_to_int  # noqa: F401
 from .. import re
 
-if TYPE_CHECKING:  # pragma: no cover
+if TYPE_CHECKING:
     from ..erasmus import Erasmus  # noqa: F401
     from ..context import Context  # noqa: F401
 
@@ -114,7 +115,7 @@ class Confession(object):
             await self.list(ctx)
             return
 
-        row = await get_confession(confession)
+        row = await get_confession(ctx.db, confession)
 
         if not row:
             await ctx.send_error_to_author(f'`{confession}` is not a valid confession.')
@@ -136,9 +137,9 @@ class Confession(object):
         paginator = Paginator()
         paginator.add_line('I support the following confessions:', empty=True)
 
-        async with get_confessions() as confs:
-            async for conf in confs:
-                paginator.add_line(f'  `{conf["command"]}`: {conf["name"]}')
+        confs = await get_confessions(ctx.db)
+        for conf in confs:
+            paginator.add_line(f'  `{conf["command"]}`: {conf["name"]}')
 
         await ctx.send_pages_to_author(paginator.pages)
 
@@ -150,7 +151,7 @@ class Confession(object):
 
     async def list_sections(self, ctx: 'Context', confession: ConfessionRow) -> None:
         paginator = Paginator()
-        getter: Callable[[ConfessionRow], AsyncContextManager[AsyncIterable[Any]]] = None
+        getter: Callable[[Connection, ConfessionRow], Awaitable[List[Any]]] = None
         number_key: str = None
         title_key: str = None
         type_str: str = None
@@ -167,10 +168,10 @@ class Confession(object):
             type_str = 'articles'
 
         format_number = number_formatters[confession['numbering']]
-        async with getter(confession) as records:
-            async for record in records:
-                paginator.add_line('**{number}**. {title}'.format(number=format_number(record[number_key]),
-                                                                  title=record[title_key]))
+        records = await getter(ctx.db, confession)
+        for record in records:
+            paginator.add_line('**{number}**. {title}'.format(number=format_number(record[number_key]),
+                                                              title=record[title_key]))
 
         if len(paginator.pages) == 0:
             await ctx.send_error_to_author(f'`{confession["name"]}` has no {type_str}')
@@ -180,7 +181,7 @@ class Confession(object):
         await ctx.send_pages_to_author(paginator.pages, embed=embed)
 
     async def list_questions(self, ctx: 'Context', confession: ConfessionRow) -> None:
-        count = await get_question_count(confession)
+        count = await get_question_count(ctx.db, confession)
         question_str = pluralizers[ConfessionType.QA](count)
 
         await ctx.send_to_author(f'`{confession["name"]}` has {question_str}')
@@ -189,7 +190,7 @@ class Confession(object):
         pluralize_type: PluralizerType = None
         references: List[str] = []
         reference_pattern: str = None
-        search_func: Callable[[ConfessionRow, Sequence[str]], AsyncContextManager[AsyncIterable[Any]]] = None
+        search_func: Callable[[Connection, ConfessionRow, Sequence[str]], Awaitable[List[Any]]] = None
         paginate = True
 
         pluralize_type = pluralizers[confession['type']]
@@ -205,8 +206,8 @@ class Confession(object):
             reference_pattern = '**{question_number}**. {question_text}'
             search_func = search_questions
 
-        async with search_func(confession, terms) as results:
-            references = [reference_pattern.format(**result) async for result in results]
+        results = await search_func(ctx.db, confession, terms)
+        references = [reference_pattern.format(**result) for result in results]
 
         matches = pluralize_match(len(references))
         first_line = f'I have found {matches}'
@@ -245,7 +246,7 @@ class Confession(object):
             else:
                 chapter_num = int(match['chapter'])
                 paragraph_num = int(match['paragraph'])
-            paragraph = await get_paragraph(confession, chapter_num, paragraph_num)
+            paragraph = await get_paragraph(ctx.db, confession, chapter_num, paragraph_num)
             if not paragraph:
                 await ctx.send_error_to_author(f'{confession["name"]} does not have a paragraph {match[0]}')
                 return
@@ -262,7 +263,7 @@ class Confession(object):
             else:
                 question_number = int(match['number'])
 
-            question = await get_question(confession, question_number)
+            question = await get_question(ctx.db, confession, question_number)
             question_number_str = format_number(question_number)
 
             if q_or_a is None:
@@ -280,7 +281,7 @@ class Confession(object):
                 article_number = roman_to_int(match['article_roman'])
             else:
                 article_number = int(match['article'])
-            article = await get_article(confession, article_number)
+            article = await get_article(ctx.db, confession, article_number)
 
             if not article:
                 await ctx.send_error_to_author(f'{confession["name"]} does not have an article {match[0]}')

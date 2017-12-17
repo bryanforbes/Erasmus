@@ -3,15 +3,18 @@ from typing import TYPE_CHECKING
 import discord
 from discord.ext import commands
 
-from ..db import get_bibles, get_bible, get_user_bible, set_user_bible, add_bible, delete_bible, UniqueViolationError
+from ..db import (
+    select_all, get_bibles, get_bible, get_user_bible, set_user_bible,
+    add_bible, delete_bible, UniqueViolationError
+)
 from ..data import VerseRange
 from ..format import pluralizer
 from ..service_manager import ServiceManager, Bible as BibleObject
 from ..exceptions import OnlyDirectMessage, BookNotInVersionError
 
-if TYPE_CHECKING:  # pragma: no cover
-    from ..erasmus import Erasmus  # noqa
-    from ..context import Context  # noqa
+if TYPE_CHECKING:
+    from ..erasmus import Erasmus  # noqa: F401
+    from ..context import Context  # noqa: F401
 
 pluralize_match = pluralizer('match', 'es')
 
@@ -101,15 +104,16 @@ class Bible(object):
         self.bot.loop.run_until_complete(self._init())
 
     async def _init(self) -> None:
-        async with get_bibles() as versions:
-            async for version in versions:
+        async with self.bot.pool.acquire() as db:
+            versions = await select_all(db, table='bible_versions')
+            for version in versions:
                 self._add_bible_commands(version['command'], version['name'])
 
     @commands.command(aliases=[''],
                       brief='Look up a verse in your preferred version',
                       help=lookup_help)
     async def lookup(self, ctx: 'Context', *, reference: VerseRange) -> None:
-        bible = await get_user_bible(ctx.author.id)
+        bible = await get_user_bible(ctx.db, ctx.author.id)
 
         if not bible:
             await ctx.send_error_to_author(f'You must first set your default version with `{ctx.prefix}setversion`')
@@ -121,7 +125,7 @@ class Bible(object):
                       brief='Search for terms in your preferred version',
                       help=search_help)
     async def search(self, ctx: 'Context', *terms: str) -> None:
-        bible = await get_user_bible(ctx.author.id)
+        bible = await get_user_bible(ctx.db, ctx.author.id)
         if not bible:
             await ctx.send_error_to_author(f'You must first set your default version with `{ctx.prefix}setversion`')
             return
@@ -133,8 +137,8 @@ class Bible(object):
     async def versions(self, ctx: 'Context') -> None:
         lines = ['I support the following Bible versions:', '']
 
-        async with get_bibles(ordered=True) as versions:
-            lines += [f'  `{ctx.prefix}{version["command"]}`: {version["name"]}' async for version in versions]
+        versions = await get_bibles(ctx.db, ordered=True)
+        lines += [f'  `{ctx.prefix}{version["command"]}`: {version["name"]}' for version in versions]
 
         lines.append("\nYou can search any version by prefixing the version command with 's' "
                      f'(ex. `{ctx.prefix}sesv terms...`)')
@@ -149,14 +153,14 @@ class Bible(object):
         if version[0] == ctx.prefix:
             version = version[1:]
 
-        existing = await get_bible(version)
+        existing = await get_bible(ctx.db, version)
 
         if not existing:
             await ctx.send_error_to_author(f'`{version}` is not a valid version.'
                                            f'Check `{ctx.prefix}versions` for valid versions')
             return
 
-        await set_user_bible(ctx.author.id, existing)
+        await set_user_bible(ctx.db, ctx.author.id, existing)
 
         await ctx.send_to_author(f'Version set to `{version}`')
 
@@ -170,7 +174,8 @@ class Bible(object):
             return
 
         try:
-            await add_bible(command=command,
+            await add_bible(ctx.db,
+                            command=command,
                             name=name,
                             abbr=abbr,
                             service=service,
@@ -187,20 +192,20 @@ class Bible(object):
     @dm_only()
     @commands.is_owner()
     async def delete_bible(self, ctx: 'Context', command: str) -> None:
-        existing = get_bible(command)
+        existing = await get_bible(ctx.db, command)
 
         if not existing:
             await ctx.send_error_to_author(f'`{command}` doesn\'t exist')
             return
 
-        await delete_bible(command)
+        await delete_bible(ctx.db, command)
 
         self._remove_bible_commands(command)
 
         await ctx.send_to_author(f'Removed `{command}`')
 
     async def _version_lookup(self, ctx: 'Context', *, reference: VerseRange) -> None:
-        bible = await get_bible(ctx.invoked_with)
+        bible = await get_bible(ctx.db, ctx.invoked_with)
 
         if not bible:
             return
@@ -208,7 +213,7 @@ class Bible(object):
         await self._lookup(ctx, bible, reference)
 
     async def _version_search(self, ctx: 'Context', *terms: str) -> None:
-        bible = await get_bible(ctx.invoked_with[1:])
+        bible = await get_bible(ctx.db, ctx.invoked_with[1:])
 
         if not bible:
             return

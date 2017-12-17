@@ -6,7 +6,7 @@ from .json import load
 from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
 from . import re
 
-if TYPE_CHECKING:  # pragma: no cover
+if TYPE_CHECKING:
     from .context import Context  # noqa
 
 with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
@@ -53,7 +53,7 @@ book_mask_map = {}  # type: Dict[str, int]
 for book in books_data:
     for input_string in [book.name, book.osis] + book.alt:  # type: str
         book_input_map[input_string.lower()] = book.name
-        book_mask_map[input_string.lower()] = book.section
+    book_mask_map[book.name] = book.section
 
 
 class Bible(TypedDict):
@@ -101,10 +101,11 @@ class VerseRange(object):
 
     def __init__(self, book: str, start: Verse, end: Verse = None) -> None:
         self.book = book_input_map.get(book.lower(), None)
-        self.book_mask = book_mask_map.get(book.lower(), None)
 
         if self.book is None:
             raise BookNotUnderstoodError(book)
+
+        self.book_mask = book_mask_map.get(self.book, None)
 
         self.start = start
         self.end = end

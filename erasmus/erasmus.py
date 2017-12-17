@@ -3,7 +3,8 @@ from typing import cast
 import discord
 import logging
 
-from asyncpgsa import pg  # type: ignore
+from asyncpg import create_pool
+from asyncpg.pool import Pool
 from configparser import ConfigParser
 
 from discord.ext import commands
@@ -48,6 +49,7 @@ _mention_pattern_re = re.compile(
 class Erasmus(commands.Bot):
     config: ConfigParser
     default_prefix: str  # noqa
+    pool: Pool
 
     def __init__(self, config_path: str, *args, **kwargs) -> None:
         self.config = ConfigParser(default_section='erasmus')
@@ -60,8 +62,8 @@ class Erasmus(commands.Bot):
 
         super().__init__(*args, **kwargs)
 
-        self.loop.run_until_complete(
-            pg.init(
+        self.pool = self.loop.run_until_complete(
+            create_pool(
                 self.config.get('erasmus', 'db_url'),
                 min_size=1,
                 max_size=10
@@ -81,7 +83,7 @@ class Erasmus(commands.Bot):
         super().run(self.config.get('erasmus', 'discord_api_key'))
 
     async def close(self) -> None:
-        await pg.pool.close()
+        await self.pool.close()
         await super().close()
 
     async def get_context(self, message: discord.Message, *, cls=Context) -> Context:
@@ -99,7 +101,8 @@ class Erasmus(commands.Bot):
         if ctx.command is None:
             return
 
-        await self.invoke(ctx)
+        async with ctx.acquire():
+            await self.invoke(ctx)
 
     async def on_ready(self) -> None:
         await self.change_presence(game=discord.Game(name=f'| {self.default_prefix}help'))
