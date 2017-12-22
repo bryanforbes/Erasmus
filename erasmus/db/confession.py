@@ -1,4 +1,4 @@
-from typing import Sequence, List, Optional
+from typing import Sequence, List, cast
 from mypy_extensions import TypedDict
 from asyncpg import Connection
 from enum import Enum
@@ -109,20 +109,20 @@ async def get_chapters(db: Connection, confession: Confession) -> List[Chapter]:
 
 async def get_paragraph(db: Connection, confession: Confession,
                         chapter: int, paragraph: int) -> Paragraph:
-    paragraph = await select_one(db, confession['id'], chapter, paragraph,
-                                 columns=('ch.chapter_title', 'p.chapter_number', 'p.paragraph_number', 'p.text'),
-                                 table='confession_paragraphs AS p',
-                                 joins=[('confessions AS c', 'c.id = p.confess_id'),
-                                        ('confession_chapters AS ch',
-                                         'ch.confess_id = c.id AND ch.chapter_number = p.chapter_number')],
-                                 where=['c.id = $1',
-                                        'p.chapter_number = $2',
-                                        'p.paragraph_number = $3'])
+    result = await select_one(db, confession['id'], chapter, paragraph,
+                              columns=('ch.chapter_title', 'p.chapter_number', 'p.paragraph_number', 'p.text'),
+                              table='confession_paragraphs AS p',
+                              joins=[('confessions AS c', 'c.id = p.confess_id'),
+                                     ('confession_chapters AS ch',
+                                      'ch.confess_id = c.id AND ch.chapter_number = p.chapter_number')],
+                              where=['c.id = $1',
+                                     'p.chapter_number = $2',
+                                     'p.paragraph_number = $3'])
 
-    if not paragraph:
+    if not result:
         raise NoSectionError(confession['name'], f'{chapter}.{paragraph}', 'paragraph')
 
-    return paragraph
+    return result
 
 
 async def search_paragraphs(db: Connection, confession: Confession,
@@ -148,11 +148,10 @@ async def get_questions(db: Connection, confession: Confession) -> List[Question
                             order_by='q.question_number')
 
 
-async def get_question_count(db: Connection, confession: Confession) -> Optional[int]:
-    query = '''SELECT count(id) FROM confession_questions
-        WHERE confess_id = $1'''
+async def get_question_count(db: Connection, confession: Confession) -> int:
+    query = '''SELECT count(id) FROM confession_questions WHERE confess_id = $1'''
 
-    return await db.fetchval(query, confession['id'], column=0)
+    return cast(int, await db.fetchval(query, confession['id'], column=0))
 
 
 async def get_question(db: Connection, confession: Confession, question_number: int) -> Question:

@@ -80,7 +80,7 @@ class Erasmus(commands.Bot):
             except Exception as e:
                 log.exception('Failed to load extension %s.', extension)
 
-    def run(self, *args, **kwargs) -> None:
+    def run(self, *args, **kwargs):
         super().run(self.config.get('erasmus', 'discord_api_key'))
 
     async def close(self) -> None:
@@ -108,7 +108,8 @@ class Erasmus(commands.Bot):
     async def on_ready(self) -> None:
         await self.change_presence(game=discord.Game(name=f'| {self.default_prefix}help'))
 
-        log.info('Erasmus ready. Logged in as %s %s', self.user.name, self.user.id)
+        user = cast(discord.ClientUser, self.user)
+        log.info('Erasmus ready. Logged in as %s %s', user.name, user.id)
 
     async def on_command_error(self, ctx: Context, exc: Exception) -> None:
         message = 'An error occurred'

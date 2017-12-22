@@ -15,11 +15,13 @@ from ..exceptions import DoNotUnderstandError
 # TODO: Better error handling
 class BiblesOrg(Service[JSONObject]):
     base_url = 'https://bibles.org/v2'
+    _auth: Optional[BasicAuth]
 
     def __init__(self, config: Optional[SectionProxy]) -> None:
         super().__init__(config)
 
-        self._auth = BasicAuth(self.config.get('api_key'), 'X')
+        if self.config:
+            self._auth = BasicAuth(self.config.get('api_key'), 'X')
 
     async def _process_response(self, response: ClientResponse) -> JSONObject:
         obj = cast(JSONObject, await response.json(loads=loads, content_type='application/javascript'))

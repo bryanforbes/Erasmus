@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, List, Callable, Sequence, Any, Match, Awaitable  # noqa: F401
+from typing import TYPE_CHECKING, List, Callable, Sequence, Any, Match, Awaitable, Optional  # noqa: F401
 
 import discord
 from discord.ext import commands
@@ -110,7 +110,7 @@ class Confession(object):
 
     @commands.command(brief='Query confessions and catechisms', help=confess_help)
     @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
-    async def confess(self, ctx: 'Context', confession: str = None, *args: str) -> None:
+    async def confess(self, ctx: 'Context', confession: Optional[str] = None, *args: str) -> None:
         if confession is None:
             await self.list(ctx)
             return
@@ -147,15 +147,15 @@ class Confession(object):
 
     async def list_sections(self, ctx: 'Context', confession: ConfessionRow) -> None:
         paginator = Paginator()
-        getter: Callable[[Connection, ConfessionRow], Awaitable[List[Any]]] = None
-        number_key: str = None
-        title_key: str = None
+        getter: Optional[Callable[[Connection, ConfessionRow], Awaitable[List[Any]]]] = None
+        number_key: Optional[str] = None
+        title_key: Optional[str] = None
 
         if confession['type'] == ConfessionType.CHAPTERS:
             getter = get_chapters
             number_key = 'chapter_number'
             title_key = 'chapter_title'
-        elif confession['type'] == ConfessionType.ARTICLES:
+        else:  # ConfessionType.ARTICLES
             getter = get_articles
             number_key = 'article_number'
             title_key = 'title'
@@ -177,10 +177,10 @@ class Confession(object):
         await ctx.send_embed(f'`{confession["name"]}` has {question_str}')
 
     async def search(self, ctx: 'Context', confession: ConfessionRow, *terms: str) -> None:
-        pluralize_type: PluralizerType = None
-        references: List[str] = []
-        reference_pattern: str = None
-        search_func: Callable[[Connection, ConfessionRow, Sequence[str]], Awaitable[List[Any]]] = None
+        pluralize_type: Optional[PluralizerType] = None
+        references: Optional[List[str]] = []
+        reference_pattern: Optional[str] = None
+        search_func: Optional[Callable[[Connection, ConfessionRow, Sequence[str]], Awaitable[List[Any]]]] = None
         paginate = True
 
         pluralize_type = pluralizers[confession['type']]
@@ -192,7 +192,7 @@ class Confession(object):
         elif confession['type'] == ConfessionType.ARTICLES:
             reference_pattern = '**{article_number}**. {title}'
             search_func = search_articles
-        elif confession['type'] == ConfessionType.QA:
+        else:  # ConfessionType.QA
             reference_pattern = '**{question_number}**. {question_text}'
             search_func = search_questions
 
@@ -222,9 +222,9 @@ class Confession(object):
 
             await ctx.send_embed(first_line)
 
-    async def show_item(self, ctx: 'Context', confession: ConfessionRow, match: Match) -> None:
-        embed = None  # type: discord.Embed
-        output = None  # type: str
+    async def show_item(self, ctx: 'Context', confession: ConfessionRow, match: Match[str]) -> None:
+        embed: Optional[discord.Embed] = None
+        output: Optional[str] = None
 
         paginator = Paginator()
         format_number = number_formatters[confession['numbering']]
@@ -252,6 +252,7 @@ class Confession(object):
                 question_number = int(match['number'])
 
             question = await get_question(ctx.db, confession, question_number)
+
             question_number_str = format_number(question_number)
 
             if q_or_a is None:
@@ -275,7 +276,7 @@ class Confession(object):
             embed = discord.Embed(title=f'__**{format_number(article_number)}. {article["title"]}**__')
             output = article['text']
 
-        while len(output) > 0:
+        while output and len(output) > 0:
             if len(output) > paginator.max_size:
                 index = output.rfind(' ', 0, paginator.max_size)
                 line = output[:index]

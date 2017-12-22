@@ -69,7 +69,7 @@ class Service(Generic[RT]):
                     log.debug('Finished GET %s', url)
                     return await self._process_response(response)
 
-    async def post(self, url: str, data: Dict[str, Any] = None, **session_options) -> RT:
+    async def post(self, url: str, data: Optional[Dict[str, Any]] = None, **session_options) -> RT:
         log.debug('POST %s', url)
         async with aiohttp.ClientSession(**session_options) as session:
             with async_timeout.timeout(10):

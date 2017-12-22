@@ -26,7 +26,7 @@ VERBOSE = re.VERBOSE
 
 @wraps(re.compile)
 def compile(*args: _ReOrStrType, flags: int = 0) -> Pattern[AnyStr]:
-    return re.compile(cast(AnyStr, combine(*args)), flags=flags)
+    return re.compile(combine(*args), flags=flags)  # type: ignore
 
 
 def _to_str(reOrStr: _ReOrStrType) -> str:
@@ -91,7 +91,7 @@ def escape_all(patterns: Iterable[Union[str, Pattern[AnyStr]]]) -> Iterator[str]
         if isinstance(pattern, str):
             yield re.escape(pattern)
         else:
-            yield cast(str, pattern.pattern)
+            yield pattern.pattern  # type: ignore
 
 
 START = '^'

@@ -33,11 +33,11 @@ def _get_order_by_string(order_by: Optional[str]) -> str:
 
 
 async def select_all(db: Connection, *args: Any,
-                     columns: Sequence[str] = None,
+                     columns: Optional[Sequence[str]] = None,
                      table: str,
-                     order_by: str = None,
-                     where: Sequence[str] = None,
-                     joins: Sequence[Tuple[str, str]] = None) -> List[Any]:
+                     order_by: Optional[str] = None,
+                     where: Optional[Sequence[str]] = None,
+                     joins: Optional[Sequence[Tuple[str, str]]] = None) -> List[Any]:
     columns_str = _get_columns_string(columns)
     where_str = _get_where_string(where)
     joins_str = _get_join_string(joins)
@@ -50,10 +50,10 @@ async def select_all(db: Connection, *args: Any,
 
 
 async def select_one(db: Connection, *args: Any,
-                     columns: Sequence[str] = None,
+                     columns: Optional[Sequence[str]] = None,
                      table: str,
-                     where: Sequence[str],
-                     joins: Sequence[Tuple[str, str]] = None) -> Optional[Any]:
+                     where: Optional[Sequence[str]],
+                     joins: Optional[Sequence[Tuple[str, str]]] = None) -> Optional[Any]:
     columns_str = _get_columns_string(columns)
     joins_str = _get_join_string(joins)
     where_str = _get_where_string(where)
@@ -65,13 +65,13 @@ async def select_one(db: Connection, *args: Any,
 
 
 async def search(db: Connection, *args: Any,
-                 columns: Sequence[str] = None,
+                 columns: Optional[Sequence[str]] = None,
                  table: str,
                  search_columns: Sequence[str],
                  terms: Sequence[str],
                  where: Sequence[str] = [],
-                 order_by: str = None,
-                 joins: Sequence[Tuple[str, str]] = None) -> List[Any]:
+                 order_by: Optional[str] = None,
+                 joins: Optional[Sequence[Tuple[str, str]]] = None) -> List[Any]:
     columns_str = _get_columns_string(columns)
     joins_str = _get_join_string(joins)
     search_columns_str = " || ' ' || ".join(search_columns)

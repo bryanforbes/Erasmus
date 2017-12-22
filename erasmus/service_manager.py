@@ -1,4 +1,4 @@
-from typing import Dict, List
+from typing import Dict, List, cast, Any
 from configparser import ConfigParser
 
 from .data import VerseRange, Passage, SearchResults, Bible
@@ -9,7 +9,7 @@ from . import services
 class ServiceManager(object):
     __slots__ = ('service_map')
 
-    service_map: Dict[str, Service]
+    service_map: Dict[str, Service[Any]]
 
     def __init__(self, config: ConfigParser) -> None:
         self.service_map = {}
@@ -33,11 +33,11 @@ class ServiceManager(object):
         return self.service_map.__len__()
 
     async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
-        service = self.service_map.get(bible['service'])
+        service = cast(Service[Any], self.service_map.get(bible['service']))
         passage = await service.get_passage(bible, verses)
         passage.version = bible['abbr']
         return passage
 
     async def search(self, bible: Bible, terms: List[str]) -> SearchResults:
-        service = self.service_map.get(bible['service'])
+        service = cast(Service[Any], self.service_map.get(bible['service']))
         return await service.search(bible, terms)

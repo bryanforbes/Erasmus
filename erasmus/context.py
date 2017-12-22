@@ -33,9 +33,9 @@ class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection
 
 class Context(commands.Context):
     bot: 'Erasmus'
-    db: Optional[Connection]
+    db: Connection
 
-    async def send_embed(self, text: str = None, *, embed: discord.Embed = None) -> discord.Message:
+    async def send_embed(self, text: Optional[str] = None, *, embed: Optional[discord.Embed] = None) -> discord.Message:
         if text is not None:
             if embed is None:
                 embed = discord.Embed()
@@ -43,7 +43,7 @@ class Context(commands.Context):
 
         return await self.send(embed=embed)
 
-    async def send_pages(self, pages: List[str], *, embed: discord.Embed = None) -> List[discord.Message]:
+    async def send_pages(self, pages: List[str], *, embed: Optional[discord.Embed] = None) -> List[discord.Message]:
         messages: List[discord.Message] = []
 
         for page in pages:
@@ -52,7 +52,7 @@ class Context(commands.Context):
 
         return messages
 
-    async def send_error(self, text: str = None, *, embed: discord.Embed = None) -> discord.Message:
+    async def send_error(self, text: Optional[str] = None, *, embed: Optional[discord.Embed] = None) -> discord.Message:
         if embed is not None:
             embed = discord.Embed.from_data(embed.to_dict())
         else:
@@ -89,4 +89,4 @@ class Context(commands.Context):
     async def release(self) -> None:
         if self.db is not None:
             await self.bot.pool.release(self.db)
-            self.db = None
+            self.db = None  # type: ignore

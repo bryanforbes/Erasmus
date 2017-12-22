@@ -147,7 +147,6 @@ class Bible(object):
             version = version[1:]
 
         existing = await get_bible(ctx.db, version)
-
         await set_user_bible(ctx.db, ctx.author.id, existing)
 
         await ctx.send_embed(f'Version set to `{version}`')

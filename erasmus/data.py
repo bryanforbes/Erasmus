@@ -99,13 +99,13 @@ class VerseRange(object):
     start: Verse
     end: Optional[Verse]
 
-    def __init__(self, book: str, start: Verse, end: Verse = None) -> None:
-        self.book = book_input_map.get(book.lower(), None)
+    def __init__(self, book: str, start: Verse, end: Optional[Verse] = None) -> None:
+        self.book = book_input_map.get(book.lower(), '')
 
-        if self.book is None:
+        if self.book == '':
             raise BookNotUnderstoodError(book)
 
-        self.book_mask = book_mask_map.get(self.book, None)
+        self.book_mask = book_mask_map.get(self.book, 0)
 
         self.start = start
         self.end = end
@@ -177,7 +177,7 @@ class Passage(object):
     range: VerseRange
     version: Optional[str]
 
-    def __init__(self, text: str, range: VerseRange, version: str = None) -> None:
+    def __init__(self, text: str, range: VerseRange, version: Optional[str] = None) -> None:
         self.text = text
         self.range = range
         self.version = version
