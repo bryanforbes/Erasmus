@@ -108,9 +108,10 @@ class Confession(object):
     def __init__(self, bot: 'Erasmus') -> None:
         self.bot = bot
 
+    # TODO: there's a fix coming for type hints in discord.py so `Optional[str]` should be fixed in the future
     @commands.command(brief='Query confessions and catechisms', help=confess_help)
     @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
-    async def confess(self, ctx: 'Context', confession: Optional[str] = None, *args: str) -> None:
+    async def confess(self, ctx: 'Context', confession: str = None, *args: str) -> None:  # type: ignore
         if confession is None:
             await self.list(ctx)
             return

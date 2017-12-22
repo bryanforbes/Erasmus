@@ -47,7 +47,7 @@ class Context(commands.Context):
         messages: List[discord.Message] = []
 
         for page in pages:
-            messages.append(await self.send(page, embed=embed))
+            messages.append(await self.send_embed(page, embed=embed))
             embed = None
 
         return messages
@@ -78,7 +78,7 @@ class Context(commands.Context):
         return await self.send(embed=embed)
 
     async def _acquire(self, timeout: Optional[float]) -> Connection:
-        if self.db is None:
+        if not hasattr(self, 'db'):
             self.db = await self.bot.pool.acquire(timeout=timeout)
 
         return self.db
@@ -87,6 +87,6 @@ class Context(commands.Context):
         return AquireContextManager(self, timeout)
 
     async def release(self) -> None:
-        if self.db is not None:
+        if hasattr(self, 'db'):
             await self.bot.pool.release(self.db)
-            self.db = None  # type: ignore
+            del self.db
