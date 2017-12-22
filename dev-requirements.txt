@@ -9,7 +9,7 @@ cchardet==2.1.1
 chardet==3.0.4
 click==6.7
 coverage==4.4.2
-discord.py==1.0.0a1407+g5c5a59c
+discord.py==1.0.0a1412+gf5a443f
 flake8==3.5.0
 Mako==1.0.7
 MarkupSafe==1.0

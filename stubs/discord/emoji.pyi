@@ -18,6 +18,7 @@ class Emoji(Hashable):
     name: str
     id: int
     require_colons: bool
+    animated: bool
     managed: bool
     guild_id: int
 
