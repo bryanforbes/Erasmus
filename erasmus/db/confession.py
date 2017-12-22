@@ -4,6 +4,7 @@ from asyncpg import Connection
 from enum import Enum
 
 from .util import select_all, select_one, search
+from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 
 __all__ = (
     'ConfessionType', 'NumberingType', 'Confession', 'Chapter', 'ParagraphSearchResult',
@@ -76,7 +77,7 @@ async def get_confessions(db: Connection) -> List[Confession]:
     return await select_all(db, columns=['*'], table='confessions', order_by='command')
 
 
-async def get_confession(db: Connection, command: str) -> Optional[Confession]:
+async def get_confession(db: Connection, command: str) -> Confession:
     row = await select_one(db, command.lower(),
                            columns=('c.id', 'c.command', 'c.name', 't.value AS type', 'n.numbering'),
                            table='confessions AS c',
@@ -85,7 +86,7 @@ async def get_confession(db: Connection, command: str) -> Optional[Confession]:
                            where=['c.command = $1'])
 
     if not row:
-        return None
+        raise InvalidConfessionError(command)
 
     return Confession(id=row['id'], command=row['command'],
                       name=row['name'], type=ConfessionType[row['type']],
@@ -93,25 +94,35 @@ async def get_confession(db: Connection, command: str) -> Optional[Confession]:
 
 
 async def get_chapters(db: Connection, confession: Confession) -> List[Chapter]:
-    return await select_all(db, confession['id'],
-                            columns=('ch.chapter_number', 'ch.chapter_title'),
-                            table='confession_chapters AS ch',
-                            joins=[('confessions AS c', 'ch.confess_id = c.id')],
-                            where=['c.id = $1'],
-                            order_by='ch.chapter_number')
+    chapters = await select_all(db, confession['id'],
+                                columns=('ch.chapter_number', 'ch.chapter_title'),
+                                table='confession_chapters AS ch',
+                                joins=[('confessions AS c', 'ch.confess_id = c.id')],
+                                where=['c.id = $1'],
+                                order_by='ch.chapter_number')
+
+    if len(chapters) == 0:
+        raise NoSectionsError(confession['name'], 'chapters')
+
+    return chapters
 
 
 async def get_paragraph(db: Connection, confession: Confession,
                         chapter: int, paragraph: int) -> Paragraph:
-    return await select_one(db, confession['id'], chapter, paragraph,
-                            columns=('ch.chapter_title', 'p.chapter_number', 'p.paragraph_number', 'p.text'),
-                            table='confession_paragraphs AS p',
-                            joins=[('confessions AS c', 'c.id = p.confess_id'),
-                                   ('confession_chapters AS ch',
-                                    'ch.confess_id = c.id AND ch.chapter_number = p.chapter_number')],
-                            where=['c.id = $1',
-                                   'p.chapter_number = $2',
-                                   'p.paragraph_number = $3'])
+    paragraph = await select_one(db, confession['id'], chapter, paragraph,
+                                 columns=('ch.chapter_title', 'p.chapter_number', 'p.paragraph_number', 'p.text'),
+                                 table='confession_paragraphs AS p',
+                                 joins=[('confessions AS c', 'c.id = p.confess_id'),
+                                        ('confession_chapters AS ch',
+                                         'ch.confess_id = c.id AND ch.chapter_number = p.chapter_number')],
+                                 where=['c.id = $1',
+                                        'p.chapter_number = $2',
+                                        'p.paragraph_number = $3'])
+
+    if not paragraph:
+        raise NoSectionError(confession['name'], f'{chapter}.{paragraph}', 'paragraph')
+
+    return paragraph
 
 
 async def search_paragraphs(db: Connection, confession: Confession,
@@ -137,7 +148,7 @@ async def get_questions(db: Connection, confession: Confession) -> List[Question
                             order_by='q.question_number')
 
 
-async def get_question_count(db: Connection, confession: Confession) -> int:
+async def get_question_count(db: Connection, confession: Confession) -> Optional[int]:
     query = '''SELECT count(id) FROM confession_questions
         WHERE confess_id = $1'''
 
@@ -145,11 +156,16 @@ async def get_question_count(db: Connection, confession: Confession) -> int:
 
 
 async def get_question(db: Connection, confession: Confession, question_number: int) -> Question:
-    return await select_one(db, confession['id'], question_number,
-                            columns=['q.question_number', 'q.question_text', 'q.answer_text'],
-                            table='confession_questions AS q',
-                            joins=[('confessions AS c', 'c.id = q.confess_id')],
-                            where=['c.id = $1', 'q.question_number = $2'])
+    question = await select_one(db, confession['id'], question_number,
+                                columns=['q.question_number', 'q.question_text', 'q.answer_text'],
+                                table='confession_questions AS q',
+                                joins=[('confessions AS c', 'c.id = q.confess_id')],
+                                where=['c.id = $1', 'q.question_number = $2'])
+
+    if not question:
+        raise NoSectionError(confession['name'], f'{question_number}', 'question')
+
+    return question
 
 
 async def search_questions(db: Connection, confession: Confession, terms: Sequence[str]) -> List[QuestionSearchResult]:
@@ -164,20 +180,30 @@ async def search_questions(db: Connection, confession: Confession, terms: Sequen
 
 
 async def get_articles(db: Connection, confession: Confession) -> List[ArticleSearchResult]:
-    return await select_all(db, confession['id'],
-                            columns=['a.article_number', 'a.title'],
-                            table='confession_articles AS a',
-                            joins=[('confessions AS c', 'c.id = a.confess_id')],
-                            where=['c.id = $1'],
-                            order_by='a.article_number')
+    articles = await select_all(db, confession['id'],
+                                columns=['a.article_number', 'a.title'],
+                                table='confession_articles AS a',
+                                joins=[('confessions AS c', 'c.id = a.confess_id')],
+                                where=['c.id = $1'],
+                                order_by='a.article_number')
+
+    if len(articles) == 0:
+        raise NoSectionsError(confession['name'], 'articles')
+
+    return articles
 
 
 async def get_article(db: Connection, confession: Confession, article_number: int) -> Article:
-    return await select_one(db, confession['id'], article_number,
-                            columns=['a.article_number', 'a.title', 'a.text'],
-                            table='confession_articles AS a',
-                            joins=[('confessions AS C', 'c.id = a.confess_id')],
-                            where=['c.id = $1', 'a.article_number = $2'])
+    article = await select_one(db, confession['id'], article_number,
+                               columns=['a.article_number', 'a.title', 'a.text'],
+                               table='confession_articles AS a',
+                               joins=[('confessions AS C', 'c.id = a.confess_id')],
+                               where=['c.id = $1', 'a.article_number = $2'])
+
+    if not article:
+        raise NoSectionError(confession['name'], f'{article_number}', 'article')
+
+    return article
 
 
 async def search_articles(db: Connection, confession: Confession, terms: Sequence[str]) -> List[ArticleSearchResult]:

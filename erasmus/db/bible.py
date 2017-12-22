@@ -1,8 +1,9 @@
-from typing import Optional, List
+from typing import List
 from mypy_extensions import TypedDict
 from asyncpg import Connection
 
 from .util import select_all, select_one, insert_into, delete_from
+from ..exceptions import NoUserVersionError, InvalidVersionError
 
 __all__ = (
     'Bible', 'get_bibles', 'get_bible', 'get_user_bible', 'set_user_bible',
@@ -26,17 +27,27 @@ async def get_bibles(db: Connection, *, ordered: bool = False) -> List[Bible]:
                             order_by=None if not ordered else 'command')
 
 
-async def get_bible(db: Connection, command: str) -> Optional[Bible]:
-    return await select_one(db, command,
-                            table='bible_versions',
-                            where=['command = $1'])
+async def get_bible(db: Connection, command: str) -> Bible:
+    bible = await select_one(db, command,
+                             table='bible_versions',
+                             where=['command = $1'])
+
+    if not bible:
+        raise InvalidVersionError(command)
+
+    return bible
 
 
-async def get_user_bible(db: Connection, user_id: int) -> Optional[Bible]:
-    return await select_one(db, str(user_id),
-                            table='user_prefs',
-                            joins=[('bible_versions', 'bible_versions.id = user_prefs.bible_id')],
-                            where=['user_prefs.user_id = $1'])
+async def get_user_bible(db: Connection, user_id: int) -> Bible:
+    bible = await select_one(db, str(user_id),
+                             table='user_prefs',
+                             joins=[('bible_versions', 'bible_versions.id = user_prefs.bible_id')],
+                             where=['user_prefs.user_id = $1'])
+
+    if bible is None:
+        raise NoUserVersionError
+
+    return bible
 
 
 async def set_user_bible(db: Connection, user_id: int, bible: Bible) -> None:

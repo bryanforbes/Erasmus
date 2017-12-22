@@ -96,7 +96,7 @@ class Bible(object):
         self.bot = bot
         self.service_manager = ServiceManager(self.bot.config)
         self._user_cooldown = commands.CooldownMapping(
-            commands.Cooldown(rate=4, per=60.0, type=commands.BucketType.user))
+            commands.Cooldown(rate=8, per=60.0, type=commands.BucketType.user))
 
         # Share cooldown across commands
         self.lookup._buckets = self.search._buckets = self._user_cooldown
@@ -115,10 +115,6 @@ class Bible(object):
     async def lookup(self, ctx: 'Context', *, reference: VerseRange) -> None:
         bible = await get_user_bible(ctx.db, ctx.author.id)
 
-        if not bible:
-            await ctx.send_error_to_author(f'You must first set your default version with `{ctx.prefix}setversion`')
-            return
-
         await self._lookup(ctx, bible, reference)
 
     @commands.command(aliases=['s'],
@@ -126,14 +122,11 @@ class Bible(object):
                       help=search_help)
     async def search(self, ctx: 'Context', *terms: str) -> None:
         bible = await get_user_bible(ctx.db, ctx.author.id)
-        if not bible:
-            await ctx.send_error_to_author(f'You must first set your default version with `{ctx.prefix}setversion`')
-            return
 
         await self._search(ctx, bible, *terms)
 
     @commands.command(brief='List which Bible versions are available for lookup and search')
-    @commands.cooldown(rate=1, per=30.0, type=commands.BucketType.channel)
+    @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
     async def versions(self, ctx: 'Context') -> None:
         lines = ['I support the following Bible versions:', '']
 
@@ -144,7 +137,7 @@ class Bible(object):
                      f'(ex. `{ctx.prefix}sesv terms...`)')
 
         output = '\n'.join(lines)
-        await ctx.send_to_author(f'\n{output}\n')
+        await ctx.send_embed(f'\n{output}\n')
 
     @commands.command(brief='Set your preferred version', help=setversion_help)
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
@@ -155,14 +148,9 @@ class Bible(object):
 
         existing = await get_bible(ctx.db, version)
 
-        if not existing:
-            await ctx.send_error_to_author(f'`{version}` is not a valid version.'
-                                           f'Check `{ctx.prefix}versions` for valid versions')
-            return
-
         await set_user_bible(ctx.db, ctx.author.id, existing)
 
-        await ctx.send_to_author(f'Version set to `{version}`')
+        await ctx.send_embed(f'Version set to `{version}`')
 
     @commands.command(name='addbible')
     @dm_only()
@@ -170,7 +158,7 @@ class Bible(object):
     async def add_bible(self, ctx: 'Context', command: str, name: str, abbr: str, service: str,
                         service_version: str, books: int = 3, rtl: bool = False) -> None:
         if service not in self.service_manager:
-            await ctx.send_error_to_author(f'`{service}` is not a valid service')
+            await ctx.send_error(f'`{service}` is not a valid service')
             return
 
         try:
@@ -183,40 +171,29 @@ class Bible(object):
                             rtl=rtl,
                             books=books)
         except UniqueViolationError:
-            await ctx.send_error_to_author(f'`{command}` already exists')
+            await ctx.send_error(f'`{command}` already exists')
         else:
             self._add_bible_commands(command, name)
-            await ctx.send_to_author(f'Added `{command}` as "{name}"')
+            await ctx.send_embed(f'Added `{command}` as "{name}"')
 
     @commands.command(name='delbible')
     @dm_only()
     @commands.is_owner()
     async def delete_bible(self, ctx: 'Context', command: str) -> None:
-        existing = await get_bible(ctx.db, command)
-
-        if not existing:
-            await ctx.send_error_to_author(f'`{command}` doesn\'t exist')
-            return
-
+        await get_bible(ctx.db, command)
         await delete_bible(ctx.db, command)
 
         self._remove_bible_commands(command)
 
-        await ctx.send_to_author(f'Removed `{command}`')
+        await ctx.send_embed(f'Removed `{command}`')
 
     async def _version_lookup(self, ctx: 'Context', *, reference: VerseRange) -> None:
         bible = await get_bible(ctx.db, ctx.invoked_with)
-
-        if not bible:
-            return
 
         await self._lookup(ctx, bible, reference)
 
     async def _version_search(self, ctx: 'Context', *terms: str) -> None:
         bible = await get_bible(ctx.db, ctx.invoked_with[1:])
-
-        if not bible:
-            return
 
         await self._search(ctx, bible, *terms)
 
@@ -229,7 +206,7 @@ class Bible(object):
                 passage = await self.service_manager.get_passage(bible, reference)
                 await ctx.send_passage(passage)
         else:
-            await ctx.send_error_to_author('I do not understand that request')
+            await ctx.send_error('I do not understand that request')
 
     async def _search(self, ctx: 'Context', bible: BibleObject, *terms: str) -> None:
         async with ctx.typing():
@@ -245,7 +222,7 @@ class Bible(object):
                     limit = pluralize_match(20)
                     output = f'{output}. Here are the first {limit}:\n\n{verses}'
 
-            await ctx.send_to_author(output)
+            await ctx.send_embed(output)
 
     def _add_bible_commands(self, command: str, name: str) -> None:
         lookup = self.bot.command(name=command,

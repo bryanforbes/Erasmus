@@ -15,7 +15,7 @@ class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection
     __slots__ = ('ctx', 'timeout')
 
     ctx: 'Context'
-    timeout: float
+    timeout: Optional[float]
 
     def __init__(self, ctx: 'Context', timeout: Optional[float]) -> None:
         self.ctx = ctx
@@ -33,7 +33,34 @@ class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection
 
 class Context(commands.Context):
     bot: 'Erasmus'
-    db: Optional[Connection] = None
+    db: Optional[Connection]
+
+    async def send_embed(self, text: str = None, *, embed: discord.Embed = None) -> discord.Message:
+        if text is not None:
+            if embed is None:
+                embed = discord.Embed()
+            embed.description = text
+
+        return await self.send(embed=embed)
+
+    async def send_pages(self, pages: List[str], *, embed: discord.Embed = None) -> List[discord.Message]:
+        messages: List[discord.Message] = []
+
+        for page in pages:
+            messages.append(await self.send(page, embed=embed))
+            embed = None
+
+        return messages
+
+    async def send_error(self, text: str = None, *, embed: discord.Embed = None) -> discord.Message:
+        if embed is not None:
+            embed = discord.Embed.from_data(embed.to_dict())
+        else:
+            embed = discord.Embed()
+
+        embed.color = discord.Color.red()
+
+        return await self.send_embed(text, embed=embed)
 
     async def send_passage(self, passage: Passage) -> discord.Message:
         text = passage.text
@@ -48,40 +75,7 @@ class Context(commands.Context):
             }
         })
 
-        return await self.send_to_author(embed=embed)
-
-    async def send_error_to_author(self, text: str = None, *, embed: discord.Embed = None) -> discord.Message:
-        if embed is not None:
-            embed = discord.Embed.from_data(embed.to_dict())
-        else:
-            embed = discord.Embed()
-
-        embed.color = discord.Color.red()
-
-        return await self.send_to_author(text, embed=embed)
-
-    async def send_to_author(self, text: str = None, *, embed: discord.Embed = None) -> discord.Message:
-        if text is not None:
-            if embed is None:
-                embed = discord.Embed()
-            embed.description = text
-
-        mention = None  # type: str
-
-        if not isinstance(self.message.channel, discord.DMChannel) and \
-                not isinstance(self.message.channel, discord.GroupChannel):
-            mention = self.author.mention
-
-        return await self.send(mention, embed=embed)
-
-    async def send_pages_to_author(self, pages: List[str], *, embed: discord.Embed = None) -> List[discord.Message]:
-        messages = []
-
-        for page in pages:
-            messages.append(await self.send_to_author(page, embed=embed))
-            embed = None
-
-        return messages
+        return await self.send(embed=embed)
 
     async def _acquire(self, timeout: Optional[float]) -> Connection:
         if self.db is None:

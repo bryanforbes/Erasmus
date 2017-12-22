@@ -35,10 +35,9 @@ class TestContext(object):
         return mocker.patch('discord.ext.commands.Context.send', new_callable=mocker.AsyncMock)
 
     @pytest.mark.asyncio
-    async def test_send(self, mocker, mock_context_send):
-        ctx = Context(prefix='~', message=MockMessage(author=MockUser(mention='user1')))
+    async def test_send_embed(self, mocker, mock_context_send):
+        ctx = Context(prefix='~', message=MockMessage())
 
-        await ctx.send_to_author('baz')
+        await ctx.send_embed('baz')
 
-        assert mock_context_send.call_args_list[0][0] == ('user1',)
         assert type(mock_context_send.call_args_list[0][1]['embed']) == discord.Embed

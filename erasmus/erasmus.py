@@ -12,7 +12,8 @@ from discord.ext.commands import Group
 from .exceptions import (
     DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError,
     BookNotUnderstoodError, ReferenceNotUnderstoodError, OnlyDirectMessage,
-    BookNotInVersionError
+    BookNotInVersionError, NoUserVersionError, InvalidVersionError, NoSectionError,
+    NoSectionsError, InvalidConfessionError
 )
 from .context import Context
 from .format import HelpFormatter
@@ -122,11 +123,22 @@ class Erasmus(commands.Bot):
         elif isinstance(exc, DoNotUnderstandError):
             message = 'I do not understand that request'
         elif isinstance(exc, ReferenceNotUnderstoodError):
-            message = f'I do not understand the reference {exc.reference}'
+            message = f'I do not understand the reference "{exc.reference}"'
         elif isinstance(exc, BibleNotSupportedError):
-            message = f'{ctx.prefix}{exc.version} is not supported'
+            message = f'`{ctx.prefix}{exc.version}` is not supported'
+        elif isinstance(exc, NoUserVersionError):
+            message = f'You must first set your default version with `{ctx.prefix}setversion`'
+        elif isinstance(exc, InvalidVersionError):
+            message = f'`{exc.version}` is not a valid version. Check `{ctx.prefix}versions` for valid versions'
+        elif isinstance(exc, InvalidConfessionError):
+            message = f'`{exc.confession}` is not a valid confession.'
+        elif isinstance(exc, NoSectionError):
+            message = f'`{exc.confession}` does not have {"an" if exc.section_type == "article" else "a"}' \
+                f'{exc.section_type} `{exc.section}`'
+        elif isinstance(exc, NoSectionsError):
+            message = f'`{exc.confession}` has no {exc.section_type}'
         elif isinstance(exc, ServiceNotSupportedError):
-            message = f'The service configured for {self.default_prefix}{ctx.invoked_with} is not supported'
+            message = f'The service configured for `{self.default_prefix}{ctx.invoked_with}` is not supported'
         elif isinstance(exc, commands.NoPrivateMessage):
             message = 'This command is not available in private messages'
         elif isinstance(exc, commands.CommandOnCooldown):
@@ -146,7 +158,7 @@ class Erasmus(commands.Bot):
         else:
             log.exception('Exception occurred in command %s', ctx.command, exc_info=exc)
 
-        await ctx.send_error_to_author(message)
+        await ctx.send_error(message)
 
     @commands.command(brief='List commands for this bot or get help for commands')
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)

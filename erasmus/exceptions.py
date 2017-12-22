@@ -42,5 +42,42 @@ class ServiceNotSupportedError(Exception):
         self.service_name = service_name
 
 
+class NoUserVersionError(Exception):
+    pass
+
+
+class InvalidVersionError(Exception):
+    version: str
+
+    def __init__(self, version: str) -> None:
+        self.version = version
+
+
+class InvalidConfessionError(Exception):
+    confession: str
+
+    def __init__(self, confession: str) -> None:
+        self.confession = confession
+
+
+class NoSectionError(Exception):
+    confession: str
+    section: str
+
+    def __init__(self, confession: str, section: str, section_type: str) -> None:
+        self.confession = confession
+        self.section = section
+        self.section_type = section_type
+
+
+class NoSectionsError(Exception):
+    confession: str
+    section_type: str
+
+    def __init__(self, confession: str, section_type: str) -> None:
+        self.confession = confession
+        self.section_type = section_type
+
+
 class OnlyDirectMessage(commands.CheckFailure):
     pass

@@ -109,17 +109,13 @@ class Confession(object):
         self.bot = bot
 
     @commands.command(brief='Query confessions and catechisms', help=confess_help)
-    @commands.cooldown(rate=4, per=30.0, type=commands.BucketType.user)
+    @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
     async def confess(self, ctx: 'Context', confession: str = None, *args: str) -> None:
         if confession is None:
             await self.list(ctx)
             return
 
         row = await get_confession(ctx.db, confession)
-
-        if not row:
-            await ctx.send_error_to_author(f'`{confession}` is not a valid confession.')
-            return
 
         if len(args) == 0:
             await self.list_contents(ctx, row)
@@ -141,7 +137,7 @@ class Confession(object):
         for conf in confs:
             paginator.add_line(f'  `{conf["command"]}`: {conf["name"]}')
 
-        await ctx.send_pages_to_author(paginator.pages)
+        await ctx.send_pages(paginator.pages)
 
     async def list_contents(self, ctx: 'Context', confession: ConfessionRow) -> None:
         if confession['type'] == ConfessionType.CHAPTERS or confession['type'] == ConfessionType.ARTICLES:
@@ -154,18 +150,15 @@ class Confession(object):
         getter: Callable[[Connection, ConfessionRow], Awaitable[List[Any]]] = None
         number_key: str = None
         title_key: str = None
-        type_str: str = None
 
         if confession['type'] == ConfessionType.CHAPTERS:
             getter = get_chapters
             number_key = 'chapter_number'
             title_key = 'chapter_title'
-            type_str = 'chapters'
         elif confession['type'] == ConfessionType.ARTICLES:
             getter = get_articles
             number_key = 'article_number'
             title_key = 'title'
-            type_str = 'articles'
 
         format_number = number_formatters[confession['numbering']]
         records = await getter(ctx.db, confession)
@@ -173,18 +166,15 @@ class Confession(object):
             paginator.add_line('**{number}**. {title}'.format(number=format_number(record[number_key]),
                                                               title=record[title_key]))
 
-        if len(paginator.pages) == 0:
-            await ctx.send_error_to_author(f'`{confession["name"]}` has no {type_str}')
-
         embed = discord.Embed(title=f'__**{confession["name"]}**__')
 
-        await ctx.send_pages_to_author(paginator.pages, embed=embed)
+        await ctx.send_pages(paginator.pages, embed=embed)
 
     async def list_questions(self, ctx: 'Context', confession: ConfessionRow) -> None:
         count = await get_question_count(ctx.db, confession)
         question_str = pluralizers[ConfessionType.QA](count)
 
-        await ctx.send_to_author(f'`{confession["name"]}` has {question_str}')
+        await ctx.send_embed(f'`{confession["name"]}` has {question_str}')
 
     async def search(self, ctx: 'Context', confession: ConfessionRow, *terms: str) -> None:
         pluralize_type: PluralizerType = None
@@ -225,12 +215,12 @@ class Confession(object):
             for reference in references:
                 paginator.add_line(reference)
 
-            await ctx.send_pages_to_author(paginator.pages)
+            await ctx.send_pages(paginator.pages)
         else:
             if num_references > 0:
                 first_line += '\n\n' + ', '.join(references)
 
-            await ctx.send_to_author(first_line)
+            await ctx.send_embed(first_line)
 
     async def show_item(self, ctx: 'Context', confession: ConfessionRow, match: Match) -> None:
         embed = None  # type: discord.Embed
@@ -246,10 +236,8 @@ class Confession(object):
             else:
                 chapter_num = int(match['chapter'])
                 paragraph_num = int(match['paragraph'])
+
             paragraph = await get_paragraph(ctx.db, confession, chapter_num, paragraph_num)
-            if not paragraph:
-                await ctx.send_error_to_author(f'{confession["name"]} does not have a paragraph {match[0]}')
-                return
 
             paragraph_number = format_number(paragraph['paragraph_number'])
             chapter_number = format_number(paragraph['chapter_number'])
@@ -281,11 +269,8 @@ class Confession(object):
                 article_number = roman_to_int(match['article_roman'])
             else:
                 article_number = int(match['article'])
-            article = await get_article(ctx.db, confession, article_number)
 
-            if not article:
-                await ctx.send_error_to_author(f'{confession["name"]} does not have an article {match[0]}')
-                return
+            article = await get_article(ctx.db, confession, article_number)
 
             embed = discord.Embed(title=f'__**{format_number(article_number)}. {article["title"]}**__')
             output = article['text']
@@ -301,7 +286,7 @@ class Confession(object):
 
             paginator.add_line(line)
 
-        await ctx.send_pages_to_author(paginator.pages, embed=embed)
+        await ctx.send_pages(paginator.pages, embed=embed)
 
 
 def setup(bot: 'Erasmus') -> None:
