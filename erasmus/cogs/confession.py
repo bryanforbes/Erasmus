@@ -279,7 +279,7 @@ class Confession(object):
 
         while output and len(output) > 0:
             if len(output) > paginator.max_size:
-                index = output.rfind(' ', 0, paginator.max_size)
+                index = output.rfind(' ', 0, paginator.max_size - 1)
                 line = output[:index]
                 output = output[index + 1:]
             else:

@@ -1,4 +1,4 @@
-from typing import cast
+from typing import cast, Optional
 
 import discord
 import logging
@@ -80,7 +80,7 @@ class Erasmus(commands.Bot):
             except Exception as e:
                 log.exception('Failed to load extension %s.', extension)
 
-    def run(self, *args, **kwargs):
+    def run(self, *args, **kwargs) -> None:
         super().run(self.config.get('erasmus', 'discord_api_key'))
 
     async def close(self) -> None:
