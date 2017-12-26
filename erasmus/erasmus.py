@@ -1,4 +1,4 @@
-from typing import cast, Optional
+from typing import cast
 
 import discord
 import logging
@@ -80,8 +80,8 @@ class Erasmus(commands.Bot):
             except Exception as e:
                 log.exception('Failed to load extension %s.', extension)
 
-    def run(self, *args, **kwargs) -> None:
-        super().run(self.config.get('erasmus', 'discord_api_key'))
+    def run_with_config(self) -> None:
+        self.run(self.config.get('erasmus', 'discord_api_key'))
 
     async def close(self) -> None:
         await self.pool.close()
@@ -157,7 +157,10 @@ class Erasmus(commands.Bot):
             if exc.__cause__:
                 return await self.on_command_error(ctx, cast(Exception, exc.__cause__))
         else:
-            log.exception('Exception occurred in command %s', ctx.command, exc_info=exc)
+            log.exception('Exception occurred in command "%s"\nInvoked by: %s',
+                          ctx.command.qualified_name, ctx.message.content,
+                          exc_info=exc,
+                          stack_info=True)
 
         await ctx.send_error(message)
 

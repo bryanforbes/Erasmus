@@ -52,7 +52,7 @@ def main(log_to_console: bool, log_level: str):
 
     with setup_logging(log_to_console, log_level):
         bot = Erasmus("./config.ini")
-        bot.run()
+        bot.run_with_config()
 
 
 if __name__ == '__main__':

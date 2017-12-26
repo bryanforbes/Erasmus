@@ -29,6 +29,9 @@ class Command:
     def error(self, coro: ErrorHandlerType) -> ErrorHandlerType: ...
 
     @property
+    def qualified_name(self) -> str: ...
+
+    @property
     def cog_name(self) -> Optional[str]: ...
 
     @property
