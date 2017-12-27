@@ -7,7 +7,7 @@ from ..db import (
     select_all, get_bibles, get_bible, get_user_bible, set_user_bible,
     add_bible, delete_bible, UniqueViolationError
 )
-from ..data import VerseRange
+from ..data import VerseRange, get_book, get_book_mask
 from ..format import pluralizer
 from ..service_manager import ServiceManager, Bible as BibleObject
 from ..exceptions import OnlyDirectMessage, BookNotInVersionError
@@ -155,12 +155,23 @@ class Bible(object):
     @dm_only()
     @commands.is_owner()
     async def add_bible(self, ctx: 'Context', command: str, name: str, abbr: str, service: str,
-                        service_version: str, books: int = 3, rtl: bool = False) -> None:
+                        service_version: str, books: str = 'OT,NT', rtl: bool = False) -> None:
         if service not in self.service_manager:
             await ctx.send_error(f'`{service}` is not a valid service')
             return
 
         try:
+            book_mask = 0
+            book_list = books.split(',')
+            for book in book_list:
+                book = book.strip()
+                if book == 'OT':
+                    book = 'Genesis'
+                elif book == 'NT':
+                    book = 'Matthew'
+
+                book_mask = book_mask | get_book_mask(get_book(book))
+
             await add_bible(ctx.db,
                             command=command,
                             name=name,
@@ -168,7 +179,7 @@ class Bible(object):
                             service=service,
                             service_version=service_version,
                             rtl=rtl,
-                            books=books)
+                            books=book_mask)
         except UniqueViolationError:
             await ctx.send_error(f'`{command}` already exists')
         else:

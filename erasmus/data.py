@@ -48,12 +48,25 @@ _search_reference_re = re.compile(
 )
 
 
-book_input_map = {}  # type: Dict[str, str]
-book_mask_map = {}  # type: Dict[str, int]
-for book in books_data:
-    for input_string in [book.name, book.osis] + book.alt:  # type: str
-        book_input_map[input_string.lower()] = book.name
-    book_mask_map[book.name] = book.section
+_book_input_map = {}  # type: Dict[str, str]
+_book_mask_map = {}  # type: Dict[str, int]
+for _book in books_data:
+    for input_string in [_book.name, _book.osis] + _book.alt:  # type: str
+        _book_input_map[input_string.lower()] = _book.name
+    _book_mask_map[_book.name] = _book.section
+
+
+def get_book(book_name_or_abbr: str) -> str:
+    book = _book_input_map.get(book_name_or_abbr.lower(), '')
+
+    if book == '':
+        raise BookNotUnderstoodError(book)
+
+    return book
+
+
+def get_book_mask(book_name: str) -> int:
+    return _book_mask_map.get(book_name, 0)
 
 
 class Bible(TypedDict):
@@ -100,13 +113,8 @@ class VerseRange(object):
     end: Optional[Verse]
 
     def __init__(self, book: str, start: Verse, end: Optional[Verse] = None) -> None:
-        self.book = book_input_map.get(book.lower(), '')
-
-        if self.book == '':
-            raise BookNotUnderstoodError(book)
-
-        self.book_mask = book_mask_map.get(self.book, 0)
-
+        self.book = get_book(book)
+        self.book_mask = get_book_mask(self.book)
         self.start = start
         self.end = end
 

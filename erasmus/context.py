@@ -43,10 +43,11 @@ class Context(commands.Context):
 
         return await self.send(embed=embed)
 
-    async def send_pages(self, pages: List[str], *, embed: Optional[discord.Embed] = None) -> List[discord.Message]:
+    async def send_pages(self, paginator: commands.Paginator, *,
+                         embed: Optional[discord.Embed] = None) -> List[discord.Message]:
         messages: List[discord.Message] = []
 
-        for page in pages:
+        for page in paginator.pages:
             messages.append(await self.send_embed(page, embed=embed))
             embed = None
 

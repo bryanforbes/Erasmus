@@ -99,6 +99,21 @@ class Paginator(commands.Paginator):
     def __init__(self, prefix: str = '', suffix: str = '', max_size: int = 2048) -> None:
         super().__init__(prefix, suffix, max_size)
 
+    def add_line(self, line: str = '', *, empty: bool = False) -> None:
+        # if the line is too long, paginate it
+        while len(line) > 0:
+            if len(line) > self.max_size:
+                index = line.rfind(' ', 0, self.max_size - 1)
+                sub_line = line[:index]
+                sub_empty = False
+                line = line[index + 1:]
+            else:
+                sub_line = line
+                sub_empty = empty
+                line = ''
+
+            super().add_line(sub_line, empty=sub_empty)
+
 
 class Confession(object):
     __slots__ = ('bot')
@@ -138,7 +153,7 @@ class Confession(object):
         for conf in confs:
             paginator.add_line(f'  `{conf["command"]}`: {conf["name"]}')
 
-        await ctx.send_pages(paginator.pages)
+        await ctx.send_pages(paginator)
 
     async def list_contents(self, ctx: 'Context', confession: ConfessionRow) -> None:
         if confession['type'] == ConfessionType.CHAPTERS or confession['type'] == ConfessionType.ARTICLES:
@@ -169,7 +184,7 @@ class Confession(object):
 
         embed = discord.Embed(title=f'__**{confession["name"]}**__')
 
-        await ctx.send_pages(paginator.pages, embed=embed)
+        await ctx.send_pages(paginator, embed=embed)
 
     async def list_questions(self, ctx: 'Context', confession: ConfessionRow) -> None:
         count = await get_question_count(ctx.db, confession)
@@ -216,7 +231,7 @@ class Confession(object):
             for reference in references:
                 paginator.add_line(reference)
 
-            await ctx.send_pages(paginator.pages)
+            await ctx.send_pages(paginator)
         else:
             if num_references > 0:
                 first_line += '\n\n' + ', '.join(references)
@@ -277,18 +292,10 @@ class Confession(object):
             embed = discord.Embed(title=f'__**{format_number(article_number)}. {article["title"]}**__')
             output = article['text']
 
-        while output and len(output) > 0:
-            if len(output) > paginator.max_size:
-                index = output.rfind(' ', 0, paginator.max_size - 1)
-                line = output[:index]
-                output = output[index + 1:]
-            else:
-                line = output
-                output = ''
+        if output:
+            paginator.add_line(output)
 
-            paginator.add_line(line)
-
-        await ctx.send_pages(paginator.pages, embed=embed)
+        await ctx.send_pages(paginator, embed=embed)
 
 
 def setup(bot: 'Erasmus') -> None:
