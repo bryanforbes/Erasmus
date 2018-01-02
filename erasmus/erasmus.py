@@ -2,6 +2,8 @@ from typing import cast
 
 import discord
 import logging
+import aiohttp
+import async_timeout
 
 from asyncpg import create_pool
 from asyncpg.pool import Pool
@@ -107,6 +109,7 @@ class Erasmus(commands.Bot):
 
     async def on_ready(self) -> None:
         await self.change_presence(game=discord.Game(name=f'| {self.default_prefix}help'))
+        await self._report_guilds()
 
         user = cast(discord.ClientUser, self.user)
         log.info('Erasmus ready. Logged in as %s %s', user.name, user.id)
@@ -203,6 +206,27 @@ class Erasmus(commands.Bot):
 
         for page in pages:
             await destination.send(page)
+
+    async def _report_guilds(self) -> None:
+        token = self.config.get('erasmus', 'dbl_token')
+        if not token:
+            return
+
+        headers = {'Authorization': token}
+        payload = {'server_count': len(self.guilds)}
+        user = cast(discord.ClientUser, self.user)
+
+        async with aiohttp.ClientSession() as session:
+            with async_timeout.timeout(10):
+                await session.post(f'https://discordbots.org/api/bots/{user.id}/stats',
+                                   data=payload,
+                                   headers=headers)
+
+    async def on_guild_available(self, guild: discord.Guild) -> None:
+        await self._report_guilds()
+
+    async def on_guild_join(self, guild: discord.Guild) -> None:
+        await self._report_guilds()
 
     # async def on_guild_available(self, guild: discord.Guild) -> None:
     #     await self.on_guild_join(guild)
