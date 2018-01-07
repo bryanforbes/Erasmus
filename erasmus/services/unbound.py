@@ -1,5 +1,7 @@
 # Service for querying Biola's Unbound Bible
 
+import asyncio
+
 from typing import Dict, List, Optional  # noqa
 from bs4 import BeautifulSoup, Tag
 from aiohttp import ClientResponse
@@ -7,7 +9,7 @@ from urllib.parse import urlencode
 
 from ..service import Service
 from ..data import VerseRange, SearchResults, Bible
-from ..exceptions import DoNotUnderstandError
+from ..exceptions import DoNotUnderstandError, ServiceSearchTimeout
 from .. import re
 
 number_re = re.compile(
@@ -191,16 +193,21 @@ class Unbound(Service[Tag]):
 
     async def search(self, bible: Bible, terms: List[str]) -> SearchResults:
         url = self._get_search_url(bible['service_version'], terms)
-        response = await self.post(url, {
-            'search_type': 'advanced_search',
-            'parallel_1': bible['service_version'],
-            'displayFormat': 'normalNoHeader',
-            'book_section': 'ALL',
-            'book': 'ALL',
-            'search': ' AND '.join(terms),
-            'show_commentary': '0',
-            'show_context': '0',
-            'show_illustrations': '0',
-            'show_maps': '0'
-        })
+
+        try:
+            response = await self.post(url, {
+                'search_type': 'advanced_search',
+                'parallel_1': bible['service_version'],
+                'displayFormat': 'normalNoHeader',
+                'book_section': 'ALL',
+                'book': 'ALL',
+                'search': ' AND '.join(terms),
+                'show_commentary': '0',
+                'show_context': '0',
+                'show_illustrations': '0',
+                'show_maps': '0'
+            })
+        except asyncio.TimeoutError:
+            raise ServiceSearchTimeout(bible, terms)
+
         return self._get_search_results(response)

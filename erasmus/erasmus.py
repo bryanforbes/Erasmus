@@ -15,7 +15,8 @@ from .exceptions import (
     DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError,
     BookNotUnderstoodError, ReferenceNotUnderstoodError, OnlyDirectMessage,
     BookNotInVersionError, NoUserVersionError, InvalidVersionError, NoSectionError,
-    NoSectionsError, InvalidConfessionError
+    NoSectionsError, InvalidConfessionError, ServiceTimeout, ServiceLookupTimeout,
+    ServiceSearchTimeout
 )
 from .context import Context
 from .format import HelpFormatter
@@ -155,7 +156,12 @@ class Erasmus(commands.Bot):
         elif isinstance(exc, OnlyDirectMessage):
             message = 'This command is only available in private messages'
         elif isinstance(exc, commands.MissingRequiredArgument):
-            message = f'The required argument `{exc.param}` is missing'
+            message = f'The required argument `{exc.param.name}` is missing'
+        elif isinstance(exc, ServiceTimeout):
+            if isinstance(exc, ServiceLookupTimeout):
+                message = f'The request timed out looking up {exc.verses} in {exc.bible["name"]}'
+            elif isinstance(exc, ServiceSearchTimeout):
+                message = f'The request timed out searching for "{" ".join(exc.terms)}" in {exc.bible["name"]}'
         elif isinstance(exc, commands.BadArgument):
             if exc.__cause__:
                 return await self.on_command_error(ctx, cast(Exception, exc.__cause__))

@@ -1,4 +1,8 @@
+from typing import TYPE_CHECKING, List
 from discord.ext import commands
+
+if TYPE_CHECKING:
+    from .data import Bible, VerseRange  # noqa: F401
 
 
 class DoNotUnderstandError(Exception):
@@ -40,6 +44,29 @@ class ServiceNotSupportedError(Exception):
 
     def __init__(self, service_name: str) -> None:
         self.service_name = service_name
+
+
+class ServiceTimeout(Exception):
+    bible: 'Bible'
+
+    def __init__(self, bible: 'Bible') -> None:
+        self.bible = bible
+
+
+class ServiceLookupTimeout(ServiceTimeout):
+    verses: 'VerseRange'
+
+    def __init__(self, bible: 'Bible', verses: 'VerseRange') -> None:
+        super().__init__(bible)
+        self.verses = verses
+
+
+class ServiceSearchTimeout(ServiceTimeout):
+    terms: List[str]
+
+    def __init__(self, bible: 'Bible', terms: List[str]) -> None:
+        super().__init__(bible)
+        self.terms = terms
 
 
 class NoUserVersionError(Exception):

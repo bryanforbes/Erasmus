@@ -1,10 +1,12 @@
 from typing import List, Generic, TypeVar, Dict, Any, Optional
 from abc import abstractmethod
 from configparser import SectionProxy
+import asyncio
 import aiohttp
 import async_timeout
 import logging
 from . import re
+from .exceptions import ServiceLookupTimeout, ServiceSearchTimeout
 
 from .data import VerseRange, Passage, SearchResults, Bible
 
@@ -25,7 +27,12 @@ class Service(Generic[RT]):
     async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
         url = self._get_passage_url(bible['service_version'], verses)
         log.debug('Getting passage %s', verses)
-        response = await self.get(url)
+
+        try:
+            response = await self.get(url)
+        except asyncio.TimeoutError:
+            raise ServiceLookupTimeout(bible, verses)
+
         log.debug('Got passage %s', verses)
         text = self._get_passage_text(response)
         text = whitespace_re.sub(' ', text.strip())
@@ -38,7 +45,12 @@ class Service(Generic[RT]):
 
     async def search(self, bible: Bible, terms: List[str]) -> SearchResults:
         url = self._get_search_url(bible['service_version'], terms)
-        response = await self.get(url)
+
+        try:
+            response = await self.get(url)
+        except asyncio.TimeoutError:
+            raise ServiceSearchTimeout(bible, terms)
+
         return self._get_search_results(response)
 
     @abstractmethod
