@@ -24,7 +24,7 @@ class CommandNotFound(CommandError):
 
 
 class MissingRequiredArgument(UserInputError):
-    param: str
+    param: Parameter
 
     def __init__(self, param: Parameter) -> None: ...
 

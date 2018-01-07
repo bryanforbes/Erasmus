@@ -5,13 +5,17 @@ from .role import Role
 from .guild import Guild
 
 
-class PartialReactionEmoji(NamedTuple):
+class PartialEmoji(NamedTuple):
+    animated: bool
     name: str
     id: Optional[int]
 
     def is_custom_emoji(self) -> bool: ...
 
     def is_unicode_emoji(self) -> bool: ...
+
+    @property
+    def url(self) -> Optional[str]: ...
 
 
 class Emoji(Hashable):

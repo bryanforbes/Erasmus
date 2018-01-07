@@ -2,15 +2,16 @@ aiodns==1.1.1
 aiohttp==2.2.5
 alembic==0.9.6
 async-timeout==2.0.0
-asyncpg==0.13.0
-attrs==17.3.0
+asyncpg==0.14.0
+attrs==17.4.0
 beautifulsoup4==4.6.0
 cchardet==2.1.1
 chardet==3.0.4
 click==6.7
 coverage==4.4.2
-discord.py==1.0.0a1412+gf5a443f
+discord.py==1.0.0a1426+g8de382f
 flake8==3.5.0
+idna==2.6
 Mako==1.0.7
 MarkupSafe==1.0
 mccabe==0.6.1
@@ -24,7 +25,7 @@ py==1.5.2
 pycares==2.3.0
 pycodestyle==2.3.1
 pyflakes==1.6.0
-pytest==3.3.1
+pytest==3.3.2
 pytest-asyncio==0.8.0
 pytest-cov==2.5.1
 pytest-flake8==0.9.1
@@ -39,4 +40,4 @@ typing==3.6.2
 typing-extensions==3.6.2.1
 uvloop==0.9.1
 websockets==3.4
-yarl==0.16.0
+yarl==0.17.0
