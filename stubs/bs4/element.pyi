@@ -7,6 +7,8 @@ class PageElement(object):
     def find_next_sibling(self, name: Optional[str] = ..., attrs: Dict[str, str] = ...,
                           text: Optional[str] = ..., **kwargs) -> 'Tag': ...
 
+    def insert_before(self, tag: 'Tag') -> None: ...
+
 
 class NavigableString(str, PageElement):
     pass
@@ -21,6 +23,9 @@ class Tag(PageElement):
 
     @property
     def stripped_strings(self) -> Iterator[str]: ...
+
+    @property
+    def children(self) -> Iterator['Tag']: ...
 
     def select(self, selector: str) -> List['Tag']: ...
 

@@ -12,7 +12,7 @@ from .. import re
 
 number_re = re.compile(
     re.capture(
-        re.one_or_more(re.DIGITS), re.DOT
+       re.one_or_more(re.DIGITS), re.DOT
     )
 )
 
@@ -144,10 +144,17 @@ class Unbound(Service[Tag]):
         if rows[0].get_text('').strip() == 'No Verses Found':
             raise DoNotUnderstandError
 
+        rtl = False
         for row in rows:
             cells = row.select('td')
-            if len(cells) != 2 or cells[0].string == '\xa0':
+            if len(cells) == 2 and cells[1].string == '\xa0':
+                rtl = True
+
+            if len(cells) != 2 or cells[0].string == '\xa0' or cells[1].string == '\xa0':
                 row.decompose()
+            elif rtl:
+                cells[1].contents[0].insert_before(cells[1].contents[1])
+                cells[1].insert_before(cells[0])
 
         return number_re.sub(r'**\1**', verse_table.get_text(''))
 
