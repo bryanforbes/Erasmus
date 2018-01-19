@@ -3,7 +3,7 @@ from mypy_extensions import TypedDict
 from asyncpg import Connection
 
 from .util import select_all, select_one, insert_into, delete_from
-from ..exceptions import NoUserVersionError, InvalidVersionError
+from ..exceptions import InvalidVersionError
 
 __all__ = (
     'Bible', 'get_bibles', 'get_bible', 'get_user_bible', 'set_user_bible',
