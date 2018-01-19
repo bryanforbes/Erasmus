@@ -45,7 +45,7 @@ async def get_user_bible(db: Connection, user_id: int) -> Bible:
                              where=['user_prefs.user_id = $1'])
 
     if bible is None:
-        raise NoUserVersionError
+        bible = await get_bible(db, 'esv')
 
     return bible
 
