@@ -48,8 +48,8 @@ passage_text = {
 
 class TestBibleGateway(ServiceTest):
     @pytest.fixture
-    def service(self):
-        return BibleGateway({})
+    def service(self, mock_client_session):
+        return BibleGateway({}, mock_client_session)
 
     @pytest.fixture
     def mock_search(self, mocker, mock_response):

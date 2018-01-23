@@ -2,14 +2,17 @@
 
 from typing import List, cast, Optional
 from aiohttp import BasicAuth, ClientResponse
+import async_timeout
 from bs4 import BeautifulSoup
 from urllib.parse import urlencode
-from configparser import SectionProxy
 from ..json import loads, JSONObject
+from .. import re
 
 from ..data import VerseRange, SearchResults
 from ..service import Service
 from ..exceptions import DoNotUnderstandError
+
+_img_re = re.compile('src="', re.named_group('src')('[^"]+'), '"')
 
 
 # TODO: Better error handling
@@ -17,17 +20,27 @@ class BiblesOrg(Service[JSONObject]):
     base_url = 'https://bibles.org/v2'
     _auth: Optional[BasicAuth]
 
-    def __init__(self, config: Optional[SectionProxy]) -> None:
-        super().__init__(config)
+    def __init__(self, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
 
         if self.config:
             self._auth = BasicAuth(self.config.get('api_key'), 'X')
 
     async def _process_response(self, response: ClientResponse) -> JSONObject:
-        obj = cast(JSONObject, await response.json(loads=loads, content_type='application/javascript'))
+        obj = cast(JSONObject, await response.json(loads=loads, content_type=None))
+
+        # Make a request for the image to report to the Fair Use Management System
+        meta: str = obj.get('response.meta.fums_noscript')
+        if meta:
+            match = _img_re.search(meta)
+            if match:
+                with async_timeout.timeout(10):
+                    async with self.session.get(match.group('src')) as response:
+                        await response.read()
+
         return obj.response
 
-    async def get(self, url: str, **session_options) -> JSONObject:
+    async def get(self, url: str, **request_options) -> JSONObject:
         return await super().get(url, auth=self._auth)
 
     def _get_passage_url(self, version: str, verses: VerseRange) -> str:
@@ -49,7 +62,7 @@ class BiblesOrg(Service[JSONObject]):
             heading.decompose()
         for number in soup.select('sup.v'):
             # Add a period after verse numbers
-            number.string = f' **{number.string}.** '
+            number.string = f' __BOLD__{number.string}.__BOLD__ '
         for span in soup.select('span.sc'):
             span.unwrap()
         for br in soup.select('br'):

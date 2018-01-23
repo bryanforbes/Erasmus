@@ -158,7 +158,7 @@ class Unbound(Service[Tag]):
                 cells[1].contents[0].insert_before(cells[1].contents[1])
                 cells[1].insert_before(cells[0])
 
-        return number_re.sub(r'**\1**', verse_table.get_text(''))
+        return number_re.sub(r'__BOLD__\1__BOLD__', verse_table.get_text(''))
 
     def _get_search_url(self, version: str, terms: List[str]) -> str:
         return self.base_url

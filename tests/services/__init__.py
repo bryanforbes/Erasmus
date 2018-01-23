@@ -58,7 +58,7 @@ class ServiceTest(object):
     async def test_search(self, mocker, mock_client_session, service, bible, search_url):
         response = await service.search(bible, ['one', 'two', 'three'])
 
-        assert mock_client_session.get.call_args == mocker.call(search_url)
+        assert mock_client_session.get.call_args[0] == mocker.call(search_url)[1]
         assert response == SearchResults([
             VerseRange.from_string('John 1:1-4'),
             VerseRange.from_string('Genesis 50:1')
@@ -84,7 +84,7 @@ class ServiceTest(object):
                                service, bible):
         response = await service.get_passage(bible, verse)
         passages_url = self.get_passages_url(bible['service_version'], verse)
-        assert mock_client_session.get.call_args == mocker.call(passages_url)
+        assert mock_client_session.get.call_args[0] == mocker.call(passages_url)[1]
         assert response == expected
 
     @pytest.mark.asyncio

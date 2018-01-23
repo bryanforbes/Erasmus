@@ -6,8 +6,9 @@ from erasmus.data import VerseRange, Passage
 
 def MockService(mocker):
     class Service:
-        def __init__(self, config):
+        def __init__(self, config, service):
             self.config = config
+            self.service = service
             self.get_passage = mocker.AsyncMock()
             self.search = mocker.AsyncMock()
 
@@ -45,16 +46,16 @@ class TestServiceManager(object):
         return Bible(command='bible2', name='Bible 2', abbr='BIB2',
                      service='ServiceTwo', service_version='service-BIB2')
 
-    def test_init(self, services, config):
-        manager = ServiceManager(config)
+    def test_init(self, services, config, mock_client_session):
+        manager = ServiceManager(config, mock_client_session)
 
         assert manager.service_map['ServiceOne'].config is None
         assert type(manager.service_map['ServiceOne']) == services['ServiceOne'].side_effect
         assert manager.service_map['ServiceTwo'].config is config['services:ServiceTwo']
         assert type(manager.service_map['ServiceTwo']) == services['ServiceTwo'].side_effect
 
-    def test_container_methods(self, config):
-        manager = ServiceManager(config)
+    def test_container_methods(self, config, mock_client_session):
+        manager = ServiceManager(config, mock_client_session)
 
         assert 'ServiceOne' in manager
         assert 'ServiceTwo' in manager
@@ -62,8 +63,8 @@ class TestServiceManager(object):
         assert len(manager) == 2
 
     @pytest.mark.asyncio
-    async def test_get_passage(self, config, bible2):
-        manager = ServiceManager(config)
+    async def test_get_passage(self, config, bible2, mock_client_session):
+        manager = ServiceManager(config, mock_client_session)
         manager.service_map['ServiceTwo'].get_passage.return_value = \
             Passage('blah', VerseRange.from_string('Genesis 1:2'))
 
@@ -75,8 +76,8 @@ class TestServiceManager(object):
             VerseRange.from_string('Genesis 1:2'))
 
     @pytest.mark.asyncio
-    async def test_search(self, config, bible1):
-        manager = ServiceManager(config)
+    async def test_search(self, config, bible1, mock_client_session):
+        manager = ServiceManager(config, mock_client_session)
         manager.service_map['ServiceOne'].search.return_value = 'blah'
 
         result = await manager.search(bible1, ['one', 'two', 'three'])

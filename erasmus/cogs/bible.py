@@ -94,7 +94,7 @@ class Bible(object):
 
     def __init__(self, bot: 'Erasmus') -> None:
         self.bot = bot
-        self.service_manager = ServiceManager(self.bot.config)
+        self.service_manager = ServiceManager(self.bot.config, self.bot.session)
         self._user_cooldown = commands.CooldownMapping(
             commands.Cooldown(rate=8, per=60.0, type=commands.BucketType.user))
 

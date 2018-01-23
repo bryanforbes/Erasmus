@@ -54,6 +54,7 @@ class Erasmus(commands.Bot):
     config: ConfigParser
     default_prefix: str  # noqa
     pool: Pool
+    session: aiohttp.ClientSession
 
     def __init__(self, config_path: str, *args, **kwargs) -> None:
         self.config = ConfigParser(default_section='erasmus')
@@ -74,6 +75,8 @@ class Erasmus(commands.Bot):
             )
         )
 
+        self.session = aiohttp.ClientSession(loop=self.loop)
+
         self.remove_command('help')
         self.add_command(self.help)
 
@@ -89,6 +92,7 @@ class Erasmus(commands.Bot):
     async def close(self) -> None:
         await self.pool.close()
         await super().close()
+        await self.session.close()
 
     async def get_context(self, message: discord.Message, *, cls=Context) -> Context:
         return cast(Context, await super().get_context(message, cls=cls))
@@ -103,6 +107,8 @@ class Erasmus(commands.Bot):
         ctx = await self.get_context(message)
 
         if ctx.command is None:
+            # if self.user.mentioned_in(message):
+                # log.info('here')
             return
 
         async with ctx.acquire():

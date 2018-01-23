@@ -13,6 +13,8 @@ from .data import VerseRange, Passage, SearchResults, Bible
 
 RT = TypeVar('RT')
 whitespace_re = re.compile(re.one_or_more(re.WHITESPACE))
+bold_re = re.compile(r'__BOLD__')
+specials_re = re.compile(re.capture(r'[\*`]'))
 number_re = re.compile(re.capture(r'\*\*', re.one_or_more(re.DIGIT), re.DOT, r'\*\*'))
 
 log = logging.getLogger(__name__)
@@ -20,9 +22,11 @@ log = logging.getLogger(__name__)
 
 class Service(Generic[RT]):
     config: Optional[SectionProxy]
+    session: aiohttp.ClientSession
 
-    def __init__(self, config: Optional[SectionProxy]) -> None:
+    def __init__(self, config: Optional[SectionProxy], session: aiohttp.ClientSession) -> None:
         self.config = config
+        self.session = session
 
     async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
         url = self._get_passage_url(bible['service_version'], verses)
@@ -36,6 +40,8 @@ class Service(Generic[RT]):
         log.debug('Got passage %s', verses)
         text = self._get_passage_text(response)
         text = whitespace_re.sub(' ', text.strip())
+        text = specials_re.sub(r'\\\1', text)
+        text = bold_re.sub('**', text)
 
         if bible['rtl']:
             # wrap in [RTL embedding]text[Pop directional formatting]
@@ -73,18 +79,16 @@ class Service(Generic[RT]):
     async def _process_response(self, response: aiohttp.ClientResponse) -> RT:
         raise NotImplementedError
 
-    async def get(self, url: str, **session_options) -> RT:
+    async def get(self, url: str, **request_options) -> RT:
         log.debug('GET %s', url)
-        async with aiohttp.ClientSession(**session_options) as session:
-            with async_timeout.timeout(10):
-                async with session.get(url) as response:
-                    log.debug('Finished GET %s', url)
-                    return await self._process_response(response)
+        with async_timeout.timeout(10):
+            async with self.session.get(url, **request_options) as response:
+                log.debug('Finished GET %s', url)
+                return await self._process_response(response)
 
-    async def post(self, url: str, data: Optional[Dict[str, Any]] = None, **session_options) -> RT:
+    async def post(self, url: str, data: Optional[Dict[str, Any]] = None, **request_options) -> RT:
         log.debug('POST %s', url)
-        async with aiohttp.ClientSession(**session_options) as session:
-            with async_timeout.timeout(10):
-                async with session.post(url, data=data) as response:
-                    log.debug('Finished POST %s', url)
-                    return await self._process_response(response)
+        with async_timeout.timeout(10):
+            async with self.session.post(url, data=data, **request_options) as response:
+                log.debug('Finished POST %s', url)
+                return await self._process_response(response)

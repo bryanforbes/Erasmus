@@ -29,10 +29,10 @@ def get_json_side_effect(return_value):
 
 class TestBiblesOrg(ServiceTest):
     @pytest.fixture
-    def service(self):
+    def service(self, mock_client_session):
         config = ConfigParser(default_section='erasmus')
         config['services:BiblesOrg'] = {'api_key': 'foo bar baz'}
-        return BiblesOrg(config['services:BiblesOrg'])
+        return BiblesOrg(config['services:BiblesOrg'], mock_client_session)
 
     @pytest.fixture
     def mock_search(self, mocker, mock_response):

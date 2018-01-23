@@ -34,7 +34,7 @@ class TestService(object):
 
     @pytest.mark.asyncio
     async def test_get_passage(self, MyService, bible, mock_response, mock_client_session):
-        service = MyService({})
+        service = MyService({}, mock_client_session)
         verses = VerseRange.from_string('Leviticus 1:2-3')
 
         service._get_passage_url.return_value = 'http://example.com'
@@ -51,7 +51,7 @@ class TestService(object):
 
     @pytest.mark.asyncio
     async def test_search(self, MyService, bible, mock_response, mock_client_session):
-        service = MyService({})
+        service = MyService({}, mock_client_session)
 
         service._get_search_url.return_value = 'http://example.com'
         service._process_response.return_value = 'foo bar baz'

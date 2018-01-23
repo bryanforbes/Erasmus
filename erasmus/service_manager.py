@@ -1,5 +1,6 @@
 from typing import Dict, List, cast, Any
 from configparser import ConfigParser
+import aiohttp
 
 from .data import VerseRange, Passage, SearchResults, Bible
 from .service import Service
@@ -7,12 +8,14 @@ from . import services
 
 
 class ServiceManager(object):
-    __slots__ = ('service_map')
+    __slots__ = ('service_map', 'session')
 
     service_map: Dict[str, Service[Any]]
+    session: aiohttp.ClientSession
 
-    def __init__(self, config: ConfigParser) -> None:
+    def __init__(self, config: ConfigParser, session: aiohttp.ClientSession) -> None:
         self.service_map = {}
+        self.session = session
 
         config_sections = config.sections()
 
@@ -24,7 +27,7 @@ class ServiceManager(object):
                 if section_name in config_sections:
                     section = config[section_name]
 
-                self.service_map[name] = cls(section)
+                self.service_map[name] = cls(section, self.session)
 
     def __contains__(self, key: str) -> bool:
         return self.service_map.__contains__(key)
