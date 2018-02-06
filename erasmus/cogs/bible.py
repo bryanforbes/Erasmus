@@ -7,7 +7,7 @@ from ..db import (
     select_all, get_bibles, get_bible, get_user_bible, set_user_bible,
     add_bible, delete_bible, UniqueViolationError
 )
-from ..data import VerseRange, get_book, get_book_mask
+from ..data import VerseRange, get_book, get_book_mask, _reference_re
 from ..format import pluralizer
 from ..service_manager import ServiceManager, Bible as BibleObject
 from ..exceptions import OnlyDirectMessage, BookNotInVersionError
@@ -108,6 +108,22 @@ class Bible(object):
             versions = await select_all(db, table='bible_versions')
             for version in versions:
                 self._add_bible_commands(version['command'], version['name'])
+
+    async def lookup_from_mention(self, ctx: 'Context', message: discord.Message) -> None:
+        match = _reference_re.search(message.content)
+
+        if not match:
+            return
+
+        bible = await get_user_bible(ctx.db, ctx.author.id)
+
+        while match:
+            (start, end) = match.span()
+
+            await self._lookup(ctx, bible,
+                               VerseRange.from_string(message.content[start:end]))
+
+            match = _reference_re.search(message.content, end)
 
     @commands.command(aliases=[''],
                       brief='Look up a verse in your preferred version',

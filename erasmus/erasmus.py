@@ -107,8 +107,9 @@ class Erasmus(commands.Bot):
         ctx = await self.get_context(message)
 
         if ctx.command is None:
-            # if self.user.mentioned_in(message):
-                # log.info('here')
+            if self.user.mentioned_in(message):
+                async with ctx.acquire():
+                    await self.cogs['Bible'].lookup_from_mention(ctx, message)
             return
 
         async with ctx.acquire():

@@ -29,8 +29,7 @@ _verse_end_group = re.named_group('verse_end')
 _one_or_more_digit = re.one_or_more(re.DIGIT)
 _colon = re.combine(re.any_number_of(re.WHITESPACE), ':', re.any_number_of(re.WHITESPACE))
 
-_search_reference_re = re.compile(
-    re.START,
+_reference_re = re.compile(
     _book_re,
     re.one_or_more(re.WHITESPACE),
     _chapter_start_group(_one_or_more_digit),
@@ -43,6 +42,12 @@ _search_reference_re = re.compile(
         )),
         _verse_end_group(_one_or_more_digit)
     )),
+    flags=re.IGNORECASE
+)
+
+_search_reference_re = re.compile(
+    re.START,
+    _reference_re,
     re.END,
     flags=re.IGNORECASE
 )

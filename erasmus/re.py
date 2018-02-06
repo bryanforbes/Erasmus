@@ -24,7 +24,6 @@ X = re.X
 VERBOSE = re.VERBOSE
 
 
-@wraps(re.compile)
 def compile(*args: _ReOrStrType, flags: int = 0) -> Pattern[AnyStr]:
     return re.compile(combine(*args), flags=flags)  # type: ignore
 
