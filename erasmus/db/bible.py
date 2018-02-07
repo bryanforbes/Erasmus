@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Optional
 from mypy_extensions import TypedDict
 from asyncpg import Connection
 
@@ -6,7 +6,7 @@ from .util import select_all, select_one, insert_into, delete_from
 from ..exceptions import InvalidVersionError
 
 __all__ = (
-    'Bible', 'get_bibles', 'get_bible', 'get_user_bible', 'set_user_bible',
+    'Bible', 'get_bibles', 'get_bible', 'get_bible_by_abbr', 'get_user_bible', 'set_user_bible',
     'add_bible', 'delete_bible'
 )
 
@@ -34,6 +34,17 @@ async def get_bible(db: Connection, command: str) -> Bible:
 
     if not bible:
         raise InvalidVersionError(command)
+
+    return bible
+
+
+async def get_bible_by_abbr(db: Connection, abbr: str) -> Optional[Bible]:
+    bible = await select_one(db, abbr,
+                             table='bible_versions',
+                             where=['command ILIKE $1'])
+
+    if not bible:
+        return None
 
     return bible
 

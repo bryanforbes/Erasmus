@@ -1,13 +1,13 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, cast, Optional
 
 import discord
 from discord.ext import commands
 
 from ..db import (
-    select_all, get_bibles, get_bible, get_user_bible, set_user_bible,
+    select_all, get_bibles, get_bible, get_bible_by_abbr, get_user_bible, set_user_bible,
     add_bible, delete_bible, UniqueViolationError
 )
-from ..data import VerseRange, get_book, get_book_mask, _reference_re
+from ..data import VerseRange, get_book, get_book_mask
 from ..format import pluralizer
 from ..service_manager import ServiceManager, Bible as BibleObject
 from ..exceptions import OnlyDirectMessage, BookNotInVersionError
@@ -109,21 +109,33 @@ class Bible(object):
             for version in versions:
                 self._add_bible_commands(version['command'], version['name'])
 
-    async def lookup_from_mention(self, ctx: 'Context', message: discord.Message) -> None:
-        match = _reference_re.search(message.content)
+    async def lookup_from_message(self, ctx: 'Context', message: discord.Message) -> None:
+        verse_ranges = VerseRange.get_all_from_string(message.content,
+                                                      not cast(discord.ClientUser, self.bot.user).mentioned_in(message))
 
-        if not match:
+        if len(verse_ranges) == 0:
             return
 
-        bible = await get_user_bible(ctx.db, ctx.author.id)
+        async with ctx.acquire():
+            async with ctx.typing():
+                user_bible = await get_user_bible(ctx.db, ctx.author.id)
 
-        while match:
-            (start, end) = match.span()
+                for verse_range in verse_ranges:
+                    bible: Optional[BibleObject] = None
 
-            await self._lookup(ctx, bible,
-                               VerseRange.from_string(message.content[start:end]))
+                    try:
+                        if isinstance(verse_range, Exception):
+                            raise verse_range
 
-            match = _reference_re.search(message.content, end)
+                        if verse_range.version is not None:
+                            bible = await get_bible_by_abbr(ctx.db, verse_range.version)
+
+                        if bible is None:
+                            bible = user_bible
+
+                        await self._lookup(ctx, bible, verse_range)
+                    except Exception as exc:
+                        await self.bot.on_command_error(ctx, exc)
 
     @commands.command(aliases=[''],
                       brief='Look up a verse in your preferred version',
@@ -131,7 +143,8 @@ class Bible(object):
     async def lookup(self, ctx: 'Context', *, reference: VerseRange) -> None:
         bible = await get_user_bible(ctx.db, ctx.author.id)
 
-        await self._lookup(ctx, bible, reference)
+        async with ctx.typing():
+            await self._lookup(ctx, bible, reference)
 
     @commands.command(aliases=['s'],
                       brief='Search for terms in your preferred version',
@@ -216,7 +229,8 @@ class Bible(object):
     async def _version_lookup(self, ctx: 'Context', *, reference: VerseRange) -> None:
         bible = await get_bible(ctx.db, ctx.invoked_with)
 
-        await self._lookup(ctx, bible, reference)
+        async with ctx.typing():
+            await self._lookup(ctx, bible, reference)
 
     async def _version_search(self, ctx: 'Context', *terms: str) -> None:
         bible = await get_bible(ctx.db, ctx.invoked_with[1:])
@@ -228,11 +242,10 @@ class Bible(object):
             raise BookNotInVersionError(reference.book, bible['name'])
 
         if reference is not None:
-            async with ctx.typing():
-                passage = await self.service_manager.get_passage(bible, reference)
-                await ctx.send_passage(passage)
+            passage = await self.service_manager.get_passage(bible, reference)
+            await ctx.send_passage(passage)
         else:
-            await ctx.send_error('I do not understand that request')
+            await ctx.send_error(f'I do not understand the request `${reference}`')
 
     async def _search(self, ctx: 'Context', bible: BibleObject, *terms: str) -> None:
         async with ctx.typing():

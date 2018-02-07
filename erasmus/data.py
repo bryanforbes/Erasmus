@@ -1,4 +1,4 @@
-from typing import Optional, List, Dict, TYPE_CHECKING  # noqa
+from typing import Optional, Union, List, Dict, Pattern, Match, TYPE_CHECKING  # noqa
 from pathlib import Path
 from itertools import chain
 from mypy_extensions import TypedDict
@@ -26,22 +26,56 @@ _chapter_start_group = re.named_group('chapter_start')
 _chapter_end_group = re.named_group('chapter_end')
 _verse_start_group = re.named_group('verse_start')
 _verse_end_group = re.named_group('verse_end')
+_version_group = re.named_group('version')
 _one_or_more_digit = re.one_or_more(re.DIGIT)
 _colon = re.combine(re.any_number_of(re.WHITESPACE), ':', re.any_number_of(re.WHITESPACE))
 
 _reference_re = re.compile(
-    _book_re,
-    re.one_or_more(re.WHITESPACE),
-    _chapter_start_group(_one_or_more_digit),
-    _colon,
-    _verse_start_group(_one_or_more_digit),
-    re.optional(re.group(
-        re.any_number_of(re.WHITESPACE), '[', re.DASH, '\u2013', '\u2014', ']', re.any_number_of(re.WHITESPACE),
+    re.capture(
+        _book_re,
+        re.one_or_more(re.WHITESPACE),
+        _chapter_start_group(_one_or_more_digit),
+        _colon,
+        _verse_start_group(_one_or_more_digit),
         re.optional(re.group(
-            _chapter_end_group(_one_or_more_digit), _colon
-        )),
-        _verse_end_group(_one_or_more_digit)
+            re.any_number_of(re.WHITESPACE), '[', re.DASH, '\u2013', '\u2014', ']', re.any_number_of(re.WHITESPACE),
+            re.optional(re.group(
+                _chapter_end_group(_one_or_more_digit), _colon
+            )),
+            _verse_end_group(_one_or_more_digit)
+        ))
+    ),
+    flags=re.IGNORECASE
+)
+
+_reference_with_version_re = re.compile(
+    _reference_re,
+    re.optional(re.group(
+        re.any_number_of(re.WHITESPACE),
+        _version_group(re.one_or_more(re.ALPHANUMERICS))
     )),
+    flags=re.IGNORECASE
+)
+
+_optional_bracketed_reference_re = re.compile(
+    re.optional(
+        re.LEFT_BRACKET,
+        re.any_number_of(re.WHITESPACE)
+    ),
+    _reference_with_version_re,
+    re.optional(
+        re.any_number_of(re.WHITESPACE),
+        re.RIGHT_BRACKET
+    ),
+    flags=re.IGNORECASE
+)
+
+_bracketed_reference_re = re.compile(
+    re.LEFT_BRACKET,
+    re.any_number_of(re.WHITESPACE),
+    _reference_with_version_re,
+    re.any_number_of(re.WHITESPACE),
+    re.RIGHT_BRACKET,
     flags=re.IGNORECASE
 )
 
@@ -110,18 +144,20 @@ class Verse(object):
 
 
 class VerseRange(object):
-    __slots__ = ('book', 'book_mask', 'start', 'end')
+    __slots__ = ('book', 'book_mask', 'start', 'end', 'version')
 
     book: str
     book_mask: int
     start: Verse
     end: Optional[Verse]
+    version: Optional[str]
 
-    def __init__(self, book: str, start: Verse, end: Optional[Verse] = None) -> None:
+    def __init__(self, book: str, start: Verse, end: Optional[Verse] = None, version: Optional[str] = None) -> None:
         self.book = get_book(book)
         self.book_mask = get_book_mask(self.book)
         self.start = start
         self.end = end
+        self.version = version
 
     @property
     def verses(self) -> str:
@@ -142,7 +178,7 @@ class VerseRange(object):
         if other is self:
             return True
         elif type(other) is VerseRange:
-            return str(self) == str(other)
+            return str(self) == str(other) and self.version == other.version
         else:
             return False
 
@@ -156,23 +192,57 @@ class VerseRange(object):
         if match is None:
             raise ReferenceNotUnderstoodError(verse)
 
-        chapter_start_int = int(match.group('chapter_start'))
-        start = Verse(chapter_start_int, int(match.group('verse_start')))
+        return cls.from_match(match)
+
+    @classmethod
+    def from_match(cls, match: Match) -> 'VerseRange':
+        groups = match.groupdict()
+
+        chapter_start_int = int(groups['chapter_start'])
+        start = Verse(chapter_start_int, int(groups['verse_start']))
 
         end = None  # type: Optional[Verse]
-        end_str = match.group('verse_end')
+        end_str = groups['verse_end']
 
         if end_str is not None:
             end_int = int(end_str)
             chapter_end_int = chapter_start_int
 
-            chapter_end_str = match.group('chapter_end')
+            chapter_end_str = groups['chapter_end']
             if chapter_end_str is not None:
                 chapter_end_int = int(chapter_end_str)
 
             end = Verse(chapter_end_int, end_int)
 
-        return cls(match.group('book'), start, end)
+        version: Optional[str] = None
+        if 'version' in groups:
+            version = groups['version']
+
+        return cls(groups['book'], start, end, version)
+
+    @classmethod
+    def get_all_from_string(cls, string: str, brackets: Optional[bool] = False) -> List[Union['VerseRange', Exception]]:
+        ranges: List[Union['VerseRange', Exception]] = []
+        lookup_pattern: Pattern[str]
+
+        if brackets:
+            lookup_pattern = _bracketed_reference_re
+        else:
+            lookup_pattern = _optional_bracketed_reference_re
+
+        match = lookup_pattern.search(string)
+
+        if match:
+            while match:
+                try:
+                    ranges.append(cls.from_match(match))
+                except Exception as exc:
+                    ranges.append(exc)
+
+                (_, end) = match.span(1)
+                match = lookup_pattern.search(string, end)
+
+        return ranges
 
     @classmethod
     async def convert(cls, ctx: 'Context', argument: str) -> 'VerseRange':

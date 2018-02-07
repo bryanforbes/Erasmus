@@ -56,14 +56,18 @@ class TestVerseRange(object):
 
     @pytest.mark.parametrize('passage,expected', [
         (VerseRange('John', Verse(1, 1)), None),
-        (VerseRange('John', Verse(1, 1)), VerseRange('John', Verse(1, 1)))
+        (VerseRange('John', Verse(1, 1)), VerseRange('John', Verse(1, 1))),
+        (VerseRange('John', Verse(1, 1), Verse(2, 1)), VerseRange('John', Verse(1, 1), Verse(2, 1))),
+        (VerseRange('John', Verse(1, 1), Verse(2, 1), 'sbl'), VerseRange('John', Verse(1, 1), Verse(2, 1), 'sbl'))
     ])
     def test__eq__(self, passage, expected):
         assert passage == (expected or passage)
 
     @pytest.mark.parametrize('passage,expected', [
         (VerseRange('John', Verse(1, 1)), {}),
-        (VerseRange('John', Verse(1, 1)), VerseRange('John', Verse(1, 2)))
+        (VerseRange('John', Verse(1, 1)), VerseRange('John', Verse(1, 2))),
+        (VerseRange('John', Verse(1, 1), Verse(2, 1)), VerseRange('John', Verse(1, 1), Verse(3, 1))),
+        (VerseRange('John', Verse(1, 1), Verse(2, 1), 'sbl'), VerseRange('John', Verse(1, 1), Verse(2, 1), 'niv'))
     ])
     def test__ne__(self, passage, expected):
         assert passage != expected
@@ -92,6 +96,32 @@ class TestVerseRange(object):
         passage = VerseRange.from_string(passage_str)
         assert passage is not None
         assert str(passage) == expected
+
+    @pytest.mark.parametrize('passage_str,expected', [
+        ('foo 1 John 1:1 bar', ['1 John 1:1']),
+        ('foo 1 John 1:1 bar Mark 2:1-4 baz', ['1 John 1:1', 'Mark 2:1-4']),
+        ('foo 1 John 1:1 bar Mark 2:1-4 baz Acts 3:5-6:7', ['1 John 1:1', 'Mark 2:1-4', 'Acts 3:5-6:7']),
+        ('foo 1 John 1:1 bar Mark 2:1\u20134 baz Acts 3:5-6:7', ['1 John 1:1', 'Mark 2:1-4', 'Acts 3:5-6:7']),
+        ('foo 1 John 1:1 bar Mark 2:1\u20144 baz Acts 3:5-6:7', ['1 John 1:1', 'Mark 2:1-4', 'Acts 3:5-6:7']),
+        ('foo 1 John 1:1 bar Mark    2 : 1   -     4 baz [Acts 3:5-6:7]', ['1 John 1:1', 'Mark 2:1-4', 'Acts 3:5-6:7'])
+    ])
+    def test_get_all_from_string_optional(self, passage_str, expected):
+        passages = VerseRange.get_all_from_string(passage_str)
+        assert passages is not None
+        assert [str(passage) for passage in passages] == expected
+
+    @pytest.mark.parametrize('passage_str,expected', [
+        ('foo 1 John 1:1 bar', []),
+        ('foo [1 John 1:1] bar', ['1 John 1:1']),
+        ('foo 1 John 1:1 bar [Mark 2:1-4] baz', ['Mark 2:1-4']),
+        ('foo [1 John 1:1] bar [Mark 2:1-4] baz', ['1 John 1:1', 'Mark 2:1-4']),
+        ('foo [1 John 1:1] bar Mark 2:1-4 baz [Acts 3:5-6:7]', ['1 John 1:1', 'Acts 3:5-6:7']),
+        ('foo [1 John 1:1] bar [Mark 2:1-4] baz [Acts 3:5-6:7]', ['1 John 1:1', 'Mark 2:1-4', 'Acts 3:5-6:7'])
+    ])
+    def test_get_all_from_string_brackets(self, passage_str, expected):
+        passages = VerseRange.get_all_from_string(passage_str, True)
+        assert passages is not None
+        assert [str(passage) for passage in passages] == expected
 
     @pytest.mark.parametrize('passage_str', [
         'asdfc083u4r',

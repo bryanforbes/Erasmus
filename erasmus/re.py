@@ -2,7 +2,7 @@
 
 from typing import Callable, Pattern, AnyStr, cast, Union, Iterator, Iterable
 from mypy_extensions import VarArg, DefaultNamedArg
-from functools import partial, wraps
+from functools import partial
 import re
 
 _ReOrStrType = Union[str, Pattern[AnyStr]]
@@ -110,3 +110,5 @@ ANYTHING = r'.*'
 ANY_CHARACTER = r'.'
 NEWLINE = r'\\n'
 TAB = r'\\t'
+LEFT_BRACKET = r'\['
+RIGHT_BRACKET = r'\]'
