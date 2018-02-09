@@ -111,7 +111,8 @@ class Bible(object):
 
     async def lookup_from_message(self, ctx: 'Context', message: discord.Message) -> None:
         verse_ranges = VerseRange.get_all_from_string(message.content,
-                                                      not cast(discord.ClientUser, self.bot.user).mentioned_in(message))
+                                                      only_bracketed=not cast(discord.ClientUser,
+                                                                              self.bot.user).mentioned_in(message))
 
         if len(verse_ranges) == 0:
             return

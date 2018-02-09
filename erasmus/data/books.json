@@ -8,7 +8,7 @@
   {
     "name": "Exodus",
     "osis": "Exod",
-    "alt": [ "Ex" ],
+    "alt": [ "Ex", "Exo" ],
     "section": 1
   },
   {
@@ -57,9 +57,10 @@
     "name": "1 Samuel",
     "osis": "1Sam",
     "alt": [
+      "1 Sam",
       "I Samuel",
       "ISam",
-      "1 Sam"
+      "I Sam"
     ],
     "section": 1
   },
@@ -67,9 +68,10 @@
     "name": "2 Samuel",
     "osis": "2Sam",
     "alt": [
+      "2 Sam",
       "II Samuel",
       "IISam",
-      "2 Sam"
+      "II Sam"
     ],
     "section": 1
   },
@@ -339,9 +341,9 @@
     "osis": "1Cor",
     "alt": [
       "1 Cor",
-      "I Cor",
+      "I Corinthians",
       "ICor",
-      "I Corinthians"
+      "I Cor"
     ],
     "section": 2
   },
@@ -350,9 +352,9 @@
     "osis": "2Cor",
     "alt": [
       "2 Cor",
-      "II Cor",
+      "II Corinthians",
       "IICor",
-      "II Corinthians"
+      "II Cor"
     ],
     "section": 2
   },
@@ -384,14 +386,14 @@
     "name": "1 Thessalonians",
     "osis": "1Thess",
     "alt": [
-      "IThess",
       "1 Thess",
-      "I Thess",
-      "I Thessalonians",
-      "1Thes",
-      "IThes",
       "1 Thes",
-      "I Thes"
+      "1Thes",
+      "I Thessalonians",
+      "IThess",
+      "I Thess",
+      "I Thes",
+      "IThes"
     ],
     "section": 2
   },

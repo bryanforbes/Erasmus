@@ -98,30 +98,83 @@ class TestVerseRange(object):
         assert str(passage) == expected
 
     @pytest.mark.parametrize('passage_str,expected', [
-        ('foo 1 John 1:1 bar', ['1 John 1:1']),
-        ('foo 1 John 1:1 bar Mark 2:1-4 baz', ['1 John 1:1', 'Mark 2:1-4']),
-        ('foo 1 John 1:1 bar Mark 2:1-4 baz Acts 3:5-6:7', ['1 John 1:1', 'Mark 2:1-4', 'Acts 3:5-6:7']),
-        ('foo 1 John 1:1 bar Mark 2:1\u20134 baz Acts 3:5-6:7', ['1 John 1:1', 'Mark 2:1-4', 'Acts 3:5-6:7']),
-        ('foo 1 John 1:1 bar Mark 2:1\u20144 baz Acts 3:5-6:7', ['1 John 1:1', 'Mark 2:1-4', 'Acts 3:5-6:7']),
-        ('foo 1 John 1:1 bar Mark    2 : 1   -     4 baz [Acts 3:5-6:7]', ['1 John 1:1', 'Mark 2:1-4', 'Acts 3:5-6:7'])
+        ('foo 1 John 1:1 bar', [
+            [VerseRange('1 John', Verse(1, 1))], []
+        ]),
+        ('foo 1 John 1:1 bar Mark 2:1-4 baz', [
+            [VerseRange('1 John', Verse(1, 1)),
+             VerseRange('Mark', Verse(2, 1), Verse(2, 4))],
+            []
+        ]),
+        ('foo 1 John 1:1 bar Mark 2:1-4 baz Acts 3:5-6:7', [
+            [VerseRange('1 John', Verse(1, 1)),
+             VerseRange('Mark', Verse(2, 1), Verse(2, 4)),
+             VerseRange('Acts', Verse(3, 5), Verse(6, 7))],
+            []
+        ]),
+        ('foo 1 John 1:1 bar Mark 2:1\u20134 baz Acts 3:5-6:7', [
+            [VerseRange('1 John', Verse(1, 1)),
+             VerseRange('Mark', Verse(2, 1), Verse(2, 4)),
+             VerseRange('Acts', Verse(3, 5), Verse(6, 7))],
+            []
+        ]),
+        ('foo 1 John 1:1 bar Mark 2:1\u20144 baz Acts 3:5-6:7', [
+            [VerseRange('1 John', Verse(1, 1)),
+             VerseRange('Mark', Verse(2, 1), Verse(2, 4)),
+             VerseRange('Acts', Verse(3, 5), Verse(6, 7))],
+            []
+        ]),
+        ('foo 1 John 1:1 bar Mark    2 : 1   -     4 baz [Acts 3:5-6:7]', [
+            [VerseRange('1 John', Verse(1, 1)),
+             VerseRange('Mark', Verse(2, 1), Verse(2, 4)),
+             VerseRange('Acts', Verse(3, 5), Verse(6, 7))],
+            [VerseRange('Acts', Verse(3, 5), Verse(6, 7))]
+        ]),
+        ('foo 1 John 1:1 bar [Mark 2:1-4 KJV] baz Acts 3:5-6:7 blah', [
+            [VerseRange('1 John', Verse(1, 1)),
+             VerseRange('Mark', Verse(2, 1), Verse(2, 4), 'KJV'),
+             VerseRange('Acts', Verse(3, 5), Verse(6, 7))],
+            [VerseRange('Mark', Verse(2, 1), Verse(2, 4), 'KJV')]
+        ]),
+        ('foo 1 John 1:1 bar Mark 2:1-4 KJV baz [Acts 3:5-6:7 sbl123] blah', [
+            [VerseRange('1 John', Verse(1, 1)),
+             VerseRange('Mark', Verse(2, 1), Verse(2, 4)),
+             VerseRange('Acts', Verse(3, 5), Verse(6, 7), 'sbl123')],
+            [VerseRange('Acts', Verse(3, 5), Verse(6, 7), 'sbl123')]
+        ]),
+        ('foo 1 John 1:1 bar Mark 2:1-4 KJV baz [Acts 3:5-6:7 sbl 123] blah', [
+            [VerseRange('1 John', Verse(1, 1)),
+             VerseRange('Mark', Verse(2, 1), Verse(2, 4)),
+             VerseRange('Acts', Verse(3, 5), Verse(6, 7))],
+            []
+        ]),
+        ('foo [ 1 John 1:1 ] bar [Mark 2:1-4 KJV ] baz [Acts 3:5-6:7 sbl 123 ] blah', [
+            [VerseRange('1 John', Verse(1, 1)),
+             VerseRange('Mark', Verse(2, 1), Verse(2, 4), 'KJV'),
+             VerseRange('Acts', Verse(3, 5), Verse(6, 7))],
+            [VerseRange('1 John', Verse(1, 1)),
+             VerseRange('Mark', Verse(2, 1), Verse(2, 4), 'KJV')]
+        ]),
+        # ('foo 1 John 1:1 bar', {'brackets': True}, []),
+        # ('foo [1 John 1:1] bar', {'brackets': True}, ['1 John 1:1']),
+        # ('foo 1 John 1:1 bar [Mark 2:1-4] baz', {'brackets': True}, ['Mark 2:1-4']),
+        # ('foo [1 John 1:1] bar [Mark 2:1-4] baz', {'brackets': True}, ['1 John 1:1', 'Mark 2:1-4']),
+        # ('foo [1 John 1:1] bar Mark 2:1-4 baz [Acts 3:5-6:7]', {'brackets': True}, ['1 John 1:1', 'Acts 3:5-6:7']),
+        # ('foo [1 John 1:1] bar [Mark 2:1-4] baz [Acts 3:5-6:7]', {'brackets': True},
+        #  ['1 John 1:1', 'Mark 2:1-4', 'Acts 3:5-6:7'])
     ])
-    def test_get_all_from_string_optional(self, passage_str, expected):
-        passages = VerseRange.get_all_from_string(passage_str)
+    @pytest.mark.parametrize('only_bracketed', [False, True])
+    def test_get_all_from_string_optional(self, passage_str, only_bracketed, expected):
+        passages = VerseRange.get_all_from_string(passage_str, only_bracketed=only_bracketed)
         assert passages is not None
-        assert [str(passage) for passage in passages] == expected
 
-    @pytest.mark.parametrize('passage_str,expected', [
-        ('foo 1 John 1:1 bar', []),
-        ('foo [1 John 1:1] bar', ['1 John 1:1']),
-        ('foo 1 John 1:1 bar [Mark 2:1-4] baz', ['Mark 2:1-4']),
-        ('foo [1 John 1:1] bar [Mark 2:1-4] baz', ['1 John 1:1', 'Mark 2:1-4']),
-        ('foo [1 John 1:1] bar Mark 2:1-4 baz [Acts 3:5-6:7]', ['1 John 1:1', 'Acts 3:5-6:7']),
-        ('foo [1 John 1:1] bar [Mark 2:1-4] baz [Acts 3:5-6:7]', ['1 John 1:1', 'Mark 2:1-4', 'Acts 3:5-6:7'])
-    ])
-    def test_get_all_from_string_brackets(self, passage_str, expected):
-        passages = VerseRange.get_all_from_string(passage_str, True)
-        assert passages is not None
-        assert [str(passage) for passage in passages] == expected
+        index: int
+        if only_bracketed:
+            index = 1
+        else:
+            index = 0
+
+        assert passages == expected[index]
 
     @pytest.mark.parametrize('passage_str', [
         'asdfc083u4r',

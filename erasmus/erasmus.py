@@ -50,6 +50,23 @@ _mention_pattern_re = re.compile(
 )
 
 
+def remove_mentions(string: str) -> str:
+    return _mention_pattern_re.sub('@\u200b\\g<target>', string)
+
+
+description = '''
+Erasmus:
+--------
+
+You can look up all verses in a message one of two ways:
+
+* Mention me in the message
+* Surround verse references in []
+    ex. [John 3:16] or [John 3:16 NASB]
+
+'''
+
+
 class Erasmus(commands.Bot):
     config: ConfigParser
     default_prefix: str  # noqa
@@ -62,6 +79,7 @@ class Erasmus(commands.Bot):
 
         self.default_prefix = kwargs['command_prefix'] = self.config.get('erasmus', 'command_prefix', fallback='$')
         kwargs['formatter'] = HelpFormatter()
+        kwargs['description'] = description
 
         # kwargs['command_prefix'] = get_guild_prefix
 
@@ -176,7 +194,7 @@ class Erasmus(commands.Bot):
                           exc_info=exc,
                           stack_info=True)
 
-        await ctx.send_error(message)
+        await ctx.send_error(remove_mentions(message))
 
     @commands.command(brief='List commands for this bot or get help for commands')
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
@@ -192,7 +210,7 @@ class Erasmus(commands.Bot):
             if name[0] == ctx.prefix:
                 name = name[1:]
 
-            name = _mention_pattern_re.sub('@\u200b\\g<target>', name)
+            name = remove_mentions(name)
             command = bot.all_commands.get(name)
 
             if command is None:
@@ -203,7 +221,7 @@ class Erasmus(commands.Bot):
                 group = cast(Group, command)
                 for key in commands[1:]:
                     try:
-                        key = _mention_pattern_re.sub('@\u200b\\g<target>', key)
+                        key = remove_mentions(key)
                         command = group.all_commands.get(key)
 
                         if command is None:

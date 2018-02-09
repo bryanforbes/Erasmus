@@ -5,6 +5,7 @@ from mypy_extensions import TypedDict
 from .json import load
 from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
 from . import re
+from .util import unique_seen
 
 if TYPE_CHECKING:
     from .context import Context  # noqa
@@ -16,7 +17,7 @@ with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
 _book_re = re.compile(
     re.named_group('book')(re.either(
         *re.escape_all(
-            chain.from_iterable([[book.name, book.osis] + book.alt for book in books_data])
+            unique_seen(chain.from_iterable([[book.name, book.osis] + book.alt for book in books_data]))
         )
     )),
     re.optional(re.DOT)
@@ -31,20 +32,18 @@ _one_or_more_digit = re.one_or_more(re.DIGIT)
 _colon = re.combine(re.any_number_of(re.WHITESPACE), ':', re.any_number_of(re.WHITESPACE))
 
 _reference_re = re.compile(
-    re.capture(
-        _book_re,
-        re.one_or_more(re.WHITESPACE),
-        _chapter_start_group(_one_or_more_digit),
-        _colon,
-        _verse_start_group(_one_or_more_digit),
+    _book_re,
+    re.one_or_more(re.WHITESPACE),
+    _chapter_start_group(_one_or_more_digit),
+    _colon,
+    _verse_start_group(_one_or_more_digit),
+    re.optional(re.group(
+        re.any_number_of(re.WHITESPACE), '[', re.DASH, '\u2013', '\u2014', ']', re.any_number_of(re.WHITESPACE),
         re.optional(re.group(
-            re.any_number_of(re.WHITESPACE), '[', re.DASH, '\u2013', '\u2014', ']', re.any_number_of(re.WHITESPACE),
-            re.optional(re.group(
-                _chapter_end_group(_one_or_more_digit), _colon
-            )),
-            _verse_end_group(_one_or_more_digit)
-        ))
-    ),
+            _chapter_end_group(_one_or_more_digit), _colon
+        )),
+        _verse_end_group(_one_or_more_digit)
+    )),
     flags=re.IGNORECASE
 )
 
@@ -57,20 +56,18 @@ _reference_with_version_re = re.compile(
     flags=re.IGNORECASE
 )
 
-_optional_bracketed_reference_re = re.compile(
-    re.optional(
-        re.LEFT_BRACKET,
-        re.any_number_of(re.WHITESPACE)
-    ),
-    _reference_with_version_re,
-    re.optional(
-        re.any_number_of(re.WHITESPACE),
-        re.RIGHT_BRACKET
-    ),
+_reference_or_bracketed_with_version_re = re.compile(
+    re.optional(re.named_group('bracket')(re.LEFT_BRACKET, re.any_number_of(re.WHITESPACE))),
+    _reference_re,
+    '(?(bracket)', re.group(re.optional(re.group(re.one_or_more(re.WHITESPACE),
+                                                 _version_group(re.one_or_more(re.ALPHANUMERICS)))),
+                            re.any_number_of(re.WHITESPACE),
+                            re.RIGHT_BRACKET),
+    '|)',
     flags=re.IGNORECASE
 )
 
-_bracketed_reference_re = re.compile(
+_bracketed_reference_with_version_re = re.compile(
     re.LEFT_BRACKET,
     re.any_number_of(re.WHITESPACE),
     _reference_with_version_re,
@@ -85,7 +82,6 @@ _search_reference_re = re.compile(
     re.END,
     flags=re.IGNORECASE
 )
-
 
 _book_input_map = {}  # type: Dict[str, str]
 _book_mask_map = {}  # type: Dict[str, int]
@@ -221,14 +217,15 @@ class VerseRange(object):
         return cls(groups['book'], start, end, version)
 
     @classmethod
-    def get_all_from_string(cls, string: str, brackets: Optional[bool] = False) -> List[Union['VerseRange', Exception]]:
+    def get_all_from_string(cls, string: str, *,
+                            only_bracketed: bool = False) -> List[Union['VerseRange', Exception]]:
         ranges: List[Union['VerseRange', Exception]] = []
         lookup_pattern: Pattern[str]
 
-        if brackets:
-            lookup_pattern = _bracketed_reference_re
+        if only_bracketed:
+            lookup_pattern = _bracketed_reference_with_version_re
         else:
-            lookup_pattern = _optional_bracketed_reference_re
+            lookup_pattern = _reference_or_bracketed_with_version_re
 
         match = lookup_pattern.search(string)
 
@@ -239,8 +236,7 @@ class VerseRange(object):
                 except Exception as exc:
                     ranges.append(exc)
 
-                (_, end) = match.span(1)
-                match = lookup_pattern.search(string, end)
+                match = lookup_pattern.search(string, match.end())
 
         return ranges
 

@@ -55,10 +55,13 @@ def named_group(name: str) -> Callable[[VarArg(_ReOrStrType), DefaultNamedArg(st
 
 
 def atomic(string: str) -> str:
-    if string[0] == '(' and string[-1] == ')':
+    if len(string) == 2 and string[0] == '\\':
         return string
-    else:
-        return group(string)
+
+    if (string[0] == '(' and string[-1] == ')') or (string[0] == '[' and string[-1] == ']'):
+        return string
+
+    return group(string)
 
 
 def _suffix(*args: _ReOrStrType, suffix: str, greedy: bool = True) -> str:

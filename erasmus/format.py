@@ -1,6 +1,8 @@
-from typing import Callable, List, Iterable, Tuple, Set, TypeVar, Iterator  # noqa
+from typing import Callable, List, Iterable, Tuple
 from mypy_extensions import Arg, DefaultNamedArg
 from discord.ext import commands
+
+from .util import unique_seen
 
 PluralizerType = Callable[[Arg(int, 'value'),
                            DefaultNamedArg(bool, 'include_number')], str]
@@ -49,14 +51,6 @@ def roman_to_int(numerals: str) -> int:
     return result
 
 
-def unique_seen(iterable: Iterable[Tuple[str, commands.Command]]) -> Iterator[Tuple[str, commands.Command]]:
-    seen = set()  # type: Set[commands.Command]
-    for element in iterable:
-        if element[1] not in seen:
-            seen.add(element[1])
-            yield element
-
-
 class HelpFormatter(commands.HelpFormatter):
     def _get_command_title(self, name: str, command: commands.Command) -> str:
         return ', '.join(map(
@@ -66,7 +60,7 @@ class HelpFormatter(commands.HelpFormatter):
 
     async def filter_command_list(self) -> Iterable[Tuple[str, commands.Command]]:
         iterable = await super().filter_command_list()
-        return unique_seen(iterable)
+        return unique_seen(iterable, lambda x: x[1])
 
     async def format(self) -> List[str]:
         self._paginator = commands.Paginator()
@@ -98,6 +92,8 @@ class HelpFormatter(commands.HelpFormatter):
             return self._paginator.pages
 
         if isinstance(self.command, commands.Bot):
+            add_line(self.command.description, empty=True)
+
             filtered = await self.filter_command_list()
             filtered = sorted(filtered)
 
