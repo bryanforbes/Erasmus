@@ -1,6 +1,6 @@
 ## direct dependencies
 aiodns==1.1.1
-aiohttp>=2.0.0,<2.3.0
+aiohttp==2.2.5
 alembic==0.9.7
 async-timeout==2.0.0
 asyncpg==0.14.0
@@ -12,3 +12,16 @@ mypy-extensions==0.3.0
 psycopg2==2.7.4
 SQLAlchemy==1.2.2
 uvloop==0.9.1
+
+## The following requirements were added by pip freeze:
+chardet==3.0.4
+idna==2.6
+Mako==1.0.7
+MarkupSafe==1.0
+multidict==4.1.0
+pycares==2.3.0
+python-dateutil==2.6.1
+python-editor==1.0.3
+six==1.11.0
+websockets==3.4
+yarl==1.1.0

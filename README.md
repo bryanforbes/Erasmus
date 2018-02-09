@@ -5,3 +5,22 @@
 A Bible bot for Discord
 
 [Invite Erasmus to your server](https://discordapp.com/oauth2/authorize?client_id=349394562336292876&scope=bot&permissions=379968)
+
+# Setup
+
+## Running
+
+```
+python3.6 -m venv venv
+source venv/bin/activate
+pip install -r run-requirements.txt
+```
+
+## Development
+
+```
+python3.6 -m venv venv
+source venv/bin/activate
+pip install -U -r requirements.txt
+pip install -U -r dev-requirements.txt
+```

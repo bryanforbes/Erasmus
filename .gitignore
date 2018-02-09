@@ -1,9 +1,11 @@
 .cache/
 .mypy_cache/
+.pytest_cache/
 __pycache__/
 /htmlcov/
 /venv/
-.coverage
+.coverage*
+.testmondata
 config.json
 config.ini
 *.pyc
