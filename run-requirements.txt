@@ -1,9 +1,9 @@
 ## direct dependencies
 aiodns==1.1.1
 aiohttp==2.2.5
-alembic==0.9.7
+alembic==0.9.8
 async-timeout==2.0.0
-asyncpg==0.14.0
+asyncpg==0.15.0
 beautifulsoup4==4.6.0
 cchardet==2.1.1
 click==6.7
@@ -23,5 +23,5 @@ pycares==2.3.0
 python-dateutil==2.6.1
 python-editor==1.0.3
 six==1.11.0
-websockets==3.4
+websockets==4.0.1
 yarl==1.1.0
