@@ -1,4 +1,4 @@
-from typing import Optional, Union, List, Dict, Pattern, Match, TYPE_CHECKING  # noqa
+from typing import Optional, Union, List, Dict, Pattern, Match, TYPE_CHECKING, Any  # noqa
 from pathlib import Path
 from itertools import chain
 from mypy_extensions import TypedDict
@@ -127,7 +127,7 @@ class Verse(object):
     def __str__(self) -> str:
         return f'{self.chapter}:{self.verse}'
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
         if other is self:
             return True
         elif type(other) is Verse:
@@ -135,7 +135,7 @@ class Verse(object):
         else:
             return False
 
-    def __ne__(self, other) -> bool:
+    def __ne__(self, other: Any) -> bool:
         return not self.__eq__(other)
 
 
@@ -170,7 +170,7 @@ class VerseRange(object):
     def __str__(self) -> str:
         return f'{self.book} {self.verses}'
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
         if other is self:
             return True
         elif type(other) is VerseRange:
@@ -178,7 +178,7 @@ class VerseRange(object):
         else:
             return False
 
-    def __ne__(self, other) -> bool:
+    def __ne__(self, other: Any) -> bool:
         return not self.__eq__(other)
 
     @classmethod
@@ -262,7 +262,7 @@ class Passage(object):
         self.version = version
 
     @property
-    def citation(self):
+    def citation(self) -> str:
         if self.version is not None:
             return f'{self.range} ({self.version})'
         else:
@@ -277,7 +277,7 @@ class Passage(object):
     def __str__(self) -> str:
         return f'{self.text}\n\n{self.citation}'
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
         if other is self:
             return True
         elif type(other) is Passage:
@@ -285,7 +285,7 @@ class Passage(object):
         else:
             return False
 
-    def __ne__(self, other) -> bool:
+    def __ne__(self, other: Any) -> bool:
         return not self.__eq__(other)
 
 
@@ -299,7 +299,7 @@ class SearchResults(object):
         self.verses = verses
         self.total = total
 
-    def __eq__(self, other) -> bool:
+    def __eq__(self, other: Any) -> bool:
         if other is self:
             return True
         elif type(other) is SearchResults:
@@ -307,5 +307,5 @@ class SearchResults(object):
         else:
             return False
 
-    def __ne__(self, other) -> bool:
+    def __ne__(self, other: Any) -> bool:
         return not self.__eq__(other)

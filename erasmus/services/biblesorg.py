@@ -1,6 +1,6 @@
 # Service for querying bibles.org
 
-from typing import List, cast, Optional
+from typing import List, cast, Optional, Any
 from aiohttp import BasicAuth, ClientResponse
 import async_timeout
 from bs4 import BeautifulSoup
@@ -20,7 +20,7 @@ class BiblesOrg(Service[JSONObject]):
     base_url = 'https://bibles.org/v2'
     _auth: Optional[BasicAuth]
 
-    def __init__(self, *args, **kwargs) -> None:
+    def __init__(self, *args: Any, **kwargs: Any) -> None:
         super().__init__(*args, **kwargs)
 
         if self.config:
@@ -40,7 +40,7 @@ class BiblesOrg(Service[JSONObject]):
 
         return obj.response
 
-    async def get(self, url: str, **request_options) -> JSONObject:
+    async def get(self, url: str, **request_options: Any) -> JSONObject:
         return await super().get(url, auth=self._auth)
 
     def _get_passage_url(self, version: str, verses: VerseRange) -> str:

@@ -79,14 +79,14 @@ class Service(Generic[RT]):
     async def _process_response(self, response: aiohttp.ClientResponse) -> RT:
         raise NotImplementedError
 
-    async def get(self, url: str, **request_options) -> RT:
+    async def get(self, url: str, **request_options: Any) -> RT:
         log.debug('GET %s', url)
         with async_timeout.timeout(10):
             async with self.session.get(url, **request_options) as response:
                 log.debug('Finished GET %s', url)
                 return await self._process_response(response)
 
-    async def post(self, url: str, data: Optional[Dict[str, Any]] = None, **request_options) -> RT:
+    async def post(self, url: str, data: Optional[Dict[str, Any]] = None, **request_options: Any) -> RT:
         log.debug('POST %s', url)
         with async_timeout.timeout(10):
             async with self.session.post(url, data=data, **request_options) as response:

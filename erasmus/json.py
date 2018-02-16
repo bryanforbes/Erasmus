@@ -25,11 +25,11 @@ class JSONObject(OrderedDict):
         return obj
 
 
-def loads(s: Union[Text, bytes], *args, **kwargs) -> Any:
+def loads(s: Union[Text, bytes], *args: Any, **kwargs: Any) -> Any:
     kwargs['object_pairs_hook'] = lambda x: JSONObject(x)
     return json.loads(s, *args, **kwargs)
 
 
-def load(fp: IO[str], *args, **kwargs) -> Any:
+def load(fp: IO[str], *args: Any, **kwargs: Any) -> Any:
     kwargs['object_pairs_hook'] = lambda x: JSONObject(x)
     return json.load(fp, *args, **kwargs)

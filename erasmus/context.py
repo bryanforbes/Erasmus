@@ -27,7 +27,7 @@ class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection
     async def __aenter__(self) -> Connection:
         return await self.ctx._acquire(self.timeout)
 
-    async def __aexit__(self, *args) -> None:
+    async def __aexit__(self, *args: Any) -> None:
         await self.ctx.release()
 
 

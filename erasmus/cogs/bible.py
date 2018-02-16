@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, cast, Optional
+from typing import TYPE_CHECKING, cast, Optional, Callable, Any
 
 import discord
 from discord.ext import commands
@@ -19,8 +19,8 @@ if TYPE_CHECKING:
 pluralize_match = pluralizer('match', 'es')
 
 
-def dm_only():
-    def predicate(ctx: 'Context'):
+def dm_only() -> Callable[..., Any]:
+    def predicate(ctx: 'Context') -> bool:
         if not isinstance(ctx.channel, discord.DMChannel):
             raise OnlyDirectMessage('This command can only be used in private messags.')
         return True

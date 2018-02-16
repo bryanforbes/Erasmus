@@ -1,4 +1,4 @@
-from typing import cast
+from typing import cast, Any
 
 import discord
 import logging
@@ -73,7 +73,7 @@ class Erasmus(commands.Bot):
     pool: Pool
     session: aiohttp.ClientSession
 
-    def __init__(self, config_path: str, *args, **kwargs) -> None:
+    def __init__(self, config_path: str, *args: Any, **kwargs: Any) -> None:
         self.config = ConfigParser(default_section='erasmus')
         self.config.read(config_path)
 
@@ -112,7 +112,7 @@ class Erasmus(commands.Bot):
         await super().close()
         await self.session.close()
 
-    async def get_context(self, message: discord.Message, *, cls=Context) -> Context:
+    async def get_context(self, message: discord.Message, *, cls: Any=Context) -> Context:
         return cast(Context, await super().get_context(message, cls=cls))
 
     async def on_message(self, message: discord.Message) -> None:
