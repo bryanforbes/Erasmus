@@ -1,5 +1,5 @@
 import asyncio
-from typing import Dict, Mapping, Iterable, Callable, Union, AsyncContextManager, Any, Optional, TypeVar
+from typing import Dict, Mapping, Iterable, Callable, Union, AsyncContextManager, Any, Optional, TypeVar, IO
 from .connector import BaseConnector
 from .abc import AbstractCookieJar
 from .helpers import BasicAuth, _BaseCoroMixin
@@ -33,7 +33,7 @@ class ClientSession(AsyncContextManager['ClientSession']):
 
     def get(self, url: str, *, allow_redirects: bool = ..., **kwargs) -> _RequestContextManager[ClientResponse]: ...
 
-    def post(self, url: str, *, data: Optional[Dict[str, Any]] = ..., **kwargs) -> \
+    def post(self, url: str, *, data: Union[Optional[Dict[str, Any]], bytes, str, IO] = ..., **kwargs) -> \
         _RequestContextManager[ClientResponse]: ...
 
     async def close(self): ...

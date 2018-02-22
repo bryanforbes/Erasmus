@@ -10,5 +10,5 @@ click==6.7
 git+https://github.com/Rapptz/discord.py@355eb08b25b5c46c4c061cf50594650738ac09cf#egg=discord.py
 mypy-extensions==0.3.0
 psycopg2==2.7.4
-SQLAlchemy==1.2.2
+SQLAlchemy==1.2.3
 uvloop==0.9.1

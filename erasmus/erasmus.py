@@ -4,6 +4,7 @@ import discord
 import logging
 import aiohttp
 import async_timeout
+import json
 
 from asyncpg import create_pool
 from asyncpg.pool import Pool
@@ -241,20 +242,25 @@ class Erasmus(commands.Bot):
         if not token:
             return
 
-        headers = {'Authorization': token}
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
         payload = {'server_count': len(self.guilds)}
         user = cast(discord.ClientUser, self.user)
 
-        async with aiohttp.ClientSession() as session:
-            with async_timeout.timeout(10):
-                await session.post(f'https://discordbots.org/api/bots/{user.id}/stats',
-                                   data=payload,
-                                   headers=headers)
+        with async_timeout.timeout(10):
+            await self.session.post(f'https://discordbots.org/api/bots/{user.id}/stats',
+                                    data=json.dumps(payload, ensure_ascii=True),
+                                    headers=headers)
 
     async def on_guild_available(self, guild: discord.Guild) -> None:
         await self._report_guilds()
 
     async def on_guild_join(self, guild: discord.Guild) -> None:
+        await self._report_guilds()
+
+    async def on_guild_remove(self, guild: discord.Guild) -> None:
         await self._report_guilds()
 
     # async def on_guild_available(self, guild: discord.Guild) -> None:

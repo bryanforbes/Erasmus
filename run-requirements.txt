@@ -10,7 +10,7 @@ click==6.7
 git+https://github.com/Rapptz/discord.py@d53c3a6c12f640519c5e4d569421a35c43978ef5#egg=discord.py
 mypy-extensions==0.3.0
 psycopg2==2.7.4
-SQLAlchemy==1.2.2
+SQLAlchemy==1.2.3
 uvloop==0.9.1
 
 ## The following requirements were added by pip freeze:
@@ -24,4 +24,4 @@ python-dateutil==2.6.1
 python-editor==1.0.3
 six==1.11.0
 websockets==4.0.1
-yarl==1.1.0
+yarl==1.1.1
