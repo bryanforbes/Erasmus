@@ -14,6 +14,7 @@ from .data import VerseRange, Passage, SearchResults, Bible
 RT = TypeVar('RT')
 whitespace_re = re.compile(re.one_or_more(re.WHITESPACE))
 bold_re = re.compile(r'__BOLD__')
+italic_re = re.compile(r'__ITALIC__')
 specials_re = re.compile(re.capture(r'[\*`]'))
 number_re = re.compile(re.capture(r'\*\*', re.one_or_more(re.DIGIT), re.DOT, r'\*\*'))
 
@@ -42,6 +43,7 @@ class Service(Generic[RT]):
         text = whitespace_re.sub(' ', text.strip())
         text = specials_re.sub(r'\\\1', text)
         text = bold_re.sub('**', text)
+        text = italic_re.sub('_', text)
 
         if bible['rtl']:
             # wrap in [RTL embedding]text[Pop directional formatting]

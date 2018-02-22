@@ -63,6 +63,8 @@ class BiblesOrg(Service[JSONObject]):
         for number in soup.select('sup.v'):
             # Add a period after verse numbers
             number.string = f' __BOLD__{number.string}.__BOLD__ '
+        for it in soup.select('span.it'):
+            it.replace_with(f'__ITALIC__{it.get_text(" ", strip=True).strip()}__ITALIC__')
         for span in soup.select('span.sc'):
             span.unwrap()
         for br in soup.select('br'):

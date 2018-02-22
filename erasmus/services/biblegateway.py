@@ -50,7 +50,9 @@ class BibleGateway(Service[Tag]):
         for br in verse_block.select('br'):
             br.replace_with('\n')
         for h4 in verse_block.select('h4'):
-            h4.replace_with(f'__BOLD__{h4.string.strip()}__BOLD__ ')
+            h4.replace_with(f'__BOLD__{h4.get_text(" ", strip=True).strip()}__BOLD__ ')
+        for selah in verse_block.select('.selah'):
+            selah.replace_with(f'__ITALIC__{selah.get_text(" ", strip=True).strip()}__ITALIC__')
 
         return verse_block.get_text('')
 

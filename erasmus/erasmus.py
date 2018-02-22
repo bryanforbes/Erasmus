@@ -238,7 +238,7 @@ class Erasmus(commands.Bot):
             await destination.send(page)
 
     async def _report_guilds(self) -> None:
-        token = self.config.get('erasmus', 'dbl_token')
+        token = self.config.get('erasmus', 'dbl_token', fallback='')
         if not token:
             return
 
