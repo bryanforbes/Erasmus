@@ -1,8 +1,8 @@
 from typing import Union, Callable, Awaitable, TypeVar, Optional, List, NamedTuple
 from asyncio import AbstractEventLoop
 from .user import User, ClientUser
-from .game import Game
 from .enums import Status
+from .activity import Activity, Game, Streaming, Spotify
 from .guild import Guild
 from .emoji import Emoji
 from .abc import PrivateChannel, GuildChannel
@@ -25,8 +25,8 @@ class AppInfo(NamedTuple):
 
 
 class Client:
-    user: User
     loop: AbstractEventLoop
+    activity: Union[Activity, Game, Streaming, Spotify]
 
     @property
     def latency(self) -> float: ...
@@ -82,5 +82,5 @@ class Client:
     def async_event(self, coro: Union[Callable[..., _ReturnType],
                                       _CoroType[_ReturnType]]) -> _CoroType[_ReturnType]: ...
 
-    async def change_presence(self, *, game: Optional[Game] = ..., status: Optional[Status] = ...,
-                              afk: bool = ...) -> None: ...
+    async def change_presence(self, *, activity: Optional[Union[Activity, Game, Streaming, Spotify]] = ...,
+                              status: Optional[Status] = ..., afk: bool = ...) -> None: ...

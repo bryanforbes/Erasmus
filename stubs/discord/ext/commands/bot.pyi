@@ -17,6 +17,7 @@ def when_mentioned_or(*prefixes) -> Callable[['Bot', discord.Message], List[str]
 
 class BotBase(GroupMixin):
     command_prefix: CommandPrefix
+    case_insensitive: bool
     description: str
     self_bot: bool
     formatter: HelpFormatter  # noqa

@@ -133,7 +133,7 @@ class Erasmus(commands.Bot):
             await self.invoke(ctx)
 
     async def on_ready(self) -> None:
-        await self.change_presence(game=discord.Game(name=f'| {self.default_prefix}help'))
+        await self.change_presence(activity=discord.Game(name=f'| {self.default_prefix}help'))
         await self._report_guilds()
 
         user = cast(discord.ClientUser, self.user)

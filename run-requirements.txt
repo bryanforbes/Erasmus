@@ -8,7 +8,7 @@ attrs=17.4.0
 beautifulsoup4==4.6.0
 cchardet==2.1.1
 click==6.7
-git+https://github.com/Rapptz/discord.py@d53c3a6c12f640519c5e4d569421a35c43978ef5#egg=discord.py
+git+https://github.com/Rapptz/discord.py@8ba78168a6e71cf8ade47b62e4659a720a13aa06#egg=discord.py
 mypy-extensions==0.3.0
 psycopg2==2.7.4
 SQLAlchemy==1.2.3

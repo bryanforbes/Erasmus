@@ -1,8 +1,8 @@
-from typing import NamedTuple, Callable, Any, Optional, Dict, ClassVar
+from typing import NamedTuple, Callable, Any, Optional, Dict, ClassVar, Union
 from asyncio import Future
 import threading
 from .client import Client
-from .game import Game
+from .activity import Activity, Game, Streaming, Spotify
 from .enums import Status
 
 
@@ -70,7 +70,8 @@ class DiscordWebSocket:
 
     async def send_as_json(self, data: Any) -> None: ...
 
-    async def change_presence(self, *, game: Game=None, status: Status=None, afk: bool=None) -> None: ...
+    async def change_presence(self, *, activity: Optional[Union[Activity, Game, Streaming, Spotify]]=...,
+                              status: Status=..., afk: bool=...) -> None: ...
 
     async def close_connection(self, *args, **kwargs) -> None: ...
 
