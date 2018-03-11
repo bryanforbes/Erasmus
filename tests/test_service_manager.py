@@ -47,7 +47,7 @@ class TestServiceManager(object):
                      service='ServiceTwo', service_version='service-BIB2')
 
     def test_init(self, services, config, mock_client_session):
-        manager = ServiceManager(config, mock_client_session)
+        manager = ServiceManager.from_config(config, mock_client_session)
 
         assert manager.service_map['ServiceOne'].config is None
         assert type(manager.service_map['ServiceOne']) == services['ServiceOne'].side_effect
@@ -55,7 +55,7 @@ class TestServiceManager(object):
         assert type(manager.service_map['ServiceTwo']) == services['ServiceTwo'].side_effect
 
     def test_container_methods(self, config, mock_client_session):
-        manager = ServiceManager(config, mock_client_session)
+        manager = ServiceManager.from_config(config, mock_client_session)
 
         assert 'ServiceOne' in manager
         assert 'ServiceTwo' in manager
@@ -64,7 +64,7 @@ class TestServiceManager(object):
 
     @pytest.mark.asyncio
     async def test_get_passage(self, config, bible2, mock_client_session):
-        manager = ServiceManager(config, mock_client_session)
+        manager = ServiceManager.from_config(config, mock_client_session)
         manager.service_map['ServiceTwo'].get_passage.return_value = \
             Passage('blah', VerseRange.from_string('Genesis 1:2'))
 
@@ -77,7 +77,7 @@ class TestServiceManager(object):
 
     @pytest.mark.asyncio
     async def test_search(self, config, bible1, mock_client_session):
-        manager = ServiceManager(config, mock_client_session)
+        manager = ServiceManager.from_config(config, mock_client_session)
         manager.service_map['ServiceOne'].search.return_value = 'blah'
 
         result = await manager.search(bible1, ['one', 'two', 'three'])

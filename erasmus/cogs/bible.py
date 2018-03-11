@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING, cast, Optional, Callable, Any
 
+import attr
 import discord
 from discord.ext import commands
 
@@ -85,16 +86,15 @@ Example:
     {prefix}{command} faith hope'''
 
 
+@attr.s(slots=True, auto_attribs=True)
 class Bible(object):
-    __slots__ = ('bot', 'service_manager', '_user_cooldown')
-
     bot: 'Erasmus'
-    service_manager: ServiceManager
-    _user_cooldown: commands.CooldownMapping
+    service_manager: ServiceManager = attr.ib(init=False)
+    _user_cooldown: commands.CooldownMapping = attr.ib(init=False)
+    __weakref__: Any = attr.ib(init=False, hash=False, repr=False, cmp=False)  # type: ignore
 
-    def __init__(self, bot: 'Erasmus') -> None:
-        self.bot = bot
-        self.service_manager = ServiceManager(self.bot.config, self.bot.session)
+    def __attrs_post_init__(self) -> None:
+        self.service_manager = ServiceManager.from_config(self.bot.config, self.bot.session)
         self._user_cooldown = commands.CooldownMapping(
             commands.Cooldown(rate=8, per=60.0, type=commands.BucketType.user))
 

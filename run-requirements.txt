@@ -4,6 +4,7 @@ aiohttp==2.2.5
 alembic==0.9.8
 async-timeout==2.0.0
 asyncpg==0.15.0
+attrs=17.4.0
 beautifulsoup4==4.6.0
 cchardet==2.1.1
 click==6.7

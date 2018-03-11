@@ -84,7 +84,7 @@ class ServiceTest(object):
                                service, bible):
         response = await service.get_passage(bible, verse)
         passages_url = self.get_passages_url(bible['service_version'], verse)
-        assert mock_client_session.get.call_args[0] == mocker.call(passages_url)[1]
+        assert mock_client_session.get.call_args_list[0][0] == mocker.call(passages_url)[1]
         assert response == expected
 
     @pytest.mark.asyncio
