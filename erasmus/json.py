@@ -24,6 +24,12 @@ class JSONObject(OrderedDict):
                 return fallback
         return obj
 
+    def has(self, key: str) -> bool:
+        fallback = object()
+        result = self.get(key, fallback)
+
+        return result is not fallback
+
 
 def loads(s: Union[Text, bytes], *args: Any, **kwargs: Any) -> Any:
     kwargs['object_pairs_hook'] = lambda x: JSONObject(x)

@@ -82,15 +82,19 @@ class BiblesOrg(Service[JSONObject]):
         })
 
     def _get_search_results(self, response: JSONObject) -> SearchResults:
-        result = response.get('search.result')
+        result: JSONObject = response.get('search.result')
 
-        if result is None or 'summary' not in result or 'total' not in result.summary or \
-                result.summary.total > 0 and 'verses' not in result:
+        if result is None:
             raise DoNotUnderstandError
 
-        if result.summary.total > 0:
+        total: int = result.get('summary.total') or 0
+
+        if not result.has('summary.total') or total > 0 and not result.has('verses'):
+            raise DoNotUnderstandError
+
+        if total > 0:
             verses = [VerseRange.from_string(verse.reference) for verse in result.verses]
         else:
             verses = []
 
-        return SearchResults(verses, result.summary.total)
+        return SearchResults(verses, total)

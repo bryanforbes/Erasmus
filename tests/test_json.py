@@ -31,3 +31,15 @@ def test_loads():
 def test_jsonobject_get(data, key, expected):
     obj = JSONObject(data)
     assert obj.get(key) == expected
+
+
+@pytest.mark.parametrize('data,key,expected', [
+    ({'foo': {'bar': {'baz': 1}}}, 'foo.bar.baz', True),
+    ({'foo': [{'bar': 1}]}, 'foo.0.bar', True),
+    ({'foo': [{'bar': 1}]}, 'foo.0.baz', False),
+    ({}, 'foo', False),
+    ({'foo': 1}, 'foo.bar.baz', False)
+])
+def test_jsonobject_has(data, key, expected):
+    obj = JSONObject(data)
+    assert obj.has(key) == expected
