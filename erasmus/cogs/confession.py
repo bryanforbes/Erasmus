@@ -119,7 +119,7 @@ class Paginator(commands.Paginator):
 @attr.s(slots=True, auto_attribs=True)
 class Confession(object):
     bot: 'Erasmus'
-    __weakref__: Any = attr.ib(init=False, hash=False, repr=False, cmp=False)  # type: ignore
+    __weakref__: Any = attr.ib(init=False, hash=False, repr=False, cmp=False)
 
     # TODO: there's a fix coming for type hints in discord.py so `Optional[str]` should be fixed in the future
     @commands.command(brief='Query confessions and catechisms', help=confess_help)

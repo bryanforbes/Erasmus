@@ -91,7 +91,7 @@ class Bible(object):
     bot: 'Erasmus'
     service_manager: ServiceManager = attr.ib(init=False)
     _user_cooldown: commands.CooldownMapping = attr.ib(init=False)
-    __weakref__: Any = attr.ib(init=False, hash=False, repr=False, cmp=False)  # type: ignore
+    __weakref__: Any = attr.ib(init=False, hash=False, repr=False, cmp=False)
 
     def __attrs_post_init__(self) -> None:
         self.service_manager = ServiceManager.from_config(self.bot.config, self.bot.session)

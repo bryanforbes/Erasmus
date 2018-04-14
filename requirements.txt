@@ -1,15 +1,15 @@
 ## direct dependencies
 aiodns==1.1.1
 aiohttp>=2.0.0,<2.3.0
-alembic==0.9.8
-async-timeout==2.0.0
+alembic==0.9.9
+async-timeout==2.0.1
 asyncpg==0.15.0
 attrs==17.4.0
 beautifulsoup4==4.6.0
 cchardet==2.1.1
 click==6.7
-git+https://github.com/Rapptz/discord.py@8ba78168a6e71cf8ade47b62e4659a720a13aa06#egg=discord.py
+git+https://github.com/Rapptz/discord.py@56650ae7c235a85dac202ea57aa1bab2603a7f92#egg=discord.py
 mypy-extensions==0.3.0
 psycopg2==2.7.4
-SQLAlchemy==1.2.3
+SQLAlchemy==1.2.6
 uvloop==0.9.1
