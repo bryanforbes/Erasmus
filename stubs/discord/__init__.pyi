@@ -1,6 +1,6 @@
 from .client import Client as Client, AppInfo as AppInfo
 from .user import User as User, ClientUser as ClientUser, Profile as Profile
-from .game import Game as Game
+from .activity import Activity as Activity, Game as Game, Streaming as Streaming, Spotify as Spotify
 from .emoji import Emoji as Emoji, PartialEmoji as PartialEmoji
 from .channel import *
 from .guild import Guild as Guild

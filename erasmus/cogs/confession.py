@@ -1,5 +1,6 @@
 from typing import TYPE_CHECKING, List, Callable, Sequence, Any, Match, Awaitable, Optional  # noqa: F401
 
+import attr
 import discord
 from discord.ext import commands
 from asyncpg import Connection
@@ -115,13 +116,10 @@ class Paginator(commands.Paginator):
             super().add_line(sub_line, empty=sub_empty)
 
 
+@attr.s(slots=True, auto_attribs=True)
 class Confession(object):
-    __slots__ = ('bot')
-
     bot: 'Erasmus'
-
-    def __init__(self, bot: 'Erasmus') -> None:
-        self.bot = bot
+    __weakref__: Any = attr.ib(init=False, hash=False, repr=False, cmp=False)
 
     # TODO: there's a fix coming for type hints in discord.py so `Optional[str]` should be fixed in the future
     @commands.command(brief='Query confessions and catechisms', help=confess_help)

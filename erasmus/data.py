@@ -1,4 +1,5 @@
 from typing import Optional, Union, List, Dict, Pattern, Match, TYPE_CHECKING, Any  # noqa
+import attr
 from pathlib import Path
 from itertools import chain
 from mypy_extensions import TypedDict
@@ -114,46 +115,25 @@ class Bible(TypedDict):
     books: int
 
 
+@attr.s(slots=True, auto_attribs=True)
 class Verse(object):
-    __slots__ = ('chapter', 'verse')
-
     chapter: int
     verse: int
-
-    def __init__(self, chapter: int, verse: int) -> None:
-        self.chapter = chapter
-        self.verse = verse
 
     def __str__(self) -> str:
         return f'{self.chapter}:{self.verse}'
 
-    def __eq__(self, other: Any) -> bool:
-        if other is self:
-            return True
-        elif type(other) is Verse:
-            return str(self) == str(other)
-        else:
-            return False
 
-    def __ne__(self, other: Any) -> bool:
-        return not self.__eq__(other)
-
-
+@attr.s(slots=True, auto_attribs=True)
 class VerseRange(object):
-    __slots__ = ('book', 'book_mask', 'start', 'end', 'version')
-
-    book: str
-    book_mask: int
+    book: str = attr.ib(converter=get_book)
     start: Verse
-    end: Optional[Verse]
-    version: Optional[str]
+    end: Optional[Verse] = None
+    version: Optional[str] = None
+    book_mask: int = attr.ib(init=False)
 
-    def __init__(self, book: str, start: Verse, end: Optional[Verse] = None, version: Optional[str] = None) -> None:
-        self.book = get_book(book)
+    def __attrs_post_init__(self) -> None:
         self.book_mask = get_book_mask(self.book)
-        self.start = start
-        self.end = end
-        self.version = version
 
     @property
     def verses(self) -> str:
@@ -169,17 +149,6 @@ class VerseRange(object):
 
     def __str__(self) -> str:
         return f'{self.book} {self.verses}'
-
-    def __eq__(self, other: Any) -> bool:
-        if other is self:
-            return True
-        elif type(other) is VerseRange:
-            return str(self) == str(other) and self.version == other.version
-        else:
-            return False
-
-    def __ne__(self, other: Any) -> bool:
-        return not self.__eq__(other)
 
     @classmethod
     def from_string(cls, verse: str) -> 'VerseRange':
@@ -249,17 +218,11 @@ truncation_warning = 'The passage was too long and has been truncated:\n\n'
 truncation_warning_len = len(truncation_warning) + 3
 
 
+@attr.s(slots=True, auto_attribs=True)
 class Passage(object):
-    __slots__ = ('text', 'range', 'version')
-
     text: str
     range: VerseRange
-    version: Optional[str]
-
-    def __init__(self, text: str, range: VerseRange, version: Optional[str] = None) -> None:
-        self.text = text
-        self.range = range
-        self.version = version
+    version: Optional[str] = None
 
     @property
     def citation(self) -> str:
@@ -277,35 +240,8 @@ class Passage(object):
     def __str__(self) -> str:
         return f'{self.text}\n\n{self.citation}'
 
-    def __eq__(self, other: Any) -> bool:
-        if other is self:
-            return True
-        elif type(other) is Passage:
-            return self.text == other.text and self.range == other.range and self.version == other.version
-        else:
-            return False
 
-    def __ne__(self, other: Any) -> bool:
-        return not self.__eq__(other)
-
-
+@attr.s(slots=True, auto_attribs=True)
 class SearchResults(object):
-    __slots__ = ('verses', 'total')
-
     verses: List[VerseRange]
     total: int
-
-    def __init__(self, verses: List[VerseRange], total: int) -> None:
-        self.verses = verses
-        self.total = total
-
-    def __eq__(self, other: Any) -> bool:
-        if other is self:
-            return True
-        elif type(other) is SearchResults:
-            return self.total == other.total and self.verses == other.verses
-        else:
-            return False
-
-    def __ne__(self, other: Any) -> bool:
-        return not self.__eq__(other)

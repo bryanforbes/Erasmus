@@ -124,3 +124,11 @@ class UserFlags(Enum):
     staff: int
     partner: int
     hypesquad: int
+
+
+class ActivityType(Enum):
+    unknown: int
+    playing: int
+    streaming: int
+    listening: int
+    watching: int

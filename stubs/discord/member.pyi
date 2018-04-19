@@ -1,5 +1,7 @@
-from typing import Any, Hashable, Optional
+from typing import Any, Hashable, Optional, List, Union
 from .abc import User as _BaseUser, Messageable, GuildChannel
+from .activity import Activity, Game, Streaming, Spotify
+from .enums import Status
 from .colour import Colour
 from .message import Message
 from .role import Role
@@ -18,6 +20,12 @@ class VoiceState:
 
 
 class Member(Messageable, _BaseUser, Hashable):
+    roles: List[Role]
+    joined_at: datetime
+    status: Status
+    activity: Union[Activity, Game, Streaming, Spotify]
+    nick: Optional[str]
+
     # From BaseUser:
     name: str
     id: int

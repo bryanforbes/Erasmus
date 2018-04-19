@@ -133,7 +133,7 @@ class Erasmus(commands.Bot):
             await self.invoke(ctx)
 
     async def on_ready(self) -> None:
-        await self.change_presence(game=discord.Game(name=f'| {self.default_prefix}help'))
+        await self.change_presence(activity=discord.Game(name=f'| {self.default_prefix}help'))
         await self._report_guilds()
 
         user = cast(discord.ClientUser, self.user)
@@ -190,8 +190,18 @@ class Erasmus(commands.Bot):
             if exc.__cause__:
                 return await self.on_command_error(ctx, cast(Exception, exc.__cause__))
         else:
+            if ctx.command is None:
+                qualified_name = 'NO COMMAND'
+            else:
+                qualified_name = ctx.command.qualified_name
+
+            if ctx.message is None:
+                content = 'NO MESSAGE'
+            else:
+                content = ctx.message.content
+
             log.exception('Exception occurred in command "%s"\nInvoked by: %s',
-                          ctx.command.qualified_name, ctx.message.content,
+                          qualified_name, content,
                           exc_info=exc,
                           stack_info=True)
 

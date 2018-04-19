@@ -1,4 +1,5 @@
 from typing import List, Optional, AsyncContextManager, Awaitable, Generator, Any, TYPE_CHECKING
+import attr
 from asyncpg import Connection
 import discord
 from discord.ext import commands
@@ -11,15 +12,10 @@ truncation_warning = '**The passage was too long and has been truncated:**\n\n'
 max_length = 2048 - (len(truncation_warning) + 1)
 
 
+@attr.s(slots=True, auto_attribs=True)
 class AquireContextManager(AsyncContextManager[Connection], Awaitable[Connection]):
-    __slots__ = ('ctx', 'timeout')
-
     ctx: 'Context'
-    timeout: Optional[float]
-
-    def __init__(self, ctx: 'Context', timeout: Optional[float]) -> None:
-        self.ctx = ctx
-        self.timeout = timeout
+    timeout: Optional[float] = None
 
     def __await__(self) -> Generator[Any, None, Connection]:
         return self.ctx._acquire(self.timeout).__await__()

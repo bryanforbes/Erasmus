@@ -1,29 +1,29 @@
 import pytest
-from urllib.parse import urlencode
-from configparser import ConfigParser
 import json
+
+from pathlib import Path
+from configparser import ConfigParser
+from yarl import URL
 from . import ServiceTest
 
 from erasmus.services import BiblesOrg
 from erasmus.data import VerseRange
 
-passage_text = {
-    'Galatians 3:10-11': ('<p class=\"p\"><sup id=\"Gal.3.10\" class=\"v\">10</sup>'
-                          'For as many as are of the works of the Law are under a '
-                          'curse; for it is written, “C<span class=\"sc\">URSED IS '
-                          'EVERYONE WHO DOES NOT ABIDE BY ALL THINGS WRITTEN IN THE '
-                          'BOOK OF THE LAW</span>, <span class=\"sc\">TO '
-                          'PERFORM THEM</span>.”<sup id=\"Gal.3.11\" class=\"v\">11'
-                          '</sup>Now that no one is justified by the Law before God '
-                          'is evident; for, “T<span class=\"sc\">HE RIGHTEOUS MAN '
-                          'SHALL LIVE BY FAITH</span>.”</p>'),
-    'Mark 5:1': '<h3 class=\"s\">The Gerasene Demoniac</h3>\n<p class=\"p\"><sup id=\"Mark.5.1\" class=\"v\">1</sup>They came to the other side of the sea, into the country of the Gerasenes.</p>' # noqa
+__directory__ = Path(__file__).resolve().parent
+
+passage_sources = {
+    'Galatians 3:10-11': (__directory__ / 'biblesorg_Galatians_3:10-11_NASB.txt').read_text(),
+    'Mark 5:1': (__directory__ / 'biblesorg_Mark_5:1_NASB.txt').read_text(),
 }
 
 
 def get_json_side_effect(return_value):
+    if type(return_value) != str:
+        return_value = json.dumps(return_value)
+
     def json_side_effect(*, encoding=None, loads=None, content_type=None):
-        return loads(json.dumps(return_value))
+        return loads(return_value)
+
     return json_side_effect
 
 
@@ -79,7 +79,7 @@ class TestBiblesOrg(ServiceTest):
 
     @pytest.fixture
     def search_url(self):
-        return 'https://bibles.org/v2/verses.js?' + urlencode({
+        return URL('https://bibles.org/v2/verses.js').with_query({
             'keyword': 'one two three',
             'precision': 'all',
             'version': 'eng-BIB',
@@ -90,24 +90,16 @@ class TestBiblesOrg(ServiceTest):
     @pytest.fixture
     def mock_passage(self, request, mocker, mock_response):
         if hasattr(request, 'param'):
-            text = passage_text[request.param]
+            text = passage_sources[request.param]
         else:
             text = ''
 
-        return_value = {
-            'response': {
-                'search': {
-                    'result': {
-                        'passages': [
-                            {'text': text}
-                        ]
-                    }
-                }
-            }
-        }
         mocker.patch.object(mock_response, 'json',
                             new_callable=mocker.AsyncMock,
-                            side_effect=get_json_side_effect(return_value))
+                            side_effect=get_json_side_effect(text))
+        mocker.patch.object(mock_response, 'read',
+                            new_callable=mocker.AsyncMock,
+                            return_value=None)
 
         return mock_response
 
@@ -130,7 +122,7 @@ class TestBiblesOrg(ServiceTest):
         return mock_passage
 
     def get_passages_url(self, version: str, verses: VerseRange) -> str:
-        return f'https://bibles.org/v2/passages.js?' + urlencode({
+        return URL('https://bibles.org/v2/passages.js').with_query({
             'q[]': str(verses),
             'version': version
         })

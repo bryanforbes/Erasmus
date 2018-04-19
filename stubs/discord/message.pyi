@@ -1,4 +1,5 @@
 from typing import Optional, List, Union
+from mypy_extensions import TypedDict
 from datetime import datetime
 from .guild import Guild
 from .channel import TextChannel, DMChannel, GroupChannel
@@ -10,6 +11,19 @@ from .embeds import Embed
 
 class Attachment:
     ...
+
+
+class MessageActivity(TypedDict, total=False):
+    type: int
+    party_id: str
+
+
+class MessageApplication(TypedDict):
+    id: str
+    name: str
+    description: str
+    icon: str
+    cover_image: str
 
 
 class Message:
@@ -26,6 +40,8 @@ class Message:
     attachments: List[Attachment]
     pinned: bool
     reactions: List[object]
+    activity: Optional[MessageActivity]
+    application: Optional[MessageApplication]
 
     @property
     def guild(self) -> Optional[Guild]: ...

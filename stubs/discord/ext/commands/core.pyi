@@ -44,6 +44,7 @@ class Command:
 
 class GroupMixin:
     all_commands: Dict[str, Command]
+    case_insensitive: bool
 
     @property
     def commands(self) -> ValuesView[Command]: ...
