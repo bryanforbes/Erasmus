@@ -19,7 +19,7 @@ chardet==3.0.4
 idna==2.6
 Mako==1.0.7
 MarkupSafe==1.0
-multidict==4.1.0
+multidict==4.2.0
 pycares==2.3.0
 python-dateutil==2.7.2
 python-editor==1.0.3

@@ -1,8 +1,9 @@
 import pytest
-from pathlib import Path
-from urllib.parse import urlencode
-from configparser import ConfigParser
 import json
+
+from pathlib import Path
+from configparser import ConfigParser
+from yarl import URL
 from . import ServiceTest
 
 from erasmus.services import BiblesOrg
@@ -78,7 +79,7 @@ class TestBiblesOrg(ServiceTest):
 
     @pytest.fixture
     def search_url(self):
-        return 'https://bibles.org/v2/verses.js?' + urlencode({
+        return URL('https://bibles.org/v2/verses.js').with_query({
             'keyword': 'one two three',
             'precision': 'all',
             'version': 'eng-BIB',
@@ -121,7 +122,7 @@ class TestBiblesOrg(ServiceTest):
         return mock_passage
 
     def get_passages_url(self, version: str, verses: VerseRange) -> str:
-        return f'https://bibles.org/v2/passages.js?' + urlencode({
+        return URL('https://bibles.org/v2/passages.js').with_query({
             'q[]': str(verses),
             'version': version
         })

@@ -4,7 +4,6 @@ from typing import List, cast, Optional, Any
 from aiohttp import BasicAuth, ClientResponse
 import async_timeout
 from bs4 import BeautifulSoup
-from urllib.parse import urlencode
 from ..json import loads, JSONObject
 from .. import re
 
@@ -12,12 +11,15 @@ from ..data import VerseRange, SearchResults
 from ..service import Service
 from ..exceptions import DoNotUnderstandError
 
+from yarl import URL
+
 _img_re = re.compile('src="', re.named_group('src')('[^"]+'), '"')
 
 
 # TODO: Better error handling
 class BiblesOrg(Service[JSONObject]):
-    base_url = 'https://bibles.org/v2'
+    passage_url = URL('https://bibles.org/v2/passages.js')
+    search_url = URL('https://bibles.org/v2/verses.js')
     _auth: Optional[BasicAuth]
 
     def __init__(self, *args: Any, **kwargs: Any) -> None:
@@ -40,11 +42,11 @@ class BiblesOrg(Service[JSONObject]):
 
         return obj.response
 
-    async def get(self, url: str, **request_options: Any) -> JSONObject:
+    async def get(self, url: URL, **request_options: Any) -> JSONObject:
         return await super().get(url, auth=self._auth)
 
-    def _get_passage_url(self, version: str, verses: VerseRange) -> str:
-        return f'{self.base_url}/passages.js?' + urlencode({
+    def _get_passage_url(self, version: str, verses: VerseRange) -> URL:
+        return self.passage_url.with_query({
             'q[]': str(verses),
             'version': version
         })
@@ -72,8 +74,8 @@ class BiblesOrg(Service[JSONObject]):
 
         return soup.get_text('')
 
-    def _get_search_url(self, version: str, terms: List[str]) -> str:
-        return f'{self.base_url}/verses.js?' + urlencode({
+    def _get_search_url(self, version: str, terms: List[str]) -> URL:
+        return self.search_url.with_query({
             'keyword': ' '.join(terms),
             'precision': 'all',
             'version': version,

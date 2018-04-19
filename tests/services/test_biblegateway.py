@@ -1,5 +1,7 @@
 import pytest
+
 from pathlib import Path
+from yarl import URL
 from . import ServiceTest
 
 from erasmus.services import BibleGateway
@@ -64,8 +66,8 @@ class TestBibleGateway(ServiceTest):
 
     @pytest.fixture
     def search_url(self):
-        return f'https://www.biblegateway.com/quicksearch/?quicksearch=one+two+three&qs_version=eng-BIB&' \
-               'limit=20&interface=print'
+        return URL(f'https://www.biblegateway.com/quicksearch/?quicksearch=one+two+three&qs_version=eng-BIB&'
+                   'limit=20&interface=print')
 
     @pytest.fixture
     def mock_passage(self, request, mocker, mock_response):
@@ -90,5 +92,8 @@ class TestBibleGateway(ServiceTest):
         return mock_passage
 
     def get_passages_url(self, version: str, verses: VerseRange) -> str:
-        passage_str = str(verses).replace(' ', '+').replace(':', '%3A')
-        return f'https://www.biblegateway.com/passage/?search={passage_str}&version={version}&interface=print'
+        return URL(f'https://www.biblegateway.com/passage/').with_query({
+            'search': str(verses),
+            'version': version,
+            'interface': 'print'
+        })

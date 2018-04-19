@@ -4,6 +4,7 @@ from .connector import BaseConnector
 from .abc import AbstractCookieJar
 from .helpers import BasicAuth, _BaseCoroMixin
 from .client_reqrep import ClientResponse
+from yarl import URL
 
 
 _RT = TypeVar('_RT')
@@ -31,9 +32,10 @@ class ClientSession(AsyncContextManager['ClientSession']):
                  read_timeout: float = ...,
                  conn_timeout: Union[None, float] = ...) -> None: ...
 
-    def get(self, url: str, *, allow_redirects: bool = ..., **kwargs) -> _RequestContextManager[ClientResponse]: ...
+    def get(self, url: Union[str, URL], *, allow_redirects: bool = ..., **kwargs) -> \
+        _RequestContextManager[ClientResponse]: ...
 
-    def post(self, url: str, *, data: Union[Optional[Dict[str, Any]], bytes, str, IO] = ..., **kwargs) -> \
+    def post(self, url: Union[str, URL], *, data: Union[Optional[Dict[str, Any]], bytes, str, IO] = ..., **kwargs) -> \
         _RequestContextManager[ClientResponse]: ...
 
     async def close(self): ...

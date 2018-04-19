@@ -1,14 +1,15 @@
 # Service for querying biblegateway.com
 
-from typing import List
+from typing import List, Dict, Any
 from bs4 import BeautifulSoup, Tag
 from aiohttp import ClientResponse
-from urllib.parse import urlencode
 
 from ..data import VerseRange, SearchResults
 from ..service import Service
 from ..exceptions import DoNotUnderstandError
 from .. import re
+
+from yarl import URL
 
 total_re = re.compile(
     re.START,
@@ -18,14 +19,15 @@ total_re = re.compile(
 
 # TODO: Error handling
 class BibleGateway(Service[Tag]):
-    base_url = 'https://www.biblegateway.com'
+    passage_url = URL('https://www.biblegateway.com/passage/')
+    search_url = URL('https://www.biblegateway.com/quicksearch/')
 
     async def _process_response(self, response: ClientResponse) -> Tag:
         text = await response.text()
         return BeautifulSoup(text, 'html.parser')
 
-    def _get_passage_url(self, version: str, verses: VerseRange) -> str:
-        return f'{self.base_url}/passage/?' + urlencode({
+    def _get_passage_url(self, version: str, verses: VerseRange) -> URL:
+        return self.passage_url.with_query({
             'search': str(verses),
             'version': version,
             'interface': 'print'
@@ -56,8 +58,8 @@ class BibleGateway(Service[Tag]):
 
         return verse_block.get_text('')
 
-    def _get_search_url(self, version: str, terms: List[str]) -> str:
-        return f'{self.base_url}/quicksearch/?' + urlencode({
+    def _get_search_url(self, version: str, terms: List[str]) -> URL:
+        return self.search_url.with_query({
             'quicksearch': ' '.join(terms),
             'qs_version': version,
             'limit': 20,

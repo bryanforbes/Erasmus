@@ -5,12 +5,13 @@ import asyncio
 from typing import Dict, List, Optional  # noqa
 from bs4 import BeautifulSoup, Tag
 from aiohttp import ClientResponse
-from urllib.parse import urlencode
 
 from ..service import Service
 from ..data import VerseRange, SearchResults, Bible
 from ..exceptions import DoNotUnderstandError, ServiceSearchTimeout
 from .. import re
+
+from yarl import URL
 
 number_re = re.compile(
     re.capture(
@@ -110,14 +111,14 @@ book_map = {
 
 
 class Unbound(Service[Tag]):
-    base_url = 'http://unbound.biola.edu/index.cfm?method=searchResults.doSearch'
+    base_url = URL('http://unbound.biola.edu/index.cfm?method=searchResults.doSearch')
 
     async def _process_response(self, response: ClientResponse) -> Tag:
         text = await response.text()
         return BeautifulSoup(text, 'html.parser')
 
-    def _get_passage_url(self, version: str, verses: VerseRange) -> str:
-        query = {
+    def _get_passage_url(self, version: str, verses: VerseRange) -> URL:
+        url = self.base_url.update_query({
             'search_type': 'simple_search',
             'parallel_1': version,
             'book_section': '00',
@@ -125,15 +126,15 @@ class Unbound(Service[Tag]):
             'displayFormat': 'normalNoHeader',
             'from_chap': str(verses.start.chapter),
             'from_verse': str(verses.start.verse)
-        }  # type: Dict[str, str]
+        })
 
         if (verses.end):
-            query.update({
+            url = url.update_query({
                 'to_chap': str(verses.end.chapter),
                 'to_verse': str(verses.end.verse)
             })
 
-        return f'{self.base_url}&' + urlencode(query)
+        return url
 
     def _get_passage_text(self, response: Tag) -> str:
         verse_table = response.select_one('table table table')
@@ -160,7 +161,7 @@ class Unbound(Service[Tag]):
 
         return number_re.sub(r'__BOLD__\1__BOLD__', verse_table.get_text(''))
 
-    def _get_search_url(self, version: str, terms: List[str]) -> str:
+    def _get_search_url(self, version: str, terms: List[str]) -> URL:
         return self.base_url
 
     def _get_search_results(self, response: Tag) -> SearchResults:

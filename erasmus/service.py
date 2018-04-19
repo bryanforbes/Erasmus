@@ -7,6 +7,7 @@ import async_timeout
 import logging
 from . import re
 from .exceptions import ServiceLookupTimeout, ServiceSearchTimeout
+from yarl import URL
 
 from .data import VerseRange, Passage, SearchResults, Bible
 
@@ -62,7 +63,7 @@ class Service(Generic[RT]):
         return self._get_search_results(response)
 
     @abstractmethod
-    def _get_passage_url(self, version: str, verses: VerseRange) -> str:
+    def _get_passage_url(self, version: str, verses: VerseRange) -> URL:
         raise NotImplementedError
 
     @abstractmethod
@@ -70,7 +71,7 @@ class Service(Generic[RT]):
         raise NotImplementedError
 
     @abstractmethod
-    def _get_search_url(self, version: str, terms: List[str]) -> str:
+    def _get_search_url(self, version: str, terms: List[str]) -> URL:
         raise NotImplementedError
 
     @abstractmethod
@@ -81,14 +82,14 @@ class Service(Generic[RT]):
     async def _process_response(self, response: aiohttp.ClientResponse) -> RT:
         raise NotImplementedError
 
-    async def get(self, url: str, **request_options: Any) -> RT:
+    async def get(self, url: URL, **request_options: Any) -> RT:
         log.debug('GET %s', url)
         with async_timeout.timeout(10):
             async with self.session.get(url, **request_options) as response:
                 log.debug('Finished GET %s', url)
                 return await self._process_response(response)
 
-    async def post(self, url: str, data: Optional[Dict[str, Any]] = None, **request_options: Any) -> RT:
+    async def post(self, url: URL, data: Optional[Dict[str, Any]] = None, **request_options: Any) -> RT:
         log.debug('POST %s', url)
         with async_timeout.timeout(10):
             async with self.session.post(url, data=data, **request_options) as response:
