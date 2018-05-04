@@ -23,22 +23,6 @@ from .context import Context
 from .format import HelpFormatter
 from . import re
 
-# from .db import guild_prefs
-
-
-# async def get_guild_prefix(bot: 'Erasmus', message: discord.Message) -> str:
-#     prefix = None
-
-#     if message.guild:
-#         query = guild_prefs.select() \
-#             .where(guild_prefs.c.guild_id == message.guild.id)
-#         prefix = await pg.fetchval(query, column=1)
-
-#     if not prefix:
-#         return bot.default_prefix
-
-#     return prefix
-
 log = logging.getLogger(__name__)
 
 extensions = (
@@ -272,20 +256,6 @@ class Erasmus(commands.Bot):
 
     async def on_guild_remove(self, guild: discord.Guild) -> None:
         await self._report_guilds()
-
-    # async def on_guild_available(self, guild: discord.Guild) -> None:
-    #     await self.on_guild_join(guild)
-
-    # async def on_guild_join(self, guild: discord.Guild) -> None:
-    #     prefs = await pg.fetchrow(guild_prefs.select().where(guild_prefs.c.guild_id == guild.id))
-
-    #     if not prefs:
-    #         await pg.execute(guild_prefs.insert().values(guild_id=guild.id, prefix=self.default_prefix))
-    #         # await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=1))
-    #         # await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=2))
-    #         # await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=4))
-    #         # await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=5))
-    #         # await pg.execute(guild_bibles.insert().values(guild_id=guild.id, bible_id=7))
 
 
 __all__ = ['Erasmus']

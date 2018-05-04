@@ -4,11 +4,11 @@ aiohttp>=2.0.0,<2.3.0
 alembic==0.9.9
 async-timeout==2.0.1
 asyncpg==0.15.0
-attrs==17.4.0
+attrs==18.1.0
 beautifulsoup4==4.6.0
 cchardet==2.1.1
 click==6.7
-git+https://github.com/Rapptz/discord.py@56650ae7c235a85dac202ea57aa1bab2603a7f92#egg=discord.py
+git+https://github.com/Rapptz/discord.py@60f0b22cbb0d603cdad4117df2cfc7c84c9e9e40#egg=discord.py
 mypy-extensions==0.3.0
 psycopg2==2.7.4
 SQLAlchemy==1.2.6
