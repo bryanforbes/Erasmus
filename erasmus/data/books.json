@@ -320,7 +320,8 @@
     "name": "John",
     "osis": "John",
     "alt": [
-      "Jo"
+      "Jo",
+      "Jn"
     ],
     "section": 2
   },
@@ -488,10 +489,14 @@
     "alt": [
       "IJohn",
       "IJo",
+      "IJn",
       "I John",
       "I Jo",
       "1Jo",
-      "1 Jo"
+      "1 Jo",
+      "I Jn",
+      "1Jn",
+      "1 Jn"
     ],
     "section": 2
   },
@@ -501,10 +506,14 @@
     "alt": [
       "IIJohn",
       "IIJo",
+      "IIJn",
       "II John",
       "II Jo",
       "2Jo",
-      "2 Jo"
+      "2 Jo",
+      "II Jn",
+      "2Jn",
+      "2 Jn"
     ],
     "section": 2
   },
@@ -514,10 +523,14 @@
     "alt": [
       "IIIJohn",
       "IIIJo",
+      "IIIJn",
       "III John",
       "III Jo",
       "3Jo",
-      "3 Jo"
+      "3 Jo",
+      "III Jn",
+      "3Jn",
+      "3 Jn"
     ],
     "section": 2
   },
