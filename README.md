@@ -13,7 +13,7 @@ A Bible bot for Discord
 ```
 python3.6 -m venv venv
 source venv/bin/activate
-pip install -r run-requirements.txt
+pip install --process-dependency-links -r requirements/run.txt
 ```
 
 ## Development
@@ -21,6 +21,5 @@ pip install -r run-requirements.txt
 ```
 python3.6 -m venv venv
 source venv/bin/activate
-pip install -U -r requirements.txt
-pip install -U -r dev-requirements.txt
+pip install -U --process-depenency-links -r requirements/dev.txt
 ```

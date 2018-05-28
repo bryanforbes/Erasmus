@@ -6,7 +6,7 @@ async-timeout==3.0.0
 asyncpg==0.15.0
 attrs==18.1.0
 beautifulsoup4==4.6.0
-git+https://github.com/BryanForbes/botus_receptus@15789a3d6fe16fa5ece02a30fd968c5803afd973#egg=botus_receptus[db]
+git+https://github.com/BryanForbes/botus_receptus@904d69be44fb0f63f38dfab464de6b249283df61#egg=botus_receptus[db]
 cchardet==2.1.1
 click==6.7
 mypy-extensions==0.3.0
