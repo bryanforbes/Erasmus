@@ -5,11 +5,11 @@ import asyncio
 from typing import Dict, List, Optional  # noqa
 from bs4 import BeautifulSoup, Tag
 from aiohttp import ClientResponse
+from botus_receptus import re
 
 from ..service import Service
 from ..data import VerseRange, SearchResults, Bible
 from ..exceptions import DoNotUnderstandError, ServiceSearchTimeout
-from .. import re
 
 from yarl import URL
 

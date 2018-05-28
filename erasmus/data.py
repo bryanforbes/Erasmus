@@ -3,10 +3,10 @@ import attr
 from pathlib import Path
 from itertools import chain
 from mypy_extensions import TypedDict
+from botus_receptus import re
+from botus_receptus.util import unique_seen
 from .json import load
 from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
-from . import re
-from .util import unique_seen
 
 if TYPE_CHECKING:
     from .context import Context  # noqa

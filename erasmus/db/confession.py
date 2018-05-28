@@ -2,8 +2,8 @@ from typing import Sequence, List, cast
 from mypy_extensions import TypedDict
 from asyncpg import Connection
 from enum import Enum
+from botus_receptus.db import select_all, select_one, search
 
-from .util import select_all, select_one, search
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 
 __all__ = (

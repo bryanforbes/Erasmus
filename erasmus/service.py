@@ -1,11 +1,11 @@
 from typing import List, Generic, TypeVar, Dict, Any, Optional
 from abc import abstractmethod
 from configparser import SectionProxy
+from botus_receptus import re
 import asyncio
 import aiohttp
 import async_timeout
 import logging
-from . import re
 from .exceptions import ServiceLookupTimeout, ServiceSearchTimeout
 from yarl import URL
 

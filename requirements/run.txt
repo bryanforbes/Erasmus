@@ -2,13 +2,13 @@
 aiodns==1.1.1
 aiohttp==2.2.5
 alembic==0.9.9
-async-timeout==2.0.1
+async-timeout==3.0.0
 asyncpg==0.15.0
 attrs==18.1.0
 beautifulsoup4==4.6.0
+git+https://github.com/BryanForbes/botus_receptus@15789a3d6fe16fa5ece02a30fd968c5803afd973#egg=botus_receptus[db]
 cchardet==2.1.1
 click==6.7
-git+https://github.com/Rapptz/discord.py@60f0b22cbb0d603cdad4117df2cfc7c84c9e9e40#egg=discord.py
 mypy-extensions==0.3.0
 psycopg2==2.7.4
 SQLAlchemy==1.2.6
@@ -19,9 +19,9 @@ chardet==3.0.4
 idna==2.6
 Mako==1.0.7
 MarkupSafe==1.0
-multidict==4.2.0
+multidict==4.3.1
 pycares==2.3.0
-python-dateutil==2.7.2
+python-dateutil==2.7.3
 python-editor==1.0.3
 six==1.11.0
 websockets==3.4

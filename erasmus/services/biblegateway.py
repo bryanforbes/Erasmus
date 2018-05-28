@@ -1,13 +1,13 @@
 # Service for querying biblegateway.com
 
-from typing import List, Dict, Any
+from typing import List
 from bs4 import BeautifulSoup, Tag
 from aiohttp import ClientResponse
+from botus_receptus import re
 
 from ..data import VerseRange, SearchResults
 from ..service import Service
 from ..exceptions import DoNotUnderstandError
-from .. import re
 
 from yarl import URL
 

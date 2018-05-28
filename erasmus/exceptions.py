@@ -1,5 +1,4 @@
 from typing import TYPE_CHECKING, List
-from discord.ext import commands
 
 if TYPE_CHECKING:
     from .data import Bible, VerseRange  # noqa: F401
@@ -104,7 +103,3 @@ class NoSectionsError(Exception):
     def __init__(self, confession: str, section_type: str) -> None:
         self.confession = confession
         self.section_type = section_type
-
-
-class OnlyDirectMessage(commands.CheckFailure):
-    pass

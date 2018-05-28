@@ -1,17 +1,17 @@
 from typing import TYPE_CHECKING, List, Callable, Sequence, Any, Match, Awaitable, Optional  # noqa: F401
 
 import attr
-import discord
 from discord.ext import commands
 from asyncpg import Connection
+from botus_receptus.formatting import pluralizer, PluralizerType, bold, underline, EmbedPaginator
+from botus_receptus import re
 
 from ..db import (
     ConfessionType, Confession as ConfessionRow, get_confessions, get_confession, get_chapters,
     get_paragraph, search_paragraphs, search_questions, get_question_count, get_question,
     get_articles, get_article, search_articles, NumberingType
 )
-from ..format import pluralizer, PluralizerType, int_to_roman, roman_to_int  # noqa: F401
-from .. import re
+from ..format import int_to_roman, roman_to_int  # noqa: F401
 
 if TYPE_CHECKING:
     from ..erasmus import Erasmus  # noqa: F401
@@ -96,26 +96,6 @@ Examples:
 '''
 
 
-class Paginator(commands.Paginator):
-    def __init__(self, prefix: str = '', suffix: str = '', max_size: int = 2048) -> None:
-        super().__init__(prefix, suffix, max_size)
-
-    def add_line(self, line: str = '', *, empty: bool = False) -> None:
-        # if the line is too long, paginate it
-        while len(line) > 0:
-            if len(line) > self.max_size:
-                index = line.rfind(' ', 0, self.max_size - 1)
-                sub_line = line[:index]
-                sub_empty = False
-                line = line[index + 1:]
-            else:
-                sub_line = line
-                sub_empty = empty
-                line = ''
-
-            super().add_line(sub_line, empty=sub_empty)
-
-
 @attr.s(slots=True, auto_attribs=True)
 class Confession(object):
     bot: 'Erasmus'
@@ -144,14 +124,15 @@ class Confession(object):
         await self.show_item(ctx, row, match)
 
     async def list(self, ctx: 'Context') -> None:
-        paginator = Paginator()
+        paginator = EmbedPaginator()
         paginator.add_line('I support the following confessions:', empty=True)
 
         confs = await get_confessions(ctx.db)
         for conf in confs:
             paginator.add_line(f'  `{conf["command"]}`: {conf["name"]}')
 
-        await ctx.send_pages(paginator)
+        for page in paginator:
+            await ctx.send_embed(page)
 
     async def list_contents(self, ctx: 'Context', confession: ConfessionRow) -> None:
         if confession['type'] == ConfessionType.CHAPTERS or confession['type'] == ConfessionType.ARTICLES:
@@ -160,7 +141,7 @@ class Confession(object):
             await self.list_questions(ctx, confession)
 
     async def list_sections(self, ctx: 'Context', confession: ConfessionRow) -> None:
-        paginator = Paginator()
+        paginator = EmbedPaginator()
         getter: Optional[Callable[[Connection, ConfessionRow], Awaitable[List[Any]]]] = None
         number_key: Optional[str] = None
         title_key: Optional[str] = None
@@ -180,9 +161,8 @@ class Confession(object):
             paginator.add_line('**{number}**. {title}'.format(number=format_number(record[number_key]),
                                                               title=record[title_key]))
 
-        embed = discord.Embed(title=f'__**{confession["name"]}**__')
-
-        await ctx.send_pages(paginator, embed=embed)
+        for index, page in enumerate(paginator):
+            await ctx.send_embed(page, title=(underline(bold(confession["name"])) if index == 0 else None))
 
     async def list_questions(self, ctx: 'Context', confession: ConfessionRow) -> None:
         count = await get_question_count(ctx.db, confession)
@@ -222,14 +202,14 @@ class Confession(object):
                 .format(pluralize_type(num_references, include_number=False))
 
         if paginate:
-            paginator = Paginator()
-
+            paginator = EmbedPaginator()
             paginator.add_line(first_line, empty=num_references > 0)
 
             for reference in references:
                 paginator.add_line(reference)
 
-            await ctx.send_pages(paginator)
+            for page in paginator:
+                await ctx.send_embed(page)
         else:
             if num_references > 0:
                 first_line += '\n\n' + ', '.join(references)
@@ -237,10 +217,10 @@ class Confession(object):
             await ctx.send_embed(first_line)
 
     async def show_item(self, ctx: 'Context', confession: ConfessionRow, match: Match[str]) -> None:
-        embed: Optional[discord.Embed] = None
+        title: Optional[str] = None
         output: Optional[str] = None
 
-        paginator = Paginator()
+        paginator = EmbedPaginator()
         format_number = number_formatters[confession['numbering']]
 
         if confession['type'] == ConfessionType.CHAPTERS:
@@ -255,7 +235,7 @@ class Confession(object):
 
             paragraph_number = format_number(paragraph['paragraph_number'])
             chapter_number = format_number(paragraph['chapter_number'])
-            embed = discord.Embed(title=f'__**{chapter_number}. {paragraph["chapter_title"]}**__')
+            title = underline(bold(f'{chapter_number}. {paragraph["chapter_title"]}'))
             output = f'**{paragraph_number}.** {paragraph["text"]}'
 
         elif confession['type'] == ConfessionType.QA:
@@ -270,7 +250,7 @@ class Confession(object):
             question_number_str = format_number(question_number)
 
             if q_or_a is None:
-                embed = discord.Embed(title=f'__**{question_number_str}. {question["question_text"]}**__')
+                title = underline(bold(f'{question_number_str}. {question["question_text"]}'))
                 output_str = '{answer_text}'
             elif q_or_a.lower() == 'q':
                 output_str = '**Q{question_number_str}**. {question_text}'
@@ -287,13 +267,15 @@ class Confession(object):
 
             article = await get_article(ctx.db, confession, article_number)
 
-            embed = discord.Embed(title=f'__**{format_number(article_number)}. {article["title"]}**__')
+            title = underline(bold(f'{format_number(article_number)}. {article["title"]}'))
             output = article['text']
 
         if output:
             paginator.add_line(output)
 
-        await ctx.send_pages(paginator, embed=embed)
+        for page in paginator:
+            await ctx.send_embed(page, title=title)
+            title = None
 
 
 def setup(bot: 'Erasmus') -> None:

@@ -1,27 +1,6 @@
-from typing import Callable, List, Iterable, Tuple
-from mypy_extensions import Arg, DefaultNamedArg
+from typing import List, Iterable, Tuple
 from discord.ext import commands
-
-from .util import unique_seen
-
-PluralizerType = Callable[[Arg(int, 'value'),
-                           DefaultNamedArg(bool, 'include_number')], str]
-
-
-def pluralizer(word: str, suffix: str = 's') -> PluralizerType:
-    def pluralize(value: int, *, include_number: bool = True) -> str:
-        if include_number:
-            result = f'{value} {word}'
-        else:
-            result = word
-
-        if value == 0 or value > 1:
-            result = f'{result}{suffix}'
-
-        return result
-
-    return pluralize
-
+from botus_receptus.util import unique_seen
 
 _roman_pairs = tuple(zip(
     ('M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'),

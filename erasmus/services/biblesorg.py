@@ -4,8 +4,8 @@ from typing import List, cast, Optional, Any
 from aiohttp import BasicAuth, ClientResponse
 import async_timeout
 from bs4 import BeautifulSoup
+from botus_receptus import re
 from ..json import loads, JSONObject
-from .. import re
 
 from ..data import VerseRange, SearchResults
 from ..service import Service

@@ -2,26 +2,22 @@ from typing import cast, Any
 
 import discord
 import logging
-import aiohttp
-import async_timeout
-import json
 
-from asyncpg import create_pool
-from asyncpg.pool import Pool
 from configparser import ConfigParser
 
 from discord.ext import commands
 from discord.ext.commands import Group
+from botus_receptus import db, formatting, checks, DblBot
+
 from .exceptions import (
     DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError,
-    BookNotUnderstoodError, ReferenceNotUnderstoodError, OnlyDirectMessage,
+    BookNotUnderstoodError, ReferenceNotUnderstoodError,
     BookNotInVersionError, NoUserVersionError, InvalidVersionError, NoSectionError,
     NoSectionsError, InvalidConfessionError, ServiceTimeout, ServiceLookupTimeout,
     ServiceSearchTimeout
 )
 from .context import Context
 from .format import HelpFormatter
-from . import re
 
 log = logging.getLogger(__name__)
 
@@ -29,14 +25,6 @@ extensions = (
     'erasmus.cogs.bible',
     'erasmus.cogs.confession',
 )
-
-_mention_pattern_re = re.compile(
-    '@', re.named_group('target')(re.one_or_more(re.ANY_CHARACTER))
-)
-
-
-def remove_mentions(string: str) -> str:
-    return _mention_pattern_re.sub('@\u200b\\g<target>', string)
 
 
 description = '''
@@ -52,33 +40,12 @@ You can look up all verses in a message one of two ways:
 '''
 
 
-class Erasmus(commands.Bot):
-    config: ConfigParser
-    default_prefix: str  # noqa
-    pool: Pool
-    session: aiohttp.ClientSession
-
-    def __init__(self, config_path: str, *args: Any, **kwargs: Any) -> None:
-        self.config = ConfigParser(default_section='erasmus')
-        self.config.read(config_path)
-
-        self.default_prefix = kwargs['command_prefix'] = self.config.get('erasmus', 'command_prefix', fallback='$')
+class Erasmus(db.Bot, DblBot):
+    def __init__(self, config: ConfigParser, *args: Any, **kwargs: Any) -> None:
         kwargs['formatter'] = HelpFormatter()
         kwargs['description'] = description
 
-        # kwargs['command_prefix'] = get_guild_prefix
-
-        super().__init__(*args, **kwargs)
-
-        self.pool = self.loop.run_until_complete(
-            create_pool(
-                self.config.get('erasmus', 'db_url'),
-                min_size=1,
-                max_size=10
-            )
-        )
-
-        self.session = aiohttp.ClientSession(loop=self.loop)
+        super().__init__(config, *args, **kwargs)
 
         self.remove_command('help')
         self.add_command(self.help)
@@ -88,14 +55,6 @@ class Erasmus(commands.Bot):
                 self.load_extension(extension)
             except Exception as e:
                 log.exception('Failed to load extension %s.', extension)
-
-    def run_with_config(self) -> None:
-        self.run(self.config.get('erasmus', 'discord_api_key'))
-
-    async def close(self) -> None:
-        await self.pool.close()
-        await super().close()
-        await self.session.close()
 
     async def get_context(self, message: discord.Message, *, cls: Any=Context) -> Context:
         return cast(Context, await super().get_context(message, cls=cls))
@@ -117,8 +76,8 @@ class Erasmus(commands.Bot):
             await self.invoke(ctx)
 
     async def on_ready(self) -> None:
+        await super().on_ready()
         await self.change_presence(activity=discord.Game(name=f'| {self.default_prefix}help'))
-        await self._report_guilds()
 
         user = cast(discord.ClientUser, self.user)
         log.info('Erasmus ready. Logged in as %s %s', user.name, user.id)
@@ -161,7 +120,7 @@ class Erasmus(commands.Bot):
             elif exc.cooldown.type == commands.BucketType.channel:
                 message = f'`{ctx.prefix}{ctx.invoked_with}` has been used too many times in this channel.'
             message = f'{message} You can retry again in {exc.retry_after:.2f} seconds.'
-        elif isinstance(exc, OnlyDirectMessage):
+        elif isinstance(exc, checks.OnlyDirectMessage):
             message = 'This command is only available in private messages'
         elif isinstance(exc, commands.MissingRequiredArgument):
             message = f'The required argument `{exc.param.name}` is missing'
@@ -189,7 +148,7 @@ class Erasmus(commands.Bot):
                           exc_info=exc,
                           stack_info=True)
 
-        await ctx.send_error(remove_mentions(message))
+        await ctx.send_error(formatting.escape(message, mass_mentions=True))
 
     @commands.command(brief='List commands for this bot or get help for commands')
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
@@ -205,7 +164,7 @@ class Erasmus(commands.Bot):
             if name[0] == ctx.prefix:
                 name = name[1:]
 
-            name = remove_mentions(name)
+            name = formatting.escape(name, mass_mentions=True)
             command = bot.all_commands.get(name)
 
             if command is None:
@@ -216,7 +175,7 @@ class Erasmus(commands.Bot):
                 group = cast(Group, command)
                 for key in commands[1:]:
                     try:
-                        key = remove_mentions(key)
+                        key = formatting.escape(key, mass_mentions=True)
                         command = group.all_commands.get(key)
 
                         if command is None:
@@ -230,32 +189,6 @@ class Erasmus(commands.Bot):
 
         for page in pages:
             await destination.send(page)
-
-    async def _report_guilds(self) -> None:
-        token = self.config.get('erasmus', 'dbl_token', fallback='')
-        if not token:
-            return
-
-        headers = {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
-        payload = {'server_count': len(self.guilds)}
-        user = cast(discord.ClientUser, self.user)
-
-        with async_timeout.timeout(10):
-            await self.session.post(f'https://discordbots.org/api/bots/{user.id}/stats',
-                                    data=json.dumps(payload, ensure_ascii=True),
-                                    headers=headers)
-
-    async def on_guild_available(self, guild: discord.Guild) -> None:
-        await self._report_guilds()
-
-    async def on_guild_join(self, guild: discord.Guild) -> None:
-        await self._report_guilds()
-
-    async def on_guild_remove(self, guild: discord.Guild) -> None:
-        await self._report_guilds()
 
 
 __all__ = ['Erasmus']
