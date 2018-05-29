@@ -11,14 +11,22 @@ from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
 if TYPE_CHECKING:
     from .context import Context  # noqa
 
+
+class BookDict(TypedDict):
+    name: str
+    osis: str
+    alt: List[str]
+    section: int
+
+
 with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
-    books_data = load(f)
+    books_data: List[BookDict] = load(f)
 
 # Inspired by https://github.com/TehShrike/verse-reference-regex/blob/master/create-regex.js
 _book_re = re.compile(
     re.named_group('book')(re.either(
         *re.escape_all(
-            unique_seen(chain.from_iterable([[book.name, book.osis] + book.alt for book in books_data]))
+            unique_seen(chain.from_iterable([[book['name'], book['osis']] + book['alt'] for book in books_data]))
         )
     )),
     re.optional(re.DOT)
@@ -87,9 +95,9 @@ _search_reference_re = re.compile(
 _book_input_map = {}  # type: Dict[str, str]
 _book_mask_map = {}  # type: Dict[str, int]
 for _book in books_data:
-    for input_string in [_book.name, _book.osis] + _book.alt:  # type: str
-        _book_input_map[input_string.lower()] = _book.name
-    _book_mask_map[_book.name] = _book.section
+    for input_string in [_book['name'], _book['osis']] + _book['alt']:  # type: str
+        _book_input_map[input_string.lower()] = _book['name']
+    _book_mask_map[_book['name']] = _book['section']
 
 
 def get_book(book_name_or_abbr: str) -> str:

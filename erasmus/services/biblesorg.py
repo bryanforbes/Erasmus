@@ -1,11 +1,12 @@
 # Service for querying bibles.org
 
-from typing import List, cast, Optional, Any
+from typing import List, Optional, Dict, Any
 from aiohttp import BasicAuth, ClientResponse
 import async_timeout
 from bs4 import BeautifulSoup
 from botus_receptus import re
-from ..json import loads, JSONObject
+from mypy_extensions import TypedDict
+from ..json import loads, get, has
 
 from ..data import VerseRange, SearchResults
 from ..service import Service
@@ -16,8 +17,25 @@ from yarl import URL
 _img_re = re.compile('src="', re.named_group('src')('[^"]+'), '"')
 
 
+class PassageDict(TypedDict):
+    text: str
+
+
+class SummaryDict(TypedDict):
+    total: int
+
+
+class VerseDict(TypedDict):
+    reference: str
+
+
+class SearchResultDict(TypedDict):
+    summary: SummaryDict
+    verses: List[VerseDict]
+
+
 # TODO: Better error handling
-class BiblesOrg(Service[JSONObject]):
+class BiblesOrg(Service[Dict[str, Any]]):
     passage_url = URL('https://bibles.org/v2/passages.js')
     search_url = URL('https://bibles.org/v2/verses.js')
     _auth: Optional[BasicAuth]
@@ -28,11 +46,11 @@ class BiblesOrg(Service[JSONObject]):
         if self.config:
             self._auth = BasicAuth(self.config.get('api_key'), 'X')
 
-    async def _process_response(self, response: ClientResponse) -> JSONObject:
-        obj = cast(JSONObject, await response.json(loads=loads, content_type=None))
+    async def _process_response(self, response: ClientResponse) -> Dict[str, Any]:
+        obj = await response.json(loads=loads, content_type=None)
 
         # Make a request for the image to report to the Fair Use Management System
-        meta: str = obj.get('response.meta.fums_noscript')
+        meta: str = get(obj, 'response.meta.fums_noscript')
         if meta:
             match = _img_re.search(meta)
             if match:
@@ -40,9 +58,9 @@ class BiblesOrg(Service[JSONObject]):
                     async with self.session.get(match.group('src')) as response:
                         await response.read()
 
-        return obj.response
+        return obj['response']
 
-    async def get(self, url: URL, **request_options: Any) -> JSONObject:
+    async def get(self, url: URL, **request_options: Any) -> Dict[str, Any]:
         return await super().get(url, auth=self._auth)
 
     def _get_passage_url(self, version: str, verses: VerseRange) -> URL:
@@ -51,13 +69,13 @@ class BiblesOrg(Service[JSONObject]):
             'version': version
         })
 
-    def _get_passage_text(self, response: JSONObject) -> str:
-        passages = response.get('search.result.passages')
+    def _get_passage_text(self, response: Dict[str, Any]) -> str:
+        passages: List[PassageDict] = get(response, 'search.result.passages')
 
         if passages is None or len(passages) == 0:
             raise DoNotUnderstandError
 
-        soup = BeautifulSoup(passages[0].text, 'html.parser')
+        soup = BeautifulSoup(passages[0]['text'], 'html.parser')
 
         for heading in soup.select('h3'):
             # Remove headings
@@ -83,19 +101,19 @@ class BiblesOrg(Service[JSONObject]):
             'limit': 20
         })
 
-    def _get_search_results(self, response: JSONObject) -> SearchResults:
-        result: JSONObject = response.get('search.result')
+    def _get_search_results(self, response: Dict[str, Any]) -> SearchResults:
+        result: SearchResultDict = get(response, 'search.result')
 
         if result is None:
             raise DoNotUnderstandError
 
-        total: int = result.get('summary.total') or 0
+        total: int = get(result, 'summary.total') or 0
 
-        if not result.has('summary.total') or total > 0 and not result.has('verses'):
+        if not has(result, 'summary.total') or total > 0 and not has(result, 'verses'):
             raise DoNotUnderstandError
 
         if total > 0:
-            verses = [VerseRange.from_string(verse.reference) for verse in result.verses]
+            verses = [VerseRange.from_string(verse['reference']) for verse in result['verses']]
         else:
             verses = []
 

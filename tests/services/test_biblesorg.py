@@ -1,5 +1,5 @@
 import pytest
-import json
+import ujson
 
 from pathlib import Path
 from configparser import ConfigParser
@@ -19,7 +19,7 @@ passage_sources = {
 
 def get_json_side_effect(return_value):
     if type(return_value) != str:
-        return_value = json.dumps(return_value)
+        return_value = ujson.dumps(return_value)
 
     def json_side_effect(*, encoding=None, loads=None, content_type=None):
         return loads(return_value)

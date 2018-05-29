@@ -1,5 +1,5 @@
 import pytest
-from erasmus.json import JSONObject, load, loads
+from erasmus.json import load, loads, get, has
 
 
 def test_load(mocker):
@@ -8,17 +8,13 @@ def test_load(mocker):
     with mock() as fp:
         result = load(fp)
 
-    assert type(result) is JSONObject
-    assert result.get('foo.bar') == 'baz'
-    assert result.get('spam') == 'ham'
+    assert result == {'foo': {'bar': 'baz'}, 'spam': 'ham'}
 
 
 def test_loads():
     result = loads('{ "foo": { "bar": "baz" }, "spam": "ham" }')
 
-    assert type(result) is JSONObject
-    assert result.get('foo.bar') == 'baz'
-    assert result.get('spam') == 'ham'
+    assert result == {'foo': {'bar': 'baz'}, 'spam': 'ham'}
 
 
 @pytest.mark.parametrize('data,key,expected', [
@@ -28,9 +24,8 @@ def test_loads():
     ({}, 'foo', None),
     ({'foo': 1}, 'foo.bar.baz', None)
 ])
-def test_jsonobject_get(data, key, expected):
-    obj = JSONObject(data)
-    assert obj.get(key) == expected
+def test_get(data, key, expected):
+    assert get(data, key) == expected
 
 
 @pytest.mark.parametrize('data,key,expected', [
@@ -41,5 +36,4 @@ def test_jsonobject_get(data, key, expected):
     ({'foo': 1}, 'foo.bar.baz', False)
 ])
 def test_jsonobject_has(data, key, expected):
-    obj = JSONObject(data)
-    assert obj.has(key) == expected
+    assert has(data, key) == expected
