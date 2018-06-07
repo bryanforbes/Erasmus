@@ -54,14 +54,14 @@ def run_migrations_online():
 
     """
 
-    erasmus_config = ConfigParser(default_section='erasmus')
-    erasmus_config.read(Path(__file__).resolve().parent.parent / 'config.ini')
+    bot_config = ConfigParser(default_section='bot')
+    bot_config.read(Path(__file__).resolve().parent.parent / 'config.ini')
 
     connectable = engine_from_config(
         config.get_section(config.config_ini_section),
         prefix='sqlalchemy.',
         poolclass=pool.NullPool,
-        url=erasmus_config.get('erasmus', 'db_url'))
+        url=bot_config.get('bot', 'db_url'))
 
     with connectable.connect() as connection:
         context.configure(

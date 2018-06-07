@@ -40,12 +40,14 @@ You can look up all verses in a message one of two ways:
 '''
 
 
-class Erasmus(db.Bot, DblBot):
+class Erasmus(db.Bot[Context], DblBot[Context]):
+    context_cls = Context
+
     def __init__(self, config: ConfigParser, *args: Any, **kwargs: Any) -> None:
         kwargs['formatter'] = HelpFormatter()
         kwargs['description'] = description
 
-        super().__init__(config, *args, **kwargs)
+        super().__init__(config, *args, verify_ssl=False, **kwargs)
 
         self.remove_command('help')
         self.add_command(self.help)
@@ -55,9 +57,6 @@ class Erasmus(db.Bot, DblBot):
                 self.load_extension(extension)
             except Exception as e:
                 log.exception('Failed to load extension %s.', extension)
-
-    async def get_context(self, message: discord.Message, *, cls: Any=Context) -> Context:
-        return cast(Context, await super().get_context(message, cls=cls))
 
     async def on_message(self, message: discord.Message) -> None:
         if message.author.bot:

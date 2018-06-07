@@ -3,7 +3,7 @@ aiohttp>=2.0.0,<2.3.0
 alembic==0.9.9
 async-timeout==3.0.0
 beautifulsoup4==4.6.0
-git+https://github.com/BryanForbes/botus_receptus@904d69be44fb0f63f38dfab464de6b249283df61#egg=botus_receptus[db]
+git+https://github.com/BryanForbes/botus_receptus@168bc85748aa5ebf0098cebcacd52ea73587a003#egg=botus_receptus[db]
 cchardet==2.1.1
 mypy-extensions==0.3.0
 psycopg2==2.7.4

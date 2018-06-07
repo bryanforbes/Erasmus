@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, List, Callable, Sequence, Any, Match, Awaitable, Optional  # noqa: F401
+from typing import TYPE_CHECKING, List, Callable, Sequence, Any, Match, Awaitable, Optional
 
 import attr
 from discord.ext import commands
@@ -101,10 +101,9 @@ class Confession(object):
     bot: 'Erasmus'
     __weakref__: Any = attr.ib(init=False, hash=False, repr=False, cmp=False)
 
-    # TODO: there's a fix coming for type hints in discord.py so `Optional[str]` should be fixed in the future
     @commands.command(brief='Query confessions and catechisms', help=confess_help)
     @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
-    async def confess(self, ctx: 'Context', confession: str = None, *args: str) -> None:  # type: ignore
+    async def confess(self, ctx: 'Context', confession: Optional[str] = None, *args: str) -> None:
         if confession is None:
             await self.list(ctx)
             return
