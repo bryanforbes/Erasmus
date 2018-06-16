@@ -61,7 +61,7 @@ class BiblesOrg(Service[Dict[str, Any]]):
         return obj['response']
 
     async def get(self, url: URL, **request_options: Any) -> Dict[str, Any]:
-        return await super().get(url, auth=self._auth)
+        return await super().get(url, auth=self._auth, verify_ssl=False)
 
     def _get_passage_url(self, version: str, verses: VerseRange) -> URL:
         return self.passage_url.with_query({

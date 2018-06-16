@@ -1,19 +1,21 @@
 ## direct dependencies
 aiodns==1.1.1
-aiohttp==2.2.5
+aiohttp==3.3.2
 alembic==0.9.9
 async-timeout==3.0.0
 asyncpg==0.15.0
 attrs==18.1.0
 beautifulsoup4==4.6.0
-git+https://github.com/BryanForbes/botus_receptus@168bc85748aa5ebf0098cebcacd52ea73587a003#egg=botus_receptus[db]
+git+https://github.com/BryanForbes/botus_receptus@73a232ea439ac9c4fd058be0a71b137a57e859d6#egg=botus_receptus[db]
 cchardet==2.1.1
 click==6.7
+git+https://github.com/Rapptz/discord.py@607771c4f49a12d984d782883a580e7332359a10#egg=discord.py
 mypy-extensions==0.3.0
 psycopg2==2.7.4
 SQLAlchemy==1.2.6
 ujson==1.35
-uvloop==0.9.1
+uvloop==0.10.1
+websockets==5.0.1
 
 ## The following requirements were added by pip freeze:
 chardet==3.0.4
@@ -25,5 +27,4 @@ pycares==2.3.0
 python-dateutil==2.7.3
 python-editor==1.0.3
 six==1.11.0
-websockets==3.4
-yarl==1.1.1
+yarl==1.2.5
