@@ -23,11 +23,16 @@ class Bible(TypedDict):
 
 async def get_bibles(ctx: Context, *, ordered: bool = False) -> List[Bible]:
     return await ctx.select_all(table='bible_versions',
+                                columns=['id', 'command', 'name', 'abbr', 'service', 'service_version',
+                                         'rtl', 'books'],
                                 order_by=None if not ordered else 'command')
 
 
 async def get_bible(ctx: Context, command: str) -> Bible:
-    bible = await ctx.select_one(command, table='bible_versions', where=['command = $1'])
+    bible = await ctx.select_one(command, table='bible_versions',
+                                 columns=['id', 'command', 'name', 'abbr', 'service', 'service_version',
+                                          'rtl', 'books'],
+                                 where=['command = $1'])
 
     if not bible:
         raise InvalidVersionError(command)
@@ -36,7 +41,10 @@ async def get_bible(ctx: Context, command: str) -> Bible:
 
 
 async def get_bible_by_abbr(ctx: Context, abbr: str) -> Optional[Bible]:
-    bible = await ctx.select_one(abbr, table='bible_versions', where=['command ILIKE $1'])
+    bible = await ctx.select_one(abbr, table='bible_versions',
+                                 columns=['id', 'command', 'name', 'abbr', 'service', 'service_version',
+                                          'rtl', 'books'],
+                                 where=['command ILIKE $1'])
 
     if not bible:
         return None
@@ -47,6 +55,8 @@ async def get_bible_by_abbr(ctx: Context, abbr: str) -> Optional[Bible]:
 async def get_user_bible(ctx: Context, user_id: int) -> Bible:
     bible = await ctx.select_one(str(user_id),
                                  table='user_prefs',
+                                 columns=['id', 'command', 'name', 'abbr', 'service', 'service_version',
+                                          'rtl', 'books'],
                                  joins=[('bible_versions', 'bible_versions.id = user_prefs.bible_id')],
                                  where=['user_prefs.user_id = $1'])
 

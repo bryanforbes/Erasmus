@@ -98,7 +98,9 @@ class Bible(object):
 
     async def _init(self) -> None:
         async with self.bot.pool.acquire() as db:
-            versions = await select_all(db, table='bible_versions')
+            versions = await select_all(db, table='bible_versions',
+                                        columns=['id', 'command', 'name', 'abbr', 'service', 'service_version',
+                                                 'rtl', 'books'])
             for version in versions:
                 self._add_bible_commands(version['command'], version['name'])
 
