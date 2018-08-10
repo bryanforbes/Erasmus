@@ -1,0 +1,32 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+"botus_receptus" = {ref = "master", git = "https://github.com/bryanforbes/botus_receptus", editable = true, extras = ["db"]}
+"discord.py" = {ref = "31718c540643329468d462c5433ecff5ff51035a", git = "https://github.com/bryanforbes/discord.py", editable = true, extras = ["typings"]}
+aiodns = "*"
+alembic = "*"
+beautifulsoup4 = "*"
+cchardet = "*"
+uvloop = "*"
+psycopg2 = "*"
+ujson = "*"
+asyncpg = ">=0.17.0"
+
+[dev-packages]
+flake8 = "*"
+mypy = ">=0.610"
+pytest = ">=3.6.1"
+pytest-asyncio = "*"
+pytest-cov = "*"
+pytest-flake8 = "*"
+pytest-mock = "*"
+pytest-mypy = "*"
+
+[requires]
+python_version = "3.7"
+
+[scripts]
+test = "py.test"
