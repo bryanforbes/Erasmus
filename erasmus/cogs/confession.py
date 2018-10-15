@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING, List, Callable, Sequence, Any, Match, Awaitable, Optional
+from typing import List, Callable, Sequence, Any, Match, Awaitable, Optional
 
 import attr
 from discord.ext import commands
@@ -13,9 +13,8 @@ from ..db import (
 )
 from ..format import int_to_roman, roman_to_int  # noqa: F401
 
-if TYPE_CHECKING:
-    from ..erasmus import Erasmus  # noqa: F401
-    from ..context import Context  # noqa: F401
+from ..erasmus import Erasmus
+from ..context import Context
 
 pluralize_match = pluralizer('match', 'es')
 
@@ -98,12 +97,12 @@ Examples:
 
 @attr.s(slots=True, auto_attribs=True)
 class Confession(object):
-    bot: 'Erasmus'
+    bot: Erasmus
     __weakref__: Any = attr.ib(init=False, hash=False, repr=False, cmp=False)
 
     @commands.command(brief='Query confessions and catechisms', help=confess_help)
     @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
-    async def confess(self, ctx: 'Context', confession: Optional[str] = None, *args: str) -> None:
+    async def confess(self, ctx: Context, confession: Optional[str] = None, *args: str) -> None:
         if confession is None:
             await self.list(ctx)
             return
@@ -122,7 +121,7 @@ class Confession(object):
 
         await self.show_item(ctx, row, match)
 
-    async def list(self, ctx: 'Context') -> None:
+    async def list(self, ctx: Context) -> None:
         paginator = EmbedPaginator()
         paginator.add_line('I support the following confessions:', empty=True)
 
@@ -133,13 +132,13 @@ class Confession(object):
         for page in paginator:
             await ctx.send_embed(page)
 
-    async def list_contents(self, ctx: 'Context', confession: ConfessionRow) -> None:
+    async def list_contents(self, ctx: Context, confession: ConfessionRow) -> None:
         if confession['type'] == ConfessionType.CHAPTERS or confession['type'] == ConfessionType.ARTICLES:
             await self.list_sections(ctx, confession)
         elif confession['type'] == ConfessionType.QA:
             await self.list_questions(ctx, confession)
 
-    async def list_sections(self, ctx: 'Context', confession: ConfessionRow) -> None:
+    async def list_sections(self, ctx: Context, confession: ConfessionRow) -> None:
         paginator = EmbedPaginator()
         getter: Optional[Callable[[Connection, ConfessionRow], Awaitable[List[Any]]]] = None
         number_key: Optional[str] = None
@@ -163,13 +162,13 @@ class Confession(object):
         for index, page in enumerate(paginator):
             await ctx.send_embed(page, title=(underline(bold(confession["name"])) if index == 0 else None))
 
-    async def list_questions(self, ctx: 'Context', confession: ConfessionRow) -> None:
+    async def list_questions(self, ctx: Context, confession: ConfessionRow) -> None:
         count = await get_question_count(ctx.db, confession)
         question_str = pluralizers[ConfessionType.QA](count)
 
         await ctx.send_embed(f'`{confession["name"]}` has {question_str}')
 
-    async def search(self, ctx: 'Context', confession: ConfessionRow, *terms: str) -> None:
+    async def search(self, ctx: Context, confession: ConfessionRow, *terms: str) -> None:
         pluralize_type: Optional[PluralizerType] = None
         references: Optional[List[str]] = []
         reference_pattern: Optional[str] = None
@@ -215,7 +214,7 @@ class Confession(object):
 
             await ctx.send_embed(first_line)
 
-    async def show_item(self, ctx: 'Context', confession: ConfessionRow, match: Match[str]) -> None:
+    async def show_item(self, ctx: Context, confession: ConfessionRow, match: Match[str]) -> None:
         title: Optional[str] = None
         output: Optional[str] = None
 

@@ -9,8 +9,8 @@ def MockService(mocker):
         def __init__(self, config, service):
             self.config = config
             self.service = service
-            self.get_passage = mocker.AsyncMock()
-            self.search = mocker.AsyncMock()
+            self.get_passage = mocker.CoroutineMock()
+            self.search = mocker.CoroutineMock()
 
     mock = mocker.Mock(side_effect=Service)
 

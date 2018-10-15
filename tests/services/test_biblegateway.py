@@ -1,99 +1,59 @@
 import pytest
 
-from pathlib import Path
-from yarl import URL
-from . import ServiceTest
+from . import ServiceTest, Galatians_3_10_11, Mark_5_1
 
 from erasmus.services import BibleGateway
-from erasmus.data import VerseRange
-
-__directory__ = Path(__file__).resolve().parent
-
-passage_sources = {
-    'Galatians 3:10-11': (__directory__ / 'biblegateway_Galatians_3:10-11_NASB.txt').read_text(),
-    'Mark 5:1': (__directory__ / 'biblegateway_Mark_5:1_NASB.txt').read_text(),
-    'Psalm 32:1-5': (__directory__ / 'biblegateway_Psalm_32:1-5_ESV.txt').read_text()
-}
+from erasmus.data import VerseRange, Passage
 
 
 class TestBibleGateway(ServiceTest):
-    @pytest.fixture
-    def service(self, mock_client_session):
-        return BibleGateway({}, mock_client_session)
+    @pytest.fixture(params=[
+        {
+            'terms': ['Melchizedek'],
+            'verses': [
+                VerseRange.from_string('Genesis 14:18'),
+                VerseRange.from_string('Psalm 110:4'),
+                VerseRange.from_string('Hebrews 5:6'),
+                VerseRange.from_string('Hebrews 5:10'),
+                VerseRange.from_string('Hebrews 6:20'),
+                VerseRange.from_string('Hebrews 7:1'),
+                VerseRange.from_string('Hebrews 7:10'),
+                VerseRange.from_string('Hebrews 7:11'),
+                VerseRange.from_string('Hebrews 7:15'),
+                VerseRange.from_string('Hebrews 7:17')
+            ],
+            'total': 10
+        },
+        {
+            'terms': ['antidisestablishmentarianism'],
+            'verses': [],
+            'total': 0
+        }
+    ], ids=['Melchizedek', 'antidisestablishmentarianism'])
+    def search_data(self, request):
+        return request.param
+
+    @pytest.fixture(params=[
+        {
+            'verse': VerseRange.from_string('Gal 3:10-11'),
+            'passage': Passage(Galatians_3_10_11, VerseRange.from_string('Gal 3:10-11'), 'NASB')
+        },
+        {
+            'verse': VerseRange.from_string('Mark 5:1'),
+            'passage': Passage(Mark_5_1, VerseRange.from_string('Mark 5:1'), 'NASB')
+        }
+    ], ids=['Gal 3:10-11 NASB', 'Mark 5:1 NASB'])
+    def passage_data(self, request):
+        return request.param
 
     @pytest.fixture
-    def mock_search(self, mocker, mock_response):
-        return_value = '''<html><body>
-    <div id="serp-bible-pane" class="iv-pane active">
-        <p class="search-total-results">
-            50 Bible results for <span class="search-term">&ldquo;one two three&rdquo;</span> Showing results 1-2.
-        </p>
-        <h4 class="search-result-heading">
-            Bible search results
-        </h4>
-        <div class="search-result-list">
-            <div class="text-html">
-                <article class="row bible-item">
-                    <div class="bible-item-title-wrap col-sm-3">
-                        <a class="bible-item-title" href="">John 1:1-4</a>
-                    </div>
-                    <div class="bible-item-text col-sm-9">Lorem ipsum</div>
-                </article>
-                <article class="row bible-item">
-                    <div class="bible-item-title-wrap col-sm-3">
-                        <a class="bible-item-title" href="">Genesis 50:1</a>
-                    </div>
-                    <div class="bible-item-text col-sm-9">Lorem ipsum</div>
-                </article>
-            </div>
-        </div>
-    </div>
-</body></html>'''
-        mocker.patch.object(mock_response, 'text',
-                            new_callable=mocker.AsyncMock,
-                            return_value=return_value)
-
-        return mock_response
+    def default_version(self):
+        return 'NASB'
 
     @pytest.fixture
-    def mock_search_failure(self, mocker, mock_search):
-        mock_search.text.return_value = '''<html>
-    <body>
-    </body>
-</html>'''
-
-        return mock_search
+    def default_abbr(self):
+        return 'NASB'
 
     @pytest.fixture
-    def search_url(self):
-        return URL(f'https://www.biblegateway.com/quicksearch/?quicksearch=one+two+three&qs_version=eng-BIB&'
-                   'limit=20&interface=print')
-
-    @pytest.fixture
-    def mock_passage(self, request, mocker, mock_response):
-        if hasattr(request, 'param'):
-            text = passage_sources[request.param]
-        else:
-            text = ''
-
-        mocker.patch.object(mock_response, 'text',
-                            new_callable=mocker.AsyncMock,
-                            return_value=text)
-
-        return mock_response
-
-    @pytest.fixture
-    def mock_passage_failure(self, mocker, mock_passage):
-        mock_passage.text.return_value = '''<html>
-    <body>
-    </body>
-</html>'''
-
-        return mock_passage
-
-    def get_passages_url(self, version: str, verses: VerseRange) -> str:
-        return URL(f'https://www.biblegateway.com/passage/').with_query({
-            'search': str(verses),
-            'version': version,
-            'interface': 'print'
-        })
+    def service(self, session):
+        return BibleGateway({}, session)

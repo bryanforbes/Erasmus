@@ -1,5 +1,8 @@
 import pytest
-from erasmus.data import VerseRange, Passage, SearchResults, Bible
+import asyncio
+import aiohttp
+
+from erasmus.data import VerseRange, SearchResults, Bible
 from erasmus.exceptions import DoNotUnderstandError
 
 Galatians_3_10_11 = ('**10.** For as many as are of the works of the Law are under a '
@@ -12,83 +15,51 @@ Galatians_3_10_11 = ('**10.** For as many as are of the works of the Law are und
 Mark_5_1 = '**1.** They came to the other side of the sea, into the country of the Gerasenes.'
 
 
-@pytest.mark.usefixtures('mock_aiohttp')
 class ServiceTest(object):
     @pytest.fixture
-    def service(self):
-        raise NotImplementedError
+    def event_loop(self, request):
+        loop = asyncio.get_event_loop_policy().new_event_loop()
+        yield loop
+        loop.close()
 
     @pytest.fixture
-    def mock_search(self):
-        raise NotImplementedError
+    async def session(self, event_loop):
+        async with aiohttp.ClientSession(loop=event_loop) as session:
+            yield session
 
     @pytest.fixture
-    def mock_search_failure(self):
-        raise NotImplementedError
+    def bible(self, request, default_version, default_abbr):
+        name = request.function.__name__
 
-    @pytest.fixture
-    def search_url(self):
-        raise NotImplementedError
+        if name == 'test_search':
+            data = request.getfixturevalue('search_data')
+        elif name == 'test_get_passage':
+            data = request.getfixturevalue('passage_data')
+        else:
+            data = {}
 
-    @pytest.fixture
-    def mock_passage(self):
-        raise NotImplementedError
-
-    @pytest.fixture
-    def mock_passage_failure(self):
-        raise NotImplementedError
-
-    @pytest.fixture
-    def bible(self):
         return Bible(command='bib',
                      name='The Bible',
-                     abbr='BIB',
+                     abbr=data.get('abbr', default_abbr),
                      service='MyService',
-                     service_version='eng-BIB',
+                     service_version=data.get('version', default_version),
                      rtl=False)
 
-    def get_passages_url(self, version: str, verses: VerseRange) -> str:
-        raise NotImplementedError
-
-    def test_init(self, service):
-        assert service is not None
-
+    @pytest.mark.vcr()
     @pytest.mark.asyncio
-    @pytest.mark.usefixtures('mock_search')
-    async def test_search(self, mocker, mock_client_session, service, bible, search_url):
-        response = await service.search(bible, ['one', 'two', 'three'])
+    async def test_search(self, search_data, service, bible):
+        response = await service.search(bible, search_data['terms'])
 
-        assert mock_client_session.get.call_args[0] == mocker.call(search_url)[1]
-        assert response == SearchResults([
-            VerseRange.from_string('John 1:1-4'),
-            VerseRange.from_string('Genesis 50:1')
-        ], 50)
+        assert response == SearchResults(search_data['verses'], search_data['total'])
 
+    @pytest.mark.vcr()
     @pytest.mark.asyncio
-    @pytest.mark.usefixtures('mock_search_failure')
-    async def test_search_bad_response(self, mocker, mock_client_session, service, bible):
-        with pytest.raises(DoNotUnderstandError):
-            await service.search(bible, ['one', 'two', 'three'])
+    async def test_get_passage(self, passage_data, service, bible):
+        response = await service.get_passage(bible, passage_data['verse'])
+        assert response == passage_data['passage']
 
-    @pytest.mark.parametrize('verse,expected,mock_passage', [
-        (VerseRange.from_string('Gal 3:10-11'),
-         Passage(Galatians_3_10_11, VerseRange.from_string('Gal 3:10-11'), 'BIB'),
-         'Galatians 3:10-11'),
-        (VerseRange.from_string('Mark 5:1'),
-         Passage(Mark_5_1, VerseRange.from_string('Mark 5:1'), 'BIB'),
-         'Mark 5:1')
-    ], indirect=['mock_passage'])
+    @pytest.mark.vcr()
     @pytest.mark.asyncio
-    @pytest.mark.usefixtures('mock_passage')
-    async def test_get_passage(self, verse, expected, mocker, mock_client_session,
-                               service, bible):
-        response = await service.get_passage(bible, verse)
-        passages_url = self.get_passages_url(bible['service_version'], verse)
-        assert mock_client_session.get.call_args_list[0][0] == mocker.call(passages_url)[1]
-        assert response == expected
-
-    @pytest.mark.asyncio
-    @pytest.mark.usefixtures('mock_passage_failure')
     async def test_get_passage_no_passages(self, service, bible):
         with pytest.raises(DoNotUnderstandError):
-            await service.get_passage(bible, VerseRange.from_string('John 1:2-3'))
+            await service.get_passage(bible, VerseRange.from_string('John 50:1-4'))

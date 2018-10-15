@@ -13,7 +13,7 @@ class TestService(object):
             _get_passage_text = mocker.Mock()
             _get_search_url = mocker.Mock()
             _get_search_results = mocker.Mock()
-            _process_response = mocker.AsyncMock()
+            _process_response = mocker.CoroutineMock()
 
         return MyService
 

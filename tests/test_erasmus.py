@@ -49,11 +49,11 @@ class MockContext(object):
 #     def mock_discord_py(self, mocker):
 #         mocker.patch('discord.ext.commands.Bot.add_command')
 #         mocker.patch('discord.ext.commands.Bot.run')
-#         mocker.patch('discord.ext.commands.Bot.invoke', new_callable=mocker.AsyncMock)
+#         mocker.patch('discord.ext.commands.Bot.invoke', new_callable=mocker.CoroutineMock)
 #
 #     @pytest.fixture
 #     def mock_send_to_author(self, mocker):
-#         return mocker.patch('erasmus.erasmus.Context.send_to_author', new_callable=mocker.AsyncMock)
+#         return mocker.patch('erasmus.erasmus.Context.send_to_author', new_callable=mocker.CoroutineMock)
 #
 #     @pytest.fixture(autouse=True)
 #     def mock_load(self, mocker):
@@ -68,8 +68,8 @@ class MockContext(object):
 #             ('esv', 'English Standard Version'),
 #             ('nasb', 'New American Standard Bible')
 #         ])
-#         mocker.patch('erasmus.erasmus.BibleManager.get_passage', new_callable=mocker.AsyncMock)
-#         mocker.patch('erasmus.erasmus.BibleManager.search', new_callable=mocker.AsyncMock)
+#         mocker.patch('erasmus.erasmus.BibleManager.get_passage', new_callable=mocker.CoroutineMock)
+#         mocker.patch('erasmus.erasmus.BibleManager.search', new_callable=mocker.CoroutineMock)
 #
 #     def test_init(self, mocker, mock_load):
 #         bot = Erasmus('foo/bar/baz.json')

@@ -1,134 +1,67 @@
 import pytest
-import ujson
 
 from pathlib import Path
 from configparser import ConfigParser
-from yarl import URL
-from . import ServiceTest
+from . import ServiceTest, Galatians_3_10_11, Mark_5_1
 
 from erasmus.services import BiblesOrg
-from erasmus.data import VerseRange
-
-__directory__ = Path(__file__).resolve().parent
-
-passage_sources = {
-    'Galatians 3:10-11': (__directory__ / 'biblesorg_Galatians_3:10-11_NASB.txt').read_text(),
-    'Mark 5:1': (__directory__ / 'biblesorg_Mark_5:1_NASB.txt').read_text(),
-}
-
-
-def get_json_side_effect(return_value):
-    if type(return_value) != str:
-        return_value = ujson.dumps(return_value)
-
-    def json_side_effect(*, encoding=None, loads=None, content_type=None):
-        return loads(return_value)
-
-    return json_side_effect
+from erasmus.data import VerseRange, Passage
 
 
 class TestBiblesOrg(ServiceTest):
-    @pytest.fixture
-    def service(self, mock_client_session):
-        config = ConfigParser(default_section='erasmus')
-        config['services:BiblesOrg'] = {'api_key': 'foo bar baz'}
-        return BiblesOrg(config['services:BiblesOrg'], mock_client_session)
-
-    @pytest.fixture
-    def mock_search(self, mocker, mock_response):
-        return_value = {
-            'response': {
-                'search': {
-                    'result': {
-                        'summary': {
-                            'total': 50
-                        },
-                        'verses': [
-                            {'reference': 'John 1:1-4'},
-                            {'reference': 'Genesis 50:1'}
-                        ]
-                    }
-                }
-            }
+    @pytest.fixture(params=[
+        {
+            'terms': ['Melchizedek'],
+            'verses': [
+                VerseRange.from_string('Genesis 14:18'),
+                VerseRange.from_string('Hebrews 5:6'),
+                VerseRange.from_string('Hebrews 5:10'),
+                VerseRange.from_string('Hebrews 6:20'),
+                VerseRange.from_string('Hebrews 7:1'),
+                VerseRange.from_string('Hebrews 7:10'),
+                VerseRange.from_string('Hebrews 7:11'),
+                VerseRange.from_string('Hebrews 7:15'),
+                VerseRange.from_string('Hebrews 7:17'),
+                VerseRange.from_string('Psalm 110:4')
+            ],
+            'total': 10
+        },
+        {
+            'terms': ['antidisestablishmentarianism'],
+            'verses': [],
+            'total': 0
         }
-        mocker.patch.object(mock_response, 'json',
-                            new_callable=mocker.AsyncMock,
-                            side_effect=get_json_side_effect(return_value))
-
-        return mock_response
+    ], ids=['Melchizedek', 'antidisestablishmentarianism'])
+    def search_data(self, request):
+        return request.param
 
     @pytest.fixture(params=[
         {
-            'response': {
-                'search': {
-                    'result': {
-                    }
-                }
-            }
+            'verse': VerseRange.from_string('Gal 3:10-11'),
+            'passage': Passage(Galatians_3_10_11, VerseRange.from_string('Gal 3:10-11'), 'NASB')
         },
         {
-            'response': {
-                'search': {
-                }
-            }
+            'verse': VerseRange.from_string('Mark 5:1'),
+            'passage': Passage(Mark_5_1, VerseRange.from_string('Mark 5:1'), 'NASB')
         }
-    ])
-    def mock_search_failure(self, request, mocker, mock_search):
-        mock_search.json.side_effect = get_json_side_effect(request.param)
-        return mock_search
+    ], ids=['Gal 3:10-11 NASB', 'Mark 5:1 NASB'])
+    def passage_data(self, request):
+        return request.param
 
     @pytest.fixture
-    def search_url(self):
-        return URL('https://bibles.org/v2/verses.js').with_query({
-            'keyword': 'one two three',
-            'precision': 'all',
-            'version': 'eng-BIB',
-            'sort_order': 'canonical',
-            'limit': 20
-        })
+    def config(self):
+        parser = ConfigParser(default_section='bot')
+        parser.read(str(Path(__file__).resolve().parent.parent.parent / 'config.ini'))
+        return parser['services:BiblesOrg']
 
     @pytest.fixture
-    def mock_passage(self, request, mocker, mock_response):
-        if hasattr(request, 'param'):
-            text = passage_sources[request.param]
-        else:
-            text = ''
+    def default_version(self):
+        return 'eng-NASB'
 
-        mocker.patch.object(mock_response, 'json',
-                            new_callable=mocker.AsyncMock,
-                            side_effect=get_json_side_effect(text))
-        mocker.patch.object(mock_response, 'read',
-                            new_callable=mocker.AsyncMock,
-                            return_value=None)
+    @pytest.fixture
+    def default_abbr(self):
+        return 'NASB'
 
-        return mock_response
-
-    @pytest.fixture(params=[
-        {
-            'response': {
-                'search': {
-                    'result': {
-                        'passages': []
-                    }
-                }
-            }
-        },
-        {
-            'response': {}
-        }
-    ])
-    def mock_passage_failure(self, request, mocker, mock_passage):
-        mock_passage.json.side_effect = get_json_side_effect(request.param)
-        return mock_passage
-
-    def get_passages_url(self, version: str, verses: VerseRange) -> str:
-        return URL('https://bibles.org/v2/passages.js').with_query({
-            'q[]': str(verses),
-            'version': version
-        })
-
-    def test_init(self, service):
-        super().test_init(service)
-
-        assert service._auth.login == 'foo bar baz'
-        assert service._auth.password == 'X'
+    @pytest.fixture
+    def service(self, config, session):
+        return BiblesOrg(config, session)
