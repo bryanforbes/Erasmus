@@ -55,7 +55,7 @@ class Erasmus(db.Bot[Context], DblBot[Context]):
         for extension in extensions:
             try:
                 self.load_extension(extension)
-            except Exception as e:
+            except Exception:
                 log.exception('Failed to load extension %s.', extension)
 
     async def on_message(self, message: discord.Message) -> None:
