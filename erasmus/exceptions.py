@@ -1,7 +1,11 @@
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, List
 
+
 if TYPE_CHECKING:
-    from .data import Bible, VerseRange  # noqa: F401
+    from .data import VerseRange
+    from .db.bible import BibleVersion
 
 
 class DoNotUnderstandError(Exception):
@@ -46,16 +50,16 @@ class ServiceNotSupportedError(Exception):
 
 
 class ServiceTimeout(Exception):
-    bible: 'Bible'
+    bible: BibleVersion
 
-    def __init__(self, bible: 'Bible') -> None:
+    def __init__(self, bible: BibleVersion) -> None:
         self.bible = bible
 
 
 class ServiceLookupTimeout(ServiceTimeout):
-    verses: 'VerseRange'
+    verses: VerseRange
 
-    def __init__(self, bible: 'Bible', verses: 'VerseRange') -> None:
+    def __init__(self, bible: BibleVersion, verses: VerseRange) -> None:
         super().__init__(bible)
         self.verses = verses
 
@@ -63,7 +67,7 @@ class ServiceLookupTimeout(ServiceTimeout):
 class ServiceSearchTimeout(ServiceTimeout):
     terms: List[str]
 
-    def __init__(self, bible: 'Bible', terms: List[str]) -> None:
+    def __init__(self, bible: BibleVersion, terms: List[str]) -> None:
         super().__init__(bible)
         self.terms = terms
 

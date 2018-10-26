@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-"botus_receptus" = {ref = "master", git = "https://github.com/bryanforbes/botus_receptus", editable = true, extras = ["db"]}
+"botus_receptus" = {ref = "f04c397a21088f8b991882da980c77cebed94d58", git = "https://github.com/bryanforbes/botus_receptus", editable = true, extras = ["gino"]}
 "discord.py" = {ref = "8c18bf868e47740e8ae1c2fb2741b3482412efab", git = "https://github.com/bryanforbes/discord.py", editable = true, extras = ["typings"]}
 aiodns = "*"
 alembic = "*"
@@ -16,7 +16,7 @@ ujson = "*"
 
 [dev-packages]
 flake8 = "*"
-mypy = ">=0.610,!=0.640"
+mypy = ">=0.610"
 pytest = ">=3.6.1"
 pytest-asyncio = "*"
 pytest-cov = "*"
@@ -26,9 +26,12 @@ pytest-mypy = "*"
 asynctest = "*"
 pytest-vcr = "*"
 pytest-xdist = "*"
+gino-stubs = {editable = true, ref = "d0c68dd29e1d5edd98a283873d2e14b5ca18865e", git = "https://github.com/bryanforbes/gino-stubs.git"}
+sqlalchemy-stubs = {editable = true, ref = "8b45fc4345778e3f08e8a3b53ff71aaaa775e632", git = "https://github.com/dropbox/sqlalchemy-stubs.git"}
 
 [requires]
 python_version = "3.7"
 
 [scripts]
 test = "py.test"
+check = "mypy erasmus"

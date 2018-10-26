@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import Optional, Union, List, Dict, Pattern, Match, TYPE_CHECKING
 import attr
 from pathlib import Path
@@ -9,7 +11,7 @@ from .json import load
 from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
 
 if TYPE_CHECKING:
-    from .context import Context  # noqa
+    from .context import Context
 
 
 class BookDict(TypedDict):
@@ -183,7 +185,7 @@ class VerseRange(object):
         return f'{self.book} {self.verses}'
 
     @classmethod
-    def from_string(cls, verse: str) -> 'VerseRange':
+    def from_string(cls, verse: str) -> VerseRange:  # noqa: F821
         match = _search_reference_re.match(verse)
 
         if match is None:
@@ -192,7 +194,7 @@ class VerseRange(object):
         return cls.from_match(match)
 
     @classmethod
-    def from_match(cls, match: Match) -> 'VerseRange':
+    def from_match(cls, match: Match) -> VerseRange:  # noqa: F821
         groups = match.groupdict()
 
         chapter_start_int = int(groups['chapter_start'])
@@ -220,8 +222,8 @@ class VerseRange(object):
     @classmethod
     def get_all_from_string(
         cls, string: str, *, only_bracketed: bool = False
-    ) -> List[Union['VerseRange', Exception]]:
-        ranges: List[Union['VerseRange', Exception]] = []
+    ) -> List[Union[VerseRange, Exception]]:  # noqa: F821
+        ranges: List[Union[VerseRange, Exception]] = []
         lookup_pattern: Pattern[str]
 
         if only_bracketed:
@@ -243,7 +245,7 @@ class VerseRange(object):
         return ranges
 
     @classmethod
-    async def convert(cls, ctx: 'Context', argument: str) -> 'VerseRange':
+    async def convert(cls, ctx: Context, argument: str) -> VerseRange:  # noqa: F821
         return cls.from_string(argument)
 
 

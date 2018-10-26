@@ -1,5 +1,7 @@
 # Service for querying Biola's Unbound Bible
 
+from __future__ import annotations
+
 import asyncio
 
 from typing import Dict, List, Optional  # noqa
@@ -8,7 +10,8 @@ from aiohttp import ClientResponse
 from botus_receptus import re
 
 from ..service import Service
-from ..data import VerseRange, SearchResults, Bible
+from ..data import VerseRange, SearchResults
+from ..db.bible import BibleVersion
 from ..exceptions import DoNotUnderstandError, ServiceSearchTimeout
 
 from yarl import URL
@@ -195,15 +198,15 @@ class Unbound(Service[Tag]):
 
         return SearchResults(verses[:20], len(verses))
 
-    async def search(self, bible: Bible, terms: List[str]) -> SearchResults:
-        url = self._get_search_url(bible['service_version'], terms)
+    async def search(self, bible: BibleVersion, terms: List[str]) -> SearchResults:
+        url = self._get_search_url(bible.service_version, terms)
 
         try:
             response = await self.post(
                 url,
                 {
                     'search_type': 'advanced_search',
-                    'parallel_1': bible['service_version'],
+                    'parallel_1': bible.service_version,
                     'displayFormat': 'normalNoHeader',
                     'book_section': 'ALL',
                     'book': 'ALL',

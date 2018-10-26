@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import List, Iterable, Tuple
 from discord.ext import commands
 from botus_receptus.util import unique_seen

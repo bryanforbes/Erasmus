@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import List, Generic, TypeVar, Dict, Any, Optional
 from abc import abstractmethod
 from configparser import SectionProxy
@@ -9,7 +11,8 @@ import logging
 from .exceptions import ServiceLookupTimeout, ServiceSearchTimeout
 from yarl import URL
 
-from .data import VerseRange, Passage, SearchResults, Bible
+from .data import VerseRange, Passage, SearchResults
+from .db.bible import BibleVersion
 
 
 RT = TypeVar('RT')
@@ -32,8 +35,8 @@ class Service(Generic[RT]):
         self.config = config
         self.session = session
 
-    async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
-        url = self._get_passage_url(bible['service_version'], verses)
+    async def get_passage(self, bible: BibleVersion, verses: VerseRange) -> Passage:
+        url = self._get_passage_url(bible.service_version, verses)
         log.debug('Getting passage %s', verses)
 
         try:
@@ -48,14 +51,14 @@ class Service(Generic[RT]):
         text = bold_re.sub('**', text)
         text = italic_re.sub('_', text)
 
-        if bible['rtl']:
+        if bible.rtl:
             # wrap in [RTL embedding]text[Pop directional formatting]
             text = number_re.sub('\u202b\\1\u202c', text)
 
-        return Passage(text, verses, bible['abbr'])
+        return Passage(text, verses, bible.abbr)
 
-    async def search(self, bible: Bible, terms: List[str]) -> SearchResults:
-        url = self._get_search_url(bible['service_version'], terms)
+    async def search(self, bible: BibleVersion, terms: List[str]) -> SearchResults:
+        url = self._get_search_url(bible.service_version, terms)
 
         try:
             response = await self.get(url)

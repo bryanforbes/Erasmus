@@ -1,5 +1,7 @@
 # Service for querying bibles.org
 
+from __future__ import annotations
+
 from typing import List, Optional, Dict, Any
 from aiohttp import BasicAuth, ClientResponse
 import async_timeout

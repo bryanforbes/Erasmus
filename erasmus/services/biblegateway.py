@@ -1,5 +1,7 @@
 # Service for querying biblegateway.com
 
+from __future__ import annotations
+
 from typing import List
 from bs4 import BeautifulSoup, Tag
 from aiohttp import ClientResponse

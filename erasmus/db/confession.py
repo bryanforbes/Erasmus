@@ -1,38 +1,14 @@
-from typing import Sequence, List, cast
-from mypy_extensions import TypedDict
-from asyncpg import Connection
+from __future__ import annotations
+
+from typing import Any, Sequence, AsyncIterator, cast
 from enum import Enum
-from botus_receptus.db import select_all, select_one, search
+
+from botus_receptus.gino import db, Base
 
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 
-__all__ = (
-    'ConfessionType',
-    'NumberingType',
-    'Confession',
-    'Chapter',
-    'ParagraphSearchResult',
-    'Paragraph',
-    'QuestionSearchResult',
-    'Question',
-    'ArticleSearchResult',
-    'Article',
-    'get_confessions',
-    'get_confession',
-    'get_chapters',
-    'get_paragraph',
-    'search_paragraphs',
-    'get_questions',
-    'get_question_count',
-    'get_question',
-    'search_questions',
-    'get_articles',
-    'get_article',
-    'search_articles',
-)
 
-
-class ConfessionType(Enum):
+class ConfessionTypeEnum(Enum):
     ARTICLES = 'ARTICLES'
     CHAPTERS = 'CHAPTERS'
     QA = 'QA'
@@ -41,7 +17,14 @@ class ConfessionType(Enum):
         return '<%s.%s>' % (self.__class__.__name__, self.name)
 
 
-class NumberingType(Enum):
+class ConfessionType(Base):
+    __tablename__ = 'confession_types'
+
+    id = db.Column(db.Integer, primary_key=True)
+    value = db.Column(db.Enum(ConfessionTypeEnum), unique=True, nullable=False)
+
+
+class NumberingTypeEnum(Enum):
     ARABIC = 'ARABIC'
     ROMAN = 'ROMAN'
 
@@ -49,250 +32,237 @@ class NumberingType(Enum):
         return '<%s.%s>' % (self.__class__.__name__, self.name)
 
 
-class Confession(TypedDict):
-    id: int
-    command: str
-    name: str
-    type: ConfessionType
-    numbering: NumberingType
+class ConfessionNumberingType(Base):
+    __tablename__ = 'confession_numbering_types'
+
+    id = db.Column(db.Integer, primary_key=True)
+    numbering = db.Column(db.Enum(NumberingTypeEnum), unique=True, nullable=False)
 
 
-class Chapter(TypedDict):
-    chapter_number: int
-    chapter_title: str
+class Chapter(Base):
+    __tablename__ = 'confession_chapters'
+
+    id = db.Column(db.Integer, primary_key=True)
+    confess_id = db.Column(db.Integer, db.ForeignKey('confessions.id'), nullable=False)
+    chapter_number = db.Column(db.Integer, nullable=False)
+    chapter_title = db.Column(db.String, nullable=False)
 
 
-class ParagraphSearchResult(TypedDict):
-    chapter_number: int
-    paragraph_number: int
+class Paragraph(Base):
+    chapter: Chapter
+
+    __tablename__ = 'confession_paragraphs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    confess_id = db.Column(db.Integer, db.ForeignKey('confessions.id'), nullable=False)
+    chapter_number = db.Column(db.Integer)
+    paragraph_number = db.Column(db.Integer, nullable=False)
+    text = db.Column(db.Text, nullable=False)
 
 
-class Paragraph(ParagraphSearchResult):
-    chapter_title: str
-    text: str
+class Question(Base):
+    __tablename__ = 'confession_questions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    confess_id = db.Column(db.Integer, db.ForeignKey('confessions.id'), nullable=False)
+    question_number = db.Column(db.Integer, nullable=False)
+    question_text = db.Column(db.Text, nullable=False)
+    answer_text = db.Column(db.Text, nullable=False)
 
 
-class QuestionSearchResult(TypedDict):
-    question_number: int
-    question_text: str
+class Article(Base):
+    __tablename__ = 'confession_articles'
+
+    id = db.Column(db.Integer, primary_key=True)
+    confess_id = db.Column(db.Integer, db.ForeignKey('confessions.id'), nullable=False)
+    article_number = db.Column(db.Integer, nullable=False)
+    title = db.Column(db.Text, nullable=False)
+    text = db.Column(db.Text, nullable=False)
 
 
-class Question(QuestionSearchResult):
-    answer_text: str
+class Confession(Base):
+    __tablename__ = 'confessions'
 
+    _type: ConfessionTypeEnum
+    _numbering: NumberingTypeEnum
 
-class ArticleSearchResult(TypedDict):
-    article_number: int
-    title: str
-
-
-class Article(ArticleSearchResult):
-    text: str
-
-
-async def get_confessions(db: Connection) -> List[Confession]:
-    return await select_all(db, columns=['*'], table='confessions', order_by='command')
-
-
-async def get_confession(db: Connection, command: str) -> Confession:
-    row = await select_one(
-        db,
-        command.lower(),
-        columns=('c.id', 'c.command', 'c.name', 't.value AS type', 'n.numbering'),
-        table='confessions AS c',
-        joins=[
-            ('confession_numbering_types AS n', 'c.numbering_id = n.id'),
-            ('confession_types AS t', 'c.type_id = t.id'),
-        ],
-        where=['c.command = $1'],
+    id = db.Column(db.Integer, primary_key=True)
+    command = db.Column(db.String, unique=True, nullable=False)
+    name = db.Column(db.String, nullable=False)
+    type_id = db.Column(
+        db.Integer, db.ForeignKey('confession_types.id'), nullable=False
+    )
+    numbering_id = db.Column(
+        db.Integer, db.ForeignKey('confession_numbering_types.id'), nullable=False
     )
 
-    if not row:
-        raise InvalidConfessionError(command)
+    async def get_chapters(self) -> AsyncIterator[Chapter]:
+        count = 0
+        async with db.transaction():
+            async for chapter in Chapter.query.where(
+                Chapter.confess_id == self.id
+            ).order_by(db.asc(Chapter.chapter_number)).gino.iterate():
+                count += 1
+                yield chapter
 
-    return Confession(
-        id=row['id'],
-        command=row['command'],
-        name=row['name'],
-        type=ConfessionType[row['type']],
-        numbering=NumberingType[row['numbering']],
-    )
+        if count == 0:
+            raise NoSectionsError(self.name, 'chapters')
 
+    async def get_paragraph(self, chapter: int, paragraph: int) -> Paragraph:
+        loader = Paragraph.load(
+            chapter=Chapter.on(
+                db.and_(
+                    Paragraph.chapter_number == Chapter.chapter_number,
+                    Paragraph.confess_id == Chapter.confess_id,
+                )
+            )
+        )
 
-async def get_chapters(db: Connection, confession: Confession) -> List[Chapter]:
-    chapters = await select_all(
-        db,
-        confession['id'],
-        columns=('ch.chapter_number', 'ch.chapter_title'),
-        table='confession_chapters AS ch',
-        joins=[('confessions AS c', 'ch.confess_id = c.id')],
-        where=['c.id = $1'],
-        order_by='ch.chapter_number',
-    )
+        result = (
+            await loader.query.where(Paragraph.confess_id == self.id)
+            .where(Paragraph.chapter_number == chapter)
+            .where(Paragraph.paragraph_number == paragraph)
+            .gino.first()
+        )
 
-    if len(chapters) == 0:
-        raise NoSectionsError(confession['name'], 'chapters')
+        if not result:
+            raise NoSectionError(self.name, f'{chapter}.{paragraph}', 'paragraph')
 
-    return chapters
+        return result
 
+    async def search_paragraphs(self, terms: Sequence[str]) -> AsyncIterator[Paragraph]:
+        loader = Paragraph.load(
+            chapter=Chapter.on(
+                db.and_(
+                    Paragraph.chapter_number == Chapter.chapter_number,
+                    Paragraph.confess_id == Chapter.confess_id,
+                )
+            )
+        )
+        async with db.transaction():
+            async for paragraph in loader.query.where(
+                Paragraph.confess_id == self.id
+            ).where(
+                db.func.to_tsvector(
+                    'english', Chapter.chapter_title + db.text("' '") + Paragraph.text
+                ).match(' & '.join(terms))
+            ).order_by(
+                db.asc(Paragraph.chapter_number)
+            ).gino.iterate():
+                yield paragraph
 
-async def get_paragraph(
-    db: Connection, confession: Confession, chapter: int, paragraph: int
-) -> Paragraph:
-    result = await select_one(
-        db,
-        confession['id'],
-        chapter,
-        paragraph,
-        columns=(
-            'ch.chapter_title',
-            'p.chapter_number',
-            'p.paragraph_number',
-            'p.text',
-        ),
-        table='confession_paragraphs AS p',
-        joins=[
-            ('confessions AS c', 'c.id = p.confess_id'),
-            (
-                'confession_chapters AS ch',
-                'ch.confess_id = c.id AND ch.chapter_number = p.chapter_number',
-            ),
-        ],
-        where=['c.id = $1', 'p.chapter_number = $2', 'p.paragraph_number = $3'],
-    )
+    async def get_questions(self) -> AsyncIterator[Question]:
+        async with db.transaction():
+            async for question in Question.query.where(
+                Question.confess_id == self.id
+            ).order_by(db.asc(Question.question_number)).gino.iterate():
+                yield question
 
-    if not result:
-        raise NoSectionError(confession['name'], f'{chapter}.{paragraph}', 'paragraph')
+    async def get_question_count(self) -> int:
+        return await db.scalar(
+            db.select([db.func.count(Question.id)]).where(
+                Question.confess_id == self.id
+            )
+        )
 
-    return result
+    async def get_question(self, question_number: int) -> Question:
+        question = (
+            await Question.query.where(Question.confess_id == self.id)
+            .where(Question.question_number == question_number)
+            .gino.first()
+        )
 
+        if not question:
+            raise NoSectionError(self.name, f'{question_number}', 'question')
 
-async def search_paragraphs(
-    db: Connection, confession: Confession, terms: Sequence[str]
-) -> List[ParagraphSearchResult]:
-    return await search(
-        db,
-        confession['id'],
-        columns=['p.chapter_number', 'p.paragraph_number'],
-        table='confession_paragraphs AS p',
-        joins=[
-            ('confessions AS c', 'c.id = p.confess_id'),
-            (
-                'confession_chapters AS ch',
-                'ch.confess_id = c.id AND ch.chapter_number = p.chapter_number',
-            ),
-        ],
-        where=['c.id = $1'],
-        search_columns=['ch.chapter_title', 'p.text'],
-        terms=terms,
-        order_by='p.chapter_number',
-    )
+        return question
 
+    async def search_questions(self, terms: Sequence[str]) -> AsyncIterator[Question]:
+        async with db.transaction():
+            async for question in Question.query.where(
+                Question.confess_id == self.id
+            ).where(
+                db.func.to_tsvector(
+                    'english',
+                    Question.question_text + db.text("' '") + Question.answer_text,
+                ).match(' & '.join(terms))
+            ).order_by(
+                db.asc(Question.question_number)
+            ).gino.iterate():
+                yield question
 
-async def get_questions(
-    db: Connection, confession: Confession
-) -> List[QuestionSearchResult]:
-    return await select_all(
-        db,
-        confession['id'],
-        columns=['q.question_number', 'q.question_text'],
-        table='confession_questions AS q',
-        joins=[('confessions AS c', 'c.id = q.confess_id')],
-        where=['c.id = $1'],
-        order_by='q.question_number',
-    )
+    async def get_articles(self) -> AsyncIterator[Article]:
+        count = 0
+        async with db.transaction():
+            async for article in Article.query.where(
+                Article.confess_id == self.id
+            ).order_by(db.asc(Article.article_number)).gino.iterate():
+                count += 1
+                yield article
 
+        if count == 0:
+            raise NoSectionsError(self.name, 'articles')
 
-async def get_question_count(db: Connection, confession: Confession) -> int:
-    query = '''SELECT count(id) FROM confession_questions WHERE confess_id = $1'''
+    async def get_article(self, article_number: int) -> Article:
+        article = (
+            await Article.query.where(Article.confess_id == self.id)
+            .where(Article.article_number == article_number)
+            .gino.first()
+        )
 
-    return cast(int, await db.fetchval(query, confession['id'], column=0))
+        if not article:
+            raise NoSectionError(self.name, f'{article_number}', 'article')
 
+        return article
 
-async def get_question(
-    db: Connection, confession: Confession, question_number: int
-) -> Question:
-    question = await select_one(
-        db,
-        confession['id'],
-        question_number,
-        columns=['q.question_number', 'q.question_text', 'q.answer_text'],
-        table='confession_questions AS q',
-        joins=[('confessions AS c', 'c.id = q.confess_id')],
-        where=['c.id = $1', 'q.question_number = $2'],
-    )
+    async def search_articles(self, terms: Sequence[str]) -> AsyncIterator[Article]:
+        async with db.transaction():
+            async for article in Article.query.where(
+                Article.confess_id == self.id
+            ).where(
+                db.func.to_tsvector(
+                    'english', Article.title + db.text("' '") + Article.text
+                ).match(' & '.join(terms))
+            ).order_by(
+                db.asc(Article.article_number)
+            ).gino.iterate():
+                yield article
 
-    if not question:
-        raise NoSectionError(confession['name'], f'{question_number}', 'question')
+    @property
+    def type(self) -> ConfessionTypeEnum:
+        return self._type
 
-    return question
+    @type.setter
+    def type(self, value: ConfessionType) -> None:
+        self._type = cast(Any, value.value)
 
+    @property
+    def numbering(self) -> NumberingTypeEnum:
+        return self._numbering
 
-async def search_questions(
-    db: Connection, confession: Confession, terms: Sequence[str]
-) -> List[QuestionSearchResult]:
-    return await search(
-        db,
-        confession['id'],
-        columns=['q.question_number', 'q.question_text'],
-        table='confession_questions AS q',
-        joins=[('confessions AS c', 'c.id = q.confess_id')],
-        where=['c.id = $1'],
-        search_columns=['q.question_text', 'q.answer_text'],
-        terms=terms,
-        order_by='q.question_number',
-    )
+    @numbering.setter
+    def numbering(self, value: ConfessionNumberingType) -> None:
+        self._numbering = cast(Any, value.numbering)
 
+    @staticmethod
+    async def get_all() -> AsyncIterator[Confession]:  # noqa: F821
+        async with db.transaction():
+            async for confession in Confession.query.order_by(
+                db.asc(Confession.command)
+            ).gino.iterate():
+                yield confession
 
-async def get_articles(
-    db: Connection, confession: Confession
-) -> List[ArticleSearchResult]:
-    articles = await select_all(
-        db,
-        confession['id'],
-        columns=['a.article_number', 'a.title'],
-        table='confession_articles AS a',
-        joins=[('confessions AS c', 'c.id = a.confess_id')],
-        where=['c.id = $1'],
-        order_by='a.article_number',
-    )
+    @staticmethod
+    async def get_by_command(command: str) -> Confession:  # noqa: F821
+        c = (
+            await Confession.load(
+                type=ConfessionType, numbering=ConfessionNumberingType
+            )
+            .query.where(Confession.command == command.lower())
+            .gino.first()
+        )
 
-    if len(articles) == 0:
-        raise NoSectionsError(confession['name'], 'articles')
+        if not c:
+            raise InvalidConfessionError(command)
 
-    return articles
-
-
-async def get_article(
-    db: Connection, confession: Confession, article_number: int
-) -> Article:
-    article = await select_one(
-        db,
-        confession['id'],
-        article_number,
-        columns=['a.article_number', 'a.title', 'a.text'],
-        table='confession_articles AS a',
-        joins=[('confessions AS C', 'c.id = a.confess_id')],
-        where=['c.id = $1', 'a.article_number = $2'],
-    )
-
-    if not article:
-        raise NoSectionError(confession['name'], f'{article_number}', 'article')
-
-    return article
-
-
-async def search_articles(
-    db: Connection, confession: Confession, terms: Sequence[str]
-) -> List[ArticleSearchResult]:
-    return await search(
-        db,
-        confession['id'],
-        columns=['a.article_number', 'a.title'],
-        table='confession_articles AS a',
-        joins=[('confessions AS c', 'c.id = a.confess_id')],
-        where=['c.id = $1'],
-        search_columns=['a.title', 'a.text'],
-        terms=terms,
-        order_by='a.article_number',
-    )
+        return c

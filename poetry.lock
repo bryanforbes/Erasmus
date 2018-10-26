@@ -168,9 +168,9 @@ version = "0.0.1a66+gf04c397"
 
 [package.dependencies]
 async_timeout = ">=3.0.0"
-asyncpg = ">=0.17.0"
 attrs = ">=18.1.0"
 click = ">=6.7"
+gino = ">=0.8.0"
 mypy_extensions = ">=0.4.1"
 typing-extensions = ">=3.6.5"
 
@@ -328,7 +328,7 @@ category = "main"
 description = "GINO Is Not ORM - a Python asyncio ORM on SQLAlchemy core."
 marker = "extra == \"gino\""
 name = "gino"
-optional = true
+optional = false
 python-versions = ">=3.5"
 version = "0.8.0"
 
@@ -337,6 +337,21 @@ SQLAlchemy = "1.2.12"
 aiocontextvars = "0.2.0"
 asyncpg = "0.17.0"
 
+[[package]]
+category = "main"
+description = ""
+name = "gino-stubs"
+optional = false
+python-versions = "*"
+version = "0.1"
+
+[package.dependencies]
+typing-extensions = ">=3.6.5"
+
+[package.source]
+reference = "d0c68dd29e1d5edd98a283873d2e14b5ca18865e"
+type = "git"
+url = "https://github.com/bryanforbes/gino-stubs.git"
 [[package]]
 category = "dev"
 description = "File identification library for Python"
@@ -812,6 +827,21 @@ python-versions = "*"
 version = "1.2.12"
 
 [[package]]
+category = "main"
+description = ""
+name = "sqlalchemy-stubs"
+optional = false
+python-versions = "*"
+version = "0.1"
+
+[package.dependencies]
+typing-extensions = ">=3.6.5"
+
+[package.source]
+reference = "8b45fc4345778e3f08e8a3b53ff71aaaa775e632"
+type = "git"
+url = "https://github.com/dropbox/sqlalchemy-stubs.git"
+[[package]]
 category = "dev"
 description = "Python Library for Tom's Obvious, Minimal Language"
 name = "toml"
@@ -925,7 +955,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "fc4701a58db1e87339008eafb25f84018b4b083206033a95b7e841b14bde439f"
+content-hash = "9286925f298c66cc41c1f2dd7d7736a1d700d91b776d8d832984f4004d395397"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -961,6 +991,7 @@ execnet = ["a7a84d5fa07a089186a329528f127c9d73b9de57f1a1131b82bb5320ee651f6a", "
 flake8 = ["6a35f5b8761f45c5513e3405f110a86bea57982c3b75b766ce7b65217abe1670", "c01f8a3963b3571a8e6bd7a4063359aff90749e160778e03817cd9b71c9e07d2"]
 flake8-bugbear = ["07b6e769d7f4e168d590f7088eae40f6ddd9fa4952bed31602def65842682c83", "0ccf56975f4db1d69dc1cf3598c99d768ebf95d0cad27d76087954aa399b515a"]
 gino = ["721f9686d3860dba3264157c302b7d32362b961e0e3570412a56c9bccab505fc", "bc3d89d5582223cbf61795c0020be6f522c1d8b28da30a8c1e7bb4c397519a15"]
+gino-stubs = []
 identify = ["5e956558a9a1e3b3891d7c6609fc9709657a11878af288ace484d1a46a93922b", "623086059219cc7b86c77a3891f3700cb175d4ce02b8fb8802b047301d71e783"]
 idna = ["156a6814fb5ac1fc6850fb002e0852d56c0c8d2531923a51032d1b70760e186e", "684a38a6f903c1d71d6d5fac066b58d7768af4de2b832e426ec79c30daa94a16"]
 imagesize = ["3f349de3eb99145973fefb7dbe38554414e5c30abd0c8e4b970a7c9d09f3a1d8", "f3832918bc3c66617f92e35f5d70729187676313caa60c187eb0f28b8fe5e3b5"]
@@ -1006,6 +1037,7 @@ sphinx = ["2e7ad92e96eff1b2006cf9f0cdb2743dacbae63755458594e9e8238b0c3dc60b", "e
 sphinxcontrib-asyncio = ["96627b1ec4eba08d09ad577ff9416c131910333ef37a2c82a2716e59646739f0"]
 sphinxcontrib-websupport = ["68ca7ff70785cbe1e7bccc71a48b5b6d965d79ca50629606c7861a21b206d9dd", "9de47f375baf1ea07cdb3436ff39d7a9c76042c10a769c52353ec46e4e8fc3b9"]
 sqlalchemy = ["c5951d9ef1d5404ed04bae5a16b60a0779087378928f997a294d1229c6ca4d3e"]
+sqlalchemy-stubs = []
 toml = ["229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c", "235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e", "f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"]
 typed-ast = ["0948004fa228ae071054f5208840a1e88747a357ec1101c17217bfe99b299d58", "10703d3cec8dcd9eef5a630a04056bbc898abc19bac5691612acba7d1325b66d", "1f6c4bd0bdc0f14246fd41262df7dfc018d65bb05f6e16390b7ea26ca454a291", "25d8feefe27eb0303b73545416b13d108c6067b846b543738a25ff304824ed9a", "29464a177d56e4e055b5f7b629935af7f49c196be47528cc94e0a7bf83fbc2b9", "2e214b72168ea0275efd6c884b114ab42e316de3ffa125b267e732ed2abda892", "3e0d5e48e3a23e9a4d1a9f698e32a542a4a288c871d33ed8df1b092a40f3a0f9", "519425deca5c2b2bdac49f77b2c5625781abbaf9a809d727d3a5596b30bb4ded", "57fe287f0cdd9ceaf69e7b71a2e94a24b5d268b35df251a88fef5cc241bf73aa", "668d0cec391d9aed1c6a388b0d5b97cd22e6073eaa5fbaa6d2946603b4871efe", "68ba70684990f59497680ff90d18e756a47bf4863c604098f10de9716b2c0bdd", "6de012d2b166fe7a4cdf505eee3aaa12192f7ba365beeefaca4ec10e31241a85", "79b91ebe5a28d349b6d0d323023350133e927b4de5b651a8aa2db69c761420c6", "8550177fa5d4c1f09b5e5f524411c44633c80ec69b24e0e98906dd761941ca46", "898f818399cafcdb93cbbe15fc83a33d05f18e29fb498ddc09b0214cdfc7cd51", "94b091dc0f19291adcb279a108f5d38de2430411068b219f41b343c03b28fb1f", "a26863198902cda15ab4503991e8cf1ca874219e0118cbf07c126bce7c4db129", "a8034021801bc0440f2e027c354b4eafd95891b573e12ff0418dec385c76785c", "bc978ac17468fe868ee589c795d06777f75496b1ed576d308002c8a5756fb9ea", "c05b41bc1deade9f90ddc5d988fe506208019ebba9f2578c622516fd201f5863", "c9b060bd1e5a26ab6e8267fd46fc9e02b54eb15fffb16d112d4c7b1c12987559", "edb04bdd45bfd76c8292c4d9654568efaedf76fe78eb246dde69bdb13b2dad87", "f19f2a4f547505fe9072e15f6f4ae714af51b5a681a97f187971f50c283193b6"]
 typing = ["4027c5f6127a6267a435201981ba156de91ad0d1d98e9ddc2aa173453453492d", "57dcf675a99b74d64dacf6fba08fb17cf7e3d5fdff53d4a30ea2a5e7e52543d4", "a4c8473ce11a65999c8f59cb093e70686b6c84c98df58c1dae9b3b196089858a"]

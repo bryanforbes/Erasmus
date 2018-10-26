@@ -1,6 +1,6 @@
 import pytest
 from configparser import ConfigParser
-from erasmus.service_manager import ServiceManager, Bible
+from erasmus.service_manager import ServiceManager
 from erasmus.data import VerseRange, Passage
 
 
@@ -37,8 +37,8 @@ class TestServiceManager(object):
         return config
 
     @pytest.fixture
-    def bible1(self):
-        return Bible(
+    def bible1(self, MockBible):
+        return MockBible(
             command='bible1',
             name='Bible 1',
             abbr='BIB1',
@@ -47,8 +47,8 @@ class TestServiceManager(object):
         )
 
     @pytest.fixture
-    def bible2(self):
-        return Bible(
+    def bible2(self, MockBible):
+        return MockBible(
             command='bible2',
             name='Bible 2',
             abbr='BIB2',

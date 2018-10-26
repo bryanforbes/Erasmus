@@ -2,7 +2,7 @@ import pytest
 import asyncio
 import aiohttp
 
-from erasmus.data import VerseRange, SearchResults, Bible
+from erasmus.data import VerseRange, SearchResults
 from erasmus.exceptions import DoNotUnderstandError
 
 Galatians_3_10_11 = (
@@ -32,7 +32,7 @@ class ServiceTest(object):
             yield session
 
     @pytest.fixture
-    def bible(self, request, default_version, default_abbr):
+    def bible(self, request, default_version, default_abbr, MockBible):
         name = request.function.__name__
 
         if name == 'test_search':
@@ -42,7 +42,7 @@ class ServiceTest(object):
         else:
             data = {}
 
-        return Bible(
+        return MockBible(
             command='bib',
             name='The Bible',
             abbr=data.get('abbr', default_abbr),

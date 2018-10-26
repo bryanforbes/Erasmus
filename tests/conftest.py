@@ -5,8 +5,24 @@ from typing import Any
 import pytest  # type: ignore
 import pytest_mock  # type: ignore
 import asynctest.mock  # type: ignore
+import attr
 
 pytest_mock._get_mock_module._module = asynctest.mock
+
+
+@attr.s(slots=True, auto_attribs=True)
+class MockBible(object):
+    command: str
+    name: str
+    abbr: str
+    service: str
+    service_version: str
+    rtl: bool = False
+
+
+@pytest.fixture(name='MockBible', scope='session')
+def fixture_MockBible() -> None:
+    return MockBible
 
 
 @pytest.fixture

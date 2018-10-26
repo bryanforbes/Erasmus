@@ -1,23 +1,17 @@
+from __future__ import annotations
+
 from typing import cast, Optional
 
 import attr
 import discord
 from discord.ext import commands
 from botus_receptus.formatting import pluralizer
-from botus_receptus.db import select_all, UniqueViolationError
+from botus_receptus.db import UniqueViolationError
 from botus_receptus import checks
 
-from ..db import (
-    get_bibles,
-    get_bible,
-    get_bible_by_abbr,
-    get_user_bible,
-    set_user_bible,
-    add_bible,
-    delete_bible,
-)
+from ..db.bible import BibleVersion
 from ..data import VerseRange, get_book, get_book_mask
-from ..service_manager import ServiceManager, Bible as BibleObject
+from ..service_manager import ServiceManager
 from ..exceptions import BookNotInVersionError
 from ..erasmus import Erasmus
 from ..context import Context
@@ -104,23 +98,8 @@ class Bible(object):
         self.bot.loop.run_until_complete(self._init())
 
     async def _init(self) -> None:
-        async with self.bot.pool.acquire() as db:
-            versions = await select_all(
-                db,
-                table='bible_versions',
-                columns=[
-                    'id',
-                    'command',
-                    'name',
-                    'abbr',
-                    'service',
-                    'service_version',
-                    'rtl',
-                    'books',
-                ],
-            )
-            for version in versions:
-                self._add_bible_commands(version['command'], version['name'])
+        async for version in BibleVersion.get_all():
+            self._add_bible_commands(version.command, version.name)
 
     async def lookup_from_message(self, ctx: Context, message: discord.Message) -> None:
         verse_ranges = VerseRange.get_all_from_string(
@@ -133,26 +112,25 @@ class Bible(object):
         if len(verse_ranges) == 0:
             return
 
-        async with ctx.acquire():
-            async with ctx.typing():
-                user_bible = await get_user_bible(ctx, ctx.author.id)
+        async with ctx.typing():
+            user_bible = await BibleVersion.get_for_user(ctx.author.id)
 
-                for verse_range in verse_ranges:
-                    bible: Optional[BibleObject] = None
+            for verse_range in verse_ranges:
+                bible: Optional[BibleVersion] = None
 
-                    try:
-                        if isinstance(verse_range, Exception):
-                            raise verse_range
+                try:
+                    if isinstance(verse_range, Exception):
+                        raise verse_range
 
-                        if verse_range.version is not None:
-                            bible = await get_bible_by_abbr(ctx, verse_range.version)
+                    if verse_range.version is not None:
+                        bible = await BibleVersion.get_by_abbr(verse_range.version)
 
-                        if bible is None:
-                            bible = user_bible
+                    if bible is None:
+                        bible = user_bible
 
-                        await self._lookup(ctx, bible, verse_range)
-                    except Exception as exc:
-                        await self.bot.on_command_error(ctx, exc)
+                    await self._lookup(ctx, bible, verse_range)
+                except Exception as exc:
+                    await self.bot.on_command_error(ctx, exc)
 
     @commands.command(
         aliases=[''],
@@ -160,7 +138,7 @@ class Bible(object):
         help=lookup_help,
     )
     async def lookup(self, ctx: Context, *, reference: VerseRange) -> None:
-        bible = await get_user_bible(ctx, ctx.author.id)
+        bible = await BibleVersion.get_for_user(ctx.author.id)
 
         async with ctx.typing():
             await self._lookup(ctx, bible, reference)
@@ -171,7 +149,7 @@ class Bible(object):
         help=search_help,
     )
     async def search(self, ctx: Context, *terms: str) -> None:
-        bible = await get_user_bible(ctx, ctx.author.id)
+        bible = await BibleVersion.get_for_user(ctx.author.id)
 
         await self._search(ctx, bible, *terms)
 
@@ -182,10 +160,9 @@ class Bible(object):
     async def versions(self, ctx: Context) -> None:
         lines = ['I support the following Bible versions:', '']
 
-        versions = await get_bibles(ctx, ordered=True)
         lines += [
-            f'  `{ctx.prefix}{version["command"]}`: {version["name"]}'
-            for version in versions
+            f'  `{ctx.prefix}{version.command}`: {version.name}'
+            async for version in BibleVersion.get_all(ordered=True)
         ]
 
         lines.append(
@@ -203,8 +180,8 @@ class Bible(object):
         if version[0] == ctx.prefix:
             version = version[1:]
 
-        existing = await get_bible(ctx, version)
-        await set_user_bible(ctx, ctx.author.id, existing)
+        existing = await BibleVersion.get_by_command(version)
+        await existing.set_for_user(ctx.author.id)
 
         await ctx.send_embed(f'Version set to `{version}`')
 
@@ -238,8 +215,7 @@ class Bible(object):
 
                 book_mask = book_mask | get_book_mask(get_book(book))
 
-            await add_bible(
-                ctx,
+            await BibleVersion.create(
                 command=command,
                 name=name,
                 abbr=abbr,
@@ -258,29 +234,29 @@ class Bible(object):
     @checks.dm_only()
     @commands.is_owner()
     async def delete_bible(self, ctx: Context, command: str) -> None:
-        await get_bible(ctx, command)
-        await delete_bible(ctx, command)
+        version = await BibleVersion.get_by_command(command)
+        await version.delete()
 
         self._remove_bible_commands(command)
 
         await ctx.send_embed(f'Removed `{command}`')
 
     async def _version_lookup(self, ctx: Context, *, reference: VerseRange) -> None:
-        bible = await get_bible(ctx, cast(str, ctx.invoked_with))
+        bible = await BibleVersion.get_by_command(cast(str, ctx.invoked_with))
 
         async with ctx.typing():
             await self._lookup(ctx, bible, reference)
 
     async def _version_search(self, ctx: Context, *terms: str) -> None:
-        bible = await get_bible(ctx, cast(str, ctx.invoked_with)[1:])
+        bible = await BibleVersion.get_by_command(cast(str, ctx.invoked_with)[1:])
 
         await self._search(ctx, bible, *terms)
 
     async def _lookup(
-        self, ctx: Context, bible: BibleObject, reference: VerseRange
+        self, ctx: Context, bible: BibleVersion, reference: VerseRange
     ) -> None:
-        if not (bible['books'] & reference.book_mask):
-            raise BookNotInVersionError(reference.book, bible['name'])
+        if not (bible.books & reference.book_mask):
+            raise BookNotInVersionError(reference.book, bible.name)
 
         if reference is not None:
             passage = await self.service_manager.get_passage(bible, reference)
@@ -288,7 +264,7 @@ class Bible(object):
         else:
             await ctx.send_error(f'I do not understand the request `${reference}`')
 
-    async def _search(self, ctx: Context, bible: BibleObject, *terms: str) -> None:
+    async def _search(self, ctx: Context, bible: BibleVersion, *terms: str) -> None:
         async with ctx.typing():
             results = await self.service_manager.search(bible, list(terms))
             matches = pluralize_match(results.total)
@@ -326,5 +302,5 @@ class Bible(object):
         self.bot.remove_command(f's{command}')
 
 
-def setup(bot: 'Erasmus') -> None:
+def setup(bot: Erasmus) -> None:
     bot.add_cog(Bible(bot))

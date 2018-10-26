@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import cast, Any
 
 import discord
@@ -7,7 +9,8 @@ from configparser import ConfigParser
 
 from discord.ext import commands
 from discord.ext.commands import Group
-from botus_receptus import db, formatting, checks, DblBot
+from botus_receptus import formatting, checks, DblBot
+from botus_receptus.gino import Bot
 
 from .exceptions import (
     DoNotUnderstandError,
@@ -46,7 +49,7 @@ You can look up all verses in a message one of two ways:
 '''
 
 
-class Erasmus(db.Bot[Context], DblBot[Context]):
+class Erasmus(Bot[Context], DblBot[Context]):
     context_cls = Context
 
     def __init__(self, config: ConfigParser, *args: Any, **kwargs: Any) -> None:
@@ -77,8 +80,7 @@ class Erasmus(db.Bot[Context], DblBot[Context]):
             await self.cogs['Bible'].lookup_from_message(ctx, message)
             return
 
-        async with ctx.acquire():
-            await self.invoke(ctx)
+        await self.invoke(ctx)
 
     async def on_ready(self) -> None:
         await super().on_ready()
@@ -158,13 +160,12 @@ class Erasmus(db.Bot[Context], DblBot[Context]):
         elif isinstance(exc, ServiceTimeout):
             if isinstance(exc, ServiceLookupTimeout):
                 message = (
-                    f'The request timed out looking up {exc.verses} in '
-                    f'{exc.bible["name"]}'
+                    f'The request timed out looking up {exc.verses} in {exc.bible.name}'
                 )
             elif isinstance(exc, ServiceSearchTimeout):
                 message = (
                     f'The request timed out searching for '
-                    f'"{" ".join(exc.terms)}" in {exc.bible["name"]}'
+                    f'"{" ".join(exc.terms)}" in {exc.bible.name}'
                 )
         else:
             if ctx.command is None:
