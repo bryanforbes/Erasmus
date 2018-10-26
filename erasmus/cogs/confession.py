@@ -98,7 +98,6 @@ Examples:
 @attr.s(slots=True, auto_attribs=True)
 class Confession(object):
     bot: Erasmus
-    __weakref__: Any = attr.ib(init=False, hash=False, repr=False, cmp=False)
 
     @commands.command(brief='Query confessions and catechisms', help=confess_help)
     @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
