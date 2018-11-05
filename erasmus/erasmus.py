@@ -84,8 +84,9 @@ class Erasmus(db.Bot[Context], DblBot[Context]):
     async def on_command_error(self, ctx: Context, exc: Exception) -> None:
         message = 'An error occurred'
 
-        if isinstance(exc, commands.CommandInvokeError):
-            exc = exc.original
+        if isinstance(exc, (commands.CommandInvokeError, commands.BadArgument, commands.ConversionError)) and \
+                exc.__cause__ is not None:
+            exc = cast(Exception, exc.__cause__)
 
         if isinstance(exc, BookNotUnderstoodError):
             message = f'I do not understand the book "{exc.book}"'
@@ -128,9 +129,6 @@ class Erasmus(db.Bot[Context], DblBot[Context]):
                 message = f'The request timed out looking up {exc.verses} in {exc.bible["name"]}'
             elif isinstance(exc, ServiceSearchTimeout):
                 message = f'The request timed out searching for "{" ".join(exc.terms)}" in {exc.bible["name"]}'
-        elif isinstance(exc, commands.BadArgument):
-            if exc.__cause__:
-                return await self.on_command_error(ctx, cast(Exception, exc.__cause__))
         else:
             if ctx.command is None:
                 qualified_name = 'NO COMMAND'
