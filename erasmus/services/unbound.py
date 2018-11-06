@@ -13,11 +13,7 @@ from ..exceptions import DoNotUnderstandError, ServiceSearchTimeout
 
 from yarl import URL
 
-number_re = re.compile(
-    re.capture(
-       re.one_or_more(re.DIGITS), re.DOT
-    )
-)
+number_re = re.compile(re.capture(re.one_or_more(re.DIGITS), re.DOT))
 
 book_map = {
     'Genesis': '01O',
@@ -106,7 +102,7 @@ book_map = {
     'Prayer of Manasseh': '83A',
     'Psalm 151': '84A',
     'Psalms of Solomon': '85A',
-    'Odes': '86A'
+    'Odes': '86A',
 }  # type: Dict[str, str]
 
 
@@ -118,21 +114,22 @@ class Unbound(Service[Tag]):
         return BeautifulSoup(text, 'html.parser')
 
     def _get_passage_url(self, version: str, verses: VerseRange) -> URL:
-        url = self.base_url.update_query({
-            'search_type': 'simple_search',
-            'parallel_1': version,
-            'book_section': '00',
-            'book': book_map[verses.book],
-            'displayFormat': 'normalNoHeader',
-            'from_chap': str(verses.start.chapter),
-            'from_verse': str(verses.start.verse)
-        })
+        url = self.base_url.update_query(
+            {
+                'search_type': 'simple_search',
+                'parallel_1': version,
+                'book_section': '00',
+                'book': book_map[verses.book],
+                'displayFormat': 'normalNoHeader',
+                'from_chap': str(verses.start.chapter),
+                'from_verse': str(verses.start.verse),
+            }
+        )
 
-        if (verses.end):
-            url = url.update_query({
-                'to_chap': str(verses.end.chapter),
-                'to_verse': str(verses.end.verse)
-            })
+        if verses.end:
+            url = url.update_query(
+                {'to_chap': str(verses.end.chapter), 'to_verse': str(verses.end.verse)}
+            )
 
         return url
 
@@ -153,7 +150,11 @@ class Unbound(Service[Tag]):
             if len(cells) == 2 and cells[1].string == '\xa0':
                 rtl = True
 
-            if len(cells) != 2 or cells[0].string == '\xa0' or cells[1].string == '\xa0':
+            if (
+                len(cells) != 2
+                or cells[0].string == '\xa0'
+                or cells[1].string == '\xa0'
+            ):
                 row.decompose()
             elif rtl:
                 cells[1].contents[0].insert_before(cells[1].contents[1])
@@ -188,7 +189,9 @@ class Unbound(Service[Tag]):
                 chapter_string = row.get_text('').strip()
             else:
                 verse_string = cells[0].get_text('').strip()[:-1]
-                verses.append(VerseRange.from_string(f'{chapter_string}:{verse_string}'))
+                verses.append(
+                    VerseRange.from_string(f'{chapter_string}:{verse_string}')
+                )
 
         return SearchResults(verses[:20], len(verses))
 
@@ -196,18 +199,21 @@ class Unbound(Service[Tag]):
         url = self._get_search_url(bible['service_version'], terms)
 
         try:
-            response = await self.post(url, {
-                'search_type': 'advanced_search',
-                'parallel_1': bible['service_version'],
-                'displayFormat': 'normalNoHeader',
-                'book_section': 'ALL',
-                'book': 'ALL',
-                'search': ' AND '.join(terms),
-                'show_commentary': '0',
-                'show_context': '0',
-                'show_illustrations': '0',
-                'show_maps': '0'
-            })
+            response = await self.post(
+                url,
+                {
+                    'search_type': 'advanced_search',
+                    'parallel_1': bible['service_version'],
+                    'displayFormat': 'normalNoHeader',
+                    'book_section': 'ALL',
+                    'book': 'ALL',
+                    'search': ' AND '.join(terms),
+                    'show_commentary': '0',
+                    'show_context': '0',
+                    'show_illustrations': '0',
+                    'show_maps': '0',
+                },
+            )
         except asyncio.TimeoutError:
             raise ServiceSearchTimeout(bible, terms)
 

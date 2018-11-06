@@ -1,0 +1,58 @@
+[tool.poetry]
+name = "erasmus"
+version = "0.1.0"
+description = ""
+authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
+license = "BSD-3-Clause"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+aiodns = "^1.1"
+alembic = "^1.0"
+beautifulsoup4 = "^4.6"
+cchardet = "^2.1"
+uvloop = "^0.11.3"
+psycopg2 = "^2.7"
+ujson = "^1.35"
+"discord.py" = {git = "https://github.com/bryanforbes/discord.py.git",extras = ["typings"],rev = "8c18bf868e47740e8ae1c2fb2741b3482412efab"}
+"botus_receptus" = {rev = "f04c397a21088f8b991882da980c77cebed94d58", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["db"]}
+
+[tool.poetry.dev-dependencies]
+asynctest = "^0.12.2"
+black = "^18.3-alpha.0"
+flake8 = "^3.6"
+flake8-bugbear = "^18.8"
+mypy = "^0.641.0"
+pre-commit = "^1.12"
+pytest = "^3.9"
+pytest-asyncio = "^0.9.0"
+pytest-cov = "^2.6"
+pytest-flake8 = "^1.0"
+pytest-mock = "^1.10"
+pytest-mypy = "^0.3.2"
+pytest-vcr = "^0.3.0"
+pytest-xdist = "^1.24"
+
+[tool.poetry.scripts]
+erasmus = 'erasmus.run:main'
+
+[tool.black]
+line-length = 88
+py36 = true
+skip-string-normalization = true
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+  | \.hg
+  | \.mypy_cache
+  | \.pytest_cache
+  | \.venv
+  | alembic
+  | htmlcov
+)/
+'''
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

@@ -1,4 +1,4 @@
-from typing import cast, Optional, Any
+from typing import cast, Optional
 
 import attr
 import discord
@@ -8,8 +8,13 @@ from botus_receptus.db import select_all, UniqueViolationError
 from botus_receptus import checks
 
 from ..db import (
-    get_bibles, get_bible, get_bible_by_abbr, get_user_bible, set_user_bible,
-    add_bible, delete_bible
+    get_bibles,
+    get_bible,
+    get_bible_by_abbr,
+    get_user_bible,
+    set_user_bible,
+    add_bible,
+    delete_bible,
 )
 from ..data import VerseRange, get_book, get_book_mask
 from ..service_manager import ServiceManager, Bible as BibleObject
@@ -32,7 +37,8 @@ Example:
 --------
     {prefix} John 1:50-2:1
 
-NOTE: Before this command will work, you MUST set your prefered Bible version using {prefix}setversion'''
+NOTE: Before this command will work, you MUST set your prefered Bible version
+      using {prefix}setversion'''
 
 search_help = '''
 Arguments:
@@ -43,7 +49,8 @@ Example:
 --------
     {prefix}s faith hope
 
-NOTE: Before this command will work, you MUST set your prefered Bible version using {prefix}setversion'''
+NOTE: Before this command will work, you MUST set your prefered Bible version
+      using {prefix}setversion'''
 
 setversion_help = '''
 Arguments:
@@ -84,9 +91,12 @@ class Bible(object):
     _user_cooldown: commands.CooldownMapping = attr.ib(init=False)
 
     def __attrs_post_init__(self) -> None:
-        self.service_manager = ServiceManager.from_config(self.bot.config, self.bot.session)
+        self.service_manager = ServiceManager.from_config(
+            self.bot.config, self.bot.session
+        )
         self._user_cooldown = commands.CooldownMapping(
-            commands.Cooldown(rate=8, per=60.0, type=commands.BucketType.user))
+            commands.Cooldown(rate=8, per=60.0, type=commands.BucketType.user)
+        )
 
         # Share cooldown across commands
         self.lookup._buckets = self.search._buckets = self._user_cooldown
@@ -95,16 +105,30 @@ class Bible(object):
 
     async def _init(self) -> None:
         async with self.bot.pool.acquire() as db:
-            versions = await select_all(db, table='bible_versions',
-                                        columns=['id', 'command', 'name', 'abbr', 'service', 'service_version',
-                                                 'rtl', 'books'])
+            versions = await select_all(
+                db,
+                table='bible_versions',
+                columns=[
+                    'id',
+                    'command',
+                    'name',
+                    'abbr',
+                    'service',
+                    'service_version',
+                    'rtl',
+                    'books',
+                ],
+            )
             for version in versions:
                 self._add_bible_commands(version['command'], version['name'])
 
     async def lookup_from_message(self, ctx: Context, message: discord.Message) -> None:
-        verse_ranges = VerseRange.get_all_from_string(message.content,
-                                                      only_bracketed=not cast(discord.ClientUser,
-                                                                              self.bot.user).mentioned_in(message))
+        verse_ranges = VerseRange.get_all_from_string(
+            message.content,
+            only_bracketed=not cast(discord.ClientUser, self.bot.user).mentioned_in(
+                message
+            ),
+        )
 
         if len(verse_ranges) == 0:
             return
@@ -130,33 +154,44 @@ class Bible(object):
                     except Exception as exc:
                         await self.bot.on_command_error(ctx, exc)
 
-    @commands.command(aliases=[''],
-                      brief='Look up a verse in your preferred version',
-                      help=lookup_help)
+    @commands.command(
+        aliases=[''],
+        brief='Look up a verse in your preferred version',
+        help=lookup_help,
+    )
     async def lookup(self, ctx: Context, *, reference: VerseRange) -> None:
         bible = await get_user_bible(ctx, ctx.author.id)
 
         async with ctx.typing():
             await self._lookup(ctx, bible, reference)
 
-    @commands.command(aliases=['s'],
-                      brief='Search for terms in your preferred version',
-                      help=search_help)
+    @commands.command(
+        aliases=['s'],
+        brief='Search for terms in your preferred version',
+        help=search_help,
+    )
     async def search(self, ctx: Context, *terms: str) -> None:
         bible = await get_user_bible(ctx, ctx.author.id)
 
         await self._search(ctx, bible, *terms)
 
-    @commands.command(brief='List which Bible versions are available for lookup and search')
+    @commands.command(
+        brief='List which Bible versions are available for lookup and search'
+    )
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
     async def versions(self, ctx: Context) -> None:
         lines = ['I support the following Bible versions:', '']
 
         versions = await get_bibles(ctx, ordered=True)
-        lines += [f'  `{ctx.prefix}{version["command"]}`: {version["name"]}' for version in versions]
+        lines += [
+            f'  `{ctx.prefix}{version["command"]}`: {version["name"]}'
+            for version in versions
+        ]
 
-        lines.append("\nYou can search any version by prefixing the version command with 's' "
-                     f'(ex. `{ctx.prefix}sesv terms...`)')
+        lines.append(
+            "\nYou can search any version by prefixing the version command with 's' "
+            f'(ex. `{ctx.prefix}sesv terms...`)'
+        )
 
         output = '\n'.join(lines)
         await ctx.send_embed(f'\n{output}\n')
@@ -176,8 +211,17 @@ class Bible(object):
     @commands.command(name='addbible')
     @checks.dm_only()
     @commands.is_owner()
-    async def add_bible(self, ctx: Context, command: str, name: str, abbr: str, service: str,
-                        service_version: str, books: str = 'OT,NT', rtl: bool = False) -> None:
+    async def add_bible(
+        self,
+        ctx: Context,
+        command: str,
+        name: str,
+        abbr: str,
+        service: str,
+        service_version: str,
+        books: str = 'OT,NT',
+        rtl: bool = False,
+    ) -> None:
         if service not in self.service_manager:
             await ctx.send_error(f'`{service}` is not a valid service')
             return
@@ -194,14 +238,16 @@ class Bible(object):
 
                 book_mask = book_mask | get_book_mask(get_book(book))
 
-            await add_bible(ctx,
-                            command=command,
-                            name=name,
-                            abbr=abbr,
-                            service=service,
-                            service_version=service_version,
-                            rtl=rtl,
-                            books=book_mask)
+            await add_bible(
+                ctx,
+                command=command,
+                name=name,
+                abbr=abbr,
+                service=service,
+                service_version=service_version,
+                rtl=rtl,
+                books=book_mask,
+            )
         except UniqueViolationError:
             await ctx.send_error(f'`{command}` already exists')
         else:
@@ -230,7 +276,9 @@ class Bible(object):
 
         await self._search(ctx, bible, *terms)
 
-    async def _lookup(self, ctx: Context, bible: BibleObject, reference: VerseRange) -> None:
+    async def _lookup(
+        self, ctx: Context, bible: BibleObject, reference: VerseRange
+    ) -> None:
         if not (bible['books'] & reference.book_mask):
             raise BookNotInVersionError(reference.book, bible['name'])
 
@@ -257,16 +305,18 @@ class Bible(object):
             await ctx.send_embed(output)
 
     def _add_bible_commands(self, command: str, name: str) -> None:
-        lookup = self.bot.command(name=command,
-                                  brief=f'Look up a verse in {name}',
-                                  help=version_lookup_help.format(prefix='{prefix}',
-                                                                  command=command),
-                                  hidden=True)(self._version_lookup)
-        search = self.bot.command(name=f's{command}',
-                                  brief=f'Search in {name}',
-                                  help=version_search_help.format(prefix='{prefix}',
-                                                                  command=f's{command}'),
-                                  hidden=True)(self._version_search)
+        lookup = self.bot.command(
+            name=command,
+            brief=f'Look up a verse in {name}',
+            help=version_lookup_help.format(prefix='{prefix}', command=command),
+            hidden=True,
+        )(self._version_lookup)
+        search = self.bot.command(
+            name=f's{command}',
+            brief=f'Search in {name}',
+            help=version_search_help.format(prefix='{prefix}', command=f's{command}'),
+            hidden=True,
+        )(self._version_search)
 
         # Share cooldown across commands
         lookup._buckets = search._buckets = self._user_cooldown

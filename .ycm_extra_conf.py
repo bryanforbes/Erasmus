@@ -1,4 +1,2 @@
 def Settings(**kwargs):
-    return {
-        'interpreter_path': '.venv/bin/python'
-    }
+    return {'interpreter_path': '.venv/bin/python'}

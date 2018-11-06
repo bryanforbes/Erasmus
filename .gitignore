@@ -5,6 +5,7 @@
 __pycache__/
 /htmlcov/
 /venv/
+/erasmus.egg-info/
 .coverage*
 .testmondata
 config.json

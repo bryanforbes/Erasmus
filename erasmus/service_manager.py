@@ -30,7 +30,9 @@ class ServiceManager(object):
         return await service.search(bible, terms)
 
     @classmethod
-    def from_config(cls, config: ConfigParser, session: aiohttp.ClientSession) -> 'ServiceManager':
+    def from_config(
+        cls, config: ConfigParser, session: aiohttp.ClientSession
+    ) -> 'ServiceManager':
         service_map: Dict[str, Service[Any]] = {}
 
         config_sections = config.sections()

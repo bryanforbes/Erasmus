@@ -11,10 +11,7 @@ from ..exceptions import DoNotUnderstandError
 
 from yarl import URL
 
-total_re = re.compile(
-    re.START,
-    re.named_group('total')(re.one_or_more(re.DIGITS))
-)
+total_re = re.compile(re.START, re.named_group('total')(re.one_or_more(re.DIGITS)))
 
 
 # TODO: Error handling
@@ -27,19 +24,21 @@ class BibleGateway(Service[Tag]):
         return BeautifulSoup(text, 'html.parser')
 
     def _get_passage_url(self, version: str, verses: VerseRange) -> URL:
-        return self.passage_url.with_query({
-            'search': str(verses),
-            'version': version,
-            'interface': 'print'
-        })
+        return self.passage_url.with_query(
+            {'search': str(verses), 'version': version, 'interface': 'print'}
+        )
 
     def _get_passage_text(self, response: Tag) -> str:
-        verse_block = response.select_one('.result-text-style-normal, .result-text-style-rtl')
+        verse_block = response.select_one(
+            '.result-text-style-normal, .result-text-style-rtl'
+        )
 
         if verse_block is None:
             raise DoNotUnderstandError
 
-        for node in verse_block.select('h1, h3, .footnotes, .footnote, .crossrefs, .crossreference'):
+        for node in verse_block.select(
+            'h1, h3, .footnotes, .footnote, .crossrefs, .crossreference'
+        ):
             # Remove headings and footnotes
             node.decompose()
         for number in verse_block.select('span.chapternum'):
@@ -54,20 +53,26 @@ class BibleGateway(Service[Tag]):
         for h4 in verse_block.select('h4'):
             h4.replace_with(f'__BOLD__{h4.get_text(" ", strip=True).strip()}__BOLD__ ')
         for italic in verse_block.select('.selah, i'):
-            italic.replace_with(f'__ITALIC__{italic.get_text(" ", strip=True).strip()}__ITALIC__')
+            italic.replace_with(
+                f'__ITALIC__{italic.get_text(" ", strip=True).strip()}__ITALIC__'
+            )
 
         return verse_block.get_text('')
 
     def _get_search_url(self, version: str, terms: List[str]) -> URL:
-        return self.search_url.with_query({
-            'quicksearch': ' '.join(terms),
-            'qs_version': version,
-            'limit': 20,
-            'interface': 'print'
-        })
+        return self.search_url.with_query(
+            {
+                'quicksearch': ' '.join(terms),
+                'qs_version': version,
+                'limit': 20,
+                'interface': 'print',
+            }
+        )
 
     def _get_search_results(self, response: Tag) -> SearchResults:
-        verse_nodes = response.select('.search-result-list .bible-item .bible-item-title')
+        verse_nodes = response.select(
+            '.search-result-list .bible-item .bible-item-title'
+        )
 
         if verse_nodes is None:
             raise DoNotUnderstandError

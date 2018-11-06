@@ -19,12 +19,14 @@ class TestService(object):
 
     @pytest.fixture
     def bible(self):
-        return Bible(command='bib',
-                     name='The Bible',
-                     abbr='BIB',
-                     service='MyService',
-                     service_version='eng-BIB',
-                     rtl=False)
+        return Bible(
+            command='bib',
+            name='The Bible',
+            abbr='BIB',
+            service='MyService',
+            service_version='eng-BIB',
+            rtl=False,
+        )
 
     def test_init(self):
         config = {}
@@ -33,7 +35,9 @@ class TestService(object):
             Service(config)
 
     @pytest.mark.asyncio
-    async def test_get_passage(self, MyService, bible, mock_response, mock_client_session):
+    async def test_get_passage(
+        self, MyService, bible, mock_response, mock_client_session
+    ):
         service = MyService({}, mock_client_session)
         verses = VerseRange.from_string('Leviticus 1:2-3')
 
@@ -43,7 +47,9 @@ class TestService(object):
 
         result = await service.get_passage(bible, verses)
 
-        service._get_passage_url.assert_called_once_with(bible['service_version'], verses)
+        service._get_passage_url.assert_called_once_with(
+            bible['service_version'], verses
+        )
         mock_client_session.get.assert_called_once_with('http://example.com')
         service._process_response.assert_called_once_with(mock_response)
         service._get_passage_text.assert_called_once_with('foo bar baz')
@@ -59,7 +65,9 @@ class TestService(object):
 
         result = await service.search(bible, ['one', 'two', 'three'])
 
-        service._get_search_url.assert_called_once_with(bible['service_version'], ['one', 'two', 'three'])
+        service._get_search_url.assert_called_once_with(
+            bible['service_version'], ['one', 'two', 'three']
+        )
         mock_client_session.get.assert_called_once_with('http://example.com')
         service._process_response.assert_called_once_with(mock_response)
         service._get_search_results.assert_called_once_with('foo bar baz')

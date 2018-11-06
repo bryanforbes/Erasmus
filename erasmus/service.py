@@ -26,7 +26,9 @@ class Service(Generic[RT]):
     config: Optional[SectionProxy]
     session: aiohttp.ClientSession
 
-    def __init__(self, config: Optional[SectionProxy], session: aiohttp.ClientSession) -> None:
+    def __init__(
+        self, config: Optional[SectionProxy], session: aiohttp.ClientSession
+    ) -> None:
         self.config = config
         self.session = session
 
@@ -89,7 +91,9 @@ class Service(Generic[RT]):
                 log.debug('Finished GET %s', url)
                 return await self._process_response(response)
 
-    async def post(self, url: URL, data: Optional[Dict[str, Any]] = None, **request_options: Any) -> RT:
+    async def post(
+        self, url: URL, data: Optional[Dict[str, Any]] = None, **request_options: Any
+    ) -> RT:
         log.debug('POST %s', url)
         with async_timeout.timeout(10):
             async with self.session.post(url, data=data, **request_options) as response:

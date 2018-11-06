@@ -10,21 +10,27 @@ from discord.ext.commands import Group
 from botus_receptus import db, formatting, checks, DblBot
 
 from .exceptions import (
-    DoNotUnderstandError, BibleNotSupportedError, ServiceNotSupportedError,
-    BookNotUnderstoodError, ReferenceNotUnderstoodError,
-    BookNotInVersionError, NoUserVersionError, InvalidVersionError, NoSectionError,
-    NoSectionsError, InvalidConfessionError, ServiceTimeout, ServiceLookupTimeout,
-    ServiceSearchTimeout
+    DoNotUnderstandError,
+    BibleNotSupportedError,
+    ServiceNotSupportedError,
+    BookNotUnderstoodError,
+    ReferenceNotUnderstoodError,
+    BookNotInVersionError,
+    NoUserVersionError,
+    InvalidVersionError,
+    NoSectionError,
+    NoSectionsError,
+    InvalidConfessionError,
+    ServiceTimeout,
+    ServiceLookupTimeout,
+    ServiceSearchTimeout,
 )
 from .context import Context
 from .format import HelpFormatter
 
 log = logging.getLogger(__name__)
 
-extensions = (
-    'erasmus.cogs.bible',
-    'erasmus.cogs.confession',
-)
+extensions = ('erasmus.cogs.bible', 'erasmus.cogs.confession')
 
 
 description = '''
@@ -76,7 +82,9 @@ class Erasmus(db.Bot[Context], DblBot[Context]):
 
     async def on_ready(self) -> None:
         await super().on_ready()
-        await self.change_presence(activity=discord.Game(name=f'| {self.default_prefix}help'))
+        await self.change_presence(
+            activity=discord.Game(name=f'| {self.default_prefix}help')
+        )
 
         user = cast(discord.ClientUser, self.user)
         log.info('Erasmus ready. Logged in as %s %s', user.name, user.id)
@@ -84,8 +92,17 @@ class Erasmus(db.Bot[Context], DblBot[Context]):
     async def on_command_error(self, ctx: Context, exc: Exception) -> None:
         message = 'An error occurred'
 
-        if isinstance(exc, (commands.CommandInvokeError, commands.BadArgument, commands.ConversionError)) and \
-                exc.__cause__ is not None:
+        if (
+            isinstance(
+                exc,
+                (
+                    commands.CommandInvokeError,
+                    commands.BadArgument,
+                    commands.ConversionError,
+                ),
+            )
+            and exc.__cause__ is not None
+        ):
             exc = cast(Exception, exc.__cause__)
 
         if isinstance(exc, BookNotUnderstoodError):
@@ -99,18 +116,29 @@ class Erasmus(db.Bot[Context], DblBot[Context]):
         elif isinstance(exc, BibleNotSupportedError):
             message = f'`{ctx.prefix}{exc.version}` is not supported'
         elif isinstance(exc, NoUserVersionError):
-            message = f'You must first set your default version with `{ctx.prefix}setversion`'
+            message = (
+                f'You must first set your default version with `{ctx.prefix}setversion`'
+            )
         elif isinstance(exc, InvalidVersionError):
-            message = f'`{exc.version}` is not a valid version. Check `{ctx.prefix}versions` for valid versions'
+            message = (
+                f'`{exc.version}` is not a valid version. Check `{ctx.prefix}'
+                'versions` for valid versions'
+            )
         elif isinstance(exc, InvalidConfessionError):
             message = f'`{exc.confession}` is not a valid confession.'
         elif isinstance(exc, NoSectionError):
-            message = f'`{exc.confession}` does not have {"an" if exc.section_type == "article" else "a"}' \
+            message = (
+                f'`{exc.confession}` does not have '
+                f'{"an" if exc.section_type == "article" else "a"}'
                 f'{exc.section_type} `{exc.section}`'
+            )
         elif isinstance(exc, NoSectionsError):
             message = f'`{exc.confession}` has no {exc.section_type}'
         elif isinstance(exc, ServiceNotSupportedError):
-            message = f'The service configured for `{self.default_prefix}{ctx.invoked_with}` is not supported'
+            message = (
+                f'The service configured for '
+                f'`{self.default_prefix}{ctx.invoked_with}` is not supported'
+            )
         elif isinstance(exc, commands.NoPrivateMessage):
             message = 'This command is not available in private messages'
         elif isinstance(exc, commands.CommandOnCooldown):
@@ -118,7 +146,10 @@ class Erasmus(db.Bot[Context], DblBot[Context]):
             if exc.cooldown.type == commands.BucketType.user:
                 message = f'You have used this command too many times.'
             elif exc.cooldown.type == commands.BucketType.channel:
-                message = f'`{ctx.prefix}{ctx.invoked_with}` has been used too many times in this channel.'
+                message = (
+                    f'`{ctx.prefix}{ctx.invoked_with}` has been used too many '
+                    'times in this channel.'
+                )
             message = f'{message} You can retry again in {exc.retry_after:.2f} seconds.'
         elif isinstance(exc, checks.OnlyDirectMessage):
             message = 'This command is only available in private messages'
@@ -126,9 +157,15 @@ class Erasmus(db.Bot[Context], DblBot[Context]):
             message = f'The required argument `{exc.param.name}` is missing'
         elif isinstance(exc, ServiceTimeout):
             if isinstance(exc, ServiceLookupTimeout):
-                message = f'The request timed out looking up {exc.verses} in {exc.bible["name"]}'
+                message = (
+                    f'The request timed out looking up {exc.verses} in '
+                    f'{exc.bible["name"]}'
+                )
             elif isinstance(exc, ServiceSearchTimeout):
-                message = f'The request timed out searching for "{" ".join(exc.terms)}" in {exc.bible["name"]}'
+                message = (
+                    f'The request timed out searching for '
+                    f'"{" ".join(exc.terms)}" in {exc.bible["name"]}'
+                )
         else:
             if ctx.command is None:
                 qualified_name = 'NO COMMAND'
@@ -140,10 +177,13 @@ class Erasmus(db.Bot[Context], DblBot[Context]):
             else:
                 content = ctx.message.content
 
-            log.exception('Exception occurred in command "%s"\nInvoked by: %s',
-                          qualified_name, content,
-                          exc_info=exc,
-                          stack_info=True)
+            log.exception(
+                'Exception occurred in command "%s"\nInvoked by: %s',
+                qualified_name,
+                content,
+                exc_info=exc,
+                stack_info=True,
+            )
 
         await ctx.send_error(formatting.escape(message, mass_mentions=True))
 
@@ -179,7 +219,9 @@ class Erasmus(db.Bot[Context], DblBot[Context]):
                             await destination.send(bot.command_not_found.format(key))
                             return
                     except AttributeError:
-                        await destination.send(bot.command_has_no_subcommands.format(command, key))
+                        await destination.send(
+                            bot.command_has_no_subcommands.format(command, key)
+                        )
                         return
 
             pages = await bot.formatter.format_help_for(ctx, command)

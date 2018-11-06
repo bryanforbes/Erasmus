@@ -5,14 +5,18 @@ import aiohttp
 from erasmus.data import VerseRange, SearchResults, Bible
 from erasmus.exceptions import DoNotUnderstandError
 
-Galatians_3_10_11 = ('**10.** For as many as are of the works of the Law are under a '
-                     'curse; for it is written, “CURSED IS EVERYONE WHO DOES NOT '
-                     'ABIDE BY ALL THINGS WRITTEN IN THE BOOK OF THE LAW, TO '
-                     'PERFORM THEM.” **11.** Now that no one is justified by the Law '
-                     'before God is evident; for, “THE RIGHTEOUS MAN SHALL LIVE BY '
-                     'FAITH.”')
+Galatians_3_10_11 = (
+    '**10.** For as many as are of the works of the Law are under a '
+    'curse; for it is written, “CURSED IS EVERYONE WHO DOES NOT '
+    'ABIDE BY ALL THINGS WRITTEN IN THE BOOK OF THE LAW, TO '
+    'PERFORM THEM.” **11.** Now that no one is justified by the Law '
+    'before God is evident; for, “THE RIGHTEOUS MAN SHALL LIVE BY '
+    'FAITH.”'
+)
 
-Mark_5_1 = '**1.** They came to the other side of the sea, into the country of the Gerasenes.'
+Mark_5_1 = (
+    '**1.** They came to the other side of the sea, into the country of the Gerasenes.'
+)
 
 
 class ServiceTest(object):
@@ -38,12 +42,14 @@ class ServiceTest(object):
         else:
             data = {}
 
-        return Bible(command='bib',
-                     name='The Bible',
-                     abbr=data.get('abbr', default_abbr),
-                     service='MyService',
-                     service_version=data.get('version', default_version),
-                     rtl=False)
+        return Bible(
+            command='bib',
+            name='The Bible',
+            abbr=data.get('abbr', default_abbr),
+            service='MyService',
+            service_version=data.get('version', default_version),
+            rtl=False,
+        )
 
     @pytest.mark.vcr()
     @pytest.mark.asyncio

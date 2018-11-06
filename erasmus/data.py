@@ -1,4 +1,4 @@
-from typing import Optional, Union, List, Dict, Pattern, Match, TYPE_CHECKING, Any  # noqa
+from typing import Optional, Union, List, Dict, Pattern, Match, TYPE_CHECKING
 import attr
 from pathlib import Path
 from itertools import chain
@@ -22,14 +22,24 @@ class BookDict(TypedDict):
 with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
     books_data: List[BookDict] = load(f)
 
-# Inspired by https://github.com/TehShrike/verse-reference-regex/blob/master/create-regex.js
+# Inspired by
+# https://github.com/TehShrike/verse-reference-regex/blob/master/create-regex.js
 _book_re = re.compile(
-    re.named_group('book')(re.either(
-        *re.escape_all(
-            unique_seen(chain.from_iterable([[book['name'], book['osis']] + book['alt'] for book in books_data]))
+    re.named_group('book')(
+        re.either(
+            *re.escape_all(
+                unique_seen(
+                    chain.from_iterable(
+                        [
+                            [book['name'], book['osis']] + book['alt']
+                            for book in books_data
+                        ]
+                    )
+                )
+            )
         )
-    )),
-    re.optional(re.DOT)
+    ),
+    re.optional(re.DOT),
 )
 
 _chapter_start_group = re.named_group('chapter_start')
@@ -38,7 +48,9 @@ _verse_start_group = re.named_group('verse_start')
 _verse_end_group = re.named_group('verse_end')
 _version_group = re.named_group('version')
 _one_or_more_digit = re.one_or_more(re.DIGIT)
-_colon = re.combine(re.any_number_of(re.WHITESPACE), ':', re.any_number_of(re.WHITESPACE))
+_colon = re.combine(
+    re.any_number_of(re.WHITESPACE), ':', re.any_number_of(re.WHITESPACE)
+)
 
 _reference_re = re.compile(
     _book_re,
@@ -46,34 +58,51 @@ _reference_re = re.compile(
     _chapter_start_group(_one_or_more_digit),
     _colon,
     _verse_start_group(_one_or_more_digit),
-    re.optional(re.group(
-        re.any_number_of(re.WHITESPACE), '[', re.DASH, '\u2013', '\u2014', ']', re.any_number_of(re.WHITESPACE),
-        re.optional(re.group(
-            _chapter_end_group(_one_or_more_digit), _colon
-        )),
-        _verse_end_group(_one_or_more_digit)
-    )),
-    flags=re.IGNORECASE
+    re.optional(
+        re.group(
+            re.any_number_of(re.WHITESPACE),
+            '[',
+            re.DASH,
+            '\u2013',
+            '\u2014',
+            ']',
+            re.any_number_of(re.WHITESPACE),
+            re.optional(re.group(_chapter_end_group(_one_or_more_digit), _colon)),
+            _verse_end_group(_one_or_more_digit),
+        )
+    ),
+    flags=re.IGNORECASE,
 )
 
 _reference_with_version_re = re.compile(
     _reference_re,
-    re.optional(re.group(
-        re.any_number_of(re.WHITESPACE),
-        _version_group(re.one_or_more(re.ALPHANUMERICS))
-    )),
-    flags=re.IGNORECASE
+    re.optional(
+        re.group(
+            re.any_number_of(re.WHITESPACE),
+            _version_group(re.one_or_more(re.ALPHANUMERICS)),
+        )
+    ),
+    flags=re.IGNORECASE,
 )
 
 _reference_or_bracketed_with_version_re = re.compile(
-    re.optional(re.named_group('bracket')(re.LEFT_BRACKET, re.any_number_of(re.WHITESPACE))),
+    re.optional(
+        re.named_group('bracket')(re.LEFT_BRACKET, re.any_number_of(re.WHITESPACE))
+    ),
     _reference_re,
-    '(?(bracket)', re.group(re.optional(re.group(re.one_or_more(re.WHITESPACE),
-                                                 _version_group(re.one_or_more(re.ALPHANUMERICS)))),
-                            re.any_number_of(re.WHITESPACE),
-                            re.RIGHT_BRACKET),
+    '(?(bracket)',
+    re.group(
+        re.optional(
+            re.group(
+                re.one_or_more(re.WHITESPACE),
+                _version_group(re.one_or_more(re.ALPHANUMERICS)),
+            )
+        ),
+        re.any_number_of(re.WHITESPACE),
+        re.RIGHT_BRACKET,
+    ),
     '|)',
-    flags=re.IGNORECASE
+    flags=re.IGNORECASE,
 )
 
 _bracketed_reference_with_version_re = re.compile(
@@ -82,18 +111,13 @@ _bracketed_reference_with_version_re = re.compile(
     _reference_with_version_re,
     re.any_number_of(re.WHITESPACE),
     re.RIGHT_BRACKET,
-    flags=re.IGNORECASE
+    flags=re.IGNORECASE,
 )
 
-_search_reference_re = re.compile(
-    re.START,
-    _reference_re,
-    re.END,
-    flags=re.IGNORECASE
-)
+_search_reference_re = re.compile(re.START, _reference_re, re.END, flags=re.IGNORECASE)
 
-_book_input_map = {}  # type: Dict[str, str]
-_book_mask_map = {}  # type: Dict[str, int]
+_book_input_map: Dict[str, str] = {}
+_book_mask_map: Dict[str, int] = {}
 for _book in books_data:
     for input_string in [_book['name'], _book['osis']] + _book['alt']:  # type: str
         _book_input_map[input_string.lower()] = _book['name']
@@ -194,8 +218,9 @@ class VerseRange(object):
         return cls(groups['book'], start, end, version)
 
     @classmethod
-    def get_all_from_string(cls, string: str, *,
-                            only_bracketed: bool = False) -> List[Union['VerseRange', Exception]]:
+    def get_all_from_string(
+        cls, string: str, *, only_bracketed: bool = False
+    ) -> List[Union['VerseRange', Exception]]:
         ranges: List[Union['VerseRange', Exception]] = []
         lookup_pattern: Pattern[str]
 

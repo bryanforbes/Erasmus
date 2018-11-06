@@ -10,7 +10,9 @@ class MockUser(object):
     id: int
     mention: str
 
-    def __init__(self, *, bot: bool = None, id: int = None, mention: str = None) -> None:
+    def __init__(
+        self, *, bot: bool = None, id: int = None, mention: str = None
+    ) -> None:
         self.bot = bot
         self.id = id
         self.mention = mention
@@ -32,7 +34,9 @@ class MockMessage(object):
 class TestContext(object):
     @pytest.fixture
     def mock_context_send(self, mocker):
-        return mocker.patch('discord.ext.commands.Context.send', new_callable=mocker.CoroutineMock)
+        return mocker.patch(
+            'discord.ext.commands.Context.send', new_callable=mocker.CoroutineMock
+        )
 
     @pytest.mark.asyncio
     async def test_send_embed(self, mocker, mock_context_send):

@@ -2,10 +2,12 @@ from typing import List, Iterable, Tuple
 from discord.ext import commands
 from botus_receptus.util import unique_seen
 
-_roman_pairs = tuple(zip(
-    ('M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'),
-    (1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1)
-))
+_roman_pairs = tuple(
+    zip(
+        ('M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'),
+        (1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1),
+    )
+)
 
 
 def int_to_roman(number: int) -> str:
@@ -23,7 +25,7 @@ def roman_to_int(numerals: str) -> int:
     index = result = 0
 
     for letter, value in _roman_pairs:
-        while numerals[index:index + len(letter)] == letter:
+        while numerals[index : index + len(letter)] == letter:
             result += value
             index += len(letter)
 
@@ -32,10 +34,9 @@ def roman_to_int(numerals: str) -> int:
 
 class HelpFormatter(commands.HelpFormatter):
     def _get_command_title(self, name: str, command: commands.Command) -> str:
-        return ', '.join(map(
-            lambda s: f'{self.clean_prefix}{s}',
-            [name] + command.aliases
-        ))
+        return ', '.join(
+            map(lambda s: f'{self.clean_prefix}{s}', [name] + command.aliases)
+        )
 
     async def filter_command_list(self) -> Iterable[Tuple[str, commands.Command]]:
         iterable = await super().filter_command_list()
@@ -60,7 +61,13 @@ class HelpFormatter(commands.HelpFormatter):
             add_line('------')
 
             for name in names:
-                add_line('    ' + signature_parts[0][0] + name + ' ' + ' '.join(signature_parts[1:]))
+                add_line(
+                    '    '
+                    + signature_parts[0][0]
+                    + name
+                    + ' '
+                    + ' '.join(signature_parts[1:])
+                )
 
             if self.command.help:
                 if self.command.help[0] != '\n':
@@ -84,13 +91,23 @@ class HelpFormatter(commands.HelpFormatter):
                 add_line('    ' + command.short_doc, empty=True)
 
             add_line(f'{self.clean_prefix}<version>')
-            add_line(f'    Look up a verse in a specific version (see {self.clean_prefix}versions)', empty=True)
+            add_line(
+                '    Look up a verse in a specific version (see '
+                f'{self.clean_prefix}versions)',
+                empty=True,
+            )
             add_line(f'{self.clean_prefix}s<version>')
-            add_line(f'    Search for terms in a specific version (see {self.clean_prefix}versions)', empty=True)
+            add_line(
+                '    Search for terms in a specific version (see '
+                f'{self.clean_prefix}versions)',
+                empty=True,
+            )
 
         add_line()
-        add_line(f'''You can type the following for more information on a command:
+        add_line(
+            f'''You can type the following for more information on a command:
 
-    {self.clean_prefix}{self.context.invoked_with} <command>''')
+    {self.clean_prefix}{self.context.invoked_with} <command>'''
+        )
 
         return self._paginator.pages

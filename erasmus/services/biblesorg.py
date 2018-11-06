@@ -44,7 +44,9 @@ class BiblesOrg(Service[Dict[str, Any]]):
         super().__init__(*args, **kwargs)
 
         if self.config:
-            self._auth = BasicAuth(login=self.config.get('api_key'), password='X', encoding='latin1')
+            self._auth = BasicAuth(
+                login=self.config.get('api_key'), password='X', encoding='latin1'
+            )
 
     async def _process_response(self, response: ClientResponse) -> Dict[str, Any]:
         obj = await response.json(loads=loads, content_type=None)
@@ -64,10 +66,7 @@ class BiblesOrg(Service[Dict[str, Any]]):
         return await super().get(url, auth=self._auth, verify_ssl=False)
 
     def _get_passage_url(self, version: str, verses: VerseRange) -> URL:
-        return self.passage_url.with_query({
-            'q[]': str(verses),
-            'version': version
-        })
+        return self.passage_url.with_query({'q[]': str(verses), 'version': version})
 
     def _get_passage_text(self, response: Dict[str, Any]) -> str:
         passages: List[PassageDict] = get(response, 'search.result.passages')
@@ -84,7 +83,9 @@ class BiblesOrg(Service[Dict[str, Any]]):
             # Add a period after verse numbers
             number.string = f' __BOLD__{number.string}.__BOLD__ '
         for it in soup.select('span.it'):
-            it.replace_with(f'__ITALIC__{it.get_text(" ", strip=True).strip()}__ITALIC__')
+            it.replace_with(
+                f'__ITALIC__{it.get_text(" ", strip=True).strip()}__ITALIC__'
+            )
         for span in soup.select('span.sc'):
             span.unwrap()
         for br in soup.select('br'):
@@ -93,13 +94,15 @@ class BiblesOrg(Service[Dict[str, Any]]):
         return soup.get_text('')
 
     def _get_search_url(self, version: str, terms: List[str]) -> URL:
-        return self.search_url.with_query({
-            'keyword': ' '.join(terms),
-            'precision': 'all',
-            'version': version,
-            'sort_order': 'canonical',
-            'limit': 20
-        })
+        return self.search_url.with_query(
+            {
+                'keyword': ' '.join(terms),
+                'precision': 'all',
+                'version': version,
+                'sort_order': 'canonical',
+                'limit': 20,
+            }
+        )
 
     def _get_search_results(self, response: Dict[str, Any]) -> SearchResults:
         result: SearchResultDict = get(response, 'search.result')
@@ -113,7 +116,9 @@ class BiblesOrg(Service[Dict[str, Any]]):
             raise DoNotUnderstandError
 
         if total > 0:
-            verses = [VerseRange.from_string(verse['reference']) for verse in result['verses']]
+            verses = [
+                VerseRange.from_string(verse['reference']) for verse in result['verses']
+            ]
         else:
             verses = []
 

@@ -24,11 +24,8 @@ class Context(db.Context, EmbedContext):
         if len(text) > 2048:
             text = f'{truncation_warning}{text[:max_length]}\u2026'
 
-        embed = discord.Embed.from_data({
-            'description': text,
-            'footer': {
-                'text': passage.citation
-            }
-        })
+        embed = discord.Embed.from_data(
+            {'description': text, 'footer': {'text': passage.citation}}
+        )
 
         return await self.send(embed=embed)
