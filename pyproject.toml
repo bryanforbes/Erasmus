@@ -14,8 +14,7 @@ cchardet = "^2.1"
 uvloop = "^0.11.3"
 psycopg2 = "^2.7"
 ujson = "^1.35"
-"discord.py" = {git = "https://github.com/bryanforbes/discord.py.git",extras = ["typings"],rev = "8c18bf868e47740e8ae1c2fb2741b3482412efab"}
-"botus_receptus" = {rev = "f04c397a21088f8b991882da980c77cebed94d58", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino"]}
+"botus_receptus" = {rev = "57b4cf7317e51b28de1f201885957991b51b6c73", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino"]}
 
 [tool.poetry.dev-dependencies]
 asynctest = "^0.12.2"

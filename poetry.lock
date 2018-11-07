@@ -1,7 +1,6 @@
 [[package]]
 category = "main"
 description = "PEP-550 polyfill, execution context for asyncio."
-marker = "extra == \"gino\""
 name = "aiocontextvars"
 optional = false
 python-versions = ">=3.5"
@@ -94,7 +93,6 @@ version = "3.0.1"
 [[package]]
 category = "main"
 description = "An asyncio PosgtreSQL driver"
-marker = "extra == \"db\" or extra == \"gino\""
 name = "asyncpg"
 optional = false
 python-versions = ">=3.5.0"
@@ -161,21 +159,21 @@ toml = ">=0.9.4"
 [[package]]
 category = "main"
 description = ""
-name = "botus-receptus"
+name = "botus_receptus"
 optional = false
-python-versions = ">=3.7"
-version = "0.0.1a66+gf04c397"
+python-versions = "^3.7"
+version = "0.0.1a"
 
 [package.dependencies]
-async_timeout = ">=3.0.0"
-attrs = ">=18.1.0"
+async-timeout = ">=3.0.0"
+attrs = ">=18.2.0"
 click = ">=6.7"
-gino = ">=0.8.0"
+"discord.py" = "rev 8c18bf868e47740e8ae1c2fb2741b3482412efab"
 mypy_extensions = ">=0.4.1"
-typing-extensions = ">=3.6.5"
+typing-extensions = ">=3.6.4"
 
 [package.source]
-reference = "f04c397a21088f8b991882da980c77cebed94d58"
+reference = "57b4cf7317e51b28de1f201885957991b51b6c73"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -326,9 +324,8 @@ flake8 = ">=3.0.0"
 [[package]]
 category = "main"
 description = "GINO Is Not ORM - a Python asyncio ORM on SQLAlchemy core."
-marker = "extra == \"gino\""
 name = "gino"
-optional = false
+optional = true
 python-versions = ">=3.5"
 version = "0.8.0"
 
@@ -955,7 +952,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "9286925f298c66cc41c1f2dd7d7736a1d700d91b776d8d832984f4004d395397"
+content-hash = "31ad8d4442c942f5341ae03426a9979bf3249dc6c4c3cbfa4ec997341995f55d"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -975,7 +972,7 @@ attrs = ["10cbf6e27dbce8c30807caf056c8eb50917e0eaafe86347671b57254006c3e69", "ca
 babel = ["6778d85147d5d85345c14a26aada5e478ab04e39b078b0745ee6870c2b5cf669", "8cba50f48c529ca3fa18cf81fa9403be176d374ac4d60738b839122dfaaa3d23"]
 beautifulsoup4 = ["194ec62a25438adcb3fdb06378b26559eda1ea8a747367d34c33cef9c7f48d57", "90f8e61121d6ae58362ce3bed8cd997efb00c914eae0ff3d363c32f9a9822d10", "f0abd31228055d698bb392a826528ea08ebb9959e6bea17c606fd9c9009db938"]
 black = ["817243426042db1d36617910df579a54f1afd659adb96fc5032fcf4b36209739", "e030a9a28f542debc08acceb273f228ac422798e5215ba2a791a6ddeaaca22a5"]
-botus-receptus = []
+botus_receptus = []
 cached-property = ["3a026f1a54135677e7da5ce819b0c690f156f37976f3e30c5430740725203d7f", "9217a59f14a5682da7c4b8829deadbfc194ac22e9908ccf7c8820234e80a1504"]
 cchardet = ["079aa02a14072874d943a671ba778a9def5b0e3cedc2ac9f59308526cfb31472", "3e048a21688dcb4c797f40c8deb3600887bcaf435620256fd8becd4252012750", "41fced7a6f05ef859fe3eac89fc2120aca3cbbfd2b6c803bed3ee4bf02956903", "440903d5dca3d326f4b841e7fa760b6af1be4f950ead1a6ff77b76eaa46f0cd3", "50170f346527c5df4d3cb94648ca187c666e61c0db6e510b984e867c44709d8b", "6c55a6e7bc7337671c9f1ad90746c0efb2b2979ff4305c7ca1d7d381f05174c1", "7f581ea172b252034f745dfd49733966b73b73907bdef0b47ad5f2008b797d54", "80f7b087198827e60c81574c321b12f89188eae626ae1567d66808928be42f88", "8ba753ff73ca2f3554999a0e027eab9450f6ffdb7e92e1b4e13b52be89995349", "9ad8f61d6d1ca37bd4b954ad92d461ea4f58d0dc413b0790a5abed7c09e54996", "a35bd23cedbaa87cc9300af1dd10bb03fda41894045fbca7bfdf1d350b813f25", "a8feb9a7def2310e18c27e485a21a38669abe8c2e36b93c6ce1a1363495d4cdf", "aa9dd4cee8a5210a6d0a7b263b98dc50637e00401fc4a5ad3ce2dbef54fdfa02", "ab9858a0673262e467619df91f425cfef0590dcf5deef5c0c7945e9dc4dbd7d8", "b09a488bbb35be95f82845e3c4312be9025e8377975b027eee67e0b39445e070", "b2893d558761b3534cddf5a49ba8d77df3d8f964d7b14680b925f4a85fc13476", "b5a8f9b229a30cd2432572d15e169483bc47c24418772ff58d0585050631c2fd", "bded54eeccd5f810bc69e076b3d9a35819a92e5e0559ad274b9ae9061b1b881d", "cbc206061e69561af6e4cba11f99abd928346c6b5bcdc83eb32ae40e9fc23a5f", "cc9745e0400da4cfb49f075e7819f22473b66443f953427058fee2c7b9547cc0", "db30bf3825702c07fc55a290d41663fd8151f870642a15667bbabf81fff21e0b", "eeeb1b95bb5851dda93ee522860a0e6066d47921cb1d540cb778346e37e5a524", "f1c3919fb71ac5da3aeee42c5b731c99dcd2beed71db7fdc28ca993c173f0402"]
 certifi = ["339dc09518b07e2fa7eda5450740925974815557727d6bd35d319c1524a04a4c", "6d58c986d22b038c8c0df30d639f23a3e6d172a05c3583e766f4c0b785c0986a"]
