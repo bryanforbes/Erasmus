@@ -14,7 +14,7 @@ cchardet = "^2.1"
 uvloop = "^0.11.3"
 psycopg2 = "^2.7"
 ujson = "^1.35"
-"botus_receptus" = {rev = "57b4cf7317e51b28de1f201885957991b51b6c73", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino"]}
+"botus_receptus" = {rev = "54cbfae249ed8cf50858690033fbc59932813bd7", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino"]}
 
 [tool.poetry.dev-dependencies]
 asynctest = "^0.12.2"
@@ -31,7 +31,7 @@ pytest-mock = "^1.10"
 pytest-mypy = "^0.3.2"
 pytest-vcr = "^0.3.0"
 pytest-xdist = "^1.24"
-"gino-stubs" = {rev = "d0c68dd29e1d5edd98a283873d2e14b5ca18865e", git = "https://github.com/bryanforbes/gino-stubs.git"}
+"gino-stubs" = {rev = "7b91ab9e6f4965f1a1199bb1e47f6105299c7774", git = "https://github.com/bryanforbes/gino-stubs.git"}
 "sqlalchemy-stubs" = {rev = "8b45fc4345778e3f08e8a3b53ff71aaaa775e632", git = "https://github.com/dropbox/sqlalchemy-stubs.git"}
 
 [tool.poetry.scripts]
