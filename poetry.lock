@@ -150,13 +150,13 @@ click = ">=6.7"
 "discord.py" = "rev 8c18bf868e47740e8ae1c2fb2741b3482412efab"
 gino = ">=0.8.0"
 mypy_extensions = ">=0.4.1"
+toml = "^0.10.0"
 typing-extensions = ">=3.6.4"
 
 [package.source]
-reference = "54cbfae249ed8cf50858690033fbc59932813bd7"
+reference = "fc00cac89bff43e260763e1ed4bd3ce191c1aba5"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-
 [[package]]
 category = "dev"
 description = "A decorator for caching properties in classes."
@@ -415,6 +415,18 @@ version = "1.3.3"
 
 [[package]]
 category = "dev"
+description = "Core utilities for Python packages"
+name = "packaging"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+version = "18.0"
+
+[package.dependencies]
+pyparsing = ">=2.0.2"
+six = "*"
+
+[[package]]
+category = "dev"
 description = "Path matching utilities"
 name = "pathmatch"
 optional = false
@@ -492,6 +504,14 @@ name = "pyflakes"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "2.0.0"
+
+[[package]]
+category = "dev"
+description = "Python parsing module"
+name = "pyparsing"
+optional = false
+python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
+version = "2.3.0"
 
 [[package]]
 category = "dev"
@@ -582,13 +602,14 @@ pytest = ">=2.9.2"
 
 [[package]]
 category = "dev"
-description = "py.test is a plugin for py.test that changes the default look and feel of py.test (e.g. progressbar, show tests that fail instantly)."
+description = "pytest-sugar is a plugin for pytest that changes the default look and feel of pytest (e.g. progressbar, show tests that fail instantly)."
 name = "pytest-sugar"
 optional = false
 python-versions = "*"
-version = "0.9.1"
+version = "0.9.2"
 
 [package.dependencies]
+packaging = ">=14.1"
 pytest = ">=2.9"
 termcolor = ">=1.1.0"
 
@@ -686,7 +707,7 @@ python-versions = "*"
 version = "1.1.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Python Library for Tom's Obvious, Minimal Language"
 name = "toml"
 optional = false
@@ -790,7 +811,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "9ee6d32cb520c8d0bfff6f94fe9794b753321756dfdbc2eff72bdd089c5990fc"
+content-hash = "b8aa3889e322ebf9c5ad73777d5131830d8e825e8ed155a890276b829bff0db8"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -834,6 +855,7 @@ multidict = ["05eeab69bf2b0664644c62bd92fabb045163e5b8d4376a31dfb52ce0210ced7b",
 mypy = ["8e071ec32cc226e948a34bbb3d196eb0fd96f3ac69b6843a5aff9bd4efa14455", "fb90c804b84cfd8133d3ddfbd630252694d11ccc1eb0166a1b2efb5da37ecab2"]
 mypy-extensions = ["37e0e956f41369209a3d5f34580150bcacfabaa57b33a15c0b25f4b5725e0812", "b16cabe759f55e3409a7d231ebd2841378fb0c27a5d1994719e340e4f429ac3e"]
 nodeenv = ["ad8259494cf1c9034539f6cced78a1da4840a4b157e23640bc4a0c0546b0cb7a"]
+packaging = ["0886227f54515e592aaa2e5a553332c73962917f2831f1b0f9b9f4380a4b9807", "f95a1e147590f204328170981833854229bb2912ac3d5f89e2a8ccd2834800c9"]
 pathmatch = ["b35db907d0532c66132e5bc8aaa20dbfae916441987c8f0abd53ac538376d9a7"]
 pluggy = ["447ba94990e8014ee25ec853339faf7b0fc8050cdc3289d4d71f7f410fb90095", "bde19360a8ec4dfd8a20dcb811780a30998101f078fc7ded6162f0076f50508f"]
 pre-commit = ["7542bd8ae1c58745175ea0a9295964ee82a10f7e18c4344f5e4c02bd85d02561", "87f687da6a2651d5067cfec95b854b004e95b70143cbf2369604bb3acbce25ec"]
@@ -842,6 +864,7 @@ py = ["bf92637198836372b520efcba9e020c330123be8ce527e535d185ed4b6f45694", "e7682
 pycares = ["0e81c971236bb0767354f1456e67ab6ae305f248565ce77cd413a311f9572bf5", "11c0ff3ccdb5a838cbd59a4e59df35d31355a80a61393bca786ca3b44569ba10", "170d62bd300999227e64da4fa85459728cc96e62e44780bbc86a915fdae01f78", "36f4c03df57c41a87eb3d642201684eb5a8bc194f4bafaa9f60ee6dc0aef8e40", "371ce688776da984c4105c8ca760cc60944b9b49ccf8335c71dc7669335e6173", "3a2234516f7db495083d8bba0ccdaabae587e62cfcd1b8154d5d0b09d3a48dfc", "3f288586592c697109b2b06e3988b7e17d9765887b5fc367010ee8500cbddc86", "40134cee03c8bbfbc644d4c0bc81796e12dd012a5257fb146c5a5417812ee5f7", "722f5d2c5f78d47b13b0112f6daff43ce4e08e8152319524d14f1f917cc5125e", "7b18fab0ed534a898552df91bc804bd62bb3a2646c11e054baca14d23663e1d6", "8a39d03bd99ea191f86b990ef67ecce878d6bf6518c5cde9173fb34fb36beb5e", "8ea263de8bf1a30b0d87150b4aa0e3203cf93bc1723ea3e7408a7d25e1299217", "943e2dc67ff45ab4c81d628c959837d01561d7e185080ab7a276b8ca67573fb5", "9d56a54c93e64b30c0d31f394d9890f175edec029cd846221728f99263cdee82", "b95b339c11d824f0bb789d31b91c8534916fcbdce248cccce216fa2630bb8a90", "bbfd9aba1e172cd2ab7b7142d49b28cf44d6451c4a66a870aff1dc3cb84849c7", "d8637bcc2f901aa61ec1d754abc862f9f145cb0346a0249360df4c159377018e", "e2446577eeea79d2179c9469d9d4ce3ab8a07d7985465c3cb91e7d74abc329b6", "e72fa163f37ae3b09f143cc6690a36f012d13e905d142e1beed4ec0e593ff657", "f32b7c63094749fbc0c1106c9a785666ec8afd49ecfe7002a30bb7c42e62b47c", "f50be4dd53f009cfb4b98c3c6b240e18ff9b17e3f1c320bd594bb83eddabfcb2"]
 pycodestyle = ["74abc4e221d393ea5ce1f129ea6903209940c1ecd29e002e8c6933c2b21026e0", "cbc619d09254895b0d12c2c691e237b2e91e9b2ecf5e84c26b35400f93dcfb83", "cbfca99bd594a10f674d0cd97a3d802a1fdef635d4361e1a2658de47ed261e3a"]
 pyflakes = ["9a7662ec724d0120012f6e29d6248ae3727d821bba522a0e6b356eff19126a49", "f661252913bc1dbe7fcfcbf0af0db3f42ab65aabd1a6ca68fe5d466bace94dae"]
+pyparsing = ["40856e74d4987de5d01761a22d1621ae1c7f8774585acae358aa5c5936c6c90b", "f353aab21fd474459d97b709e527b5571314ee5f067441dc9f88e33eecd96592"]
 pytest = ["630ff1dbe04f469ee78faa5660f712e58b953da7df22ea5d828c9012e134da43", "a2b5232735dd0b736cbea9c0f09e5070d78fcaba2823a4f6f09d9a81bd19415c"]
 pytest-asyncio = ["a962e8e1b6ec28648c8fe214edab4e16bacdb37b52df26eb9d63050af309b2a9", "fbd92c067c16111174a1286bfb253660f1e564e5146b39eeed1133315cf2c2cf"]
 pytest-cov = ["513c425e931a0344944f84ea47f3956be0e416d95acbd897a44970c8d926d5d7", "e360f048b7dae3f2f2a9a4d067b2dd6b6a015d384d1577c994a43f3f7cbad762"]
@@ -849,7 +872,7 @@ pytest-flake8 = ["4f30f5be3efb89755f38f11bdb2a5e22d19a6f5faa73428f703a3292a9572c
 pytest-forked = ["e4500cd0509ec4a26535f7d4112a8cc0f17d3a41c29ffd4eab479d2a55b30805", "f275cb48a73fc61a6710726348e1da6d68a978f0ec0c54ece5a5fae5977e5a08"]
 pytest-mock = ["53801e621223d34724926a5c98bd90e8e417ce35264365d39d6c896388dcc928", "d89a8209d722b8307b5e351496830d5cc5e192336003a485443ae9adeb7dd4c0"]
 pytest-mypy = ["8f6436eed8118afd6c10a82b3b60fb537336736b0fd7a29262a656ac42ce01ac", "acc653210e7d8d5c72845a5248f00fd33f4f3379ca13fe56cfc7b749b5655c3e"]
-pytest-sugar = ["ab8cc42faf121344a4e9b13f39a51257f26f410e416c52ea11078cdd00d98a2c"]
+pytest-sugar = ["26cf8289fe10880cbbc130bd77398c4e6a8b936d8393b116a5c16121d95ab283", "fcd87a74b2bce5386d244b49ad60549bfbc4602527797fac167da147983f58ab"]
 pytest-vcr = ["13f2e24ab4b8674e012ca23df50e34f0b322a8b8cf8aa80f2b432ae95a92e298", "b3d1f0a470e172a5f8ef60b3f1daf3ff1ff60a43280a9cdfb24a8c53e3e9c12c"]
 pytest-xdist = ["3bc9dcb6ff47e607d3c710727cd9996fd7ac1466d405c3b40bb495da99b6b669", "8e188d13ce6614c7a678179a76f46231199ffdfe6163de031c17e62ffa256917"]
 python-dateutil = ["063df5763652e21de43de7d9e00ccf239f953a832941e37be541614732cdfc93", "88f9287c0174266bb0d8cedd395cfba9c58e87e5ad86b2ce58859bc11be3cf02"]

@@ -5,13 +5,12 @@ from typing import cast, Any
 import discord
 import logging
 
-from configparser import ConfigParser
-
 from discord.ext import commands
 from discord.ext.commands import Group
 from botus_receptus import formatting, checks, DblBot
 from botus_receptus.gino import Bot
 
+from .config import Config
 from .exceptions import (
     DoNotUnderstandError,
     BibleNotSupportedError,
@@ -50,9 +49,11 @@ You can look up all verses in a message one of two ways:
 
 
 class Erasmus(Bot[Context], DblBot[Context]):
+    config: Config
+
     context_cls = Context
 
-    def __init__(self, config: ConfigParser, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
         kwargs['formatter'] = HelpFormatter()
         kwargs['description'] = description
 

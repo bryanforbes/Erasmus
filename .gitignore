@@ -10,5 +10,6 @@ __pycache__/
 .testmondata
 config.json
 config.ini
+config.toml
 *.pyc
 /erasmus.log

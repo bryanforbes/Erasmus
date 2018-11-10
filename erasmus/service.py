@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import List, Generic, TypeVar, Dict, Any, Optional
 from abc import abstractmethod
-from configparser import SectionProxy
 from botus_receptus import re
 import asyncio
 import aiohttp
@@ -26,11 +25,11 @@ log = logging.getLogger(__name__)
 
 
 class Service(Generic[RT]):
-    config: Optional[SectionProxy]
+    config: Optional[Dict[str, Any]]
     session: aiohttp.ClientSession
 
     def __init__(
-        self, config: Optional[SectionProxy], session: aiohttp.ClientSession
+        self, config: Optional[Dict[str, Any]], session: aiohttp.ClientSession
     ) -> None:
         self.config = config
         self.session = session

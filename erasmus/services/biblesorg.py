@@ -47,7 +47,7 @@ class BiblesOrg(Service[Dict[str, Any]]):
 
         if self.config:
             self._auth = BasicAuth(
-                login=self.config.get('api_key'), password='X', encoding='latin1'
+                login=self.config.get('api_key', ''), password='X', encoding='latin1'
             )
 
     async def _process_response(self, response: ClientResponse) -> Dict[str, Any]:

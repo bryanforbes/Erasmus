@@ -1,5 +1,4 @@
 import pytest
-from configparser import ConfigParser
 from erasmus.service_manager import ServiceManager
 from erasmus.data import VerseRange, Passage
 
@@ -32,9 +31,7 @@ class TestServiceManager(object):
 
     @pytest.fixture
     def config(self):
-        config = ConfigParser(default_section='erasmus')
-        config['services:ServiceTwo'] = {'api_key': 'foo bar baz'}
-        return config
+        return {'services': {'ServiceTwo': {'api_key': 'foo bar baz'}}}
 
     @pytest.fixture
     def bible1(self, MockBible):
@@ -64,7 +61,9 @@ class TestServiceManager(object):
             type(manager.service_map['ServiceOne'])
             == services['ServiceOne'].side_effect
         )
-        assert manager.service_map['ServiceTwo'].config is config['services:ServiceTwo']
+        assert (
+            manager.service_map['ServiceTwo'].config is config['services']['ServiceTwo']
+        )
         assert (
             type(manager.service_map['ServiceTwo'])
             == services['ServiceTwo'].side_effect

@@ -1,7 +1,7 @@
 import pytest
 
+import toml
 from pathlib import Path
-from configparser import ConfigParser
 from . import ServiceTest, Galatians_3_10_11, Mark_5_1
 
 from erasmus.services import BiblesOrg
@@ -54,11 +54,12 @@ class TestBiblesOrg(ServiceTest):
     def passage_data(self, request):
         return request.param
 
-    @pytest.fixture
+    @pytest.fixture(scope="class")
     def config(self):
-        parser = ConfigParser(default_section='bot')
-        parser.read(str(Path(__file__).resolve().parent.parent.parent / 'config.ini'))
-        return parser['services:BiblesOrg']
+        config = toml.load(
+            str(Path(__file__).resolve().parent.parent.parent / 'config.toml')
+        )
+        return config['bot']['services']['BiblesOrg']
 
     @pytest.fixture
     def default_version(self):

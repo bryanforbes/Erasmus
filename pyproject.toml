@@ -14,7 +14,7 @@ cchardet = "^2.1"
 uvloop = "^0.11.3"
 psycopg2 = "^2.7"
 ujson = "^1.35"
-"botus_receptus" = {rev = "54cbfae249ed8cf50858690033fbc59932813bd7", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino"]}
+"botus_receptus" = {rev = "fc00cac89bff43e260763e1ed4bd3ce191c1aba5", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino"]}
 
 [tool.poetry.dev-dependencies]
 asynctest = "^0.12.2"
