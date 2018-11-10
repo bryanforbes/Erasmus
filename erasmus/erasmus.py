@@ -11,22 +11,7 @@ from botus_receptus import formatting, checks, DblBot
 from botus_receptus.gino import Bot
 
 from .config import Config
-from .exceptions import (
-    DoNotUnderstandError,
-    BibleNotSupportedError,
-    ServiceNotSupportedError,
-    BookNotUnderstoodError,
-    ReferenceNotUnderstoodError,
-    BookNotInVersionError,
-    NoUserVersionError,
-    InvalidVersionError,
-    NoSectionError,
-    NoSectionsError,
-    InvalidConfessionError,
-    ServiceTimeout,
-    ServiceLookupTimeout,
-    ServiceSearchTimeout,
-)
+from .exceptions import ErasmusError
 from .context import Context
 from .format import HelpFormatter
 
@@ -93,8 +78,6 @@ class Erasmus(Bot[Context], DblBot[Context]):
         log.info('Erasmus ready. Logged in as %s %s', user.name, user.id)
 
     async def on_command_error(self, ctx: Context, exc: Exception) -> None:
-        message = 'An error occurred'
-
         if (
             isinstance(
                 exc,
@@ -108,41 +91,13 @@ class Erasmus(Bot[Context], DblBot[Context]):
         ):
             exc = cast(Exception, exc.__cause__)
 
-        if isinstance(exc, BookNotUnderstoodError):
-            message = f'I do not understand the book "{exc.book}"'
-        if isinstance(exc, BookNotInVersionError):
-            message = f'{exc.version} does not contain {exc.book}'
-        elif isinstance(exc, DoNotUnderstandError):
-            message = 'I do not understand that request'
-        elif isinstance(exc, ReferenceNotUnderstoodError):
-            message = f'I do not understand the reference "{exc.reference}"'
-        elif isinstance(exc, BibleNotSupportedError):
-            message = f'`{ctx.prefix}{exc.version}` is not supported'
-        elif isinstance(exc, NoUserVersionError):
-            message = (
-                f'You must first set your default version with `{ctx.prefix}setversion`'
-            )
-        elif isinstance(exc, InvalidVersionError):
-            message = (
-                f'`{exc.version}` is not a valid version. Check `{ctx.prefix}'
-                'versions` for valid versions'
-            )
-        elif isinstance(exc, InvalidConfessionError):
-            message = f'`{exc.confession}` is not a valid confession.'
-        elif isinstance(exc, NoSectionError):
-            message = (
-                f'`{exc.confession}` does not have '
-                f'{"an" if exc.section_type == "article" else "a"}'
-                f'{exc.section_type} `{exc.section}`'
-            )
-        elif isinstance(exc, NoSectionsError):
-            message = f'`{exc.confession}` has no {exc.section_type}'
-        elif isinstance(exc, ServiceNotSupportedError):
-            message = (
-                f'The service configured for '
-                f'`{self.default_prefix}{ctx.invoked_with}` is not supported'
-            )
-        elif isinstance(exc, commands.NoPrivateMessage):
+        if isinstance(exc, ErasmusError):
+            # All of these are handled in their respective cogs
+            return
+
+        message = 'An error occurred'
+
+        if isinstance(exc, commands.NoPrivateMessage):
             message = 'This command is not available in private messages'
         elif isinstance(exc, commands.CommandOnCooldown):
             message = ''
@@ -158,16 +113,6 @@ class Erasmus(Bot[Context], DblBot[Context]):
             message = 'This command is only available in private messages'
         elif isinstance(exc, commands.MissingRequiredArgument):
             message = f'The required argument `{exc.param.name}` is missing'
-        elif isinstance(exc, ServiceTimeout):
-            if isinstance(exc, ServiceLookupTimeout):
-                message = (
-                    f'The request timed out looking up {exc.verses} in {exc.bible.name}'
-                )
-            elif isinstance(exc, ServiceSearchTimeout):
-                message = (
-                    f'The request timed out searching for '
-                    f'"{" ".join(exc.terms)}" in {exc.bible.name}'
-                )
         else:
             if ctx.command is None:
                 qualified_name = 'NO COMMAND'

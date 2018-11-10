@@ -8,25 +8,29 @@ if TYPE_CHECKING:
     from .db.bible import BibleVersion
 
 
-class DoNotUnderstandError(Exception):
+class ErasmusError(Exception):
     pass
 
 
-class BibleNotSupportedError(Exception):
+class DoNotUnderstandError(ErasmusError):
+    pass
+
+
+class BibleNotSupportedError(ErasmusError):
     version: str
 
     def __init__(self, version: str) -> None:
         self.version = version
 
 
-class BookNotUnderstoodError(Exception):
+class BookNotUnderstoodError(ErasmusError):
     book: str
 
     def __init__(self, book: str) -> None:
         self.book = book
 
 
-class BookNotInVersionError(Exception):
+class BookNotInVersionError(ErasmusError):
     book: str
     version: str
 
@@ -35,21 +39,21 @@ class BookNotInVersionError(Exception):
         self.version = version
 
 
-class ReferenceNotUnderstoodError(Exception):
+class ReferenceNotUnderstoodError(ErasmusError):
     reference: str
 
     def __init__(self, reference: str) -> None:
         self.reference = reference
 
 
-class ServiceNotSupportedError(Exception):
+class ServiceNotSupportedError(ErasmusError):
     service_name: str
 
     def __init__(self, service_name: str) -> None:
         self.service_name = service_name
 
 
-class ServiceTimeout(Exception):
+class ServiceTimeout(ErasmusError):
     bible: BibleVersion
 
     def __init__(self, bible: BibleVersion) -> None:
@@ -72,25 +76,25 @@ class ServiceSearchTimeout(ServiceTimeout):
         self.terms = terms
 
 
-class NoUserVersionError(Exception):
+class NoUserVersionError(ErasmusError):
     pass
 
 
-class InvalidVersionError(Exception):
+class InvalidVersionError(ErasmusError):
     version: str
 
     def __init__(self, version: str) -> None:
         self.version = version
 
 
-class InvalidConfessionError(Exception):
+class InvalidConfessionError(ErasmusError):
     confession: str
 
     def __init__(self, confession: str) -> None:
         self.confession = confession
 
 
-class NoSectionError(Exception):
+class NoSectionError(ErasmusError):
     confession: str
     section: str
 
@@ -100,7 +104,7 @@ class NoSectionError(Exception):
         self.section_type = section_type
 
 
-class NoSectionsError(Exception):
+class NoSectionsError(ErasmusError):
     confession: str
     section_type: str
 

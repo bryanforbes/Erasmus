@@ -5,14 +5,26 @@ from typing import cast, Optional
 import attr
 import discord
 from discord.ext import commands
-from botus_receptus.formatting import pluralizer
+from botus_receptus.formatting import pluralizer, escape
 from botus_receptus.db import UniqueViolationError
 from botus_receptus import checks
 
 from ..db.bible import BibleVersion
 from ..data import VerseRange, get_book, get_book_mask
 from ..service_manager import ServiceManager
-from ..exceptions import BookNotInVersionError
+from ..exceptions import (
+    BookNotUnderstoodError,
+    BookNotInVersionError,
+    DoNotUnderstandError,
+    ReferenceNotUnderstoodError,
+    BibleNotSupportedError,
+    NoUserVersionError,
+    InvalidVersionError,
+    ServiceNotSupportedError,
+    ServiceTimeout,
+    ServiceLookupTimeout,
+    ServiceSearchTimeout,
+)
 from ..erasmus import Erasmus
 from ..context import Context
 
@@ -131,6 +143,60 @@ class Bible(object):
                     await self._lookup(ctx, bible, verse_range)
                 except Exception as exc:
                     await self.bot.on_command_error(ctx, exc)
+
+    async def __error(self, ctx: Context, error: Exception) -> None:
+        if (
+            isinstance(
+                error,
+                (
+                    commands.CommandInvokeError,
+                    commands.BadArgument,
+                    commands.ConversionError,
+                ),
+            )
+            and error.__cause__ is not None
+        ):
+            error = cast(Exception, error.__cause__)
+
+        if isinstance(error, BookNotUnderstoodError):
+            message = f'I do not understand the book "{error.book}"'
+        elif isinstance(error, BookNotInVersionError):
+            message = f'{error.version} does not contain {error.book}'
+        elif isinstance(error, DoNotUnderstandError):
+            message = 'I do not understand that request'
+        elif isinstance(error, ReferenceNotUnderstoodError):
+            message = f'I do not understand the reference "{error.reference}"'
+        elif isinstance(error, BibleNotSupportedError):
+            message = f'`{ctx.prefix}{error.version}` is not supported'
+        elif isinstance(error, NoUserVersionError):
+            message = (
+                f'You must first set your default version with `{ctx.prefix}setversion`'
+            )
+        elif isinstance(error, InvalidVersionError):
+            message = (
+                f'`{error.version}` is not a valid version. Check '
+                '`{ctx.prefix}versions` for valid versions'
+            )
+        elif isinstance(error, ServiceNotSupportedError):
+            message = (
+                f'The service configured for '
+                f'`{self.bot.default_prefix}{ctx.invoked_with}` is not supported'
+            )
+        elif isinstance(error, ServiceTimeout):
+            if isinstance(error, ServiceLookupTimeout):
+                message = (
+                    f'The request timed out looking up {error.verses} in '
+                    + error.bible.name
+                )
+            elif isinstance(error, ServiceSearchTimeout):
+                message = (
+                    f'The request timed out searching for '
+                    f'"{" ".join(error.terms)}" in {error.bible.name}'
+                )
+        else:
+            raise error
+
+        await ctx.send_error(escape(message, mass_mentions=True))
 
     @commands.command(
         aliases=[''],

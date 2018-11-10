@@ -1,8 +1,9 @@
 from __future__ import annotations
 
-from typing import List, Callable, Sequence, Any, Match, Optional, AsyncIterator
+from typing import List, Callable, Sequence, Any, Match, Optional, AsyncIterator, cast
 
 import attr
+
 from discord.ext import commands
 from botus_receptus.formatting import (
     pluralizer,
@@ -10,6 +11,7 @@ from botus_receptus.formatting import (
     bold,
     underline,
     EmbedPaginator,
+    escape,
 )
 from botus_receptus import re
 
@@ -22,6 +24,7 @@ from ..format import int_to_roman, roman_to_int
 
 from ..erasmus import Erasmus
 from ..context import Context
+from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 
 pluralize_match = pluralizer('match', 'es')
 
@@ -115,6 +118,35 @@ Examples:
 @attr.s(slots=True, auto_attribs=True)
 class Confession(object):
     bot: Erasmus
+
+    async def __error(self, ctx: Context, error: Exception) -> None:
+        if (
+            isinstance(
+                error,
+                (
+                    commands.CommandInvokeError,
+                    commands.BadArgument,
+                    commands.ConversionError,
+                ),
+            )
+            and error.__cause__ is not None
+        ):
+            error = cast(Exception, error.__cause__)
+
+        if isinstance(error, InvalidConfessionError):
+            message = f'`{error.confession}` is not a valid confession.'
+        elif isinstance(error, NoSectionError):
+            message = (
+                f'`{error.confession}` does not have '
+                f'{"an" if error.section_type == "article" else "a"} '
+                f'{error.section_type} `{error.section}`'
+            )
+        elif isinstance(error, NoSectionsError):
+            message = f'`{error.confession}` has no {error.section_type}'
+        else:
+            raise error
+
+        await ctx.send_error(escape(message, mass_mentions=True))
 
     @commands.command(brief='Query confessions and catechisms', help=confess_help)
     @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
