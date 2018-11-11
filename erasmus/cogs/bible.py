@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import cast, Optional
+from typing import Optional, cast
 
 import attr
 import discord

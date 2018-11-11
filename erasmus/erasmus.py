@@ -17,7 +17,7 @@ from .format import HelpFormatter
 
 log = logging.getLogger(__name__)
 
-extensions = ('erasmus.cogs.bible', 'erasmus.cogs.confession')
+extensions = ('bible', 'confession', 'creeds')
 
 
 description = '''
@@ -49,7 +49,7 @@ class Erasmus(Bot[Context], DblBot[Context]):
 
         for extension in extensions:
             try:
-                self.load_extension(extension)
+                self.load_extension(f'erasmus.cogs.{extension}')
             except Exception:
                 log.exception('Failed to load extension %s.', extension)
 
