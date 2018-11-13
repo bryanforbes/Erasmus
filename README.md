@@ -1,6 +1,7 @@
 # Erasmus
 
 [![Discord Bots](https://discordbots.org/api/widget/status/349394562336292876.svg?noavatar=true)](https://discordbots.org/bot/349394562336292876) [![Discord Bots](https://discordbots.org/api/widget/servers/349394562336292876.svg?noavatar=true)](https://discordbots.org/bot/349394562336292876) [![Discord Bots](https://discordbots.org/api/widget/upvotes/349394562336292876.svg?noavatar=true)](https://discordbots.org/bot/349394562336292876) [![Discord Bots](https://discordbots.org/api/widget/lib/349394562336292876.svg?noavatar=true)](https://discordbots.org/bot/349394562336292876)
+[![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
 
 A Bible bot for Discord
 
