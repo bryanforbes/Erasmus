@@ -9,18 +9,18 @@ A Bible bot for Discord
 
 # Setup
 
+Ensure that [Poetry](https://poetry.eustace.io/) is installed
+
 ## Running
 
 ```
-python3.6 -m venv venv
-source venv/bin/activate
-pip install --process-dependency-links -r requirements/run.txt
+poetry install --no-dev
+poetry run erasmus
 ```
 
 ## Development
 
 ```
-python3.6 -m venv venv
-source venv/bin/activate
-pip install -U --process-depenency-links -r requirements/dev.txt
+poetry install
+poetry run erasmus
 ```
