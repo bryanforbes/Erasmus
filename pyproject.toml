@@ -14,7 +14,7 @@ cchardet = "^2.1"
 uvloop = "^0.11.3"
 psycopg2 = "^2.7"
 ujson = "^1.35"
-"botus_receptus" = {rev = "fc00cac89bff43e260763e1ed4bd3ce191c1aba5", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino"]}
+"botus_receptus" = {rev = "f1371614e284cce4c65828956644b004869c0199", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino"]}
 
 [tool.poetry.dev-dependencies]
 asynctest = "^0.12.2"
@@ -24,16 +24,16 @@ flake8-bugbear = "^18.8"
 flake8-per-file-ignores = "^0.6.0"
 mypy = "^0.641.0"
 pre-commit = "^1.12"
-pytest = "^3.9"
+pytest = "^4.0"
 pytest-asyncio = "^0.9.0"
 pytest-cov = "^2.6"
 pytest-flake8 = "^1.0"
 pytest-mock = "^1.10"
 pytest-mypy = "^0.3.2"
 pytest-sugar = "^0.9.1"
-pytest-vcr = "^0.3.0"
+pytest-vcr = "^1.0.0"
 pytest-xdist = "^1.24"
-"gino-stubs" = {rev = "7b91ab9e6f4965f1a1199bb1e47f6105299c7774", git = "https://github.com/bryanforbes/gino-stubs.git"}
+"gino-stubs" = {rev = "3abbb37450f28445b067afd98629f8918655f88c", git = "https://github.com/bryanforbes/gino-stubs.git"}
 "sqlalchemy-stubs" = {rev = "8b45fc4345778e3f08e8a3b53ff71aaaa775e632", git = "https://github.com/dropbox/sqlalchemy-stubs.git"}
 
 [tool.poetry.scripts]
