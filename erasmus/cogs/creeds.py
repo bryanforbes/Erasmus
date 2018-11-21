@@ -172,7 +172,7 @@ nicene_381_text = (
 class Creeds(object):
     bot: Erasmus
 
-    @commands.command()
+    @commands.command(brief='List the supported creeds')
     async def creeds(self, ctx: Context) -> None:
         prefix = ctx.prefix
         await ctx.send_embed(
