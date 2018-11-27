@@ -100,8 +100,8 @@ class Bible(object):
         self.service_manager = ServiceManager.from_config(
             self.bot.config, self.bot.session
         )
-        self._user_cooldown = commands.CooldownMapping(
-            commands.Cooldown(rate=8, per=60.0, type=commands.BucketType.user)
+        self._user_cooldown = commands.CooldownMapping.from_cooldown(
+            8, 60.0, commands.BucketType.user
         )
 
         # Share cooldown across commands
@@ -124,10 +124,18 @@ class Bible(object):
         if len(verse_ranges) == 0:
             return
 
+        bucket = self._user_cooldown.get_bucket(ctx.message)
+        retry_after = bucket.update_rate_limit()
+        if retry_after:
+            raise commands.CommandOnCooldown(bucket, retry_after)
+
         async with ctx.typing():
             user_bible = await BibleVersion.get_for_user(ctx.author.id)
 
-            for verse_range in verse_ranges:
+            for i, verse_range in enumerate(verse_ranges):
+                if i > 0:
+                    bucket.update_rate_limit()
+
                 bible: Optional[BibleVersion] = None
 
                 try:
