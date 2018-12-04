@@ -4,6 +4,7 @@ from typing import cast, Any
 
 import discord
 import logging
+import pendulum  # type: ignore
 
 from discord.ext import commands
 from discord.ext.commands import Group
@@ -108,7 +109,8 @@ class Erasmus(Bot[Context], DblBot[Context]):
                     f'`{ctx.prefix}{ctx.invoked_with}` has been used too many '
                     'times in this channel.'
                 )
-            message = f'{message} You can retry again in {exc.retry_after:.2f} seconds.'
+            retry_period = pendulum.now().add(seconds=int(exc.retry_after)).diff()
+            message = f'{message} You can retry again in {retry_period.in_words()}.'
         elif isinstance(exc, checks.OnlyDirectMessage):
             message = 'This command is only available in private messages'
         elif isinstance(exc, commands.MissingRequiredArgument):
