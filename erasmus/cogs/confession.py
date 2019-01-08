@@ -317,15 +317,11 @@ class Confession(object):
                 title = underline(
                     bold(f'{question_number_str}. {question.question_text}')
                 )
-                output_str = '{answer_text}'
+                output = f'{question.answer_text}'
             elif q_or_a.lower() == 'q':
-                output_str = '**Q{question_number_str}**. {question.question_text}'
+                output = f'**Q{question_number_str}**. {question.question_text}'
             else:
-                output_str = '**A{question_number_str}**: {question.answer_text}'
-
-            output = output_str.format(
-                question_number_str=question_number_str, question=question
-            )
+                output = f'**A{question_number_str}**: {question.answer_text}'
 
         elif confession.type == ConfessionTypeEnum.ARTICLES:
             if match['article_roman']:
