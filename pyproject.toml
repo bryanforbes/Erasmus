@@ -14,19 +14,22 @@ cchardet = "^2.1"
 uvloop = "^0.11.3"
 psycopg2 = "^2.7"
 ujson = "^1.35"
-"botus_receptus" = {rev = "981f8ec9d6d29c425c23b4eaa974618e755bd994", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino"]}
-pendulum = "^2.0"
+"botus_receptus" = {rev = "2b7b6a211791c24cb0c01a2a6f38b01a103b25ae", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed"]}
+pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
+gino-stubs = {rev = "be25999f90d84e1d29d14fec3cc6dae5259827ce", git = "https://github.com/bryanforbes/gino-stubs.git"}
+sqlalchemy-stubs = {rev = "d05a736c8a4cbd6ac0a1a1d8ddb805435df9adc9", git = "https://github.com/dropbox/sqlalchemy-stubs.git"}
+more_itertools = "^5.0"
 
 [tool.poetry.dev-dependencies]
 asynctest = "^0.12.2"
 black = "^18.3-alpha.0"
 flake8 = "^3.6"
 flake8-bugbear = "^18.8"
-flake8-per-file-ignores = "^0.6.0"
-mypy = "^0.641.0"
+flake8-per-file-ignores = "^0.7.0"
+mypy = "^0.650"
 pre-commit = "^1.12"
 pytest = "^4.0"
-pytest-asyncio = "^0.9.0"
+pytest-asyncio = "^0.10.0"
 pytest-cov = "^2.6"
 pytest-flake8 = "^1.0"
 pytest-mock = "^1.10"
@@ -34,8 +37,6 @@ pytest-mypy = "^0.3.2"
 pytest-sugar = "^0.9.1"
 pytest-vcr = "^1.0.0"
 pytest-xdist = "^1.24"
-"gino-stubs" = {rev = "3abbb37450f28445b067afd98629f8918655f88c", git = "https://github.com/bryanforbes/gino-stubs.git"}
-"sqlalchemy-stubs" = {rev = "8b45fc4345778e3f08e8a3b53ff71aaaa775e632", git = "https://github.com/dropbox/sqlalchemy-stubs.git"}
 
 [tool.poetry.scripts]
 erasmus = 'erasmus.run:main'

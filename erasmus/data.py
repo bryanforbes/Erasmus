@@ -5,8 +5,8 @@ import attr
 from pathlib import Path
 from itertools import chain
 from mypy_extensions import TypedDict
+from more_itertools import unique_everseen
 from botus_receptus import re
-from botus_receptus.util import unique_seen
 from .json import load
 from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
 
@@ -30,7 +30,7 @@ _book_re = re.compile(
     re.named_group('book')(
         re.either(
             *re.escape_all(
-                unique_seen(
+                unique_everseen(
                     chain.from_iterable(
                         [
                             [book['name'], book['osis']] + book['alt']

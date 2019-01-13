@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import List, Iterable, Tuple
 from discord.ext import commands
-from botus_receptus.util import unique_seen
+from more_itertools import unique_everseen
 
 _roman_pairs = tuple(
     zip(
@@ -42,7 +42,7 @@ class HelpFormatter(commands.HelpFormatter):
 
     async def filter_command_list(self) -> Iterable[Tuple[str, commands.Command]]:
         iterable = await super().filter_command_list()
-        return unique_seen(iterable, lambda x: x[1])
+        return unique_everseen(iterable, lambda x: x[1])
 
     async def format(self) -> List[str]:
         self._paginator = commands.Paginator()

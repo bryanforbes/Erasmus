@@ -120,10 +120,7 @@ class Bible(object):
             raise commands.CommandOnCooldown(bucket, retry_after)
 
         verse_ranges = VerseRange.get_all_from_string(
-            message.content,
-            only_bracketed=not cast(discord.ClientUser, self.bot.user).mentioned_in(
-                message
-            ),
+            message.content, only_bracketed=not self.bot.user.mentioned_in(message)
         )
 
         if len(verse_ranges) == 0:

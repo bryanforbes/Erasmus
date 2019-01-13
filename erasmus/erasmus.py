@@ -4,7 +4,7 @@ from typing import cast, Any
 
 import discord
 import logging
-import pendulum  # type: ignore
+import pendulum
 
 from discord.ext import commands
 from discord.ext.commands import Group
@@ -75,7 +75,7 @@ class Erasmus(Bot[Context], DblBot[Context]):
             activity=discord.Game(name=f'| {self.default_prefix}help')
         )
 
-        user = cast(discord.ClientUser, self.user)
+        user = self.user
         log.info('Erasmus ready. Logged in as %s %s', user.name, user.id)
 
     async def on_command_error(self, ctx: Context, exc: Exception) -> None:
