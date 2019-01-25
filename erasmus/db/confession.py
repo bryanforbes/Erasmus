@@ -55,7 +55,7 @@ class Paragraph(Base):
 
     id = db.Column(db.Integer, primary_key=True)
     confess_id = db.Column(db.Integer, db.ForeignKey('confessions.id'), nullable=False)
-    chapter_number = db.Column(db.Integer)
+    chapter_number = db.Column(db.Integer, nullable=False)
     paragraph_number = db.Column(db.Integer, nullable=False)
     text = db.Column(db.Text, nullable=False)
 

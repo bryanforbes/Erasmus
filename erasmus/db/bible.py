@@ -10,13 +10,13 @@ class BibleVersion(Base):
     __tablename__ = 'bible_versions'
 
     id = db.Column(db.Integer, primary_key=True)
-    command = db.Column(db.String, unique=True)
-    name = db.Column(db.String)
-    abbr = db.Column(db.String)
-    service = db.Column(db.String)
-    service_version = db.Column(db.String)
+    command = db.Column(db.String, unique=True, nullable=False)
+    name = db.Column(db.String, nullable=False)
+    abbr = db.Column(db.String, nullable=False)
+    service = db.Column(db.String, nullable=False)
+    service_version = db.Column(db.String, nullable=False)
     rtl = db.Column(db.Boolean)
-    books = db.Column(db.BigInteger)
+    books = db.Column(db.BigInteger, nullable=False)
 
     async def set_for_user(self, user_id: int) -> None:
         await create_or_update(
