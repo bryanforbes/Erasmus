@@ -13,7 +13,7 @@ def get(obj: Any, key: str, fallback: Any = None) -> Any:
                 obj = obj[part]
             else:
                 return fallback
-        except (KeyError, TypeError):
+        except (KeyError, TypeError, IndexError):
             return fallback
 
     return obj

@@ -1,16 +1,18 @@
 from __future__ import annotations
 
-from typing import Optional, cast
+from typing import Any, Optional, Tuple, List, Dict, cast
 
 import attr
 import discord
 from discord.ext import commands
-from botus_receptus.formatting import pluralizer, escape
+from botus_receptus.formatting import escape
 from botus_receptus.db import UniqueViolationError
+from botus_receptus.interactive_pager import InteractiveFieldPager, FieldPageSource
 from botus_receptus import checks
+from functools import partial
 
 from ..db.bible import BibleVersion
-from ..data import VerseRange, get_book, get_book_mask
+from ..data import VerseRange, get_book, get_book_mask, SearchResults, Passage
 from ..service_manager import ServiceManager
 from ..exceptions import (
     BookNotUnderstoodError,
@@ -28,7 +30,54 @@ from ..exceptions import (
 from ..erasmus import Erasmus
 from ..context import Context
 
-pluralize_match = pluralizer('match', 'es')
+
+@attr.s(slots=True, auto_attribs=True)
+class SearchPageSource(FieldPageSource[Passage]):
+    search_func: Any
+    cache: Dict[int, List[Passage]] = attr.ib(init=False, factory=dict)
+
+    async def get_page_items(self, page: int) -> List[Passage]:
+        if page in self.cache:
+            return self.cache[page]
+
+        results: SearchResults = await self.search_func(
+            offset=(page - 1) * self.per_page
+        )
+
+        self.cache[page] = results.verses
+
+        return results.verses
+
+    def format_entry(  # type: ignore
+        self, index: int, entry: Passage
+    ) -> Tuple[str, str]:
+        return str(entry.range), entry.text
+
+    @staticmethod
+    def create(
+        initial_results: SearchResults,
+        search_func: Any,
+        per_page: int,
+        *,
+        show_entry_count: bool = False,
+    ) -> SearchPageSource:
+        fetcher = SearchPageSource(
+            search_func=search_func,
+            total=initial_results.total,
+            per_page=per_page,
+            show_entry_count=show_entry_count,
+        )
+
+        if len(initial_results.verses) == initial_results.total:
+            for page in range(0, fetcher.max_pages):
+                page_start = page * per_page
+                fetcher.cache[page + 1] = initial_results.verses[
+                    page_start : page_start + per_page
+                ]
+        else:
+            fetcher.cache[1] = initial_results.verses
+
+        return fetcher
 
 
 lookup_help = '''
@@ -330,26 +379,24 @@ class Bible(object):
             raise BookNotInVersionError(reference.book, bible.name)
 
         if reference is not None:
-            passage = await self.service_manager.get_passage(bible, reference)
+            passage = await self.service_manager.get_passage(
+                cast(Any, bible), reference
+            )
             await ctx.send_passage(passage)
         else:
             await ctx.send_error(f'I do not understand the request `${reference}`')
 
     async def _search(self, ctx: Context, bible: BibleVersion, *terms: str) -> None:
+        search = partial(self.service_manager.search, bible, list(terms), limit=5)
         async with ctx.typing():
-            results = await self.service_manager.search(bible, list(terms))
-            matches = pluralize_match(results.total)
-            output = f'I have found {matches} to your search'
+            initial_results: SearchResults = await search(offset=0)
 
-            if results.total > 0:
-                verses = '\n'.join([f'- {verse}' for verse in results.verses])
-                if results.total <= 20:
-                    output = f'{output}:\n\n{verses}'
-                else:
-                    limit = pluralize_match(20)
-                    output = f'{output}. Here are the first {limit}:\n\n{verses}'
-
-            await ctx.send_embed(output)
+        if initial_results.total > 0:
+            fetcher = SearchPageSource.create(initial_results, search, 5)
+            paginator = InteractiveFieldPager.create(ctx, fetcher)
+            await paginator.paginate()
+        else:
+            await ctx.send_embed('I found 0 results')
 
     def _add_bible_commands(self, command: str, name: str) -> None:
         lookup = self.bot.command(

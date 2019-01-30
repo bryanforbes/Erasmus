@@ -1,0 +1,265 @@
+interactions:
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://bibles.org/v2/verses.js?keyword=faith&precision=all&version=eng-NASB&sort_order=canonical&limit=20&offset=0
+  response:
+    body: {string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"faith","start":1,"total":417,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[],"verses":[{"auditid":"0","verse":"9","lastverse":"9","id":"eng-NASB:Deut.7.9","osis_end":"eng-NASB:Deut.7.9","label":"Deut.007.009,eng-NASB","reference":"Deuteronomy
+        7:9","prev_osis_id":"Deut.007.008,eng-NASB","next_osis_id":"Deut.007.010,eng-NASB","text":"<sup>9<\/sup>\u201cKnow
+        therefore that the LORD your God, He is God, the <em>faithful<\/em> God, who
+        keeps His covenant and His lovingkindness to a thousandth generation with
+        those who love Him and keep His commandments;","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Deut.7","name":"Deuteronomy
+        7","id":"eng-NASB:Deut.7"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Deut.7.10","name":"Deuteronomy
+        7:10","id":"eng-NASB:Deut.7.10"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Deut.7.8","name":"Deuteronomy
+        7:8","id":"eng-NASB:Deut.7.8"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"4","lastverse":"4","id":"eng-NASB:Deut.32.4","osis_end":"eng-NASB:Deut.32.4","label":"Deut.032.004,eng-NASB","reference":"Deuteronomy
+        32:4","prev_osis_id":"Deut.032.003,eng-NASB","next_osis_id":"Deut.032.005,eng-NASB","text":"<sup>4<\/sup>\u201cThe
+        Rock! His work is perfect,\n\n\nFor all His ways are just;\n\n\nA God of <em>faithfulness<\/em>
+        and without injustice,\n\n\nRighteous and upright is He.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Deut.32","name":"Deuteronomy
+        32","id":"eng-NASB:Deut.32"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Deut.32.5","name":"Deuteronomy
+        32:5","id":"eng-NASB:Deut.32.5"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Deut.32.3","name":"Deuteronomy
+        32:3","id":"eng-NASB:Deut.32.3"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"20","lastverse":"20","id":"eng-NASB:Deut.32.20","osis_end":"eng-NASB:Deut.32.20","label":"Deut.032.020,eng-NASB","reference":"Deuteronomy
+        32:20","prev_osis_id":"Deut.032.019,eng-NASB","next_osis_id":"Deut.032.021,eng-NASB","text":"<sup>20<\/sup>\u201cThen
+        He said, \u2018I will hide My face from them,\n\n\nI will see what their end
+        shall be;\n\n\nFor they are a perverse generation,\n\n\nSons in whom is no
+        <em>faithfulness<\/em>.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Deut.32","name":"Deuteronomy
+        32","id":"eng-NASB:Deut.32"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Deut.32.21","name":"Deuteronomy
+        32:21","id":"eng-NASB:Deut.32.21"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Deut.32.19","name":"Deuteronomy
+        32:19","id":"eng-NASB:Deut.32.19"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"51","lastverse":"51","id":"eng-NASB:Deut.32.51","osis_end":"eng-NASB:Deut.32.51","label":"Deut.032.051,eng-NASB","reference":"Deuteronomy
+        32:51","prev_osis_id":"Deut.032.050,eng-NASB","next_osis_id":"Deut.032.052,eng-NASB","text":"<sup>51<\/sup>because
+        you broke <em>faith<\/em> with Me in the midst of the sons of Israel at the
+        waters of Meribah-kadesh, in the wilderness of Zin, because you did not treat
+        Me as holy in the midst of the sons of Israel.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Deut.32","name":"Deuteronomy
+        32","id":"eng-NASB:Deut.32"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Deut.32.52","name":"Deuteronomy
+        32:52","id":"eng-NASB:Deut.32.52"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Deut.32.50","name":"Deuteronomy
+        32:50","id":"eng-NASB:Deut.32.50"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"10","lastverse":"10","id":"eng-NASB:Gen.32.10","osis_end":"eng-NASB:Gen.32.10","label":"Gen.032.010,eng-NASB","reference":"Genesis
+        32:10","prev_osis_id":"Gen.032.009,eng-NASB","next_osis_id":"Gen.032.011,eng-NASB","text":"<sup>10<\/sup>I
+        am unworthy of all the lovingkindness and of all the <em>faithfulness<\/em>
+        which You have shown to Your servant; for with my staff only I crossed this
+        Jordan, and now I have become two companies.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Gen.32","name":"Genesis
+        32","id":"eng-NASB:Gen.32"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Gen.32.11","name":"Genesis
+        32:11","id":"eng-NASB:Gen.32.11"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Gen.32.9","name":"Genesis
+        32:9","id":"eng-NASB:Gen.32.9"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"29","lastverse":"29","id":"eng-NASB:Gen.47.29","osis_end":"eng-NASB:Gen.47.29","label":"Gen.047.029,eng-NASB","reference":"Genesis
+        47:29","prev_osis_id":"Gen.047.028,eng-NASB","next_osis_id":"Gen.047.030,eng-NASB","text":"<sup>29<\/sup>When
+        the time for Israel to die drew near, he called his son Joseph and said to
+        him, \u201cPlease, if I have found favor in your sight, place now your hand
+        under my thigh and deal with me in kindness and <em>faithfulness<\/em>. Please
+        do not bury me in Egypt,","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Gen.47","name":"Genesis
+        47","id":"eng-NASB:Gen.47"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Gen.47.30","name":"Genesis
+        47:30","id":"eng-NASB:Gen.47.30"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Gen.47.28","name":"Genesis
+        47:28","id":"eng-NASB:Gen.47.28"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"14","lastverse":"14","id":"eng-NASB:Josh.2.14","osis_end":"eng-NASB:Josh.2.14","label":"Josh.002.014,eng-NASB","reference":"Joshua
+        2:14","prev_osis_id":"Josh.002.013,eng-NASB","next_osis_id":"Josh.002.015,eng-NASB","text":"<sup>14<\/sup>So
+        the men said to her, \u201cOur life for yours if you do not tell this business
+        of ours; and it shall come about when the LORD gives us the land that we will
+        deal kindly and <em>faithfully<\/em> with you.\u201d\n\n\nThe Promise to Rahab","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Josh.2","name":"Joshua
+        2","id":"eng-NASB:Josh.2"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Josh.2.15","name":"Joshua
+        2:15","id":"eng-NASB:Josh.2.15"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Josh.2.13","name":"Joshua
+        2:13","id":"eng-NASB:Josh.2.13"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"1","lastverse":"1","id":"eng-NASB:Josh.7.1","osis_end":"eng-NASB:Josh.7.1","label":"Josh.007.001,eng-NASB","reference":"Joshua
+        7:1","prev_osis_id":"Josh.006.027,eng-NASB","next_osis_id":"Josh.007.002,eng-NASB","text":"Israel
+        Is Defeated at Ai\n\n\n<sup>1<\/sup>But the sons of Israel acted <em>unfaithfully<\/em>
+        in regard to the things under the ban, for Achan, the son of Carmi, the son
+        of Zabdi, the son of Zerah, from the tribe of Judah, took some of the things
+        under the ban, therefore the anger of the LORD burned against the sons of
+        Israel.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Josh.7","name":"Joshua
+        7","id":"eng-NASB:Josh.7"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Josh.7.2","name":"Joshua
+        7:2","id":"eng-NASB:Josh.7.2"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Josh.6.27","name":"Joshua
+        6:27","id":"eng-NASB:Josh.6.27"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"16","lastverse":"16","id":"eng-NASB:Josh.22.16","osis_end":"eng-NASB:Josh.22.16","label":"Josh.022.016,eng-NASB","reference":"Joshua
+        22:16","prev_osis_id":"Josh.022.015,eng-NASB","next_osis_id":"Josh.022.017,eng-NASB","text":"<sup>16<\/sup>\u201cThus
+        says the whole congregation of the LORD, \u2018What is this <em>unfaithful<\/em>
+        act which you have committed against the God of Israel, turning away from
+        following the LORD this day, by building yourselves an altar, to rebel against
+        the LORD this day?","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Josh.22","name":"Joshua
+        22","id":"eng-NASB:Josh.22"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Josh.22.17","name":"Joshua
+        22:17","id":"eng-NASB:Josh.22.17"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Josh.22.15","name":"Joshua
+        22:15","id":"eng-NASB:Josh.22.15"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"20","lastverse":"20","id":"eng-NASB:Josh.22.20","osis_end":"eng-NASB:Josh.22.20","label":"Josh.022.020,eng-NASB","reference":"Joshua
+        22:20","prev_osis_id":"Josh.022.019,eng-NASB","next_osis_id":"Josh.022.021,eng-NASB","text":"<sup>20<\/sup>\u2018Did
+        not Achan the son of Zerah act <em>unfaithfully<\/em> in the things under
+        the ban, and wrath fall on all the congregation of Israel? And that man did
+        not perish alone in his iniquity.\u2019\u201d","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Josh.22","name":"Joshua
+        22","id":"eng-NASB:Josh.22"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Josh.22.21","name":"Joshua
+        22:21","id":"eng-NASB:Josh.22.21"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Josh.22.19","name":"Joshua
+        22:19","id":"eng-NASB:Josh.22.19"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"22","lastverse":"22","id":"eng-NASB:Josh.22.22","osis_end":"eng-NASB:Josh.22.22","label":"Josh.022.022,eng-NASB","reference":"Joshua
+        22:22","prev_osis_id":"Josh.022.021,eng-NASB","next_osis_id":"Josh.022.023,eng-NASB","text":"<sup>22<\/sup>\u201cThe
+        Mighty One, God, the LORD, the Mighty One, God, the LORD! He knows, and may
+        Israel itself know. If it was in rebellion, or if in an <em>unfaithful<\/em>
+        act against the LORD do not save us this day!","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Josh.22","name":"Joshua
+        22","id":"eng-NASB:Josh.22"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Josh.22.23","name":"Joshua
+        22:23","id":"eng-NASB:Josh.22.23"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Josh.22.21","name":"Joshua
+        22:21","id":"eng-NASB:Josh.22.21"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"31","lastverse":"31","id":"eng-NASB:Josh.22.31","osis_end":"eng-NASB:Josh.22.31","label":"Josh.022.031,eng-NASB","reference":"Joshua
+        22:31","prev_osis_id":"Josh.022.030,eng-NASB","next_osis_id":"Josh.022.032,eng-NASB","text":"<sup>31<\/sup>And
+        Phinehas the son of Eleazar the priest said to the sons of Reuben and to the
+        sons of Gad and to the sons of Manasseh, \u201cToday we know that the LORD
+        is in our midst, because you have not committed this <em>unfaithful<\/em>
+        act against the LORD; now you have delivered the sons of Israel from the hand
+        of the LORD.\u201d","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Josh.22","name":"Joshua
+        22","id":"eng-NASB:Josh.22"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Josh.22.32","name":"Joshua
+        22:32","id":"eng-NASB:Josh.22.32"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Josh.22.30","name":"Joshua
+        22:30","id":"eng-NASB:Josh.22.30"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"15","lastverse":"15","id":"eng-NASB:Lev.5.15","osis_end":"eng-NASB:Lev.5.15","label":"Lev.005.015,eng-NASB","reference":"Leviticus
+        5:15","prev_osis_id":"Lev.005.014,eng-NASB","next_osis_id":"Lev.005.016,eng-NASB","text":"<sup>15<\/sup>\u201cIf
+        a person acts <em>unfaithfully<\/em> and sins unintentionally against the
+        LORD\u2019S holy things, then he shall bring his guilt offering to the LORD:
+        a ram without defect from the flock, according to your valuation in silver
+        by shekels, in terms of the shekel of the sanctuary, for a guilt offering.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Lev.5","name":"Leviticus
+        5","id":"eng-NASB:Lev.5"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Lev.5.16","name":"Leviticus
+        5:16","id":"eng-NASB:Lev.5.16"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Lev.5.14","name":"Leviticus
+        5:14","id":"eng-NASB:Lev.5.14"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"2","lastverse":"2","id":"eng-NASB:Lev.6.2","osis_end":"eng-NASB:Lev.6.2","label":"Lev.006.002,eng-NASB","reference":"Leviticus
+        6:2","prev_osis_id":"Lev.006.001,eng-NASB","next_osis_id":"Lev.006.003,eng-NASB","text":"<sup>2<\/sup>\u201cWhen
+        a person sins and acts <em>unfaithfully<\/em> against the LORD, and deceives
+        his companion in regard to a deposit or a security entrusted to him, or through
+        robbery, or if he has extorted from his companion,","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Lev.6","name":"Leviticus
+        6","id":"eng-NASB:Lev.6"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Lev.6.3","name":"Leviticus
+        6:3","id":"eng-NASB:Lev.6.3"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Lev.6.1","name":"Leviticus
+        6:1","id":"eng-NASB:Lev.6.1"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"40","lastverse":"40","id":"eng-NASB:Lev.26.40","osis_end":"eng-NASB:Lev.26.40","label":"Lev.026.040,eng-NASB","reference":"Leviticus
+        26:40","prev_osis_id":"Lev.026.039,eng-NASB","next_osis_id":"Lev.026.041,eng-NASB","text":"<sup>40<\/sup>\u2018If
+        they confess their iniquity and the iniquity of their forefathers, in their
+        <em>unfaithfulness<\/em> which they committed against Me, and also in their
+        acting with hostility against Me\u2014","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Lev.26","name":"Leviticus
+        26","id":"eng-NASB:Lev.26"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Lev.26.41","name":"Leviticus
+        26:41","id":"eng-NASB:Lev.26.41"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Lev.26.39","name":"Leviticus
+        26:39","id":"eng-NASB:Lev.26.39"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"6","lastverse":"6","id":"eng-NASB:Num.5.6","osis_end":"eng-NASB:Num.5.6","label":"Num.005.006,eng-NASB","reference":"Numbers
+        5:6","prev_osis_id":"Num.005.005,eng-NASB","next_osis_id":"Num.005.007,eng-NASB","text":"<sup>6<\/sup>\u201cSpeak
+        to the sons of Israel, \u2018When a man or woman commits any of the sins of
+        mankind, acting <em>unfaithfully<\/em> against the LORD, and that person is
+        guilty,","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Num.5","name":"Numbers
+        5","id":"eng-NASB:Num.5"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Num.5.7","name":"Numbers
+        5:7","id":"eng-NASB:Num.5.7"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Num.5.5","name":"Numbers
+        5:5","id":"eng-NASB:Num.5.5"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"12","lastverse":"12","id":"eng-NASB:Num.5.12","osis_end":"eng-NASB:Num.5.12","label":"Num.005.012,eng-NASB","reference":"Numbers
+        5:12","prev_osis_id":"Num.005.011,eng-NASB","next_osis_id":"Num.005.013,eng-NASB","text":"<sup>12<\/sup>\u201cSpeak
+        to the sons of Israel and say to them, \u2018If any man\u2019s wife goes astray
+        and is <em>unfaithful<\/em> to him,","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Num.5","name":"Numbers
+        5","id":"eng-NASB:Num.5"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Num.5.13","name":"Numbers
+        5:13","id":"eng-NASB:Num.5.13"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Num.5.11","name":"Numbers
+        5:11","id":"eng-NASB:Num.5.11"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"27","lastverse":"27","id":"eng-NASB:Num.5.27","osis_end":"eng-NASB:Num.5.27","label":"Num.005.027,eng-NASB","reference":"Numbers
+        5:27","prev_osis_id":"Num.005.026,eng-NASB","next_osis_id":"Num.005.028,eng-NASB","text":"<sup>27<\/sup>\u2018When
+        he has made her drink the water, then it shall come about, if she has defiled
+        herself and has been <em>unfaithful<\/em> to her husband, that the water which
+        brings a curse will go into her and cause bitterness, and her abdomen will
+        swell and her thigh will waste away, and the woman will become a curse among
+        her people.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Num.5","name":"Numbers
+        5","id":"eng-NASB:Num.5"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Num.5.28","name":"Numbers
+        5:28","id":"eng-NASB:Num.5.28"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Num.5.26","name":"Numbers
+        5:26","id":"eng-NASB:Num.5.26"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"7","lastverse":"7","id":"eng-NASB:Num.12.7","osis_end":"eng-NASB:Num.12.7","label":"Num.012.007,eng-NASB","reference":"Numbers
+        12:7","prev_osis_id":"Num.012.006,eng-NASB","next_osis_id":"Num.012.008,eng-NASB","text":"<sup>7<\/sup>\u201cNot
+        so, with My servant Moses,\n\n\nHe is <em>faithful<\/em> in all My household;","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Num.12","name":"Numbers
+        12","id":"eng-NASB:Num.12"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Num.12.8","name":"Numbers
+        12:8","id":"eng-NASB:Num.12.8"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Num.12.6","name":"Numbers
+        12:6","id":"eng-NASB:Num.12.6"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"33","lastverse":"33","id":"eng-NASB:Num.14.33","osis_end":"eng-NASB:Num.14.33","label":"Num.014.033,eng-NASB","reference":"Numbers
+        14:33","prev_osis_id":"Num.014.032,eng-NASB","next_osis_id":"Num.014.034,eng-NASB","text":"<sup>33<\/sup>\u2018Your
+        sons shall be shepherds for forty years in the wilderness, and they will suffer
+        for your <em>unfaithfulness<\/em>, until your corpses lie in the wilderness.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Num.14","name":"Numbers
+        14","id":"eng-NASB:Num.14"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Num.14.34","name":"Numbers
+        14:34","id":"eng-NASB:Num.14.34"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Num.14.32","name":"Numbers
+        14:32","id":"eng-NASB:Num.14.32"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "}]}},"meta":{"fums":"<script>\nvar
+        _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
+        src=\"''+document.location.protocol+''\/\/d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js\"\\x3E\\x3C\/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''5c4b359c81bd72.17203148'');\\x3C\/script\\x3E\");\n<\/script><noscript><img
+        src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5c4b359c81bd72.17203148\"
+        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
+        \/><\/noscript>","fums_tid":"5c4b359c81bd72.17203148","fums_js_include":"d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js","fums_js":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''5c4b359c81bd72.17203148'');
+        }","fums_noscript":"<img src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5c4b359c81bd72.17203148\"
+        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
+        \/>"}}}'}
+    headers:
+      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      : no-cache="set-cookie"
+      ? !!python/object/new:multidict._istr.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      : application/javascript
+      ? !!python/object/new:multidict._istr.istr [Date]
+      : Fri, 25 Jan 2019 16:13:16 GMT
+      P3P: CP="IEFIX"
+      ? !!python/object/new:multidict._istr.istr [Server]
+      : Apache
+      ? !!python/object/new:multidict._istr.istr [Set-Cookie]
+      : abs_session=cmMbZ8qvx81Cxcb5GnSWApJMaVMVe%2BuO2hF11XCUSGxF9ckU5Km4yJVtkxRTTY1X%2Bt3Z19fm28QI%2FLZkHM8oVoHT5%2BmPYX2xyPtNAlOmsjbTxxiH5yK76PcX%2FwjjXL5bB1cVonf21wE11LHX%2F1joMZbTeoikXQG7EHwN8Ke5AuXB972PlmFy7n4IA66dhMCWWDfeLc5w1NvohfmXUmDraADc1Gxj3cmW2tTaE9oVViwkc75hMA8TwkmK9m%2FHSD6Y4ueco%2BVzzSqPh%2FJ8oYaxvwdJG7iA9OgpcTXAiue30%2BuzIn3MiOuLsrIi4hdp139OXCyyfK9ai09JhmRZEFXv7Q%3D%3D;
+        expires=Mon, 22-Jan-2029 16:13:16 GMT; Max-Age=315360000; path=/; domain=.bibles.org
+      ? !!python/object/new:multidict._istr.istr [Transfer-Encoding]
+      : chunked
+    status: {code: 200, message: OK}
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult [https, bibles.org, /v2/verses.js,
+        keyword=faith&precision=all&version=eng-NASB&sort_order=canonical&limit=20&offset=0,
+        '']
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://d3a2okcloueqyx.cloudfront.net/nf1?t=5c4b359c81bd72.17203148
+  response:
+    body:
+      string: !!binary |
+        R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
+    headers:
+      ? !!python/object/new:multidict._istr.istr [Accept-Ranges]
+      : bytes
+      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      : max-age=0, no-cache, must-revalidate, proxy-revalidate, no-transform, private,
+        pre-check=0
+      ? !!python/object/new:multidict._istr.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      : '35'
+      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      : image/gif
+      ? !!python/object/new:multidict._istr.istr [Date]
+      : Fri, 25 Jan 2019 16:13:17 GMT
+      ? !!python/object/new:multidict._istr.istr [Etag]
+      : '"28d6814f309ea289f847c69cf91194c6"'
+      ? !!python/object/new:multidict._istr.istr [Expires]
+      : Wed, 19 Apr 2000 11:43:00 GMT
+      ? !!python/object/new:multidict._istr.istr [Last-Modified]
+      : Tue, 09 Aug 2011 09:09:57 GMT
+      ? !!python/object/new:multidict._istr.istr [Server]
+      : AmazonS3
+      ? !!python/object/new:multidict._istr.istr [Via]
+      : 1.1 6e52c2b5ee04b03daebde778694a698a.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id: 06JAoH7wwAf_YF_8BAcsr22X0P1PNaj4RnUkvd0zAqYef60QSujk5g==
+      X-Cache: Hit from cloudfront
+    status: {code: 200, message: OK}
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult [https, d3a2okcloueqyx.cloudfront.net,
+        /nf1, t=5c4b359c81bd72.17203148, '']
+version: 1

@@ -5,9 +5,9 @@ from erasmus.data import VerseRange, Passage
 
 def MockService(mocker):
     class Service:
-        def __init__(self, config, service):
+        def __init__(self, *, config, session):
             self.config = config
-            self.service = service
+            self.session = session
             self.get_passage = mocker.CoroutineMock()
             self.search = mocker.CoroutineMock()
 
@@ -98,8 +98,10 @@ class TestServiceManager(object):
         manager = ServiceManager.from_config(config, mock_client_session)
         manager.service_map['ServiceOne'].search.return_value = 'blah'
 
-        result = await manager.search(bible1, ['one', 'two', 'three'])
+        result = await manager.search(
+            bible1, ['one', 'two', 'three'], limit=10, offset=20
+        )
         assert result == 'blah'
         manager.service_map['ServiceOne'].search.assert_called_once_with(
-            bible1, ['one', 'two', 'three']
+            bible1, ['one', 'two', 'three'], limit=10, offset=20
         )

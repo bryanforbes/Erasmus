@@ -1,24 +1,37 @@
 from __future__ import annotations
 
-from typing import List, Callable, Sequence, Any, Match, Optional, AsyncIterator, cast
+from typing import (
+    List,
+    Callable,
+    Sequence,
+    Any,
+    Type,
+    Match,
+    Optional,
+    AsyncIterator,
+    cast,
+)
 
 import attr
 
 from discord.ext import commands
 from botus_receptus.formatting import (
     pluralizer,
-    PluralizerType,
     bold,
     underline,
     EmbedPaginator,
     escape,
 )
 from botus_receptus import re
+from botus_receptus.interactive_pager import InteractivePager, ListPageSource
 
 from ..db.confession import (
     ConfessionTypeEnum,
     Confession as ConfessionRecord,
     NumberingTypeEnum,
+    SearchParagraphsSource,
+    SearchArticleSource,
+    SearchQuestionSource,
 )
 from ..format import int_to_roman, roman_to_int
 
@@ -228,53 +241,28 @@ class Confession(object):
     async def search(
         self, ctx: Context, confession: ConfessionRecord, *terms: str
     ) -> None:
-        pluralize_type: Optional[PluralizerType] = None
-        references: Optional[List[str]] = []
-        reference_pattern: Optional[str] = None
+        Source: Type[ListPageSource[Any]]
+        references: Optional[List[Any]] = []
         search_func: Optional[Callable[[Sequence[str]], AsyncIterator[Any]]] = None
-        paginate = True
-
-        pluralize_type = pluralizers[confession.type]
 
         if confession.type == ConfessionTypeEnum.CHAPTERS:
-            reference_pattern = '{result.chapter_number}.{result.paragraph_number}'
+            Source = SearchParagraphsSource
             search_func = confession.search_paragraphs
-            paginate = False
         elif confession.type == ConfessionTypeEnum.ARTICLES:
-            reference_pattern = '**{result.article_number}**. {result.title}'
+            Source = SearchArticleSource
             search_func = confession.search_articles
         else:  # ConfessionTypeEnum.QA
-            reference_pattern = '**{result.question_number}**. {result.question_text}'
+            Source = SearchQuestionSource
             search_func = confession.search_questions
 
-        references = [
-            reference_pattern.format(result=result)
-            async for result in search_func(terms)
-        ]
+        references = [result async for result in search_func(terms)]
 
-        matches = pluralize_match(len(references))
-        first_line = f'I have found {matches}'
-
-        num_references = len(references)
-        if num_references > 0:
-            first_line += ' in the following {}:'.format(
-                pluralize_type(num_references, include_number=False)
-            )
-
-        if paginate:
-            paginator = EmbedPaginator()
-            paginator.add_line(first_line, empty=num_references > 0)
-
-            for reference in references:
-                paginator.add_line(reference)
-
-            for page in paginator:
-                await ctx.send_embed(page)
+        if references:
+            fetcher = Source.create(references, 20)
+            paginator = InteractivePager.create(ctx, fetcher)
+            await paginator.paginate()
         else:
-            if num_references > 0:
-                first_line += '\n\n' + ', '.join(references)
-
-            await ctx.send_embed(first_line)
+            await ctx.send_embed('I have found 0 matches')
 
     async def show_item(
         self, ctx: Context, confession: ConfessionRecord, match: Match[str]

@@ -47,6 +47,7 @@ class Erasmus(Bot[Context], DblBot[Context]):
 
         self.remove_command('help')
         self.add_command(self.help)
+        self.add_command(self.invite)
 
         for extension in extensions:
             try:
@@ -177,6 +178,14 @@ class Erasmus(Bot[Context], DblBot[Context]):
 
         for page in pages:
             await destination.send(page)
+
+    @commands.command(brief='Get the invite link for Erasmus')
+    @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
+    async def invite(self, ctx: Context) -> None:
+        await ctx.send(
+            '<https://discordapp.com/oauth2/authorize?client_id='
+            '349394562336292876&scope=bot&permissions=388160>'
+        )
 
 
 __all__ = ['Erasmus']

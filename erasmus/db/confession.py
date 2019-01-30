@@ -1,9 +1,12 @@
 from __future__ import annotations
 
+import attr
+
 from typing import Any, Sequence, AsyncIterator, cast
 from enum import Enum
 
 from botus_receptus.gino import db, Base
+from botus_receptus.interactive_pager import ListPageSource
 
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 
@@ -245,7 +248,7 @@ class Confession(Base):
         self._numbering = cast(Any, value.numbering)
 
     @staticmethod
-    async def get_all() -> AsyncIterator[Confession]:  # noqa: F821
+    async def get_all() -> AsyncIterator[Confession]:
         async with db.transaction():
             async for confession in Confession.query.order_by(
                 db.asc(Confession.command)
@@ -253,7 +256,7 @@ class Confession(Base):
                 yield confession
 
     @staticmethod
-    async def get_by_command(command: str) -> Confession:  # noqa: F821
+    async def get_by_command(command: str) -> Confession:
         c = (
             await Confession.load(
                 type=ConfessionType, numbering=ConfessionNumberingType
@@ -266,3 +269,24 @@ class Confession(Base):
             raise InvalidConfessionError(command)
 
         return c
+
+
+@attr.s(slots=True, auto_attribs=True)
+class SearchParagraphsSource(ListPageSource[Paragraph]):
+    def format_entry(self, index: int, entry: Paragraph) -> str:
+        return (
+            f'**{entry.chapter_number}.{entry.paragraph_number}**. '
+            f'{entry.chapter.chapter_title}'
+        )
+
+
+@attr.s(slots=True, auto_attribs=True)
+class SearchArticleSource(ListPageSource[Article]):
+    def format_entry(self, index: int, entry: Article) -> str:
+        return f'**{entry.article_number}**. {entry.title}'
+
+
+@attr.s(slots=True, auto_attribs=True)
+class SearchQuestionSource(ListPageSource[Question]):
+    def format_entry(self, index: int, entry: Question) -> str:
+        return f'**{entry.question_number}**. {entry.question_text}'

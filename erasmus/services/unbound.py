@@ -2,23 +2,23 @@
 
 from __future__ import annotations
 
-import asyncio
+import attr
 
-from typing import Dict, List, Optional  # noqa
-from bs4 import BeautifulSoup, Tag
-from aiohttp import ClientResponse
+from typing import Dict, List, AsyncIterator
 from botus_receptus import re
-
-from ..service import Service
-from ..data import VerseRange, SearchResults
-from ..db.bible import BibleVersion
-from ..exceptions import DoNotUnderstandError, ServiceSearchTimeout
-
+from bs4 import BeautifulSoup
+from contextlib import asynccontextmanager
 from yarl import URL
+
+from .base_service import BaseService
+from ..data import Passage, VerseRange, SearchResults
+from ..exceptions import DoNotUnderstandError
+from ..protocols import Bible
+
 
 number_re = re.compile(re.capture(re.one_or_more(re.DIGITS), re.DOT))
 
-book_map = {
+book_map: Dict[str, str] = {
     'Genesis': '01O',
     'Exodus': '02O',
     'Leviticus': '03O',
@@ -106,21 +106,26 @@ book_map = {
     'Psalm 151': '84A',
     'Psalms of Solomon': '85A',
     'Odes': '86A',
-}  # type: Dict[str, str]
+}
 
 
-class Unbound(Service[Tag]):
-    base_url = URL('http://unbound.biola.edu/index.cfm?method=searchResults.doSearch')
+@attr.s(slots=True)
+class Unbound(BaseService):
+    _base_url = attr.ib(init=False)
 
-    async def _process_response(self, response: ClientResponse) -> Tag:
-        text = await response.text()
-        return BeautifulSoup(text, 'html.parser')
+    def __attrs_post_init__(self) -> None:
+        self._base_url = URL(
+            'http://unbound.biola.edu/index.cfm?method=searchResults.doSearch'
+        )
 
-    def _get_passage_url(self, version: str, verses: VerseRange) -> URL:
-        url = self.base_url.update_query(
+    @asynccontextmanager
+    async def _request_passage(
+        self, bible: Bible, verses: VerseRange
+    ) -> AsyncIterator[Passage]:
+        url = self._base_url.update_query(
             {
                 'search_type': 'simple_search',
-                'parallel_1': version,
+                'parallel_1': bible.service_version,
                 'book_section': '00',
                 'book': book_map[verses.book],
                 'displayFormat': 'normalNoHeader',
@@ -134,90 +139,102 @@ class Unbound(Service[Tag]):
                 {'to_chap': str(verses.end.chapter), 'to_verse': str(verses.end.verse)}
             )
 
-        return url
+        async with self.get(url) as response:
+            text = await response.text()
+            soup = BeautifulSoup(text, 'html.parser')
 
-    def _get_passage_text(self, response: Tag) -> str:
-        verse_table = response.select_one('table table table')
+            verse_table = soup.select_one('table table table')
 
-        if verse_table is None:
-            raise DoNotUnderstandError
+            if verse_table is None:
+                raise DoNotUnderstandError
 
-        rows = verse_table.select('tr')
+            rows = verse_table.select('tr')
 
-        if rows[0].get_text('').strip() == 'No Verses Found':
-            raise DoNotUnderstandError
+            if rows[0].get_text('').strip() == 'No Verses Found':
+                raise DoNotUnderstandError
 
-        rtl = False
-        for row in rows:
-            cells = row.select('td')
-            if len(cells) == 2 and cells[1].string == '\xa0':
-                rtl = True
+            rtl = False
+            for row in rows:
+                cells = row.select('td')
+                if len(cells) == 2 and cells[1].string == '\xa0':
+                    rtl = True
 
-            if (
-                len(cells) != 2
-                or cells[0].string == '\xa0'
-                or cells[1].string == '\xa0'
-            ):
-                row.decompose()
-            elif rtl:
-                cells[1].contents[0].insert_before(cells[1].contents[1])
-                cells[1].insert_before(cells[0])
+                if (
+                    len(cells) != 2
+                    or cells[0].string == '\xa0'
+                    or cells[1].string == '\xa0'
+                ):
+                    row.decompose()
+                elif rtl:
+                    cells[1].contents[0].insert_before(cells[1].contents[1])
+                    cells[1].insert_before(cells[0])
 
-        return number_re.sub(r'__BOLD__\1__BOLD__', verse_table.get_text(''))
-
-    def _get_search_url(self, version: str, terms: List[str]) -> URL:
-        return self.base_url
-
-    def _get_search_results(self, response: Tag) -> SearchResults:
-        verse_table = response.select_one('table table table')
-
-        if verse_table is None:
-            raise DoNotUnderstandError
-
-        rows = verse_table.select('tr')
-
-        if rows[0].get_text('').strip() == 'No Verses Found':
-            return SearchResults([], 0)
-
-        rows[0].decompose()
-        rows[-2].decompose()
-        rows[-1].decompose()
-
-        verses = []  # type: List[VerseRange]
-        chapter_string = ''
-
-        for row in verse_table.select('tr'):
-            cells = row.select('td')
-            if cells[0].string == '\xa0':
-                chapter_string = row.get_text('').strip()
-            else:
-                verse_string = cells[0].get_text('').strip()[:-1]
-                verses.append(
-                    VerseRange.from_string(f'{chapter_string}:{verse_string}')
-                )
-
-        return SearchResults(verses[:20], len(verses))
-
-    async def search(self, bible: BibleVersion, terms: List[str]) -> SearchResults:
-        url = self._get_search_url(bible.service_version, terms)
-
-        try:
-            response = await self.post(
-                url,
-                {
-                    'search_type': 'advanced_search',
-                    'parallel_1': bible.service_version,
-                    'displayFormat': 'normalNoHeader',
-                    'book_section': 'ALL',
-                    'book': 'ALL',
-                    'search': ' AND '.join(terms),
-                    'show_commentary': '0',
-                    'show_context': '0',
-                    'show_illustrations': '0',
-                    'show_maps': '0',
-                },
+            yield Passage(
+                text=self._replace_special_escapes(
+                    bible,
+                    number_re.sub(r'__BOLD__\1__BOLD__', verse_table.get_text('')),
+                ),
+                range=verses,
+                version=bible.abbr,
             )
-        except asyncio.TimeoutError:
-            raise ServiceSearchTimeout(bible, terms)
 
-        return self._get_search_results(response)
+    @asynccontextmanager
+    async def _request_search(
+        self, bible: Bible, terms: List[str], *, limit: int, offset: int
+    ) -> AsyncIterator[SearchResults]:
+        async with self.post(
+            self._base_url,
+            {
+                'search_type': 'advanced_search',
+                'parallel_1': bible.service_version,
+                'displayFormat': 'normalNoHeader',
+                'book_section': 'ALL',
+                'book': 'ALL',
+                'search': ' AND '.join(terms),
+                'show_commentary': '0',
+                'show_context': '0',
+                'show_illustrations': '0',
+                'show_maps': '0',
+            },
+        ) as response:
+            text = await response.text()
+            soup = BeautifulSoup(text, 'html.parser')
+
+            verse_table = soup.select_one('table table table')
+
+            if verse_table is None:
+                raise DoNotUnderstandError
+
+            rows = verse_table.select('tr')
+
+            if rows[0].get_text('').strip() == 'No Verses Found':
+                yield SearchResults([], 0)
+                return
+
+            rows[0].decompose()
+            rows[-2].decompose()
+            rows[-1].decompose()
+
+            passages: List[Passage] = []
+            chapter_string = ''
+
+            for row in verse_table.select('tr'):
+                cells = row.select('td')
+                if len(cells) < 2:
+                    continue
+                if cells[0].string == '\xa0':
+                    chapter_string = row.get_text('').strip()
+                else:
+                    verse_string = cells[0].get_text('').strip()[:-1]
+                    passage_text = cells[1].get_text('')
+                    passages.append(
+                        Passage(
+                            text=self._replace_special_escapes(bible, passage_text),
+                            range=VerseRange.from_string(
+                                f'{chapter_string}:{verse_string}'
+                            ),
+                            version=bible.abbr,
+                        )
+                    )
+
+            yield SearchResults(passages, len(passages))

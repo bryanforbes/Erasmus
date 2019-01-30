@@ -11,12 +11,12 @@ aiodns = "^1.1"
 alembic = "^1.0"
 beautifulsoup4 = "^4.6"
 cchardet = "^2.1"
-uvloop = "^0.11.3"
+uvloop = "^0.12.0"
 psycopg2 = "^2.7"
 ujson = "^1.35"
-"botus_receptus" = {rev = "882d2006ed9ecda32d807a3b71d055de8f8b5fbc", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed"]}
+"botus_receptus" = {rev = "6fc82dffe5cc45922db3661e125b168fba86d8f9", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed"]}
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
-gino-stubs = {rev = "89a886ba95ac7e8157595be9f9857b9fd71783b2", git = "https://github.com/bryanforbes/gino-stubs.git"}
+gino-stubs = {rev = "291b390566416103ce4c88c10521c40344645dea", git = "https://github.com/bryanforbes/gino-stubs.git"}
 sqlalchemy-stubs = {rev = "c0d559246eb9ec24a0bf552253ef4018b5f49a31", git = "https://github.com/dropbox/sqlalchemy-stubs.git"}
 more_itertools = "^5.0"
 
@@ -25,7 +25,6 @@ asynctest = "^0.12.2"
 black = "^18.3-alpha.0"
 flake8 = "^3.6"
 flake8-bugbear = "^18.8"
-flake8-per-file-ignores = "^0.7.0"
 mypy = "^0.660"
 pre-commit = "^1.12"
 pytest = "^4.0"

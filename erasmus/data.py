@@ -139,16 +139,6 @@ def get_book_mask(book_name: str) -> int:
     return _book_mask_map.get(book_name, 0)
 
 
-class Bible(TypedDict):
-    command: str
-    name: str
-    abbr: str
-    service: str
-    service_version: str
-    rtl: bool
-    books: int
-
-
 @attr.s(slots=True, auto_attribs=True)
 class Verse(object):
     chapter: int
@@ -185,7 +175,7 @@ class VerseRange(object):
         return f'{self.book} {self.verses}'
 
     @classmethod
-    def from_string(cls, verse: str) -> VerseRange:  # noqa: F821
+    def from_string(cls, verse: str) -> VerseRange:
         match = _search_reference_re.match(verse)
 
         if match is None:
@@ -194,7 +184,7 @@ class VerseRange(object):
         return cls.from_match(match)
 
     @classmethod
-    def from_match(cls, match: Match) -> VerseRange:  # noqa: F821
+    def from_match(cls, match: Match) -> VerseRange:
         groups = match.groupdict()
 
         chapter_start_int = int(groups['chapter_start'])
@@ -222,7 +212,7 @@ class VerseRange(object):
     @classmethod
     def get_all_from_string(
         cls, string: str, *, only_bracketed: bool = False
-    ) -> List[Union[VerseRange, Exception]]:  # noqa: F821
+    ) -> List[Union[VerseRange, Exception]]:
         ranges: List[Union[VerseRange, Exception]] = []
         lookup_pattern: Pattern[str]
 
@@ -245,7 +235,7 @@ class VerseRange(object):
         return ranges
 
     @classmethod
-    async def convert(cls, ctx: Context, argument: str) -> VerseRange:  # noqa: F821
+    async def convert(cls, ctx: Context, argument: str) -> VerseRange:
         return cls.from_string(argument)
 
 
@@ -278,5 +268,5 @@ class Passage(object):
 
 @attr.s(slots=True, auto_attribs=True)
 class SearchResults(object):
-    verses: List[VerseRange]
+    verses: List[Passage]
     total: int

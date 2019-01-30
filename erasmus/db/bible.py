@@ -24,9 +24,7 @@ class BibleVersion(Base):
         )
 
     @staticmethod
-    async def get_all(
-        *, ordered: bool = False
-    ) -> AsyncIterator[BibleVersion]:  # noqa: F821
+    async def get_all(*, ordered: bool = False) -> AsyncIterator[BibleVersion]:
         query = BibleVersion.query
 
         if ordered:
@@ -37,7 +35,7 @@ class BibleVersion(Base):
                 yield version
 
     @staticmethod
-    async def get_by_command(command: str) -> BibleVersion:  # noqa: F821
+    async def get_by_command(command: str) -> BibleVersion:
         bible = await BibleVersion.query.where(
             BibleVersion.command == command
         ).gino.first()
@@ -48,13 +46,13 @@ class BibleVersion(Base):
         return bible
 
     @staticmethod
-    async def get_by_abbr(abbr: str) -> Optional[BibleVersion]:  # noqa: F821
+    async def get_by_abbr(abbr: str) -> Optional[BibleVersion]:
         return await BibleVersion.query.where(
             BibleVersion.command.ilike(abbr)
         ).gino.first()
 
     @staticmethod
-    async def get_for_user(user_id: int) -> BibleVersion:  # noqa: F821
+    async def get_for_user(user_id: int) -> BibleVersion:
         user_pref = (
             await UserPref.load(bible_version=BibleVersion)
             .query.where(UserPref.user_id == user_id)
