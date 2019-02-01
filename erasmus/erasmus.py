@@ -10,6 +10,7 @@ from discord.ext import commands
 from discord.ext.commands import Group
 from botus_receptus import formatting, checks, DblBot
 from botus_receptus.gino import Bot
+from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
 
 from .config import Config
 from .exceptions import ErasmusError
@@ -116,6 +117,15 @@ class Erasmus(Bot[Context], DblBot[Context]):
             message = 'This command is only available in private messages'
         elif isinstance(exc, commands.MissingRequiredArgument):
             message = f'The required argument `{exc.param.name}` is missing'
+        elif isinstance(exc, CannotPaginate):
+            if exc.reason == CannotPaginateReason.embed_links:
+                message = 'I need the "Embed Links" permission'
+            elif exc.reason == CannotPaginateReason.send_messages:
+                message = 'I need the "Send Messages" permission'
+            elif exc.reason == CannotPaginateReason.add_reactions:
+                message = 'I need the "Add Reactions" permission'
+            elif exc.reason == CannotPaginateReason.read_message_history:
+                message = 'I need the "Read Message History" permission'
         else:
             if ctx.command is None:
                 qualified_name = 'NO COMMAND'

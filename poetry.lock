@@ -109,7 +109,7 @@ description = "Atomic file writes."
 name = "atomicwrites"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "1.2.1"
+version = "1.3.0"
 
 [[package]]
 category = "main"
@@ -175,7 +175,7 @@ typing-extensions = ">=3.6.4"
 
 [package.dependencies."discord.py"]
 extras = ["typings"]
-version = "rev 38d25a45f0b4f97c9bb996f33b8c1d9f3f68cdd0"
+version = "rev 97ecd0ab25fb01cbda5de7075785e84e058b9a9f"
 
 [package.dependencies.gino]
 optional = true
@@ -195,7 +195,7 @@ gino = ["gino (~0.8.1)"]
 gino_typed = ["gino (~0.8.1)", "sqlalchemy-stubs", "gino-stubs"]
 
 [package.source]
-reference = "6fc82dffe5cc45922db3661e125b168fba86d8f9"
+reference = "054f47731d6a3c4bd092a5a9a66a17398e14fdc0"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -256,7 +256,7 @@ description = "A python wrapper for the Discord API"
 name = "discord.py"
 optional = false
 python-versions = ">=3.5.3"
-version = "1.0.0a1653+g38d25a4"
+version = "1.0.0a1671+g97ecd0a"
 
 [package.dependencies]
 aiohttp = ">=3.3.0,<3.5.0"
@@ -276,7 +276,7 @@ typings = ["mypy-extensions (>=0.3.0)", "typing-extensions (>=3.6.5)"]
 voice = ["PyNaCl (1.2.1)"]
 
 [package.source]
-reference = "38d25a45f0b4f97c9bb996f33b8c1d9f3f68cdd0"
+reference = "97ecd0ab25fb01cbda5de7075785e84e058b9a9f"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
 [[package]]
@@ -304,7 +304,7 @@ description = "the modular source code checker: pep8, pyflakes and co"
 name = "flake8"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "3.7.1"
+version = "3.7.4"
 
 [package.dependencies]
 entrypoints = ">=0.3.0,<0.4.0"
@@ -569,7 +569,7 @@ description = "pytest: simple powerful testing with Python"
 name = "pytest"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
-version = "4.1.1"
+version = "4.2.0"
 
 [package.dependencies]
 atomicwrites = ">=1.0"
@@ -616,7 +616,7 @@ description = "pytest plugin to check FLAKE8 requirements"
 name = "pytest-flake8"
 optional = false
 python-versions = "*"
-version = "1.0.3"
+version = "1.0.4"
 
 [package.dependencies]
 flake8 = ">=3.5"
@@ -712,7 +712,7 @@ description = "Programmatically open an editor, capture the result."
 name = "python-editor"
 optional = false
 python-versions = "*"
-version = "1.0.3"
+version = "1.0.4"
 
 [[package]]
 category = "main"
@@ -777,7 +777,7 @@ version = "0.1"
 typing-extensions = ">=3.6.5"
 
 [package.source]
-reference = "c0d559246eb9ec24a0bf552253ef4018b5f49a31"
+reference = "66c0312b67149261c3d38eb1a406bd244573809e"
 type = "git"
 url = "https://github.com/dropbox/sqlalchemy-stubs.git"
 [[package]]
@@ -912,7 +912,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs", "pytest-flake8", "pathlib2"]
 
 [metadata]
-content-hash = "53f9ce7f3d14f911340597d73544cef8a14b04fe1db4089054cfa9fb56c11324"
+content-hash = "dff84d94ca262495aa2ee5d1117967e4fda0c708266af46ccf78cbb7a95766b2"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -926,7 +926,7 @@ appdirs = ["9e5896d1372858f8dd3344faf4e5014d21849c756c8d5701f78f8a103b372d92", "
 async-timeout = ["0c3c816a028d47f659d6ff5c745cb2acf1f966da1fe5c19c77a70282b25f4c5f", "4291ca197d287d274d0b6cb5d6f8f8f82d434ed288f962539ff18cc9012f9ea3"]
 asyncpg = ["08a0afa32588a04581975fb09dc7c32a873e84481347d8701aba2c4360b70253", "0b5b6d17d5e160e6c3b28f07b770de4ad464483ae2d27863973547e9b754f752", "0f97e1bbc3a89508e6c7458b5145c540c9ae8fcf2be08807601701a7e0e61e6f", "14892f2d715496da3d46b5ea968e48a30d6de15d60ae8e8d1e00605120b0d2b4", "22751a565c6e559d968565f2a4ed5803260f107171ed5cb81304573c13138438", "4534b146687e737acb56051ce57040454d79c017281b1bea82610e34aac6a9c7", "58d36d6cd77ac9ca55a9f0ad96dca859e51debde2ba62b3274dc897a1dce81ea", "60f45ce145d9eaba8f8382c9c2003ebcfff19db8cfdc1fc26e61387bc9d4b378", "6b3f1edf5dd3a9b332d34207101d2e2921beb194b9f41a50a2b669280c695a52", "6c18bddbfc9cb5ce4bf41fc273a964018d6b9a5db144f927aa33246125b09d5b", "7540f66f8dfd3a46cd146fc459dd331dd16ea4c7ffb882434d58e334e3d93f7d", "8863143f8ffa3ebe690b23ebdf3667f1286478e2dccdd4da94fb0403276be4b1", "9c730d9ac150cbeae07d9773451150c06b8797187a72b936fbfe349337ff5fba", "a50072efe844f7758253b96c0878364725a412c23070253dba44719124b6bbf2", "c8523c518a9db479b85b9d756d38afe946fa1727ffe6976b2e6fd856e0716e20", "eb1d1951fa6842884c0f3d520b74fd7975d48cae7d3561ae24cc348fbd3dc677"]
 asynctest = ["56bd75b03df55956d57437db26700503d1013616314db5d1ea1a73be1186fd71", "77520850ae21620ec31738f4a7b467acaa44de6d3752d8ac7a9f4dcf55d77853"]
-atomicwrites = ["0312ad34fcad8fac3704d441f7b317e50af620823353ec657a53e981f92920c0", "ec9ae8adaae229e4f8446952d204a3e4b5fdd2d099f9be3aaf556120135fb3ee"]
+atomicwrites = ["03472c30eb2c5d1ba9227e4c2ca66ab8287fbfbbda3888aa93dc2e28fc6811b4", "75a9445bac02d8d058d5e1fe689654ba5a6556a1dfd8ce6ec55a0ed79866cfa6"]
 attrs = ["10cbf6e27dbce8c30807caf056c8eb50917e0eaafe86347671b57254006c3e69", "ca4be454458f9dec299268d472aaa5a11f67a4ff70093396e1ceae9c76cf4bbb"]
 beautifulsoup4 = ["034740f6cb549b4e932ae1ab975581e6103ac8f942200a0e9759065984391858", "945065979fb8529dd2f37dbb58f00b661bdbcbebf954f93b32fdf5263ef35348", "ba6d5c59906a85ac23dadfe5c88deaf3e179ef565f4898671253e50a78680718"]
 black = ["817243426042db1d36617910df579a54f1afd659adb96fc5032fcf4b36209739", "e030a9a28f542debc08acceb273f228ac422798e5215ba2a791a6ddeaaca22a5"]
@@ -940,7 +940,7 @@ coverage = ["06123b58a1410873e22134ca2d88bd36680479fe354955b3579fb8ff150e4d27", 
 "discord.py" = []
 entrypoints = ["589f874b313739ad35be6e0cd7efde2a4e9b6fea91edcc34e58ecbb8dbe56d19", "c70dd71abe5a8c85e55e12c19bd91ccfeec11a6e99044204511f9ed547d48451"]
 execnet = ["a7a84d5fa07a089186a329528f127c9d73b9de57f1a1131b82bb5320ee651f6a", "fc155a6b553c66c838d1a22dba1dc9f5f505c43285a878c6f74a79c024750b83"]
-flake8 = ["545c8faa8425cafcd9800538b4fa324a543cdec0ac273cf698ddd6a954123401", "e9ca1bb84d76511315e565a2cdd292d916b08b0d639aa3e323d8c7d895a03897"]
+flake8 = ["09b9bb539920776da542e67a570a5df96ff933c9a08b62cfae920bcc789e4383", "e0f8cd519cfc0072c0ee31add5def09d2b3ef6040b34dc426445c3af9b02163c"]
 flake8-bugbear = ["07b6e769d7f4e168d590f7088eae40f6ddd9fa4952bed31602def65842682c83", "0ccf56975f4db1d69dc1cf3598c99d768ebf95d0cad27d76087954aa399b515a"]
 gino = ["3471e2f5b44f787eff3381d47e3e252ba184749ba2747adca06658d56272e912", "741cc5b96fbf8d7f62a8ce37efc14204ab67a17efa78c38b34f74fcc8155b4b2"]
 gino-stubs = []
@@ -965,10 +965,10 @@ pycares = ["080ae0f1b1b754be60b6ef31b9ab2915364c210eb1cb4d8e089357c89d7b9819", "
 pycodestyle = ["95a2219d12372f05704562a14ec30bc76b05a5b297b21a5dfe3f6fac3491ae56", "e40a936c9a450ad81df37f549d676d127b1b66000a6c500caa2b085bc0ca976c"]
 pyflakes = ["5e8c00e30c464c99e0b501dc160b13a14af7f27d4dffb529c556e30a159e231d", "f277f9ca3e55de669fba45b7393a1449009cff5a37d1af10ebb76c52765269cd"]
 pyparsing = ["66c9268862641abcac4a96ba74506e594c884e3f57690a696d21ad8210ed667a", "f6c5ef0d7480ad048c054c37632c67fca55299990fff127850181659eea33fc3"]
-pytest = ["41568ea7ecb4a68d7f63837cf65b92ce8d0105e43196ff2b26622995bb3dc4b2", "c3c573a29d7c9547fb90217ece8a8843aa0c1328a797e200290dc3d0b4b823be"]
+pytest = ["65aeaa77ae87c7fc95de56285282546cfa9c886dc8e5dc78313db1c25e21bc07", "6ac6d467d9f053e95aaacd79f831dbecfe730f419c6c7022cb316b365cd9199d"]
 pytest-asyncio = ["9fac5100fd716cbecf6ef89233e8590a4ad61d729d1732e0a96b84182df1daaf", "d734718e25cfc32d2bf78d346e99d33724deeba774cc4afdf491530c6184b63b"]
 pytest-cov = ["0ab664b25c6aa9716cbf203b17ddb301932383046082c081b9848a0edf5add33", "230ef817450ab0699c6cc3c9c8f7a829c34674456f2ed8df1fe1d39780f7c87f"]
-pytest-flake8 = ["b2c71fb6d469bae076a01c43d4a83485d740db6a8a00bad77e0657ed035e98d4", "e6a407e8effa623d839e4994799c2a4674ff46219d39533fc0afccf39af53fc1"]
+pytest-flake8 = ["4d225c13e787471502ff94409dcf6f7927049b2ec251c63b764a4b17447b60c0", "d7e2b6b274a255b7ae35e9224c85294b471a83b76ecb6bd53c337ae977a499af"]
 pytest-forked = ["260d03fbd38d5ce41a657759e8d19bc7c8cfa6d0dcfa36c0bc9742d33bc30742", "8d05c2e6f33cd4422571b2b1bb309720c398b0549cff499e3e4cde661875ab54"]
 pytest-mock = ["53801e621223d34724926a5c98bd90e8e417ce35264365d39d6c896388dcc928", "d89a8209d722b8307b5e351496830d5cc5e192336003a485443ae9adeb7dd4c0"]
 pytest-mypy = ["8f6436eed8118afd6c10a82b3b60fb537336736b0fd7a29262a656ac42ce01ac", "acc653210e7d8d5c72845a5248f00fd33f4f3379ca13fe56cfc7b749b5655c3e"]
@@ -976,7 +976,7 @@ pytest-sugar = ["26cf8289fe10880cbbc130bd77398c4e6a8b936d8393b116a5c16121d95ab28
 pytest-vcr = ["5e5bfa522667007723db331823d5d351724da2d95e88bd4cf141fa4e267faba2"]
 pytest-xdist = ["4a201bb3ee60f5dd6bb40c5209d4e491cecc4d5bafd656cfb10f86178786e568", "d03d1ff1b008458ed04fa73e642d840ac69b4107c168e06b71037c62d7813dd4"]
 python-dateutil = ["063df5763652e21de43de7d9e00ccf239f953a832941e37be541614732cdfc93", "88f9287c0174266bb0d8cedd395cfba9c58e87e5ad86b2ce58859bc11be3cf02"]
-python-editor = ["a3c066acee22a1c94f63938341d4fb374e3fdd69366ed6603d7b24bed1efc565"]
+python-editor = ["1bf6e860a8ad52a14c3ee1252d5dc25b2030618ed80c022598f00176adc8367d", "51fda6bcc5ddbbb7063b2af7509e43bd84bfc32a4ff71349ec7847713882327b", "5f98b069316ea1c2ed3f67e7f5df6c0d8f10b689964a4a811ff64f0106819ec8", "c3da2053dbab6b29c94e43c486ff67206eafbe7eb52dbec7390b5e2fb05aac77", "ea87e17f6ec459e780e4221f295411462e0d0810858e055fc514684350a2f522"]
 pytzdata = ["10c74b0cfc51a9269031f86ecd11096c9c6a141f5bb15a3b8a88f9979f6361e2", "279cbd9900d5da9a8f9053e60db0db7f42d9a799673744b76aaeb6b4f14abe77"]
 pyyaml = ["3d7da3009c0f3e783b2c873687652d83b1bbfd5c88e9813fb7e5b03c0dd3108b", "3ef3092145e9b70e3ddd2c7ad59bdd0252a94dfe3949721633e41344de00a6bf", "40c71b8e076d0550b2e6380bada1f1cd1017b882f7e16f09a65be98e017f211a", "558dd60b890ba8fd982e05941927a3911dc409a63dcb8b634feaa0cda69330d3", "a7c28b45d9f99102fa092bb213aa12e0aaf9a6a1f5e395d36166639c1f96c3a1", "aa7dd4a6a427aed7df6fb7f08a580d68d9b118d90310374716ae90b710280af1", "bc558586e6045763782014934bfaf39d48b8ae85a2713117d16c39864085c613", "d46d7982b62e0729ad0175a9bc7e10a566fc07b224d2c79fafb5e032727eaa04", "d5eef459e30b09f5a098b9cea68bebfeb268697f78d647bd255a085371ac7f3f", "e01d3203230e1786cd91ccfdc8f8454c8069c91bee3962ad93b87a4b2860f537", "e170a9e6fcfd19021dd29845af83bb79236068bf5fd4df3327c1be18182b2531"]
 six = ["3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c", "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"]

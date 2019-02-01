@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import attr
 
-from typing import Any, Sequence, AsyncIterator, cast
+from typing import Any, Union, List, Sequence, AsyncIterator, cast
 from enum import Enum
 
 from botus_receptus.gino import db, Base
@@ -272,21 +272,37 @@ class Confession(Base):
 
 
 @attr.s(slots=True, auto_attribs=True)
-class SearchParagraphsSource(ListPageSource[Paragraph]):
-    def format_entry(self, index: int, entry: Paragraph) -> str:
-        return (
-            f'**{entry.chapter_number}.{entry.paragraph_number}**. '
-            f'{entry.chapter.chapter_title}'
+class SearchConfessionSource(ListPageSource[Union[Paragraph, Article, Question]]):
+    entry_text_string: str
+
+    def format_line(
+        self, index: int, entry: Union[Paragraph, Article, Question]
+    ) -> str:
+        return self.entry_text_string.format(entry=entry)
+
+    @classmethod
+    def create(  # type: ignore
+        cls,
+        type: ConfessionTypeEnum,
+        entries: List[Union[Paragraph, Article, Question]],
+        per_page: int,
+        *,
+        show_entry_count: bool = True,
+    ) -> SearchConfessionSource:
+        if type == ConfessionTypeEnum.CHAPTERS:
+            entry_text_string = (
+                '**{entry.chapter_number}.{entry.paragraph_number}**. '
+                '{entry.chapter.chapter_title}'
+            )
+        elif type == ConfessionTypeEnum.ARTICLES:
+            entry_text_string = '**{entry.article_number}**. {entry.title}'
+        elif type == ConfessionTypeEnum.QA:
+            entry_text_string = '**{entry.question_number}**. {entry.question_text}'
+
+        return cls(
+            total=len(entries),
+            entries=cast(Any, entries),
+            per_page=per_page,
+            show_entry_count=show_entry_count,
+            entry_text_string=entry_text_string,
         )
-
-
-@attr.s(slots=True, auto_attribs=True)
-class SearchArticleSource(ListPageSource[Article]):
-    def format_entry(self, index: int, entry: Article) -> str:
-        return f'**{entry.article_number}**. {entry.title}'
-
-
-@attr.s(slots=True, auto_attribs=True)
-class SearchQuestionSource(ListPageSource[Question]):
-    def format_entry(self, index: int, entry: Question) -> str:
-        return f'**{entry.question_number}**. {entry.question_text}'

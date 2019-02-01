@@ -48,9 +48,7 @@ class SearchPageSource(FieldPageSource[Passage]):
 
         return results.verses
 
-    def format_entry(  # type: ignore
-        self, index: int, entry: Passage
-    ) -> Tuple[str, str]:
+    def format_field(self, index: int, entry: Passage) -> Tuple[str, str]:
         return str(entry.range), entry.text
 
     @staticmethod
@@ -61,7 +59,7 @@ class SearchPageSource(FieldPageSource[Passage]):
         *,
         show_entry_count: bool = False,
     ) -> SearchPageSource:
-        fetcher = SearchPageSource(
+        source = SearchPageSource(
             search_func=search_func,
             total=initial_results.total,
             per_page=per_page,
@@ -69,15 +67,15 @@ class SearchPageSource(FieldPageSource[Passage]):
         )
 
         if len(initial_results.verses) == initial_results.total:
-            for page in range(0, fetcher.max_pages):
+            for page in range(0, source.max_pages):
                 page_start = page * per_page
-                fetcher.cache[page + 1] = initial_results.verses[
+                source.cache[page + 1] = initial_results.verses[
                     page_start : page_start + per_page
                 ]
         else:
-            fetcher.cache[1] = initial_results.verses
+            source.cache[1] = initial_results.verses
 
-        return fetcher
+        return source
 
 
 lookup_help = '''
@@ -156,11 +154,11 @@ class Bible(object):
         # Share cooldown across commands
         self.lookup._buckets = self.search._buckets = self._user_cooldown
 
-        self.bot.loop.run_until_complete(self._init())
+        self.bot.loop.run_until_complete(self.__init())
 
-    async def _init(self) -> None:
+    async def __init(self) -> None:
         async for version in BibleVersion.get_all():
-            self._add_bible_commands(version.command, version.name)
+            self.__add_bible_commands(version.command, version.name)
 
     async def lookup_from_message(self, ctx: Context, message: discord.Message) -> None:
         bucket = self._user_cooldown.get_bucket(ctx.message)
@@ -194,7 +192,7 @@ class Bible(object):
                     if bible is None:
                         bible = user_bible
 
-                    await self._lookup(ctx, bible, verse_range)
+                    await self.__lookup(ctx, bible, verse_range)
                 except Exception as exc:
                     await self.bot.on_command_error(ctx, exc)
 
@@ -261,7 +259,7 @@ class Bible(object):
         bible = await BibleVersion.get_for_user(ctx.author.id)
 
         async with ctx.typing():
-            await self._lookup(ctx, bible, reference)
+            await self.__lookup(ctx, bible, reference)
 
     @commands.command(
         aliases=['s'],
@@ -271,7 +269,7 @@ class Bible(object):
     async def search(self, ctx: Context, *terms: str) -> None:
         bible = await BibleVersion.get_for_user(ctx.author.id)
 
-        await self._search(ctx, bible, *terms)
+        await self.__search(ctx, bible, *terms)
 
     @commands.command(
         brief='List which Bible versions are available for lookup and search'
@@ -347,7 +345,7 @@ class Bible(object):
         except UniqueViolationError:
             await ctx.send_error(f'`{command}` already exists')
         else:
-            self._add_bible_commands(command, name)
+            self.__add_bible_commands(command, name)
             await ctx.send_embed(f'Added `{command}` as "{name}"')
 
     @commands.command(name='delbible')
@@ -357,22 +355,22 @@ class Bible(object):
         version = await BibleVersion.get_by_command(command)
         await version.delete()
 
-        self._remove_bible_commands(command)
+        self.__remove_bible_commands(command)
 
         await ctx.send_embed(f'Removed `{command}`')
 
-    async def _version_lookup(self, ctx: Context, *, reference: VerseRange) -> None:
+    async def __version_lookup(self, ctx: Context, *, reference: VerseRange) -> None:
         bible = await BibleVersion.get_by_command(cast(str, ctx.invoked_with))
 
         async with ctx.typing():
-            await self._lookup(ctx, bible, reference)
+            await self.__lookup(ctx, bible, reference)
 
-    async def _version_search(self, ctx: Context, *terms: str) -> None:
+    async def __version_search(self, ctx: Context, *terms: str) -> None:
         bible = await BibleVersion.get_by_command(cast(str, ctx.invoked_with)[1:])
 
-        await self._search(ctx, bible, *terms)
+        await self.__search(ctx, bible, *terms)
 
-    async def _lookup(
+    async def __lookup(
         self, ctx: Context, bible: BibleVersion, reference: VerseRange
     ) -> None:
         if not (bible.books & reference.book_mask):
@@ -386,36 +384,36 @@ class Bible(object):
         else:
             await ctx.send_error(f'I do not understand the request `${reference}`')
 
-    async def _search(self, ctx: Context, bible: BibleVersion, *terms: str) -> None:
+    async def __search(self, ctx: Context, bible: BibleVersion, *terms: str) -> None:
         search = partial(self.service_manager.search, bible, list(terms), limit=5)
         async with ctx.typing():
             initial_results: SearchResults = await search(offset=0)
 
         if initial_results.total > 0:
-            fetcher = SearchPageSource.create(initial_results, search, 5)
-            paginator = InteractiveFieldPager.create(ctx, fetcher)
+            source = SearchPageSource.create(initial_results, search, 5)
+            paginator = InteractiveFieldPager.create(ctx, source)
             await paginator.paginate()
         else:
             await ctx.send_embed('I found 0 results')
 
-    def _add_bible_commands(self, command: str, name: str) -> None:
+    def __add_bible_commands(self, command: str, name: str) -> None:
         lookup = self.bot.command(
             name=command,
             brief=f'Look up a verse in {name}',
             help=version_lookup_help.format(prefix='{prefix}', command=command),
             hidden=True,
-        )(self._version_lookup)
+        )(self.__version_lookup)
         search = self.bot.command(
             name=f's{command}',
             brief=f'Search in {name}',
             help=version_search_help.format(prefix='{prefix}', command=f's{command}'),
             hidden=True,
-        )(self._version_search)
+        )(self.__version_search)
 
         # Share cooldown across commands
         lookup._buckets = search._buckets = self._user_cooldown
 
-    def _remove_bible_commands(self, command: str) -> None:
+    def __remove_bible_commands(self, command: str) -> None:
         self.bot.remove_command(command)
         self.bot.remove_command(f's{command}')
 

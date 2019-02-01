@@ -1,16 +1,6 @@
 from __future__ import annotations
 
-from typing import (
-    List,
-    Callable,
-    Sequence,
-    Any,
-    Type,
-    Match,
-    Optional,
-    AsyncIterator,
-    cast,
-)
+from typing import List, Callable, Sequence, Any, Match, Optional, AsyncIterator, cast
 
 import attr
 
@@ -23,15 +13,13 @@ from botus_receptus.formatting import (
     escape,
 )
 from botus_receptus import re
-from botus_receptus.interactive_pager import InteractivePager, ListPageSource
+from botus_receptus.interactive_pager import InteractivePager
 
 from ..db.confession import (
     ConfessionTypeEnum,
     Confession as ConfessionRecord,
     NumberingTypeEnum,
-    SearchParagraphsSource,
-    SearchArticleSource,
-    SearchQuestionSource,
+    SearchConfessionSource,
 )
 from ..format import int_to_roman, roman_to_int
 
@@ -241,25 +229,21 @@ class Confession(object):
     async def search(
         self, ctx: Context, confession: ConfessionRecord, *terms: str
     ) -> None:
-        Source: Type[ListPageSource[Any]]
         references: Optional[List[Any]] = []
         search_func: Optional[Callable[[Sequence[str]], AsyncIterator[Any]]] = None
 
         if confession.type == ConfessionTypeEnum.CHAPTERS:
-            Source = SearchParagraphsSource
             search_func = confession.search_paragraphs
         elif confession.type == ConfessionTypeEnum.ARTICLES:
-            Source = SearchArticleSource
             search_func = confession.search_articles
         else:  # ConfessionTypeEnum.QA
-            Source = SearchQuestionSource
             search_func = confession.search_questions
 
         references = [result async for result in search_func(terms)]
 
         if references:
-            fetcher = Source.create(references, 20)
-            paginator = InteractivePager.create(ctx, fetcher)
+            source = SearchConfessionSource.create(confession.type, references, 20)
+            paginator = InteractivePager.create(ctx, source)
             await paginator.paginate()
         else:
             await ctx.send_embed('I have found 0 matches')
