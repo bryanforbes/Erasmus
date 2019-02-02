@@ -286,8 +286,6 @@ class SearchConfessionSource(ListPageSource[Union[Paragraph, Article, Question]]
         type: ConfessionTypeEnum,
         entries: List[Union[Paragraph, Article, Question]],
         per_page: int,
-        *,
-        show_entry_count: bool = True,
     ) -> SearchConfessionSource:
         if type == ConfessionTypeEnum.CHAPTERS:
             entry_text_string = (
@@ -303,6 +301,6 @@ class SearchConfessionSource(ListPageSource[Union[Paragraph, Article, Question]]
             total=len(entries),
             entries=cast(Any, entries),
             per_page=per_page,
-            show_entry_count=show_entry_count,
+            show_entry_count=True,
             entry_text_string=entry_text_string,
         )

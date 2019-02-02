@@ -53,17 +53,13 @@ class SearchPageSource(FieldPageSource[Passage]):
 
     @staticmethod
     def create(
-        initial_results: SearchResults,
-        search_func: Any,
-        per_page: int,
-        *,
-        show_entry_count: bool = False,
+        initial_results: SearchResults, search_func: Any, per_page: int
     ) -> SearchPageSource:
         source = SearchPageSource(
             search_func=search_func,
             total=initial_results.total,
             per_page=per_page,
-            show_entry_count=show_entry_count,
+            show_entry_count=True,
         )
 
         if len(initial_results.verses) == initial_results.total:

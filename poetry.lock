@@ -175,7 +175,7 @@ typing-extensions = ">=3.6.4"
 
 [package.dependencies."discord.py"]
 extras = ["typings"]
-version = "rev 97ecd0ab25fb01cbda5de7075785e84e058b9a9f"
+version = "rev 3f71dbd6a24cb23c257f63d1446650baf2ddc9b4"
 
 [package.dependencies.gino]
 optional = true
@@ -195,7 +195,7 @@ gino = ["gino (~0.8.1)"]
 gino_typed = ["gino (~0.8.1)", "sqlalchemy-stubs", "gino-stubs"]
 
 [package.source]
-reference = "054f47731d6a3c4bd092a5a9a66a17398e14fdc0"
+reference = "18bc9ae4b67f5c8fe414dc12406c243986efef9f"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -256,7 +256,7 @@ description = "A python wrapper for the Discord API"
 name = "discord.py"
 optional = false
 python-versions = ">=3.5.3"
-version = "1.0.0a1671+g97ecd0a"
+version = "1.0.0a1672+g3f71dbd"
 
 [package.dependencies]
 aiohttp = ">=3.3.0,<3.5.0"
@@ -276,7 +276,7 @@ typings = ["mypy-extensions (>=0.3.0)", "typing-extensions (>=3.6.5)"]
 voice = ["PyNaCl (1.2.1)"]
 
 [package.source]
-reference = "97ecd0ab25fb01cbda5de7075785e84e058b9a9f"
+reference = "3f71dbd6a24cb23c257f63d1446650baf2ddc9b4"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
 [[package]]
@@ -912,7 +912,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs", "pytest-flake8", "pathlib2"]
 
 [metadata]
-content-hash = "dff84d94ca262495aa2ee5d1117967e4fda0c708266af46ccf78cbb7a95766b2"
+content-hash = "1297278b154741acea6dd30d28e9c161c1daebcda485b545f9ada2ec20a3d497"
 python-versions = "^3.7"
 
 [metadata.hashes]
