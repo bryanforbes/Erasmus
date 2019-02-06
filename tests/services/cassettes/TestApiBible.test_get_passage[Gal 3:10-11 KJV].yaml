@@ -1,0 +1,87 @@
+interactions:
+- request:
+    body: null
+    headers:
+      api-key: [e724f40aaafed111b75d6f83b011b823]
+    method: GET
+    uri: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/passages/GAL.3.10-GAL.3.11?include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
+  response:
+    body: {string: '{"data":{"id":"GAL.3.10-GAL.3.11","orgId":"GAL.3.10-GAL.3.11","bibleId":"de4e12af7f28f599-02","bookId":"GAL","chapterIds":["GAL.3"],"reference":"Galatians
+        3:10-11","content":"<p class=\"p\"><span data-number=\"10\" class=\"v\">10</span>For
+        as many as are of the works of the law are under the curse: for it is written,
+        Cursed <span class=\"add\">is</span> every one that continueth not in all
+        things which are written in the book of the law to do them. <span data-number=\"11\"
+        class=\"v\">11</span>But that no man is justified by the law in the sight
+        of God, <span class=\"add\">it is</span> evident: for, The just shall live
+        by faith. </p>","copyright":"PUBLIC DOMAIN except in the United Kingdom, where
+        a Crown Copyright applies to printing the KJV. See http://www.cambridge.org/about-us/who-we-are/queens-printers-patent"},"meta":{"fums":"<script>\nvar
+        _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
+        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''''
+        + unique + '''');\\x3C/script\\x3E\");\n</script><noscript><img src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''
+        + unique + ''\" height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height:
+        0; width: 0;\" /></noscript>","fumsId":"1fb7db4d-0fef-4304-bed7-bbb1ae48ec69","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''1fb7db4d-0fef-4304-bed7-bbb1ae48ec69'');
+        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=1fb7db4d-0fef-4304-bed7-bbb1ae48ec69\"
+        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
+        />"}}'}
+    headers:
+      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      : no-cache
+      ? !!python/object/new:multidict._istr.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._istr.istr [Content-Encoding]
+      : gzip
+      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      : '857'
+      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      : application/json; charset=utf-8
+      ? !!python/object/new:multidict._istr.istr [Date]
+      : Wed, 06 Feb 2019 18:23:58 GMT
+      ? !!python/object/new:multidict._istr.istr [Server]
+      : nginx/1.12.1
+      ? !!python/object/new:multidict._istr.istr [Vary]
+      : origin,accept-encoding
+    status: {code: 200, message: OK}
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult [https, api.scripture.api.bible,
+        /v1/bibles/de4e12af7f28f599-02/passages/GAL.3.10-GAL.3.11, include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true,
+        '']
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=1fb7db4d-0fef-4304-bed7-bbb1ae48ec69
+  response:
+    body:
+      string: !!binary |
+        R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
+    headers:
+      ? !!python/object/new:multidict._istr.istr [Accept-Ranges]
+      : bytes
+      ? !!python/object/new:multidict._istr.istr [Age]
+      : '522'
+      ? !!python/object/new:multidict._istr.istr [Connection]
+      : keep-alive
+      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      : '35'
+      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      : image/gif
+      ? !!python/object/new:multidict._istr.istr [Date]
+      : Wed, 06 Feb 2019 18:15:17 GMT
+      ? !!python/object/new:multidict._istr.istr [Etag]
+      : '"28d6814f309ea289f847c69cf91194c6"'
+      ? !!python/object/new:multidict._istr.istr [Last-Modified]
+      : Wed, 10 May 2017 13:35:25 GMT
+      ? !!python/object/new:multidict._istr.istr [Server]
+      : AmazonS3
+      ? !!python/object/new:multidict._istr.istr [Via]
+      : 1.1 1f081e139ee67b99eb3c94017b3f3d84.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id: W35zvPL8q515VC-VcMbpQbFf5o-gm0K9S1z5iVOEKavwEhYIxuM2Hg==
+      X-Cache: Hit from cloudfront
+    status: {code: 200, message: OK}
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult [https, d3btgtzu3ctdwx.cloudfront.net,
+        /nf1, t=1fb7db4d-0fef-4304-bed7-bbb1ae48ec69, '']
+version: 1

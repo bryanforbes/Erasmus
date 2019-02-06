@@ -561,7 +561,9 @@
   {
     "name": "Additions to Esther",
     "osis": "AddEsth",
-    "alt": [],
+    "alt": [
+      "Esther (Greek)"
+    ],
     "section": "DC"
   },
   {
@@ -576,7 +578,8 @@
     "name": "Sirach",
     "osis": "Sir",
     "alt": [
-      "Ecclesiasticus (Sirach)"
+      "Ecclesiasticus (Sirach)",
+      "Ecclesiasticus"
     ],
     "section": 32
   },
@@ -606,7 +609,9 @@
     "alt": [
       "Song of the Three Children",
       "The Three Holy Children",
-      "Song of Three Young Men"
+      "Song of Three Young Men",
+      "Song of the Three",
+      "The Song of The Three Holy Children"
     ],
     "section": 256
   },
@@ -669,7 +674,9 @@
   {
     "name": "Prayer of Manasseh",
     "osis": "PrMan",
-    "alt": [],
+    "alt": [
+      "Manasseh"
+    ],
     "section": 32768
   },
   {
