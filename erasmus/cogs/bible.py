@@ -355,6 +355,23 @@ class Bible(object):
 
         await ctx.send_embed(f'Removed `{command}`')
 
+    @commands.command(name='upbible')
+    @checks.dm_only()
+    @commands.is_owner()
+    async def update_bible(
+        self, ctx: Context, command: str, service: str, service_version: str
+    ) -> None:
+        version = await BibleVersion.get_by_command(command)
+
+        try:
+            await version.update(
+                service=service, service_version=service_version
+            ).apply()
+        except Exception:
+            await ctx.send_error(f'Error updating `{command}`')
+        else:
+            await ctx.send_embed(f'Updated `{command}`')
+
     async def __version_lookup(self, ctx: Context, *, reference: VerseRange) -> None:
         bible = await BibleVersion.get_by_command(cast(str, ctx.invoked_with))
 
