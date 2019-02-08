@@ -192,19 +192,15 @@ version = "~0.8.1"
 
 [package.dependencies.gino-stubs]
 optional = true
-version = "rev bad51347918eeedbe1ddd5dca2f5ae0860892235"
-
-[package.dependencies.sqlalchemy-stubs]
-optional = true
-version = "rev c155b67180e14eb68331fb7deb108bc1cb79bf88"
+version = "rev cadb2cec69d11ca8c4a83a0530e88dd1fbf41861"
 
 [package.extras]
 db = ["asyncpg (>=0.18.2)"]
 gino = ["gino (~0.8.1)"]
-gino_typed = ["gino (~0.8.1)", "sqlalchemy-stubs", "gino-stubs"]
+gino_typed = ["gino (~0.8.1)", "gino-stubs"]
 
 [package.source]
-reference = "ff5add5cf0d08190e7117452c5325a2eed251ddf"
+reference = "69655aecc9414f4a37350e8857dfdce043dc7722"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -355,11 +351,11 @@ python-versions = "^3.6"
 version = "0.1"
 
 [package.dependencies]
-sqlalchemy-stubs = "rev c155b67180e14eb68331fb7deb108bc1cb79bf88"
+sqlalchemy-stubs = "^0.1"
 typing-extensions = ">=3.6.5"
 
 [package.source]
-reference = "bad51347918eeedbe1ddd5dca2f5ae0860892235"
+reference = "cadb2cec69d11ca8c4a83a0530e88dd1fbf41861"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
 [[package]]
@@ -436,7 +432,7 @@ python-versions = ">=3.4.1"
 version = "4.5.2"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Optional static typing for Python"
 name = "mypy"
 optional = false
@@ -779,19 +775,16 @@ pymysql = ["pymysql"]
 
 [[package]]
 category = "main"
-description = ""
+description = "SQLAlchemy stubs and mypy plugin"
 name = "sqlalchemy-stubs"
 optional = false
 python-versions = "*"
 version = "0.1"
 
 [package.dependencies]
+mypy = ">=0.660"
 typing-extensions = ">=3.6.5"
 
-[package.source]
-reference = "c155b67180e14eb68331fb7deb108bc1cb79bf88"
-type = "git"
-url = "https://github.com/dropbox/sqlalchemy-stubs.git"
 [[package]]
 category = "dev"
 description = "ANSII Color formatting for output in terminal."
@@ -809,7 +802,7 @@ python-versions = "*"
 version = "0.10.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "a fork of Python 2 and 3 ast modules with type comment support"
 name = "typed-ast"
 optional = false
@@ -924,7 +917,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs", "pytest-flake8", "pathlib2"]
 
 [metadata]
-content-hash = "34fa63996276589d1a3cace6b25f333f8a9ed59b593ecf784f5e5e7dcd1ebebb"
+content-hash = "2af66b3257e50f425f14c6226fc10873acfa4369a09b04b2d85eedda5b1007e4"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -995,7 +988,7 @@ pyyaml = ["3d7da3009c0f3e783b2c873687652d83b1bbfd5c88e9813fb7e5b03c0dd3108b", "3
 six = ["3350809f0555b11f552448330d0b52d5f24c91a322ea4a15ef22629740f3761c", "d16a0141ec1a18405cd4ce8b4613101da75da0e9a7aec5bdd4fa804d0e0eba73"]
 soupsieve = ["466910df7561796a60748826781ebe9a888f7a1668a636ae86783f44d10aae73", "87db12ae79194f0ff9808d2b1641c4f031ae39ffa3cab6b907ea7c1e5e5ed445"]
 sqlalchemy = ["52a42dbf02d0562d6e90e7af59f177f1cc027e72833cc29c3a821eefa009c71d"]
-sqlalchemy-stubs = []
+sqlalchemy-stubs = ["29785ab293df529f8abf4fef755428b7d1d47e55cc678888061bf2ddfbe5a02a", "7dd98ede4184ca1a8266999458ac775742b3f70bf949e77538e369442b35ce9c"]
 termcolor = ["1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"]
 toml = ["229f81c57791a41d65e399fc06bf0848bab550a9dfd5ed66df18ce5f05e73d5c", "235682dd292d5899d361a811df37e04a8828a5b1da3115886b73cf81ebc9100e", "f1db651f9657708513243e61e6cc67d101a39bad662eaa9b5546f789338e07a3"]
 typed-ast = ["023625bfa9359e29bd6e24cac2a4503495b49761d48a5f1e38333fc4ac4d93fe", "07591f7a5fdff50e2e566c4c1e9df545c75d21e27d98d18cb405727ed0ef329c", "153e526b0f4ffbfada72d0bb5ffe8574ba02803d2f3a9c605c8cf99dfedd72a2", "3ad2bdcd46a4a1518d7376e9f5016d17718a9ed3c6a3f09203d832f6c165de4a", "3ea98c84df53ada97ee1c5159bb3bc784bd734231235a1ede14c8ae0775049f7", "51a7141ccd076fa561af107cfb7a8b6d06a008d92451a1ac7e73149d18e9a827", "52c93cd10e6c24e7ac97e8615da9f224fd75c61770515cb323316c30830ddb33", "6344c84baeda3d7b33e157f0b292e4dd53d05ddb57a63f738178c01cac4635c9", "64699ca1b3bd5070bdeb043e6d43bc1d0cebe08008548f4a6bee782b0ecce032", "74903f2e56bbffe29282ef8a5487d207d10be0f8513b41aff787d954a4cf91c9", "7891710dba83c29ee2bd51ecaa82f60f6bede40271af781110c08be134207bf2", "91976c56224e26c256a0de0f76d2004ab885a29423737684b4f7ebdd2f46dde2", "9bad678a576ecc71f25eba9f1e3fd8d01c28c12a2834850b458428b3e855f062", "b4726339a4c180a8b6ad9d8b50d2b6dc247e1b79b38fe2290549c98e82e4fd15", "ba36f6aa3f8933edf94ea35826daf92cbb3ec248b89eccdc053d4a815d285357", "bbc96bde544fd19e9ef168e4dfa5c3dfe704bfa78128fa76f361d64d6b0f731a", "c0c927f1e44469056f7f2dada266c79b577da378bbde3f6d2ada726d131e4824", "c0f9a3708008aa59f560fa1bd22385e05b79b8e38e0721a15a8402b089243442", "f0bf6f36ff9c5643004171f11d2fdc745aa3953c5aacf2536a0685db9ceb3fb1", "f5be39a0146be663cbf210a4d95c3c58b2d7df7b043c9047c5448e358f0550a2", "fcd198bf19d9213e5cbf2cde2b9ef20a9856e716f76f9476157f90ae6de06cc6"]

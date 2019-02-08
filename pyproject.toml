@@ -14,10 +14,9 @@ cchardet = "^2.1"
 uvloop = "^0.12.0"
 psycopg2 = "^2.7"
 ujson = "^1.35"
-"botus_receptus" = {rev = "ff5add5cf0d08190e7117452c5325a2eed251ddf", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed"]}
+"botus_receptus" = {rev = "69655aecc9414f4a37350e8857dfdce043dc7722", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed"]}
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
-gino-stubs = {rev = "bad51347918eeedbe1ddd5dca2f5ae0860892235", git = "https://github.com/bryanforbes/gino-stubs.git"}
-sqlalchemy-stubs = {rev = "c155b67180e14eb68331fb7deb108bc1cb79bf88", git = "https://github.com/dropbox/sqlalchemy-stubs.git"}
+gino-stubs = {rev = "cadb2cec69d11ca8c4a83a0530e88dd1fbf41861", git = "https://github.com/bryanforbes/gino-stubs.git"}
 more_itertools = "^5.0"
 
 [tool.poetry.dev-dependencies]
