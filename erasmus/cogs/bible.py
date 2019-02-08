@@ -398,6 +398,10 @@ class Bible(object):
             await ctx.send_error(f'I do not understand the request `${reference}`')
 
     async def __search(self, ctx: Context, bible: BibleVersion, *terms: str) -> None:
+        if not terms:
+            await ctx.send_error('Please include some terms to search for')
+            return
+
         search = partial(self.service_manager.search, bible, list(terms), limit=5)
         async with ctx.typing():
             initial_results: SearchResults = await search(offset=0)
