@@ -78,7 +78,7 @@ class BaseService(object):
     @asynccontextmanager
     async def get(
         self, url: URL, **request_options: Any
-    ) -> AsyncIterator[aiohttp.ClientResponse]:
+    ) -> AsyncIterator[aiohttp.ClientResponse]:  # type: ignore
         log.debug('GET %s', url)
         with async_timeout.timeout(10):
             async with self.session.get(url, **request_options) as response:
@@ -88,7 +88,7 @@ class BaseService(object):
     @asynccontextmanager
     async def post(
         self, url: URL, data: Optional[Dict[str, Any]] = None, **request_options: Any
-    ) -> AsyncIterator[aiohttp.ClientResponse]:
+    ) -> AsyncIterator[aiohttp.ClientResponse]:  # type: ignore
         log.debug('POST %s', url)
         with async_timeout.timeout(10):
             async with self.session.post(url, data=data, **request_options) as response:
