@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 from typing import Optional, AsyncIterator
-from botus_receptus.gino import db, Base, Snowflake, create_or_update
+from botus_receptus.gino import Snowflake
 
+from .base import db, Base
 from ..exceptions import InvalidVersionError
 
 
@@ -19,8 +20,8 @@ class BibleVersion(Base):
     books = db.Column(db.BigInteger, nullable=False)
 
     async def set_for_user(self, user_id: int) -> None:
-        await create_or_update(
-            UserPref, set_=('bible_id',), user_id=user_id, bible_id=self.id
+        await UserPref.create_or_update(
+            set_=('bible_id',), user_id=user_id, bible_id=self.id
         )
 
     @staticmethod

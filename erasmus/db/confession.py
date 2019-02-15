@@ -5,9 +5,9 @@ import attr
 from typing import Any, Union, List, Sequence, AsyncIterator, cast
 from enum import Enum
 
-from botus_receptus.gino import db, Base
 from botus_receptus.interactive_pager import ListPageSource
 
+from .base import db, Base
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 
 

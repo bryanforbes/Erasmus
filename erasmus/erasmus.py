@@ -12,6 +12,7 @@ from botus_receptus import formatting, checks, DblBot
 from botus_receptus.gino import Bot
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
 
+from .db import db
 from .config import Config
 from .exceptions import ErasmusError
 from .context import Context
@@ -39,6 +40,7 @@ class Erasmus(Bot[Context], DblBot[Context]):
     config: Config
 
     context_cls = Context
+    db = db
 
     def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
         kwargs['formatter'] = HelpFormatter()
