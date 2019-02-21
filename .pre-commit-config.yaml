@@ -1,6 +1,21 @@
 repos:
--   repo: https://github.com/ambv/black
-    rev: stable
+-   repo: local
     hooks:
-    - id: black
-      language_version: python3.7
+    -   id: black
+        name: black
+        language: system
+        entry: poetry run black --check
+        files: \.pyi?$
+        exclude: ^alembic\/.*$
+    -   id: flake8
+        name: flake8
+        language: system
+        entry: poetry run flake8
+        files: \.pyi?$
+        exclude: ^alembic\/.*$
+    -   id: mypy
+        name: mypy
+        language: system
+        entry: poetry run mypy
+        files: \.py$
+        exclude: ^alembic\/.*$
