@@ -195,7 +195,7 @@ version = "~0.8.1"
 
 [package.dependencies.gino-stubs]
 optional = true
-version = "rev 24221898bf52c33cd2f6e39ab43df35e6db19375"
+version = "rev 7af0c386fa82177d8003d19987605752b8022c62"
 
 [package.dependencies.more-itertools]
 optional = true
@@ -213,7 +213,7 @@ more_itertools = ["more-itertools (~6.0.0)"]
 uvloop = ["uvloop (~0.12.1)"]
 
 [package.source]
-reference = "8fec5e1231366cf6c75d02c058c3c71569af7c52"
+reference = "1021dec4204ab8332082c75c533392695c1be789"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -380,7 +380,7 @@ sqlalchemy-stubs = "^0.1"
 typing-extensions = ">=3.6.5"
 
 [package.source]
-reference = "24221898bf52c33cd2f6e39ab43df35e6db19375"
+reference = "7af0c386fa82177d8003d19987605752b8022c62"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
 [[package]]
@@ -642,18 +642,6 @@ pytest = ">=3.6"
 
 [[package]]
 category = "dev"
-description = "pytest plugin to check FLAKE8 requirements"
-name = "pytest-flake8"
-optional = false
-python-versions = "*"
-version = "1.0.4"
-
-[package.dependencies]
-flake8 = ">=3.5"
-pytest = ">=3.5"
-
-[[package]]
-category = "dev"
 description = "run tests in isolated forked subprocesses"
 name = "pytest-forked"
 optional = false
@@ -676,18 +664,6 @@ pytest = ">=2.7"
 
 [package.extras]
 dev = ["pre-commit", "tox"]
-
-[[package]]
-category = "dev"
-description = "Mypy static type checker plugin for Pytest"
-name = "pytest-mypy"
-optional = false
-python-versions = "*"
-version = "0.3.2"
-
-[package.dependencies]
-mypy = ">=0.570,<1.0"
-pytest = ">=2.9.2"
 
 [[package]]
 category = "dev"
@@ -939,7 +915,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pytest (>=3.5,<3.7.3 || >3.7.3)", "pytest-checkdocs", "pytest-flake8", "pathlib2"]
 
 [metadata]
-content-hash = "bd6ab8d96ddc66d7b9989cd1a3092d4bb5a348c2e94dfffbecf4fde26b169627"
+content-hash = "cdfaf9dae890ced919a836a1523dd2c7a4234f1a0d359ad50d68bbf2de9097b9"
 python-versions = "^3.7"
 
 [metadata.hashes]
@@ -997,10 +973,8 @@ pyparsing = ["66c9268862641abcac4a96ba74506e594c884e3f57690a696d21ad8210ed667a",
 pytest = ["067a1d4bf827ffdd56ad21bd46674703fce77c5957f6c1eef731f6146bfcef1c", "9687049d53695ad45cf5fdc7bbd51f0c49f1ea3ecfc4b7f3fde7501b541f17f4"]
 pytest-asyncio = ["9fac5100fd716cbecf6ef89233e8590a4ad61d729d1732e0a96b84182df1daaf", "d734718e25cfc32d2bf78d346e99d33724deeba774cc4afdf491530c6184b63b"]
 pytest-cov = ["0ab664b25c6aa9716cbf203b17ddb301932383046082c081b9848a0edf5add33", "230ef817450ab0699c6cc3c9c8f7a829c34674456f2ed8df1fe1d39780f7c87f"]
-pytest-flake8 = ["4d225c13e787471502ff94409dcf6f7927049b2ec251c63b764a4b17447b60c0", "d7e2b6b274a255b7ae35e9224c85294b471a83b76ecb6bd53c337ae977a499af"]
 pytest-forked = ["5fe33fbd07d7b1302c95310803a5e5726a4ff7f19d5a542b7ce57c76fed8135f", "d352aaced2ebd54d42a65825722cb433004b4446ab5d2044851d9cc7a00c9e38"]
 pytest-mock = ["4d0d06d173eecf172703219a71dbd4ade0e13904e6bbce1ce660e2e0dc78b5c4", "bfdf02789e3d197bd682a758cae0a4a18706566395fbe2803badcd1335e0173e"]
-pytest-mypy = ["8f6436eed8118afd6c10a82b3b60fb537336736b0fd7a29262a656ac42ce01ac", "acc653210e7d8d5c72845a5248f00fd33f4f3379ca13fe56cfc7b749b5655c3e"]
 pytest-sugar = ["26cf8289fe10880cbbc130bd77398c4e6a8b936d8393b116a5c16121d95ab283", "fcd87a74b2bce5386d244b49ad60549bfbc4602527797fac167da147983f58ab"]
 pytest-vcr = ["5e5bfa522667007723db331823d5d351724da2d95e88bd4cf141fa4e267faba2"]
 pytest-xdist = ["4a201bb3ee60f5dd6bb40c5209d4e491cecc4d5bafd656cfb10f86178786e568", "d03d1ff1b008458ed04fa73e642d840ac69b4107c168e06b71037c62d7813dd4"]

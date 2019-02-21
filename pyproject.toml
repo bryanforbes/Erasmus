@@ -13,9 +13,9 @@ beautifulsoup4 = "^4.6"
 cchardet = "^2.1"
 psycopg2 = "^2.7"
 ujson = "^1.35"
-"botus_receptus" = {rev = "8fec5e1231366cf6c75d02c058c3c71569af7c52", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop", "more_itertools"]}
+"botus_receptus" = {rev = "1021dec4204ab8332082c75c533392695c1be789", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop", "more_itertools"]}
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
-gino-stubs = {rev = "24221898bf52c33cd2f6e39ab43df35e6db19375", git = "https://github.com/bryanforbes/gino-stubs.git"}
+gino-stubs = {rev = "7af0c386fa82177d8003d19987605752b8022c62", git = "https://github.com/bryanforbes/gino-stubs.git"}
 
 [tool.poetry.dev-dependencies]
 asynctest = "^0.12.2"
@@ -28,9 +28,7 @@ pre-commit = "^1.12"
 pytest = "^4.0"
 pytest-asyncio = "^0.10.0"
 pytest-cov = "^2.6"
-pytest-flake8 = "^1.0"
 pytest-mock = "^1.10"
-pytest-mypy = "^0.3.2"
 pytest-sugar = "^0.9.1"
 pytest-vcr = "^1.0.0"
 pytest-xdist = "^1.24"
