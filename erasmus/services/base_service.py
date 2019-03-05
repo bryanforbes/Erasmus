@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-import attr
+from dataclasses import dataclass
+from dataslots import with_slots
 import asyncio
 import async_timeout
 import aiohttp
@@ -25,7 +26,8 @@ specials_re = re.compile(re.capture(r'[\*`]'))
 number_re = re.compile(re.capture(r'\*\*', re.one_or_more(re.DIGIT), re.DOT, r'\*\*'))
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots  # type: ignore
+@dataclass
 class BaseService(object):
     session: aiohttp.ClientSession
     config: Optional[Dict[str, Any]]

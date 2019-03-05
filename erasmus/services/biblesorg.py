@@ -2,7 +2,8 @@
 
 from __future__ import annotations
 
-import attr
+from dataclasses import dataclass, field
+from dataslots import with_slots
 import asyncio
 
 from typing import Any, Optional, List, Dict, AsyncIterator
@@ -38,13 +39,14 @@ class SearchResultDict(TypedDict):
 
 
 # TODO: better error handling
-@attr.s(slots=True)
+@with_slots
+@dataclass
 class BiblesOrg(BaseService):
-    _auth: Optional[BasicAuth] = attr.ib(init=False)
-    _passage_url: URL = attr.ib(init=False)
-    _search_url: URL = attr.ib(init=False)
+    _auth: Optional[BasicAuth] = field(init=False)
+    _passage_url: URL = field(init=False)
+    _search_url: URL = field(init=False)
 
-    def __attrs_post_init__(self) -> None:
+    def __post_init__(self) -> None:
         self._passage_url = URL('https://bibles.org/v2/passages.js')
         self._search_url = URL('https://bibles.org/v2/verses.js')
 

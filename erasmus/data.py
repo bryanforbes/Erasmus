@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from typing import Optional, Union, List, Dict, Pattern, Match, TYPE_CHECKING
-import attr
+from dataclasses import dataclass, field
+from dataslots import with_slots
 from pathlib import Path
 from itertools import chain
 from mypy_extensions import TypedDict
@@ -139,7 +140,8 @@ def get_book_mask(book_name: str) -> int:
     return _book_mask_map.get(book_name, 0)
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class Verse(object):
     chapter: int
     verse: int
@@ -148,15 +150,17 @@ class Verse(object):
         return f'{self.chapter}:{self.verse}'
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class VerseRange(object):
-    book: str = attr.ib(converter=get_book)
+    book: str
     start: Verse
     end: Optional[Verse] = None
     version: Optional[str] = None
-    book_mask: int = attr.ib(init=False)
+    book_mask: int = field(init=False)
 
-    def __attrs_post_init__(self) -> None:
+    def __post_init__(self) -> None:
+        self.book = get_book(self.book)
         self.book_mask = get_book_mask(self.book)
 
     @property
@@ -243,7 +247,8 @@ truncation_warning = 'The passage was too long and has been truncated:\n\n'
 truncation_warning_len = len(truncation_warning) + 3
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class Passage(object):
     text: str
     range: VerseRange
@@ -266,7 +271,8 @@ class Passage(object):
         return f'{self.text}\n\n{self.citation}'
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class SearchResults(object):
     verses: List[Passage]
     total: int

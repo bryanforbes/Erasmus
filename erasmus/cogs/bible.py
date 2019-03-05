@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import Any, Optional, Tuple, List, Dict, cast
 
-import attr
+from dataclasses import dataclass, field
+from dataslots import with_slots
 import discord
 from discord.ext import commands
 from botus_receptus.formatting import escape
@@ -31,10 +32,14 @@ from ..erasmus import Erasmus
 from ..context import Context
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class SearchPageSource(FieldPageSource[Passage]):
     search_func: Any
-    cache: Dict[int, List[Passage]] = attr.ib(init=False, factory=dict)
+    cache: Dict[int, List[Passage]] = field(init=False)
+
+    def __post_init__(self) -> None:
+        self.cache = {}
 
     async def get_page_items(self, page: int) -> List[Passage]:
         if page in self.cache:
@@ -133,13 +138,14 @@ Example:
     {prefix}{command} faith hope'''
 
 
-@attr.s(slots=True, auto_attribs=True)
-class Bible(object):
+@with_slots
+@dataclass
+class Bible(commands.Cog[Context]):
     bot: Erasmus
-    service_manager: ServiceManager = attr.ib(init=False)
-    _user_cooldown: commands.CooldownMapping = attr.ib(init=False)
+    service_manager: ServiceManager = field(init=False)
+    _user_cooldown: commands.CooldownMapping = field(init=False)
 
-    def __attrs_post_init__(self) -> None:
+    def __post_init__(self) -> None:
         self.service_manager = ServiceManager.from_config(
             self.bot.config, self.bot.session
         )
@@ -192,7 +198,7 @@ class Bible(object):
                 except Exception as exc:
                     await self.bot.on_command_error(ctx, exc)
 
-    async def __error(self, ctx: Context, error: Exception) -> None:
+    async def cog_command_error(self, ctx: Context, error: Exception) -> None:
         if (
             isinstance(
                 error,
@@ -419,13 +425,15 @@ class Bible(object):
             brief=f'Look up a verse in {name}',
             help=version_lookup_help.format(prefix='{prefix}', command=command),
             hidden=True,
-        )(self.__version_lookup)
+        )(Bible.__version_lookup)
+        lookup.cog = self
         search = self.bot.command(
             name=f's{command}',
             brief=f'Search in {name}',
             help=version_search_help.format(prefix='{prefix}', command=f's{command}'),
             hidden=True,
-        )(self.__version_search)
+        )(Bible.__version_search)
+        search.cog = self
 
         # Share cooldown across commands
         lookup._buckets = search._buckets = self._user_cooldown

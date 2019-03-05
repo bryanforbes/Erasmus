@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-import attr
+from dataclasses import dataclass
+from dataslots import with_slots
 from discord.ext import commands
 from botus_receptus.formatting import bold
 
@@ -168,8 +169,9 @@ nicene_381_text = (
 )
 
 
-@attr.s(slots=True, auto_attribs=True)
-class Creeds(object):
+@with_slots
+@dataclass
+class Creeds(commands.Cog[Context]):
     bot: Erasmus
 
     @commands.command(brief='List the supported creeds')

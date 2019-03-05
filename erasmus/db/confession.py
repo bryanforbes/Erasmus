@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-import attr
+from dataclasses import dataclass
+from dataslots import with_slots
 
 from typing import Any, Union, List, Sequence, AsyncIterator, cast
 from enum import Enum
@@ -271,7 +272,8 @@ class Confession(Base):
         return c
 
 
-@attr.s(slots=True, auto_attribs=True)
+@with_slots
+@dataclass
 class SearchConfessionSource(ListPageSource[Union[Paragraph, Article, Question]]):
     entry_text_string: str
 

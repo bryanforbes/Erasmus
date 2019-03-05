@@ -1,5 +1,7 @@
 import pytest
-import attr
+from typing import Any
+from dataclasses import dataclass, field
+from dataslots import with_slots
 
 from erasmus.services.base_service import BaseService
 from erasmus.data import VerseRange
@@ -9,10 +11,11 @@ from erasmus.data import VerseRange
 class TestService(object):
     @pytest.fixture
     def MyService(self, mocker):
-        @attr.s(slots=True)
+        @with_slots
+        @dataclass
         class MyService(BaseService):
-            _request_passage = attr.ib(init=False, factory=mocker.Mock)
-            _request_search = attr.ib(init=False, factory=mocker.Mock)
+            _request_passage: Any = field(default_factory=mocker.Mock)
+            _request_search: Any = field(default_factory=mocker.Mock)
 
         return MyService
 
