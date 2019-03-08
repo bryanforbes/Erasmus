@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 from typing import Dict, List
-from dataclasses import dataclass, field
-from dataslots import with_slots
+from attr import dataclass, attrib
 import aiohttp
 
 from .data import VerseRange, Passage, SearchResults
@@ -11,11 +10,10 @@ from . import services
 from .protocols import Bible, Service
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class ServiceManager(object):
     session: aiohttp.ClientSession
-    service_map: Dict[str, Service] = field(default_factory=dict)
+    service_map: Dict[str, Service] = attrib(factory=dict)
 
     def __contains__(self, key: str) -> bool:
         return self.service_map.__contains__(key)

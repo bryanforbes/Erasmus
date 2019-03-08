@@ -2,12 +2,11 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from dataslots import with_slots
 import asyncio
 
 from typing import Any, Optional, List, Dict, AsyncIterator
 from mypy_extensions import TypedDict
+from attr import dataclass, attrib
 from aiohttp import BasicAuth
 from botus_receptus import re
 from bs4 import BeautifulSoup
@@ -39,14 +38,13 @@ class SearchResultDict(TypedDict):
 
 
 # TODO: better error handling
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class BiblesOrg(BaseService):
-    _auth: Optional[BasicAuth] = field(init=False)
-    _passage_url: URL = field(init=False)
-    _search_url: URL = field(init=False)
+    _auth: Optional[BasicAuth] = attrib(init=False)
+    _passage_url: URL = attrib(init=False)
+    _search_url: URL = attrib(init=False)
 
-    def __post_init__(self) -> None:
+    def __attrs_post_init__(self) -> None:
         self._passage_url = URL('https://bibles.org/v2/passages.js')
         self._search_url = URL('https://bibles.org/v2/verses.js')
 

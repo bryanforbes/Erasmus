@@ -1,10 +1,8 @@
 # Service for querying biblegateway.com
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from dataslots import with_slots
-
 from typing import List, AsyncIterator
+from attr import dataclass, attrib
 from botus_receptus import re
 from bs4 import BeautifulSoup, Tag, NavigableString, SoupStrainer
 from contextlib import asynccontextmanager
@@ -19,13 +17,12 @@ total_re = re.compile(re.START, re.named_group('total')(re.one_or_more(re.DIGITS
 
 
 # TODO: Error handling
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class BibleGateway(BaseService):
-    _passage_url: URL = field(init=False)
-    _search_url: URL = field(init=False)
+    _passage_url: URL = attrib(init=False)
+    _search_url: URL = attrib(init=False)
 
-    def __post_init__(self) -> None:
+    def __attrs_post_init__(self) -> None:
         self._passage_url = URL('https://www.biblegateway.com/passage/')
         self._search_url = URL('https://www.biblegateway.com/quicksearch/')
 

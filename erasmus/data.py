@@ -1,13 +1,13 @@
 from __future__ import annotations
 
 from typing import Optional, Union, List, Dict, Pattern, Match, TYPE_CHECKING
-from dataclasses import dataclass, field
-from dataslots import with_slots
-from pathlib import Path
+from attr import dataclass, attrib
+from botus_receptus import re
 from itertools import chain
 from mypy_extensions import TypedDict
 from more_itertools import unique_everseen
-from botus_receptus import re
+from pathlib import Path
+
 from .json import load
 from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
 
@@ -140,8 +140,7 @@ def get_book_mask(book_name: str) -> int:
     return _book_mask_map.get(book_name, 0)
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class Verse(object):
     chapter: int
     verse: int
@@ -150,16 +149,15 @@ class Verse(object):
         return f'{self.chapter}:{self.verse}'
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class VerseRange(object):
     book: str
     start: Verse
     end: Optional[Verse] = None
     version: Optional[str] = None
-    book_mask: int = field(init=False)
+    book_mask: int = attrib(init=False)
 
-    def __post_init__(self) -> None:
+    def __attrs_post_init__(self) -> None:
         self.book = get_book(self.book)
         self.book_mask = get_book_mask(self.book)
 
@@ -247,8 +245,7 @@ truncation_warning = 'The passage was too long and has been truncated:\n\n'
 truncation_warning_len = len(truncation_warning) + 3
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class Passage(object):
     text: str
     range: VerseRange
@@ -271,8 +268,7 @@ class Passage(object):
         return f'{self.text}\n\n{self.citation}'
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class SearchResults(object):
     verses: List[Passage]
     total: int

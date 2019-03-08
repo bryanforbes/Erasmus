@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from dataslots import with_slots
 import asyncio
 
 from typing import Any, List, Dict, AsyncIterator
+from attr import dataclass, attrib
 from botus_receptus import re
 from bs4 import BeautifulSoup
 from contextlib import asynccontextmanager
@@ -104,14 +103,13 @@ book_map: Dict[str, str] = {
 }
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class ApiBible(BaseService):
-    _passage_url: URL = field(init=False)
-    _search_url: URL = field(init=False)
-    _headers: Dict[str, str] = field(init=False)
+    _passage_url: URL = attrib(init=False)
+    _search_url: URL = attrib(init=False)
+    _headers: Dict[str, str] = attrib(init=False)
 
-    def __post_init__(self) -> None:
+    def __attrs_post_init__(self) -> None:
         self._passage_url = URL(
             'https://api.scripture.api.bible/v1/bibles/{bibleId}/passages/{passageId}'
         )

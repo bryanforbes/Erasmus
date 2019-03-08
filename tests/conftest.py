@@ -5,8 +5,7 @@ from typing import Any
 import pytest  # type: ignore
 import pytest_mock  # type: ignore
 import asynctest.mock  # type: ignore
-from dataclasses import dataclass
-from dataslots import with_slots
+from attr import dataclass
 
 pytest_mock._get_mock_module._module = asynctest.mock
 
@@ -22,8 +21,7 @@ def workaround_sugar_issue_159():
     pytest_sugar.SugarTerminalReporter.pytest_runtest_logfinish = lambda self: None
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class MockBible(object):
     command: str
     name: str

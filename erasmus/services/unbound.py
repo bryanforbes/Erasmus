@@ -2,10 +2,8 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from dataslots import with_slots
-
 from typing import Dict, List, AsyncIterator
+from attr import dataclass, attrib
 from botus_receptus import re
 from bs4 import BeautifulSoup
 from contextlib import asynccontextmanager
@@ -110,12 +108,11 @@ book_map: Dict[str, str] = {
 }
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class Unbound(BaseService):
-    _base_url: URL = field(init=False)
+    _base_url: URL = attrib(init=False)
 
-    def __post_init__(self) -> None:
+    def __attrs_post_init__(self) -> None:
         self._base_url = URL(
             'http://unbound.biola.edu/index.cfm?method=searchResults.doSearch'
         )

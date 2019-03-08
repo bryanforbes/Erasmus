@@ -1,9 +1,7 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from dataslots import with_slots
-
 from typing import Any, Union, List, Sequence, AsyncIterator, cast
+from attr import dataclass
 from enum import Enum
 
 from botus_receptus.interactive_pager import ListPageSource
@@ -272,8 +270,7 @@ class Confession(Base):
         return c
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class SearchConfessionSource(ListPageSource[Union[Paragraph, Article, Question]]):
     entry_text_string: str
 

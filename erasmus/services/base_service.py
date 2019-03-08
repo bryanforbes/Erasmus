@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from dataclasses import dataclass
-from dataslots import with_slots
 import asyncio
 import async_timeout
 import aiohttp
@@ -9,6 +7,7 @@ import logging
 
 from typing import Any, Optional, Dict, List, AsyncContextManager, AsyncIterator
 from abc import abstractmethod
+from attr import dataclass
 from contextlib import asynccontextmanager
 from botus_receptus import re
 from yarl import URL
@@ -26,8 +25,7 @@ specials_re = re.compile(re.capture(r'[\*`]'))
 number_re = re.compile(re.capture(r'\*\*', re.one_or_more(re.DIGIT), re.DOT, r'\*\*'))
 
 
-@with_slots  # type: ignore
-@dataclass
+@dataclass(slots=True)
 class BaseService(object):
     session: aiohttp.ClientSession
     config: Optional[Dict[str, Any]]

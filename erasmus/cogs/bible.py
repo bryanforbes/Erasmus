@@ -2,9 +2,8 @@ from __future__ import annotations
 
 from typing import Any, Optional, Tuple, List, Dict, cast
 
-from dataclasses import dataclass, field
-from dataslots import with_slots
 import discord
+from attr import dataclass, attrib
 from discord.ext import commands
 from botus_receptus.formatting import escape
 from botus_receptus.db import UniqueViolationError
@@ -32,14 +31,10 @@ from ..erasmus import Erasmus
 from ..context import Context
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class SearchPageSource(FieldPageSource[Passage]):
     search_func: Any
-    cache: Dict[int, List[Passage]] = field(init=False)
-
-    def __post_init__(self) -> None:
-        self.cache = {}
+    cache: Dict[int, List[Passage]] = attrib(init=False, factory=dict)
 
     async def get_page_items(self, page: int) -> List[Passage]:
         if page in self.cache:
@@ -138,14 +133,13 @@ Example:
     {prefix}{command} faith hope'''
 
 
-@with_slots
-@dataclass
+@dataclass(slots=True)
 class Bible(commands.Cog[Context]):
     bot: Erasmus
-    service_manager: ServiceManager = field(init=False)
-    _user_cooldown: commands.CooldownMapping = field(init=False)
+    service_manager: ServiceManager = attrib(init=False)
+    _user_cooldown: commands.CooldownMapping = attrib(init=False)
 
-    def __post_init__(self) -> None:
+    def __attrs_post_init__(self) -> None:
         self.service_manager = ServiceManager.from_config(
             self.bot.config, self.bot.session
         )
