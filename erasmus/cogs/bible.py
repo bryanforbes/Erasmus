@@ -223,7 +223,7 @@ class Bible(commands.Cog[Context]):
         elif isinstance(error, InvalidVersionError):
             message = (
                 f'`{error.version}` is not a valid version. Check '
-                '`{ctx.prefix}versions` for valid versions'
+                f'`{ctx.prefix}versions` for valid versions'
             )
         elif isinstance(error, ServiceNotSupportedError):
             message = (
@@ -242,7 +242,7 @@ class Bible(commands.Cog[Context]):
                     f'"{" ".join(error.terms)}" in {error.bible.name}'
                 )
         else:
-            raise error
+            return
 
         await ctx.send_error(escape(message, mass_mentions=True))
 

@@ -144,7 +144,7 @@ class Confession(commands.Cog[Context]):
         elif isinstance(error, NoSectionsError):
             message = f'`{error.confession}` has no {error.section_type}'
         else:
-            raise error
+            return
 
         await ctx.send_error(escape(message, mass_mentions=True))
 
