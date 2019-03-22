@@ -133,16 +133,11 @@ Example:
     {prefix}{command} faith hope'''
 
 
-@dataclass(slots=True)
 class Bible(commands.Cog[Context]):
-    bot: Erasmus
-    service_manager: ServiceManager = attrib(init=False)
-    _user_cooldown: commands.CooldownMapping = attrib(init=False)
+    def __init__(self, bot: Erasmus) -> None:
+        self.bot = bot
 
-    def __attrs_post_init__(self) -> None:
-        self.service_manager = ServiceManager.from_config(
-            self.bot.config, self.bot.session
-        )
+        self.service_manager = ServiceManager.from_config(bot.config, bot.session)
         self._user_cooldown = commands.CooldownMapping.from_cooldown(
             8, 60.0, commands.BucketType.user
         )

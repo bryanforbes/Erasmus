@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import List, Callable, Sequence, Any, Match, Optional, AsyncIterator, cast
 
-from attr import dataclass
 from discord.ext import commands
 from botus_receptus.formatting import (
     pluralizer,
@@ -115,9 +114,9 @@ Examples:
 '''
 
 
-@dataclass(slots=True)
 class Confession(commands.Cog[Context]):
-    bot: Erasmus
+    def __init__(self, bot: Erasmus) -> None:
+        self.bot = bot
 
     async def cog_command_error(self, ctx: Context, error: Exception) -> None:
         if (

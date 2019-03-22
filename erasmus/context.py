@@ -26,7 +26,7 @@ class Context(EmbedContext):
         if len(text) > 2048:
             text = f'{truncation_warning}{text[:max_length]}\u2026'
 
-        embed = discord.Embed.from_data(
+        embed = discord.Embed.from_dict(
             {'description': text, 'footer': {'text': passage.citation}}
         )
 

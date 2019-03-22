@@ -7,16 +7,16 @@ import logging
 import pendulum
 
 from discord.ext import commands
-from discord.ext.commands import Group
 from botus_receptus import formatting, checks, DblBot
 from botus_receptus.gino import Bot
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
+from botus_receptus.formatting import Paginator
 
 from .db import db
 from .config import Config
 from .exceptions import ErasmusError
 from .context import Context
-from .format import HelpFormatter
+from .help import HelpCommand
 
 log = logging.getLogger(__name__)
 
@@ -43,13 +43,17 @@ class Erasmus(Bot[Context], DblBot[Context]):
     db = db
 
     def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
-        kwargs['formatter'] = HelpFormatter()
+        kwargs['help_command'] = HelpCommand(
+            paginator=Paginator(),
+            command_attrs={
+                'brief': 'List commands for this bot or get help for commands',
+                'cooldown': commands.Cooldown(5, 30.0, commands.BucketType.channel),
+            },
+        )
         kwargs['description'] = description
 
         super().__init__(config, *args, verify_ssl=False, **kwargs)
 
-        self.remove_command('help')
-        self.add_command(self.help)
         self.add_command(self.invite)
 
         for extension in extensions:
@@ -148,48 +152,6 @@ class Erasmus(Bot[Context], DblBot[Context]):
             )
 
         await ctx.send_error(formatting.escape(message, mass_mentions=True))
-
-    @commands.command(brief='List commands for this bot or get help for commands')
-    @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
-    async def help(self, ctx: Context, *commands: str) -> None:
-        bot = ctx.bot
-        destination = ctx.message.author if bot.pm_help else ctx.message.channel
-
-        if len(commands) == 0:
-            pages = await bot.formatter.format_help_for(ctx, bot)
-        else:
-            name = commands[0]
-
-            if name[0] == ctx.prefix:
-                name = name[1:]
-
-            name = formatting.escape(name, mass_mentions=True)
-            command = bot.all_commands.get(name)
-
-            if command is None:
-                await destination.send(bot.command_not_found.format(name))
-                return
-
-            if len(commands) > 1:
-                group = cast(Group, command)
-                for key in commands[1:]:
-                    try:
-                        key = formatting.escape(key, mass_mentions=True)
-                        command = group.all_commands.get(key)
-
-                        if command is None:
-                            await destination.send(bot.command_not_found.format(key))
-                            return
-                    except AttributeError:
-                        await destination.send(
-                            bot.command_has_no_subcommands.format(command, key)
-                        )
-                        return
-
-            pages = await bot.formatter.format_help_for(ctx, command)
-
-        for page in pages:
-            await destination.send(page)
 
     @commands.command(brief='Get the invite link for Erasmus')
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
