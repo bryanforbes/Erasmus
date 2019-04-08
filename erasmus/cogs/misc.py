@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from discord.ext import commands
+from botus_receptus.formatting import code_block
 
 from ..context import Context
 from ..erasmus import Erasmus
@@ -25,6 +26,16 @@ class Misc(commands.Cog[Context]):
             await ctx.send(f'No, I am not your friend, {ctx.author.mention}')
         else:
             await ctx.send(f"Of course I'm your friend, {ctx.author.mention}")
+
+    @commands.command(hidden=True)
+    @commands.is_owner()
+    async def stats(self, ctx: Context) -> None:
+        await ctx.send(
+            code_block(
+                f'''Servers: {len(self.bot.guilds)}
+Users: {len(self.bot.users)}'''
+            )
+        )
 
 
 def setup(bot: Erasmus) -> None:
