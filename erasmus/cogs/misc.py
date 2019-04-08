@@ -24,6 +24,8 @@ class Misc(commands.Cog[Context]):
     async def areyoumyfriend(self, ctx: Context) -> None:
         if ctx.author.id in {547579430164365313, 139178723235594240}:
             await ctx.send(f'No, I am not your friend, {ctx.author.mention}')
+        elif ctx.author.id == 275782127168126977:
+            await ctx.send(f'You are on my permanent troll list, {ctx.author.mention}')
         else:
             await ctx.send(f"Of course I'm your friend, {ctx.author.mention}")
 
