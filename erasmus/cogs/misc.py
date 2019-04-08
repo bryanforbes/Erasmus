@@ -18,6 +18,14 @@ class Misc(commands.Cog[Context]):
             '349394562336292876&scope=bot&permissions=388160>'
         )
 
+    @commands.command(hidden=True)
+    @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
+    async def areyoumyfriend(self, ctx: Context) -> None:
+        if ctx.author.id in {547579430164365313, 139178723235594240}:
+            await ctx.send(f'No, I am not your friend, {ctx.author.mention}')
+        else:
+            await ctx.send(f"Of course I'm your friend, {ctx.author.mention}")
+
 
 def setup(bot: Erasmus) -> None:
     bot.add_cog(Misc(bot))
