@@ -20,7 +20,7 @@ from .help import HelpCommand
 
 log = logging.getLogger(__name__)
 
-extensions = ('bible', 'confession', 'creeds')
+extensions = ('bible', 'confession', 'creeds', 'misc')
 
 
 description = '''
@@ -53,8 +53,6 @@ class Erasmus(Bot[Context], DblBot[Context]):
         kwargs['description'] = description
 
         super().__init__(config, *args, verify_ssl=False, **kwargs)
-
-        self.add_command(self.invite)
 
         for extension in extensions:
             try:
@@ -152,14 +150,6 @@ class Erasmus(Bot[Context], DblBot[Context]):
             )
 
         await ctx.send_error(formatting.escape(message, mass_mentions=True))
-
-    @commands.command(brief='Get the invite link for Erasmus')
-    @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
-    async def invite(self, ctx: Context) -> None:
-        await ctx.send(
-            '<https://discordapp.com/oauth2/authorize?client_id='
-            '349394562336292876&scope=bot&permissions=388160>'
-        )
 
 
 __all__ = ['Erasmus']
