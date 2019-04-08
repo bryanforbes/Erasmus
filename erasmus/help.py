@@ -20,10 +20,11 @@ class HelpCommand(commands.DefaultHelpCommand[Context]):
         ],
     ) -> None:
         assert self.context is not None
+        bot = self.context.bot
 
-        filtered = unique_everseen(
-            await self.filter_commands(self.context.bot.commands, sort=True)
-        )
+        self.paginator.add_line(bot.description, empty=True)
+
+        filtered = unique_everseen(await self.filter_commands(bot.commands, sort=True))
 
         self.paginator.add_line('Commands:')
         self.paginator.add_line('---------', empty=True)
