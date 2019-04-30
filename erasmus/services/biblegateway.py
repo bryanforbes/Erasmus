@@ -47,7 +47,7 @@ class BibleGateway(BaseService):
             small_caps.unwrap()
         for bold in verse_node.select('b, h4'):
             bold.insert_before('__BOLD__')
-            bold.insert_after('__BOLD__')
+            bold.insert_after('__BOLD__' + (' ' if bold.name == 'h4' else ''))
             bold.unwrap()
         for number in verse_node.select('sup.versenum'):
             # Add a period after verse numbers

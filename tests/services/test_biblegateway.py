@@ -5,6 +5,12 @@ from . import ServiceTest, Galatians_3_10_11, Mark_5_1
 from erasmus.services import BibleGateway
 from erasmus.data import VerseRange, Passage
 
+Psalm_53_1_ESV = (
+    '**To the choirmaster: according to Mahalath. A Maskil of David.** **1.** The fool '
+    'says in his heart, “There is no God.” They are corrupt, doing abominable '
+    'iniquity; there is none who does good.'
+)
+
 
 class TestBibleGateway(ServiceTest):
     @pytest.fixture(
@@ -261,8 +267,16 @@ class TestBibleGateway(ServiceTest):
                     Mark_5_1, VerseRange.from_string('Mark 5:1'), 'NASB'
                 ),
             },
+            {
+                'verse': VerseRange.from_string('Psalm 53:1'),
+                'passage': Passage(
+                    Psalm_53_1_ESV, VerseRange.from_string('Psalm 53:1'), 'ESV'
+                ),
+                'version': 'ESV',
+                'abbr': 'ESV',
+            },
         ],
-        ids=['Gal 3:10-11 NASB', 'Mark 5:1 NASB'],
+        ids=['Gal 3:10-11 NASB', 'Mark 5:1 NASB', 'Psalm 53:1 ESV'],
     )
     def passage_data(self, request):
         return request.param
