@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "erasmus"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
 license = "BSD-3-Clause"
@@ -13,7 +13,7 @@ beautifulsoup4 = "^4.6"
 cchardet = "^2.1"
 psycopg2 = "^2.7"
 ujson = "^1.35"
-"botus_receptus" = {rev = "4dfa33b592eb964f82592077883910daea3dd1b4", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop", "more_itertools"]}
+"botus_receptus" = {rev = "598927529f3db0b0aa0eccd28118990375616b76", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop", "more_itertools"]}
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
 gino-stubs = {rev = "7af0c386fa82177d8003d19987605752b8022c62", git = "https://github.com/bryanforbes/gino-stubs.git"}
 
@@ -23,7 +23,7 @@ black = "^19.3b0"
 flake8 = "^3.6"
 flake8-bugbear = "^19.3"
 flake8-pyi = "^19.3"
-mypy = "^0.700"
+mypy = "^0.701"
 pre-commit = "^1.12"
 pytest = "^4.0"
 pytest-asyncio = "^0.10.0"
