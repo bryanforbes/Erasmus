@@ -4,7 +4,7 @@ from sqlalchemy import engine_from_config, pool
 from logging.config import fileConfig
 from erasmus.db import db
 
-from configparser import ConfigParser
+from botus_receptus.config import load
 from pathlib import Path
 
 # this is the Alembic Config object, which provides
@@ -54,14 +54,13 @@ def run_migrations_online():
 
     """
 
-    bot_config = ConfigParser(default_section='bot')
-    bot_config.read(Path(__file__).resolve().parent.parent / 'config.ini')
+    bot_config = load(Path(__file__).resolve().parent.parent / 'config.toml')
 
     connectable = engine_from_config(
         config.get_section(config.config_ini_section),
         prefix='sqlalchemy.',
         poolclass=pool.NullPool,
-        url=bot_config.get('bot', 'db_url'),
+        url=bot_config['db_url'],
     )
 
     def process_revision_directives(context, revision, directives):
