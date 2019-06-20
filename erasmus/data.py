@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from typing import Optional, Union, List, Dict, Pattern, Match, TYPE_CHECKING
+from typing_extensions import TypedDict
 from attr import dataclass, attrib
 from botus_receptus import re
 from itertools import chain
-from mypy_extensions import TypedDict
 from more_itertools import unique_everseen
 from pathlib import Path
 

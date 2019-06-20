@@ -5,7 +5,7 @@ from __future__ import annotations
 import asyncio
 
 from typing import Any, Optional, List, Dict, AsyncIterator
-from mypy_extensions import TypedDict
+from typing_extensions import TypedDict
 from attr import dataclass, attrib
 from aiohttp import BasicAuth
 from botus_receptus import re

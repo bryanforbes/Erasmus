@@ -1,5 +1,4 @@
 import pytest
-import asyncio
 import aiohttp
 
 from erasmus.data import VerseRange, SearchResults
@@ -20,12 +19,6 @@ Mark_5_1 = (
 
 
 class ServiceTest(object):
-    @pytest.fixture
-    def event_loop(self, request):
-        loop = asyncio.get_event_loop_policy().new_event_loop()
-        yield loop
-        loop.close()
-
     @pytest.fixture
     async def session(self, event_loop):
         async with aiohttp.ClientSession(loop=event_loop) as session:
