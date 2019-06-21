@@ -16,12 +16,12 @@ before_install:
   - pip install pip==18.1
 
 install:
-  - poetry install -v --extras "db gino_typed more_itertools uvloop"
+  - poetry install -v
   - poetry run pip install codecov
 
 script: |
   set -e
-  poetry run flake8 src
+  poetry run flake8 erasmus
   poetry run mypy -m erasmus
   poetry run py.test -p no:sugar
 
