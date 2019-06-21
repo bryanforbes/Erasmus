@@ -272,10 +272,13 @@ class TestApiBible(ServiceTest):
 
     @pytest.fixture(scope="class")
     def config(self):
-        config = toml.load(
-            str(Path(__file__).resolve().parent.parent.parent / 'config.toml')
-        )
-        return config['bot']['services']['ApiBible']
+        try:
+            config = toml.load(
+                str(Path(__file__).resolve().parent.parent.parent / 'config.toml')
+            )
+            return config['bot']['services']['ApiBible']
+        except FileNotFoundError:
+            return {'api_key': ''}
 
     @pytest.fixture
     def default_version(self):
