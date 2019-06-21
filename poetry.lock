@@ -159,7 +159,7 @@ aioitertools = "^0.4.0"
 async-timeout = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = "rev d14d11421284fb23256a45d5fcd88cf9ba490f43"
+"discord.py" = "rev 6e55d5b3b4962dff7c0cf204fea66d4d7563929d"
 gino = "~0.8.1"
 gino-stubs = "rev da87454aba1a905666797d91227e7e1090a9607d"
 more-itertools = "~7.0.0"
@@ -170,7 +170,7 @@ typing-extensions = ">=3.7.4"
 uvloop = "~0.12.1"
 
 [package.source]
-reference = "e28b1d32a53f9dfd010a5e76e1fc950a4c30776d"
+reference = "675646f68864adc906df022884dc9bd14660c453"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -250,7 +250,7 @@ typing-extensions = ">=3.7.4"
 websockets = ">=6.0,<7.0"
 
 [package.source]
-reference = "d14d11421284fb23256a45d5fcd88cf9ba490f43"
+reference = "6e55d5b3b4962dff7c0cf204fea66d4d7563929d"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
 [[package]]
@@ -862,7 +862,7 @@ python-versions = ">=2.7"
 version = "0.5.1"
 
 [metadata]
-content-hash = "1d930c4ff2a94120130e2ba146ab8fe4ef2f7903af1621edf48c255bbf412742"
+content-hash = "b23a4a263adf0567a2016736bebd586482da4d8b0394fbf8ccdc16dc55e8bd36"
 python-versions = "^3.7"
 
 [metadata.hashes]
