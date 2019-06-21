@@ -1,0 +1,29 @@
+language: python
+python:
+  - "3.7"
+
+dist: xenial
+sudo: required
+
+cache:
+  pip: true
+  directories:
+    - "$HOME/.cache/pypoetry"
+
+before_install:
+  - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python - -y --preview
+  - source $HOME/.poetry/env
+  - pip install pip==18.1
+
+install:
+  - poetry install -v --extras "db gino_typed more_itertools uvloop"
+  - poetry run pip install codecov
+
+script: |
+  set -e
+  poetry run flake8 src
+  poetry run mypy -m erasmus
+  poetry run py.test -p no:sugar
+
+after_success:
+  - poetry run codecov
