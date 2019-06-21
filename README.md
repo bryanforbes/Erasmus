@@ -1,7 +1,12 @@
 # Erasmus
 
 [![Discord Bots](https://discordbots.org/api/widget/status/349394562336292876.svg?noavatar=true)](https://discordbots.org/bot/349394562336292876) [![Discord Bots](https://discordbots.org/api/widget/servers/349394562336292876.svg?noavatar=true)](https://discordbots.org/bot/349394562336292876) [![Discord Bots](https://discordbots.org/api/widget/upvotes/349394562336292876.svg?noavatar=true)](https://discordbots.org/bot/349394562336292876) [![Discord Bots](https://discordbots.org/api/widget/lib/349394562336292876.svg?noavatar=true)](https://discordbots.org/bot/349394562336292876)
+
+[![Build Status](https://travis-ci.org/bryanforbes/Erasmus.svg?branch=master)](https://travis-ci.org/bryanforbes/Erasmus)
+[![codecov](https://codecov.io/gh/bryanforbes/Erasmus/branch/master/graph/badge.svg)](https://codecov.io/gh/bryanforbes/Erasmus)
+[![License](https://img.shields.io/badge/License-BSD%203--Clause-blue.svg)](https://github.com/bryanforbes/botus_receptus/blob/master/LICENSE)
 [![Checked with mypy](http://www.mypy-lang.org/static/mypy_badge.svg)](http://mypy-lang.org/)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/ambv/black)
 
 A Bible bot for Discord
 
