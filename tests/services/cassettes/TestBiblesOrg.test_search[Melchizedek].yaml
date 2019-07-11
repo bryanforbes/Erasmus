@@ -5,7 +5,8 @@ interactions:
     method: GET
     uri: https://bibles.org/v2/verses.js?keyword=Melchizedek&precision=all&version=eng-NASB&sort_order=canonical&limit=20
   response:
-    body: {string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"Melchizedek","start":1,"total":10,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[],"verses":[{"auditid":"0","verse":"18","lastverse":"18","id":"eng-NASB:Gen.14.18","osis_end":"eng-NASB:Gen.14.18","label":"Gen.014.018,eng-NASB","reference":"Genesis
+    body:
+      string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"Melchizedek","start":1,"total":10,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[],"verses":[{"auditid":"0","verse":"18","lastverse":"18","id":"eng-NASB:Gen.14.18","osis_end":"eng-NASB:Gen.14.18","label":"Gen.014.018,eng-NASB","reference":"Genesis
         14:18","prev_osis_id":"Gen.014.017,eng-NASB","next_osis_id":"Gen.014.019,eng-NASB","text":"<sup>18<\/sup>And
         <em>Melchizedek<\/em> king of Salem brought out bread and wine; now he was
         a priest of God Most High.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Gen.14","name":"Genesis
@@ -95,30 +96,42 @@ interactions:
         _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''5bbbf35718e370.17760490'');
         }","fums_noscript":"<img src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5bbbf35718e370.17760490\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        \/>"}}}'}
+        \/>"}}}'
     headers:
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : no-cache="set-cookie"
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : application/javascript
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Tue, 09 Oct 2018 00:16:23 GMT
       P3P: CP="IEFIX"
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : Apache
-      ? !!python/object/new:multidict._istr.istr [Set-Cookie]
+      ? !!python/object/new:multidict._istr.istr
+      - Set-Cookie
       : abs_session=BoJdCzCrsJVMCMjfOP2DQQZJV9ow6BN6KrCb0iSzAluP8%2FFfcAEK4Y8kjqStuSLbIgi9GvCPXnNnp4RDTtTkoCyDP%2FnrjSoliZMppNAKlujiDK5RBQSQ5vOMUEXjiwM4Uv4ln%2B3eg8pGtX1O7vshNa0jO3w2jZeHlP98c1F%2BndzS1uGogsRvkXGb%2Ftgo5%2FgHVJUguZtVlU%2FBuue9Eqclqr2Svb7ZjxMXciGoVvZKJS%2B%2FKge2m3S7GFyuAQj9Gv2XNxgDDlkw%2FD3%2BeE4Ws0Loywzq%2B4tLaB%2FgZlSEQUl5YHvR8tPpiUj%2Bm53q%2BRGkWfTIZDCG2u1B42l%2FJYs8ubHp5g%3D%3D;
         expires=Fri, 06-Oct-2028 00:16:23 GMT; Max-Age=315360000; path=/; domain=.bibles.org
-      ? !!python/object/new:multidict._istr.istr [Transfer-Encoding]
+      ? !!python/object/new:multidict._istr.istr
+      - Transfer-Encoding
       : chunked
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, bibles.org, /v2/verses.js,
-        keyword=Melchizedek&precision=all&version=eng-NASB&sort_order=canonical&limit=20,
-        '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - bibles.org
+        - /v2/verses.js
+        - keyword=Melchizedek&precision=all&version=eng-NASB&sort_order=canonical&limit=20
+        - ''
 - request:
     body: null
     headers: {}
@@ -129,45 +142,64 @@ interactions:
       string: !!binary |
         R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
     headers:
-      ? !!python/object/new:multidict._istr.istr [Accept-Ranges]
+      ? !!python/object/new:multidict._istr.istr
+      - Accept-Ranges
       : bytes
-      ? !!python/object/new:multidict._istr.istr [Age]
+      ? !!python/object/new:multidict._istr.istr
+      - Age
       : '1314'
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : max-age=0, no-cache, must-revalidate, proxy-revalidate, no-transform, private,
         pre-check=0
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
       : '35'
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : image/gif
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Sat, 22 Sep 2018 09:37:37 GMT
-      ? !!python/object/new:multidict._istr.istr [Etag]
+      ? !!python/object/new:multidict._istr.istr
+      - Etag
       : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr [Expires]
+      ? !!python/object/new:multidict._istr.istr
+      - Expires
       : Wed, 19 Apr 2000 11:43:00 GMT
-      ? !!python/object/new:multidict._istr.istr [Last-Modified]
+      ? !!python/object/new:multidict._istr.istr
+      - Last-Modified
       : Tue, 09 Aug 2011 09:09:57 GMT
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : AmazonS3
-      ? !!python/object/new:multidict._istr.istr [Via]
+      ? !!python/object/new:multidict._istr.istr
+      - Via
       : 1.1 3ca41706981cad42d8ecaabd29f88efa.cloudfront.net (CloudFront)
       X-Amz-Cf-Id: k-h1LeGOfE46jHtmzg32Rq8y1Me_6DLT-zDN--mBkxSMoIEWG-MN8g==
       X-Cache: Hit from cloudfront
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, d3a2okcloueqyx.cloudfront.net,
-        /nf1, t=5bbbf35718e370.17760490, '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - d3a2okcloueqyx.cloudfront.net
+        - /nf1
+        - t=5bbbf35718e370.17760490
+        - ''
 - request:
     body: null
     headers: {}
     method: GET
     uri: https://bibles.org/v2/verses.js?keyword=Melchizedek&precision=all&version=eng-NASB&sort_order=canonical&limit=20
   response:
-    body: {string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"Melchizedek","start":1,"total":10,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[],"verses":[{"auditid":"0","verse":"18","lastverse":"18","id":"eng-NASB:Gen.14.18","osis_end":"eng-NASB:Gen.14.18","label":"Gen.014.018,eng-NASB","reference":"Genesis
+    body:
+      string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"Melchizedek","start":1,"total":10,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[],"verses":[{"auditid":"0","verse":"18","lastverse":"18","id":"eng-NASB:Gen.14.18","osis_end":"eng-NASB:Gen.14.18","label":"Gen.014.018,eng-NASB","reference":"Genesis
         14:18","prev_osis_id":"Gen.014.017,eng-NASB","next_osis_id":"Gen.014.019,eng-NASB","text":"<sup>18<\/sup>And
         <em>Melchizedek<\/em> king of Salem brought out bread and wine; now he was
         a priest of God Most High.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Gen.14","name":"Genesis
@@ -257,30 +289,42 @@ interactions:
         _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''5bbcd680c71c31.35813444'');
         }","fums_noscript":"<img src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5bbcd680c71c31.35813444\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        \/>"}}}'}
+        \/>"}}}'
     headers:
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : no-cache="set-cookie"
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : application/javascript
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Tue, 09 Oct 2018 16:25:36 GMT
       P3P: CP="IEFIX"
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : Apache
-      ? !!python/object/new:multidict._istr.istr [Set-Cookie]
+      ? !!python/object/new:multidict._istr.istr
+      - Set-Cookie
       : abs_session=8tgGYBHfVu1mdL3YTjSFjuXhY7WDIW8plRRzBlkX7%2FKdE0Ju6mBLsz43ZEqlyMZIA2qYtd0R1rmhCP8gyMfzQBxcRC51w3R%2BgqAMKf2tHjWpjDD%2FLCemkTGOpkH2i61vFdwGeUI2YICYyqLtj7p81poMNyC7ZtYb2WtdmRORPLXgNYwJtjuBuiSQFVT6Kg24ODsTg3b96PvWEm%2BQYP%2FjayQWnWFQAR%2FYcRekXIvAQShHjKau9E7qNQeoplNWHudaWdwN5FJsMngTuyFMpbHX285ilneIpvlUn31xkflapGlC%2BDH1hPL3mSsbFxhbDIUPz6xyPkQjjomMoBQslK50pA%3D%3D;
         expires=Fri, 06-Oct-2028 16:25:36 GMT; Max-Age=315360000; path=/; domain=.bibles.org
-      ? !!python/object/new:multidict._istr.istr [Transfer-Encoding]
+      ? !!python/object/new:multidict._istr.istr
+      - Transfer-Encoding
       : chunked
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, bibles.org, /v2/verses.js,
-        keyword=Melchizedek&precision=all&version=eng-NASB&sort_order=canonical&limit=20,
-        '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - bibles.org
+        - /v2/verses.js
+        - keyword=Melchizedek&precision=all&version=eng-NASB&sort_order=canonical&limit=20
+        - ''
 - request:
     body: null
     headers: {}
@@ -291,45 +335,64 @@ interactions:
       string: !!binary |
         R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
     headers:
-      ? !!python/object/new:multidict._istr.istr [Accept-Ranges]
+      ? !!python/object/new:multidict._istr.istr
+      - Accept-Ranges
       : bytes
-      ? !!python/object/new:multidict._istr.istr [Age]
+      ? !!python/object/new:multidict._istr.istr
+      - Age
       : '636'
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : max-age=0, no-cache, must-revalidate, proxy-revalidate, no-transform, private,
         pre-check=0
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
       : '35'
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : image/gif
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Thu, 03 May 2018 07:54:38 GMT
-      ? !!python/object/new:multidict._istr.istr [Etag]
+      ? !!python/object/new:multidict._istr.istr
+      - Etag
       : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr [Expires]
+      ? !!python/object/new:multidict._istr.istr
+      - Expires
       : Wed, 19 Apr 2000 11:43:00 GMT
-      ? !!python/object/new:multidict._istr.istr [Last-Modified]
+      ? !!python/object/new:multidict._istr.istr
+      - Last-Modified
       : Tue, 09 Aug 2011 09:09:57 GMT
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : AmazonS3
-      ? !!python/object/new:multidict._istr.istr [Via]
+      ? !!python/object/new:multidict._istr.istr
+      - Via
       : 1.1 d4288fffbe3895015af2915a87b1fa4e.cloudfront.net (CloudFront)
       X-Amz-Cf-Id: oFTH7QDiqlF8maOotIMTl8Va2E6lrODfOBvvTftLXXa0LC20LbvNVw==
       X-Cache: Hit from cloudfront
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, d3a2okcloueqyx.cloudfront.net,
-        /nf1, t=5bbcd680c71c31.35813444, '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - d3a2okcloueqyx.cloudfront.net
+        - /nf1
+        - t=5bbcd680c71c31.35813444
+        - ''
 - request:
     body: null
     headers: {}
     method: GET
     uri: https://bibles.org/v2/verses.js?keyword=Melchizedek&precision=all&version=eng-NASB&sort_order=canonical&limit=20&offset=0
   response:
-    body: {string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"Melchizedek","start":1,"total":10,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[],"verses":[{"auditid":"0","verse":"18","lastverse":"18","id":"eng-NASB:Gen.14.18","osis_end":"eng-NASB:Gen.14.18","label":"Gen.014.018,eng-NASB","reference":"Genesis
+    body:
+      string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"Melchizedek","start":1,"total":10,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[],"verses":[{"auditid":"0","verse":"18","lastverse":"18","id":"eng-NASB:Gen.14.18","osis_end":"eng-NASB:Gen.14.18","label":"Gen.014.018,eng-NASB","reference":"Genesis
         14:18","prev_osis_id":"Gen.014.017,eng-NASB","next_osis_id":"Gen.014.019,eng-NASB","text":"<sup>18<\/sup>And
         <em>Melchizedek<\/em> king of Salem brought out bread and wine; now he was
         a priest of God Most High.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Gen.14","name":"Genesis
@@ -419,30 +482,42 @@ interactions:
         _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''5c4b359babc3a4.99165117'');
         }","fums_noscript":"<img src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5c4b359babc3a4.99165117\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        \/>"}}}'}
+        \/>"}}}'
     headers:
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : no-cache="set-cookie"
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : application/javascript
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Fri, 25 Jan 2019 16:13:15 GMT
       P3P: CP="IEFIX"
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : Apache
-      ? !!python/object/new:multidict._istr.istr [Set-Cookie]
+      ? !!python/object/new:multidict._istr.istr
+      - Set-Cookie
       : abs_session=9YAbWuYHQoIlR9iy7W6OBIjhdo2xwBdq2CweO5GI0%2FtQJg2jml6OVxSwB6JALYdb%2F%2FpS1BR91SZT5y9KCbblQTxuEWxAmiHy5zHrF6j8uXWpnpq6duR052B%2F6V3tz2nL7WswXLn3XJorgujN97Wj%2BzCMHPACcqsTIdPspAVH2HKEgPmEUQXFV2ZA7SJGH7uq%2BKm2xmvZjxIDyuDVuI6ShhnB9d25iQD8Z345OgrmW%2BePQmhFFWDc%2BFc0XsbAmmFDU0%2BJnucbROnTO8i17wm%2FmfNamqIqD6ZqxIvUUMIblbdlbP5dAgfC0d5HCi4LFeid%2FQUK6b8vxMOxGugGfidC4g%3D%3D;
         expires=Mon, 22-Jan-2029 16:13:15 GMT; Max-Age=315360000; path=/; domain=.bibles.org
-      ? !!python/object/new:multidict._istr.istr [Transfer-Encoding]
+      ? !!python/object/new:multidict._istr.istr
+      - Transfer-Encoding
       : chunked
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, bibles.org, /v2/verses.js,
-        keyword=Melchizedek&precision=all&version=eng-NASB&sort_order=canonical&limit=20&offset=0,
-        '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - bibles.org
+        - /v2/verses.js
+        - keyword=Melchizedek&precision=all&version=eng-NASB&sort_order=canonical&limit=20&offset=0
+        - ''
 - request:
     body: null
     headers: {}
@@ -453,34 +528,245 @@ interactions:
       string: !!binary |
         R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
     headers:
-      ? !!python/object/new:multidict._istr.istr [Accept-Ranges]
+      ? !!python/object/new:multidict._istr.istr
+      - Accept-Ranges
       : bytes
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : max-age=0, no-cache, must-revalidate, proxy-revalidate, no-transform, private,
         pre-check=0
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
       : '35'
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : image/gif
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Mon, 21 Jan 2019 12:37:55 GMT
-      ? !!python/object/new:multidict._istr.istr [Etag]
+      ? !!python/object/new:multidict._istr.istr
+      - Etag
       : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr [Expires]
+      ? !!python/object/new:multidict._istr.istr
+      - Expires
       : Wed, 19 Apr 2000 11:43:00 GMT
-      ? !!python/object/new:multidict._istr.istr [Last-Modified]
+      ? !!python/object/new:multidict._istr.istr
+      - Last-Modified
       : Tue, 09 Aug 2011 09:09:57 GMT
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : AmazonS3
-      ? !!python/object/new:multidict._istr.istr [Via]
+      ? !!python/object/new:multidict._istr.istr
+      - Via
       : 1.1 cab3e542f2f523a804e99e74cb91af31.cloudfront.net (CloudFront)
       X-Amz-Cf-Id: VowUjNJJqY0J80Ixm-R6B5XXC8J0TSjdEPonCCPoVRFD_7DWtuKtWw==
       X-Cache: RefreshHit from cloudfront
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, d3a2okcloueqyx.cloudfront.net,
-        /nf1, t=5c4b359babc3a4.99165117, '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - d3a2okcloueqyx.cloudfront.net
+        - /nf1
+        - t=5c4b359babc3a4.99165117
+        - ''
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://bibles.org/v2/verses.js?keyword=Melchizedek&precision=all&version=eng-NASB&sort_order=canonical&limit=20&offset=0
+  response:
+    body:
+      string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"Melchizedek","start":1,"total":10,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[],"verses":[{"auditid":"0","verse":"18","lastverse":"18","id":"eng-NASB:Gen.14.18","osis_end":"eng-NASB:Gen.14.18","label":"Gen.014.018,eng-NASB","reference":"Genesis
+        14:18","prev_osis_id":"Gen.014.017,eng-NASB","next_osis_id":"Gen.014.019,eng-NASB","text":"<sup>18<\/sup>And
+        <em>Melchizedek<\/em> king of Salem brought out bread and wine; now he was
+        a priest of God Most High.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Gen.14","name":"Genesis
+        14","id":"eng-NASB:Gen.14"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Gen.14.19","name":"Genesis
+        14:19","id":"eng-NASB:Gen.14.19"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Gen.14.17","name":"Genesis
+        14:17","id":"eng-NASB:Gen.14.17"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"6","lastverse":"6","id":"eng-NASB:Heb.5.6","osis_end":"eng-NASB:Heb.5.6","label":"Heb.005.006,eng-NASB","reference":"Hebrews
+        5:6","prev_osis_id":"Heb.005.005,eng-NASB","next_osis_id":"Heb.005.007,eng-NASB","text":"<sup>6<\/sup>just
+        as He says also in another passage,\n\n\n\u201cYOU ARE A PRIEST FOREVER\n\n\nACCORDING
+        TOTHE ORDER OF <em>MELCHIZEDEK<\/em>.\u201d","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Heb.5","name":"Hebrews
+        5","id":"eng-NASB:Heb.5"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Heb.5.7","name":"Hebrews
+        5:7","id":"eng-NASB:Heb.5.7"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Heb.5.5","name":"Hebrews
+        5:5","id":"eng-NASB:Heb.5.5"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"10","lastverse":"10","id":"eng-NASB:Heb.5.10","osis_end":"eng-NASB:Heb.5.10","label":"Heb.005.010,eng-NASB","reference":"Hebrews
+        5:10","prev_osis_id":"Heb.005.009,eng-NASB","next_osis_id":"Heb.005.011,eng-NASB","text":"<sup>10<\/sup>being
+        designated by God as a high priest according to the order of <em>Melchizedek<\/em>.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Heb.5","name":"Hebrews
+        5","id":"eng-NASB:Heb.5"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Heb.5.11","name":"Hebrews
+        5:11","id":"eng-NASB:Heb.5.11"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Heb.5.9","name":"Hebrews
+        5:9","id":"eng-NASB:Heb.5.9"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"20","lastverse":"20","id":"eng-NASB:Heb.6.20","osis_end":"eng-NASB:Heb.6.20","label":"Heb.006.020,eng-NASB","reference":"Hebrews
+        6:20","prev_osis_id":"Heb.006.019,eng-NASB","next_osis_id":"Heb.007.001,eng-NASB","text":"<sup>20<\/sup>where
+        Jesus has entered as a forerunner for us, having become a high priest forever
+        according to the order of <em>Melchizedek<\/em>.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Heb.6","name":"Hebrews
+        6","id":"eng-NASB:Heb.6"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Heb.7.1","name":"Hebrews
+        7:1","id":"eng-NASB:Heb.7.1"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Heb.6.19","name":"Hebrews
+        6:19","id":"eng-NASB:Heb.6.19"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"1","lastverse":"1","id":"eng-NASB:Heb.7.1","osis_end":"eng-NASB:Heb.7.1","label":"Heb.007.001,eng-NASB","reference":"Hebrews
+        7:1","prev_osis_id":"Heb.006.020,eng-NASB","next_osis_id":"Heb.007.002,eng-NASB","text":"<em>Melchizedek\u2019s<\/em>
+        Priesthood Like Christ\u2019s\n\n\n<sup>1<\/sup>For this <em>Melchizedek<\/em>,
+        king of Salem, priest of the Most High God, who met Abraham as he was returning
+        from the slaughter of the kings and blessed him,","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Heb.7","name":"Hebrews
+        7","id":"eng-NASB:Heb.7"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Heb.7.2","name":"Hebrews
+        7:2","id":"eng-NASB:Heb.7.2"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Heb.6.20","name":"Hebrews
+        6:20","id":"eng-NASB:Heb.6.20"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"10","lastverse":"10","id":"eng-NASB:Heb.7.10","osis_end":"eng-NASB:Heb.7.10","label":"Heb.007.010,eng-NASB","reference":"Hebrews
+        7:10","prev_osis_id":"Heb.007.009,eng-NASB","next_osis_id":"Heb.007.011,eng-NASB","text":"<sup>10<\/sup>for
+        he was still in the loins of his father when <em>Melchizedek<\/em> met him.","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Heb.7","name":"Hebrews
+        7","id":"eng-NASB:Heb.7"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Heb.7.11","name":"Hebrews
+        7:11","id":"eng-NASB:Heb.7.11"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Heb.7.9","name":"Hebrews
+        7:9","id":"eng-NASB:Heb.7.9"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"11","lastverse":"11","id":"eng-NASB:Heb.7.11","osis_end":"eng-NASB:Heb.7.11","label":"Heb.007.011,eng-NASB","reference":"Hebrews
+        7:11","prev_osis_id":"Heb.007.010,eng-NASB","next_osis_id":"Heb.007.012,eng-NASB","text":"<sup>11<\/sup>Now
+        if perfection was through the Levitical priesthood (for on the basis of it
+        the people received the Law), what further need was there for another priest
+        to arise according to the order of <em>Melchizedek<\/em>, and not be designated
+        according to the order of Aaron?","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Heb.7","name":"Hebrews
+        7","id":"eng-NASB:Heb.7"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Heb.7.12","name":"Hebrews
+        7:12","id":"eng-NASB:Heb.7.12"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Heb.7.10","name":"Hebrews
+        7:10","id":"eng-NASB:Heb.7.10"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"15","lastverse":"15","id":"eng-NASB:Heb.7.15","osis_end":"eng-NASB:Heb.7.15","label":"Heb.007.015,eng-NASB","reference":"Hebrews
+        7:15","prev_osis_id":"Heb.007.014,eng-NASB","next_osis_id":"Heb.007.016,eng-NASB","text":"<sup>15<\/sup>And
+        this is clearer still, if another priest arises according to the likeness
+        of <em>Melchizedek<\/em>,","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Heb.7","name":"Hebrews
+        7","id":"eng-NASB:Heb.7"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Heb.7.16","name":"Hebrews
+        7:16","id":"eng-NASB:Heb.7.16"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Heb.7.14","name":"Hebrews
+        7:14","id":"eng-NASB:Heb.7.14"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"17","lastverse":"17","id":"eng-NASB:Heb.7.17","osis_end":"eng-NASB:Heb.7.17","label":"Heb.007.017,eng-NASB","reference":"Hebrews
+        7:17","prev_osis_id":"Heb.007.016,eng-NASB","next_osis_id":"Heb.007.018,eng-NASB","text":"<sup>17<\/sup>For
+        it is attested of Him,\n\n\n\u201cYOU ARE A PRIEST FOREVER\n\n\nACCORDING
+        TO THE ORDER OF <em>MELCHIZEDEK<\/em>.\u201d","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Heb.7","name":"Hebrews
+        7","id":"eng-NASB:Heb.7"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Heb.7.18","name":"Hebrews
+        7:18","id":"eng-NASB:Heb.7.18"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Heb.7.16","name":"Hebrews
+        7:16","id":"eng-NASB:Heb.7.16"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "},{"auditid":"0","verse":"4","lastverse":"4","id":"eng-NASB:Ps.110.4","osis_end":"eng-NASB:Ps.110.4","label":"Ps.110.004,eng-NASB","reference":"Psalm
+        110:4","prev_osis_id":"Ps.110.003,eng-NASB","next_osis_id":"Ps.110.005,eng-NASB","text":"<sup>4<\/sup>The
+        LORD has sworn and will not change His mind,\n\n\n\u201cYou are a priest forever\n\n\nAccording
+        to the order of <em>Melchizedek<\/em>.\u201d","parent":{"chapter":{"path":"\/chapters\/eng-NASB:Ps.110","name":"Psalm
+        110","id":"eng-NASB:Ps.110"}},"next":{"verse":{"path":"\/verses\/eng-NASB:Ps.110.5","name":"Psalm
+        110:5","id":"eng-NASB:Ps.110.5"}},"previous":{"verse":{"path":"\/verses\/eng-NASB:Ps.110.3","name":"Psalm
+        110:3","id":"eng-NASB:Ps.110.3"}},"copyright":"\n      New American Standard
+        Bible, Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The
+        Lockman Foundation.  Used by permission.\n    "}]}},"meta":{"fums":"<script>\nvar
+        _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
+        src=\"''+document.location.protocol+''\/\/d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js\"\\x3E\\x3C\/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''5d275a3bcb0897.89365491'');\\x3C\/script\\x3E\");\n<\/script><noscript><img
+        src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5d275a3bcb0897.89365491\"
+        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
+        \/><\/noscript>","fums_tid":"5d275a3bcb0897.89365491","fums_js_include":"d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js","fums_js":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''5d275a3bcb0897.89365491'');
+        }","fums_noscript":"<img src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5d275a3bcb0897.89365491\"
+        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
+        \/>"}}}'
+    headers:
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
+      : no-cache="set-cookie"
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
+      : keep-alive
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
+      : application/javascript
+      ? !!python/object/new:multidict._istr.istr
+      - Date
+      : Thu, 11 Jul 2019 15:48:11 GMT
+      P3P: CP="IEFIX"
+      ? !!python/object/new:multidict._istr.istr
+      - Server
+      : Apache
+      ? !!python/object/new:multidict._istr.istr
+      - Set-Cookie
+      : abs_session=%2BieBSd5gBKQEFyhveVTUZi%2BHyRI7zwdjnawbLX1ZQBEBxaD2ilu86qTLV%2BYn7jMtVc4%2FMMKPlsYOvpQrjBnA%2BM6KcPh5Ghxj5r3UyeoS%2B%2BOr%2FYPtHZ7Ko5jvcUaNTnyVZSfrQ%2FfNKHdUm398AELLJ8GFihf9y%2B96m6U7yBUVyyv3Om7q357sJpwMqgzF6ZbY%2BwvxlacdogOCMxnpuseIrwI19XVW%2B4nUy22rWf6PyPWkHe%2BNCX7Rnit2IQ4tyuo8N8zTdK15H1pSQsJsVFdbEUdli9ckXWAAzfWr%2BJ%2FpuW%2FYz1XIYzSH2XJC%2ByHzvzo0T74ccpuux3nkVrTrGmnRWg%3D%3D;
+        expires=Sun, 08-Jul-2029 15:48:11 GMT; Max-Age=315360000; path=/; domain=.bibles.org
+      ? !!python/object/new:multidict._istr.istr
+      - Transfer-Encoding
+      : chunked
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - bibles.org
+        - /v2/verses.js
+        - keyword=Melchizedek&precision=all&version=eng-NASB&sort_order=canonical&limit=20&offset=0
+        - ''
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://d3a2okcloueqyx.cloudfront.net/nf1?t=5d275a3bcb0897.89365491
+  response:
+    body:
+      string: !!binary |
+        R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
+    headers:
+      ? !!python/object/new:multidict._istr.istr
+      - Accept-Ranges
+      : bytes
+      ? !!python/object/new:multidict._istr.istr
+      - Age
+      : '1028'
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
+      : max-age=0, no-cache, must-revalidate, proxy-revalidate, no-transform, private,
+        pre-check=0
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
+      : keep-alive
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
+      : '35'
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
+      : image/gif
+      ? !!python/object/new:multidict._istr.istr
+      - Date
+      : Wed, 10 Jul 2019 14:05:55 GMT
+      ? !!python/object/new:multidict._istr.istr
+      - Etag
+      : '"28d6814f309ea289f847c69cf91194c6"'
+      ? !!python/object/new:multidict._istr.istr
+      - Expires
+      : Wed, 19 Apr 2000 11:43:00 GMT
+      ? !!python/object/new:multidict._istr.istr
+      - Last-Modified
+      : Tue, 09 Aug 2011 09:09:57 GMT
+      ? !!python/object/new:multidict._istr.istr
+      - Server
+      : AmazonS3
+      ? !!python/object/new:multidict._istr.istr
+      - Via
+      : 1.1 2614aff6912f836d77ae243b9dbf5dd6.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id: 3soPwtID73zdVlV2ntrYHnyps2pWO8JY0xteSCFnF0wJT9IYn14JtQ==
+      X-Amz-Cf-Pop: ORD52-C2
+      X-Cache: Hit from cloudfront
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - d3a2okcloueqyx.cloudfront.net
+        - /nf1
+        - t=5d275a3bcb0897.89365491
+        - ''
 version: 1

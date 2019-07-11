@@ -2,11 +2,13 @@ interactions:
 - request:
     body: null
     headers:
-      api-key: [e724f40aaafed111b75d6f83b011b823]
+      api-key:
+      - e724f40aaafed111b75d6f83b011b823
     method: GET
     uri: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/passages/MRK.5.1?include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
   response:
-    body: {string: '{"data":{"id":"MRK.5.1","orgId":"MRK.5.1","bibleId":"de4e12af7f28f599-02","bookId":"MRK","chapterIds":["MRK.5"],"reference":"Mark
+    body:
+      string: '{"data":{"id":"MRK.5.1","orgId":"MRK.5.1","bibleId":"de4e12af7f28f599-02","bookId":"MRK","chapterIds":["MRK.5"],"reference":"Mark
         5:1","content":"<p class=\"p\"><span data-number=\"1\" class=\"v\">1</span>And
         they came over unto the other side of the sea, into the country of the Gadarenes.
         </p>","copyright":"PUBLIC DOMAIN except in the United Kingdom, where a Crown
@@ -19,30 +21,43 @@ interactions:
         _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''4da90602-7495-4c0f-9357-64b89c9414ad'');
         }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=4da90602-7495-4c0f-9357-64b89c9414ad\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        />"}}'}
+        />"}}'
     headers:
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : no-cache
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Encoding]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Encoding
       : gzip
-      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
       : '709'
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : application/json; charset=utf-8
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Wed, 06 Feb 2019 18:23:59 GMT
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : nginx/1.12.1
-      ? !!python/object/new:multidict._istr.istr [Vary]
+      ? !!python/object/new:multidict._istr.istr
+      - Vary
       : origin,accept-encoding
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, api.scripture.api.bible,
-        /v1/bibles/de4e12af7f28f599-02/passages/MRK.5.1, include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true,
-        '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - api.scripture.api.bible
+        - /v1/bibles/de4e12af7f28f599-02/passages/MRK.5.1
+        - include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
+        - ''
 - request:
     body: null
     headers: {}
@@ -53,31 +68,163 @@ interactions:
       string: !!binary |
         R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
     headers:
-      ? !!python/object/new:multidict._istr.istr [Accept-Ranges]
+      ? !!python/object/new:multidict._istr.istr
+      - Accept-Ranges
       : bytes
-      ? !!python/object/new:multidict._istr.istr [Age]
+      ? !!python/object/new:multidict._istr.istr
+      - Age
       : '523'
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
       : '35'
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : image/gif
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Wed, 06 Feb 2019 18:15:17 GMT
-      ? !!python/object/new:multidict._istr.istr [Etag]
+      ? !!python/object/new:multidict._istr.istr
+      - Etag
       : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr [Last-Modified]
+      ? !!python/object/new:multidict._istr.istr
+      - Last-Modified
       : Wed, 10 May 2017 13:35:25 GMT
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : AmazonS3
-      ? !!python/object/new:multidict._istr.istr [Via]
+      ? !!python/object/new:multidict._istr.istr
+      - Via
       : 1.1 be071d71ef5bed15dfd6af31e50615d8.cloudfront.net (CloudFront)
       X-Amz-Cf-Id: oDSC3fvCIzmfJV0GRhlw7pZq12oHc_AlQrLmpIN7VgF_Qa5Olt4uGA==
       X-Cache: Hit from cloudfront
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, d3btgtzu3ctdwx.cloudfront.net,
-        /nf1, t=4da90602-7495-4c0f-9357-64b89c9414ad, '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - d3btgtzu3ctdwx.cloudfront.net
+        - /nf1
+        - t=4da90602-7495-4c0f-9357-64b89c9414ad
+        - ''
+- request:
+    body: null
+    headers:
+      api-key:
+      - e724f40aaafed111b75d6f83b011b823
+    method: GET
+    uri: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/passages/MRK.5.1?include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
+  response:
+    body:
+      string: '{"data":{"id":"MRK.5.1","orgId":"MRK.5.1","bibleId":"de4e12af7f28f599-02","bookId":"MRK","chapterIds":["MRK.5"],"reference":"Mark
+        5:1","content":"<p class=\"p\"><span data-number=\"1\" class=\"v\">1</span>And
+        they came over unto the other side of the sea, into the country of the Gadarenes.
+        </p>","copyright":"PUBLIC DOMAIN except in the United Kingdom, where a Crown
+        Copyright applies to printing the KJV. See http://www.cambridge.org/about-us/who-we-are/queens-printers-patent"},"meta":{"fums":"<script>\nvar
+        _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
+        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''''
+        + unique + '''');\\x3C/script\\x3E\");\n</script><noscript><img src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''
+        + unique + ''\" height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height:
+        0; width: 0;\" /></noscript>","fumsId":"9361c869-852c-4cbf-8048-36e8b39196b6","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''9361c869-852c-4cbf-8048-36e8b39196b6'');
+        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=9361c869-852c-4cbf-8048-36e8b39196b6\"
+        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
+        />"}}'
+    headers:
+      ? !!python/object/new:multidict._istr.istr
+      - Access-Control-Expose-Headers
+      : WWW-Authenticate,Server-Authorization
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
+      : no-cache
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
+      : keep-alive
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Encoding
+      : gzip
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
+      : '711'
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
+      : application/json; charset=utf-8
+      ? !!python/object/new:multidict._istr.istr
+      - Date
+      : Thu, 11 Jul 2019 15:48:14 GMT
+      ? !!python/object/new:multidict._istr.istr
+      - Server
+      : nginx/1.12.1
+      ? !!python/object/new:multidict._istr.istr
+      - Vary
+      : origin,accept-encoding
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - api.scripture.api.bible
+        - /v1/bibles/de4e12af7f28f599-02/passages/MRK.5.1
+        - include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
+        - ''
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=9361c869-852c-4cbf-8048-36e8b39196b6
+  response:
+    body:
+      string: !!binary |
+        R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
+    headers:
+      ? !!python/object/new:multidict._istr.istr
+      - Accept-Ranges
+      : bytes
+      ? !!python/object/new:multidict._istr.istr
+      - Age
+      : '12223'
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
+      : keep-alive
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
+      : '35'
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
+      : image/gif
+      ? !!python/object/new:multidict._istr.istr
+      - Date
+      : Sun, 16 Jun 2019 22:57:39 GMT
+      ? !!python/object/new:multidict._istr.istr
+      - Etag
+      : '"28d6814f309ea289f847c69cf91194c6"'
+      ? !!python/object/new:multidict._istr.istr
+      - Last-Modified
+      : Wed, 10 May 2017 13:35:25 GMT
+      ? !!python/object/new:multidict._istr.istr
+      - Server
+      : AmazonS3
+      ? !!python/object/new:multidict._istr.istr
+      - Via
+      : 1.1 17256fd1010bade0d64432a8527fd53c.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id: hBPOWQcBWFiUDX5dy4apG50kDuBuXt4pG5UC4NRK0Ki2M7Zjx4MQjQ==
+      X-Amz-Cf-Pop: ORD52-C2
+      X-Cache: Hit from cloudfront
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - d3btgtzu3ctdwx.cloudfront.net
+        - /nf1
+        - t=9361c869-852c-4cbf-8048-36e8b39196b6
+        - ''
 version: 1

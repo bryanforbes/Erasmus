@@ -79,7 +79,7 @@ class BibleGateway(BaseService):
                 }
             )
         ) as response:
-            text = await response.text()
+            text = await response.text(errors='replace')
             strainer = SoupStrainer(
                 class_=re.compile(
                     re.WORD_BOUNDARY,
@@ -113,7 +113,7 @@ class BibleGateway(BaseService):
                 }
             )
         ) as response:
-            text = await response.text()
+            text = await response.text(errors='replace')
             strainer = SoupStrainer(
                 class_=['search-result-list', 'search-total-results']
             )

@@ -2,33 +2,98 @@ interactions:
 - request:
     body: null
     headers:
-      api-key: [e724f40aaafed111b75d6f83b011b823]
+      api-key:
+      - e724f40aaafed111b75d6f83b011b823
     method: GET
     uri: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/passages/JHN.50.1-JHN.50.4?include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
   response:
-    body: {string: '{"statusCode":404,"error":"Not Found","message":"Could not find
-        that passage"}'}
+    body:
+      string: '{"statusCode":404,"error":"Not Found","message":"Could not find that
+        passage"}'
     headers:
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : no-cache
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Encoding]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Encoding
       : gzip
-      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
       : '91'
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : application/json; charset=utf-8
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Wed, 06 Feb 2019 18:23:59 GMT
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : nginx/1.12.1
-      ? !!python/object/new:multidict._istr.istr [Vary]
+      ? !!python/object/new:multidict._istr.istr
+      - Vary
       : origin,accept-encoding
-    status: {code: 404, message: Not Found}
+    status:
+      code: 404
+      message: Not Found
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, api.scripture.api.bible,
-        /v1/bibles/de4e12af7f28f599-02/passages/JHN.50.1-JHN.50.4, include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true,
-        '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - api.scripture.api.bible
+        - /v1/bibles/de4e12af7f28f599-02/passages/JHN.50.1-JHN.50.4
+        - include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
+        - ''
+- request:
+    body: null
+    headers:
+      api-key:
+      - e724f40aaafed111b75d6f83b011b823
+    method: GET
+    uri: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/passages/JHN.50.1-JHN.50.4?include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
+  response:
+    body:
+      string: '{"statusCode":404,"error":"Not Found","message":"Could not find that
+        passage"}'
+    headers:
+      ? !!python/object/new:multidict._istr.istr
+      - Access-Control-Expose-Headers
+      : WWW-Authenticate,Server-Authorization
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
+      : no-cache
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
+      : keep-alive
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Encoding
+      : gzip
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
+      : '91'
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
+      : application/json; charset=utf-8
+      ? !!python/object/new:multidict._istr.istr
+      - Date
+      : Thu, 11 Jul 2019 15:48:14 GMT
+      ? !!python/object/new:multidict._istr.istr
+      - Server
+      : nginx/1.12.1
+      ? !!python/object/new:multidict._istr.istr
+      - Vary
+      : origin
+    status:
+      code: 404
+      message: Not Found
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - api.scripture.api.bible
+        - /v1/bibles/de4e12af7f28f599-02/passages/JHN.50.1-JHN.50.4
+        - include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
+        - ''
 version: 1

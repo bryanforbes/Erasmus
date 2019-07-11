@@ -13,7 +13,7 @@ beautifulsoup4 = "^4.6"
 cchardet = "^2.1"
 psycopg2 = "^2.7"
 ujson = "^1.35"
-"botus_receptus" = {rev = "4e75c0f79c4eb27497a0dd8355f050887f9c1a6a", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop", "more_itertools"]}
+"botus_receptus" = {rev = "cc2e568a887b00e9e40fa9794abc670676461776", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop", "more_itertools"]}
 pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
 gino-stubs = {rev = "e0b22f7958dbd500d4ae0439fab6a7df5a1ab6e1", git = "https://github.com/bryanforbes/gino-stubs.git"}
 "typing-extensions" = ">=3.7.4"

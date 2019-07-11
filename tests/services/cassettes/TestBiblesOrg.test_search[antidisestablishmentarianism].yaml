@@ -5,7 +5,8 @@ interactions:
     method: GET
     uri: https://bibles.org/v2/verses.js?keyword=antidisestablishmentarianism&precision=all&version=eng-NASB&sort_order=canonical&limit=20
   response:
-    body: {string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"antidisestablishmentarianism","start":1,"total":0,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[]}},"meta":{"fums":"<script>\nvar
+    body:
+      string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"antidisestablishmentarianism","start":1,"total":0,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[]}},"meta":{"fums":"<script>\nvar
         _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
         src=\"''+document.location.protocol+''\/\/d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js\"\\x3E\\x3C\/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''5bbbf357cdf384.52826875'');\\x3C\/script\\x3E\");\n<\/script><noscript><img
         src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5bbbf357cdf384.52826875\"
@@ -14,30 +15,42 @@ interactions:
         _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''5bbbf357cdf384.52826875'');
         }","fums_noscript":"<img src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5bbbf357cdf384.52826875\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        \/>"}}}'}
+        \/>"}}}'
     headers:
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : no-cache="set-cookie"
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
       : '1135'
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : application/javascript
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Tue, 09 Oct 2018 00:16:23 GMT
       P3P: CP="IEFIX"
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : Apache
-      ? !!python/object/new:multidict._istr.istr [Set-Cookie]
+      ? !!python/object/new:multidict._istr.istr
+      - Set-Cookie
       : abs_session=BoJdCzCrsJVMCMjfOP2DQQZJV9ow6BN6KrCb0iSzAluHv%2FVKRN69gt4kUdNOyp5gK3UnYFXg%2ByHD3Wy5H%2FtJ4ThIsxPiUQ7jbssjhiX2E0DxKohei7yDTRtysCnchDhJv42JY8O0K0TBLuPvhsSmP9RMXd33SkyppHzb1xQGCxTyFpyOs3HsFehuIZgxe3QklLSGunw9e3T0JG0vELVXXiXX7pA8ncDfkOzVQzMPIiDJNjGBxPRbuKQ8w3Br6Tm4SrS4LqXxU2l6OErq%2Bj%2BX0ny%2FMzYeB%2B5AR7AFeQI%2FZWz2llV7I4tV2Pi3N5hVJQrdbrs1jOlkE5K64FfxLTuA8w%3D%3D;
         expires=Fri, 06-Oct-2028 00:16:23 GMT; Max-Age=315360000; path=/; domain=.bibles.org
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, bibles.org, /v2/verses.js,
-        keyword=antidisestablishmentarianism&precision=all&version=eng-NASB&sort_order=canonical&limit=20,
-        '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - bibles.org
+        - /v2/verses.js
+        - keyword=antidisestablishmentarianism&precision=all&version=eng-NASB&sort_order=canonical&limit=20
+        - ''
 - request:
     body: null
     headers: {}
@@ -48,45 +61,64 @@ interactions:
       string: !!binary |
         R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
     headers:
-      ? !!python/object/new:multidict._istr.istr [Accept-Ranges]
+      ? !!python/object/new:multidict._istr.istr
+      - Accept-Ranges
       : bytes
-      ? !!python/object/new:multidict._istr.istr [Age]
+      ? !!python/object/new:multidict._istr.istr
+      - Age
       : '1315'
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : max-age=0, no-cache, must-revalidate, proxy-revalidate, no-transform, private,
         pre-check=0
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
       : '35'
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : image/gif
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Sat, 22 Sep 2018 09:37:37 GMT
-      ? !!python/object/new:multidict._istr.istr [Etag]
+      ? !!python/object/new:multidict._istr.istr
+      - Etag
       : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr [Expires]
+      ? !!python/object/new:multidict._istr.istr
+      - Expires
       : Wed, 19 Apr 2000 11:43:00 GMT
-      ? !!python/object/new:multidict._istr.istr [Last-Modified]
+      ? !!python/object/new:multidict._istr.istr
+      - Last-Modified
       : Tue, 09 Aug 2011 09:09:57 GMT
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : AmazonS3
-      ? !!python/object/new:multidict._istr.istr [Via]
+      ? !!python/object/new:multidict._istr.istr
+      - Via
       : 1.1 79ee364b2ad2daf670457e2618b8bea6.cloudfront.net (CloudFront)
       X-Amz-Cf-Id: Xyysrbzey5Un3yKHskChxvZpLVOfblq1lrLFMY6Rnol6qU9slQwmgw==
       X-Cache: Hit from cloudfront
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, d3a2okcloueqyx.cloudfront.net,
-        /nf1, t=5bbbf357cdf384.52826875, '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - d3a2okcloueqyx.cloudfront.net
+        - /nf1
+        - t=5bbbf357cdf384.52826875
+        - ''
 - request:
     body: null
     headers: {}
     method: GET
     uri: https://bibles.org/v2/verses.js?keyword=antidisestablishmentarianism&precision=all&version=eng-NASB&sort_order=canonical&limit=20
   response:
-    body: {string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"antidisestablishmentarianism","start":1,"total":0,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[]}},"meta":{"fums":"<script>\nvar
+    body:
+      string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"antidisestablishmentarianism","start":1,"total":0,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[]}},"meta":{"fums":"<script>\nvar
         _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
         src=\"''+document.location.protocol+''\/\/d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js\"\\x3E\\x3C\/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''5bbcd6815d5a12.81670565'');\\x3C\/script\\x3E\");\n<\/script><noscript><img
         src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5bbcd6815d5a12.81670565\"
@@ -95,30 +127,42 @@ interactions:
         _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''5bbcd6815d5a12.81670565'');
         }","fums_noscript":"<img src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5bbcd6815d5a12.81670565\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        \/>"}}}'}
+        \/>"}}}'
     headers:
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : no-cache="set-cookie"
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
       : '1135'
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : application/javascript
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Tue, 09 Oct 2018 16:25:37 GMT
       P3P: CP="IEFIX"
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : Apache
-      ? !!python/object/new:multidict._istr.istr [Set-Cookie]
+      ? !!python/object/new:multidict._istr.istr
+      - Set-Cookie
       : abs_session=KBbuxrZ3vMLgR67vNkDndLhGSVR6fr9kiI8%2FKo563cN9qmLcWkoDONpUDV8fNMwHV0TXOWoePzzaGJiFPJW4OSsFPWz4Mc5BYS4FNo%2F%2BSPoEr6vYkyqFE9xJOC4Vqk3HX%2BaR2XTUpvGzAC33goLRzwkxUjCDPDHhrUcuz2NiUrg4Ubuc1MCkeBihqr3PpaKNqLGKJtT%2B4mZ3sdaCS%2FSRNUr26%2BGM3y5vRTVAzQKWrvz6l2gXPySOsL%2BBMBpHR53FJhIi%2BRViVEH5yv8lMsKtcOfNUSSf0MPMW5YVRVZfz4DarQIsS4CuqrFbRrDUzMr933U1imEqasPHNAWDKjvAkA%3D%3D;
         expires=Fri, 06-Oct-2028 16:25:37 GMT; Max-Age=315360000; path=/; domain=.bibles.org
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, bibles.org, /v2/verses.js,
-        keyword=antidisestablishmentarianism&precision=all&version=eng-NASB&sort_order=canonical&limit=20,
-        '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - bibles.org
+        - /v2/verses.js
+        - keyword=antidisestablishmentarianism&precision=all&version=eng-NASB&sort_order=canonical&limit=20
+        - ''
 - request:
     body: null
     headers: {}
@@ -129,45 +173,64 @@ interactions:
       string: !!binary |
         R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
     headers:
-      ? !!python/object/new:multidict._istr.istr [Accept-Ranges]
+      ? !!python/object/new:multidict._istr.istr
+      - Accept-Ranges
       : bytes
-      ? !!python/object/new:multidict._istr.istr [Age]
+      ? !!python/object/new:multidict._istr.istr
+      - Age
       : '636'
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : max-age=0, no-cache, must-revalidate, proxy-revalidate, no-transform, private,
         pre-check=0
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
       : '35'
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : image/gif
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Thu, 03 May 2018 07:54:38 GMT
-      ? !!python/object/new:multidict._istr.istr [Etag]
+      ? !!python/object/new:multidict._istr.istr
+      - Etag
       : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr [Expires]
+      ? !!python/object/new:multidict._istr.istr
+      - Expires
       : Wed, 19 Apr 2000 11:43:00 GMT
-      ? !!python/object/new:multidict._istr.istr [Last-Modified]
+      ? !!python/object/new:multidict._istr.istr
+      - Last-Modified
       : Tue, 09 Aug 2011 09:09:57 GMT
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : AmazonS3
-      ? !!python/object/new:multidict._istr.istr [Via]
+      ? !!python/object/new:multidict._istr.istr
+      - Via
       : 1.1 4d0c93287ebf2a8b4edcc89a853740e6.cloudfront.net (CloudFront)
       X-Amz-Cf-Id: 6j2d5vX2S8YLsAEXCeeGaGh2mUXaIXR028IfKuUDjzX3FcoVjfo9AA==
       X-Cache: Hit from cloudfront
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, d3a2okcloueqyx.cloudfront.net,
-        /nf1, t=5bbcd6815d5a12.81670565, '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - d3a2okcloueqyx.cloudfront.net
+        - /nf1
+        - t=5bbcd6815d5a12.81670565
+        - ''
 - request:
     body: null
     headers: {}
     method: GET
     uri: https://bibles.org/v2/verses.js?keyword=antidisestablishmentarianism&precision=all&version=eng-NASB&sort_order=canonical&limit=20&offset=0
   response:
-    body: {string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"antidisestablishmentarianism","start":1,"total":0,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[]}},"meta":{"fums":"<script>\nvar
+    body:
+      string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"antidisestablishmentarianism","start":1,"total":0,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[]}},"meta":{"fums":"<script>\nvar
         _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
         src=\"''+document.location.protocol+''\/\/d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js\"\\x3E\\x3C\/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''5c4b359d40f2a6.51648619'');\\x3C\/script\\x3E\");\n<\/script><noscript><img
         src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5c4b359d40f2a6.51648619\"
@@ -176,30 +239,42 @@ interactions:
         _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''5c4b359d40f2a6.51648619'');
         }","fums_noscript":"<img src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5c4b359d40f2a6.51648619\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        \/>"}}}'}
+        \/>"}}}'
     headers:
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : no-cache="set-cookie"
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
       : '1135'
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : application/javascript
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Fri, 25 Jan 2019 16:13:17 GMT
       P3P: CP="IEFIX"
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : Apache
-      ? !!python/object/new:multidict._istr.istr [Set-Cookie]
+      ? !!python/object/new:multidict._istr.istr
+      - Set-Cookie
       : abs_session=eexrhX3WSwfGQT%2FDIxFCSzRIlmF1lq8pt5XlKa3fr1M%2FkCL4znaaqjTi2mb7c65UlMV6qTL3FZv00LDAvHRq2ETr1nhMpShnK5DNpYYNT%2BR5Nroa3e2WjzjbIgO%2F3C3cXsDZCHvVNzgiuupsFSaFasdM5inU97%2BZxY%2BAe2JahHM0p5t349oHQ5INHydVkRD4r1hhCSLiNmo0%2BO7HDBv7mwolk01fVUk4padnpsHTxK%2FGsFLFbiAuHZJBsKw42uFFnIHRgNk07z4NPU3vJatSkmVpy955tInL%2F8k2X4%2FDs86tgHQluaD%2BPTquNiqm%2BHCXw%2BIOwlfPiSwbI3SinLGVeA%3D%3D;
         expires=Mon, 22-Jan-2029 16:13:17 GMT; Max-Age=315360000; path=/; domain=.bibles.org
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, bibles.org, /v2/verses.js,
-        keyword=antidisestablishmentarianism&precision=all&version=eng-NASB&sort_order=canonical&limit=20&offset=0,
-        '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - bibles.org
+        - /v2/verses.js
+        - keyword=antidisestablishmentarianism&precision=all&version=eng-NASB&sort_order=canonical&limit=20&offset=0
+        - ''
 - request:
     body: null
     headers: {}
@@ -210,36 +285,167 @@ interactions:
       string: !!binary |
         R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
     headers:
-      ? !!python/object/new:multidict._istr.istr [Accept-Ranges]
+      ? !!python/object/new:multidict._istr.istr
+      - Accept-Ranges
       : bytes
-      ? !!python/object/new:multidict._istr.istr [Age]
+      ? !!python/object/new:multidict._istr.istr
+      - Age
       : '1'
-      ? !!python/object/new:multidict._istr.istr [Cache-Control]
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
       : max-age=0, no-cache, must-revalidate, proxy-revalidate, no-transform, private,
         pre-check=0
-      ? !!python/object/new:multidict._istr.istr [Connection]
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
       : keep-alive
-      ? !!python/object/new:multidict._istr.istr [Content-Length]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
       : '35'
-      ? !!python/object/new:multidict._istr.istr [Content-Type]
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
       : image/gif
-      ? !!python/object/new:multidict._istr.istr [Date]
+      ? !!python/object/new:multidict._istr.istr
+      - Date
       : Mon, 21 Jan 2019 12:37:55 GMT
-      ? !!python/object/new:multidict._istr.istr [Etag]
+      ? !!python/object/new:multidict._istr.istr
+      - Etag
       : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr [Expires]
+      ? !!python/object/new:multidict._istr.istr
+      - Expires
       : Wed, 19 Apr 2000 11:43:00 GMT
-      ? !!python/object/new:multidict._istr.istr [Last-Modified]
+      ? !!python/object/new:multidict._istr.istr
+      - Last-Modified
       : Tue, 09 Aug 2011 09:09:57 GMT
-      ? !!python/object/new:multidict._istr.istr [Server]
+      ? !!python/object/new:multidict._istr.istr
+      - Server
       : AmazonS3
-      ? !!python/object/new:multidict._istr.istr [Via]
+      ? !!python/object/new:multidict._istr.istr
+      - Via
       : 1.1 44fe63a1db8b1044da9b622118437512.cloudfront.net (CloudFront)
       X-Amz-Cf-Id: _kEAkjhd4XJbp024hf21bsWmbZbQB7M1qrHuDoyYSDUdz02Wp67a4Q==
       X-Cache: Hit from cloudfront
-    status: {code: 200, message: OK}
+    status:
+      code: 200
+      message: OK
     url: !!python/object/new:yarl.URL
       state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult [https, d3a2okcloueqyx.cloudfront.net,
-        /nf1, t=5c4b359d40f2a6.51648619, '']
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - d3a2okcloueqyx.cloudfront.net
+        - /nf1
+        - t=5c4b359d40f2a6.51648619
+        - ''
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://bibles.org/v2/verses.js?keyword=antidisestablishmentarianism&precision=all&version=eng-NASB&sort_order=canonical&limit=20&offset=0
+  response:
+    body:
+      string: '{"response":{"search":{"result":{"type":"verses","summary":{"query":"antidisestablishmentarianism","start":1,"total":0,"rpp":"20","sort":"canonical","versions":["eng-NASB"],"testaments":["OT","NT"]},"spelling":[]}},"meta":{"fums":"<script>\nvar
+        _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
+        src=\"''+document.location.protocol+''\/\/d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js\"\\x3E\\x3C\/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''5d275a3cdbf587.49464480'');\\x3C\/script\\x3E\");\n<\/script><noscript><img
+        src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5d275a3cdbf587.49464480\"
+        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
+        \/><\/noscript>","fums_tid":"5d275a3cdbf587.49464480","fums_js_include":"d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js","fums_js":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''5d275a3cdbf587.49464480'');
+        }","fums_noscript":"<img src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5d275a3cdbf587.49464480\"
+        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
+        \/>"}}}'
+    headers:
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
+      : no-cache="set-cookie"
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
+      : keep-alive
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
+      : '1135'
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
+      : application/javascript
+      ? !!python/object/new:multidict._istr.istr
+      - Date
+      : Thu, 11 Jul 2019 15:48:12 GMT
+      P3P: CP="IEFIX"
+      ? !!python/object/new:multidict._istr.istr
+      - Server
+      : Apache
+      ? !!python/object/new:multidict._istr.istr
+      - Set-Cookie
+      : abs_session=mjREjXczzwakCtgrXGiToIvTelpHWTqROPQHc%2FxY420wBF1NIhGMKQQ%2B4UEAGnU6PAGAHpKM%2BGrpX6yYejCeLscZHqcrnfb%2BLoZ6Mk%2FslbPrR5yABZZ2fWPK%2BLgCtQDWYDSCfgbQZtJmn7mR83xiN7dBbvl%2FdHTlbSS6KWDfnToU9pMaAsV%2F2jbyyWHawin9OQ0NCZ37dbXMqZG%2BdEBfWRZNKkqoiDf2ilL2dwW4uPpl1eire8f%2B0AH1BNyjhy3m8hW0Oogm4FdSWMnAu0kwNTcxPoCW%2B6jqsop7DB6NyWvuajCQZC1mhkVt38kBGc37lbzdhKu0mf0uVW9Eyf%2F%2Bcw%3D%3D;
+        expires=Sun, 08-Jul-2029 15:48:12 GMT; Max-Age=315360000; path=/; domain=.bibles.org
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - bibles.org
+        - /v2/verses.js
+        - keyword=antidisestablishmentarianism&precision=all&version=eng-NASB&sort_order=canonical&limit=20&offset=0
+        - ''
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://d3a2okcloueqyx.cloudfront.net/nf1?t=5d275a3cdbf587.49464480
+  response:
+    body:
+      string: !!binary |
+        R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
+    headers:
+      ? !!python/object/new:multidict._istr.istr
+      - Accept-Ranges
+      : bytes
+      ? !!python/object/new:multidict._istr.istr
+      - Age
+      : '1029'
+      ? !!python/object/new:multidict._istr.istr
+      - Cache-Control
+      : max-age=0, no-cache, must-revalidate, proxy-revalidate, no-transform, private,
+        pre-check=0
+      ? !!python/object/new:multidict._istr.istr
+      - Connection
+      : keep-alive
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Length
+      : '35'
+      ? !!python/object/new:multidict._istr.istr
+      - Content-Type
+      : image/gif
+      ? !!python/object/new:multidict._istr.istr
+      - Date
+      : Wed, 10 Jul 2019 14:05:55 GMT
+      ? !!python/object/new:multidict._istr.istr
+      - Etag
+      : '"28d6814f309ea289f847c69cf91194c6"'
+      ? !!python/object/new:multidict._istr.istr
+      - Expires
+      : Wed, 19 Apr 2000 11:43:00 GMT
+      ? !!python/object/new:multidict._istr.istr
+      - Last-Modified
+      : Tue, 09 Aug 2011 09:09:57 GMT
+      ? !!python/object/new:multidict._istr.istr
+      - Server
+      : AmazonS3
+      ? !!python/object/new:multidict._istr.istr
+      - Via
+      : 1.1 80d333a7c8f93ae71eecc760dbcee2d6.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id: G9b-Jj8vjB9t668UrPdlnlfTKdTWP6Ko7rZAY_UUtOap-u3-WdFEtg==
+      X-Amz-Cf-Pop: ORD52-C2
+      X-Cache: Hit from cloudfront
+    status:
+      code: 200
+      message: OK
+    url: !!python/object/new:yarl.URL
+      state: !!python/tuple
+      - !!python/object/new:urllib.parse.SplitResult
+        - https
+        - d3a2okcloueqyx.cloudfront.net
+        - /nf1
+        - t=5d275a3cdbf587.49464480
+        - ''
 version: 1
