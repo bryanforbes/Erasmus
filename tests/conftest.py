@@ -1,21 +1,13 @@
 from __future__ import annotations
 
-from typing import Any, Optional
+from typing import Any
 
 import pytest  # type: ignore
 import pytest_mock  # type: ignore
 import asynctest.mock  # type: ignore
 from attr import dataclass
-from vcr.stubs import aiohttp_stubs
 
 pytest_mock._get_mock_module._module = asynctest.mock
-
-
-async def text(self, encoding: Optional[str] = 'utf-8', errors: str = 'strict') -> str:
-    return self._body.decode(encoding, errors=errors)  # type: ignore
-
-
-aiohttp_stubs.MockClientResponse.text = text
 
 
 @dataclass(slots=True)
