@@ -11,7 +11,7 @@ from botus_receptus.interactive_pager import InteractiveFieldPager, FieldPageSou
 from botus_receptus import checks
 from functools import partial
 
-from ..db.bible import BibleVersion
+from ..db.bible import BibleVersion, GuildPref, UserPref
 from ..data import VerseRange, get_book, get_book_mask, SearchResults, Passage
 from ..service_manager import ServiceManager
 from ..exceptions import (
@@ -28,7 +28,7 @@ from ..exceptions import (
     ServiceSearchTimeout,
 )
 from ..erasmus import Erasmus
-from ..context import Context
+from ..context import Context, GuildContext
 
 
 @dataclass(slots=True)
@@ -110,6 +110,27 @@ Example:
 --------
     {prefix}setversion nasb'''
 
+unsetversion_help = '''
+
+Example:
+--------
+    {prefix}unsetversion'''
+
+setguildversion_help = '''
+Arguments:
+----------
+    <version> - A supported version identifier listed in {prefix}versions
+
+Example:
+--------
+    {prefix}setguildversion nasb'''
+
+unsetguildversion_help = '''
+
+Example:
+--------
+    {prefix}unsetguildversion'''
+
 version_lookup_help = '''
 Arguments:
 ----------
@@ -165,7 +186,9 @@ class Bible(commands.Cog[Context]):
             return
 
         async with ctx.typing():
-            user_bible = await BibleVersion.get_for_user(ctx.author.id)
+            user_bible = await BibleVersion.get_for_user(
+                ctx.author.id, ctx.guild.id if ctx.guild is not None else None
+            )
 
             for i, verse_range in enumerate(verse_ranges):
                 if i > 0:
@@ -247,7 +270,9 @@ class Bible(commands.Cog[Context]):
         help=lookup_help,
     )
     async def lookup(self, ctx: Context, *, reference: VerseRange) -> None:
-        bible = await BibleVersion.get_for_user(ctx.author.id)
+        bible = await BibleVersion.get_for_user(
+            ctx.author.id, ctx.guild.id if ctx.guild is not None else None
+        )
 
         async with ctx.typing():
             await self.__lookup(ctx, bible, reference)
@@ -258,7 +283,9 @@ class Bible(commands.Cog[Context]):
         help=search_help,
     )
     async def search(self, ctx: Context, *terms: str) -> None:
-        bible = await BibleVersion.get_for_user(ctx.author.id)
+        bible = await BibleVersion.get_for_user(
+            ctx.author.id, ctx.guild.id if ctx.guild is not None else None
+        )
 
         await self.__search(ctx, bible, *terms)
 
@@ -293,6 +320,46 @@ class Bible(commands.Cog[Context]):
         await existing.set_for_user(ctx.author.id)
 
         await ctx.send_embed(f'Version set to `{version}`')
+
+    @commands.command(brief='Delete your preferred version', help=unsetversion_help)
+    @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
+    async def unsetversion(self, ctx: Context) -> None:
+        user_prefs = await UserPref.get(ctx.author.id)
+
+        if user_prefs is not None:
+            await user_prefs.delete()
+            await ctx.send_embed(f'Preferred version deleted')
+        else:
+            await ctx.send_embed(f'Preferred version already deleted')
+
+    @commands.command(brief='Set the guild default version', help=setguildversion_help)
+    @commands.has_permissions(administrator=True)
+    @commands.guild_only()
+    @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
+    async def setguildversion(self, ctx: GuildContext, version: str) -> None:
+        version = version.lower()
+        if version[0] == ctx.prefix:
+            version = version[1:]
+
+        existing = await BibleVersion.get_by_command(version)
+        await existing.set_for_guild(ctx.guild.id)
+
+        await ctx.send_embed(f'Guild version set to `{version}`')
+
+    @commands.command(
+        brief='Delete the guild default version', help=unsetguildversion_help
+    )
+    @commands.has_permissions(administrator=True)
+    @commands.guild_only()
+    @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
+    async def unsetguildversion(self, ctx: GuildContext) -> None:
+        guild_prefs = await GuildPref.get(ctx.guild.id)
+
+        if guild_prefs is not None:
+            await guild_prefs.delete()
+            await ctx.send_embed(f'Guild version deleted')
+        else:
+            await ctx.send_embed(f'Guild version already deleted')
 
     @commands.command(name='addbible')
     @checks.dm_only()

@@ -24,6 +24,11 @@ class BibleVersion(Base):
             set_=('bible_id',), user_id=user_id, bible_id=self.id
         )
 
+    async def set_for_guild(self, guild_id: int) -> None:
+        await GuildPref.create_or_update(
+            set_=('bible_id',), guild_id=guild_id, bible_id=self.id
+        )
+
     @staticmethod
     async def get_all(*, ordered: bool = False) -> AsyncIterator[BibleVersion]:
         query = BibleVersion.query
@@ -53,23 +58,42 @@ class BibleVersion(Base):
         ).gino.first()
 
     @staticmethod
-    async def get_for_user(user_id: int) -> BibleVersion:
+    async def get_for_user(user_id: int, guild_id: Optional[int]) -> BibleVersion:
         user_pref = (
             await UserPref.load(bible_version=BibleVersion)
             .query.where(UserPref.user_id == user_id)
             .gino.first()
         )
 
-        if user_pref is None or user_pref.bible_version is None:
-            return await BibleVersion.get_by_command('esv')
+        if user_pref is not None and user_pref.bible_version is not None:
+            return user_pref.bible_version
 
-        return user_pref.bible_version
+        if guild_id is not None:
+            guild_pref = (
+                await GuildPref.load(bible_version=BibleVersion)
+                .query.where(GuildPref.guild_id == guild_id)
+                .gino.first()
+            )
+
+            if guild_pref is not None and guild_pref.bible_version is not None:
+                return guild_pref.bible_version
+
+        return await BibleVersion.get_by_command('esv')
 
 
 class UserPref(Base):
-    bible_version: Optional[BibleVersion]
-
     __tablename__ = 'user_prefs'
 
+    bible_version: Optional[BibleVersion]
+
     user_id = db.Column(Snowflake, primary_key=True)
+    bible_id = db.Column(db.Integer, db.ForeignKey('bible_versions.id'))
+
+
+class GuildPref(Base):
+    __tablename__ = 'guild_prefs'
+
+    bible_version: Optional[BibleVersion]
+
+    guild_id = db.Column(Snowflake, primary_key=True)
     bible_id = db.Column(db.Integer, db.ForeignKey('bible_versions.id'))

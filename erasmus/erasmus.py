@@ -117,6 +117,8 @@ class Erasmus(Bot[Context], DblBot[Context]):
                 )
             retry_period = pendulum.now().add(seconds=int(exc.retry_after)).diff()
             message = f'{message} You can retry again in {retry_period.in_words()}.'
+        elif isinstance(exc, commands.MissingPermissions):
+            message = 'You do not have the correct permissions to run this command'
         elif isinstance(exc, checks.OnlyDirectMessage):
             message = 'This command is only available in private messages'
         elif isinstance(exc, commands.MissingRequiredArgument):
