@@ -13,9 +13,7 @@ beautifulsoup4 = "^4.6"
 cchardet = "^2.1"
 psycopg2 = "^2.7"
 ujson = "^1.35"
-"botus_receptus" = {rev = "b60ec3c35710c3cb7584df4affbb4f7d89fc4876", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop", "more_itertools"]}
-pendulum = {git = "https://github.com/bryanforbes/pendulum.git", branch = "update-for-pep-561"}
-gino-stubs = {rev = "70a6fa10be8ef45e03d96a0939c2c0556a0b285c", git = "https://github.com/bryanforbes/gino-stubs.git"}
+"botus_receptus" = {rev = "a11433a222c49d6a3916ba4d6f0fdb6fc385b7ac", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop", "more_itertools"]}
 "typing-extensions" = ">=3.7.4"
 
 [tool.poetry.dev-dependencies]
@@ -24,7 +22,7 @@ black = "^19.3b0"
 flake8 = "^3.6"
 flake8-bugbear = "^19.3"
 flake8-pyi = "^19.3"
-mypy = "^0.720"
+mypy = "^0.740"
 pre-commit = "^1.12"
 pytest = "^5.0"
 pytest-asyncio = "^0.10.0"

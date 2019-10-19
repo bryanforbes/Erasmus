@@ -22,7 +22,7 @@ install:
 script: |
   set -e
   poetry run flake8 erasmus
-  poetry run mypy -m erasmus
+  poetry run mypy erasmus
   poetry run py.test -p no:sugar
 
 after_success:
