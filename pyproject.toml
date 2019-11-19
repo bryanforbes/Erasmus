@@ -13,7 +13,7 @@ beautifulsoup4 = "^4.6"
 cchardet = "^2.1"
 psycopg2 = "^2.7"
 ujson = "^1.35"
-"botus_receptus" = {rev = "a11433a222c49d6a3916ba4d6f0fdb6fc385b7ac", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop", "more_itertools"]}
+"botus_receptus" = {rev = "d9813d3d6e2c1ab4ee77a7413fe930d3599d54ce", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop", "more_itertools"]}
 "typing-extensions" = ">=3.7.4"
 
 [tool.poetry.dev-dependencies]
