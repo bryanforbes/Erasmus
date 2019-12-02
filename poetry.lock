@@ -389,7 +389,7 @@ asyncpg = ">=0.18,<1.0"
 category = "main"
 description = ""
 name = "gino-stubs"
-optional = true
+optional = false
 python-versions = "^3.6"
 version = "0.2"
 
@@ -989,7 +989,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pathlib2", "contextlib2", "unittest2"]
 
 [metadata]
-content-hash = "bd31132334992b0c61b29b47487a7b9c7cb991c99a358b8fcfb39a0c198c91f0"
+content-hash = "3109603712c4699071513ce9deceefd150350df898b46b1bfdee513d0b534069"
 python-versions = "^3.7"
 
 [metadata.files]
