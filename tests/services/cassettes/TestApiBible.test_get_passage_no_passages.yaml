@@ -11,89 +11,17 @@ interactions:
       string: '{"statusCode":404,"error":"Not Found","message":"Could not find that
         passage"}'
     headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Cache-Control
-      : no-cache
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Encoding
-      : gzip
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '91'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : application/json; charset=utf-8
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Wed, 06 Feb 2019 18:23:59 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : nginx/1.12.1
-      ? !!python/object/new:multidict._istr.istr
-      - Vary
-      : origin,accept-encoding
+      Access-Control-Expose-Headers: WWW-Authenticate,Server-Authorization
+      Cache-Control: no-cache
+      Connection: keep-alive
+      Content-Encoding: gzip
+      Content-Type: application/json; charset=utf-8
+      Date: Mon, 16 Dec 2019 23:03:40 GMT
+      Server: nginx/1.14.1
+      Transfer-Encoding: chunked
+      Vary: origin
     status:
       code: 404
       message: Not Found
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - api.scripture.api.bible
-        - /v1/bibles/de4e12af7f28f599-02/passages/JHN.50.1-JHN.50.4
-        - include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
-        - ''
-- request:
-    body: null
-    headers:
-      api-key:
-      - e724f40aaafed111b75d6f83b011b823
-    method: GET
-    uri: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/passages/JHN.50.1-JHN.50.4?include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
-  response:
-    body:
-      string: '{"statusCode":404,"error":"Not Found","message":"Could not find that
-        passage"}'
-    headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Access-Control-Expose-Headers
-      : WWW-Authenticate,Server-Authorization
-      ? !!python/object/new:multidict._istr.istr
-      - Cache-Control
-      : no-cache
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Encoding
-      : gzip
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '91'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : application/json; charset=utf-8
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Thu, 11 Jul 2019 15:48:14 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : nginx/1.12.1
-      ? !!python/object/new:multidict._istr.istr
-      - Vary
-      : origin
-    status:
-      code: 404
-      message: Not Found
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - api.scripture.api.bible
-        - /v1/bibles/de4e12af7f28f599-02/passages/JHN.50.1-JHN.50.4
-        - include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
-        - ''
+    url: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/passages/JHN.50.1-JHN.50.4?include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
 version: 1

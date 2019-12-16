@@ -62,259 +62,52 @@ interactions:
         src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''''
         + unique + '''');\\x3C/script\\x3E\");\n</script><noscript><img src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''
         + unique + ''\" height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height:
-        0; width: 0;\" /></noscript>","fumsId":"4796dadf-28b0-4bd5-9498-036f5ad7170d","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''4796dadf-28b0-4bd5-9498-036f5ad7170d'');
-        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=4796dadf-28b0-4bd5-9498-036f5ad7170d\"
+        0; width: 0;\" /></noscript>","fumsId":"c42de829-6e9d-4894-bc96-c10642813d6e","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''c42de829-6e9d-4894-bc96-c10642813d6e'');
+        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=c42de829-6e9d-4894-bc96-c10642813d6e\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
         />"}}'
     headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Cache-Control
-      : no-cache
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Encoding
-      : gzip
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : application/json; charset=utf-8
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Wed, 06 Feb 2019 18:23:57 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : nginx/1.12.1
-      ? !!python/object/new:multidict._istr.istr
-      - Transfer-Encoding
-      : chunked
-      ? !!python/object/new:multidict._istr.istr
-      - Vary
-      : origin,accept-encoding
+      Access-Control-Expose-Headers: WWW-Authenticate,Server-Authorization
+      Cache-Control: no-cache
+      Connection: keep-alive
+      Content-Encoding: gzip
+      Content-Type: application/json; charset=utf-8
+      Date: Mon, 16 Dec 2019 23:03:38 GMT
+      Server: nginx/1.14.1
+      Transfer-Encoding: chunked
+      Vary: origin,accept-encoding
+      x-request-wants-bypass: static
+      x-server-allows-bypass: static
     status:
       code: 200
       message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - api.scripture.api.bible
-        - /v1/bibles/de4e12af7f28f599-02/search
-        - query=faith&limit=20&offset=0&sort=canonical
-        - ''
+    url: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/search?query=faith&limit=20&offset=0&sort=canonical
 - request:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=4796dadf-28b0-4bd5-9498-036f5ad7170d
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=c42de829-6e9d-4894-bc96-c10642813d6e
   response:
     body:
       string: !!binary |
         R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
     headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Accept-Ranges
-      : bytes
-      ? !!python/object/new:multidict._istr.istr
-      - Age
-      : '522'
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '35'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : image/gif
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Wed, 06 Feb 2019 18:15:17 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Etag
-      : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr
-      - Last-Modified
-      : Wed, 10 May 2017 13:35:25 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : AmazonS3
-      ? !!python/object/new:multidict._istr.istr
-      - Via
-      : 1.1 f45f484a39625800067d22f39ff53da4.cloudfront.net (CloudFront)
-      X-Amz-Cf-Id: Z_sOzipFfAwXyRHRbIxTdQaIs65QeI-q_UJwH4zIqs0KA-xal87Gjg==
+      Accept-Ranges: bytes
+      Age: '40422'
+      Connection: keep-alive
+      Content-Length: '35'
+      Content-Type: image/gif
+      Date: Mon, 16 Dec 2019 11:49:57 GMT
+      Etag: '"28d6814f309ea289f847c69cf91194c6"'
+      Last-Modified: Wed, 10 May 2017 13:35:25 GMT
+      Server: AmazonS3
+      Via: 1.1 6f5a63f08c741820abad2a0b2a35176c.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id: l8BsI1p2LGdPCfoK4sgnXAxGHFIzbEllN2lzdTz3sbZdE_ETDlk2_A==
+      X-Amz-Cf-Pop: ORD51-C2
       X-Cache: Hit from cloudfront
     status:
       code: 200
       message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - d3btgtzu3ctdwx.cloudfront.net
-        - /nf1
-        - t=4796dadf-28b0-4bd5-9498-036f5ad7170d
-        - ''
-- request:
-    body: null
-    headers:
-      api-key:
-      - e724f40aaafed111b75d6f83b011b823
-    method: GET
-    uri: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/search?query=faith&limit=20&offset=0&sort=canonical
-  response:
-    body:
-      string: '{"data":{"query":"faith","limit":20,"offset":0,"total":231,"verses":[{"id":"DEU.32.20","orgId":"DEU.32.20","bookId":"DEU","bibleId":"de4e12af7f28f599-02","chapterId":"DEU.32","reference":"Deuteronomy
-        32:20","text":"And he said, I will hide my face from them, I will see what
-        their end shall be:  for they  are  a very froward generation, children in
-        whom  is  no faith."},{"id":"HAB.2.4","orgId":"HAB.2.4","bookId":"HAB","bibleId":"de4e12af7f28f599-02","chapterId":"HAB.2","reference":"Habakkuk
-        2:4","text":"Behold, his soul which  is lifted up is not upright in him: but
-        the just shall live by his faith."},{"id":"MAT.6.30","orgId":"MAT.6.30","bookId":"MAT","bibleId":"de4e12af7f28f599-02","chapterId":"MAT.6","reference":"Matthew
-        6:30","text":"Wherefore, if God so clothe the grass of the field, which to
-        day is, and to morrow is cast into the oven, shall he  not much more  clothe  you,
-        O ye of little faith?"},{"id":"MAT.8.10","orgId":"MAT.8.10","bookId":"MAT","bibleId":"de4e12af7f28f599-02","chapterId":"MAT.8","reference":"Matthew
-        8:10","text":"When Jesus heard it , he marvelled, and said to them that followed,  Verily
-        I say unto you, I have not found so great faith, no, not in Israel."},{"id":"MAT.8.26","orgId":"MAT.8.26","bookId":"MAT","bibleId":"de4e12af7f28f599-02","chapterId":"MAT.8","reference":"Matthew
-        8:26","text":"And he saith unto them, Why are ye fearful, O ye of little faith?  Then
-        he arose, and rebuked the winds and the sea; and there was a great calm."},{"id":"MAT.9.2","orgId":"MAT.9.2","bookId":"MAT","bibleId":"de4e12af7f28f599-02","chapterId":"MAT.9","reference":"Matthew
-        9:2","text":"And, behold, they brought to him a man sick of the palsy, lying
-        on a bed: and Jesus seeing their faith said unto the sick of the palsy; Son,
-        be of good cheer; thy sins be forgiven thee."},{"id":"MAT.9.22","orgId":"MAT.9.22","bookId":"MAT","bibleId":"de4e12af7f28f599-02","chapterId":"MAT.9","reference":"Matthew
-        9:22","text":"But Jesus turned him about, and when he saw her, he said, Daughter,
-        be of good comfort; thy faith hath made thee whole.  And the woman was made
-        whole from that hour."},{"id":"MAT.9.29","orgId":"MAT.9.29","bookId":"MAT","bibleId":"de4e12af7f28f599-02","chapterId":"MAT.9","reference":"Matthew
-        9:29","text":"Then touched he their eyes, saying, According to your faith
-        be it unto you."},{"id":"MAT.14.31","orgId":"MAT.14.31","bookId":"MAT","bibleId":"de4e12af7f28f599-02","chapterId":"MAT.14","reference":"Matthew
-        14:31","text":"And immediately Jesus stretched forth his  hand, and caught
-        him, and said unto him,  O thou of little faith, wherefore didst thou doubt?"},{"id":"MAT.15.28","orgId":"MAT.15.28","bookId":"MAT","bibleId":"de4e12af7f28f599-02","chapterId":"MAT.15","reference":"Matthew
-        15:28","text":"Then Jesus answered and said unto her, O woman, great  is  thy
-        faith: be it unto thee even as thou wilt.  And her daughter was made whole
-        from that very hour."},{"id":"MAT.16.8","orgId":"MAT.16.8","bookId":"MAT","bibleId":"de4e12af7f28f599-02","chapterId":"MAT.16","reference":"Matthew
-        16:8","text":"Which when Jesus perceived, he said unto them,  O ye of little
-        faith, why reason ye among yourselves, because ye have brought no bread?"},{"id":"MAT.17.20","orgId":"MAT.17.20","bookId":"MAT","bibleId":"de4e12af7f28f599-02","chapterId":"MAT.17","reference":"Matthew
-        17:20","text":"And Jesus said unto them, Because of your unbelief: for verily
-        I say unto you, If ye have faith as a grain of mustard seed, ye shall say
-        unto this mountain, Remove hence to yonder place; and it shall remove; and
-        nothing shall be impossible unto you."},{"id":"MAT.21.21","orgId":"MAT.21.21","bookId":"MAT","bibleId":"de4e12af7f28f599-02","chapterId":"MAT.21","reference":"Matthew
-        21:21","text":"Jesus answered and said unto them, Verily I say unto you, If
-        ye have faith, and doubt not, ye shall not only do this  which is done  to
-        the fig tree, but also if ye shall say unto this mountain, Be thou removed,
-        and be thou cast into the sea; it shall be done."},{"id":"MAT.23.23","orgId":"MAT.23.23","bookId":"MAT","bibleId":"de4e12af7f28f599-02","chapterId":"MAT.23","reference":"Matthew
-        23:23","text":"Woe unto you, scribes and Pharisees, hypocrites! for ye pay
-        tithe of mint and anise and cummin, and have omitted the weightier matters  of
-        the law, judgment, mercy, and faith: these ought ye to have done, and not
-        to leave the other undone."},{"id":"MRK.2.5","orgId":"MRK.2.5","bookId":"MRK","bibleId":"de4e12af7f28f599-02","chapterId":"MRK.2","reference":"Mark
-        2:5","text":"When Jesus saw their faith, he said unto the sick of the palsy,
-        Son, thy sins be forgiven thee."},{"id":"MRK.4.40","orgId":"MRK.4.40","bookId":"MRK","bibleId":"de4e12af7f28f599-02","chapterId":"MRK.4","reference":"Mark
-        4:40","text":"And he said unto them, Why are ye so fearful? how is it that
-        ye have no faith?"},{"id":"MRK.5.34","orgId":"MRK.5.34","bookId":"MRK","bibleId":"de4e12af7f28f599-02","chapterId":"MRK.5","reference":"Mark
-        5:34","text":"And he said unto her, Daughter, thy faith hath made thee whole;
-        go in peace, and be whole of thy plague."},{"id":"MRK.10.52","orgId":"MRK.10.52","bookId":"MRK","bibleId":"de4e12af7f28f599-02","chapterId":"MRK.10","reference":"Mark
-        10:52","text":"And Jesus said unto him, Go thy way; thy faith hath made thee
-        whole.  And immediately he received his sight, and followed Jesus in the way."},{"id":"MRK.11.22","orgId":"MRK.11.22","bookId":"MRK","bibleId":"de4e12af7f28f599-02","chapterId":"MRK.11","reference":"Mark
-        11:22","text":"And Jesus answering saith unto them, Have faith in God."},{"id":"LUK.5.20","orgId":"LUK.5.20","bookId":"LUK","bibleId":"de4e12af7f28f599-02","chapterId":"LUK.5","reference":"Luke
-        5:20","text":"And when he saw their faith, he said unto him, Man, thy sins
-        are forgiven thee."}]},"meta":{"fums":"<script>\nvar _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''''
-        + unique + '''');\\x3C/script\\x3E\");\n</script><noscript><img src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''
-        + unique + ''\" height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height:
-        0; width: 0;\" /></noscript>","fumsId":"0f9811d3-e717-4cbe-9934-02379aafc904","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''0f9811d3-e717-4cbe-9934-02379aafc904'');
-        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=0f9811d3-e717-4cbe-9934-02379aafc904\"
-        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        />"}}'
-    headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Access-Control-Expose-Headers
-      : WWW-Authenticate,Server-Authorization
-      ? !!python/object/new:multidict._istr.istr
-      - Cache-Control
-      : no-cache
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Encoding
-      : gzip
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '2166'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : application/json; charset=utf-8
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Thu, 11 Jul 2019 15:48:12 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : nginx/1.12.1
-      ? !!python/object/new:multidict._istr.istr
-      - Vary
-      : origin,accept-encoding
-    status:
-      code: 200
-      message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - api.scripture.api.bible
-        - /v1/bibles/de4e12af7f28f599-02/search
-        - query=faith&limit=20&offset=0&sort=canonical
-        - ''
-- request:
-    body: null
-    headers: {}
-    method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=0f9811d3-e717-4cbe-9934-02379aafc904
-  response:
-    body:
-      string: !!binary |
-        R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
-    headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Accept-Ranges
-      : bytes
-      ? !!python/object/new:multidict._istr.istr
-      - Age
-      : '12221'
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '35'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : image/gif
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Sun, 16 Jun 2019 22:57:39 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Etag
-      : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr
-      - Last-Modified
-      : Wed, 10 May 2017 13:35:25 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : AmazonS3
-      ? !!python/object/new:multidict._istr.istr
-      - Via
-      : 1.1 e385fbaea7c648ad7e4ea77cdc0acd94.cloudfront.net (CloudFront)
-      X-Amz-Cf-Id: wAhL3no1fG6qD3W7vnb6oE5CcUvmPW9kj3nEybQVeVxim5PanWUrHw==
-      X-Amz-Cf-Pop: ORD52-C2
-      X-Cache: Hit from cloudfront
-    status:
-      code: 200
-      message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - d3btgtzu3ctdwx.cloudfront.net
-        - /nf1
-        - t=0f9811d3-e717-4cbe-9934-02379aafc904
-        - ''
+    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=c42de829-6e9d-4894-bc96-c10642813d6e
 version: 1

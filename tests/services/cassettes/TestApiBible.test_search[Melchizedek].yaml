@@ -38,235 +38,52 @@ interactions:
         src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''''
         + unique + '''');\\x3C/script\\x3E\");\n</script><noscript><img src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''
         + unique + ''\" height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height:
-        0; width: 0;\" /></noscript>","fumsId":"3551e25e-cf28-42c9-b74a-9fdf1738781b","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''3551e25e-cf28-42c9-b74a-9fdf1738781b'');
-        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=3551e25e-cf28-42c9-b74a-9fdf1738781b\"
+        0; width: 0;\" /></noscript>","fumsId":"78bdbf6b-2008-4b93-8bb7-fa6a5c75ae23","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''78bdbf6b-2008-4b93-8bb7-fa6a5c75ae23'');
+        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=78bdbf6b-2008-4b93-8bb7-fa6a5c75ae23\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
         />"}}'
     headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Cache-Control
-      : no-cache
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Encoding
-      : gzip
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '1261'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : application/json; charset=utf-8
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Wed, 06 Feb 2019 18:23:57 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : nginx/1.12.1
-      ? !!python/object/new:multidict._istr.istr
-      - Vary
-      : origin,accept-encoding
+      Access-Control-Expose-Headers: WWW-Authenticate,Server-Authorization
+      Cache-Control: no-cache
+      Connection: keep-alive
+      Content-Encoding: gzip
+      Content-Type: application/json; charset=utf-8
+      Date: Mon, 16 Dec 2019 23:03:38 GMT
+      Server: nginx/1.14.1
+      Transfer-Encoding: chunked
+      Vary: origin,accept-encoding
+      x-request-wants-bypass: static
+      x-server-allows-bypass: static
     status:
       code: 200
       message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - api.scripture.api.bible
-        - /v1/bibles/de4e12af7f28f599-02/search
-        - query=Melchizedek&limit=20&offset=0&sort=canonical
-        - ''
+    url: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/search?query=Melchizedek&limit=20&offset=0&sort=canonical
 - request:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=3551e25e-cf28-42c9-b74a-9fdf1738781b
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=78bdbf6b-2008-4b93-8bb7-fa6a5c75ae23
   response:
     body:
       string: !!binary |
         R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
     headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Accept-Ranges
-      : bytes
-      ? !!python/object/new:multidict._istr.istr
-      - Age
-      : '521'
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '35'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : image/gif
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Wed, 06 Feb 2019 18:15:17 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Etag
-      : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr
-      - Last-Modified
-      : Wed, 10 May 2017 13:35:25 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : AmazonS3
-      ? !!python/object/new:multidict._istr.istr
-      - Via
-      : 1.1 fc9898e8f62308e3f28fb29079b65ebb.cloudfront.net (CloudFront)
-      X-Amz-Cf-Id: V-LctpIsx6x7TDSWS-3H5rQYeUogEzhQ5O_H89T3WVVsQ5pjih4MWw==
+      Accept-Ranges: bytes
+      Age: '40422'
+      Connection: keep-alive
+      Content-Length: '35'
+      Content-Type: image/gif
+      Date: Mon, 16 Dec 2019 11:49:57 GMT
+      Etag: '"28d6814f309ea289f847c69cf91194c6"'
+      Last-Modified: Wed, 10 May 2017 13:35:25 GMT
+      Server: AmazonS3
+      Via: 1.1 bc779a771e58cc6656070a41635de578.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id: DNgowXD1mEyq_gUNQ2uYozsW_NHQ9wFhdApDjS1IzxPiYPaT_nUCKQ==
+      X-Amz-Cf-Pop: ORD51-C2
       X-Cache: Hit from cloudfront
     status:
       code: 200
       message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - d3btgtzu3ctdwx.cloudfront.net
-        - /nf1
-        - t=3551e25e-cf28-42c9-b74a-9fdf1738781b
-        - ''
-- request:
-    body: null
-    headers:
-      api-key:
-      - e724f40aaafed111b75d6f83b011b823
-    method: GET
-    uri: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/search?query=Melchizedek&limit=20&offset=0&sort=canonical
-  response:
-    body:
-      string: '{"data":{"query":"Melchizedek","limit":20,"offset":0,"total":11,"verses":[{"id":"GEN.14.18","orgId":"GEN.14.18","bookId":"GEN","bibleId":"de4e12af7f28f599-02","chapterId":"GEN.14","reference":"Genesis
-        14:18","text":"And Melchizedek king of Salem brought forth bread and wine:
-        and he was  the priest of the most high God."},{"id":"PSA.110.4","orgId":"PSA.110.4","bookId":"PSA","bibleId":"de4e12af7f28f599-02","chapterId":"PSA.110","reference":"Psalms
-        110:4","text":"The LORD  hath sworn, and will not repent, Thou  art  a priest
-        for ever after the order of Melchizedek."},{"id":"HEB.5.6","orgId":"HEB.5.6","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.5","reference":"Hebrews
-        5:6","text":"As he saith also in another place , Thou  art  a priest for ever
-        after the order of Melchisedec."},{"id":"HEB.5.10","orgId":"HEB.5.10","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.5","reference":"Hebrews
-        5:10","text":"Called of God an high priest after the order of Melchisedec."},{"id":"HEB.6.20","orgId":"HEB.6.20","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.6","reference":"Hebrews
-        6:20","text":"Whither the forerunner is for us entered, even  Jesus, made
-        an high priest for ever after the order of Melchisedec."},{"id":"HEB.7.1","orgId":"HEB.7.1","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.7","reference":"Hebrews
-        7:1","text":"For this Melchisedec, king of Salem, priest of the most high
-        God, who met Abraham returning from the slaughter of the kings, and blessed
-        him;"},{"id":"HEB.7.10","orgId":"HEB.7.10","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.7","reference":"Hebrews
-        7:10","text":"For he was yet in the loins of his father, when Melchisedec
-        met him."},{"id":"HEB.7.11","orgId":"HEB.7.11","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.7","reference":"Hebrews
-        7:11","text":"If therefore perfection were by the Levitical priesthood, (for
-        under it the people received the law,) what further need was there  that another
-        priest should rise after the order of Melchisedec, and not be called after
-        the order of Aaron?"},{"id":"HEB.7.15","orgId":"HEB.7.15","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.7","reference":"Hebrews
-        7:15","text":"And it is yet far more evident: for that after the similitude
-        of Melchisedec there ariseth another priest,"},{"id":"HEB.7.17","orgId":"HEB.7.17","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.7","reference":"Hebrews
-        7:17","text":"For he testifieth, Thou art  a priest for ever after the order
-        of Melchisedec."},{"id":"HEB.7.21","orgId":"HEB.7.21","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.7","reference":"Hebrews
-        7:21","text":"(For those priests were made without an oath; but this with
-        an oath by him that said unto him, The Lord sware and will not repent, Thou
-        art  a priest for ever after the order of Melchisedec:)"}]},"meta":{"fums":"<script>\nvar
-        _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''''
-        + unique + '''');\\x3C/script\\x3E\");\n</script><noscript><img src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''
-        + unique + ''\" height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height:
-        0; width: 0;\" /></noscript>","fumsId":"60732722-ec59-42eb-b1d9-0894a077d8a2","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''60732722-ec59-42eb-b1d9-0894a077d8a2'');
-        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=60732722-ec59-42eb-b1d9-0894a077d8a2\"
-        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        />"}}'
-    headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Access-Control-Expose-Headers
-      : WWW-Authenticate,Server-Authorization
-      ? !!python/object/new:multidict._istr.istr
-      - Cache-Control
-      : no-cache
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Encoding
-      : gzip
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '1261'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : application/json; charset=utf-8
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Thu, 11 Jul 2019 15:48:12 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : nginx/1.12.1
-      ? !!python/object/new:multidict._istr.istr
-      - Vary
-      : origin,accept-encoding
-    status:
-      code: 200
-      message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - api.scripture.api.bible
-        - /v1/bibles/de4e12af7f28f599-02/search
-        - query=Melchizedek&limit=20&offset=0&sort=canonical
-        - ''
-- request:
-    body: null
-    headers: {}
-    method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=60732722-ec59-42eb-b1d9-0894a077d8a2
-  response:
-    body:
-      string: !!binary |
-        R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
-    headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Accept-Ranges
-      : bytes
-      ? !!python/object/new:multidict._istr.istr
-      - Age
-      : '12221'
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '35'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : image/gif
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Sun, 16 Jun 2019 22:57:39 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Etag
-      : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr
-      - Last-Modified
-      : Wed, 10 May 2017 13:35:25 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : AmazonS3
-      ? !!python/object/new:multidict._istr.istr
-      - Via
-      : 1.1 05ce646a2ff6febe063c256476b18a9c.cloudfront.net (CloudFront)
-      X-Amz-Cf-Id: cq57i-vb7ZvmIDWSk-MFzHlHNK0EJ1_JqFGMsoEDeiYx26IRTeXsBQ==
-      X-Amz-Cf-Pop: ORD52-C2
-      X-Cache: Hit from cloudfront
-    status:
-      code: 200
-      message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - d3btgtzu3ctdwx.cloudfront.net
-        - /nf1
-        - t=60732722-ec59-42eb-b1d9-0894a077d8a2
-        - ''
+    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=78bdbf6b-2008-4b93-8bb7-fa6a5c75ae23
 version: 1

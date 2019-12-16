@@ -1,336 +1,160 @@
 interactions:
 - request:
     body: null
-    headers: {}
+    headers:
+      AUTHORIZATION:
+      - Basic eEN6QWhUU1NSZVFTcndlMTRkZzN1WHUzaG1ENzFIb2paUFJLUU5oNDpY
     method: GET
     uri: https://bibles.org/v2/passages.js?q%5B%5D=Mark+5:1&version=eng-NASB
   response:
     body:
-      string: '{"response":{"search":{"result":{"type":"passages","passages":[{"display":"Mark
-        5:1","version":"eng-NASB","version_abbreviation":"NASB","path":"\/chapters\/eng-NASB:Mark.5\/verses.js?start=1&end=1","start_verse_id":"eng-NASB:Mark.5.1","end_verse_id":"eng-NASB:Mark.5.1","text":"<h3
-        class=\"s\">The Gerasene Demoniac<\/h3>\n<p class=\"p\"><sup id=\"Mark.5.1\"
-        class=\"v\">1<\/sup>They came to the other side of the sea, into the country
-        of the Gerasenes.<\/p>","copyright":"\n      New American Standard Bible,
-        Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The Lockman
-        Foundation.  Used by permission.\n    "}]}},"meta":{"fums":"<script>\nvar
-        _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''\/\/d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js\"\\x3E\\x3C\/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''5bbbf359013fc9.73418584'');\\x3C\/script\\x3E\");\n<\/script><noscript><img
-        src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5bbbf359013fc9.73418584\"
-        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        \/><\/noscript>","fums_tid":"5bbbf359013fc9.73418584","fums_js_include":"d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js","fums_js":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''5bbbf359013fc9.73418584'');
-        }","fums_noscript":"<img src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5bbbf359013fc9.73418584\"
-        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        \/>"}}}'
+      string: '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport"
+        content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name="robots"
+        content="index,follow"><meta name="apple-mobile-web-app-capable" content="yes"/><meta
+        name="apple-mobile-web-app-status-bar-style" content="black"/><link rel="manifest"
+        href="/site-assets/manifest.json"><link rel="apple-touch-icon-precomposed"
+        sizes="57x57" href="/site-assets/icons/apple-touch-icon-57x57.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="114x114" href="/site-assets/icons/apple-touch-icon-114x114.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="72x72" href="/site-assets/icons/apple-touch-icon-72x72.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="144x144" href="/site-assets/icons/apple-touch-icon-144x144.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="60x60" href="/site-assets/icons/apple-touch-icon-60x60.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="120x120" href="/site-assets/icons/apple-touch-icon-120x120.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="76x76" href="/site-assets/icons/apple-touch-icon-76x76.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="152x152" href="/site-assets/icons/apple-touch-icon-152x152.png"/><link
+        rel="icon" type="image/png" href="/site-assets/icons/favicon-196x196.png"
+        sizes="196x196"/><link rel="icon" type="image/png" href="/site-assets/icons/favicon-96x96.png"
+        sizes="96x96"/><link rel="icon" type="image/png" href="/site-assets/icons/favicon-32x32.png"
+        sizes="32x32"/><link rel="icon" type="image/png" href="/site-assets/icons/favicon-16x16.png"
+        sizes="16x16"/><link rel="icon" type="image/png" href="/site-assets/icons/favicon-128x128.png"
+        sizes="128x128"/><meta name="msapplication-TileColor" content="#666666"/><meta
+        name="msapplication-TileImage" content="/site-assets/icons/mstile-144x144.png"/><meta
+        name="msapplication-square70x70logo" content="/site-assets/icons/mstile-70x70.png"/><meta
+        name="msapplication-square150x150logo" content="/site-assets/icons/mstile-150x150.png"/><meta
+        name="msapplication-wide310x150logo" content="/site-assets/icons/mstile-310x150.png"/><meta
+        name="msapplication-square310x310logo" content="/site-assets/icons/mstile-310x310.png"/><meta
+        name="google-site-verification" content="YeQRSzo4eJEBnw5DaKo5tDExqvX3oaLD3Bee5xb6kXQ"/><link
+        rel="preconnect" href="https://global-bible-images-prod.s3.amazonaws.com"><link
+        rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect"
+        href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com"><link
+        rel="preconnect" href="https://vars.hotjar.com"><link rel="preconnect" href="https://script.hotjar.com"><title>Global.Bible</title><link
+        href="/static/css/2.e555329d.chunk.css" rel="stylesheet"><link href="/static/css/main.300a361b.chunk.css"
+        rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run
+        this app.</noscript><div id="root"></div><div id="modal-root"></div><script>!function(l){function
+        e(e){for(var r,t,n=e[0],o=e[1],u=e[2],a=0,i=[];a<n.length;a++)t=n[a],Object.prototype.hasOwnProperty.call(f,t)&&f[t]&&i.push(f[t][0]),f[t]=0;for(r
+        in o)Object.prototype.hasOwnProperty.call(o,r)&&(l[r]=o[r]);for(d&&d(e);i.length;)i.shift()();return
+        s.push.apply(s,u||[]),c()}function c(){for(var e,r=0;r<s.length;r++){for(var
+        t=s[r],n=!0,o=1;o<t.length;o++){var u=t[o];0!==f[u]&&(n=!1)}n&&(s.splice(r--,1),e=p(p.s=t[0]))}return
+        e}var t={},f={1:0},s=[];function p(e){if(t[e])return t[e].exports;var r=t[e]={i:e,l:!1,exports:{}};return
+        l[e].call(r.exports,r,r.exports,p),r.l=!0,r.exports}p.e=function(o){var e=[],t=f[o];if(0!==t)if(t)e.push(t[2]);else{var
+        r=new Promise(function(e,r){t=f[o]=[e,r]});e.push(t[2]=r);var n,u=document.createElement("script");u.charset="utf-8",u.timeout=120,p.nc&&u.setAttribute("nonce",p.nc),u.src=p.p+"static/js/"+({}[o]||o)+"."+{3:"e392be3d"}[o]+".chunk.js";var
+        a=new Error;n=function(e){u.onerror=u.onload=null,clearTimeout(i);var r=f[o];if(0!==r){if(r){var
+        t=e&&("load"===e.type?"missing":e.type),n=e&&e.target&&e.target.src;a.message="Loading
+        chunk "+o+" failed.\n("+t+": "+n+")",a.name="ChunkLoadError",a.type=t,a.request=n,r[1](a)}f[o]=void
+        0}};var i=setTimeout(function(){n({type:"timeout",target:u})},12e4);u.onerror=u.onload=n,document.head.appendChild(u)}return
+        Promise.all(e)},p.m=l,p.c=t,p.d=function(e,r,t){p.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},p.r=function(e){"undefined"!=typeof
+        Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},p.t=function(r,e){if(1&e&&(r=p(r)),8&e)return
+        r;if(4&e&&"object"==typeof r&&r&&r.__esModule)return r;var t=Object.create(null);if(p.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:r}),2&e&&"string"!=typeof
+        r)for(var n in r)p.d(t,n,function(e){return r[e]}.bind(null,n));return t},p.n=function(e){var
+        r=e&&e.__esModule?function(){return e.default}:function(){return e};return
+        p.d(r,"a",r),r},p.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},p.p="/",p.oe=function(e){throw
+        console.error(e),e};var r=this["webpackJsonpglobal-bible"]=this["webpackJsonpglobal-bible"]||[],n=r.push.bind(r);r.push=e,r=r.slice();for(var
+        o=0;o<r.length;o++)e(r[o]);var d=n;c()}([])</script><script src="/static/js/2.831cfaf2.chunk.js"></script><script
+        src="/static/js/main.cb8f2cbc.chunk.js"></script></body></html>'
     headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '1550'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : application/javascript
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Tue, 09 Oct 2018 00:16:24 GMT
-      P3P: CP="IEFIX"
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : Apache
+      Connection: keep-alive
+      Content-Encoding: gzip
+      Content-Type: text/html
+      Date: Mon, 16 Dec 2019 23:03:45 GMT
+      Last-Modified: Sun, 17 Nov 2019 05:37:03 GMT
+      Server: AmazonS3
+      Transfer-Encoding: chunked
+      Vary: Accept-Encoding
+      Via: 1.1 16a12520cb84572aced3b0a8e5f80bae.cloudfront.net (CloudFront), 1.1 454a63246de92b821085cc7b465357e1.cloudfront.net
+        (CloudFront)
+      X-Amz-Cf-Id: y4BJBhFnbDOpX2QaZycZVOVCXanKWmAv7Sm4MSMHHrKr4Q12GgyQ9Q==
+      X-Amz-Cf-Pop: ORD51-C1
+      X-Cache: Miss from cloudfront
     status:
       code: 200
       message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - bibles.org
-        - /v2/eng-NASB/passages.js
-        - q%5B%5D=Mark+5:1
-        - ''
+    url: https://bibles.org/v2/passages.js?q%5B%5D=Mark+5:1&version=eng-NASB
 - request:
     body: null
-    headers: {}
-    method: GET
-    uri: https://d3a2okcloueqyx.cloudfront.net/nf1?t=5bbbf359013fc9.73418584
-  response:
-    body:
-      string: !!binary |
-        R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
     headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Accept-Ranges
-      : bytes
-      ? !!python/object/new:multidict._istr.istr
-      - Age
-      : '1316'
-      ? !!python/object/new:multidict._istr.istr
-      - Cache-Control
-      : max-age=0, no-cache, must-revalidate, proxy-revalidate, no-transform, private,
-        pre-check=0
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '35'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : image/gif
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Sat, 22 Sep 2018 09:37:37 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Etag
-      : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr
-      - Expires
-      : Wed, 19 Apr 2000 11:43:00 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Last-Modified
-      : Tue, 09 Aug 2011 09:09:57 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : AmazonS3
-      ? !!python/object/new:multidict._istr.istr
-      - Via
-      : 1.1 745be6f5c9d4ef96df60c871a8c43185.cloudfront.net (CloudFront)
-      X-Amz-Cf-Id: hl2R1kwYtPzGOMutRldUXTK4PsRmcLn0MSsE42ERVX5UsP06MdN0dA==
-      X-Cache: Hit from cloudfront
-    status:
-      code: 200
-      message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - d3a2okcloueqyx.cloudfront.net
-        - /nf1
-        - t=5bbbf359013fc9.73418584
-        - ''
-- request:
-    body: null
-    headers: {}
+      AUTHORIZATION:
+      - Basic eEN6QWhUU1NSZVFTcndlMTRkZzN1WHUzaG1ENzFIb2paUFJLUU5oNDpY
     method: GET
     uri: https://bibles.org/v2/passages.js?q%5B%5D=Mark+5:1&version=eng-NASB
   response:
     body:
-      string: '{"response":{"search":{"result":{"type":"passages","passages":[{"display":"Mark
-        5:1","version":"eng-NASB","version_abbreviation":"NASB","path":"\/chapters\/eng-NASB:Mark.5\/verses.js?start=1&end=1","start_verse_id":"eng-NASB:Mark.5.1","end_verse_id":"eng-NASB:Mark.5.1","text":"<h3
-        class=\"s\">The Gerasene Demoniac<\/h3>\n<p class=\"p\"><sup id=\"Mark.5.1\"
-        class=\"v\">1<\/sup>They came to the other side of the sea, into the country
-        of the Gerasenes.<\/p>","copyright":"\n      New American Standard Bible,
-        Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The Lockman
-        Foundation.  Used by permission.\n    "}]}},"meta":{"fums":"<script>\nvar
-        _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''\/\/d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js\"\\x3E\\x3C\/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''5bbcd6827bd462.06404809'');\\x3C\/script\\x3E\");\n<\/script><noscript><img
-        src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5bbcd6827bd462.06404809\"
-        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        \/><\/noscript>","fums_tid":"5bbcd6827bd462.06404809","fums_js_include":"d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js","fums_js":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''5bbcd6827bd462.06404809'');
-        }","fums_noscript":"<img src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5bbcd6827bd462.06404809\"
-        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        \/>"}}}'
+      string: '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport"
+        content="width=device-width,initial-scale=1,shrink-to-fit=no"><meta name="robots"
+        content="index,follow"><meta name="apple-mobile-web-app-capable" content="yes"/><meta
+        name="apple-mobile-web-app-status-bar-style" content="black"/><link rel="manifest"
+        href="/site-assets/manifest.json"><link rel="apple-touch-icon-precomposed"
+        sizes="57x57" href="/site-assets/icons/apple-touch-icon-57x57.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="114x114" href="/site-assets/icons/apple-touch-icon-114x114.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="72x72" href="/site-assets/icons/apple-touch-icon-72x72.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="144x144" href="/site-assets/icons/apple-touch-icon-144x144.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="60x60" href="/site-assets/icons/apple-touch-icon-60x60.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="120x120" href="/site-assets/icons/apple-touch-icon-120x120.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="76x76" href="/site-assets/icons/apple-touch-icon-76x76.png"/><link
+        rel="apple-touch-icon-precomposed" sizes="152x152" href="/site-assets/icons/apple-touch-icon-152x152.png"/><link
+        rel="icon" type="image/png" href="/site-assets/icons/favicon-196x196.png"
+        sizes="196x196"/><link rel="icon" type="image/png" href="/site-assets/icons/favicon-96x96.png"
+        sizes="96x96"/><link rel="icon" type="image/png" href="/site-assets/icons/favicon-32x32.png"
+        sizes="32x32"/><link rel="icon" type="image/png" href="/site-assets/icons/favicon-16x16.png"
+        sizes="16x16"/><link rel="icon" type="image/png" href="/site-assets/icons/favicon-128x128.png"
+        sizes="128x128"/><meta name="msapplication-TileColor" content="#666666"/><meta
+        name="msapplication-TileImage" content="/site-assets/icons/mstile-144x144.png"/><meta
+        name="msapplication-square70x70logo" content="/site-assets/icons/mstile-70x70.png"/><meta
+        name="msapplication-square150x150logo" content="/site-assets/icons/mstile-150x150.png"/><meta
+        name="msapplication-wide310x150logo" content="/site-assets/icons/mstile-310x150.png"/><meta
+        name="msapplication-square310x310logo" content="/site-assets/icons/mstile-310x310.png"/><meta
+        name="google-site-verification" content="YeQRSzo4eJEBnw5DaKo5tDExqvX3oaLD3Bee5xb6kXQ"/><link
+        rel="preconnect" href="https://global-bible-images-prod.s3.amazonaws.com"><link
+        rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect"
+        href="https://fonts.gstatic.com"><link rel="preconnect" href="https://www.google-analytics.com"><link
+        rel="preconnect" href="https://vars.hotjar.com"><link rel="preconnect" href="https://script.hotjar.com"><title>Global.Bible</title><link
+        href="/static/css/2.e555329d.chunk.css" rel="stylesheet"><link href="/static/css/main.300a361b.chunk.css"
+        rel="stylesheet"></head><body><noscript>You need to enable JavaScript to run
+        this app.</noscript><div id="root"></div><div id="modal-root"></div><script>!function(l){function
+        e(e){for(var r,t,n=e[0],o=e[1],u=e[2],a=0,i=[];a<n.length;a++)t=n[a],Object.prototype.hasOwnProperty.call(f,t)&&f[t]&&i.push(f[t][0]),f[t]=0;for(r
+        in o)Object.prototype.hasOwnProperty.call(o,r)&&(l[r]=o[r]);for(d&&d(e);i.length;)i.shift()();return
+        s.push.apply(s,u||[]),c()}function c(){for(var e,r=0;r<s.length;r++){for(var
+        t=s[r],n=!0,o=1;o<t.length;o++){var u=t[o];0!==f[u]&&(n=!1)}n&&(s.splice(r--,1),e=p(p.s=t[0]))}return
+        e}var t={},f={1:0},s=[];function p(e){if(t[e])return t[e].exports;var r=t[e]={i:e,l:!1,exports:{}};return
+        l[e].call(r.exports,r,r.exports,p),r.l=!0,r.exports}p.e=function(o){var e=[],t=f[o];if(0!==t)if(t)e.push(t[2]);else{var
+        r=new Promise(function(e,r){t=f[o]=[e,r]});e.push(t[2]=r);var n,u=document.createElement("script");u.charset="utf-8",u.timeout=120,p.nc&&u.setAttribute("nonce",p.nc),u.src=p.p+"static/js/"+({}[o]||o)+"."+{3:"e392be3d"}[o]+".chunk.js";var
+        a=new Error;n=function(e){u.onerror=u.onload=null,clearTimeout(i);var r=f[o];if(0!==r){if(r){var
+        t=e&&("load"===e.type?"missing":e.type),n=e&&e.target&&e.target.src;a.message="Loading
+        chunk "+o+" failed.\n("+t+": "+n+")",a.name="ChunkLoadError",a.type=t,a.request=n,r[1](a)}f[o]=void
+        0}};var i=setTimeout(function(){n({type:"timeout",target:u})},12e4);u.onerror=u.onload=n,document.head.appendChild(u)}return
+        Promise.all(e)},p.m=l,p.c=t,p.d=function(e,r,t){p.o(e,r)||Object.defineProperty(e,r,{enumerable:!0,get:t})},p.r=function(e){"undefined"!=typeof
+        Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})},p.t=function(r,e){if(1&e&&(r=p(r)),8&e)return
+        r;if(4&e&&"object"==typeof r&&r&&r.__esModule)return r;var t=Object.create(null);if(p.r(t),Object.defineProperty(t,"default",{enumerable:!0,value:r}),2&e&&"string"!=typeof
+        r)for(var n in r)p.d(t,n,function(e){return r[e]}.bind(null,n));return t},p.n=function(e){var
+        r=e&&e.__esModule?function(){return e.default}:function(){return e};return
+        p.d(r,"a",r),r},p.o=function(e,r){return Object.prototype.hasOwnProperty.call(e,r)},p.p="/",p.oe=function(e){throw
+        console.error(e),e};var r=this["webpackJsonpglobal-bible"]=this["webpackJsonpglobal-bible"]||[],n=r.push.bind(r);r.push=e,r=r.slice();for(var
+        o=0;o<r.length;o++)e(r[o]);var d=n;c()}([])</script><script src="/static/js/2.831cfaf2.chunk.js"></script><script
+        src="/static/js/main.cb8f2cbc.chunk.js"></script></body></html>'
     headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '1550'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : application/javascript
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Tue, 09 Oct 2018 16:25:38 GMT
-      P3P: CP="IEFIX"
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : Apache
+      Connection: keep-alive
+      Content-Encoding: gzip
+      Content-Type: text/html
+      Date: Mon, 16 Dec 2019 23:06:03 GMT
+      Last-Modified: Sun, 17 Nov 2019 05:37:03 GMT
+      Server: AmazonS3
+      Transfer-Encoding: chunked
+      Vary: Accept-Encoding
+      Via: 1.1 70bfe4d417faea766975f28f39bec9e0.cloudfront.net (CloudFront), 1.1 083683fc4606b82cffcaa87e04058f56.cloudfront.net
+        (CloudFront)
+      X-Amz-Cf-Id: 4k93ozWGrpMQRIJK16NDKWDHD8ak8JAbXf4k_IwU12Ulgt2_rfQn5w==
+      X-Amz-Cf-Pop: ORD51-C2
+      X-Cache: Miss from cloudfront
     status:
       code: 200
       message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - bibles.org
-        - /v2/eng-NASB/passages.js
-        - q%5B%5D=Mark+5:1
-        - ''
-- request:
-    body: null
-    headers: {}
-    method: GET
-    uri: https://d3a2okcloueqyx.cloudfront.net/nf1?t=5bbcd6827bd462.06404809
-  response:
-    body:
-      string: !!binary |
-        R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
-    headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Accept-Ranges
-      : bytes
-      ? !!python/object/new:multidict._istr.istr
-      - Age
-      : '637'
-      ? !!python/object/new:multidict._istr.istr
-      - Cache-Control
-      : max-age=0, no-cache, must-revalidate, proxy-revalidate, no-transform, private,
-        pre-check=0
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '35'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : image/gif
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Thu, 03 May 2018 07:54:38 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Etag
-      : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr
-      - Expires
-      : Wed, 19 Apr 2000 11:43:00 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Last-Modified
-      : Tue, 09 Aug 2011 09:09:57 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : AmazonS3
-      ? !!python/object/new:multidict._istr.istr
-      - Via
-      : 1.1 126677158516d6659a5afcc26674bdd1.cloudfront.net (CloudFront)
-      X-Amz-Cf-Id: TtWg0zbQr6nOLtsaflp9jqV1-EHWw_tipWoUPWch1le2Wt_5UdGl7g==
-      X-Cache: Hit from cloudfront
-    status:
-      code: 200
-      message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - d3a2okcloueqyx.cloudfront.net
-        - /nf1
-        - t=5bbcd6827bd462.06404809
-        - ''
-- request:
-    body: null
-    headers: {}
-    method: GET
-    uri: https://bibles.org/v2/passages.js?q%5B%5D=Mark+5:1&version=eng-NASB
-  response:
-    body:
-      string: '{"response":{"search":{"result":{"type":"passages","passages":[{"display":"Mark
-        5:1","version":"eng-NASB","version_abbreviation":"NASB","path":"\/chapters\/eng-NASB:Mark.5\/verses.js?start=1&end=1","start_verse_id":"eng-NASB:Mark.5.1","end_verse_id":"eng-NASB:Mark.5.1","text":"<h3
-        class=\"s\">The Gerasene Demoniac<\/h3>\n<p class=\"p\"><sup id=\"Mark.5.1\"
-        class=\"v\">1<\/sup>They came to the other side of the sea, into the country
-        of the Gerasenes.<\/p>","copyright":"\n      New American Standard Bible,
-        Copyright  1960,1962,1963,1968,1971,1972,1973,1975,1977,1995 by The Lockman
-        Foundation.  Used by permission.\n    "}]}},"meta":{"fums":"<script>\nvar
-        _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''\/\/d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js\"\\x3E\\x3C\/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''5d275a3e09a7e4.01238899'');\\x3C\/script\\x3E\");\n<\/script><noscript><img
-        src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5d275a3e09a7e4.01238899\"
-        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        \/><\/noscript>","fums_tid":"5d275a3e09a7e4.01238899","fums_js_include":"d2ue49q0mum86x.cloudfront.net\/include\/fums.c.js","fums_js":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''5d275a3e09a7e4.01238899'');
-        }","fums_noscript":"<img src=\"https:\/\/d3a2okcloueqyx.cloudfront.net\/nf1?t=5d275a3e09a7e4.01238899\"
-        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        \/>"}}}'
-    headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '1550'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : application/javascript
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Thu, 11 Jul 2019 15:48:14 GMT
-      P3P: CP="IEFIX"
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : Apache
-    status:
-      code: 200
-      message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - bibles.org
-        - /v2/eng-NASB/passages.js
-        - q%5B%5D=Mark+5:1
-        - ''
-- request:
-    body: null
-    headers: {}
-    method: GET
-    uri: https://d3a2okcloueqyx.cloudfront.net/nf1?t=5d275a3e09a7e4.01238899
-  response:
-    body:
-      string: !!binary |
-        R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
-    headers:
-      ? !!python/object/new:multidict._istr.istr
-      - Accept-Ranges
-      : bytes
-      ? !!python/object/new:multidict._istr.istr
-      - Age
-      : '1030'
-      ? !!python/object/new:multidict._istr.istr
-      - Cache-Control
-      : max-age=0, no-cache, must-revalidate, proxy-revalidate, no-transform, private,
-        pre-check=0
-      ? !!python/object/new:multidict._istr.istr
-      - Connection
-      : keep-alive
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Length
-      : '35'
-      ? !!python/object/new:multidict._istr.istr
-      - Content-Type
-      : image/gif
-      ? !!python/object/new:multidict._istr.istr
-      - Date
-      : Wed, 10 Jul 2019 14:05:55 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Etag
-      : '"28d6814f309ea289f847c69cf91194c6"'
-      ? !!python/object/new:multidict._istr.istr
-      - Expires
-      : Wed, 19 Apr 2000 11:43:00 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Last-Modified
-      : Tue, 09 Aug 2011 09:09:57 GMT
-      ? !!python/object/new:multidict._istr.istr
-      - Server
-      : AmazonS3
-      ? !!python/object/new:multidict._istr.istr
-      - Via
-      : 1.1 3ab660ab8233b0af240e9f3d56469e50.cloudfront.net (CloudFront)
-      X-Amz-Cf-Id: rUW2IFeMB4N8ehJqlkAnuJ23RbsjMnBLlGh5F_XLUNsFKSx0f7H8lg==
-      X-Amz-Cf-Pop: ORD52-C2
-      X-Cache: Hit from cloudfront
-    status:
-      code: 200
-      message: OK
-    url: !!python/object/new:yarl.URL
-      state: !!python/tuple
-      - !!python/object/new:urllib.parse.SplitResult
-        - https
-        - d3a2okcloueqyx.cloudfront.net
-        - /nf1
-        - t=5d275a3e09a7e4.01238899
-        - ''
+    url: https://bibles.org/v2/passages.js?q%5B%5D=Mark+5:1&version=eng-NASB
 version: 1

@@ -8,6 +8,7 @@ from erasmus.services import BiblesOrg
 from erasmus.data import VerseRange, Passage
 
 
+@pytest.mark.skip()
 class TestBiblesOrg(ServiceTest):
     @pytest.fixture(
         params=[
