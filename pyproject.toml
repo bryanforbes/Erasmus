@@ -13,17 +13,18 @@ beautifulsoup4 = "^4.6"
 cchardet = "^2.1"
 psycopg2 = "^2.7"
 ujson = "^1.35"
-"botus_receptus" = {rev = "79a72a320c1331fbb7e1b5bcdf1b785e0b7bb5a0", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop", "more_itertools"]}
+"botus_receptus" = {rev = "d42dbb4856a5beafc83cd16ea82109963c845efa", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
 "typing-extensions" = ">=3.7.4"
+more-itertools = {version = "~8.1.0"}
 
 [tool.poetry.dev-dependencies]
 asynctest = "^0.13.0"
 black = "^19.3b0"
 coverage = {extras = ["toml"], version = "^5.0"}
 flake8 = "^3.6"
-flake8-bugbear = "^19.3"
+flake8-bugbear = "^20.1"
 flake8-pyi = "^19.3"
-mypy = "^0.750"
+mypy = "^0.761"
 pre-commit = "^1.12"
 pytest = "^5.0"
 pytest-asyncio = "^0.10.0"
