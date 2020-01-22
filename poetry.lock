@@ -190,7 +190,7 @@ typing-extensions = ">=3.7.4"
 
 [package.dependencies."discord.py"]
 extras = ["typings"]
-version = "rev dcea982ce199e8f4a06090ccf900ac00ed96c3e3"
+version = "branch typings"
 
 [package.dependencies.gino]
 optional = true
@@ -215,7 +215,7 @@ gino_typed = ["gino (~0.8.1)", "sqlalchemy (~1.2.18)", "gino-stubs"]
 uvloop = ["uvloop (~0.14.0)"]
 
 [package.source]
-reference = "72cfe212a1134bb819b58c397653be6a5b440f4b"
+reference = "99f4cff8e94f03b75f1f9fa03e6f0e91cf48c979"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -295,7 +295,7 @@ description = "A python wrapper for the Discord API"
 name = "discord.py"
 optional = false
 python-versions = ">=3.5.3"
-version = "1.3.0a2363+gdcea982"
+version = "1.3.0a2374+g91c13c6"
 
 [package.dependencies]
 aiohttp = ">=3.6.0,<3.7.0"
@@ -311,7 +311,7 @@ typings = ["typing-extensions (>=3.7.4)"]
 voice = ["PyNaCl (1.3.0)"]
 
 [package.source]
-reference = "dcea982ce199e8f4a06090ccf900ac00ed96c3e3"
+reference = "91c13c6c5ed43da5165c37512f7bcd4e1cb706c8"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
 [[package]]
@@ -1002,7 +1002,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["pathlib2", "contextlib2", "unittest2"]
 
 [metadata]
-content-hash = "95d44729e70c3e928e1d733760ce11bd21aef24651f8d5812918ba67227e37d1"
+content-hash = "9743f457c6733ecdd0848ce777687928dcfe104acb571524f9623f9836d7cae8"
 python-versions = "^3.7"
 
 [metadata.files]
