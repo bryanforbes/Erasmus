@@ -11,9 +11,8 @@ cache:
     - "$HOME/.cache/pypoetry"
 
 before_install:
-  - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python - -y --preview
+  - curl -sSL https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py | python - -y
   - source $HOME/.poetry/env
-  - pip install pip==18.1
 
 install:
   - poetry install -v
