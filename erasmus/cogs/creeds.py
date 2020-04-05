@@ -167,6 +167,26 @@ nicene_381_text = (
 )
 
 
+nicene_381_filioque_text = (
+    'We believe in one God, the Father Almighty, Maker of heaven and earth, and of all '
+    'things visible and invisible.\n\n'
+    'And in one Lord Jesus Christ, the only-begotten Son of God, begotten of the '
+    'Father before all worlds (æons), Light of Light, very God of very God, begotten, '
+    'not made, being of one substance with the Father; by whom all things were made; '
+    'who for us men, and for our salvation, came down from heaven, and was incarnate '
+    'by the Holy Ghost of the Virgin Mary, and was made man; he was crucified for us '
+    'under Pontius Pilate, and suffered, and was buried, and the third day he rose '
+    'again, according to the Scriptures, and ascended into heaven, and sitteth on the '
+    'right hand of the Father; from thence he shall come again, with glory, to judge '
+    'the quick and the dead; whose kingdom shall have no end.\n\n'
+    'And in the Holy Ghost, the Lord and Giver of life, who proceedeth from the '
+    'Father and the Son, who with the Father and the Son together is worshiped and '
+    'glorified, who spake by the prophets. In one holy catholic and apostolic Church; '
+    'we acknowledge one baptism for the remission of sins; we look for the '
+    'resurrection of the dead, and the life of the world to come. Amen.'
+)
+
+
 class Creeds(commands.Cog[Context]):
     def __init__(self, bot: Erasmus) -> None:
         self.bot = bot
@@ -181,6 +201,7 @@ class Creeds(commands.Cog[Context]):
 {bold(f'{prefix}chalcedon')} - The Chalcedonian Definition
 {bold(f'{prefix}nicene')} - The Nicene Creed
 {bold(f'{prefix}nicene325')} - The Nicene Creed (325 AD)
+{bold(f'{prefix}nicene381')} - The Nicene Creed (381 AD)
 ''',
             title='Historic Creeds',
         )
@@ -200,11 +221,15 @@ class Creeds(commands.Cog[Context]):
 
     @commands.command(hidden=True)
     async def nicene(self, ctx: Context) -> None:
-        await ctx.send_embed(nicene_381_text, title='The Nicene Creed')
+        await ctx.send_embed(nicene_381_filioque_text, title='The Nicene Creed')
 
     @commands.command(hidden=True)
     async def nicene325(self, ctx: Context) -> None:
         await ctx.send_embed(nicene_325_text, title='The Nicene Creed (325 AD)')
+
+    @commands.command(hidden=True)
+    async def nicene381(self, ctx: Context) -> None:
+        await ctx.send_embed(nicene_381_text, title='The Nicene Creed (381 AD)')
 
 
 def setup(bot: Erasmus) -> None:
