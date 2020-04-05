@@ -12,8 +12,8 @@ alembic = "^1.0"
 beautifulsoup4 = "^4.6"
 cchardet = "^2.1"
 psycopg2 = "^2.7"
-ujson = "^1.35"
-"botus_receptus" = {rev = "250e8e79c2fa4b4a43c83f6b61a22787c8b59d92", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
+ujson = "^2.0.0"
+"botus_receptus" = {rev = "70d6a6cd035e979a7644cabdf87c1551e5e7e118", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
 "typing-extensions" = ">=3.7.4"
 more-itertools = {version = "~8.2.0"}
 
@@ -24,12 +24,12 @@ coverage = {extras = ["toml"], version = "^5.0"}
 flake8 = "^3.6"
 flake8-bugbear = "^20.1"
 flake8-pyi = "^19.3"
-mypy = "^0.761"
+mypy = "^0.770"
 pre-commit = "^2.0"
 pytest = "^5.0"
 pytest-asyncio = "^0.10.0"
 pytest-cov = "^2.6"
-pytest-mock = "^2.0.0"
+pytest-mock = "^3.0.0"
 pytest-sugar = "^0.9.1"
 pytest-vcr = "^1.0.0"
 pytest-xdist = "^1.24"
