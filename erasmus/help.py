@@ -8,7 +8,7 @@ from .context import Context
 
 
 class HelpCommand(commands.DefaultHelpCommand[Context]):
-    def _get_command_title(self, command: commands.Command) -> str:
+    def _get_command_title(self, command: commands.Command[Context]) -> str:
         return ', '.join(
             map(lambda s: f'{self.clean_prefix}{s}', [command.name] + command.aliases)
         )

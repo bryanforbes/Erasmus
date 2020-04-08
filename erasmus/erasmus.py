@@ -7,7 +7,7 @@ import logging
 import pendulum
 
 from discord.ext import commands
-from botus_receptus import formatting, checks, DblBot
+from botus_receptus import formatting, DblBot, exceptions
 from botus_receptus.gino import Bot
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
 from botus_receptus.formatting import Paginator
@@ -115,11 +115,16 @@ class Erasmus(Bot[Context], DblBot[Context]):
                     f'`{ctx.prefix}{ctx.invoked_with}` has been used too many '
                     'times in this channel.'
                 )
-            retry_period = pendulum.now().add(seconds=int(exc.retry_after)).diff()
-            message = f'{message} You can retry again in {retry_period.in_words()}.'
+            retry_period: pendulum.Period = pendulum.now().add(  # type: ignore
+                seconds=int(exc.retry_after)
+            ).diff()
+            message = (
+                f'{message} You can retry again in '  # type: ignore
+                f'{retry_period.in_words()}.'
+            )
         elif isinstance(exc, commands.MissingPermissions):
             message = 'You do not have the correct permissions to run this command'
-        elif isinstance(exc, checks.OnlyDirectMessage):
+        elif isinstance(exc, exceptions.OnlyDirectMessage):
             message = 'This command is only available in private messages'
         elif isinstance(exc, commands.MissingRequiredArgument):
             message = f'The required argument `{exc.param.name}` is missing'

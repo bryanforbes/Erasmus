@@ -161,10 +161,13 @@ class Confession(Base):
                 yield question
 
     async def get_question_count(self) -> int:
-        return await db.scalar(
-            db.select([db.func.count(Question.id)]).where(
-                Question.confess_id == self.id
-            )
+        return cast(
+            int,
+            await db.scalar(
+                db.select([db.func.count(Question.id)]).where(
+                    Question.confess_id == self.id
+                )
+            ),
         )
 
     async def get_question(self, question_number: int) -> Question:

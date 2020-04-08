@@ -31,7 +31,3 @@ class Context(EmbedContext):
         )
 
         return await self.send(embed=embed)
-
-
-class GuildContext(Context):
-    guild: discord.Guild

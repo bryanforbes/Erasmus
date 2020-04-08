@@ -186,7 +186,7 @@ class VerseRange(object):
         return cls.from_match(match)
 
     @classmethod
-    def from_match(cls, match: Match) -> VerseRange:
+    def from_match(cls, match: Match[str]) -> VerseRange:
         groups = match.groupdict()
 
         chapter_start_int = int(groups['chapter_start'])

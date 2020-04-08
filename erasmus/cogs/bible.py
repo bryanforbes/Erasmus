@@ -28,7 +28,7 @@ from ..exceptions import (
     ServiceSearchTimeout,
 )
 from ..erasmus import Erasmus
-from ..context import Context, GuildContext
+from ..context import Context
 
 
 @dataclass(slots=True)
@@ -336,7 +336,9 @@ class Bible(commands.Cog[Context]):
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
-    async def setguildversion(self, ctx: GuildContext, version: str) -> None:
+    async def setguildversion(self, ctx: Context, version: str) -> None:
+        assert ctx.guild is not None
+
         version = version.lower()
         if version[0] == ctx.prefix:
             version = version[1:]
@@ -352,7 +354,9 @@ class Bible(commands.Cog[Context]):
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
-    async def unsetguildversion(self, ctx: GuildContext) -> None:
+    async def unsetguildversion(self, ctx: Context) -> None:
+        assert ctx.guild is not None
+
         guild_prefs = await GuildPref.get(ctx.guild.id)
 
         if guild_prefs is not None:
