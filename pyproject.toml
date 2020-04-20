@@ -13,7 +13,7 @@ beautifulsoup4 = "^4.6"
 cchardet = "^2.1"
 psycopg2 = "^2.7"
 ujson = "^2.0.0"
-"botus_receptus" = {rev = "d27ff8fb28c1ddab05760a00742bc90d5ade1b83", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
+"botus_receptus" = {rev = "7789464d81a60d67e472e706a87fe7dc5d1960aa", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
 "typing-extensions" = ">=3.7.4"
 more-itertools = {version = "~8.2.0"}
 
@@ -27,7 +27,7 @@ flake8-pyi = "^19.3"
 mypy = "^0.770"
 pre-commit = "^2.0"
 pytest = "^5.0"
-pytest-asyncio = "^0.10.0"
+pytest-asyncio = "^0.11.0"
 pytest-cov = "^2.6"
 pytest-mock = "^3.0.0"
 pytest-sugar = "^0.9.1"
