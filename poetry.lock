@@ -29,11 +29,11 @@ speedups = ["aiodns", "brotlipy", "cchardet"]
 
 [[package]]
 category = "main"
-description = "asyncio version of the standard multiprocessing module"
+description = "itertools and builtins for AsyncIO and mixed iterables"
 name = "aioitertools"
 optional = false
 python-versions = ">=3.6"
-version = "0.6.0"
+version = "0.6.1"
 
 [[package]]
 category = "main"
@@ -74,10 +74,10 @@ python-versions = ">=3.5.3"
 version = "3.0.1"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "An asyncio PostgreSQL driver"
 name = "asyncpg"
-optional = true
+optional = false
 python-versions = ">=3.5.0"
 version = "0.20.1"
 
@@ -87,10 +87,10 @@ docs = ["Sphinx (>=1.7.3,<1.8.0)", "sphinxcontrib-asyncio (>=0.2.0,<0.3.0)", "sp
 test = ["pycodestyle (>=2.5.0,<2.6.0)", "flake8 (>=3.7.9,<3.8.0)", "uvloop (>=0.14.0,<0.15.0)"]
 
 [[package]]
-category = "dev"
+category = "main"
 description = ""
 name = "asyncpg-stubs"
-optional = true
+optional = false
 python-versions = "^3.6.1"
 version = "0.20.1+0"
 
@@ -102,7 +102,6 @@ typing-extensions = "^3.7.4"
 reference = "5c9837e771fe49d144a322de3091de702f9a4ef8"
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
-
 [[package]]
 category = "dev"
 description = "Enhance the standard unittest package with features for testing asyncio libraries"
@@ -178,7 +177,7 @@ python-versions = "^3.7"
 version = "0.0.1a"
 
 [package.dependencies]
-aioitertools = "^0.6.0"
+aioitertools = "^0.6.1"
 async-timeout = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
@@ -186,9 +185,29 @@ pendulum = "~2.1.0"
 toml = "^0.10.0"
 typing-extensions = ">=3.7.4"
 
+[package.dependencies.asyncpg-stubs]
+optional = true
+version = "rev 5c9837e771fe49d144a322de3091de702f9a4ef8"
+
 [package.dependencies."discord.py"]
 extras = ["typings"]
 version = "branch typings"
+
+[package.dependencies.gino]
+optional = true
+version = ">=1.0.0-rc4"
+
+[package.dependencies.gino-stubs]
+optional = true
+version = "rev 45718309f0f6c079ff943b44c00d2b8c3260a310"
+
+[package.dependencies.sqlalchemy]
+optional = true
+version = "~1.2.18"
+
+[package.dependencies.uvloop]
+optional = true
+version = "~0.14.0"
 
 [package.extras]
 db = ["asyncpg (>=0.18.2)"]
@@ -198,10 +217,9 @@ gino_typed = ["gino (>=1.0.0-rc4)", "sqlalchemy (~1.2.18)", "asyncpg-stubs", "gi
 uvloop = ["uvloop (~0.14.0)"]
 
 [package.source]
-reference = "ba7355e55184778930ba4683b2811a346206630f"
+reference = "3e24a15852e58972b2e81ef49172cdf02d9176ae"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-
 [[package]]
 category = "main"
 description = "cChardet is high speed universal character encoding detector."
@@ -282,6 +300,10 @@ version = "1.4.0a2478+g69cf8c3"
 aiohttp = ">=3.6.0,<3.7.0"
 websockets = ">=6.0,<7.0 || >7.0,<8.0 || >8.0,<8.0.1 || >8.0.1,<9.0"
 
+[package.dependencies.typing-extensions]
+optional = true
+version = ">=3.7.4"
+
 [package.extras]
 docs = ["sphinx (1.8.5)", "sphinxcontrib_trio (1.1.1)", "sphinxcontrib-websupport"]
 typings = ["typing-extensions (>=3.7.4)"]
@@ -291,7 +313,6 @@ voice = ["PyNaCl (1.3.0)"]
 reference = "69cf8c3493e34bdeac848423d377b6023b8ad3a8"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
-
 [[package]]
 category = "dev"
 description = "Distribution utilities"
@@ -370,10 +391,10 @@ flake8 = ">=3.2.1"
 pyflakes = ">=2.1.1"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "GINO Is Not ORM - a Python asyncio ORM on SQLAlchemy core."
 name = "gino"
-optional = true
+optional = false
 python-versions = ">=3.5,<4.0"
 version = "1.0.0rc4"
 
@@ -389,10 +410,10 @@ version = ">=1.3.0,<2.0.0"
 starlette = ["gino-starlette (>=0.1.1,<0.2.0)"]
 
 [[package]]
-category = "dev"
+category = "main"
 description = ""
 name = "gino-stubs"
-optional = true
+optional = false
 python-versions = "^3.6.1"
 version = "1.0.0-rc4+0"
 
@@ -410,14 +431,13 @@ version = "^1.3.0"
 reference = "45718309f0f6c079ff943b44c00d2b8c3260a310"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
-
 [[package]]
 category = "dev"
 description = "File identification library for Python"
 name = "identify"
 optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
-version = "1.4.14"
+version = "1.4.15"
 
 [package.extras]
 license = ["editdistance"]
@@ -425,13 +445,14 @@ license = ["editdistance"]
 [[package]]
 category = "main"
 description = "Internationalized Domain Names in Applications (IDNA)"
+marker = "python_version >= \"3.6\""
 name = "idna"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "2.9"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Read metadata from Python packages"
 marker = "python_version < \"3.8\""
 name = "importlib-metadata"
@@ -494,7 +515,7 @@ python-versions = ">=3.5"
 version = "4.7.5"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Optional static typing for Python"
 name = "mypy"
 optional = false
@@ -510,7 +531,7 @@ typing-extensions = ">=3.7.4"
 dmypy = ["psutil (>=4.0)"]
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Experimental type system extensions for programs checked with the mypy typechecker."
 name = "mypy-extensions"
 optional = false
@@ -856,10 +877,10 @@ postgresql_psycopg2cffi = ["psycopg2cffi"]
 pymysql = ["pymysql"]
 
 [[package]]
-category = "dev"
+category = "main"
 description = "SQLAlchemy stubs and mypy plugin"
 name = "sqlalchemy-stubs"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.3"
 
@@ -884,7 +905,7 @@ python-versions = "*"
 version = "0.10.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "a fork of Python 2 and 3 ast modules with type comment support"
 name = "typed-ast"
 optional = false
@@ -908,10 +929,10 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 version = "2.0.3"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Fast implementation of asyncio event loop on top of libuv"
 name = "uvloop"
-optional = true
+optional = false
 python-versions = "*"
 version = "0.14.0"
 
@@ -991,7 +1012,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [[package]]
-category = "dev"
+category = "main"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 marker = "python_version < \"3.8\""
 name = "zipp"
@@ -1004,7 +1025,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "c7aec3ac4a8dff5f7ab1868f1fe972ae7f8445c168e039039b410accf726c733"
+content-hash = "eff1cf491f32e7dab986f6fbe3a1be62eb5ab3792761af2802da96dd4c45a6ed"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1027,8 +1048,8 @@ aiohttp = [
     {file = "aiohttp-3.6.2.tar.gz", hash = "sha256:259ab809ff0727d0e834ac5e8a283dc5e3e0ecc30c4d80b3cd17a4139ce1f326"},
 ]
 aioitertools = [
-    {file = "aioitertools-0.6.0-py3-none-any.whl", hash = "sha256:dd7232299dccb0650b1b5489aa9a7a7c40824bd40daec5afd47260c3b943790a"},
-    {file = "aioitertools-0.6.0.tar.gz", hash = "sha256:3684a9e5626664169ee31bc6e40d30d1ad86d9a1832d251652fda2cf3e3e74ae"},
+    {file = "aioitertools-0.6.1-py3-none-any.whl", hash = "sha256:34155556df490ae1afb63b6393f80111cd3afdd32a5e6fe7c6fb897ace3277d3"},
+    {file = "aioitertools-0.6.1.tar.gz", hash = "sha256:27411653e28c391f2caa79476cc719591da88540278c53e7d6925d5b2fafa162"},
 ]
 alembic = [
     {file = "alembic-1.4.2.tar.gz", hash = "sha256:035ab00497217628bf5d0be82d664d8713ab13d37b630084da8e1f98facf4dbf"},
@@ -1235,8 +1256,8 @@ gino = [
 ]
 gino-stubs = []
 identify = [
-    {file = "identify-1.4.14-py2.py3-none-any.whl", hash = "sha256:2bb8760d97d8df4408f4e805883dad26a2d076f04be92a10a3e43f09c6060742"},
-    {file = "identify-1.4.14.tar.gz", hash = "sha256:faffea0fd8ec86bb146ac538ac350ed0c73908326426d387eded0bcc9d077522"},
+    {file = "identify-1.4.15-py2.py3-none-any.whl", hash = "sha256:88ed90632023e52a6495749c6732e61e08ec9f4f04e95484a5c37b9caf40283c"},
+    {file = "identify-1.4.15.tar.gz", hash = "sha256:23c18d97bb50e05be1a54917ee45cc61d57cb96aedc06aabb2b02331edf0dbf0"},
 ]
 idna = [
     {file = "idna-2.9-py2.py3-none-any.whl", hash = "sha256:a068a21ceac8a4d63dbfd964670474107f541babbd2250d61922f029858365fa"},
@@ -1278,11 +1299,6 @@ markupsafe = [
     {file = "MarkupSafe-1.1.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:ba59edeaa2fc6114428f1637ffff42da1e311e29382d81b339c1817d37ec93c6"},
     {file = "MarkupSafe-1.1.1-cp37-cp37m-win32.whl", hash = "sha256:b00c1de48212e4cc9603895652c5c410df699856a2853135b3967591e4beebc2"},
     {file = "MarkupSafe-1.1.1-cp37-cp37m-win_amd64.whl", hash = "sha256:9bf40443012702a1d2070043cb6291650a0841ece432556f784f004937f0f32c"},
-    {file = "MarkupSafe-1.1.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:6788b695d50a51edb699cb55e35487e430fa21f1ed838122d722e0ff0ac5ba15"},
-    {file = "MarkupSafe-1.1.1-cp38-cp38-manylinux1_i686.whl", hash = "sha256:cdb132fc825c38e1aeec2c8aa9338310d29d337bebbd7baa06889d09a60a1fa2"},
-    {file = "MarkupSafe-1.1.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:13d3144e1e340870b25e7b10b98d779608c02016d5184cfb9927a9f10c689f42"},
-    {file = "MarkupSafe-1.1.1-cp38-cp38-win32.whl", hash = "sha256:596510de112c685489095da617b5bcbbac7dd6384aeebeda4df6025d0256a81b"},
-    {file = "MarkupSafe-1.1.1-cp38-cp38-win_amd64.whl", hash = "sha256:e8313f01ba26fbbe36c7be1966a7b7424942f670f38e666995b88d012765b9be"},
     {file = "MarkupSafe-1.1.1.tar.gz", hash = "sha256:29872e92839765e546828bb7754a68c418d927cd064fd4708fab9fe9c8bb116b"},
 ]
 mccabe = [
