@@ -32,7 +32,7 @@ pytest-cov = "^2.6"
 pytest-mock = "^3.0.0"
 pytest-sugar = "^0.9.1"
 pytest-vcr = "^1.0.0"
-pytest-xdist = "^1.24"
+pytest-xdist = "^1.32"
 
 [tool.poetry.scripts]
 erasmus = 'erasmus.run:main'
