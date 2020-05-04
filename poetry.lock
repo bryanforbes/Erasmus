@@ -217,7 +217,7 @@ gino_typed = ["gino (^1.0.0)", "sqlalchemy (~1.2.18)", "asyncpg-stubs", "gino-st
 uvloop = ["uvloop (~0.14.0)"]
 
 [package.source]
-reference = "86fccda6bc3916a10838f210dc0afc01aca505b2"
+reference = "406aa2f6976cd8c45233092224acae41d13e5c62"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -1029,7 +1029,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "333227a4c5bd2ec32174fefe7b85949c62f87abf74219f3d0cbe96cc1dba1ee5"
+content-hash = "d1a8eb983ec6f4edb59f1fabf52d349968c5dedfc4315db09721b992a82c2c5e"
 python-versions = "^3.7"
 
 [metadata.files]
