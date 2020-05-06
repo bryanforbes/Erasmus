@@ -33,7 +33,10 @@ description = "itertools and builtins for AsyncIO and mixed iterables"
 name = "aioitertools"
 optional = false
 python-versions = ">=3.6"
-version = "0.6.1"
+version = "0.7.0"
+
+[package.dependencies]
+typing_extensions = ">=3.7"
 
 [[package]]
 category = "main"
@@ -177,7 +180,7 @@ python-versions = "^3.7"
 version = "0.0.1a"
 
 [package.dependencies]
-aioitertools = "^0.6.1"
+aioitertools = "^0.7.0"
 async-timeout = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
@@ -217,7 +220,7 @@ gino_typed = ["gino (^1.0.0)", "sqlalchemy (~1.2.18)", "asyncpg-stubs", "gino-st
 uvloop = ["uvloop (~0.14.0)"]
 
 [package.source]
-reference = "406aa2f6976cd8c45233092224acae41d13e5c62"
+reference = "314e5cbcf2beb3b0fc2e5133ee9534363102cafd"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -1052,8 +1055,8 @@ aiohttp = [
     {file = "aiohttp-3.6.2.tar.gz", hash = "sha256:259ab809ff0727d0e834ac5e8a283dc5e3e0ecc30c4d80b3cd17a4139ce1f326"},
 ]
 aioitertools = [
-    {file = "aioitertools-0.6.1-py3-none-any.whl", hash = "sha256:34155556df490ae1afb63b6393f80111cd3afdd32a5e6fe7c6fb897ace3277d3"},
-    {file = "aioitertools-0.6.1.tar.gz", hash = "sha256:27411653e28c391f2caa79476cc719591da88540278c53e7d6925d5b2fafa162"},
+    {file = "aioitertools-0.7.0-py3-none-any.whl", hash = "sha256:e931a2f0dcabd4a8446b5cc2fc71b8bb14716e6adf37728a70869213f1f741cd"},
+    {file = "aioitertools-0.7.0.tar.gz", hash = "sha256:341cb05a0903177ef1b73d4cc12c92aee18e81c364e0138f4efc7ec3c47b8177"},
 ]
 alembic = [
     {file = "alembic-1.4.2.tar.gz", hash = "sha256:035ab00497217628bf5d0be82d664d8713ab13d37b630084da8e1f98facf4dbf"},
