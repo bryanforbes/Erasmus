@@ -328,9 +328,9 @@ class Bible(commands.Cog[Context]):
 
         if user_prefs is not None:
             await user_prefs.delete()
-            await ctx.send_embed(f'Preferred version deleted')
+            await ctx.send_embed('Preferred version deleted')
         else:
-            await ctx.send_embed(f'Preferred version already deleted')
+            await ctx.send_embed('Preferred version already deleted')
 
     @commands.command(brief='Set the guild default version', help=setguildversion_help)
     @commands.has_permissions(administrator=True)
@@ -361,9 +361,9 @@ class Bible(commands.Cog[Context]):
 
         if guild_prefs is not None:
             await guild_prefs.delete()
-            await ctx.send_embed(f'Guild version deleted')
+            await ctx.send_embed('Guild version deleted')
         else:
-            await ctx.send_embed(f'Guild version already deleted')
+            await ctx.send_embed('Guild version already deleted')
 
     @commands.command(name='addbible')
     @checks.dm_only()

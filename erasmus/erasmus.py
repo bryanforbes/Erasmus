@@ -109,7 +109,7 @@ class Erasmus(Bot[Context], DblBot[Context]):
         elif isinstance(exc, commands.CommandOnCooldown):
             message = ''
             if exc.cooldown.type == commands.BucketType.user:
-                message = f'You have used this command too many times.'
+                message = 'You have used this command too many times.'
             elif exc.cooldown.type == commands.BucketType.channel:
                 message = (
                     f'`{ctx.prefix}{ctx.invoked_with}` has been used too many '
