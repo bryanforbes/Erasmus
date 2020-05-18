@@ -77,10 +77,10 @@ python-versions = ">=3.5.3"
 version = "3.0.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "An asyncio PostgreSQL driver"
 name = "asyncpg"
-optional = false
+optional = true
 python-versions = ">=3.5.0"
 version = "0.20.1"
 
@@ -90,10 +90,10 @@ docs = ["Sphinx (>=1.7.3,<1.8.0)", "sphinxcontrib-asyncio (>=0.2.0,<0.3.0)", "sp
 test = ["pycodestyle (>=2.5.0,<2.6.0)", "flake8 (>=3.7.9,<3.8.0)", "uvloop (>=0.14.0,<0.15.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = ""
 name = "asyncpg-stubs"
-optional = false
+optional = true
 python-versions = "^3.6.1"
 version = "0.20.1+0"
 
@@ -105,6 +105,7 @@ typing-extensions = "^3.7.4"
 reference = "5c9837e771fe49d144a322de3091de702f9a4ef8"
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
+
 [[package]]
 category = "dev"
 description = "Enhance the standard unittest package with features for testing asyncio libraries"
@@ -142,7 +143,7 @@ description = "Screen-scraping library"
 name = "beautifulsoup4"
 optional = false
 python-versions = "*"
-version = "4.9.0"
+version = "4.9.1"
 
 [package.dependencies]
 soupsieve = [">1.2", "<2.0"]
@@ -188,29 +189,9 @@ pendulum = "~2.1.0"
 toml = "^0.10.1"
 typing-extensions = ">=3.7.4"
 
-[package.dependencies.asyncpg-stubs]
-optional = true
-version = "rev 5c9837e771fe49d144a322de3091de702f9a4ef8"
-
 [package.dependencies."discord.py"]
 extras = ["typings"]
 version = "branch typings"
-
-[package.dependencies.gino]
-optional = true
-version = "^1.0.0"
-
-[package.dependencies.gino-stubs]
-optional = true
-version = "rev 8bc31e0994a57d1723809fe5e634f482ed43149e"
-
-[package.dependencies.sqlalchemy]
-optional = true
-version = "~1.2.18"
-
-[package.dependencies.uvloop]
-optional = true
-version = "~0.14.0"
 
 [package.extras]
 db = ["asyncpg (>=0.18.2)"]
@@ -223,6 +204,7 @@ uvloop = ["uvloop (~0.14.0)"]
 reference = "ebd897bcbdcc868ee7b212adc54e34de9397fb2b"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
+
 [[package]]
 category = "main"
 description = "cChardet is high speed universal character encoding detector."
@@ -303,10 +285,6 @@ version = "1.4.0a2487+g50587ab"
 aiohttp = ">=3.6.0,<3.7.0"
 websockets = ">=6.0,<7.0 || >7.0,<8.0 || >8.0,<8.0.1 || >8.0.1,<9.0"
 
-[package.dependencies.typing-extensions]
-optional = true
-version = ">=3.7.4"
-
 [package.extras]
 docs = ["sphinx (1.8.5)", "sphinxcontrib_trio (1.1.1)", "sphinxcontrib-websupport"]
 typings = ["typing-extensions (>=3.7.4)"]
@@ -316,6 +294,7 @@ voice = ["PyNaCl (1.3.0)"]
 reference = "50587ab6ada741031d0a8296e64be15145124c42"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
+
 [[package]]
 category = "dev"
 description = "Distribution utilities"
@@ -389,10 +368,10 @@ flake8 = ">=3.2.1"
 pyflakes = ">=2.1.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "GINO Is Not ORM - a Python asyncio ORM on SQLAlchemy core."
 name = "gino"
-optional = false
+optional = true
 python-versions = ">=3.5,<4.0"
 version = "1.0.0"
 
@@ -412,10 +391,10 @@ starlette = ["gino-starlette (>=0.1.1,<0.2.0)"]
 tornado = ["gino-tornado (>=0.1.0,<0.2.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = ""
 name = "gino-stubs"
-optional = false
+optional = true
 python-versions = "^3.6.1"
 version = "1.0.0+0"
 
@@ -433,6 +412,7 @@ version = "^1.3.0"
 reference = "8bc31e0994a57d1723809fe5e634f482ed43149e"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
+
 [[package]]
 category = "dev"
 description = "File identification library for Python"
@@ -447,14 +427,13 @@ license = ["editdistance"]
 [[package]]
 category = "main"
 description = "Internationalized Domain Names in Applications (IDNA)"
-marker = "python_version >= \"3.6\""
 name = "idna"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 version = "2.9"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Read metadata from Python packages"
 marker = "python_version < \"3.8\""
 name = "importlib-metadata"
@@ -517,7 +496,7 @@ python-versions = ">=3.5"
 version = "4.7.5"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Optional static typing for Python"
 name = "mypy"
 optional = false
@@ -533,7 +512,7 @@ typing-extensions = ">=3.7.4"
 dmypy = ["psutil (>=4.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Experimental type system extensions for programs checked with the mypy typechecker."
 name = "mypy-extensions"
 optional = false
@@ -879,10 +858,10 @@ postgresql_psycopg2cffi = ["psycopg2cffi"]
 pymysql = ["pymysql"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "SQLAlchemy stubs and mypy plugin"
 name = "sqlalchemy-stubs"
-optional = false
+optional = true
 python-versions = "*"
 version = "0.3"
 
@@ -907,7 +886,7 @@ python-versions = "*"
 version = "0.10.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "a fork of Python 2 and 3 ast modules with type comment support"
 name = "typed-ast"
 optional = false
@@ -931,10 +910,10 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 version = "2.0.3"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Fast implementation of asyncio event loop on top of libuv"
 name = "uvloop"
-optional = false
+optional = true
 python-versions = "*"
 version = "0.14.0"
 
@@ -1014,7 +993,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Backport of pathlib-compatible object wrapper for zip files"
 marker = "python_version < \"3.8\""
 name = "zipp"
@@ -1027,7 +1006,7 @@ docs = ["sphinx", "jaraco.packaging (>=3.2)", "rst.linker (>=1.9)"]
 testing = ["jaraco.itertools", "func-timeout"]
 
 [metadata]
-content-hash = "2ef8e2587fdfb81d5454c8f90e0d33fcd346e1ed12bda0daa8238add40f71429"
+content-hash = "2b08907b3ef753c244568e85bc1a0b14b9192d02e04adcc2bb64b35d05f1df77"
 python-versions = "^3.7"
 
 [metadata.files]
@@ -1105,9 +1084,9 @@ attrs = [
     {file = "attrs-19.3.0.tar.gz", hash = "sha256:f7b7ce16570fe9965acd6d30101a28f62fb4a7f9e926b3bbc9b61f8b04247e72"},
 ]
 beautifulsoup4 = [
-    {file = "beautifulsoup4-4.9.0-py2-none-any.whl", hash = "sha256:a4bbe77fd30670455c5296242967a123ec28c37e9702a8a81bd2f20a4baf0368"},
-    {file = "beautifulsoup4-4.9.0-py3-none-any.whl", hash = "sha256:d4e96ac9b0c3a6d3f0caae2e4124e6055c5dcafde8e2f831ff194c104f0775a0"},
-    {file = "beautifulsoup4-4.9.0.tar.gz", hash = "sha256:594ca51a10d2b3443cbac41214e12dbb2a1cd57e1a7344659849e2e20ba6a8d8"},
+    {file = "beautifulsoup4-4.9.1-py2-none-any.whl", hash = "sha256:e718f2342e2e099b640a34ab782407b7b676f47ee272d6739e60b8ea23829f2c"},
+    {file = "beautifulsoup4-4.9.1-py3-none-any.whl", hash = "sha256:a6237df3c32ccfaee4fd201c8f5f9d9df619b93121d01353a64a73ce8c6ef9a8"},
+    {file = "beautifulsoup4-4.9.1.tar.gz", hash = "sha256:73cc4d115b96f79c7d77c1c7f7a0a8d4c57860d1041df407dd1aae7f07a77fd7"},
 ]
 black = [
     {file = "black-19.10b0-py36-none-any.whl", hash = "sha256:1b30e59be925fafc1ee4565e5e08abef6b03fe455102883820fe5ee2e4734e0b"},
@@ -1297,6 +1276,11 @@ markupsafe = [
     {file = "MarkupSafe-1.1.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:ba59edeaa2fc6114428f1637ffff42da1e311e29382d81b339c1817d37ec93c6"},
     {file = "MarkupSafe-1.1.1-cp37-cp37m-win32.whl", hash = "sha256:b00c1de48212e4cc9603895652c5c410df699856a2853135b3967591e4beebc2"},
     {file = "MarkupSafe-1.1.1-cp37-cp37m-win_amd64.whl", hash = "sha256:9bf40443012702a1d2070043cb6291650a0841ece432556f784f004937f0f32c"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:6788b695d50a51edb699cb55e35487e430fa21f1ed838122d722e0ff0ac5ba15"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-manylinux1_i686.whl", hash = "sha256:cdb132fc825c38e1aeec2c8aa9338310d29d337bebbd7baa06889d09a60a1fa2"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:13d3144e1e340870b25e7b10b98d779608c02016d5184cfb9927a9f10c689f42"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-win32.whl", hash = "sha256:596510de112c685489095da617b5bcbbac7dd6384aeebeda4df6025d0256a81b"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-win_amd64.whl", hash = "sha256:e8313f01ba26fbbe36c7be1966a7b7424942f670f38e666995b88d012765b9be"},
     {file = "MarkupSafe-1.1.1.tar.gz", hash = "sha256:29872e92839765e546828bb7754a68c418d927cd064fd4708fab9fe9c8bb116b"},
 ]
 mccabe = [
