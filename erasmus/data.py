@@ -178,9 +178,7 @@ class VerseRange(object):
 
     @classmethod
     def from_string(cls, verse: str) -> VerseRange:
-        match = _search_reference_re.match(verse)
-
-        if match is None:
+        if (match := _search_reference_re.match(verse)) is None:
             raise ReferenceNotUnderstoodError(verse)
 
         return cls.from_match(match)
@@ -223,9 +221,7 @@ class VerseRange(object):
         else:
             lookup_pattern = _reference_or_bracketed_with_version_re
 
-        match = lookup_pattern.search(string)
-
-        if match:
+        if (match := lookup_pattern.search(string)) is not None:
             while match:
                 try:
                     ranges.append(cls.from_match(match))

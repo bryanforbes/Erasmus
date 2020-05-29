@@ -125,9 +125,7 @@ class BibleGateway(BaseService):
             if verse_nodes is None or total_node is None:
                 raise DoNotUnderstandError
 
-            match = total_re.match(total_node.get_text(' ', strip=True))
-
-            if match is None:
+            if (match := total_re.match(total_node.get_text(' ', strip=True))) is None:
                 raise DoNotUnderstandError
 
             def mapper(node: Tag) -> Passage:

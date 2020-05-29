@@ -98,8 +98,7 @@ class BiblesOrg(BaseService):
             # Make a request for the image to report to the Fair Use Management System
             meta: str = get(obj, 'response.meta.fums_noscript')
             if meta:
-                match = _img_re.search(meta)
-                if match:
+                if (match := _img_re.search(meta)) is not None:
                     try:
                         async with self.get(match.group('src')) as fums_response:
                             await fums_response.read()

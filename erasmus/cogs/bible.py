@@ -357,9 +357,7 @@ class Bible(commands.Cog[Context]):
     async def unsetguildversion(self, ctx: Context) -> None:
         assert ctx.guild is not None
 
-        guild_prefs = await GuildPref.get(ctx.guild.id)
-
-        if guild_prefs is not None:
+        if (guild_prefs := await GuildPref.get(ctx.guild.id)) is not None:
             await guild_prefs.delete()
             await ctx.send_embed('Guild version deleted')
         else:
@@ -385,8 +383,7 @@ class Bible(commands.Cog[Context]):
 
         try:
             book_mask = 0
-            book_list = books.split(',')
-            for book in book_list:
+            for book in books.split(','):
                 book = book.strip()
                 if book == 'OT':
                     book = 'Genesis'

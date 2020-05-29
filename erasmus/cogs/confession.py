@@ -162,9 +162,7 @@ class Confession(commands.Cog[Context]):
             await self.list_contents(ctx, row)
             return
 
-        match = reference_res[row.type].match(args[0])
-
-        if not match:
+        if not (match := reference_res[row.type].match(args[0])):
             await self.search(ctx, row, *args)
             return
 
