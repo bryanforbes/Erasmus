@@ -77,10 +77,10 @@ python-versions = ">=3.5.3"
 version = "3.0.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "An asyncio PostgreSQL driver"
 name = "asyncpg"
-optional = false
+optional = true
 python-versions = ">=3.5.0"
 version = "0.20.1"
 
@@ -90,10 +90,10 @@ docs = ["Sphinx (>=1.7.3,<1.8.0)", "sphinxcontrib-asyncio (>=0.2.0,<0.3.0)", "sp
 test = ["pycodestyle (>=2.5.0,<2.6.0)", "flake8 (>=3.7.9,<3.8.0)", "uvloop (>=0.14.0,<0.15.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = ""
 name = "asyncpg-stubs"
-optional = false
+optional = true
 python-versions = "^3.6.1"
 version = "0.20.1+0"
 
@@ -105,6 +105,7 @@ typing-extensions = "^3.7.4"
 reference = "b04c6f303fa1e4ee5828bd04659c4b84db69dc86"
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
+
 [[package]]
 category = "dev"
 description = "Enhance the standard unittest package with features for testing asyncio libraries"
@@ -188,29 +189,9 @@ pendulum = "~2.1.0"
 toml = "^0.10.1"
 typing-extensions = ">=3.7.4"
 
-[package.dependencies.asyncpg-stubs]
-optional = true
-version = "rev b04c6f303fa1e4ee5828bd04659c4b84db69dc86"
-
 [package.dependencies."discord.py"]
 extras = ["typings"]
 version = "branch typings"
-
-[package.dependencies.gino]
-optional = true
-version = "^1.0.0"
-
-[package.dependencies.gino-stubs]
-optional = true
-version = "rev 81aa13815f686b12114501d28f76333bc11e5d3d"
-
-[package.dependencies.sqlalchemy]
-optional = true
-version = "~1.2.18"
-
-[package.dependencies.uvloop]
-optional = true
-version = "~0.14.0"
 
 [package.extras]
 db = ["asyncpg (>=0.18.2)"]
@@ -223,6 +204,7 @@ uvloop = ["uvloop (~0.14.0)"]
 reference = "c8f5408d04225ff1b7b9ffd740a9dddea0d3b9b5"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
+
 [[package]]
 category = "main"
 description = "cChardet is high speed universal character encoding detector."
@@ -303,10 +285,6 @@ version = "1.4.0a2515+gbf37c16"
 aiohttp = ">=3.6.0,<3.7.0"
 websockets = ">=6.0,<7.0 || >7.0,<8.0 || >8.0,<8.0.1 || >8.0.1,<9.0"
 
-[package.dependencies.typing-extensions]
-optional = true
-version = ">=3.7.4"
-
 [package.extras]
 docs = ["sphinx (1.8.5)", "sphinxcontrib_trio (1.1.1)", "sphinxcontrib-websupport"]
 typings = ["typing-extensions (>=3.7.4)"]
@@ -316,6 +294,7 @@ voice = ["PyNaCl (1.3.0)"]
 reference = "bf37c165d56c052745a99444e0cb13ec05549caf"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py.git"
+
 [[package]]
 category = "dev"
 description = "Distribution utilities"
@@ -385,10 +364,10 @@ flake8 = ">=3.2.1"
 pyflakes = ">=2.1.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "GINO Is Not ORM - a Python asyncio ORM on SQLAlchemy core."
 name = "gino"
-optional = false
+optional = true
 python-versions = ">=3.5,<4.0"
 version = "1.0.0"
 
@@ -404,10 +383,10 @@ starlette = ["gino-starlette (>=0.1.1,<0.2.0)"]
 tornado = ["gino-tornado (>=0.1.0,<0.2.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = ""
 name = "gino-stubs"
-optional = false
+optional = true
 python-versions = "^3.6.1"
 version = "1.0.0+0"
 
@@ -421,6 +400,7 @@ typing-extensions = ">=3.7.4"
 reference = "81aa13815f686b12114501d28f76333bc11e5d3d"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
+
 [[package]]
 category = "dev"
 description = "File identification library for Python"
@@ -435,7 +415,6 @@ license = ["editdistance"]
 [[package]]
 category = "main"
 description = "Internationalized Domain Names in Applications (IDNA)"
-marker = "python_version >= \"3.6\""
 name = "idna"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
@@ -489,7 +468,7 @@ python-versions = ">=3.5"
 version = "4.7.6"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Optional static typing for Python"
 name = "mypy"
 optional = false
@@ -505,7 +484,7 @@ typing-extensions = ">=3.7.4"
 dmypy = ["psutil (>=4.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Experimental type system extensions for programs checked with the mypy typechecker."
 name = "mypy-extensions"
 optional = false
@@ -838,10 +817,10 @@ postgresql_psycopg2cffi = ["psycopg2cffi"]
 pymysql = ["pymysql"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "SQLAlchemy stubs and mypy plugin"
 name = "sqlalchemy-stubs"
-optional = false
+optional = true
 python-versions = "*"
 version = "0.3"
 
@@ -866,7 +845,7 @@ python-versions = "*"
 version = "0.10.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "a fork of Python 2 and 3 ast modules with type comment support"
 name = "typed-ast"
 optional = false
@@ -886,14 +865,14 @@ category = "main"
 description = "Ultra fast JSON encoder and decoder for Python"
 name = "ujson"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
-version = "2.0.3"
+python-versions = ">=3.5"
+version = "3.0.0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Fast implementation of asyncio event loop on top of libuv"
 name = "uvloop"
-optional = false
+optional = true
 python-versions = "*"
 version = "0.14.0"
 
@@ -969,7 +948,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "f05b55d07319748ba09fbe2f496459c49edbc3df090f36a66cc34a71a82a39f4"
+content-hash = "6d0421455be69210235a7b3ae848db70ebcb9269cc696126e1db5b404075af67"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -1235,6 +1214,11 @@ markupsafe = [
     {file = "MarkupSafe-1.1.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:ba59edeaa2fc6114428f1637ffff42da1e311e29382d81b339c1817d37ec93c6"},
     {file = "MarkupSafe-1.1.1-cp37-cp37m-win32.whl", hash = "sha256:b00c1de48212e4cc9603895652c5c410df699856a2853135b3967591e4beebc2"},
     {file = "MarkupSafe-1.1.1-cp37-cp37m-win_amd64.whl", hash = "sha256:9bf40443012702a1d2070043cb6291650a0841ece432556f784f004937f0f32c"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:6788b695d50a51edb699cb55e35487e430fa21f1ed838122d722e0ff0ac5ba15"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-manylinux1_i686.whl", hash = "sha256:cdb132fc825c38e1aeec2c8aa9338310d29d337bebbd7baa06889d09a60a1fa2"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:13d3144e1e340870b25e7b10b98d779608c02016d5184cfb9927a9f10c689f42"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-win32.whl", hash = "sha256:596510de112c685489095da617b5bcbbac7dd6384aeebeda4df6025d0256a81b"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-win_amd64.whl", hash = "sha256:e8313f01ba26fbbe36c7be1966a7b7424942f670f38e666995b88d012765b9be"},
     {file = "MarkupSafe-1.1.1.tar.gz", hash = "sha256:29872e92839765e546828bb7754a68c418d927cd064fd4708fab9fe9c8bb116b"},
 ]
 mccabe = [
@@ -1522,13 +1506,23 @@ typing-extensions = [
     {file = "typing_extensions-3.7.4.2.tar.gz", hash = "sha256:79ee589a3caca649a9bfd2a8de4709837400dfa00b6cc81962a1e6a1815969ae"},
 ]
 ujson = [
-    {file = "ujson-2.0.3-cp27-cp27m-manylinux1_x86_64.whl", hash = "sha256:7ae13733d9467d16ccac2f38212cdee841b49ae927085c533425be9076b0bc9d"},
-    {file = "ujson-2.0.3-cp27-cp27mu-manylinux1_x86_64.whl", hash = "sha256:6217c63a36e9b26e9271e686d212397ce7fb04c07d85509dd4e2ed73493320f8"},
-    {file = "ujson-2.0.3-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:c8369ef49169804944e920c427e350182e33756422b69989c55608fc28bebf98"},
-    {file = "ujson-2.0.3-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:0c23f21e8d2b60efab57bc6ce9d1fb7c4e96f4bfefbf5a6043a3f3309e2a738a"},
-    {file = "ujson-2.0.3-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:3d1f4705a4ec1e48ff383a4d92299d8ec25e9a8158bcea619912440948117634"},
-    {file = "ujson-2.0.3-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:2ab88e330405315512afe9276f29a60e9b3439187b273665630a57ed7fe1d936"},
-    {file = "ujson-2.0.3.tar.gz", hash = "sha256:bd2deffc983827510e5145fb66e4cc0f577480c62fe0b4882139f8f7d27ae9a3"},
+    {file = "ujson-3.0.0-cp35-cp35m-macosx_10_14_x86_64.whl", hash = "sha256:0959a5b569e192459b492b007e3fd63d8f4b4bcb4f69dcddca850a9b9dfe3e7a"},
+    {file = "ujson-3.0.0-cp35-cp35m-manylinux1_i686.whl", hash = "sha256:154f778f0b028390067aaedce8399730d4f528a16a1c214fe4eeb9c4e4f51810"},
+    {file = "ujson-3.0.0-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:019a17e7162f26e264f1645bb41630f7103d178c092ea4bb8f3b16126c3ea210"},
+    {file = "ujson-3.0.0-cp35-cp35m-win_amd64.whl", hash = "sha256:670018d4ab4b0755a7234a9f4791723abcd0506c0eed33b2ed50579c4aff31f2"},
+    {file = "ujson-3.0.0-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:634c206f4fb3be7e4523768c636d2dd41cb9c7130e2d219ef8305b8fb6f4838e"},
+    {file = "ujson-3.0.0-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:3bd791d17a175c1c6566aeaec1755b58e3f021fe9bb62f10f02b656b299199f5"},
+    {file = "ujson-3.0.0-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:0379ffc7484b862a292e924c15ad5f1c5306d4271e2efd162144812afb08ff97"},
+    {file = "ujson-3.0.0-cp36-cp36m-win_amd64.whl", hash = "sha256:f40bb0d0cb534aad3e24884cf864bda7a71eb5984bd1da61d1711bbfb3be2c38"},
+    {file = "ujson-3.0.0-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:0f33359908df32033195bfdd59ba2bfb90a23cb280ef9a0ba11e5013a53d7fd9"},
+    {file = "ujson-3.0.0-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:bea2958c7b5bf4f191f0def751b6f7c8b208edb5f7277e21776329f2ca042385"},
+    {file = "ujson-3.0.0-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:f854702a9aff3a445f4a0b715d240f2a3d84014d8ae8aad05a982c7ffab12525"},
+    {file = "ujson-3.0.0-cp37-cp37m-win_amd64.whl", hash = "sha256:c04d253fec814657fd9f150ef2333dbd0bc6f46208355aa753a29e0696b7fa7e"},
+    {file = "ujson-3.0.0-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:a32f2def62b10e8a19084d17d40363c4da1ac5f52d300a9e99d7efb49fe5f34a"},
+    {file = "ujson-3.0.0-cp38-cp38-manylinux1_i686.whl", hash = "sha256:9c68557da3e3ad57e0105aceba0cce5f8f7cd07d207c3860e59c0b3044532830"},
+    {file = "ujson-3.0.0-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:0e2352b60c4ac4fc75b723435faf36ef5e7f3bfb988adb4d589b5e0e6e1d90aa"},
+    {file = "ujson-3.0.0-cp38-cp38-win_amd64.whl", hash = "sha256:c841a6450d64c24c64cbcca429bab22cdb6daef5eaddfdfebe798a5e9e5aff4c"},
+    {file = "ujson-3.0.0.tar.gz", hash = "sha256:e0199849d61cc6418f94d52a314c6a27524d65e82174d2a043fb718f73d1520d"},
 ]
 uvloop = [
     {file = "uvloop-0.14.0-cp35-cp35m-macosx_10_11_x86_64.whl", hash = "sha256:08b109f0213af392150e2fe6f81d33261bb5ce968a288eb698aad4f46eb711bd"},
