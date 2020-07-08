@@ -1,4 +1,5 @@
 from typing import TYPE_CHECKING
+
 from botus_receptus.gino import Gino, ModelMixin
 
 db = Gino()

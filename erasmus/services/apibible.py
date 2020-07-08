@@ -1,20 +1,19 @@
 from __future__ import annotations
 
 import asyncio
+from contextlib import asynccontextmanager
+from typing import Any, AsyncIterator, Dict, List
 
-from typing import Any, List, Dict, AsyncIterator
-from attr import dataclass, attrib
+from attr import attrib, dataclass
 from botus_receptus import re
 from bs4 import BeautifulSoup
-from contextlib import asynccontextmanager
 from yarl import URL
 
-from .base_service import BaseService
-from ..data import Passage, VerseRange, SearchResults
+from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import DoNotUnderstandError
-from ..json import loads, get
+from ..json import get, loads
 from ..protocols import Bible
-
+from .base_service import BaseService
 
 _img_re = re.compile('src="', re.named_group('src')('[^"]+'), '"')
 

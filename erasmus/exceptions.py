@@ -2,10 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, List
 
-
 if TYPE_CHECKING:
-    from .protocols import Bible
     from .data import VerseRange
+    from .protocols import Bible
 
 
 class ErasmusError(Exception):

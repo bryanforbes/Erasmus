@@ -1,7 +1,7 @@
 import pytest  # noqa
 
+from erasmus.data import Passage, SearchResults  # noqa
 from erasmus.erasmus import Erasmus  # noqa
-from erasmus.data import SearchResults, Passage  # noqa
 from erasmus.exceptions import BibleNotSupportedError  # noqa
 
 

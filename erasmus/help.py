@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import Any, Optional, List, Mapping
+from typing import Any, List, Mapping, Optional
+
 from discord.ext import commands
 from more_itertools import unique_everseen
 

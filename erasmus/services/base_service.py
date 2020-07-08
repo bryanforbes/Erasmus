@@ -1,20 +1,20 @@
 from __future__ import annotations
 
 import asyncio
-import async_timeout
-import aiohttp
 import logging
-
-from typing import Any, Optional, Dict, List, AsyncContextManager, AsyncIterator
 from abc import abstractmethod
-from attr import dataclass
 from contextlib import asynccontextmanager
+from typing import Any, AsyncContextManager, AsyncIterator, Dict, List, Optional
+
+import aiohttp
+import async_timeout
+from attr import dataclass
 from botus_receptus import re
 from yarl import URL
 
-from ..data import VerseRange, Passage, SearchResults
-from ..protocols import Bible
+from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import ServiceLookupTimeout, ServiceSearchTimeout
+from ..protocols import Bible
 
 log = logging.getLogger(__name__)
 

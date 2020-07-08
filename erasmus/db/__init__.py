@@ -1,15 +1,15 @@
-from .base import db, Base  # noqa
+from .base import Base, db  # noqa
 from .bible import BibleVersion, UserPref  # noqa
 from .confession import (  # noqa
-    ConfessionTypeEnum,
-    ConfessionType,
-    NumberingTypeEnum,
-    ConfessionNumberingType,
+    Article,
     Chapter,
+    Confession,
+    ConfessionNumberingType,
+    ConfessionType,
+    ConfessionTypeEnum,
+    NumberingTypeEnum,
     Paragraph,
     Question,
-    Article,
-    Confession,
 )
 
 __all__ = (

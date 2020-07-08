@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from discord.ext import commands
 from botus_receptus.formatting import code_block
+from discord.ext import commands
 
 from ..context import Context
 from ..erasmus import Erasmus

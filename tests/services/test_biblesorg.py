@@ -1,11 +1,12 @@
-import pytest
-
-import toml
 from pathlib import Path
-from . import ServiceTest, Galatians_3_10_11, Mark_5_1
 
+import pytest
+import toml
+
+from erasmus.data import Passage, VerseRange
 from erasmus.services import BiblesOrg
-from erasmus.data import VerseRange, Passage
+
+from . import Galatians_3_10_11, Mark_5_1, ServiceTest
 
 
 @pytest.mark.skip()

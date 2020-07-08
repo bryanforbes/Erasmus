@@ -1,34 +1,34 @@
 from __future__ import annotations
 
-from typing import Any, Optional, Tuple, List, Dict, cast
+from functools import partial
+from typing import Any, Dict, List, Optional, Tuple, cast
 
 import discord
-from attr import dataclass, attrib
-from discord.ext import commands
-from botus_receptus.formatting import escape
-from botus_receptus.db import UniqueViolationError
-from botus_receptus.interactive_pager import InteractiveFieldPager, FieldPageSource
+from attr import attrib, dataclass
 from botus_receptus import checks
-from functools import partial
+from botus_receptus.db import UniqueViolationError
+from botus_receptus.formatting import escape
+from botus_receptus.interactive_pager import FieldPageSource, InteractiveFieldPager
+from discord.ext import commands
 
-from ..db.bible import BibleVersion, GuildPref, UserPref
-from ..data import VerseRange, get_book, get_book_mask, SearchResults, Passage
-from ..service_manager import ServiceManager
-from ..exceptions import (
-    BookNotUnderstoodError,
-    BookNotInVersionError,
-    DoNotUnderstandError,
-    ReferenceNotUnderstoodError,
-    BibleNotSupportedError,
-    NoUserVersionError,
-    InvalidVersionError,
-    ServiceNotSupportedError,
-    ServiceTimeout,
-    ServiceLookupTimeout,
-    ServiceSearchTimeout,
-)
-from ..erasmus import Erasmus
 from ..context import Context
+from ..data import Passage, SearchResults, VerseRange, get_book, get_book_mask
+from ..db.bible import BibleVersion, GuildPref, UserPref
+from ..erasmus import Erasmus
+from ..exceptions import (
+    BibleNotSupportedError,
+    BookNotInVersionError,
+    BookNotUnderstoodError,
+    DoNotUnderstandError,
+    InvalidVersionError,
+    NoUserVersionError,
+    ReferenceNotUnderstoodError,
+    ServiceLookupTimeout,
+    ServiceNotSupportedError,
+    ServiceSearchTimeout,
+    ServiceTimeout,
+)
+from ..service_manager import ServiceManager
 
 
 @dataclass(slots=True)

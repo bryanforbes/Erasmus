@@ -1,9 +1,10 @@
-import pytest
 from typing import Any
-from attr import dataclass, attrib
 
-from erasmus.services.base_service import BaseService
+import pytest
+from attr import attrib, dataclass
+
 from erasmus.data import VerseRange
+from erasmus.services.base_service import BaseService
 
 
 @pytest.mark.usefixtures('mock_aiohttp')

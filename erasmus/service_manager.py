@@ -1,12 +1,13 @@
 from __future__ import annotations
 
 from typing import Dict, List
-from attr import dataclass, attrib
-import aiohttp
 
-from .data import VerseRange, Passage, SearchResults
-from .config import Config
+import aiohttp
+from attr import attrib, dataclass
+
 from . import services
+from .config import Config
+from .data import Passage, SearchResults, VerseRange
 from .protocols import Bible, Service
 
 

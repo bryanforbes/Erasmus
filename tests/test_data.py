@@ -1,5 +1,6 @@
 import pytest
-from erasmus.data import Verse, VerseRange, Passage, SearchResults
+
+from erasmus.data import Passage, SearchResults, Verse, VerseRange
 from erasmus.exceptions import ReferenceNotUnderstoodError
 
 

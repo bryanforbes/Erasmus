@@ -1,11 +1,12 @@
-import pytest
-
-import toml
 from pathlib import Path
-from . import ServiceTest
 
+import pytest
+import toml
+
+from erasmus.data import Passage, VerseRange
 from erasmus.services import ApiBible
-from erasmus.data import VerseRange, Passage
+
+from . import ServiceTest
 
 
 class TestApiBible(ServiceTest):

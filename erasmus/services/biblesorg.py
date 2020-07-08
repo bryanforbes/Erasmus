@@ -3,22 +3,21 @@
 from __future__ import annotations
 
 import asyncio
-
-from typing import Any, Optional, List, Dict, AsyncIterator
+from contextlib import asynccontextmanager
+from typing import Any, AsyncIterator, Dict, List, Optional
 from typing_extensions import TypedDict
-from attr import dataclass, attrib
+
 from aiohttp import BasicAuth
+from attr import attrib, dataclass
 from botus_receptus import re
 from bs4 import BeautifulSoup
-from contextlib import asynccontextmanager
 from yarl import URL
 
-from .base_service import BaseService
-from ..data import VerseRange, SearchResults, Passage
+from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import DoNotUnderstandError
-from ..json import loads, get, has
+from ..json import get, has, loads
 from ..protocols import Bible
-
+from .base_service import BaseService
 
 _img_re = re.compile('src="', re.named_group('src')('[^"]+'), '"')
 

@@ -1,13 +1,13 @@
 from __future__ import annotations
 
-from typing import Any, Union, List, Sequence, AsyncIterator, cast
-from attr import dataclass
 from enum import Enum
+from typing import Any, AsyncIterator, List, Sequence, Union, cast
 
+from attr import dataclass
 from botus_receptus.interactive_pager import ListPageSource
 
-from .base import db, Base
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
+from .base import Base, db
 
 
 class ConfessionTypeEnum(Enum):

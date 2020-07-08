@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from typing import List, Optional
 from typing_extensions import Protocol
-from .data import VerseRange, Passage, SearchResults
+
+from .data import Passage, SearchResults, VerseRange
 
 
 class Bible(Protocol):

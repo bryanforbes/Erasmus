@@ -1,29 +1,28 @@
 from __future__ import annotations
 
-from typing import List, Callable, Sequence, Any, Match, Optional, AsyncIterator, cast
+from typing import Any, AsyncIterator, Callable, List, Match, Optional, Sequence, cast
 
-from discord.ext import commands
-from botus_receptus.formatting import (
-    pluralizer,
-    bold,
-    underline,
-    EmbedPaginator,
-    escape,
-)
 from botus_receptus import re
+from botus_receptus.formatting import (
+    EmbedPaginator,
+    bold,
+    escape,
+    pluralizer,
+    underline,
+)
 from botus_receptus.interactive_pager import InteractivePager
+from discord.ext import commands
 
+from ..context import Context
+from ..db.confession import Confession as ConfessionRecord
 from ..db.confession import (
     ConfessionTypeEnum,
-    Confession as ConfessionRecord,
     NumberingTypeEnum,
     SearchConfessionSource,
 )
-from ..format import int_to_roman, roman_to_int
-
 from ..erasmus import Erasmus
-from ..context import Context
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
+from ..format import int_to_roman, roman_to_int
 
 pluralize_match = pluralizer('match', 'es')
 

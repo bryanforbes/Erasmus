@@ -1,4 +1,5 @@
 from typing import Any, Dict
+
 from botus_receptus import Config as BaseConfig
 
 

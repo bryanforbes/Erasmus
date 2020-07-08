@@ -1,7 +1,7 @@
-import pytest
 import aiohttp
+import pytest
 
-from erasmus.data import VerseRange, SearchResults
+from erasmus.data import SearchResults, VerseRange
 from erasmus.exceptions import DoNotUnderstandError
 
 Galatians_3_10_11 = (

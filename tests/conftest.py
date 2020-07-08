@@ -2,9 +2,9 @@ from __future__ import annotations
 
 from typing import Any
 
+import asynctest.mock  # type: ignore
 import pytest  # type: ignore
 import pytest_mock  # type: ignore
-import asynctest.mock  # type: ignore
 from attr import dataclass
 
 pytest_mock._get_mock_module._module = asynctest.mock

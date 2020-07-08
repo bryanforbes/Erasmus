@@ -1,17 +1,18 @@
 # Service for querying biblegateway.com
 from __future__ import annotations
 
-from typing import List, AsyncIterator
-from attr import dataclass, attrib
-from botus_receptus import re
-from bs4 import BeautifulSoup, Tag, NavigableString, SoupStrainer
 from contextlib import asynccontextmanager
+from typing import AsyncIterator, List
+
+from attr import attrib, dataclass
+from botus_receptus import re
+from bs4 import BeautifulSoup, NavigableString, SoupStrainer, Tag
 from yarl import URL
 
-from .base_service import BaseService
-from ..data import VerseRange, SearchResults, Passage
+from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import DoNotUnderstandError
 from ..protocols import Bible
+from .base_service import BaseService
 
 total_re = re.compile(re.START, re.named_group('total')(re.one_or_more(re.DIGITS)))
 

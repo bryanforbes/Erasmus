@@ -1,9 +1,9 @@
 import pytest
 
-from . import ServiceTest, Galatians_3_10_11, Mark_5_1
-
+from erasmus.data import Passage, VerseRange
 from erasmus.services import BibleGateway
-from erasmus.data import VerseRange, Passage
+
+from . import Galatians_3_10_11, Mark_5_1, ServiceTest
 
 Psalm_53_1_ESV = (
     '**To the choirmaster: according to Mahalath. A Maskil of David.** **1.** The fool '

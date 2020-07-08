@@ -1,5 +1,6 @@
 import pytest
-from erasmus.json import load, loads, get, has
+
+from erasmus.json import get, has, load, loads
 
 
 def test_load(mocker):

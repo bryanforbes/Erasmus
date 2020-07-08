@@ -1,9 +1,9 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
-from botus_receptus import EmbedContext
 
 import discord
+from botus_receptus import EmbedContext
 
 from .data import Passage
 

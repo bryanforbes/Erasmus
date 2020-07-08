@@ -1,6 +1,7 @@
 import pytest
+
+from erasmus.data import Passage, VerseRange
 from erasmus.service_manager import ServiceManager
-from erasmus.data import VerseRange, Passage
 
 
 def MockService(mocker):

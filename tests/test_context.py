@@ -1,7 +1,7 @@
+import discord
 import pytest
 
 from erasmus.erasmus import Context
-import discord
 
 
 class MockUser(object):

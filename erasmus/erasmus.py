@@ -1,21 +1,20 @@
 from __future__ import annotations
 
-from typing import cast, Any
+import logging
+from typing import Any, cast
 
 import discord
-import logging
 import pendulum
-
-from discord.ext import commands
-from botus_receptus import formatting, DblBot, exceptions
+from botus_receptus import DblBot, exceptions, formatting
+from botus_receptus.formatting import Paginator
 from botus_receptus.gino import Bot
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
-from botus_receptus.formatting import Paginator
+from discord.ext import commands
 
-from .db import db
 from .config import Config
-from .exceptions import ErasmusError
 from .context import Context
+from .db import db
+from .exceptions import ErasmusError
 from .help import HelpCommand
 
 log = logging.getLogger(__name__)

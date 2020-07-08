@@ -2,18 +2,18 @@
 
 from __future__ import annotations
 
-from typing import Dict, List, AsyncIterator
-from attr import dataclass, attrib
+from contextlib import asynccontextmanager
+from typing import AsyncIterator, Dict, List
+
+from attr import attrib, dataclass
 from botus_receptus import re
 from bs4 import BeautifulSoup
-from contextlib import asynccontextmanager
 from yarl import URL
 
-from .base_service import BaseService
-from ..data import Passage, VerseRange, SearchResults
+from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import DoNotUnderstandError
 from ..protocols import Bible
-
+from .base_service import BaseService
 
 number_re = re.compile(re.capture(re.one_or_more(re.DIGITS), re.DOT))
 

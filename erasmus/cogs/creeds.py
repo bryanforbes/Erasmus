@@ -1,11 +1,10 @@
 from __future__ import annotations
 
-from discord.ext import commands
 from botus_receptus.formatting import bold
+from discord.ext import commands
 
-from ..erasmus import Erasmus
 from ..context import Context
-
+from ..erasmus import Erasmus
 
 apostles_text = '''
 I believe in God, the Father Almighty,

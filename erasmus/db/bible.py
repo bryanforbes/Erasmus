@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from typing import Optional, AsyncIterator
+from typing import AsyncIterator, Optional
+
 from botus_receptus.gino import Snowflake
 
-from .base import db, Base
 from ..exceptions import InvalidVersionError
+from .base import Base, db
 
 
 class BibleVersion(Base):
