@@ -24,7 +24,7 @@ coverage = {extras = ["toml"], version = "^5.1"}
 flake8 = "~3.8"
 flake8-bugbear = "^20.1"
 flake8-pyi = "^20.5"
-isort = "^5.0.9"
+isort = "^5.1.1"
 mypy = "^0.782"
 pre-commit = "^2.6"
 pytest = "^5.4"
