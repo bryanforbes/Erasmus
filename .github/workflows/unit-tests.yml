@@ -34,7 +34,7 @@ jobs:
           poetry-${{ matrix.python-version }}-
     - name: Install dependencies
       run: |
-        poetry run pip uninstall pytest-vcr
+        poetry run pip uninstall -y pytest-vcr
         poetry install -v
     - name: Lint with flake8 and mypy
       run: |
