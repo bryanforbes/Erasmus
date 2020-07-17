@@ -44,19 +44,19 @@ class ServiceTest(object):
             rtl=False,
         )
 
-    @pytest.mark.vcr()
+    @pytest.mark.vcr
     @pytest.mark.asyncio
     async def test_search(self, search_data, service, bible):
         response = await service.search(bible, search_data['terms'])
         assert response == SearchResults(search_data['verses'], search_data['total'])
 
-    @pytest.mark.vcr()
+    @pytest.mark.vcr
     @pytest.mark.asyncio
     async def test_get_passage(self, passage_data, service, bible):
         response = await service.get_passage(bible, passage_data['verse'])
         assert response == passage_data['passage']
 
-    @pytest.mark.vcr()
+    @pytest.mark.vcr
     @pytest.mark.asyncio
     async def test_get_passage_no_passages(self, service, bible):
         with pytest.raises(DoNotUnderstandError):

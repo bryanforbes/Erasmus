@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Dict, List
 
 import asynctest.mock  # type: ignore
 import pytest  # type: ignore
@@ -8,6 +8,11 @@ import pytest_mock  # type: ignore
 from attr import dataclass
 
 pytest_mock._get_mock_module._module = asynctest.mock
+
+
+@pytest.fixture(scope='session', autouse=True)
+def vcr_config() -> Dict[str, List[str]]:
+    return {'filter_headers': ['authorization', 'api-key']}
 
 
 @dataclass(slots=True)

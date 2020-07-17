@@ -52,8 +52,8 @@ class TestBibleGateway(ServiceTest):
                         version='NASB',
                     ),
                     Passage(
-                        text='[ _**Melchizedek**\u2019s Priesthood Like Christ\u2019s_'
-                        ' ] For this **Melchizedek**, king of Salem, priest of the '
+                        text='_**Melchizedek**\u2019s Priesthood Like Christ\u2019s_'
+                        ' For this **Melchizedek**, king of Salem, priest of the '
                         'Most High God, who met Abraham as he was returning from the '
                         'slaughter of the kings and blessed him,',
                         range=VerseRange.from_string('Hebrews 7:1'),
@@ -206,7 +206,7 @@ class TestBibleGateway(ServiceTest):
                         version='NASB',
                     ),
                     Passage(
-                        text='[ _**Faith**less Priests_ ] Now it came about after this '
+                        text='_**Faith**less Priests_ Now it came about after this '
                         'that Joash decided to restore the house of the LORD.',
                         range=VerseRange.from_string('2 Chronicles 24:4'),
                         version='NASB',
@@ -236,7 +236,7 @@ class TestBibleGateway(ServiceTest):
                         version='NASB',
                     ),
                     Passage(
-                        text='[ _Sennacherib Invades Judah_ ] After these acts of '
+                        text='_Sennacherib Invades Judah_ After these acts of '
                         '**faith**fulness Sennacherib king of Assyria came and invaded '
                         'Judah and besieged the fortified cities, and thought to break '
                         'into them for himself.',

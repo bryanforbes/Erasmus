@@ -28,10 +28,15 @@ class BibleGateway(BaseService):
         self._search_url = URL('https://www.biblegateway.com/quicksearch/')
 
     def _transform_verse_node(
-        self, bible: Bible, verses: VerseRange, verse_node: Tag
+        self,
+        bible: Bible,
+        verses: VerseRange,
+        verse_node: Tag,
+        for_search: bool = False,
     ) -> Passage:
         for node in verse_node.select(
-            'h1, h3, .footnotes, .footnote, .crossrefs, .crossreference'
+            f'h1, {"h3, " if not for_search else ""}.footnotes, .footnote, .crossrefs, '
+            '.crossreference, .full-chap-link'
         ):
             # Remove headings and footnotes
             node.decompose()
@@ -58,7 +63,7 @@ class BibleGateway(BaseService):
             number.unwrap()
         for br in verse_node.select('br'):
             br.replace_with('\n')
-        for italic in verse_node.select('.selah, i'):
+        for italic in verse_node.select('.selah, i, h3'):
             italic.insert_before('__ITALIC__')
             italic.insert_after('__ITALIC__')
             italic.unwrap()
@@ -107,7 +112,7 @@ class BibleGateway(BaseService):
             self._search_url.with_query(
                 {
                     'quicksearch': ' '.join(terms),
-                    'qs_version': bible.service_version,
+                    'version': bible.service_version,
                     'limit': limit,
                     'interface': 'print',
                     'startnumber': offset + 1,
@@ -115,16 +120,15 @@ class BibleGateway(BaseService):
             )
         ) as response:
             text = await response.text(errors='replace')
-            strainer = SoupStrainer(
-                class_=['search-result-list', 'search-total-results']
-            )
+            strainer = SoupStrainer(class_=['search-result-list', 'showing-results'])
             soup = BeautifulSoup(text, 'html.parser', parse_only=strainer)
 
             verse_nodes = soup.select('.search-result-list .bible-item')
-            total_node = soup.select_one('.search-total-results')
+            total_node = soup.select_one('.showing-results')
 
             if verse_nodes is None or total_node is None:
-                raise DoNotUnderstandError
+                yield SearchResults([], 0)
+                return
 
             if (match := total_re.match(total_node.get_text(' ', strip=True))) is None:
                 raise DoNotUnderstandError
@@ -139,7 +143,7 @@ class BibleGateway(BaseService):
 
                 verse = VerseRange.from_string(verse_reference_node.string.strip())
 
-                return self._transform_verse_node(bible, verse, verse_text_node)
+                return self._transform_verse_node(bible, verse, verse_text_node, True)
 
             passages = list(map(mapper, verse_nodes))
 
