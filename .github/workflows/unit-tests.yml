@@ -34,7 +34,6 @@ jobs:
           poetry-${{ matrix.python-version }}-
     - name: Install dependencies
       run: |
-        poetry run pip uninstall -y pytest-vcr
         poetry install -v
     - name: Lint with flake8 and mypy
       run: |
@@ -43,7 +42,7 @@ jobs:
         cd ..
     - name: Test with pytest
       run: |
-        poetry run py.test --block-network -p no:sugar --cov-report=xml:.coverage.xml
+        poetry run py.test --block-network --record-mode=none -p no:sugar --cov-report=xml:.coverage.xml
     - name: Upload coverage to codecov
       uses: codecov/codecov-action@v1.0.7
       with:
