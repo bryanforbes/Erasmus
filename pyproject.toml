@@ -20,11 +20,11 @@ more-itertools = {version = "~8.4.0"}
 [tool.poetry.dev-dependencies]
 asynctest = "^0.13.0"
 black = "^19.3b0"
-coverage = {extras = ["toml"], version = "^5.1"}
+coverage = {extras = ["toml"], version = "^5.2"}
 flake8 = "~3.8"
 flake8-bugbear = "^20.1"
 flake8-pyi = "^20.5"
-isort = "^5.1.1"
+isort = "^5.2.0"
 mypy = "^0.782"
 pre-commit = "^2.6"
 pytest = "^5.4"
@@ -34,7 +34,7 @@ pytest-cov = "^2.10"
 pytest-mock = "^3.2.0"
 pytest-recording = "^0.8.1"
 pytest-sugar = "^0.9.4"
-pytest-xdist = "^1.33"
+pytest-xdist = "^1.34"
 
 [tool.poetry.scripts]
 erasmus = 'erasmus.run:main'
