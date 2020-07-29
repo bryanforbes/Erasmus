@@ -37,9 +37,9 @@ jobs:
         poetry install -v
     - name: Lint with flake8 and mypy
       run: |
-        poetry run flake8 erasmus
-        poetry run mypy erasmus
-        cd ..
+        poetry run flake8 erasmus tests
+        poetry run mypy erasmus tests
+        poetry run isort --check-only erasmus tests
     - name: Test with pytest
       run: |
         poetry run py.test --block-network --record-mode=none -p no:sugar --cov-report=xml:.coverage.xml
