@@ -220,7 +220,7 @@ gino_typed = ["gino (^1.0.1)", "sqlalchemy (~1.2.18)", "asyncpg-stubs (0.20.1+0 
 uvloop = ["uvloop (~0.14.0)"]
 
 [package.source]
-reference = "287f1a3963ad336cc73177cf0219a1738ce05b9a"
+reference = "d04d3bd9bdcdf2eb9947db6c9af4ca076cee4659"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -990,6 +990,7 @@ typing-extensions = ">=3.7.4"
 
 [metadata]
 content-hash = "79b6877e6a142af8f2fb2c487d7ad45c92166c5e04d9dd24e41b4d24be534870"
+lock-version = "1.0"
 python-versions = "^3.8"
 
 [metadata.files]
