@@ -1,14 +1,13 @@
 from __future__ import annotations
 
-from botus_receptus.formatting import code_block
+from botus_receptus import Cog, formatting
 from discord.ext import commands
 
-from ..cog import Cog
 from ..context import Context
 from ..erasmus import Erasmus
 
 
-class Misc(Cog):
+class Misc(Cog[Context]):
     def __init__(self, bot: Erasmus) -> None:
         self.bot = bot
 
@@ -34,7 +33,7 @@ class Misc(Cog):
     @commands.is_owner()
     async def stats(self, ctx: Context) -> None:
         await ctx.send(
-            code_block(
+            formatting.code_block(
                 f'''Servers: {len(self.bot.guilds)}
 Users: {len(self.bot.users)}'''
             )

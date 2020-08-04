@@ -5,13 +5,11 @@ from typing import Any, Dict, List, Optional, Tuple, cast
 
 import discord
 from attr import attrib, dataclass
-from botus_receptus import checks
+from botus_receptus import Cog, checks, formatting
 from botus_receptus.db import UniqueViolationError
-from botus_receptus.formatting import escape
 from botus_receptus.interactive_pager import FieldPageSource, InteractiveFieldPager
 from discord.ext import commands
 
-from ..cog import Cog
 from ..context import Context
 from ..data import Passage, SearchResults, VerseRange, get_book, get_book_mask
 from ..db.bible import BibleVersion, GuildPref, UserPref
@@ -155,7 +153,7 @@ Example:
     {prefix}{command} faith hope'''
 
 
-class Bible(Cog):
+class Bible(Cog[Context]):
     def __init__(self, bot: Erasmus) -> None:
         self.bot = bot
 
@@ -167,6 +165,7 @@ class Bible(Cog):
         # Share cooldown across commands
         self.lookup._buckets = self.search._buckets = self._user_cooldown
 
+    def __pre_inject__(self, bot: commands.Bot[Context]) -> None:
         self.bot.loop.run_until_complete(self.__init())
 
     async def __init(self) -> None:
@@ -263,7 +262,7 @@ class Bible(Cog):
         else:
             return
 
-        await ctx.send_error(escape(message, mass_mentions=True))
+        await ctx.send_error(formatting.escape(message, mass_mentions=True))
 
     @commands.command(
         aliases=[''],

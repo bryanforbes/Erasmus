@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from typing import Any, AsyncIterator, Callable, List, Match, Optional, Sequence, cast
 
-from botus_receptus import re
+from botus_receptus import Cog, re
 from botus_receptus.formatting import (
     EmbedPaginator,
     bold,
@@ -13,7 +13,6 @@ from botus_receptus.formatting import (
 from botus_receptus.interactive_pager import InteractivePager
 from discord.ext import commands
 
-from ..cog import Cog
 from ..context import Context
 from ..db.confession import Confession as ConfessionRecord
 from ..db.confession import (
@@ -114,7 +113,7 @@ Examples:
 '''
 
 
-class Confession(Cog):
+class Confession(Cog[Context]):
     def __init__(self, bot: Erasmus) -> None:
         self.bot = bot
 

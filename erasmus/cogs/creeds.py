@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from botus_receptus.formatting import bold
+from botus_receptus import Cog, formatting
 from discord.ext import commands
 
-from ..cog import Cog
 from ..context import Context
 from ..erasmus import Erasmus
 
@@ -187,7 +186,7 @@ nicene_381_filioque_text = (
 )
 
 
-class Creeds(Cog):
+class Creeds(Cog[Context]):
     def __init__(self, bot: Erasmus) -> None:
         self.bot = bot
 
@@ -196,12 +195,12 @@ class Creeds(Cog):
         prefix = ctx.prefix
         await ctx.send_embed(
             f'''
-{bold(f'{prefix}apostles')} - The Apostles' Creed
-{bold(f'{prefix}athanasian')} - The Athanasian Creed
-{bold(f'{prefix}chalcedon')} - The Chalcedonian Definition
-{bold(f'{prefix}nicene')} - The Nicene Creed
-{bold(f'{prefix}nicene325')} - The Nicene Creed (325 AD)
-{bold(f'{prefix}nicene381')} - The Nicene Creed (381 AD)
+{formatting.bold(f'{prefix}apostles')} - The Apostles' Creed
+{formatting.bold(f'{prefix}athanasian')} - The Athanasian Creed
+{formatting.bold(f'{prefix}chalcedon')} - The Chalcedonian Definition
+{formatting.bold(f'{prefix}nicene')} - The Nicene Creed
+{formatting.bold(f'{prefix}nicene325')} - The Nicene Creed (325 AD)
+{formatting.bold(f'{prefix}nicene381')} - The Nicene Creed (381 AD)
 ''',
             title='Historic Creeds',
         )
