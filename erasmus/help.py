@@ -1,14 +1,19 @@
 from __future__ import annotations
 
-from typing import Any, List, Mapping, Optional
+from typing import TYPE_CHECKING, Any, List, Mapping, Optional
 
 from discord.ext import commands
 from more_itertools import unique_everseen
 
 from .context import Context
 
+if TYPE_CHECKING:
+    _DefaultHelpCommand = commands.DefaultHelpCommand[Context]
+else:
+    _DefaultHelpCommand = commands.DefaultHelpCommand
 
-class HelpCommand(commands.DefaultHelpCommand[Context]):
+
+class HelpCommand(_DefaultHelpCommand):
     def _get_command_title(self, command: commands.Command[Context]) -> str:
         return ', '.join(
             map(
