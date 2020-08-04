@@ -3,11 +3,12 @@ from __future__ import annotations
 from botus_receptus.formatting import code_block
 from discord.ext import commands
 
+from ..cog import Cog
 from ..context import Context
 from ..erasmus import Erasmus
 
 
-class Misc(commands.Cog[Context]):
+class Misc(Cog):
     def __init__(self, bot: Erasmus) -> None:
         self.bot = bot
 

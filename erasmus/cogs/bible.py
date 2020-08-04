@@ -11,6 +11,7 @@ from botus_receptus.formatting import escape
 from botus_receptus.interactive_pager import FieldPageSource, InteractiveFieldPager
 from discord.ext import commands
 
+from ..cog import Cog
 from ..context import Context
 from ..data import Passage, SearchResults, VerseRange, get_book, get_book_mask
 from ..db.bible import BibleVersion, GuildPref, UserPref
@@ -154,7 +155,7 @@ Example:
     {prefix}{command} faith hope'''
 
 
-class Bible(commands.Cog[Context]):
+class Bible(Cog):
     def __init__(self, bot: Erasmus) -> None:
         self.bot = bot
 

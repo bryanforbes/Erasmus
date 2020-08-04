@@ -3,6 +3,7 @@ from __future__ import annotations
 from botus_receptus.formatting import bold
 from discord.ext import commands
 
+from ..cog import Cog
 from ..context import Context
 from ..erasmus import Erasmus
 
@@ -186,7 +187,7 @@ nicene_381_filioque_text = (
 )
 
 
-class Creeds(commands.Cog[Context]):
+class Creeds(Cog):
     def __init__(self, bot: Erasmus) -> None:
         self.bot = bot
 
