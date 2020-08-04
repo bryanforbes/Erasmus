@@ -218,7 +218,7 @@ gino_typed = ["gino (^1.0.1)", "sqlalchemy (~1.2.18)", "asyncpg-stubs (0.20.1+0 
 uvloop = ["uvloop (~0.14.0)"]
 
 [package.source]
-reference = "fe3c2d5e7e62adbdf9aaa7cd1259d88159ee244a"
+reference = "31e058870eba4cddf2551b5f8687112a17330c11"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -321,7 +321,7 @@ mypy = "^0.782"
 typing-extensions = "^3.7.4"
 
 [package.source]
-reference = "0ce26d50fa7b7c69516c72f1fab2a3c6843e9c9c"
+reference = "b95fe95f7ee0cff822ea7e8e2499ce53a70ba667"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py-stubs.git"
 [[package]]

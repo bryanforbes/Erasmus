@@ -5,9 +5,8 @@ from typing import Any, cast
 
 import discord
 import pendulum
-from botus_receptus import DblBot, exceptions, formatting
-from botus_receptus.formatting import Paginator
-from botus_receptus.gino import Bot
+from botus_receptus import DblBot, abc, exceptions, formatting
+from botus_receptus.gino import Bot as GinoBot
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
 from discord.ext import commands
 
@@ -35,7 +34,9 @@ You can look up all verses in a message one of two ways:
 '''
 
 
-class Erasmus(Bot[Context], DblBot[Context]):
+class Erasmus(
+    GinoBot[Context], DblBot[Context], abc.OnMessage, abc.OnCommandError[Context],
+):
     config: Config
 
     context_cls = Context
@@ -43,7 +44,7 @@ class Erasmus(Bot[Context], DblBot[Context]):
 
     def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
         kwargs['help_command'] = HelpCommand(
-            paginator=Paginator(),
+            paginator=formatting.Paginator(),
             command_attrs={
                 'brief': 'List commands for this bot or get help for commands',
                 'cooldown': commands.Cooldown(5, 30.0, commands.BucketType.channel),
