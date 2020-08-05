@@ -218,7 +218,7 @@ gino_typed = ["gino (^1.0.1)", "sqlalchemy (~1.2.18)", "asyncpg-stubs (0.20.1+0 
 uvloop = ["uvloop (~0.14.0)"]
 
 [package.source]
-reference = "31e058870eba4cddf2551b5f8687112a17330c11"
+reference = "8166f8b0c35855be25851762193c1913ab7a71e6"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -321,7 +321,7 @@ mypy = "^0.782"
 typing-extensions = "^3.7.4"
 
 [package.source]
-reference = "b95fe95f7ee0cff822ea7e8e2499ce53a70ba667"
+reference = "b283722f700de292a29d5fd3a99992d2fc2eeaac"
 type = "git"
 url = "https://github.com/bryanforbes/discord.py-stubs.git"
 [[package]]
@@ -463,7 +463,7 @@ description = "A Python utility / library to sort Python imports."
 name = "isort"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "5.2.2"
+version = "5.3.0"
 
 [package.extras]
 colors = ["colorama (>=0.4.3,<0.5.0)"]
@@ -997,7 +997,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "aec9a238bcdd84eb0f0ea0d43e389e50c9f0dcb4b6459de1fbbf13768536b3ea"
+content-hash = "9410068d885f88a3a2de03d369785a86db43220daeca53e00940a397d80c2d66"
 lock-version = "1.0"
 python-versions = "^3.8"
 
@@ -1242,8 +1242,8 @@ iniconfig = [
     {file = "iniconfig-1.0.1.tar.gz", hash = "sha256:e5f92f89355a67de0595932a6c6c02ab4afddc6fcdc0bfc5becd0d60884d3f69"},
 ]
 isort = [
-    {file = "isort-5.2.2-py3-none-any.whl", hash = "sha256:aea484023188ef1c38256dd24afa96e914adafe3a911a1786800a74e433006d1"},
-    {file = "isort-5.2.2.tar.gz", hash = "sha256:96b27045e3187b9bdde001143b79f9b10a462f372bff7062302818013b6c86f3"},
+    {file = "isort-5.3.0-py3-none-any.whl", hash = "sha256:723de131d9ae9d2561844f0ee525ce33a396a11bcda57174f036ed5ab3d6a122"},
+    {file = "isort-5.3.0.tar.gz", hash = "sha256:cdca22530d093ed16983ba52c41560fa0219d1b958e44fd2ae2995dcc7b785be"},
 ]
 mako = [
     {file = "Mako-1.1.3-py2.py3-none-any.whl", hash = "sha256:93729a258e4ff0747c876bd9e20df1b9758028946e976324ccd2d68245c7b6a9"},
