@@ -184,8 +184,8 @@ aioitertools = "^0.7.0"
 async-timeout = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = "rev ae1ec8072f9ef26acec107824eed42fdbb897cc2"
-"discord.py-stubs" = "branch master"
+"discord.py" = "^1.4.0"
+"discord.py-stubs" = "^1.4.0.1"
 pendulum = "~2.1.2"
 toml = "^0.10.1"
 typing-extensions = ">=3.7.4"
@@ -218,7 +218,7 @@ gino_typed = ["gino (^1.0.1)", "sqlalchemy (~1.2.18)", "asyncpg-stubs (0.20.1+0 
 uvloop = ["uvloop (~0.14.0)"]
 
 [package.source]
-reference = "8166f8b0c35855be25851762193c1913ab7a71e6"
+reference = "d6d08e201a06d05abc2479a951c25c1c62b81587"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -295,35 +295,27 @@ description = "A Python wrapper for the Discord API"
 name = "discord.py"
 optional = false
 python-versions = ">=3.5.3"
-version = "1.4.0a2415+gae1ec80"
+version = "1.4.0"
 
 [package.dependencies]
 aiohttp = ">=3.6.0,<3.7.0"
 
 [package.extras]
-docs = ["sphinx (1.8.5)", "sphinxcontrib_trio (1.1.1)", "sphinxcontrib-websupport"]
+docs = ["sphinx (1.8.5)", "sphinxcontrib-trio (1.1.1)", "sphinxcontrib-websupport"]
 voice = ["PyNaCl (1.3.0)"]
 
-[package.source]
-reference = "ae1ec8072f9ef26acec107824eed42fdbb897cc2"
-type = "git"
-url = "https://github.com/Rapptz/discord.py.git"
 [[package]]
 category = "main"
-description = ""
+description = "discord.py stubs"
 name = "discord.py-stubs"
 optional = false
-python-versions = "^3.6.1"
-version = "1.4.0.0a0"
+python-versions = ">=3.6.1,<4.0.0"
+version = "1.4.0.1"
 
 [package.dependencies]
-mypy = "^0.782"
-typing-extensions = "^3.7.4"
+mypy = ">=0.782,<0.783"
+typing-extensions = ">=3.7.4,<4.0.0"
 
-[package.source]
-reference = "b283722f700de292a29d5fd3a99992d2fc2eeaac"
-type = "git"
-url = "https://github.com/bryanforbes/discord.py-stubs.git"
 [[package]]
 category = "dev"
 description = "Distribution utilities"
@@ -1198,8 +1190,14 @@ coverage = [
     {file = "coverage-5.2.1-cp39-cp39-win_amd64.whl", hash = "sha256:b8f58c7db64d8f27078cbf2a4391af6aa4e4767cc08b37555c4ae064b8558d9b"},
     {file = "coverage-5.2.1.tar.gz", hash = "sha256:a34cb28e0747ea15e82d13e14de606747e9e484fb28d63c999483f5d5188e89b"},
 ]
-"discord.py" = []
-"discord.py-stubs" = []
+"discord.py" = [
+    {file = "discord.py-1.4.0-py3-none-any.whl", hash = "sha256:2b1846bfa382b54f4eace8e437a9f59f185388c5b08749ac0e1bbd98e05bfde5"},
+    {file = "discord.py-1.4.0.tar.gz", hash = "sha256:f3db9531fccc391f51de65cfa46133106a9ba12ff2927aca6c14bffd3b7f17b5"},
+]
+"discord.py-stubs" = [
+    {file = "discord.py-stubs-1.4.0.1.tar.gz", hash = "sha256:4cc6b1eb6ee150b680078c01850ee811c6c55075e7f68ddf0c7c288c76b00253"},
+    {file = "discord.py_stubs-1.4.0.1-py3-none-any.whl", hash = "sha256:6580ce4b3e18108dc0f2c73baa5300f1abde1464dbf3427b7b8ec2bced77dcb7"},
+]
 distlib = [
     {file = "distlib-0.3.1-py2.py3-none-any.whl", hash = "sha256:8c09de2c67b3e7deef7184574fc060ab8a793e7adbb183d942c389c8b13c52fb"},
     {file = "distlib-0.3.1.zip", hash = "sha256:edf6116872c863e1aa9d5bb7cb5e05a022c519a4594dc703843343a9ddd9bff1"},
