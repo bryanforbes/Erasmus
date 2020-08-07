@@ -35,11 +35,9 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install -v
-    - name: Lint with flake8 and mypy
+    - name: Pre-commit checks
       run: |
-        poetry run flake8 erasmus tests
-        poetry run mypy erasmus tests
-        poetry run isort --check-only erasmus tests
+        poetry run pre-commit run --all-files
     - name: Test with pytest
       run: |
         poetry run py.test --block-network --record-mode=none -p no:sugar --cov-report=xml:.coverage.xml

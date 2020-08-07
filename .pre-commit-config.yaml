@@ -1,3 +1,9 @@
+files: >
+  (?x)^(
+      stubs/.*\.pyi$|
+      erasmus/.*\.py$|
+      tests/.*\.py$
+  )$
 repos:
 -   repo: local
     hooks:
@@ -5,22 +11,16 @@ repos:
         name: isort
         language: system
         entry: poetry run isort --check-only
-        files: \.pyi?$
     -   id: black
         name: black
         language: system
         entry: poetry run black --check
-        files: \.pyi?$
-        exclude: ^alembic\/.*$
     -   id: flake8
         name: flake8
         language: system
         entry: poetry run flake8
-        files: \.pyi?$
-        exclude: ^alembic\/.*$
     -   id: mypy
         name: mypy
         language: system
         entry: poetry run mypy
-        files: \.py$
-        exclude: ^alembic\/.*$
+        exclude: \.pyi$

@@ -1,14 +1,14 @@
 from typing import (
     Any,
-    List,
-    Union,
-    Iterator,
-    Optional,
+    Callable,
     Dict,
     Generator,
+    Iterator,
+    List,
+    Optional,
     Pattern,
     TypeVar,
-    Callable,
+    Union,
 )
 
 class PageElement(object):
