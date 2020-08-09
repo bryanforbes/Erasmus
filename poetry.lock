@@ -184,7 +184,7 @@ aioitertools = "^0.7.0"
 async-timeout = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-"discord.py" = "^1.4.0"
+discord-ext-typed-commands = "rev 462a26242ff06f519f650027534ecf504792a449"
 "discord.py-stubs" = "^1.4.0.1"
 pendulum = "~2.1.2"
 toml = "^0.10.1"
@@ -218,7 +218,7 @@ gino_typed = ["gino (^1.0.1)", "sqlalchemy (~1.2.18)", "asyncpg-stubs (0.20.1+0 
 uvloop = ["uvloop (~0.14.0)"]
 
 [package.source]
-reference = "d6d08e201a06d05abc2479a951c25c1c62b81587"
+reference = "51dad46ee092f1db41a3c88f5274be31e2346587"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -291,11 +291,27 @@ toml = ["toml"]
 
 [[package]]
 category = "main"
+description = ""
+name = "discord-ext-typed-commands"
+optional = false
+python-versions = "^3.6.1"
+version = "1.0.0dev0"
+
+[package.dependencies]
+"discord.py" = "^1.4.1"
+typing-extensions = "^3.7.4"
+
+[package.source]
+reference = "462a26242ff06f519f650027534ecf504792a449"
+type = "git"
+url = "https://github.com/bryanforbes/discord-ext-typed-commands.git"
+[[package]]
+category = "main"
 description = "A Python wrapper for the Discord API"
 name = "discord.py"
 optional = false
 python-versions = ">=3.5.3"
-version = "1.4.0"
+version = "1.4.1"
 
 [package.dependencies]
 aiohttp = ">=3.6.0,<3.7.0"
@@ -455,7 +471,7 @@ description = "A Python utility / library to sort Python imports."
 name = "isort"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "5.3.0"
+version = "5.3.2"
 
 [package.extras]
 colors = ["colorama (>=0.4.3,<0.5.0)"]
@@ -1190,9 +1206,10 @@ coverage = [
     {file = "coverage-5.2.1-cp39-cp39-win_amd64.whl", hash = "sha256:b8f58c7db64d8f27078cbf2a4391af6aa4e4767cc08b37555c4ae064b8558d9b"},
     {file = "coverage-5.2.1.tar.gz", hash = "sha256:a34cb28e0747ea15e82d13e14de606747e9e484fb28d63c999483f5d5188e89b"},
 ]
+discord-ext-typed-commands = []
 "discord.py" = [
-    {file = "discord.py-1.4.0-py3-none-any.whl", hash = "sha256:2b1846bfa382b54f4eace8e437a9f59f185388c5b08749ac0e1bbd98e05bfde5"},
-    {file = "discord.py-1.4.0.tar.gz", hash = "sha256:f3db9531fccc391f51de65cfa46133106a9ba12ff2927aca6c14bffd3b7f17b5"},
+    {file = "discord.py-1.4.1-py3-none-any.whl", hash = "sha256:98ea3096a3585c9c379209926f530808f5fcf4930928d8cfb579d2562d119570"},
+    {file = "discord.py-1.4.1.tar.gz", hash = "sha256:f9decb3bfa94613d922376288617e6a6f969260923643e2897f4540c34793442"},
 ]
 "discord.py-stubs" = [
     {file = "discord.py-stubs-1.4.0.1.tar.gz", hash = "sha256:4cc6b1eb6ee150b680078c01850ee811c6c55075e7f68ddf0c7c288c76b00253"},
@@ -1240,8 +1257,8 @@ iniconfig = [
     {file = "iniconfig-1.0.1.tar.gz", hash = "sha256:e5f92f89355a67de0595932a6c6c02ab4afddc6fcdc0bfc5becd0d60884d3f69"},
 ]
 isort = [
-    {file = "isort-5.3.0-py3-none-any.whl", hash = "sha256:723de131d9ae9d2561844f0ee525ce33a396a11bcda57174f036ed5ab3d6a122"},
-    {file = "isort-5.3.0.tar.gz", hash = "sha256:cdca22530d093ed16983ba52c41560fa0219d1b958e44fd2ae2995dcc7b785be"},
+    {file = "isort-5.3.2-py3-none-any.whl", hash = "sha256:5196bd2f5b23dc91215734b1c96c6d28390061d69860a948094c12635d6d64e6"},
+    {file = "isort-5.3.2.tar.gz", hash = "sha256:ba83762132a8661d3525f87a86549712fb7d8da79eeb452e01f327ada9e87920"},
 ]
 mako = [
     {file = "Mako-1.1.3-py2.py3-none-any.whl", hash = "sha256:93729a258e4ff0747c876bd9e20df1b9758028946e976324ccd2d68245c7b6a9"},
