@@ -77,10 +77,10 @@ python-versions = ">=3.5.3"
 version = "3.0.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "An asyncio PostgreSQL driver"
 name = "asyncpg"
-optional = false
+optional = true
 python-versions = ">=3.5.0"
 version = "0.21.0"
 
@@ -90,10 +90,10 @@ docs = ["Sphinx (>=1.7.3,<1.8.0)", "sphinxcontrib-asyncio (>=0.2.0,<0.3.0)", "sp
 test = ["pycodestyle (>=2.5.0,<2.6.0)", "flake8 (>=3.7.9,<3.8.0)", "uvloop (>=0.14.0,<0.15.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = ""
 name = "asyncpg-stubs"
-optional = false
+optional = true
 python-versions = "^3.6.1"
 version = "0.20.1+0"
 
@@ -105,6 +105,7 @@ typing-extensions = "^3.7.4"
 reference = "29ee4dfcd1847cd1f1a232b65c106b4abb44e2d6"
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
+
 [[package]]
 category = "dev"
 description = "Enhance the standard unittest package with features for testing asyncio libraries"
@@ -189,37 +190,18 @@ pendulum = "~2.1.2"
 toml = "^0.10.1"
 typing-extensions = ">=3.7.4"
 
-[package.dependencies.asyncpg-stubs]
-optional = true
-version = "rev 29ee4dfcd1847cd1f1a232b65c106b4abb44e2d6"
-
-[package.dependencies.gino]
-optional = true
-version = "^1.0.1"
-
-[package.dependencies.gino-stubs]
-optional = true
-version = "rev 6fdeecd5fc319ccb60030dd4af525ef3c02dfb7e"
-
-[package.dependencies.sqlalchemy]
-optional = true
-version = "~1.2.18"
-
-[package.dependencies.uvloop]
-optional = true
-version = "~0.14.0"
-
 [package.extras]
 db = ["asyncpg (>=0.18.2)"]
-db_typed = ["asyncpg (>=0.18.2)", "asyncpg-stubs (0.20.1+0 git)"]
+db_typed = ["asyncpg (>=0.18.2)", "asyncpg-stubs"]
 gino = ["gino (^1.0.1)", "sqlalchemy (~1.2.18)"]
-gino_typed = ["gino (^1.0.1)", "sqlalchemy (~1.2.18)", "asyncpg-stubs (0.20.1+0 git)", "gino-stubs (1.0.1+0 git)"]
+gino_typed = ["gino (^1.0.1)", "sqlalchemy (~1.2.18)", "asyncpg-stubs", "gino-stubs"]
 uvloop = ["uvloop (~0.14.0)"]
 
 [package.source]
 reference = "55c98d65c6c64014af6fe5e9fecb11a3b699bbc9"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
+
 [[package]]
 category = "main"
 description = "cChardet is high speed universal character encoding detector."
@@ -304,6 +286,7 @@ typing-extensions = "^3.7.4"
 reference = "d9b84eb29fb5d65a186440d8270f41e2739cca65"
 type = "git"
 url = "https://github.com/bryanforbes/discord-ext-typed-commands.git"
+
 [[package]]
 category = "main"
 description = "A Python wrapper for the Discord API"
@@ -400,10 +383,10 @@ flake8 = ">=3.2.1"
 pyflakes = ">=2.1.1"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "GINO Is Not ORM - a Python asyncio ORM on SQLAlchemy core."
 name = "gino"
-optional = false
+optional = true
 python-versions = ">=3.5,<4.0"
 version = "1.0.1"
 
@@ -419,10 +402,10 @@ starlette = ["gino-starlette (>=0.1.1,<0.2.0)"]
 tornado = ["gino-tornado (>=0.1.0,<0.2.0)"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = ""
 name = "gino-stubs"
-optional = false
+optional = true
 python-versions = "^3.6.1"
 version = "1.0.1+0"
 
@@ -436,6 +419,7 @@ typing-extensions = ">=3.7.4"
 reference = "6fdeecd5fc319ccb60030dd4af525ef3c02dfb7e"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
+
 [[package]]
 category = "dev"
 description = "File identification library for Python"
@@ -450,7 +434,6 @@ license = ["editdistance"]
 [[package]]
 category = "main"
 description = "Internationalized Domain Names in Applications (IDNA)"
-marker = "python_version >= \"3.6\""
 name = "idna"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
@@ -605,7 +588,7 @@ description = "A framework for managing and maintaining multi-language pre-commi
 name = "pre-commit"
 optional = false
 python-versions = ">=3.6.1"
-version = "2.6.0"
+version = "2.7.1"
 
 [package.dependencies]
 cfgv = ">=2.0.0"
@@ -900,10 +883,10 @@ postgresql_psycopg2cffi = ["psycopg2cffi"]
 pymysql = ["pymysql"]
 
 [[package]]
-category = "main"
+category = "dev"
 description = "SQLAlchemy stubs and mypy plugin"
 name = "sqlalchemy-stubs"
-optional = false
+optional = true
 python-versions = "*"
 version = "0.3"
 
@@ -952,10 +935,10 @@ python-versions = ">=3.5"
 version = "3.1.0"
 
 [[package]]
-category = "main"
+category = "dev"
 description = "Fast implementation of asyncio event loop on top of libuv"
 name = "uvloop"
-optional = false
+optional = true
 python-versions = "*"
 version = "0.14.0"
 
@@ -1015,8 +998,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "fdb3d060f1d408911b165d596d41556bf62068a67d07784487d6959005c73677"
-lock-version = "1.0"
+content-hash = "908521adff70cc64a04623bfd067235f15151729e5f7f633d4c4ab4fb4f1177e"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -1306,6 +1288,11 @@ markupsafe = [
     {file = "MarkupSafe-1.1.1-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:ba59edeaa2fc6114428f1637ffff42da1e311e29382d81b339c1817d37ec93c6"},
     {file = "MarkupSafe-1.1.1-cp37-cp37m-win32.whl", hash = "sha256:b00c1de48212e4cc9603895652c5c410df699856a2853135b3967591e4beebc2"},
     {file = "MarkupSafe-1.1.1-cp37-cp37m-win_amd64.whl", hash = "sha256:9bf40443012702a1d2070043cb6291650a0841ece432556f784f004937f0f32c"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:6788b695d50a51edb699cb55e35487e430fa21f1ed838122d722e0ff0ac5ba15"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-manylinux1_i686.whl", hash = "sha256:cdb132fc825c38e1aeec2c8aa9338310d29d337bebbd7baa06889d09a60a1fa2"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:13d3144e1e340870b25e7b10b98d779608c02016d5184cfb9927a9f10c689f42"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-win32.whl", hash = "sha256:596510de112c685489095da617b5bcbbac7dd6384aeebeda4df6025d0256a81b"},
+    {file = "MarkupSafe-1.1.1-cp38-cp38-win_amd64.whl", hash = "sha256:e8313f01ba26fbbe36c7be1966a7b7424942f670f38e666995b88d012765b9be"},
     {file = "MarkupSafe-1.1.1.tar.gz", hash = "sha256:29872e92839765e546828bb7754a68c418d927cd064fd4708fab9fe9c8bb116b"},
 ]
 mccabe = [
@@ -1357,6 +1344,7 @@ mypy-extensions = [
 ]
 nodeenv = [
     {file = "nodeenv-1.4.0-py2.py3-none-any.whl", hash = "sha256:4b0b77afa3ba9b54f4b6396e60b0c83f59eaeb2d63dc3cc7a70f7f4af96c82bc"},
+    {file = "nodeenv-1.4.0.tar.gz", hash = "sha256:26941644654d8dd5378720e38f62a3bac5f9240811fb3b8913d2663a17baa91c"},
 ]
 packaging = [
     {file = "packaging-20.4-py2.py3-none-any.whl", hash = "sha256:998416ba6962ae7fbd6596850b80e17859a5753ba17c32284f67bfff33784181"},
@@ -1394,8 +1382,8 @@ pluggy = [
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
 ]
 pre-commit = [
-    {file = "pre_commit-2.6.0-py2.py3-none-any.whl", hash = "sha256:e8b1315c585052e729ab7e99dcca5698266bedce9067d21dc909c23e3ceed626"},
-    {file = "pre_commit-2.6.0.tar.gz", hash = "sha256:1657663fdd63a321a4a739915d7d03baedd555b25054449090f97bb0cb30a915"},
+    {file = "pre_commit-2.7.1-py2.py3-none-any.whl", hash = "sha256:810aef2a2ba4f31eed1941fc270e72696a1ad5590b9751839c90807d0fff6b9a"},
+    {file = "pre_commit-2.7.1.tar.gz", hash = "sha256:c54fd3e574565fe128ecc5e7d2f91279772ddb03f8729645fa812fe809084a70"},
 ]
 psutil = [
     {file = "psutil-5.7.2-cp27-none-win32.whl", hash = "sha256:f2018461733b23f308c298653c8903d32aaad7873d25e1d228765e91ae42c3f2"},
