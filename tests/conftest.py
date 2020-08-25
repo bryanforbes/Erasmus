@@ -4,10 +4,10 @@ from typing import Any, Dict, List
 
 import asynctest.mock  # type: ignore
 import pytest  # type: ignore
-import pytest_mock  # type: ignore
+import pytest_mock.plugin  # type: ignore
 from attr import dataclass
 
-pytest_mock._get_mock_module._module = asynctest.mock
+pytest_mock.plugin._get_mock_module._module = asynctest.mock
 
 
 @pytest.fixture(scope='session', autouse=True)
