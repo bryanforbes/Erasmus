@@ -35,7 +35,10 @@ You can look up all verses in a message one of two ways:
 
 
 class Erasmus(
-    GinoBot[Context], DblBot[Context], abc.OnMessage, abc.OnCommandError[Context],
+    GinoBot[Context],
+    DblBot[Context],
+    abc.OnMessage,
+    abc.OnCommandError[Context],
 ):
     config: Config
 
@@ -115,9 +118,9 @@ class Erasmus(
                     f'`{ctx.prefix}{ctx.invoked_with}` has been used too many '
                     'times in this channel.'
                 )
-            retry_period: pendulum.Period = pendulum.now().add(  # type: ignore
-                seconds=int(exc.retry_after)
-            ).diff()
+            retry_period: pendulum.Period = (
+                pendulum.now().add(seconds=int(exc.retry_after)).diff()  # type: ignore
+            )
             message = (
                 f'{message} You can retry again in '  # type: ignore
                 f'{retry_period.in_words()}.'
