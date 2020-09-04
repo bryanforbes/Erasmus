@@ -105,6 +105,7 @@ typing-extensions = "^3.7.4"
 reference = "f4fa1758009712c822a86ef8b43357187bb134e2"
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
+
 [[package]]
 category = "dev"
 description = "Enhance the standard unittest package with features for testing asyncio libraries"
@@ -185,7 +186,7 @@ aioitertools = "^0.7.0"
 async-timeout = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
-discord-ext-typed-commands = "rev d9b84eb29fb5d65a186440d8270f41e2739cca65"
+discord-ext-typed-commands = "rev 73666a7bc2e69364bc9fcbe595ca724663940c8b"
 "discord.py-stubs" = "^1.4.0.2"
 pendulum = "~2.1.2"
 toml = "^0.10.1"
@@ -193,7 +194,7 @@ typing-extensions = ">=3.7.4"
 
 [package.dependencies.asyncpg-stubs]
 optional = true
-version = "rev f4fa1758009712c822a86ef8b43357187bb134e2"
+version = "rev 94d3a63dd9048dd3afcde4aed622aa8e3b44003d"
 
 [package.dependencies.gino]
 optional = true
@@ -201,7 +202,7 @@ version = "^1.0.1"
 
 [package.dependencies.gino-stubs]
 optional = true
-version = "rev a2b65af0b712e082c8696a3babc083c5fda058ad"
+version = "rev 3c4d77316db18badaaf46d97de498c32b8a1c007"
 
 [package.dependencies.sqlalchemy]
 optional = true
@@ -219,7 +220,7 @@ gino_typed = ["gino (^1.0.1)", "sqlalchemy (~1.2.18)", "asyncpg-stubs (0.20.1+0 
 uvloop = ["uvloop (~0.14.0)"]
 
 [package.source]
-reference = "b4a30fc098baf24506839f2a332bf0975db8c8ca"
+reference = "1174a8ea15c946fc9760807169df2ab809adf6f8"
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 [[package]]
@@ -439,6 +440,7 @@ typing-extensions = ">=3.7.4"
 reference = "a2b65af0b712e082c8696a3babc083c5fda058ad"
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
+
 [[package]]
 category = "dev"
 description = "File identification library for Python"
@@ -472,11 +474,11 @@ description = "A Python utility / library to sort Python imports."
 name = "isort"
 optional = false
 python-versions = ">=3.6,<4.0"
-version = "5.4.2"
+version = "5.5.1"
 
 [package.extras]
 colors = ["colorama (>=0.4.3,<0.5.0)"]
-pipfile_deprecated_finder = ["pipreqs", "requirementslib", "tomlkit (>=0.5.3)"]
+pipfile_deprecated_finder = ["pipreqs", "requirementslib"]
 requirements_deprecated_finder = ["pipreqs", "pip-api"]
 
 [[package]]
@@ -1006,7 +1008,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "2eb3e037e26b61c5d1b62cdb55da1b3fdd6fd01420fdd58289bfd13c0ade548e"
+content-hash = "8aa48e3407ba61155eeb051264624e1fa5a7ccc613cdba4805aa441e8ac2f975"
 lock-version = "1.0"
 python-versions = "^3.8"
 
@@ -1262,8 +1264,8 @@ iniconfig = [
     {file = "iniconfig-1.0.1.tar.gz", hash = "sha256:e5f92f89355a67de0595932a6c6c02ab4afddc6fcdc0bfc5becd0d60884d3f69"},
 ]
 isort = [
-    {file = "isort-5.4.2-py3-none-any.whl", hash = "sha256:60a1b97e33f61243d12647aaaa3e6cc6778f5eb9f42997650f1cc975b6008750"},
-    {file = "isort-5.4.2.tar.gz", hash = "sha256:d488ba1c5a2db721669cc180180d5acf84ebdc5af7827f7aaeaa75f73cf0e2b8"},
+    {file = "isort-5.5.1-py3-none-any.whl", hash = "sha256:a200d47b7ee8b7f7d0a9646650160c4a51b6a91a9413fd31b1da2c4de789f5d3"},
+    {file = "isort-5.5.1.tar.gz", hash = "sha256:92533892058de0306e51c88f22ece002a209dc8e80288aa3cec6d443060d584f"},
 ]
 mako = [
     {file = "Mako-1.1.3-py2.py3-none-any.whl", hash = "sha256:93729a258e4ff0747c876bd9e20df1b9758028946e976324ccd2d68245c7b6a9"},
