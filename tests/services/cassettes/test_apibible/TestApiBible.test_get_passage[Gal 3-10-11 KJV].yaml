@@ -16,26 +16,37 @@ interactions:
         by faith. </p>","copyright":"PUBLIC DOMAIN except in the United Kingdom, where
         a Crown Copyright applies to printing the KJV. See http://www.cambridge.org/about-us/who-we-are/queens-printers-patent"},"meta":{"fums":"<script>\nvar
         _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''0d55d7e4-089a-4372-ae05-cd6d9d7c47cc'');\\x3C/script\\x3E\");\n</script><noscript><img
-        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''0d55d7e4-089a-4372-ae05-cd6d9d7c47cc''\"
+        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''b02feb18-aa78-4ff6-9576-4edaa5f06de0'');\\x3C/script\\x3E\");\n</script><noscript><img
+        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''b02feb18-aa78-4ff6-9576-4edaa5f06de0''\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        /></noscript>","fumsId":"0d55d7e4-089a-4372-ae05-cd6d9d7c47cc","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''0d55d7e4-089a-4372-ae05-cd6d9d7c47cc'');
-        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=0d55d7e4-089a-4372-ae05-cd6d9d7c47cc\"
+        /></noscript>","fumsId":"b02feb18-aa78-4ff6-9576-4edaa5f06de0","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''b02feb18-aa78-4ff6-9576-4edaa5f06de0'');
+        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=b02feb18-aa78-4ff6-9576-4edaa5f06de0\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
         />"}}'
     headers:
-      Connection: keep-alive
-      Content-Type: application/json; charset=utf-8
-      Date: Tue, 28 Jul 2020 22:38:29 GMT
-      Server: nginx/1.16.1
-      Transfer-Encoding: chunked
-      access-control-expose-headers: WWW-Authenticate,Server-Authorization
-      cache-control: no-cache
-      content-encoding: gzip
-      vary: origin,accept-encoding
-      x-request-wants-bypass: static
-      x-server-allows-bypass: static
+      Connection:
+      - keep-alive
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 12 Sep 2020 20:08:50 GMT
+      Server:
+      - nginx/1.16.1
+      Transfer-Encoding:
+      - chunked
+      access-control-expose-headers:
+      - WWW-Authenticate,Server-Authorization
+      cache-control:
+      - no-cache
+      content-encoding:
+      - gzip
+      vary:
+      - origin,accept-encoding
+      x-request-wants-bypass:
+      - static
+      x-server-allows-bypass:
+      - static
     status:
       code: 200
       message: OK
@@ -44,27 +55,40 @@ interactions:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=0d55d7e4-089a-4372-ae05-cd6d9d7c47cc
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=b02feb18-aa78-4ff6-9576-4edaa5f06de0
   response:
     body:
       string: !!binary |
         R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
     headers:
-      Accept-Ranges: bytes
-      Age: '118097'
-      Connection: keep-alive
-      Content-Length: '35'
-      Content-Type: image/gif
-      Date: Mon, 27 Jul 2020 23:10:51 GMT
-      ETag: '"28d6814f309ea289f847c69cf91194c6"'
-      Last-Modified: Wed, 10 May 2017 13:35:25 GMT
-      Server: AmazonS3
-      Via: 1.1 b3dcbb5db65271a2024ef727d001a4e2.cloudfront.net (CloudFront)
-      X-Amz-Cf-Id: RQPU_GEOgAzRPvT_mecDQxTLrhdF4w_e2ZJgJCJjbw5xh8P_YmRkmw==
-      X-Amz-Cf-Pop: ORD51-C2
-      X-Cache: Hit from cloudfront
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '43783'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '35'
+      Content-Type:
+      - image/gif
+      Date:
+      - Sat, 12 Sep 2020 14:28:16 GMT
+      ETag:
+      - '"28d6814f309ea289f847c69cf91194c6"'
+      Last-Modified:
+      - Wed, 10 May 2017 13:35:25 GMT
+      Server:
+      - AmazonS3
+      Via:
+      - 1.1 a37696e4552d9fef6722800191dd6b36.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - CkECA_ERJ5BXxvu9T-9vCaRQ8km3LGdoSoD6mg0WbM9waaC3PZtB0A==
+      X-Amz-Cf-Pop:
+      - ORD53-C2
+      X-Cache:
+      - Hit from cloudfront
     status:
       code: 200
       message: OK
-    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=0d55d7e4-089a-4372-ae05-cd6d9d7c47cc
+    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=b02feb18-aa78-4ff6-9576-4edaa5f06de0
 version: 1

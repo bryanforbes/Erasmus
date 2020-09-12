@@ -9,15 +9,24 @@ interactions:
       string: '{"statusCode":404,"error":"Not Found","message":"Could not find that
         passage"}'
     headers:
-      Connection: keep-alive
-      Content-Encoding: gzip
-      Content-Type: application/json; charset=utf-8
-      Date: Tue, 28 Jul 2020 22:38:30 GMT
-      Server: nginx/1.16.1
-      Transfer-Encoding: chunked
-      access-control-expose-headers: WWW-Authenticate,Server-Authorization
-      cache-control: no-cache
-      vary: origin
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Sat, 12 Sep 2020 20:08:51 GMT
+      Server:
+      - nginx/1.16.1
+      Transfer-Encoding:
+      - chunked
+      access-control-expose-headers:
+      - WWW-Authenticate,Server-Authorization
+      cache-control:
+      - no-cache
+      vary:
+      - origin
     status:
       code: 404
       message: Not Found
