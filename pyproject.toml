@@ -11,11 +11,11 @@ aiodns = "^2.0"
 alembic = "^1.0"
 beautifulsoup4 = "^4.9"
 cchardet = "^2.1"
-psycopg2 = "^2.7"
-ujson = "^3.1.0"
+psycopg2 = "^2.8"
+ujson = "^3.2.0"
 "botus_receptus" = {rev = "master", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
 "typing-extensions" = ">=3.7.4"
-more-itertools = {version = "~8.4.0"}
+more-itertools = {version = "~8.5.0"}
 
 [tool.poetry.dev-dependencies]
 asynctest = "^0.13.0"
@@ -24,7 +24,7 @@ coverage = {extras = ["toml"], version = "^5.2"}
 flake8 = "~3.8"
 flake8-bugbear = "^20.1"
 flake8-pyi = "^20.5"
-isort = "^5.5.0"
+isort = "^5.5.2"
 mypy = "^0.782"
 pre-commit = "^2.7"
 pytest = "^6.0"
