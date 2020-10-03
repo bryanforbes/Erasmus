@@ -54,8 +54,9 @@ class Erasmus(
             },
         )
         kwargs['description'] = description
+        kwargs['intents'] = discord.Intents(guilds=True, reactions=True, messages=True)
 
-        super().__init__(config, *args, verify_ssl=False, **kwargs)
+        super().__init__(config, *args, **kwargs)
 
         for extension in extensions:
             try:

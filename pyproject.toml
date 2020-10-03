@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "erasmus"
-version = "0.1.2"
+version = "0.2.0"
 description = ""
 authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
 license = "BSD-3-Clause"
@@ -8,26 +8,26 @@ license = "BSD-3-Clause"
 [tool.poetry.dependencies]
 python = "^3.8"
 aiodns = "^2.0"
-alembic = "^1.0"
+alembic = "^1.4"
 beautifulsoup4 = "^4.9"
 cchardet = "^2.1"
 psycopg2 = "^2.8"
 ujson = "^3.2.0"
-"botus_receptus" = {rev = "master", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
+"botus_receptus" = {rev = "6b01854de69c0dfddec1aabadb72fb8ad158c3d5", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
 "typing-extensions" = ">=3.7.4"
 more-itertools = {version = "~8.5.0"}
 
 [tool.poetry.dev-dependencies]
 asynctest = "^0.13.0"
 black = "^20.8b1"
-coverage = {extras = ["toml"], version = "^5.2"}
+coverage = {extras = ["toml"], version = "^5.3"}
 flake8 = "~3.8"
 flake8-bugbear = "^20.1"
 flake8-pyi = "^20.5"
-isort = "^5.5.2"
+isort = "^5.5.4"
 mypy = "^0.782"
 pre-commit = "^2.7"
-pytest = "^6.0"
+pytest = "^6.1"
 pytest-asyncio = "^0.14.0"
 pytest-clarity = "^0.3.0-alpha.0"
 pytest-cov = "^2.10"
