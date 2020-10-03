@@ -12,8 +12,8 @@ interactions:
         3:10-11 NASB - For as many as are of the works of the - Bible Gateway</title>\n<link
         rel=\"canonical\" href=\"https://www.biblegateway.com/passage/?search=Galatians%203%3A10-11&amp;version=NASB\"
         />\n<link rel=\"amphtml\" href=\"https://www.biblegateway.com/passage/?search=Galatians%203%3A10-11&amp;version=NASB&amp;interface=amp\">\n<meta
-        property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?c1d46e79\"/>\n<meta
-        property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?c1d46e79\"/>\n<meta
+        property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?8392aea6\"/>\n<meta
+        property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?8392aea6\"/>\n<meta
         property=\"og:image:type\" content=\"image/png\"/>\n<meta property=\"og:image:width\"
         content=\"200\"/>\n<meta property=\"og:image:height\" content=\"200\"/>\n<meta
         property=\"og:title\" content=\"Bible Gateway passage: Galatians 3:10-11 -
@@ -36,17 +36,17 @@ interactions:
         IS EVERYONE WHO DOES NOT ABIDE BY ALL THINGS WRITTEN IN THE\" />\n<meta property=\"al:ios:url\"
         content=\"biblegateway://bible/Gal.3.10/NASB\" />\n<meta property=\"al:ios:app_store_id\"
         content=\"506512797\" />\n<meta property=\"al:ios:app_name\" content=\"Bible
-        Gateway\" />\n<link rel=\"favorite icon\" href=\"/favicon.ico?c1d46e79\" type=\"image/x-icon\"
+        Gateway\" />\n<link rel=\"favorite icon\" href=\"/favicon.ico?8392aea6\" type=\"image/x-icon\"
         />\n<link rel=\"search\" type=\"application/opensearchdescription+xml\" title=\"Bible
-        Gateway\" href=\"/resources/opensearch/bgsearch.xml?c1d46e79\">\n\n<link rel=\"apple-touch-icon\"
+        Gateway\" href=\"/resources/opensearch/bgsearch.xml?8392aea6\">\n\n<link rel=\"apple-touch-icon\"
         sizes=\"76x76\" href=\"/assets/images/ios/touch-icon-ipad.png\">\n<link rel=\"apple-touch-icon\"
         sizes=\"120x120\" href=\"/assets/images/ios/touch-icon-iphone-retina.png\">\n<link
         rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"/assets/images/ios/touch-icon-ipad-retina.png\">\n<script
         type=\"text/javascript\">\n(function() {\n  var apis = [window.fetch, Object.assign,
         Array.prototype.includes, NodeList.prototype.forEach, Array.from];\n  apis.every(function(api)
-        {return api}) || document.write('<script src=\"/assets/js/lib/polyfills.min.js?c1d46e79\"><\\/script>');\n
-        \ window.assetsVersion = \"c1d46e79\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?c1d46e79\"
-        type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\":\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"assets_version\":\"c1d46e79\",\"locale\":\"en\",\"cdn_host\":\"\",\"il_versions\":[\"NIV\"],\"version0\":{\"version_id\":\"NASB\"},\"books\":{\"NASB\":[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"chapters\":null},{\"display\":\"Exodus\",\"osis\":\"Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"chapters\":null},{\"display\":\"Leviticus\",\"osis\":\"Lev\",\"testament\":\"OT\",\"num_chapters\":27,\"chapters\":null},{\"display\":\"Numbers\",\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null},{\"display\":\"Deuteronomy\",\"osis\":\"Deut\",\"testament\":\"OT\",\"num_chapters\":34,\"chapters\":null},{\"display\":\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null},{\"display\":\"Judges\",\"osis\":\"Judg\",\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null},{\"display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\",\"num_chapters\":4,\"chapters\":null},{\"display\":\"1
+        {return api}) || document.write('<script src=\"/assets/js/lib/polyfills.min.js?8392aea6\"><\\/script>');\n
+        \ window.assetsVersion = \"8392aea6\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?8392aea6\"
+        type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\":\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"assets_version\":\"8392aea6\",\"locale\":\"en\",\"cdn_host\":\"\",\"il_versions\":[\"NIV\"],\"version0\":{\"version_id\":\"NASB\"},\"books\":{\"NASB\":[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"chapters\":null},{\"display\":\"Exodus\",\"osis\":\"Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"chapters\":null},{\"display\":\"Leviticus\",\"osis\":\"Lev\",\"testament\":\"OT\",\"num_chapters\":27,\"chapters\":null},{\"display\":\"Numbers\",\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null},{\"display\":\"Deuteronomy\",\"osis\":\"Deut\",\"testament\":\"OT\",\"num_chapters\":34,\"chapters\":null},{\"display\":\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null},{\"display\":\"Judges\",\"osis\":\"Judg\",\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null},{\"display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\",\"num_chapters\":4,\"chapters\":null},{\"display\":\"1
         Samuel\",\"osis\":\"1Sam\",\"testament\":\"OT\",\"num_chapters\":31,\"chapters\":null},{\"display\":\"2
         Samuel\",\"osis\":\"2Sam\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null},{\"display\":\"1
         Kings\",\"osis\":\"1Kgs\",\"testament\":\"OT\",\"num_chapters\":22,\"chapters\":null},{\"display\":\"2
@@ -96,15 +96,15 @@ interactions:
         \   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n
         \   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n
         \ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');\n
-        \ ga('create', 'UA-40541058-9', {'sampleRate':100,'cookieDomain':'biblegateway.com'});\n
-        \ ga('set', 'referrer', '');\n  ga('set', 'title', '');\n  ga('send', {'hitType':'pageview','page':'/www/nasb'});\n</script>\n<script
-        type='text/javascript'>\n !function(a9,a,p,s,t,A,g){if(a[a9])return;function
-        q(c,r){a[a9]._Q.push([c,r])}a[a9]={init:function(){q(\"i\",arguments)},fetchBids:function(){q(\"f\",arguments)},setDisplayBids:function(){},_Q:[]};A=p.createElement(s);A.async=!0;A.src=t;g=p.getElementsByTagName(s)[0];g.parentNode.insertBefore(A,g)}(\"apstag\",window,document,\"script\",\"//c.amazon-adsystem.com/aax2/apstag.js\");\n
+        \ ga('create', 'UA-40541058-9',\n    {'sampleRate':100,'cookieDomain':'biblegateway.com'}\n
+        \ );\n  ga('set', 'referrer', '');\n  ga('set', 'title', '');\n  ga('send',
+        {'hitType':'pageview','page':'/www/nasb'});\n</script>\n<script type='text/javascript'>\n
+        !function(a9,a,p,s,t,A,g){if(a[a9])return;function q(c,r){a[a9]._Q.push([c,r])}a[a9]={init:function(){q(\"i\",arguments)},fetchBids:function(){q(\"f\",arguments)},setDisplayBids:function(){},_Q:[]};A=p.createElement(s);A.async=!0;A.src=t;g=p.getElementsByTagName(s)[0];g.parentNode.insertBefore(A,g)}(\"apstag\",window,document,\"script\",\"//c.amazon-adsystem.com/aax2/apstag.js\");\n
         apstag.init({\n   pubID: '3281',\n   adServer: 'googletag'\n });\n</script>\n
-        \   <link href=\"/assets/css/passage.min.css?c1d46e79\" media=\"screen\" rel=\"stylesheet\"
-        type=\"text/css\" />\n<link href=\"/assets/css/passage.min.css?c1d46e79\"
-        media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?c1d46e79\"
-        media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?c1d46e79\"
+        \   <link href=\"/assets/css/passage.min.css?8392aea6\" media=\"screen\" rel=\"stylesheet\"
+        type=\"text/css\" />\n<link href=\"/assets/css/passage.min.css?8392aea6\"
+        media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?8392aea6\"
+        media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?8392aea6\"
         media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n</head>\n\n<body
         class=\" s-footnotes s-versenums s-headings hide-resources page-passage no-eu
         us\">\n    <svg xmlns=\"http://www.w3.org/2000/svg\" style=\"display: none;\"><symbol
@@ -374,38 +374,38 @@ interactions:
         role=\"alert\" aria-label=\"user notice\" class='sys-announce'>\n                <div
         class=\"wrapper\">\n                  <div class=\"sys-announce-content\">\n
         \                   <div class='sys-announce-body'>\n                        <div
-        class='sys-announce-body-inner'>\n                              <a href=\"https://www.biblegateway.com/landing/days-of-repentance/?utm_source=bg&utm_medium=alert&utm_campaign=alert_repentance_word\">Sign
-        up to get <strong>Days of Repentance</strong>, and learn Hebrew Words of the
-        Day.</a>                        </div>\n                    </div>\n                    <div
-        class='close'><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5
-        11.5\" width=\"11.5\" height=\"11.5\"><title>close</title><use xlink:href=\"#icon-close\"></use></svg>\n</div>\n
-        \                 </div>\n                </div>\n                <div class=\"login\">\n
-        \                 <span class=\"user-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\"
-        viewBox=\"0 0 28 28\" width=\"28\" height=\"28\"><title>account</title><use
-        xlink:href=\"#icon-account\"></use></svg>\n</span>\n                  <a href=\"/login/\"
-        class=\"login-text\">Log In/Sign Up</a>\n                  <span class=\"user-name\"></span>\n
-        \                 <span class=\"user-menu-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\"
-        viewBox=\"0 0 11.5 6.5\" width=\"11.5\" height=\"6.5\"><title>show menu</title><path
-        d=\"M11.28.22a.75.75 0 0 0-1.06 0L5.75 4.69 1.28.22A.75.75 0 0 0 .22 1.28l5
-        5a.73.73 0 0 0 .53.22.74.74 0 0 0 .53-.22l5-5a.75.75 0 0 0 0-1.06z\"/></svg>\n</span>\n
-        \               </div>\n              </section>\n              <script>\n
-        \                 BG.UserInfo.updateFullname();\n              </script>\n
-        \           </div><!-- user and search -->\n            <section class=\"content\">\n
-        \               <div role=\"banner\" class=\"float-header\">\n                    <div
-        class=\"search-form-nav\">\n                      <form class=\"search-form\"
-        role=\"search\" action=\"/quicksearch/\">\n                        <div class=\"search-and-submit\">\n
-        \                           <div class=\"search-bar\">\n                                <input
-        aria-label=\"Quick Search\" name=\"quicksearch\" class=\"quick-search\" type=\"text\"
-        placeholder=\"Enter passage, keyword, or topic\" value=\"Galatians 3:10-11\"
-        autocomplete=\"off\" />\n                                    <span class=\"autocomplete\"></span>\n
-        \                                                               <div id=\"resultspp\"></div>\n
-        \                           </div>\n                            <div class=\"search-submit-small\">\n
-        \                               <button class=\"search-submit\" type=\"submit\"
-        value=\"Search\"> <svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0
-        512 512\" width=\"20\" height=\"20\"><title>BibleGateway</title><path d=\"M345
-        298c15-24 23-52 23-82 0-84-68-152-152-152S64 132 64 216s68 153 152 153c31
-        0 59-9 83-25l7-5 108 109 34-34-108-109zm-44-167c23 23 36 53 36 85s-13 63-36
-        85c-22 23-52 35-85 35-32 0-62-12-85-35-22-22-35-53-35-85s13-62 35-85c23-22
+        class='sys-announce-body-inner'>\n                              <a href=\"https://www.biblegateway.com/plus/?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_nivsb_us0922\">Upgrade
+        to Bible Gateway Plus, and access the NEW <em><strong>NIV Study Bible Notes,
+        Fully Revised Edition</strong></em>. First 30-days on us!</a>                        </div>\n
+        \                   </div>\n                    <div class='close'><svg xmlns=\"http://www.w3.org/2000/svg\"
+        viewBox=\"0 0 11.5 11.5\" width=\"11.5\" height=\"11.5\"><title>close</title><use
+        xlink:href=\"#icon-close\"></use></svg>\n</div>\n                  </div>\n
+        \               </div>\n                <div class=\"login\">\n                  <span
+        class=\"user-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0
+        0 28 28\" width=\"28\" height=\"28\"><title>account</title><use xlink:href=\"#icon-account\"></use></svg>\n</span>\n
+        \                 <a href=\"/login/\" class=\"login-text\">Log In/Sign Up</a>\n
+        \                 <span class=\"user-name\"></span>\n                  <span
+        class=\"user-menu-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0
+        0 11.5 6.5\" width=\"11.5\" height=\"6.5\"><title>show menu</title><path d=\"M11.28.22a.75.75
+        0 0 0-1.06 0L5.75 4.69 1.28.22A.75.75 0 0 0 .22 1.28l5 5a.73.73 0 0 0 .53.22.74.74
+        0 0 0 .53-.22l5-5a.75.75 0 0 0 0-1.06z\"/></svg>\n</span>\n                </div>\n
+        \             </section>\n              <script>\n                  BG.UserInfo.updateFullname();\n
+        \             </script>\n            </div><!-- user and search -->\n            <section
+        class=\"content\">\n                <div role=\"banner\" class=\"float-header\">\n
+        \                   <div class=\"search-form-nav\">\n                      <form
+        class=\"search-form\" role=\"search\" action=\"/quicksearch/\">\n                        <div
+        class=\"search-and-submit\">\n                            <div class=\"search-bar\">\n
+        \                               <input aria-label=\"Quick Search\" name=\"quicksearch\"
+        class=\"quick-search\" type=\"text\" placeholder=\"Enter passage, keyword,
+        or topic\" value=\"Galatians 3:10-11\" autocomplete=\"off\" />\n                                    <span
+        class=\"autocomplete\"></span>\n                                                                <div
+        id=\"resultspp\"></div>\n                            </div>\n                            <div
+        class=\"search-submit-small\">\n                                <button class=\"search-submit\"
+        type=\"submit\" value=\"Search\"> <svg xmlns=\"http://www.w3.org/2000/svg\"
+        viewBox=\"0 0 512 512\" width=\"20\" height=\"20\"><title>BibleGateway</title><path
+        d=\"M345 298c15-24 23-52 23-82 0-84-68-152-152-152S64 132 64 216s68 153 152
+        153c31 0 59-9 83-25l7-5 108 109 34-34-108-109zm-44-167c23 23 36 53 36 85s-13
+        63-36 85c-22 23-52 35-85 35-32 0-62-12-85-35-22-22-35-53-35-85s13-62 35-85c23-22
         53-35 85-35 33 0 63 13 85 35z\"/></svg>\n</button>\n                            </div>\n
         \                       </div>\n                                                  <select
         aria-label=\"Biblical Version\" class=\"search-dropdown\" name=\"version\"><option
@@ -660,17 +660,18 @@ interactions:
         1917 (SV1917)</option>\n<option value=\"SFB\" >Svenska Folkbibeln (SFB)</option>\n<option
         value=\"SFB15\" >Svenska Folkbibeln 2015 (SFB15)</option>\n<option value=\"SVL\"
         >Swedish New Living Bible (Nya Levande Bibeln) (SVL)</option>\n<option class=\"spacer\"
-        value=\"SVL\">&nbsp;</option>\n<option class=\"lang\" value=\"SNT\">---Kiswahili
-        (SW)---</option>\n<option value=\"SNT\" >Neno: Bibilia Takatifu (SNT)</option>\n<option
+        value=\"SVL\">&nbsp;</option>\n<option class=\"lang\" value=\"TKU\">---Kiswahili
+        (SW)---</option>\n<option value=\"TKU\" >Agano Jipya: Tafsiri ya Kusoma-Kwa-Urahisi
+        (TKU)</option>\n<option value=\"SNT\" >Neno: Bibilia Takatifu (SNT)</option>\n<option
         class=\"spacer\" value=\"SNT\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-TA\">---\u0BA4\u0BAE\u0BBF\u0BB4\u0BCD
         (TA)---</option>\n<option value=\"ERV-TA\" >Tamil Bible: Easy-to-Read Version
         (ERV-TA)</option>\n<option class=\"spacer\" value=\"ERV-TA\">&nbsp;</option>\n<option
-        class=\"lang\" value=\"TNCV\">---\u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22
-        (TH)---</option>\n<option value=\"TNCV\" >Thai New Contemporary Bible (TNCV)</option>\n<option
-        value=\"ERV-TH\" >Thai New Testament: Easy-to-Read Version (ERV-TH)</option>\n<option
-        class=\"spacer\" value=\"ERV-TH\">&nbsp;</option>\n<option class=\"lang\"
-        value=\"FSV\">---Tagalog (TL)---</option>\n<option value=\"FSV\" >Ang Bagong
-        Tipan: Filipino Standard Version (FSV)</option>\n<option value=\"ABTAG1978\"
+        class=\"lang\" value=\"ERV-TH\">---\u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22
+        (TH)---</option>\n<option value=\"ERV-TH\" >Thai New Testament: Easy-to-Read
+        Version (ERV-TH)</option>\n<option value=\"TNCV\" >Thai New Contemporary Bible
+        (TNCV)</option>\n<option class=\"spacer\" value=\"TNCV\">&nbsp;</option>\n<option
+        class=\"lang\" value=\"FSV\">---Tagalog (TL)---</option>\n<option value=\"FSV\"
+        >Ang Bagong Tipan: Filipino Standard Version (FSV)</option>\n<option value=\"ABTAG1978\"
         >Ang Biblia (1978) (ABTAG1978)</option>\n<option value=\"ABTAG2001\" >Ang
         Biblia, 2001 (ABTAG2001)</option>\n<option value=\"ADB1905\" >Ang Dating Biblia
         (1905) (ADB1905)</option>\n<option value=\"ASND\" >Ang Salita ng Dios (Tagalog
@@ -1044,15 +1045,16 @@ interactions:
         1917 (SV1917)</option>\n<option value=\"SFB\" >Svenska Folkbibeln (SFB)</option>\n<option
         value=\"SFB15\" >Svenska Folkbibeln 2015 (SFB15)</option>\n<option value=\"SVL\"
         >Swedish New Living Bible (Nya Levande Bibeln) (SVL)</option>\n<option class=\"spacer\"
-        value=\"SVL\">&nbsp;</option>\n<option class=\"lang\" value=\"SNT\">&mdash;Kiswahili
-        (SW)&mdash;</option>\n<option value=\"SNT\" >Neno: Bibilia Takatifu (SNT)</option>\n<option
+        value=\"SVL\">&nbsp;</option>\n<option class=\"lang\" value=\"TKU\">&mdash;Kiswahili
+        (SW)&mdash;</option>\n<option value=\"TKU\" >Agano Jipya: Tafsiri ya Kusoma-Kwa-Urahisi
+        (TKU)</option>\n<option value=\"SNT\" >Neno: Bibilia Takatifu (SNT)</option>\n<option
         class=\"spacer\" value=\"SNT\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-TA\">&mdash;\u0BA4\u0BAE\u0BBF\u0BB4\u0BCD
         (TA)&mdash;</option>\n<option value=\"ERV-TA\" >Tamil Bible: Easy-to-Read
         Version (ERV-TA)</option>\n<option class=\"spacer\" value=\"ERV-TA\">&nbsp;</option>\n<option
-        class=\"lang\" value=\"TNCV\">&mdash;\u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22
-        (TH)&mdash;</option>\n<option value=\"TNCV\" >Thai New Contemporary Bible
-        (TNCV)</option>\n<option value=\"ERV-TH\" >Thai New Testament: Easy-to-Read
-        Version (ERV-TH)</option>\n<option class=\"spacer\" value=\"ERV-TH\">&nbsp;</option>\n<option
+        class=\"lang\" value=\"ERV-TH\">&mdash;\u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22
+        (TH)&mdash;</option>\n<option value=\"ERV-TH\" >Thai New Testament: Easy-to-Read
+        Version (ERV-TH)</option>\n<option value=\"TNCV\" >Thai New Contemporary Bible
+        (TNCV)</option>\n<option class=\"spacer\" value=\"TNCV\">&nbsp;</option>\n<option
         class=\"lang\" value=\"FSV\">&mdash;Tagalog (TL)&mdash;</option>\n<option
         value=\"FSV\" >Ang Bagong Tipan: Filipino Standard Version (FSV)</option>\n<option
         value=\"ABTAG1978\" >Ang Biblia (1978) (ABTAG1978)</option>\n<option value=\"ABTAG2001\"
@@ -1268,13 +1270,13 @@ interactions:
         value=\"NUB\" >NUB</option>\n<option value=\"SV1917\" >SV1917</option>\n<option
         value=\"SFB\" >SFB</option>\n<option value=\"SFB15\" >SFB15</option>\n<option
         value=\"SVL\" >SVL</option>\n<option class=\"spacer\" value=\"SVL\">&nbsp;</option>\n<option
-        class=\"lang\" value=\"SNT\">&mdash;SW&mdash;</option>\n<option value=\"SNT\"
-        >SNT</option>\n<option class=\"spacer\" value=\"SNT\">&nbsp;</option>\n<option
-        class=\"lang\" value=\"ERV-TA\">&mdash;TA&mdash;</option>\n<option value=\"ERV-TA\"
-        >ERV-TA</option>\n<option class=\"spacer\" value=\"ERV-TA\">&nbsp;</option>\n<option
-        class=\"lang\" value=\"TNCV\">&mdash;TH&mdash;</option>\n<option value=\"TNCV\"
-        >TNCV</option>\n<option value=\"ERV-TH\" >ERV-TH</option>\n<option class=\"spacer\"
-        value=\"ERV-TH\">&nbsp;</option>\n<option class=\"lang\" value=\"FSV\">&mdash;TL&mdash;</option>\n<option
+        class=\"lang\" value=\"TKU\">&mdash;SW&mdash;</option>\n<option value=\"TKU\"
+        >TKU</option>\n<option value=\"SNT\" >SNT</option>\n<option class=\"spacer\"
+        value=\"SNT\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-TA\">&mdash;TA&mdash;</option>\n<option
+        value=\"ERV-TA\" >ERV-TA</option>\n<option class=\"spacer\" value=\"ERV-TA\">&nbsp;</option>\n<option
+        class=\"lang\" value=\"ERV-TH\">&mdash;TH&mdash;</option>\n<option value=\"ERV-TH\"
+        >ERV-TH</option>\n<option value=\"TNCV\" >TNCV</option>\n<option class=\"spacer\"
+        value=\"TNCV\">&nbsp;</option>\n<option class=\"lang\" value=\"FSV\">&mdash;TL&mdash;</option>\n<option
         value=\"FSV\" >FSV</option>\n<option value=\"ABTAG1978\" >ABTAG1978</option>\n<option
         value=\"ABTAG2001\" >ABTAG2001</option>\n<option value=\"ADB1905\" >ADB1905</option>\n<option
         value=\"SND\" >SND</option>\n<option value=\"ASND\" >ASND</option>\n<option
@@ -1398,7 +1400,7 @@ interactions:
         class=\"product\" data-pos=\"2\" data-sku=\"9780310911722\"><div class=\"product-info\"><figure
         class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-life-application-study-bible-second-edition?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
         rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310911722\"
-        data-cbdm_sku=\"9780310911722\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9780310911722.jpg?v=1599342514\"
+        data-cbdm_sku=\"9780310911722\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9780310911722.jpg?v=1601070416\"
         alt=\"NASB, Life Application Study Bible, Second Edition\" /></a></figure><a
         class=\"product-title\" href=\"https://store.faithgateway.com/products/nasb-life-application-study-bible-second-edition?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
         rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310911722\"
@@ -1408,21 +1410,51 @@ interactions:
         .product-info --><div><a class=\"btn product-btn-buy\" href=\"https://store.faithgateway.com/products/nasb-life-application-study-bible-second-edition?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
         rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310911722\"
         data-cbdm_sku=\"9780310911722\">Buy Now</a></div></div><!-- .product --><div
-        class=\"product\" data-pos=\"3\" data-sku=\"9780310454960\"><div class=\"product-info\"><figure
-        class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-super-giant-print-reference-bible-red-letter-edition-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310454960\"
-        data-cbdm_sku=\"9780310454960\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9780310454960.jpg?v=1578551556\"
-        alt=\"NASB, Super Giant Print Reference Bible, Red Letter Edition, 1995 Text,
-        Comfort Print\" /></a></figure><a class=\"product-title\" href=\"https://store.faithgateway.com/products/nasb-super-giant-print-reference-bible-red-letter-edition-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310454960\"
-        data-cbdm_sku=\"9780310454960\">NASB, Super Giant Print Reference Bible, Red
-        Letter Edition, 1995 Text, Comfort Print</a><div class=\"product-retail-price\">Retail:
-        $49.99</div><div class=\"product-our-price\">Our Price: $34.99</div><div class=\"product-you-save\">Save:
-        $15.00 (30%)</div></div><!-- .product-info --><div><a class=\"btn product-btn-buy\"
-        href=\"https://store.faithgateway.com/products/nasb-super-giant-print-reference-bible-red-letter-edition-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310454960\"
-        data-cbdm_sku=\"9780310454960\">Buy Now</a></div></div><!-- .product --><div
-        class=\"product\" data-pos=\"4\" data-sku=\"9781418548858\"><div class=\"product-info\"><figure
+        class=\"product\" data-pos=\"3\" data-sku=\"9780310451204\"><div class=\"product-info\"><figure
+        class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-journal-the-word-reference-bible-red-letter-edition-1995-text-comfort-print-let-scripture-explain-scripture-reflect-on-what-you-learn?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310451204\"
+        data-cbdm_sku=\"9780310451204\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9780310451204.jpg?v=1585257662\"
+        alt=\"NASB, Journal the Word Reference Bible, Red Letter Edition, 1995 Text,
+        Comfort Print: Let Scripture Explain Scripture. Reflect on What You Learn.\"
+        /></a></figure><a class=\"product-title\" href=\"https://store.faithgateway.com/products/nasb-journal-the-word-reference-bible-red-letter-edition-1995-text-comfort-print-let-scripture-explain-scripture-reflect-on-what-you-learn?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310451204\"
+        data-cbdm_sku=\"9780310451204\">NASB, Journal the Word Reference Bible, Red
+        Letter Edition, 1995 Text, Comfort Print: Let Scripture Explain Scripture.
+        Reflect on What You Learn.</a><div class=\"product-retail-price\">Retail:
+        $59.99</div><div class=\"product-our-price\">Our Price: $41.99</div><div class=\"product-you-save\">Save:
+        $18.00 (30%)</div></div><!-- .product-info --><div><a class=\"btn product-btn-buy\"
+        href=\"https://store.faithgateway.com/products/nasb-journal-the-word-reference-bible-red-letter-edition-1995-text-comfort-print-let-scripture-explain-scripture-reflect-on-what-you-learn?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310451204\"
+        data-cbdm_sku=\"9780310451204\">Buy Now</a></div></div><!-- .product --><div
+        class=\"product\" data-pos=\"4\" data-sku=\"9780310451167\"><div class=\"product-info\"><figure
+        class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-single-column-reference-bible-wide-margin-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310451167\"
+        data-cbdm_sku=\"9780310451167\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9780310451167.jpg?v=1578550757\"
+        alt=\"NASB, Single-Column Reference Bible, Wide Margin, 1995 Text, Comfort
+        Print\" /></a></figure><a class=\"product-title\" href=\"https://store.faithgateway.com/products/nasb-single-column-reference-bible-wide-margin-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310451167\"
+        data-cbdm_sku=\"9780310451167\">NASB, Single-Column Reference Bible, Wide
+        Margin, 1995 Text, Comfort Print</a><div class=\"product-retail-price\">Retail:
+        $79.98</div><div class=\"product-our-price\">Our Price: $55.99</div><div class=\"product-you-save\">Save:
+        $23.99 (30%)</div></div><!-- .product-info --><div><a class=\"btn product-btn-buy\"
+        href=\"https://store.faithgateway.com/products/nasb-single-column-reference-bible-wide-margin-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310451167\"
+        data-cbdm_sku=\"9780310451167\">Buy Now</a></div></div><!-- .product --><div
+        class=\"product\" data-pos=\"5\" data-sku=\"9780310451006\"><div class=\"product-info\"><figure
+        class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-thinline-bible-large-print-red-letter-edition-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310451006\"
+        data-cbdm_sku=\"9780310451006\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9780310451006.jpg?v=1578551444\"
+        alt=\"NASB, Thinline Bible, Large Print, Red Letter Edition, 1995 Text, Comfort
+        Print\" /></a></figure><a class=\"product-title\" href=\"https://store.faithgateway.com/products/nasb-thinline-bible-large-print-red-letter-edition-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310451006\"
+        data-cbdm_sku=\"9780310451006\">NASB, Thinline Bible, Large Print, Red Letter
+        Edition, 1995 Text, Comfort Print</a><div class=\"product-retail-price\">Retail:
+        $39.99</div><div class=\"product-our-price\">Our Price: $27.99</div><div class=\"product-you-save\">Save:
+        $12.00 (30%)</div></div><!-- .product-info --><div><a class=\"btn product-btn-buy\"
+        href=\"https://store.faithgateway.com/products/nasb-thinline-bible-large-print-red-letter-edition-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780310451006\"
+        data-cbdm_sku=\"9780310451006\">Buy Now</a></div></div><!-- .product --><div
+        class=\"product\" data-pos=\"6\" data-sku=\"9781418548858\"><div class=\"product-info\"><figure
         class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-charles-f-stanley-life-principles-daily-bible-paperback?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
         rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781418548858\"
         data-cbdm_sku=\"9781418548858\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9781418548858.jpg?v=1578557622\"
@@ -1436,35 +1468,7 @@ interactions:
         $5.99 (30%)</div></div><!-- .product-info --><div><a class=\"btn product-btn-buy\"
         href=\"https://store.faithgateway.com/products/nasb-charles-f-stanley-life-principles-daily-bible-paperback?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
         rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781418548858\"
-        data-cbdm_sku=\"9781418548858\">Buy Now</a></div></div><!-- .product --><div
-        class=\"product\" data-pos=\"5\" data-sku=\"9781418542283\"><div class=\"product-info\"><figure
-        class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-macarthur-study-bible-large-print-holy-bible-new-american-standard-bible?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781418542283\"
-        data-cbdm_sku=\"9781418542283\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9781418542283.jpg?v=1578568994\"
-        alt=\"NASB, MacArthur Study Bible, Large Print: Holy Bible, New American Standard
-        Bible\" /></a></figure><a class=\"product-title\" href=\"https://store.faithgateway.com/products/nasb-macarthur-study-bible-large-print-holy-bible-new-american-standard-bible?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781418542283\"
-        data-cbdm_sku=\"9781418542283\">NASB, MacArthur Study Bible, Large Print:
-        Holy Bible, New American Standard Bible</a><div class=\"product-retail-price\">Retail:
-        $89.99</div><div class=\"product-our-price\">Our Price: $62.99</div><div class=\"product-you-save\">Save:
-        $27.00 (30%)</div></div><!-- .product-info --><div><a class=\"btn product-btn-buy\"
-        href=\"https://store.faithgateway.com/products/nasb-macarthur-study-bible-large-print-holy-bible-new-american-standard-bible?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781418542283\"
-        data-cbdm_sku=\"9781418542283\">Buy Now</a></div></div><!-- .product --><div
-        class=\"product\" data-pos=\"6\" data-sku=\"9781401679095\"><div class=\"product-info\"><figure
-        class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-macarthur-study-bible-holy-bible-new-american-standard-bible-1?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781401679095\"
-        data-cbdm_sku=\"9781401679095\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9781401679095.jpg?v=1578557520\"
-        alt=\"NASB, MacArthur Study Bible: Holy Bible, New American Standard Bible\"
-        /></a></figure><a class=\"product-title\" href=\"https://store.faithgateway.com/products/nasb-macarthur-study-bible-holy-bible-new-american-standard-bible-1?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781401679095\"
-        data-cbdm_sku=\"9781401679095\">NASB, MacArthur Study Bible: Holy Bible, New
-        American Standard Bible</a><div class=\"product-retail-price\">Retail: $74.98</div><div
-        class=\"product-our-price\">Our Price: $52.49</div><div class=\"product-you-save\">Save:
-        $22.49 (30%)</div></div><!-- .product-info --><div><a class=\"btn product-btn-buy\"
-        href=\"https://store.faithgateway.com/products/nasb-macarthur-study-bible-holy-bible-new-american-standard-bible-1?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781401679095\"
-        data-cbdm_sku=\"9781401679095\">Buy Now</a></div></div><!-- .product --></div><div
+        data-cbdm_sku=\"9781418548858\">Buy Now</a></div></div><!-- .product --></div><div
         class=\"row recommendations-view-row\"><div class=\"col-full\"><a class=\"recommendations-view-more\"
         href=\"https://store.faithgateway.com/collections/nasb?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
         rel=\"nofollow\" target=\"_blank\" onClick=\"_gaq.push(['_trackEvent','CBD
@@ -1535,7 +1539,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Sat, 12 Sep 2020 20:08:49 GMT
+      - Sat, 03 Oct 2020 22:59:47 GMT
       Server:
       - Tengine
       Strict-Transport-Security:
@@ -1545,9 +1549,9 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 1b942778c388855baa510622b5f73aeb.cloudfront.net (CloudFront)
+      - 1.1 f6f89853501e1cfbc4870a56ed142044.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - YlRoq5SJEMU_Mm09dN0UB_0qdgMxVruVVeita6nW_mM_crXFBHf-fA==
+      - MbCk5rCVMrOVOq8QprGlKhOepzvXagnOY-B74KeEjOIpcUQVfLqunw==
       X-Amz-Cf-Pop:
       - ORD53-C2
       X-Cache:

@@ -12,8 +12,8 @@ interactions:
         53:1 ESV - There Is None Who Does Good - To the - Bible Gateway</title>\n<link
         rel=\"canonical\" href=\"https://www.biblegateway.com/passage/?search=Psalm%2053%3A1&amp;version=ESV\"
         />\n<link rel=\"amphtml\" href=\"https://www.biblegateway.com/passage/?search=Psalm%2053%3A1&amp;version=ESV&amp;interface=amp\">\n<meta
-        property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?c1d46e79\"/>\n<meta
-        property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?c1d46e79\"/>\n<meta
+        property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?8392aea6\"/>\n<meta
+        property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?8392aea6\"/>\n<meta
         property=\"og:image:type\" content=\"image/png\"/>\n<meta property=\"og:image:width\"
         content=\"200\"/>\n<meta property=\"og:image:height\" content=\"200\"/>\n<meta
         property=\"og:title\" content=\"Bible Gateway passage: Psalm 53:1 - English
@@ -34,16 +34,16 @@ interactions:
         is no God.\u201D They are\" />\n<meta property=\"al:ios:url\" content=\"biblegateway://bible/Ps.53.1/ESV\"
         />\n<meta property=\"al:ios:app_store_id\" content=\"506512797\" />\n<meta
         property=\"al:ios:app_name\" content=\"Bible Gateway\" />\n<link rel=\"favorite
-        icon\" href=\"/favicon.ico?c1d46e79\" type=\"image/x-icon\" />\n<link rel=\"search\"
-        type=\"application/opensearchdescription+xml\" title=\"Bible Gateway\" href=\"/resources/opensearch/bgsearch.xml?c1d46e79\">\n\n<link
+        icon\" href=\"/favicon.ico?8392aea6\" type=\"image/x-icon\" />\n<link rel=\"search\"
+        type=\"application/opensearchdescription+xml\" title=\"Bible Gateway\" href=\"/resources/opensearch/bgsearch.xml?8392aea6\">\n\n<link
         rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"/assets/images/ios/touch-icon-ipad.png\">\n<link
         rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"/assets/images/ios/touch-icon-iphone-retina.png\">\n<link
         rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"/assets/images/ios/touch-icon-ipad-retina.png\">\n<script
         type=\"text/javascript\">\n(function() {\n  var apis = [window.fetch, Object.assign,
         Array.prototype.includes, NodeList.prototype.forEach, Array.from];\n  apis.every(function(api)
-        {return api}) || document.write('<script src=\"/assets/js/lib/polyfills.min.js?c1d46e79\"><\\/script>');\n
-        \ window.assetsVersion = \"c1d46e79\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?c1d46e79\"
-        type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\":\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"assets_version\":\"c1d46e79\",\"locale\":\"en\",\"cdn_host\":\"\",\"il_versions\":[\"NIV\"],\"version0\":{\"version_id\":\"ESV\"},\"books\":{\"ESV\":[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"chapters\":null},{\"display\":\"Exodus\",\"osis\":\"Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"chapters\":null},{\"display\":\"Leviticus\",\"osis\":\"Lev\",\"testament\":\"OT\",\"num_chapters\":27,\"chapters\":null},{\"display\":\"Numbers\",\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null},{\"display\":\"Deuteronomy\",\"osis\":\"Deut\",\"testament\":\"OT\",\"num_chapters\":34,\"chapters\":null},{\"display\":\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null},{\"display\":\"Judges\",\"osis\":\"Judg\",\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null},{\"display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\",\"num_chapters\":4,\"chapters\":null},{\"display\":\"1
+        {return api}) || document.write('<script src=\"/assets/js/lib/polyfills.min.js?8392aea6\"><\\/script>');\n
+        \ window.assetsVersion = \"8392aea6\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?8392aea6\"
+        type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\":\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"assets_version\":\"8392aea6\",\"locale\":\"en\",\"cdn_host\":\"\",\"il_versions\":[\"NIV\"],\"version0\":{\"version_id\":\"ESV\"},\"books\":{\"ESV\":[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"chapters\":null},{\"display\":\"Exodus\",\"osis\":\"Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"chapters\":null},{\"display\":\"Leviticus\",\"osis\":\"Lev\",\"testament\":\"OT\",\"num_chapters\":27,\"chapters\":null},{\"display\":\"Numbers\",\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null},{\"display\":\"Deuteronomy\",\"osis\":\"Deut\",\"testament\":\"OT\",\"num_chapters\":34,\"chapters\":null},{\"display\":\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null},{\"display\":\"Judges\",\"osis\":\"Judg\",\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null},{\"display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\",\"num_chapters\":4,\"chapters\":null},{\"display\":\"1
         Samuel\",\"osis\":\"1Sam\",\"testament\":\"OT\",\"num_chapters\":31,\"chapters\":null},{\"display\":\"2
         Samuel\",\"osis\":\"2Sam\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null},{\"display\":\"1
         Kings\",\"osis\":\"1Kgs\",\"testament\":\"OT\",\"num_chapters\":22,\"chapters\":null},{\"display\":\"2
@@ -239,15 +239,15 @@ interactions:
         \   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n
         \   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n
         \ })(window,document,'script','//www.google-analytics.com/analytics.js','ga');\n
-        \ ga('create', 'UA-40541058-4', {'sampleRate':100,'cookieDomain':'biblegateway.com'});\n
-        \ ga('set', 'referrer', '');\n  ga('set', 'title', '');\n  ga('send', {'hitType':'pageview','page':'/www/esv'});\n</script>\n<script
-        type='text/javascript'>\n !function(a9,a,p,s,t,A,g){if(a[a9])return;function
-        q(c,r){a[a9]._Q.push([c,r])}a[a9]={init:function(){q(\"i\",arguments)},fetchBids:function(){q(\"f\",arguments)},setDisplayBids:function(){},_Q:[]};A=p.createElement(s);A.async=!0;A.src=t;g=p.getElementsByTagName(s)[0];g.parentNode.insertBefore(A,g)}(\"apstag\",window,document,\"script\",\"//c.amazon-adsystem.com/aax2/apstag.js\");\n
+        \ ga('create', 'UA-40541058-4',\n    {'sampleRate':100,'cookieDomain':'biblegateway.com'}\n
+        \ );\n  ga('set', 'referrer', '');\n  ga('set', 'title', '');\n  ga('send',
+        {'hitType':'pageview','page':'/www/esv'});\n</script>\n<script type='text/javascript'>\n
+        !function(a9,a,p,s,t,A,g){if(a[a9])return;function q(c,r){a[a9]._Q.push([c,r])}a[a9]={init:function(){q(\"i\",arguments)},fetchBids:function(){q(\"f\",arguments)},setDisplayBids:function(){},_Q:[]};A=p.createElement(s);A.async=!0;A.src=t;g=p.getElementsByTagName(s)[0];g.parentNode.insertBefore(A,g)}(\"apstag\",window,document,\"script\",\"//c.amazon-adsystem.com/aax2/apstag.js\");\n
         apstag.init({\n   pubID: '3281',\n   adServer: 'googletag'\n });\n</script>\n
-        \   <link href=\"/assets/css/passage.min.css?c1d46e79\" media=\"screen\" rel=\"stylesheet\"
-        type=\"text/css\" />\n<link href=\"/assets/css/passage.min.css?c1d46e79\"
-        media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?c1d46e79\"
-        media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?c1d46e79\"
+        \   <link href=\"/assets/css/passage.min.css?8392aea6\" media=\"screen\" rel=\"stylesheet\"
+        type=\"text/css\" />\n<link href=\"/assets/css/passage.min.css?8392aea6\"
+        media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?8392aea6\"
+        media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?8392aea6\"
         media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n</head>\n\n<body
         class=\" s-footnotes s-versenums s-headings hide-resources page-passage no-eu
         us\">\n    <svg xmlns=\"http://www.w3.org/2000/svg\" style=\"display: none;\"><symbol
@@ -517,9 +517,9 @@ interactions:
         role=\"alert\" aria-label=\"user notice\" class='sys-announce'>\n                <div
         class=\"wrapper\">\n                  <div class=\"sys-announce-content\">\n
         \                   <div class='sys-announce-body'>\n                        <div
-        class='sys-announce-body-inner'>\n                              <a href=\"https://www.biblegateway.com/plus/?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_reverse0911\">Access
-        the <em>NIV Reverse Interlinear Bible</em> when you upgrade to Bible Gateway
-        Plus. Try it free for 30 days!</a>                        </div>\n                    </div>\n
+        class='sys-announce-body-inner'>\n                              <a href=\"https://www.biblegateway.com/landing/reclaiming-biblical-meditation/?utm_source=bg&utm_medium=alert&utm_campaign=alert_meditation1002\">Do
+        you long for a deeper experience with the Lord? Reclaim the discipline of
+        biblical meditation.</a>                        </div>\n                    </div>\n
         \                   <div class='close'><svg xmlns=\"http://www.w3.org/2000/svg\"
         viewBox=\"0 0 11.5 11.5\" width=\"11.5\" height=\"11.5\"><title>close</title><use
         xlink:href=\"#icon-close\"></use></svg>\n</div>\n                  </div>\n
@@ -803,17 +803,18 @@ interactions:
         1917 (SV1917)</option>\n<option value=\"SFB\" >Svenska Folkbibeln (SFB)</option>\n<option
         value=\"SFB15\" >Svenska Folkbibeln 2015 (SFB15)</option>\n<option value=\"SVL\"
         >Swedish New Living Bible (Nya Levande Bibeln) (SVL)</option>\n<option class=\"spacer\"
-        value=\"SVL\">&nbsp;</option>\n<option class=\"lang\" value=\"SNT\">---Kiswahili
-        (SW)---</option>\n<option value=\"SNT\" >Neno: Bibilia Takatifu (SNT)</option>\n<option
+        value=\"SVL\">&nbsp;</option>\n<option class=\"lang\" value=\"TKU\">---Kiswahili
+        (SW)---</option>\n<option value=\"TKU\" >Agano Jipya: Tafsiri ya Kusoma-Kwa-Urahisi
+        (TKU)</option>\n<option value=\"SNT\" >Neno: Bibilia Takatifu (SNT)</option>\n<option
         class=\"spacer\" value=\"SNT\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-TA\">---\u0BA4\u0BAE\u0BBF\u0BB4\u0BCD
         (TA)---</option>\n<option value=\"ERV-TA\" >Tamil Bible: Easy-to-Read Version
         (ERV-TA)</option>\n<option class=\"spacer\" value=\"ERV-TA\">&nbsp;</option>\n<option
-        class=\"lang\" value=\"TNCV\">---\u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22
-        (TH)---</option>\n<option value=\"TNCV\" >Thai New Contemporary Bible (TNCV)</option>\n<option
-        value=\"ERV-TH\" >Thai New Testament: Easy-to-Read Version (ERV-TH)</option>\n<option
-        class=\"spacer\" value=\"ERV-TH\">&nbsp;</option>\n<option class=\"lang\"
-        value=\"FSV\">---Tagalog (TL)---</option>\n<option value=\"FSV\" >Ang Bagong
-        Tipan: Filipino Standard Version (FSV)</option>\n<option value=\"ABTAG1978\"
+        class=\"lang\" value=\"ERV-TH\">---\u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22
+        (TH)---</option>\n<option value=\"ERV-TH\" >Thai New Testament: Easy-to-Read
+        Version (ERV-TH)</option>\n<option value=\"TNCV\" >Thai New Contemporary Bible
+        (TNCV)</option>\n<option class=\"spacer\" value=\"TNCV\">&nbsp;</option>\n<option
+        class=\"lang\" value=\"FSV\">---Tagalog (TL)---</option>\n<option value=\"FSV\"
+        >Ang Bagong Tipan: Filipino Standard Version (FSV)</option>\n<option value=\"ABTAG1978\"
         >Ang Biblia (1978) (ABTAG1978)</option>\n<option value=\"ABTAG2001\" >Ang
         Biblia, 2001 (ABTAG2001)</option>\n<option value=\"ADB1905\" >Ang Dating Biblia
         (1905) (ADB1905)</option>\n<option value=\"ASND\" >Ang Salita ng Dios (Tagalog
@@ -1187,22 +1188,23 @@ interactions:
         1917 (SV1917)</option>\n<option value=\"SFB\" >Svenska Folkbibeln (SFB)</option>\n<option
         value=\"SFB15\" >Svenska Folkbibeln 2015 (SFB15)</option>\n<option value=\"SVL\"
         >Swedish New Living Bible (Nya Levande Bibeln) (SVL)</option>\n<option class=\"spacer\"
-        value=\"SVL\">&nbsp;</option>\n<option class=\"lang\" value=\"SNT\">&mdash;Kiswahili
-        (SW)&mdash;</option>\n<option value=\"SNT\" >Neno: Bibilia Takatifu (SNT)</option>\n<option
+        value=\"SVL\">&nbsp;</option>\n<option class=\"lang\" value=\"TKU\">&mdash;Kiswahili
+        (SW)&mdash;</option>\n<option value=\"TKU\" >Agano Jipya: Tafsiri ya Kusoma-Kwa-Urahisi
+        (TKU)</option>\n<option value=\"SNT\" >Neno: Bibilia Takatifu (SNT)</option>\n<option
         class=\"spacer\" value=\"SNT\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-TA\">&mdash;\u0BA4\u0BAE\u0BBF\u0BB4\u0BCD
         (TA)&mdash;</option>\n<option value=\"ERV-TA\" >Tamil Bible: Easy-to-Read
         Version (ERV-TA)</option>\n<option class=\"spacer\" value=\"ERV-TA\">&nbsp;</option>\n<option
-        class=\"lang\" value=\"TNCV\">&mdash;\u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22
-        (TH)&mdash;</option>\n<option value=\"TNCV\" >Thai New Contemporary Bible
-        (TNCV)</option>\n<option value=\"ERV-TH\" >Thai New Testament: Easy-to-Read
-        Version (ERV-TH)</option>\n<option class=\"spacer\" value=\"ERV-TH\">&nbsp;</option>\n<option
+        class=\"lang\" value=\"ERV-TH\">&mdash;\u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22
+        (TH)&mdash;</option>\n<option value=\"ERV-TH\" >Thai New Testament: Easy-to-Read
+        Version (ERV-TH)</option>\n<option value=\"TNCV\" >Thai New Contemporary Bible
+        (TNCV)</option>\n<option class=\"spacer\" value=\"TNCV\">&nbsp;</option>\n<option
         class=\"lang\" value=\"FSV\">&mdash;Tagalog (TL)&mdash;</option>\n<option
         value=\"FSV\" >Ang Bagong Tipan: Filipino Standard Version (FSV)</option>\n<option
         value=\"ABTAG1978\" >Ang Biblia (1978) (ABTAG1978)</option>\n<option value=\"ABTAG2001\"
         >Ang Biblia, 2001 (ABTAG2001)</option>\n<option value=\"ADB1905\" >Ang Dating
-        Biblia (1905) (ADB1905)</option>\n<option value=\"ASND\" >Ang Salita ng Dios
-        (Tagalog Contemporary Bible) (ASND)</option>\n<option value=\"SND\" >Ang Salita
-        ng Diyos (SND)</option>\n<option value=\"MBBTAG\" >Magandang Balita Biblia
+        Biblia (1905) (ADB1905)</option>\n<option value=\"SND\" >Ang Salita ng Diyos
+        (SND)</option>\n<option value=\"ASND\" >Ang Salita ng Dios (Tagalog Contemporary
+        Bible) (ASND)</option>\n<option value=\"MBBTAG\" >Magandang Balita Biblia
         (MBBTAG)</option>\n<option value=\"MBBTAG-DC\" >Magandang Balita Biblia (with
         Deuterocanon) (MBBTAG-DC)</option>\n<option class=\"spacer\" value=\"MBBTAG-DC\">&nbsp;</option>\n<option
         class=\"lang\" value=\"NA-TWI\">&mdash;Twi (TWI)&mdash;</option>\n<option
@@ -1411,16 +1413,16 @@ interactions:
         value=\"NUB\" >NUB</option>\n<option value=\"SV1917\" >SV1917</option>\n<option
         value=\"SFB\" >SFB</option>\n<option value=\"SFB15\" >SFB15</option>\n<option
         value=\"SVL\" >SVL</option>\n<option class=\"spacer\" value=\"SVL\">&nbsp;</option>\n<option
-        class=\"lang\" value=\"SNT\">&mdash;SW&mdash;</option>\n<option value=\"SNT\"
-        >SNT</option>\n<option class=\"spacer\" value=\"SNT\">&nbsp;</option>\n<option
-        class=\"lang\" value=\"ERV-TA\">&mdash;TA&mdash;</option>\n<option value=\"ERV-TA\"
-        >ERV-TA</option>\n<option class=\"spacer\" value=\"ERV-TA\">&nbsp;</option>\n<option
-        class=\"lang\" value=\"TNCV\">&mdash;TH&mdash;</option>\n<option value=\"TNCV\"
-        >TNCV</option>\n<option value=\"ERV-TH\" >ERV-TH</option>\n<option class=\"spacer\"
-        value=\"ERV-TH\">&nbsp;</option>\n<option class=\"lang\" value=\"FSV\">&mdash;TL&mdash;</option>\n<option
+        class=\"lang\" value=\"TKU\">&mdash;SW&mdash;</option>\n<option value=\"TKU\"
+        >TKU</option>\n<option value=\"SNT\" >SNT</option>\n<option class=\"spacer\"
+        value=\"SNT\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-TA\">&mdash;TA&mdash;</option>\n<option
+        value=\"ERV-TA\" >ERV-TA</option>\n<option class=\"spacer\" value=\"ERV-TA\">&nbsp;</option>\n<option
+        class=\"lang\" value=\"ERV-TH\">&mdash;TH&mdash;</option>\n<option value=\"ERV-TH\"
+        >ERV-TH</option>\n<option value=\"TNCV\" >TNCV</option>\n<option class=\"spacer\"
+        value=\"TNCV\">&nbsp;</option>\n<option class=\"lang\" value=\"FSV\">&mdash;TL&mdash;</option>\n<option
         value=\"FSV\" >FSV</option>\n<option value=\"ABTAG1978\" >ABTAG1978</option>\n<option
         value=\"ABTAG2001\" >ABTAG2001</option>\n<option value=\"ADB1905\" >ADB1905</option>\n<option
-        value=\"ASND\" >ASND</option>\n<option value=\"SND\" >SND</option>\n<option
+        value=\"SND\" >SND</option>\n<option value=\"ASND\" >ASND</option>\n<option
         value=\"MBBTAG\" >MBBTAG</option>\n<option value=\"MBBTAG-DC\" >MBBTAG-DC</option>\n<option
         class=\"spacer\" value=\"MBBTAG-DC\">&nbsp;</option>\n<option class=\"lang\"
         value=\"NA-TWI\">&mdash;TWI&mdash;</option>\n<option value=\"NA-TWI\" >NA-TWI</option>\n<option
@@ -1505,96 +1507,95 @@ interactions:
         \ </div>\n</div>\n\n<section class=\"other-resources\">\n    <div class=\"layout-container
         container\">\n      <div class=\"recommendations-header-column col-full\"><h4>Bible
         Gateway Recommends</h4></div><div class=\"row recommendations-products-row\"><div
-        class=\"product\" data-pos=\"1\" data-sku=\"565453\"><div class=\"product-info\"><figure
-        class=\"product-img\"><a href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=565453&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433565458\"
-        data-cbdm_sku=\"565453\"><img src=\"https://g.christianbook.com/dg/product/web/f108/565453.jpg\"
-        alt=\"ESV Journaling Bible, Interleaved Edition--Imitation  leather with summer
-        garden design\" /></a></figure><a class=\"product-title\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=565453&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433565458\"
-        data-cbdm_sku=\"565453\">ESV Journaling Bible, Interleaved Edition--Imitation
-        \ leather with summer garden design</a><div class=\"product-retail-price\">Retail:
-        $49.99</div><div class=\"product-our-price\">Our Price: $21.99</div><div class=\"product-you-save\">Save:
-        $28.00 (56%)</div><div class=\"merch-stars stars-50\"><img src=\"/assets/images/merch/stars50.png?c1d46e79\"
+        class=\"product\" data-pos=\"1\" data-sku=\"564772\"><div class=\"product-info\"><figure
+        class=\"product-img\"><a href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=564772&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433564772\"
+        data-cbdm_sku=\"564772\"><img src=\"https://g.christianbook.com/dg/product/web/f108/564772.jpg\"
+        alt=\"ESV MacArthur Study Bible--soft leather-look, olive with Celtic cross
+        design\" /></a></figure><a class=\"product-title\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=564772&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433564772\"
+        data-cbdm_sku=\"564772\">ESV MacArthur Study Bible--soft leather-look, olive
+        with Celtic cross design</a><div class=\"product-retail-price\">Retail: $74.99</div><div
+        class=\"product-our-price\">Our Price: $37.49</div><div class=\"product-you-save\">Save:
+        $37.50 (50%)</div><div class=\"merch-stars stars-45\"><img src=\"/assets/images/merch/stars45.png?8392aea6\"
+        alt=\"4.5 of 5.0 stars\" /></div></div><!-- .product-info --><div><a class=\"btn
+        product-btn-buy\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=564772&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433564772\"
+        data-cbdm_sku=\"564772\">Buy Now</a></div></div><!-- .product --><div class=\"product\"
+        data-pos=\"2\" data-sku=\"412964\"><div class=\"product-info\"><figure class=\"product-img\"><a
+        href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=412964&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780781412964\"
+        data-cbdm_sku=\"412964\"><img src=\"https://g.christianbook.com/dg/product/web/f108/412964.jpg\"
+        alt=\"ESV Action Study Bible Boys, Virtual Leather, Slate Gray\" /></a></figure><a
+        class=\"product-title\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=412964&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780781412964\"
+        data-cbdm_sku=\"412964\">ESV Action Study Bible Boys, Virtual Leather, Slate
+        Gray</a><div class=\"product-retail-price\">Retail: $39.99</div><div class=\"product-our-price\">Our
+        Price: $21.99</div><div class=\"product-you-save\">Save: $18.00 (45%)</div><div
+        class=\"merch-stars stars-40\"><img src=\"/assets/images/merch/stars40.png?8392aea6\"
+        alt=\"4.0 of 5.0 stars\" /></div></div><!-- .product-info --><div><a class=\"btn
+        product-btn-buy\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=412964&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9780781412964\"
+        data-cbdm_sku=\"412964\">Buy Now</a></div></div><!-- .product --><div class=\"product\"
+        data-pos=\"3\" data-sku=\"556258\"><div class=\"product-info\"><figure class=\"product-img\"><a
+        href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=556258&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433556258\"
+        data-cbdm_sku=\"556258\"><img src=\"https://g.christianbook.com/dg/product/web/f108/556258.jpg\"
+        alt=\"ESV Student Study Bible, Trutone, Chestnut\" /></a></figure><a class=\"product-title\"
+        href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=556258&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433556258\"
+        data-cbdm_sku=\"556258\">ESV Student Study Bible, Trutone, Chestnut</a><div
+        class=\"product-retail-price\">Retail: $39.99</div><div class=\"product-our-price\">Our
+        Price: $19.99</div><div class=\"product-you-save\">Save: $20.00 (50%)</div><div
+        class=\"merch-stars stars-50\"><img src=\"/assets/images/merch/stars50.png?8392aea6\"
         alt=\"5.0 of 5.0 stars\" /></div></div><!-- .product-info --><div><a class=\"btn
-        product-btn-buy\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=565453&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433565458\"
-        data-cbdm_sku=\"565453\">Buy Now</a></div></div><!-- .product --><div class=\"product\"
-        data-pos=\"2\" data-sku=\"558900\"><div class=\"product-info\"><figure class=\"product-img\"><a
-        href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=558900&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433558900\"
-        data-cbdm_sku=\"558900\"><img src=\"https://g.christianbook.com/dg/product/web/f108/558900.jpg\"
-        alt=\"ESV Value Large Print Compact Bible (TruTone Imitation Leather, Brown)\"
-        /></a></figure><a class=\"product-title\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=558900&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433558900\"
-        data-cbdm_sku=\"558900\">ESV Value Large Print Compact Bible (TruTone Imitation
-        Leather, Brown)</a><div class=\"product-retail-price\">Retail: $19.99</div><div
-        class=\"product-our-price\">Our Price: $8.99</div><div class=\"product-you-save\">Save:
-        $11.00 (55%)</div><div class=\"merch-stars stars-45\"><img src=\"/assets/images/merch/stars45.png?c1d46e79\"
+        product-btn-buy\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=556258&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433556258\"
+        data-cbdm_sku=\"556258\">Buy Now</a></div></div><!-- .product --><div class=\"product\"
+        data-pos=\"4\" data-sku=\"567018\"><div class=\"product-info\"><figure class=\"product-img\"><a
+        href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=567018&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433567018\"
+        data-cbdm_sku=\"567018\"><img src=\"https://g.christianbook.com/dg/product/web/f108/567018.jpg\"
+        alt=\"ESV Study Bible, Large-Print--soft leather-look, mahogany with trellis
+        design (indexed)\" /></a></figure><a class=\"product-title\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=567018&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433567018\"
+        data-cbdm_sku=\"567018\">ESV Study Bible, Large-Print--soft leather-look,
+        mahogany with trellis design (indexed)</a><div class=\"product-retail-price\">Retail:
+        $99.99</div><div class=\"product-our-price\">Our Price: $59.99</div><div class=\"product-you-save\">Save:
+        $40.00 (40%)</div></div><!-- .product-info --><div><a class=\"btn product-btn-buy\"
+        href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=567018&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433567018\"
+        data-cbdm_sku=\"567018\">Buy Now</a></div></div><!-- .product --><div class=\"product\"
+        data-pos=\"5\" data-sku=\"554711\"><div class=\"product-info\"><figure class=\"product-img\"><a
+        href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=554711&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433554711\"
+        data-cbdm_sku=\"554711\"><img src=\"https://g.christianbook.com/dg/product/cbd/f108/554711.jpg\"
+        alt=\"ESV Holy Bible for Kids, Softcover Economy Edition\" /></a></figure><a
+        class=\"product-title\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=554711&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433554711\"
+        data-cbdm_sku=\"554711\">ESV Holy Bible for Kids, Softcover Economy Edition</a><div
+        class=\"product-retail-price\">Retail: $5.99</div><div class=\"product-our-price\">Our
+        Price: $3.49</div><div class=\"product-you-save\">Save: $2.50 (42%)</div><div
+        class=\"merch-stars stars-45\"><img src=\"/assets/images/merch/stars45.png?8392aea6\"
         alt=\"4.5 of 5.0 stars\" /></div></div><!-- .product-info --><div><a class=\"btn
-        product-btn-buy\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=558900&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433558900\"
-        data-cbdm_sku=\"558900\">Buy Now</a></div></div><!-- .product --><div class=\"product\"
-        data-pos=\"3\" data-sku=\"562075\"><div class=\"product-info\"><figure class=\"product-img\"><a
-        href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=562075&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433562075\"
-        data-cbdm_sku=\"562075\"><img src=\"https://g.christianbook.com/dg/product/web/f108/562075.jpg\"
-        alt=\"ESV Large Print Personal Size Bible (TruTone, Brown/Cordovan, Portfolio
-        Design)\" /></a></figure><a class=\"product-title\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=562075&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433562075\"
-        data-cbdm_sku=\"562075\">ESV Large Print Personal Size Bible (TruTone, Brown/Cordovan,
-        Portfolio Design)</a><div class=\"product-retail-price\">Retail: $49.99</div><div
-        class=\"product-our-price\">Our Price: $19.99</div><div class=\"product-you-save\">Save:
-        $30.00 (60%)</div><div class=\"merch-stars stars-45\"><img src=\"/assets/images/merch/stars45.png?c1d46e79\"
+        product-btn-buy\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=554711&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433554711\"
+        data-cbdm_sku=\"554711\">Buy Now</a></div></div><!-- .product --><div class=\"product\"
+        data-pos=\"6\" data-sku=\"550294\"><div class=\"product-info\"><figure class=\"product-img\"><a
+        href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=550294&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433550294\"
+        data-cbdm_sku=\"550294\"><img src=\"https://g.christianbook.com/dg/product/web/f108/550294.jpg\"
+        alt=\"ESV Large Print Value Thinline Bible (TruTone, Mahogany, Border Design)\"
+        /></a></figure><a class=\"product-title\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=550294&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433550294\"
+        data-cbdm_sku=\"550294\">ESV Large Print Value Thinline Bible (TruTone, Mahogany,
+        Border Design)</a><div class=\"product-retail-price\">Retail: $19.99</div><div
+        class=\"product-our-price\">Our Price: $11.99</div><div class=\"product-you-save\">Save:
+        $8.00 (40%)</div><div class=\"merch-stars stars-45\"><img src=\"/assets/images/merch/stars45.png?8392aea6\"
         alt=\"4.5 of 5.0 stars\" /></div></div><!-- .product-info --><div><a class=\"btn
-        product-btn-buy\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=562075&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433562075\"
-        data-cbdm_sku=\"562075\">Buy Now</a></div></div><!-- .product --><div class=\"product\"
-        data-pos=\"4\" data-sku=\"552786\"><div class=\"product-info\"><figure class=\"product-img\"><a
-        href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=552786&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433552786\"
-        data-cbdm_sku=\"552786\"><img src=\"https://g.christianbook.com/dg/product/cbd/f108/552786.jpg\"
-        alt=\"ESV Journaling Bible, Interleaved Edition, Cloth over Board, Tan\" /></a></figure><a
-        class=\"product-title\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=552786&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433552786\"
-        data-cbdm_sku=\"552786\">ESV Journaling Bible, Interleaved Edition, Cloth
-        over Board, Tan</a><div class=\"product-retail-price\">Retail: $44.99</div><div
-        class=\"product-our-price\">Our Price: $19.99</div><div class=\"product-you-save\">Save:
-        $25.00 (56%)</div><div class=\"merch-stars stars-50\"><img src=\"/assets/images/merch/stars50.png?c1d46e79\"
-        alt=\"5.0 of 5.0 stars\" /></div></div><!-- .product-info --><div><a class=\"btn
-        product-btn-buy\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=552786&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433552786\"
-        data-cbdm_sku=\"552786\">Buy Now</a></div></div><!-- .product --><div class=\"product\"
-        data-pos=\"5\" data-sku=\"564796\"><div class=\"product-info\"><figure class=\"product-img\"><a
-        href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=564796&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433564796\"
-        data-cbdm_sku=\"564796\"><img src=\"https://g.christianbook.com/dg/product/web/f108/564796.jpg\"
-        alt=\"ESV Large-Print MacArthur Study Bible--soft leather-look, brown/cordovan
-        with portfolio design\" /></a></figure><a class=\"product-title\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=564796&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433564796\"
-        data-cbdm_sku=\"564796\">ESV Large-Print MacArthur Study Bible--soft leather-look,
-        brown/cordovan with portfolio design</a><div class=\"product-retail-price\">Retail:
-        $84.99</div><div class=\"product-our-price\">Our Price: $41.99</div><div class=\"product-you-save\">Save:
-        $43.00 (51%)</div><div class=\"merch-stars stars-45\"><img src=\"/assets/images/merch/stars45.png?c1d46e79\"
-        alt=\"4.5 of 5.0 stars\" /></div></div><!-- .product-info --><div><a class=\"btn
-        product-btn-buy\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=564796&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433564796\"
-        data-cbdm_sku=\"564796\">Buy Now</a></div></div><!-- .product --><div class=\"product\"
-        data-pos=\"6\" data-sku=\"564178\"><div class=\"product-info\"><figure class=\"product-img\"><a
-        href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=564178&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433564178\"
-        data-cbdm_sku=\"564178\"><img src=\"https://g.christianbook.com/dg/product/web/f108/564178.jpg\"
-        alt=\"ESV Study Bible, Burgundy Genuine Leather with Thumb Index\" /></a></figure><a
-        class=\"product-title\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=564178&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433564178\"
-        data-cbdm_sku=\"564178\">ESV Study Bible, Burgundy Genuine Leather with Thumb
-        Index</a><div class=\"product-retail-price\">Retail: $109.99</div><div class=\"product-our-price\">Our
-        Price: $59.99</div><div class=\"product-you-save\">Save: $50.00 (45%)</div><div
-        class=\"merch-stars stars-45\"><img src=\"/assets/images/merch/stars45.png?c1d46e79\"
-        alt=\"4.5 of 5.0 stars\" /></div></div><!-- .product-info --><div><a class=\"btn
-        product-btn-buy\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=564178&amp;p=1172308\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433564178\"
-        data-cbdm_sku=\"564178\">Buy Now</a></div></div><!-- .product --></div><div
+        product-btn-buy\" href=\"https://biblegateway.christianbook.com/Christian/Books/product?item_no=550294&amp;p=1172308\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Passage\" data-cbdm_isbn=\"9781433550294\"
+        data-cbdm_sku=\"550294\">Buy Now</a></div></div><!-- .product --></div><div
         class=\"row recommendations-view-row\"><div class=\"col-full\"><a class=\"recommendations-view-more\"
         href=\"https://biblegateway.christianbook.com/page/tcg/biblegateway/bg-bibles/bg-esv?p=1172308\"
         rel=\"nofollow\" target=\"_blank\" onClick=\"_gaq.push(['_trackEvent','CBD
@@ -1665,7 +1666,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Sat, 12 Sep 2020 20:08:50 GMT
+      - Sat, 03 Oct 2020 22:59:48 GMT
       Server:
       - Tengine
       Strict-Transport-Security:
@@ -1675,9 +1676,9 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 5157cd5f2b7f43f1c49184b7e2da3d72.cloudfront.net (CloudFront)
+      - 1.1 372acd46bcc36af725daf90153b73977.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - jXdT6L14oqbJZkvTTNkcQ737vQGuLDyTXCaMquIi2s1ymzPkY1HwoA==
+      - h0WIFS24YELGACuvS0etjh4cSZzxhOQU9go8v29NiT-2zoJ6QhdlRw==
       X-Amz-Cf-Pop:
       - ORD53-C2
       X-Cache:
