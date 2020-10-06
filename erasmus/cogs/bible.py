@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import Any, Awaitable, Callable, Dict, List, Optional, TypeVar, cast
+from typing import Any, Dict, List, Optional, TypeVar, cast
+from typing_extensions import Protocol
 
 import discord
 from botus_receptus import Cog, checks, formatting
@@ -31,13 +32,16 @@ from ..service_manager import ServiceManager
 SPS = TypeVar('SPS', bound='SearchPageSource')
 
 
+class Search(Protocol):
+    async def __call__(self, *, limit: int, offset: int) -> SearchResults:
+        ...
+
+
 class SearchPageSource(EmbedPageSource[List[Passage]]):
     max_pages: int
     total: int
 
-    def __init__(
-        self, search: Callable[..., Awaitable[SearchResults]], *, per_page: int
-    ) -> None:
+    def __init__(self, search: Search, *, per_page: int) -> None:
         self.search = search
         self.per_page = per_page
         self.cache: Dict[int, List[Passage]] = {}
@@ -481,7 +485,7 @@ class Bible(Cog[Context]):
             await ctx.send_error('Please include some terms to search for')
             return
 
-        search = partial(self.service_manager.search, bible, list(terms))
+        search: Search = partial(self.service_manager.search, bible, list(terms))
         source = SearchPageSource(search, per_page=5)
         menu = MenuPages(
             source, 'I found 0 results', clear_reactions_after=True, check_embeds=True
