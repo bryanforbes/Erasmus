@@ -1,6 +1,16 @@
 from __future__ import annotations
 
-from typing import Any, AsyncIterator, Callable, List, Match, Optional, Sequence, cast
+from typing import (
+    Any,
+    AsyncIterator,
+    Callable,
+    List,
+    Match,
+    Optional,
+    Sequence,
+    Union,
+    cast,
+)
 
 from botus_receptus import Cog, re
 from botus_receptus.formatting import (
@@ -10,19 +20,16 @@ from botus_receptus.formatting import (
     pluralizer,
     underline,
 )
-from botus_receptus.interactive_pager import InteractivePager
 from discord.ext import commands
 
 from ..context import Context
+from ..db.confession import Article
 from ..db.confession import Confession as ConfessionRecord
-from ..db.confession import (
-    ConfessionTypeEnum,
-    NumberingTypeEnum,
-    SearchConfessionSource,
-)
+from ..db.confession import ConfessionTypeEnum, NumberingTypeEnum, Paragraph, Question
 from ..erasmus import Erasmus
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from ..format import int_to_roman, roman_to_int
+from ..menu_pages import EmbedPageSource, MenuPages, TotalListPageSource
 
 pluralize_match = pluralizer('match', 'es')
 
@@ -111,6 +118,45 @@ Examples:
         {prefix}confess hc a3
         {prefix}confess hc 3
 '''
+
+
+ConfessionSearchResult = Union[Paragraph, Article, Question]
+
+
+class ConfessionSearchSource(
+    TotalListPageSource[ConfessionSearchResult],
+    EmbedPageSource[List[ConfessionSearchResult]],
+):
+    entry_text_string: str
+
+    def __init__(
+        self,
+        entries: List[ConfessionSearchResult],
+        *,
+        per_page: int,
+        type: ConfessionTypeEnum,
+    ) -> None:
+        super().__init__(entries, per_page=per_page)
+
+        if type == ConfessionTypeEnum.CHAPTERS:
+            self.entry_text_string = (
+                '**{entry.chapter_number}.{entry.paragraph_number}**. '
+                '{entry.chapter.chapter_title}'
+            )
+        elif type == ConfessionTypeEnum.ARTICLES:
+            self.entry_text_string = '**{entry.article_number}**. {entry.title}'
+        elif type == ConfessionTypeEnum.QA:
+            self.entry_text_string = (
+                '**{entry.question_number}**. {entry.question_text}'
+            )
+
+    async def set_page_text(self, entries: List[ConfessionSearchResult]) -> None:
+        lines: List[str] = []
+
+        for entry in entries:
+            lines.append(self.entry_text_string.format(entry=entry))
+
+        self.embed.description = '\n'.join(lines)
 
 
 class Confession(Cog[Context]):
@@ -224,24 +270,25 @@ class Confession(Cog[Context]):
     async def search(
         self, ctx: Context, confession: ConfessionRecord, *terms: str
     ) -> None:
-        references: Optional[List[Any]] = []
-        search_func: Optional[Callable[[Sequence[str]], AsyncIterator[Any]]] = None
-
         if confession.type == ConfessionTypeEnum.CHAPTERS:
-            search_func = confession.search_paragraphs
+            search_func: Callable[
+                [Sequence[str]], AsyncIterator[ConfessionSearchResult]
+            ] = confession.search_paragraphs
         elif confession.type == ConfessionTypeEnum.ARTICLES:
             search_func = confession.search_articles
         else:  # ConfessionTypeEnum.QA
             search_func = confession.search_questions
 
-        references = [result async for result in search_func(terms)]
+        source = ConfessionSearchSource(
+            [result async for result in search_func(terms)],
+            type=confession.type,
+            per_page=20,
+        )
+        menu = MenuPages(
+            source, 'I found 0 results', clear_reactions_after=True, check_embeds=True
+        )
 
-        if references:
-            source = SearchConfessionSource.create(confession.type, references, 20)
-            paginator = InteractivePager.create(ctx, source)
-            await paginator.paginate()
-        else:
-            await ctx.send_embed('I have found 0 matches')
+        await menu.start(ctx)
 
     async def show_item(
         self, ctx: Context, confession: ConfessionRecord, match: Match[str]

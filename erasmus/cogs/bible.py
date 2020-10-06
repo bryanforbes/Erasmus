@@ -1,13 +1,11 @@
 from __future__ import annotations
 
 from functools import partial
-from typing import Any, Dict, List, Optional, Tuple, cast
+from typing import Any, Awaitable, Callable, Dict, List, Optional, TypeVar, cast
 
 import discord
-from attr import attrib, dataclass
 from botus_receptus import Cog, checks, formatting
 from botus_receptus.db import UniqueViolationError
-from botus_receptus.interactive_pager import FieldPageSource, InteractiveFieldPager
 from discord.ext import commands
 
 from ..context import Context
@@ -27,50 +25,68 @@ from ..exceptions import (
     ServiceSearchTimeout,
     ServiceTimeout,
 )
+from ..menu_pages import EmbedPageSource, MenuPages
 from ..service_manager import ServiceManager
 
+SPS = TypeVar('SPS', bound='SearchPageSource')
 
-@dataclass(slots=True)
-class SearchPageSource(FieldPageSource[Passage]):
-    search_func: Any
-    cache: Dict[int, List[Passage]] = attrib(init=False, factory=dict)
 
-    async def get_page_items(self, page: int) -> List[Passage]:
-        if page in self.cache:
-            return self.cache[page]
+class SearchPageSource(EmbedPageSource[List[Passage]]):
+    max_pages: int
+    total: int
 
-        results: SearchResults = await self.search_func(
-            offset=(page - 1) * self.per_page
+    def __init__(
+        self, search: Callable[..., Awaitable[SearchResults]], *, per_page: int
+    ) -> None:
+        self.search = search
+        self.per_page = per_page
+        self.cache: Dict[int, List[Passage]] = {}
+
+    async def prepare(self) -> None:
+        await super().prepare()
+
+        initial_results = await self.search(limit=self.per_page, offset=0)
+        max_pages, left_over = divmod(initial_results.total, self.per_page)
+
+        if left_over:
+            max_pages += 1
+
+        self.total = initial_results.total
+        self.max_pages = max_pages
+
+        if len(initial_results.verses) == self.total:
+            for page in range(0, self.max_pages):
+                page_start = page * self.per_page
+                self.cache[page] = initial_results.verses[
+                    page_start : page_start * self.per_page
+                ]
+        else:
+            self.cache[0] = initial_results.verses
+
+    def get_max_pages(self) -> int:
+        return self.max_pages
+
+    def get_total(self) -> int:
+        return self.total
+
+    def is_paginating(self) -> bool:
+        return self.total > self.per_page
+
+    async def get_page(self, page_number: int) -> List[Passage]:
+        if page_number in self.cache:
+            return self.cache[page_number]
+
+        results = await self.search(
+            limit=self.per_page, offset=page_number * self.per_page
         )
 
-        self.cache[page] = results.verses
+        self.cache[page_number] = results.verses
 
         return results.verses
 
-    def format_field(self, index: int, entry: Passage) -> Tuple[str, str]:
-        return str(entry.range), entry.text
-
-    @staticmethod
-    def create(
-        initial_results: SearchResults, search_func: Any, per_page: int
-    ) -> SearchPageSource:
-        source = SearchPageSource(
-            search_func=search_func,
-            total=initial_results.total,
-            per_page=per_page,
-            show_entry_count=True,
-        )
-
-        if len(initial_results.verses) == initial_results.total:
-            for page in range(0, source.max_pages):
-                page_start = page * per_page
-                source.cache[page + 1] = initial_results.verses[
-                    page_start : page_start + per_page
-                ]
-        else:
-            source.cache[1] = initial_results.verses
-
-        return source
+    async def set_page_text(self, entries: List[Passage]) -> None:
+        for entry in entries:
+            self.embed.add_field(name=str(entry.range), value=entry.text, inline=False)
 
 
 lookup_help = '''
@@ -465,16 +481,14 @@ class Bible(Cog[Context]):
             await ctx.send_error('Please include some terms to search for')
             return
 
-        search = partial(self.service_manager.search, bible, list(terms), limit=5)
-        async with ctx.typing():
-            initial_results: SearchResults = await search(offset=0)
+        search = partial(self.service_manager.search, bible, list(terms))
+        source = SearchPageSource(search, per_page=5)
+        menu = MenuPages(
+            source, 'I found 0 results', clear_reactions_after=True, check_embeds=True
+        )
 
-        if initial_results.total > 0:
-            source = SearchPageSource.create(initial_results, search, 5)
-            paginator = InteractiveFieldPager.create(ctx, source)
-            await paginator.paginate()
-        else:
-            await ctx.send_embed('I found 0 results')
+        async with ctx.typing():
+            await menu.start(ctx)
 
     def __add_bible_commands(self, command: str, name: str) -> None:
         lookup = self.bot.command(

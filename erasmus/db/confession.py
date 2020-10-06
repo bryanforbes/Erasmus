@@ -1,10 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
-from typing import Any, AsyncIterator, List, Sequence, Union, cast
-
-from attr import dataclass
-from botus_receptus.interactive_pager import ListPageSource
+from typing import Any, AsyncIterator, Sequence, cast
 
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from .base import Base, db
@@ -271,38 +268,3 @@ class Confession(Base):
             raise InvalidConfessionError(command)
 
         return c
-
-
-@dataclass(slots=True)
-class SearchConfessionSource(ListPageSource[Union[Paragraph, Article, Question]]):
-    entry_text_string: str
-
-    def format_line(
-        self, index: int, entry: Union[Paragraph, Article, Question]
-    ) -> str:
-        return self.entry_text_string.format(entry=entry)
-
-    @classmethod
-    def create(  # type: ignore
-        cls,
-        type: ConfessionTypeEnum,
-        entries: List[Union[Paragraph, Article, Question]],
-        per_page: int,
-    ) -> SearchConfessionSource:
-        if type == ConfessionTypeEnum.CHAPTERS:
-            entry_text_string = (
-                '**{entry.chapter_number}.{entry.paragraph_number}**. '
-                '{entry.chapter.chapter_title}'
-            )
-        elif type == ConfessionTypeEnum.ARTICLES:
-            entry_text_string = '**{entry.article_number}**. {entry.title}'
-        elif type == ConfessionTypeEnum.QA:
-            entry_text_string = '**{entry.question_number}**. {entry.question_text}'
-
-        return cls(
-            total=len(entries),
-            entries=cast(Any, entries),
-            per_page=per_page,
-            show_entry_count=True,
-            entry_text_string=entry_text_string,
-        )

@@ -16,6 +16,7 @@ ujson = "^3.2.0"
 "botus_receptus" = {rev = "6b01854de69c0dfddec1aabadb72fb8ad158c3d5", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
 "typing-extensions" = ">=3.7.4"
 more-itertools = {version = "~8.5.0"}
+discord-ext-menus = {git = "https://github.com/Rapptz/discord-ext-menus", rev = "84caae8038d0d3adc860957ccef05baeec2e2dd8"}
 
 [tool.poetry.dev-dependencies]
 asynctest = "^0.13.0"
