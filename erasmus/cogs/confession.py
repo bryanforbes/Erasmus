@@ -284,9 +284,7 @@ class Confession(Cog[Context]):
             type=confession.type,
             per_page=20,
         )
-        menu = MenuPages(
-            source, 'I found 0 results', clear_reactions_after=True, check_embeds=True
-        )
+        menu = MenuPages(source, 'I found 0 results')
 
         await menu.start(ctx)
 

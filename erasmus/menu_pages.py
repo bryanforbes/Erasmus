@@ -78,28 +78,11 @@ class TotalListPageSource(_ListPageSource[T], TotalPageSource[Sequence[T]]):
 
 
 class MenuPages(_MenuPages[TPS]):
-    def __init__(
-        self,
-        source: TPS,
-        zero_results_text: str,
-        *,
-        timeout: float = 180.0,
-        delete_message_after: bool = False,
-        clear_reactions_after: bool = False,
-        check_embeds: bool = False,
-        message: Optional[discord.Message] = None,
-    ) -> None:
+    def __init__(self, source: TPS, zero_results_text: str) -> None:
         self.zero_results_text = zero_results_text
         self.help_task: Optional[asyncio.Task[None]] = None
 
-        super().__init__(
-            source,
-            timeout=timeout,
-            delete_message_after=delete_message_after,
-            clear_reactions_after=clear_reactions_after,
-            check_embeds=check_embeds,
-            message=message,
-        )
+        super().__init__(source, check_embeds=True)
 
     async def start(
         self,
@@ -197,11 +180,18 @@ class MenuPages(_MenuPages[TPS]):
         except Exception:
             pass
 
-    def stop(self) -> None:
-        super().stop()
+    async def finalize(self, timed_out: bool) -> None:
         if self.help_task is not None:
             self.help_task.cancel()
             self.help_task = None
+
+        try:
+            if timed_out:
+                await self.message.clear_reactions()
+            else:
+                await self.message.delete()
+        except discord.HTTPException:
+            pass
 
     def reaction_check(self, payload: discord.RawReactionActionEvent) -> bool:
         process = super().reaction_check(payload)

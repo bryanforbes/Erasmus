@@ -487,9 +487,7 @@ class Bible(Cog[Context]):
 
         search: Search = partial(self.service_manager.search, bible, list(terms))
         source = SearchPageSource(search, per_page=5)
-        menu = MenuPages(
-            source, 'I found 0 results', clear_reactions_after=True, check_embeds=True
-        )
+        menu = MenuPages(source, 'I found 0 results')
 
         async with ctx.typing():
             await menu.start(ctx)
