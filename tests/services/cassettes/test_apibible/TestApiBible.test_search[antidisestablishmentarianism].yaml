@@ -8,12 +8,12 @@ interactions:
     body:
       string: '{"data":{"query":"antidisestablishmentarianism","limit":20,"offset":0,"total":0,"verses":[]},"meta":{"fums":"<script>\nvar
         _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''bde9ac85-9f0c-4cc6-a56f-448700b09621'');\\x3C/script\\x3E\");\n</script><noscript><img
-        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''bde9ac85-9f0c-4cc6-a56f-448700b09621''\"
+        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''d070ee5c-b0a2-4d80-ade0-1171d44896e4'');\\x3C/script\\x3E\");\n</script><noscript><img
+        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''d070ee5c-b0a2-4d80-ade0-1171d44896e4''\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        /></noscript>","fumsId":"bde9ac85-9f0c-4cc6-a56f-448700b09621","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''bde9ac85-9f0c-4cc6-a56f-448700b09621'');
-        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=bde9ac85-9f0c-4cc6-a56f-448700b09621\"
+        /></noscript>","fumsId":"d070ee5c-b0a2-4d80-ade0-1171d44896e4","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''d070ee5c-b0a2-4d80-ade0-1171d44896e4'');
+        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=d070ee5c-b0a2-4d80-ade0-1171d44896e4\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
         />"}}'
     headers:
@@ -22,7 +22,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 03 Oct 2020 22:59:47 GMT
+      - Wed, 07 Oct 2020 14:32:38 GMT
       Server:
       - nginx/1.16.1
       Transfer-Encoding:
@@ -47,7 +47,7 @@ interactions:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=bde9ac85-9f0c-4cc6-a56f-448700b09621
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=d070ee5c-b0a2-4d80-ade0-1171d44896e4
   response:
     body:
       string: !!binary |
@@ -56,7 +56,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '72721'
+      - '40984'
       Connection:
       - keep-alive
       Content-Length:
@@ -64,7 +64,7 @@ interactions:
       Content-Type:
       - image/gif
       Date:
-      - Sat, 03 Oct 2020 02:47:47 GMT
+      - Wed, 07 Oct 2020 03:09:36 GMT
       ETag:
       - '"28d6814f309ea289f847c69cf91194c6"'
       Last-Modified:
@@ -72,9 +72,9 @@ interactions:
       Server:
       - AmazonS3
       Via:
-      - 1.1 d23c384447496d3b595a94b6748c57c3.cloudfront.net (CloudFront)
+      - 1.1 cf1b0ae83fede8fa9f0138a499e17981.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - kNhKfgQzVKw14xyRyrYbQC2r5lilSc407ODSyxyM1Zja2LHOg_rfJg==
+      - cX9_5hz5MS_rFHFKQn9s87cc-lvw2DGXxVvcv3BoiGS-9gw4CVPAUw==
       X-Amz-Cf-Pop:
       - ORD53-C2
       X-Cache:
@@ -82,5 +82,5 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=bde9ac85-9f0c-4cc6-a56f-448700b09621
+    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=d070ee5c-b0a2-4d80-ade0-1171d44896e4
 version: 1

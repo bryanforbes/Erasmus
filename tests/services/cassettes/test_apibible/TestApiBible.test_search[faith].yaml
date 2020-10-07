@@ -57,12 +57,12 @@ interactions:
         11:22","text":"And Jesus answering saith unto them, Have faith in God."},{"id":"LUK.5.20","orgId":"LUK.5.20","bookId":"LUK","bibleId":"de4e12af7f28f599-02","chapterId":"LUK.5","reference":"Luke
         5:20","text":"And when he saw their faith, he said unto him, Man, thy sins
         are forgiven thee."}]},"meta":{"fums":"<script>\nvar _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''a9e749c1-9254-470b-b1d1-e946bf705860'');\\x3C/script\\x3E\");\n</script><noscript><img
-        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''a9e749c1-9254-470b-b1d1-e946bf705860''\"
+        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''4c4e582a-ff61-4489-8b19-4dbe1375634c'');\\x3C/script\\x3E\");\n</script><noscript><img
+        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''4c4e582a-ff61-4489-8b19-4dbe1375634c''\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        /></noscript>","fumsId":"a9e749c1-9254-470b-b1d1-e946bf705860","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''a9e749c1-9254-470b-b1d1-e946bf705860'');
-        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=a9e749c1-9254-470b-b1d1-e946bf705860\"
+        /></noscript>","fumsId":"4c4e582a-ff61-4489-8b19-4dbe1375634c","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''4c4e582a-ff61-4489-8b19-4dbe1375634c'');
+        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=4c4e582a-ff61-4489-8b19-4dbe1375634c\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
         />"}}'
     headers:
@@ -71,7 +71,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 03 Oct 2020 22:59:47 GMT
+      - Wed, 07 Oct 2020 14:32:38 GMT
       Server:
       - nginx/1.16.1
       Transfer-Encoding:
@@ -96,7 +96,7 @@ interactions:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=a9e749c1-9254-470b-b1d1-e946bf705860
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=4c4e582a-ff61-4489-8b19-4dbe1375634c
   response:
     body:
       string: !!binary |
@@ -105,7 +105,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '72721'
+      - '40983'
       Connection:
       - keep-alive
       Content-Length:
@@ -113,7 +113,7 @@ interactions:
       Content-Type:
       - image/gif
       Date:
-      - Sat, 03 Oct 2020 02:47:47 GMT
+      - Wed, 07 Oct 2020 03:09:36 GMT
       ETag:
       - '"28d6814f309ea289f847c69cf91194c6"'
       Last-Modified:
@@ -121,9 +121,9 @@ interactions:
       Server:
       - AmazonS3
       Via:
-      - 1.1 283fccaf32df5756e1af7b409b8561c3.cloudfront.net (CloudFront)
+      - 1.1 ab5193a864f389c2c920a42689722418.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - Ol-7ZsJXdvGtuu6AlOjdiu3aMKgwZJCuMANA3GdjstYJtJV-oc_OhQ==
+      - ZpfobevcJHMCZqxELXocq25pk5Fv8N8mRRZSAe41eWMHLtyx9_CRgw==
       X-Amz-Cf-Pop:
       - ORD53-C2
       X-Cache:
@@ -131,5 +131,5 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=a9e749c1-9254-470b-b1d1-e946bf705860
+    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=4c4e582a-ff61-4489-8b19-4dbe1375634c
 version: 1

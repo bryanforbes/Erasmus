@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from functools import partial
 from typing import Any, Dict, List, Optional, TypeVar, cast
 from typing_extensions import Protocol
 
@@ -33,7 +32,7 @@ SPS = TypeVar('SPS', bound='SearchPageSource')
 
 
 class Search(Protocol):
-    async def __call__(self, *, limit: int, offset: int) -> SearchResults:
+    async def __call__(self, *, per_page: int, page_number: int) -> SearchResults:
         ...
 
 
@@ -49,7 +48,7 @@ class SearchPageSource(EmbedPageSource[List[Passage]]):
     async def prepare(self) -> None:
         await super().prepare()
 
-        initial_results = await self.search(limit=self.per_page, offset=0)
+        initial_results = await self.search(per_page=self.per_page, page_number=0)
         max_pages, left_over = divmod(initial_results.total, self.per_page)
 
         if left_over:
@@ -81,7 +80,7 @@ class SearchPageSource(EmbedPageSource[List[Passage]]):
             return self.cache[page_number]
 
         results = await self.search(
-            limit=self.per_page, offset=page_number * self.per_page
+            per_page=self.per_page, page_number=page_number * self.per_page
         )
 
         self.cache[page_number] = results.verses
@@ -485,7 +484,11 @@ class Bible(Cog[Context]):
             await ctx.send_error('Please include some terms to search for')
             return
 
-        search: Search = partial(self.service_manager.search, bible, list(terms))
+        async def search(*, per_page: int, page_number: int) -> SearchResults:
+            return await self.service_manager.search(
+                bible.as_bible(), list(terms), limit=per_page, offset=page_number
+            )
+
         source = SearchPageSource(search, per_page=5)
         menu = MenuPages(source, 'I found 0 results')
 

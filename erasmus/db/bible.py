@@ -1,10 +1,11 @@
 from __future__ import annotations
 
-from typing import AsyncIterator, Optional
+from typing import AsyncIterator, Optional, cast
 
 from botus_receptus.gino import Snowflake
 
 from ..exceptions import InvalidVersionError
+from ..protocols import Bible
 from .base import Base, db
 
 
@@ -19,6 +20,9 @@ class BibleVersion(Base):
     service_version = db.Column(db.String, nullable=False)
     rtl = db.Column(db.Boolean)
     books = db.Column(db.BigInteger, nullable=False)
+
+    def as_bible(self) -> Bible:
+        return cast(Bible, self)
 
     async def set_for_user(self, user_id: int) -> None:
         await UserPref.create_or_update(
