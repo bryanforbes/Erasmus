@@ -8,7 +8,7 @@ import pendulum
 from botus_receptus import DblBot, abc, exceptions, formatting
 from botus_receptus.gino import Bot as GinoBot
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
-from discord.ext import commands
+from discord.ext import commands, menus
 
 from .config import Config
 from .context import Context
@@ -141,6 +141,14 @@ class Erasmus(
                 message = 'I need the "Add Reactions" permission'
             elif exc.reason == CannotPaginateReason.read_message_history:
                 message = 'I need the "Read Message History" permission'
+        elif isinstance(exc, menus.CannotSendMessages):
+            message = 'I need the "Send Messages" permission'
+        elif isinstance(exc, menus.CannotEmbedLinks):
+            message = 'I need the "Embed Links" permission'
+        elif isinstance(exc, menus.CannotAddReactions):
+            message = 'I need the "Add Reactions" permission'
+        elif isinstance(exc, menus.CannotReadMessageHistory):
+            message = 'I need the "Read Message History" permission'
         else:
             if ctx.command is None:
                 qualified_name = 'NO COMMAND'

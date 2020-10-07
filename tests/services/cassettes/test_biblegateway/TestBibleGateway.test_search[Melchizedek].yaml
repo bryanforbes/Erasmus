@@ -10,21 +10,21 @@ interactions:
         http-equiv=\"Content-Language\" content=\"en\">\n<meta name=\"google\" content=\"notranslate\"
         />\n<meta content='width=device-width, initial-scale=1' name='viewport'>\n<title>BibleGateway
         - Keyword Search: Melchizedek</title>\n<link rel=\"canonical\" href=\"https://www.biblegateway.com/quicksearch/?quicksearch=Melchizedek&amp;version=NASB&amp;limit=20&amp;interface=print&amp;startnumber=1\"
-        />\n<meta property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?8392aea6\"/>\n<meta
-        property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?8392aea6\"/>\n<meta
+        />\n<meta property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?e62b0a8c\"/>\n<meta
+        property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?e62b0a8c\"/>\n<meta
         property=\"og:image:type\" content=\"image/png\"/>\n<meta property=\"og:image:width\"
         content=\"200\"/>\n<meta property=\"og:image:height\" content=\"200\"/>\n<link
-        rel=\"favorite icon\" href=\"/favicon.ico?8392aea6\" type=\"image/x-icon\"
+        rel=\"favorite icon\" href=\"/favicon.ico?e62b0a8c\" type=\"image/x-icon\"
         />\n<link rel=\"search\" type=\"application/opensearchdescription+xml\" title=\"Bible
-        Gateway\" href=\"/resources/opensearch/bgsearch.xml?8392aea6\">\n\n<link rel=\"apple-touch-icon\"
+        Gateway\" href=\"/resources/opensearch/bgsearch.xml?e62b0a8c\">\n\n<link rel=\"apple-touch-icon\"
         sizes=\"76x76\" href=\"/assets/images/ios/touch-icon-ipad.png\">\n<link rel=\"apple-touch-icon\"
         sizes=\"120x120\" href=\"/assets/images/ios/touch-icon-iphone-retina.png\">\n<link
         rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"/assets/images/ios/touch-icon-ipad-retina.png\">\n<script
         type=\"text/javascript\">\n(function() {\n  var apis = [window.fetch, Object.assign,
         Array.prototype.includes, NodeList.prototype.forEach, Array.from];\n  apis.every(function(api)
-        {return api}) || document.write('<script src=\"/assets/js/lib/polyfills.min.js?8392aea6\"><\\/script>');\n
-        \ window.assetsVersion = \"8392aea6\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?8392aea6\"
-        type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\":\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"assets_version\":\"8392aea6\",\"locale\":\"en\",\"cdn_host\":\"\",\"version0\":{\"version_id\":\"NASB\"},\"books\":{\"NASB\":[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"chapters\":null},{\"display\":\"Exodus\",\"osis\":\"Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"chapters\":null},{\"display\":\"Leviticus\",\"osis\":\"Lev\",\"testament\":\"OT\",\"num_chapters\":27,\"chapters\":null},{\"display\":\"Numbers\",\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null},{\"display\":\"Deuteronomy\",\"osis\":\"Deut\",\"testament\":\"OT\",\"num_chapters\":34,\"chapters\":null},{\"display\":\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null},{\"display\":\"Judges\",\"osis\":\"Judg\",\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null},{\"display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\",\"num_chapters\":4,\"chapters\":null},{\"display\":\"1
+        {return api}) || document.write('<script src=\"/assets/js/lib/polyfills.min.js?e62b0a8c\"><\\/script>');\n
+        \ window.assetsVersion = \"e62b0a8c\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?e62b0a8c\"
+        type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\":\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"assets_version\":\"e62b0a8c\",\"locale\":\"en\",\"cdn_host\":\"\",\"version0\":{\"version_id\":\"NASB\"},\"books\":{\"NASB\":[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"chapters\":null},{\"display\":\"Exodus\",\"osis\":\"Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"chapters\":null},{\"display\":\"Leviticus\",\"osis\":\"Lev\",\"testament\":\"OT\",\"num_chapters\":27,\"chapters\":null},{\"display\":\"Numbers\",\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null},{\"display\":\"Deuteronomy\",\"osis\":\"Deut\",\"testament\":\"OT\",\"num_chapters\":34,\"chapters\":null},{\"display\":\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null},{\"display\":\"Judges\",\"osis\":\"Judg\",\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null},{\"display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\",\"num_chapters\":4,\"chapters\":null},{\"display\":\"1
         Samuel\",\"osis\":\"1Sam\",\"testament\":\"OT\",\"num_chapters\":31,\"chapters\":null},{\"display\":\"2
         Samuel\",\"osis\":\"2Sam\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null},{\"display\":\"1
         Kings\",\"osis\":\"1Kgs\",\"testament\":\"OT\",\"num_chapters\":22,\"chapters\":null},{\"display\":\"2
@@ -71,10 +71,10 @@ interactions:
         {'hitType':'pageview','page':'/www/nasb'});\n</script>\n<script type='text/javascript'>\n
         !function(a9,a,p,s,t,A,g){if(a[a9])return;function q(c,r){a[a9]._Q.push([c,r])}a[a9]={init:function(){q(\"i\",arguments)},fetchBids:function(){q(\"f\",arguments)},setDisplayBids:function(){},_Q:[]};A=p.createElement(s);A.async=!0;A.src=t;g=p.getElementsByTagName(s)[0];g.parentNode.insertBefore(A,g)}(\"apstag\",window,document,\"script\",\"//c.amazon-adsystem.com/aax2/apstag.js\");\n
         apstag.init({\n   pubID: '3281',\n   adServer: 'googletag'\n });\n</script>\n
-        \   <link href=\"/assets/css/search.min.css?8392aea6\" media=\"screen\" rel=\"stylesheet\"
-        type=\"text/css\" />\n<link href=\"/assets/css/search.min.css?8392aea6\" media=\"print\"
-        rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?8392aea6\"
-        media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?8392aea6\"
+        \   <link href=\"/assets/css/search.min.css?e62b0a8c\" media=\"screen\" rel=\"stylesheet\"
+        type=\"text/css\" />\n<link href=\"/assets/css/search.min.css?e62b0a8c\" media=\"print\"
+        rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?e62b0a8c\"
+        media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?e62b0a8c\"
         media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n</head>\n\n<body
         class=\" s-footnotes s-versenums s-headings  page-search no-eu us\">\n    <svg
         xmlns=\"http://www.w3.org/2000/svg\" style=\"display: none;\"><symbol id=\"icon-read\"
@@ -281,10 +281,10 @@ interactions:
         role=\"alert\" aria-label=\"user notice\" class='sys-announce'>\n                <div
         class=\"wrapper\">\n                  <div class=\"sys-announce-content\">\n
         \                   <div class='sys-announce-body'>\n                        <div
-        class='sys-announce-body-inner'>\n                              <a href=\"https://www.biblegateway.com/landing/reclaiming-biblical-meditation/?utm_source=bg&utm_medium=alert&utm_campaign=alert_meditation1002\">Do
-        you long for a deeper experience with the Lord? Reclaim the discipline of
-        biblical meditation.</a>                        </div>\n                    </div>\n
-        \                   <div class='close'><svg xmlns=\"http://www.w3.org/2000/svg\"
+        class='sys-announce-body-inner'>\n                              <a href=\"https://www.biblegateway.com/plus/?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_nivsb_us0922\">Upgrade
+        to Bible Gateway Plus, and access the NEW <em><strong>NIV Study Bible Notes,
+        Fully Revised Edition</strong></em>. First 30-days on us!</a>                        </div>\n
+        \                   </div>\n                    <div class='close'><svg xmlns=\"http://www.w3.org/2000/svg\"
         viewBox=\"0 0 11.5 11.5\" width=\"11.5\" height=\"11.5\"><title>close</title><use
         xlink:href=\"#icon-close\"></use></svg>\n</div>\n                  </div>\n
         \               </div>\n                <div class=\"login\">\n                  <span
@@ -1168,7 +1168,21 @@ interactions:
         \               </div>\n    </form>\n</section>\n\n    <section class=\"other-resources\">\n
         \       <div class=\"layout-container container\">\n          <div class=\"recommendations-header-column
         product-list\"><h4>Bible Gateway Recommends</h4></div><div class=\"row recommendations-products-row\"><div
-        class=\"product\" data-pos=\"1\" data-sku=\"9780310451006\"><div class=\"product-info\"><figure
+        class=\"product\" data-pos=\"1\" data-sku=\"9780310451167\"><div class=\"product-info\"><figure
+        class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-single-column-reference-bible-wide-margin-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310451167\"
+        data-cbdm_sku=\"9780310451167\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9780310451167.jpg?v=1578550757\"
+        alt=\"NASB, Single-Column Reference Bible, Wide Margin, 1995 Text, Comfort
+        Print\" /></a></figure><a class=\"product-title\" href=\"https://store.faithgateway.com/products/nasb-single-column-reference-bible-wide-margin-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310451167\"
+        data-cbdm_sku=\"9780310451167\">NASB, Single-Column Reference Bible, Wide
+        Margin, 1995 Text, Comfort Print</a><div class=\"product-retail-price\">Retail:
+        $79.98</div><div class=\"product-our-price\">Our Price: $55.99</div><div class=\"product-you-save\">Save:
+        $23.99 (30%)</div></div><!-- .product-info --><div><a class=\"btn product-btn-buy\"
+        href=\"https://store.faithgateway.com/products/nasb-single-column-reference-bible-wide-margin-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310451167\"
+        data-cbdm_sku=\"9780310451167\">Buy Now</a></div></div><!-- .product --><div
+        class=\"product\" data-pos=\"2\" data-sku=\"9780310451006\"><div class=\"product-info\"><figure
         class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-thinline-bible-large-print-red-letter-edition-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
         rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310451006\"
         data-cbdm_sku=\"9780310451006\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9780310451006.jpg?v=1578551444\"
@@ -1182,20 +1196,6 @@ interactions:
         href=\"https://store.faithgateway.com/products/nasb-thinline-bible-large-print-red-letter-edition-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
         rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310451006\"
         data-cbdm_sku=\"9780310451006\">Buy Now</a></div></div><!-- .product --><div
-        class=\"product\" data-pos=\"2\" data-sku=\"9781401679095\"><div class=\"product-info\"><figure
-        class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-macarthur-study-bible-holy-bible-new-american-standard-bible-1?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9781401679095\"
-        data-cbdm_sku=\"9781401679095\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9781401679095.jpg?v=1578557520\"
-        alt=\"NASB, MacArthur Study Bible: Holy Bible, New American Standard Bible\"
-        /></a></figure><a class=\"product-title\" href=\"https://store.faithgateway.com/products/nasb-macarthur-study-bible-holy-bible-new-american-standard-bible-1?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9781401679095\"
-        data-cbdm_sku=\"9781401679095\">NASB, MacArthur Study Bible: Holy Bible, New
-        American Standard Bible</a><div class=\"product-retail-price\">Retail: $74.98</div><div
-        class=\"product-our-price\">Our Price: $52.49</div><div class=\"product-you-save\">Save:
-        $22.49 (30%)</div></div><!-- .product-info --><div><a class=\"btn product-btn-buy\"
-        href=\"https://store.faithgateway.com/products/nasb-macarthur-study-bible-holy-bible-new-american-standard-bible-1?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9781401679095\"
-        data-cbdm_sku=\"9781401679095\">Buy Now</a></div></div><!-- .product --><div
         class=\"product\" data-pos=\"3\" data-sku=\"9780310454960\"><div class=\"product-info\"><figure
         class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-super-giant-print-reference-bible-red-letter-edition-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
         rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310454960\"
@@ -1224,33 +1224,36 @@ interactions:
         href=\"https://store.faithgateway.com/products/nasb-macarthur-study-bible-large-print-holy-bible-new-american-standard-bible?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
         rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9781418542283\"
         data-cbdm_sku=\"9781418542283\">Buy Now</a></div></div><!-- .product --><div
-        class=\"product\" data-pos=\"5\" data-sku=\"9780310911722\"><div class=\"product-info\"><figure
-        class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-life-application-study-bible-second-edition?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310911722\"
-        data-cbdm_sku=\"9780310911722\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9780310911722.jpg?v=1601070416\"
-        alt=\"NASB, Life Application Study Bible, Second Edition\" /></a></figure><a
-        class=\"product-title\" href=\"https://store.faithgateway.com/products/nasb-life-application-study-bible-second-edition?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310911722\"
-        data-cbdm_sku=\"9780310911722\">NASB, Life Application Study Bible, Second
-        Edition</a><div class=\"product-retail-price\">Retail: $89.99</div><div class=\"product-our-price\">Our
-        Price: $62.99</div><div class=\"product-you-save\">Save: $27.00 (30%)</div></div><!--
-        .product-info --><div><a class=\"btn product-btn-buy\" href=\"https://store.faithgateway.com/products/nasb-life-application-study-bible-second-edition?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310911722\"
-        data-cbdm_sku=\"9780310911722\">Buy Now</a></div></div><!-- .product --><div
-        class=\"product\" data-pos=\"6\" data-sku=\"9780310451167\"><div class=\"product-info\"><figure
-        class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-single-column-reference-bible-wide-margin-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310451167\"
-        data-cbdm_sku=\"9780310451167\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9780310451167.jpg?v=1578550757\"
-        alt=\"NASB, Single-Column Reference Bible, Wide Margin, 1995 Text, Comfort
-        Print\" /></a></figure><a class=\"product-title\" href=\"https://store.faithgateway.com/products/nasb-single-column-reference-bible-wide-margin-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310451167\"
-        data-cbdm_sku=\"9780310451167\">NASB, Single-Column Reference Bible, Wide
-        Margin, 1995 Text, Comfort Print</a><div class=\"product-retail-price\">Retail:
-        $79.98</div><div class=\"product-our-price\">Our Price: $55.99</div><div class=\"product-you-save\">Save:
-        $23.99 (30%)</div></div><!-- .product-info --><div><a class=\"btn product-btn-buy\"
-        href=\"https://store.faithgateway.com/products/nasb-single-column-reference-bible-wide-margin-1995-text-comfort-print?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
-        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310451167\"
-        data-cbdm_sku=\"9780310451167\">Buy Now</a></div></div><!-- .product --></div><div
+        class=\"product\" data-pos=\"5\" data-sku=\"9780529122520\"><div class=\"product-info\"><figure
+        class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-macarthur-study-bible-holy-bible-new-american-standard-bible-4?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780529122520\"
+        data-cbdm_sku=\"9780529122520\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9780529122520.jpg?v=1578568284\"
+        alt=\"NASB, MacArthur Study Bible: Holy Bible, New American Standard Bible\"
+        /></a></figure><a class=\"product-title\" href=\"https://store.faithgateway.com/products/nasb-macarthur-study-bible-holy-bible-new-american-standard-bible-4?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780529122520\"
+        data-cbdm_sku=\"9780529122520\">NASB, MacArthur Study Bible: Holy Bible, New
+        American Standard Bible</a><div class=\"product-retail-price\">Retail: $84.99</div><div
+        class=\"product-our-price\">Our Price: $59.49</div><div class=\"product-you-save\">Save:
+        $25.50 (30%)</div></div><!-- .product-info --><div><a class=\"btn product-btn-buy\"
+        href=\"https://store.faithgateway.com/products/nasb-macarthur-study-bible-holy-bible-new-american-standard-bible-4?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780529122520\"
+        data-cbdm_sku=\"9780529122520\">Buy Now</a></div></div><!-- .product --><div
+        class=\"product\" data-pos=\"6\" data-sku=\"9780310451204\"><div class=\"product-info\"><figure
+        class=\"product-img\"><a href=\"https://store.faithgateway.com/products/nasb-journal-the-word-reference-bible-red-letter-edition-1995-text-comfort-print-let-scripture-explain-scripture-reflect-on-what-you-learn?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310451204\"
+        data-cbdm_sku=\"9780310451204\"><img src=\"https://cdn.shopify.com/s/files/1/0044/1309/6047/products/9780310451204.jpg?v=1585257662\"
+        alt=\"NASB, Journal the Word Reference Bible, Red Letter Edition, 1995 Text,
+        Comfort Print: Let Scripture Explain Scripture. Reflect on What You Learn.\"
+        /></a></figure><a class=\"product-title\" href=\"https://store.faithgateway.com/products/nasb-journal-the-word-reference-bible-red-letter-edition-1995-text-comfort-print-let-scripture-explain-scripture-reflect-on-what-you-learn?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310451204\"
+        data-cbdm_sku=\"9780310451204\">NASB, Journal the Word Reference Bible, Red
+        Letter Edition, 1995 Text, Comfort Print: Let Scripture Explain Scripture.
+        Reflect on What You Learn.</a><div class=\"product-retail-price\">Retail:
+        $59.99</div><div class=\"product-our-price\">Our Price: $41.99</div><div class=\"product-you-save\">Save:
+        $18.00 (30%)</div></div><!-- .product-info --><div><a class=\"btn product-btn-buy\"
+        href=\"https://store.faithgateway.com/products/nasb-journal-the-word-reference-bible-red-letter-edition-1995-text-comfort-print-let-scripture-explain-scripture-reflect-on-what-you-learn?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
+        rel=\"nofollow\" target=\"_blank\" data-cbdm_src=\"CBD Quicksearch\" data-cbdm_isbn=\"9780310451204\"
+        data-cbdm_sku=\"9780310451204\">Buy Now</a></div></div><!-- .product --></div><div
         class=\"row recommendations-view-row\"><div class=\"product-list\"><a class=\"recommendations-view-more\"
         href=\"https://store.faithgateway.com/collections/nasb?utm_source=bg&utm_medium=referral&utm_campaign=bgfeed_nasb\"
         rel=\"nofollow\" target=\"_blank\" onClick=\"_gaq.push(['_trackEvent','CBD
@@ -1319,7 +1322,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Sat, 03 Oct 2020 22:59:46 GMT
+      - Wed, 07 Oct 2020 14:32:36 GMT
       Server:
       - Tengine
       Strict-Transport-Security:
@@ -1329,9 +1332,9 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 60a33b3ee10b817d4c26e943f253cb0c.cloudfront.net (CloudFront)
+      - 1.1 6aac9e8aea673b39a9a45a690aa06e62.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - 6GfSXbhZYaSh7kFGY0yv3OYEdOk1xm5vOOYLHB7ZsgqFuMUEYhFxOQ==
+      - GWrIzBIcUqgdjWuMlQSJhJITMY5h0w0xbTABLT8FUbxxaSEmcP-xKg==
       X-Amz-Cf-Pop:
       - ORD53-C2
       X-Cache:
