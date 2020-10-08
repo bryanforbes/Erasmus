@@ -12,7 +12,7 @@ alembic = "^1.4"
 beautifulsoup4 = "^4.9"
 cchardet = "^2.1"
 psycopg2 = "^2.8"
-ujson = "^3.2.0"
+ujson = "^4.0.0"
 "botus_receptus" = {rev = "6b01854de69c0dfddec1aabadb72fb8ad158c3d5", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
 "typing-extensions" = ">=3.7.4"
 more-itertools = {version = "~8.5.0"}
