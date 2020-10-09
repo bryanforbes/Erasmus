@@ -35,10 +35,10 @@ jobs:
     - name: Install dependencies
       run: |
         poetry install -v
+        ./fix-poetry.sh
     - name: Pre-commit checks
       run: |
         poetry run pre-commit run --all-files
-        ./fix-poetry.sh
     - name: Test with pytest
       run: |
         poetry run py.test --block-network --record-mode=none -p no:sugar --cov-report=xml:.coverage.xml
