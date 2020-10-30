@@ -135,8 +135,7 @@ class MenuPages(_MenuPages[TPS]):
             finally:
                 if self._running:
                     self.help_task = None
-                    if self.source.is_paginating():
-                        await self.show_page(self.current_page)
+                    await self.show_current_page()
 
         self.help_task = self.bot.loop.create_task(go_back_to_current_page())
 
