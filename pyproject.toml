@@ -13,7 +13,7 @@ beautifulsoup4 = "^4.9"
 cchardet = "^2.1"
 psycopg2 = "^2.8"
 ujson = "^4.0.0"
-"botus_receptus" = {rev = "2680792ef9eeda925aae04bc8851424d87579921", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
+"botus_receptus" = {rev = "7272feba8d4a22cc249cb677d2c19c5055965a49", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
 "typing-extensions" = ">=3.7.4"
 more-itertools = {version = "~8.6.0"}
 discord-ext-menus = {git = "https://github.com/Rapptz/discord-ext-menus", rev = "6f2b873bf0d28903eb752aa1166b3aac26dc9007"}
@@ -23,7 +23,7 @@ asynctest = "^0.13.0"
 black = "^20.8b1"
 coverage = {extras = ["toml"], version = "^5.3"}
 flake8 = "~3.8"
-flake8-bugbear = "^20.1"
+flake8-bugbear = ">=20.11.1"
 flake8-pyi = "^20.10"
 isort = "^5.6.4"
 mypy = ">=0.790"
@@ -33,7 +33,7 @@ pytest-asyncio = "^0.14.0"
 pytest-clarity = "^0.3.0-alpha.0"
 pytest-cov = "^2.10"
 pytest-mock = "^3.3.1"
-pytest-recording = "^0.10.0"
+pytest-recording = "^0.11.0"
 pytest-sugar = "^0.9.4"
 pytest-xdist = "^2.1"
 

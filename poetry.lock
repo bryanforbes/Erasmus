@@ -105,8 +105,8 @@ typing-extensions = "^3.7.4"
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
-reference = "f8c72ae10578cd09d8eee2a4a18f940d2be70b61"
-resolved_reference = "f8c72ae10578cd09d8eee2a4a18f940d2be70b61"
+reference = "c4aa979077e05dd025219488430da88772b8be4e"
+resolved_reference = "c4aa979077e05dd025219488430da88772b8be4e"
 
 [[package]]
 name = "asynctest"
@@ -187,14 +187,14 @@ develop = false
 [package.dependencies]
 aioitertools = "^0.7.1"
 async-timeout = ">=3.0.0"
-asyncpg-stubs = {version = "rev f8c72ae10578cd09d8eee2a4a18f940d2be70b61", optional = true}
+asyncpg-stubs = {version = "rev c4aa979077e05dd025219488430da88772b8be4e", optional = true}
 attrs = ">=18.2.0"
 click = ">=6.7"
 discord-ext-typed-commands = "^1.0.2"
 "discord.py" = "^1.5.1"
 "discord.py-stubs" = "^1.5.1.0"
 gino = {version = "^1.0.1", optional = true}
-gino-stubs = {version = "rev 448698c09fca9a79749a411db3a11c60b9808354", optional = true}
+gino-stubs = {version = "rev c996c30235884bb4fd182fc3cd569e0e23fc23a3", optional = true}
 pendulum = "~2.1.2"
 sqlalchemy = {version = "~1.2.18", optional = true}
 toml = "^0.10.2"
@@ -203,16 +203,16 @@ uvloop = {version = "~0.14.0", optional = true}
 
 [package.extras]
 db = ["asyncpg (>=0.18.2)"]
-db_typed = ["asyncpg (>=0.18.2)", "asyncpg-stubs @ git+https://github.com/bryanforbes/asyncpg-stubs.git@f8c72ae10578cd09d8eee2a4a18f940d2be70b61"]
+db_typed = ["asyncpg (>=0.18.2)", "asyncpg-stubs @ git+https://github.com/bryanforbes/asyncpg-stubs.git@c4aa979077e05dd025219488430da88772b8be4e"]
 gino = ["gino (>=1.0.1,<2.0.0)", "sqlalchemy (>=1.2.18,<1.3.0)"]
-gino_typed = ["gino (>=1.0.1,<2.0.0)", "sqlalchemy (>=1.2.18,<1.3.0)", "asyncpg-stubs @ git+https://github.com/bryanforbes/asyncpg-stubs.git@f8c72ae10578cd09d8eee2a4a18f940d2be70b61", "gino-stubs @ git+https://github.com/bryanforbes/gino-stubs.git@448698c09fca9a79749a411db3a11c60b9808354"]
+gino_typed = ["gino (>=1.0.1,<2.0.0)", "sqlalchemy (>=1.2.18,<1.3.0)", "asyncpg-stubs @ git+https://github.com/bryanforbes/asyncpg-stubs.git@c4aa979077e05dd025219488430da88772b8be4e", "gino-stubs @ git+https://github.com/bryanforbes/gino-stubs.git@c996c30235884bb4fd182fc3cd569e0e23fc23a3"]
 uvloop = ["uvloop (>=0.14.0,<0.15.0)"]
 
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "2680792ef9eeda925aae04bc8851424d87579921"
-resolved_reference = "2680792ef9eeda925aae04bc8851424d87579921"
+reference = "7272feba8d4a22cc249cb677d2c19c5055965a49"
+resolved_reference = "7272feba8d4a22cc249cb677d2c19c5055965a49"
 
 [[package]]
 name = "cchardet"
@@ -381,7 +381,7 @@ pyflakes = ">=2.2.0,<2.3.0"
 
 [[package]]
 name = "flake8-bugbear"
-version = "20.1.4"
+version = "20.11.1"
 description = "A plugin for flake8 finding likely bugs and design problems in your program. Contains warnings that don't belong in pyflakes and pycodestyle."
 category = "dev"
 optional = false
@@ -390,6 +390,9 @@ python-versions = ">=3.6"
 [package.dependencies]
 attrs = ">=19.2.0"
 flake8 = ">=3.0.0"
+
+[package.extras]
+dev = ["coverage", "black", "hypothesis", "hypothesmith"]
 
 [[package]]
 name = "flake8-pyi"
@@ -433,7 +436,7 @@ python-versions = "^3.6.1"
 develop = false
 
 [package.dependencies]
-asyncpg-stubs = "rev f8c72ae10578cd09d8eee2a4a18f940d2be70b61"
+asyncpg-stubs = "rev c4aa979077e05dd025219488430da88772b8be4e"
 mypy = ">=0.782"
 sqlalchemy-stubs = "^0.3"
 typing-extensions = ">=3.7.4"
@@ -441,8 +444,8 @@ typing-extensions = ">=3.7.4"
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
-reference = "448698c09fca9a79749a411db3a11c60b9808354"
-resolved_reference = "448698c09fca9a79749a411db3a11c60b9808354"
+reference = "c996c30235884bb4fd182fc3cd569e0e23fc23a3"
+resolved_reference = "c996c30235884bb4fd182fc3cd569e0e23fc23a3"
 
 [[package]]
 name = "identify"
@@ -608,7 +611,7 @@ dev = ["pre-commit", "tox"]
 
 [[package]]
 name = "pre-commit"
-version = "2.9.0"
+version = "2.9.2"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 category = "dev"
 optional = false
@@ -775,7 +778,7 @@ dev = ["pre-commit", "tox", "pytest-asyncio"]
 
 [[package]]
 name = "pytest-recording"
-version = "0.10.0"
+version = "0.11.0"
 description = "A pytest plugin that allows you recording of network interactions via VCR.py"
 category = "dev"
 optional = false
@@ -1009,7 +1012,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "3d330c546669af1951b475b69f52f7ba652ee49830aee984983874863e64c1a8"
+content-hash = "f563cd5f685054c4d036e2c0c63c530722664c78ba76b90a3db6320d9c2c4dd5"
 
 [metadata.files]
 aiodns = [
@@ -1250,8 +1253,8 @@ flake8 = [
     {file = "flake8-3.8.4.tar.gz", hash = "sha256:aadae8761ec651813c24be05c6f7b4680857ef6afaae4651a4eccaef97ce6c3b"},
 ]
 flake8-bugbear = [
-    {file = "flake8-bugbear-20.1.4.tar.gz", hash = "sha256:bd02e4b009fb153fe6072c31c52aeab5b133d508095befb2ffcf3b41c4823162"},
-    {file = "flake8_bugbear-20.1.4-py36.py37.py38-none-any.whl", hash = "sha256:a3ddc03ec28ba2296fc6f89444d1c946a6b76460f859795b35b77d4920a51b63"},
+    {file = "flake8-bugbear-20.11.1.tar.gz", hash = "sha256:528020129fea2dea33a466b9d64ab650aa3e5f9ffc788b70ea4bc6cf18283538"},
+    {file = "flake8_bugbear-20.11.1-py36.py37.py38-none-any.whl", hash = "sha256:f35b8135ece7a014bc0aee5b5d485334ac30a6da48494998cc1fabf7ec70d703"},
 ]
 flake8-pyi = [
     {file = "flake8-pyi-20.10.0.tar.gz", hash = "sha256:cee3b20a5123152c697870e7e800b60e3c95eb89e272a2b63d8cf55cafb0472c"},
@@ -1404,8 +1407,8 @@ pluggy = [
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
 ]
 pre-commit = [
-    {file = "pre_commit-2.9.0-py2.py3-none-any.whl", hash = "sha256:4aee0db4808fa48d2458cedd5b9a084ef24dda1a0fa504432a11977a4d1cfd0a"},
-    {file = "pre_commit-2.9.0.tar.gz", hash = "sha256:b2d106d51c6ba6217e859d81774aae33fd825fe7de0dcf0c46e2586333d7a92e"},
+    {file = "pre_commit-2.9.2-py2.py3-none-any.whl", hash = "sha256:949b13efb7467ae27e2c8f9e83434dacf2682595124d8902554a4e18351e5781"},
+    {file = "pre_commit-2.9.2.tar.gz", hash = "sha256:e31c04bc23741194a7c0b983fe512801e151a0638c6001c49f2bd034f8a664a1"},
 ]
 psycopg2 = [
     {file = "psycopg2-2.8.6-cp27-cp27m-win32.whl", hash = "sha256:068115e13c70dc5982dfc00c5d70437fe37c014c808acce119b5448361c03725"},
@@ -1499,8 +1502,8 @@ pytest-mock = [
     {file = "pytest_mock-3.3.1-py3-none-any.whl", hash = "sha256:024e405ad382646318c4281948aadf6fe1135632bea9cc67366ea0c4098ef5f2"},
 ]
 pytest-recording = [
-    {file = "pytest-recording-0.10.0.tar.gz", hash = "sha256:831bb7b8380c9198f96fdeca3192fb86ccaf1e65a971b4cadbff15384622c791"},
-    {file = "pytest_recording-0.10.0-py3-none-any.whl", hash = "sha256:1bc5afd263e2919c937befa07077c9dae50adbe699cb262a6793c3bd3a0bb159"},
+    {file = "pytest-recording-0.11.0.tar.gz", hash = "sha256:deea1ae6a129c9d8f8669ed7d12539748f00c8f9ef4de4f563055263e47bed08"},
+    {file = "pytest_recording-0.11.0-py3-none-any.whl", hash = "sha256:c2cc321f93ceffb2146ead0c51198e4ce86986723265ce6d4a87d3b16071eb85"},
 ]
 pytest-sugar = [
     {file = "pytest-sugar-0.9.4.tar.gz", hash = "sha256:b1b2186b0a72aada6859bea2a5764145e3aaa2c1cfbb23c3a19b5f7b697563d3"},
