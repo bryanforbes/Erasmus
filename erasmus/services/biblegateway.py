@@ -141,6 +141,9 @@ class BibleGateway(BaseService):
                 verse_text_node = node.select_one('.bible-item-text')
                 verse_reference_node = node.select_one('.bible-item-title')
 
+                if verse_text_node is None or verse_reference_node is None:
+                    raise DoNotUnderstandError
+
                 verse = VerseRange.from_string(verse_reference_node.string.strip())
 
                 return self._transform_verse_node(bible, verse, verse_text_node, True)
