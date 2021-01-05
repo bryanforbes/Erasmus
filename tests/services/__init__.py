@@ -1,4 +1,3 @@
-import aiohttp
 import pytest
 
 from erasmus.data import SearchResults, VerseRange
@@ -19,11 +18,6 @@ Mark_5_1 = (
 
 
 class ServiceTest(object):
-    @pytest.fixture
-    async def session(self, event_loop):
-        async with aiohttp.ClientSession(loop=event_loop) as session:
-            yield session
-
     @pytest.fixture
     def bible(self, request, default_version, default_abbr, MockBible):
         name = request.function.__name__
@@ -46,20 +40,28 @@ class ServiceTest(object):
 
     @pytest.mark.vcr
     @pytest.mark.asyncio
-    async def test_search(self, session, search_data, service, bible):
-        response = await service.search(session, bible, search_data['terms'])
+    async def test_search(self, aiohttp_client_session, search_data, service, bible):
+        response = await service.search(
+            aiohttp_client_session, bible, search_data['terms']
+        )
         assert response == SearchResults(search_data['verses'], search_data['total'])
 
     @pytest.mark.vcr
     @pytest.mark.asyncio
-    async def test_get_passage(self, session, passage_data, service, bible):
-        response = await service.get_passage(session, bible, passage_data['verse'])
+    async def test_get_passage(
+        self, aiohttp_client_session, passage_data, service, bible
+    ):
+        response = await service.get_passage(
+            aiohttp_client_session, bible, passage_data['verse']
+        )
         assert response == passage_data['passage']
 
     @pytest.mark.vcr
     @pytest.mark.asyncio
-    async def test_get_passage_no_passages(self, session, service, bible):
+    async def test_get_passage_no_passages(
+        self, aiohttp_client_session, service, bible
+    ):
         with pytest.raises(DoNotUnderstandError):
             await service.get_passage(
-                session, bible, VerseRange.from_string('John 50:1-4')
+                aiohttp_client_session, bible, VerseRange.from_string('John 50:1-4')
             )

@@ -290,5 +290,5 @@ class TestBibleGateway(ServiceTest):
         return 'NASB'
 
     @pytest.fixture
-    def service(self, session):
+    def service(self):
         return BibleGateway(config={})

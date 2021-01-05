@@ -1,7 +1,8 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List
+from typing import Any, AsyncIterator, Dict, List
 
+import aiohttp
 import asynctest.mock  # type: ignore
 import pytest  # type: ignore
 import pytest_mock.plugin  # type: ignore
@@ -46,6 +47,14 @@ def mock_client_session(mocker: Any, mock_response: Any) -> None:
     session.post = mocker.Mock(return_value=mock_response)
 
     return session
+
+
+@pytest.fixture
+async def aiohttp_client_session(
+    event_loop: Any,
+) -> AsyncIterator[aiohttp.ClientSession]:
+    async with aiohttp.ClientSession(loop=event_loop) as session:
+        yield session
 
 
 @pytest.fixture

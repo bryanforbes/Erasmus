@@ -26,7 +26,7 @@ class ServiceManager(object):
         return key in self.service_map
 
     def __len__(self) -> int:
-        return self.service_map.__len__()
+        return len(self.service_map)
 
     async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
         service = self.service_map.get(bible.service)
