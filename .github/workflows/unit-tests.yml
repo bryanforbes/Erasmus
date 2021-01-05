@@ -45,6 +45,6 @@ jobs:
       run: |
         poetry run py.test --block-network --record-mode=none -p no:sugar --cov-report=xml:.coverage.xml
     - name: Upload coverage to codecov
-      uses: codecov/codecov-action@v1.1.1
+      uses: codecov/codecov-action@v1.2.0
       with:
         file: ./.coverage.xml
