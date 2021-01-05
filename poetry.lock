@@ -190,7 +190,7 @@ async-timeout = ">=3.0.0"
 asyncpg-stubs = {version = "rev 387549840fb72e47588e3bf3c8ca83449dedffec", optional = true}
 attrs = ">=18.2.0"
 click = ">=6.7"
-discord-ext-typed-commands = "^1.0.2"
+discord-ext-typed-commands = "^1.0.3"
 "discord.py" = "^1.5.1"
 "discord.py-stubs" = "^1.5.1.0"
 gino = {version = "^1.0.1", optional = true}
@@ -198,7 +198,6 @@ gino-stubs = {version = "rev 3bbd15f77c1ac9b643f70874de1893fd2cccff2c", optional
 pendulum = "~2.1.2"
 sqlalchemy = {version = "~1.2.18", optional = true}
 toml = "^0.10.2"
-typing-extensions = ">=3.7.4"
 uvloop = {version = "~0.14.0", optional = true}
 
 [package.extras]
@@ -211,8 +210,8 @@ uvloop = ["uvloop (>=0.14.0,<0.15.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "81b7f5bed8d83933726a5fbee5ef111422af97ca"
-resolved_reference = "81b7f5bed8d83933726a5fbee5ef111422af97ca"
+reference = "5a582fa49289905a7fc7cf5eaea98e613d805bdc"
+resolved_reference = "5a582fa49289905a7fc7cf5eaea98e613d805bdc"
 
 [[package]]
 name = "cchardet"
@@ -299,7 +298,7 @@ resolved_reference = "6f2b873bf0d28903eb752aa1166b3aac26dc9007"
 
 [[package]]
 name = "discord-ext-typed-commands"
-version = "1.0.2"
+version = "1.0.3"
 description = "Typed commands for discord.py"
 category = "main"
 optional = false
@@ -307,7 +306,6 @@ python-versions = ">=3.6.1,<4.0.0"
 
 [package.dependencies]
 "discord.py" = ">=1.4.1,<2.0.0"
-typing-extensions = ">=3.7.4,<4.0.0"
 
 [[package]]
 name = "discord.py"
@@ -1011,7 +1009,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "ec9aac690fd2ee82c43c3882f290cce722e9fa87ef6b0a8e151d0445860cf009"
+content-hash = "cde2e6a9a7ff5b5edcd88c4201b050fc91fe334924542d209970e1d66da37040"
 
 [metadata.files]
 aiodns = [
@@ -1239,8 +1237,8 @@ coverage = [
 ]
 discord-ext-menus = []
 discord-ext-typed-commands = [
-    {file = "discord-ext-typed-commands-1.0.2.tar.gz", hash = "sha256:6e5ea78ffe3666261a817b36cab153e94ab311c24cc10fcdaab740f90a9d1f2a"},
-    {file = "discord_ext_typed_commands-1.0.2-py3-none-any.whl", hash = "sha256:ec6b6972ab5f24bdb870ca27ee4156afba67c5f22aa4be748ce04ca0c0defe44"},
+    {file = "discord-ext-typed-commands-1.0.3.tar.gz", hash = "sha256:9bffb46dfc93b50356624bfe7756a4f0dad3a8933ffc160c9a44babaa7bc194d"},
+    {file = "discord_ext_typed_commands-1.0.3-py3-none-any.whl", hash = "sha256:8d19e01bef9b256df7506d735ca7a42e4ecb49f8a68fc4536d4221e1921d8c5c"},
 ]
 "discord.py" = [
     {file = "discord.py-1.5.1-py3-none-any.whl", hash = "sha256:2367359e31f6527f8a936751fc20b09d7495dd6a76b28c8fb13d4ca6c55b7563"},

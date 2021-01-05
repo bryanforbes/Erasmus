@@ -5,10 +5,12 @@ from typing import (
     AnyStr,
     ClassVar,
     Dict,
+    Final,
     Generic,
     Iterable,
     Iterator,
     List,
+    Literal,
     Optional,
     Pattern,
     Tuple,
@@ -16,7 +18,6 @@ from typing import (
     Union,
     overload,
 )
-from typing_extensions import Final, Literal
 
 def chardet_dammit(s: Any) -> Optional[str]: ...
 

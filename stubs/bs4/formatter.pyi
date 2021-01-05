@@ -1,5 +1,15 @@
-from typing import Any, ClassVar, Dict, List, Optional, Set, Tuple, type_check_only
-from typing_extensions import Literal, Protocol
+from typing import (
+    Any,
+    ClassVar,
+    Dict,
+    List,
+    Literal,
+    Optional,
+    Protocol,
+    Set,
+    Tuple,
+    type_check_only,
+)
 
 from .dammit import EntitySubstitution as EntitySubstitution
 from .element import Tag

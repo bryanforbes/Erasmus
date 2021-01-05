@@ -6,15 +6,16 @@ from typing import (
     Callable,
     Dict,
     Generic,
+    Literal,
     NamedTuple,
     Optional,
+    Protocol,
     Sequence,
     Tuple,
     TypeVar,
     Union,
     overload,
 )
-from typing_extensions import Literal, Protocol
 
 import discord
 from discord.ext import commands

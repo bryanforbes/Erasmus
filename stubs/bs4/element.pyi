@@ -5,16 +5,19 @@ from typing import (
     ClassVar,
     Container,
     Dict,
+    Final,
     Generator,
     Generic,
     Iterable,
     Iterator,
     List,
+    Literal,
     Mapping,
     NewType,
     NoReturn,
     Optional,
     Pattern,
+    Protocol,
     Set,
     Tuple,
     Type,
@@ -23,7 +26,6 @@ from typing import (
     overload,
     type_check_only,
 )
-from typing_extensions import Final, Literal, Protocol
 
 from . import BeautifulSoup
 from .builder import TreeBuilder

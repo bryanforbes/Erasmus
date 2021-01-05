@@ -4,8 +4,7 @@ from __future__ import annotations
 
 import asyncio
 from contextlib import asynccontextmanager
-from typing import Any, AsyncIterator, Dict, List, Optional
-from typing_extensions import TypedDict
+from typing import Any, AsyncIterator, Dict, List, Optional, TypedDict
 
 from aiohttp import BasicAuth
 from attr import attrib, dataclass

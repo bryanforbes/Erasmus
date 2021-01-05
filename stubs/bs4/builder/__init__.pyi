@@ -3,6 +3,7 @@ from typing import (
     ClassVar,
     Container,
     Dict,
+    Final,
     Iterator,
     List,
     NewType,
@@ -12,7 +13,6 @@ from typing import (
     Type,
     Union,
 )
-from typing_extensions import Final
 
 from .. import BeautifulSoup
 from ..element import Tag

@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, TypeVar, cast
-from typing_extensions import Protocol
+from typing import Any, Dict, List, Optional, Protocol, TypeVar, cast
 
 import discord
 from botus_receptus import Cog, checks, formatting

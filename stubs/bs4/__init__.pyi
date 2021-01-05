@@ -5,12 +5,12 @@ from typing import (
     List,
     Mapping,
     Optional,
+    Protocol,
     Type,
     TypeVar,
     Union,
     type_check_only,
 )
-from typing_extensions import Protocol
 
 from .builder import ParserRejectedMarkup as ParserRejectedMarkup
 from .builder import TreeBuilder

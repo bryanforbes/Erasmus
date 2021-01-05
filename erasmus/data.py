@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from itertools import chain
 from pathlib import Path
-from typing import TYPE_CHECKING, Dict, List, Match, Optional, Pattern, Union
-from typing_extensions import TypedDict
+from typing import TYPE_CHECKING, Dict, List, Match, Optional, Pattern, TypedDict, Union
 
 from attr import attrib, dataclass
 from botus_receptus import re
