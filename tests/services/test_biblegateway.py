@@ -1,7 +1,7 @@
 import pytest
 
 from erasmus.data import Passage, VerseRange
-from erasmus.services import BibleGateway
+from erasmus.services.biblegateway import BibleGateway
 
 from . import Galatians_3_10_11, Mark_5_1, ServiceTest
 
@@ -291,4 +291,4 @@ class TestBibleGateway(ServiceTest):
 
     @pytest.fixture
     def service(self, session):
-        return BibleGateway(config={}, session=session)
+        return BibleGateway(config={})

@@ -46,18 +46,20 @@ class ServiceTest(object):
 
     @pytest.mark.vcr
     @pytest.mark.asyncio
-    async def test_search(self, search_data, service, bible):
-        response = await service.search(bible, search_data['terms'])
+    async def test_search(self, session, search_data, service, bible):
+        response = await service.search(session, bible, search_data['terms'])
         assert response == SearchResults(search_data['verses'], search_data['total'])
 
     @pytest.mark.vcr
     @pytest.mark.asyncio
-    async def test_get_passage(self, passage_data, service, bible):
-        response = await service.get_passage(bible, passage_data['verse'])
+    async def test_get_passage(self, session, passage_data, service, bible):
+        response = await service.get_passage(session, bible, passage_data['verse'])
         assert response == passage_data['passage']
 
     @pytest.mark.vcr
     @pytest.mark.asyncio
-    async def test_get_passage_no_passages(self, service, bible):
+    async def test_get_passage_no_passages(self, session, service, bible):
         with pytest.raises(DoNotUnderstandError):
-            await service.get_passage(bible, VerseRange.from_string('John 50:1-4'))
+            await service.get_passage(
+                session, bible, VerseRange.from_string('John 50:1-4')
+            )

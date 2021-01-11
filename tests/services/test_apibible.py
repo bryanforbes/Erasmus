@@ -4,7 +4,7 @@ import pytest
 import toml
 
 from erasmus.data import Passage, VerseRange
-from erasmus.services import ApiBible
+from erasmus.services.apibible import ApiBible
 
 from . import ServiceTest
 
@@ -290,5 +290,5 @@ class TestApiBible(ServiceTest):
         return 'KJV'
 
     @pytest.fixture
-    def service(self, config, session):
-        return ApiBible(config=config, session=session)
+    def service(self, config):
+        return ApiBible(config=config)

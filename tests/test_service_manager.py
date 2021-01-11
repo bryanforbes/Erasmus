@@ -6,9 +6,8 @@ from erasmus.service_manager import ServiceManager
 
 def MockService(mocker):
     class Service:
-        def __init__(self, *, config, session):
+        def __init__(self, *, config):
             self.config = config
-            self.session = session
             self.get_passage = mocker.CoroutineMock()
             self.search = mocker.CoroutineMock()
 
@@ -91,7 +90,7 @@ class TestServiceManager(object):
 
         assert result == Passage('blah', VerseRange.from_string('Genesis 1:2'), 'BIB2')
         manager.service_map['ServiceTwo'].get_passage.assert_called_once_with(
-            bible2, VerseRange.from_string('Genesis 1:2')
+            mock_client_session, bible2, VerseRange.from_string('Genesis 1:2')
         )
 
     @pytest.mark.asyncio
@@ -104,5 +103,5 @@ class TestServiceManager(object):
         )
         assert result == 'blah'
         manager.service_map['ServiceOne'].search.assert_called_once_with(
-            bible1, ['one', 'two', 'three'], limit=10, offset=20
+            mock_client_session, bible1, ['one', 'two', 'three'], limit=10, offset=20
         )

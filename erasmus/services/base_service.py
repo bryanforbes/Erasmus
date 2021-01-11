@@ -26,6 +26,19 @@ specials_re = re.compile(re.capture(r'[\*`]'))
 number_re = re.compile(re.capture(r'\*\*', re.one_or_more(re.DIGIT), re.DOT, r'\*\*'))
 
 
+def replace_special_escapes(bible: Bible, text: str) -> str:
+    text = whitespace_re.sub(' ', text.strip())
+    text = specials_re.sub(r'\\\1', text)
+    text = bold_re.sub('**', text)
+    text = italic_re.sub('_', text)
+
+    if bible.rtl:
+        # wrap in [RTL embedding]text[Pop directional formatting]
+        text = number_re.sub('\u202b\\1\u202c', text)
+
+    return text
+
+
 @dataclass(slots=True)
 class BaseService(object):
     session: aiohttp.ClientSession

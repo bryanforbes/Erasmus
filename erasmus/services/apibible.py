@@ -1,11 +1,9 @@
 from __future__ import annotations
 
 import asyncio
-from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
-from typing import Any, Dict, List
+from typing import Any, Dict, Final, List, Optional, TypedDict
 
-from attr import attrib, dataclass
+import aiohttp
 from botus_receptus import re
 from bs4 import BeautifulSoup
 from yarl import URL
@@ -14,12 +12,10 @@ from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import DoNotUnderstandError
 from ..json import get, loads
 from ..protocols import Bible
-from .base_service import BaseService
+from .base_service import replace_special_escapes
 
-_img_re = re.compile('src="', re.named_group('src')('[^"]+'), '"')
-
-
-book_map: Dict[str, str] = {
+_img_re: Final = re.compile('src="', re.named_group('src')('[^"]+'), '"')
+_book_map: Final[Dict[str, str]] = {
     'Genesis': 'GEN',
     'Exodus': 'EXO',
     'Leviticus': 'LEV',
@@ -103,13 +99,71 @@ book_map: Dict[str, str] = {
 }
 
 
-@dataclass(slots=True)
-class ApiBible(BaseService):
-    _passage_url: URL = attrib(init=False)
-    _search_url: URL = attrib(init=False)
-    _headers: Dict[str, str] = attrib(init=False)
+class _ResponseMetaDict(TypedDict):
+    fumsNoScript: Optional[str]
 
-    def __attrs_post_init__(self) -> None:
+
+class _ResponseDict(TypedDict):
+    data: Dict[str, Any]
+    meta: Optional[_ResponseMetaDict]
+
+
+def _get_passage_id(verses: VerseRange) -> str:
+    book_id: str = _book_map[verses.book]
+    passage_id: str = f'{book_id}.{verses.start.chapter}.{verses.start.verse}'
+
+    if verses.end is not None:
+        passage_id = f'{passage_id}-{book_id}.{verses.end.chapter}.{verses.end.verse}'
+
+    return passage_id
+
+
+def _transform_verse(bible: Bible, verses: VerseRange, content: str) -> Passage:
+    soup = BeautifulSoup(content, 'html.parser')
+
+    for number in soup.select('span.v'):
+        # Add a period after verse numbers
+        number.insert_before(' __BOLD__')
+        number.insert_after('__BOLD__ ')
+        number.string = f'{number.string}.'
+        number.unwrap()
+    for it in soup.select('span.add'):
+        it.insert_before('__ITALIC__')
+        it.insert_after('__ITALIC__')
+        it.unwrap()
+    for br in soup.select('br'):
+        br.replace_with('\n')
+
+    text = replace_special_escapes(bible, soup.get_text(''))
+
+    return Passage(text=text, range=verses, version=bible.abbr)
+
+
+async def _process_response(
+    session: aiohttp.ClientSession, response: aiohttp.ClientResponse
+) -> Dict[str, Any]:
+    if response.status != 200:
+        raise DoNotUnderstandError
+
+    json: _ResponseDict = await response.json(loads=loads, content_type=None)
+
+    # Make a request for the image to report to the Fair Use Management System
+    meta: Optional[str] = get(json, 'meta.fumsNoScript')
+    if meta:
+        if (match := _img_re.search(meta)) is not None:
+            try:
+                async with session.get(match.group('src')) as fums_response:
+                    await fums_response.read()
+            except asyncio.TimeoutError:
+                pass
+
+    return json['data']
+
+
+class ApiBible(object):
+    __slots__ = '_passage_url', '_search_url', '_headers'
+
+    def __init__(self, config: Optional[Dict[str, str]]) -> None:
         self._passage_url = URL(
             'https://api.scripture.api.bible/v1/bibles/{bibleId}/passages/{passageId}'
         )
@@ -117,110 +171,65 @@ class ApiBible(BaseService):
             'https://api.scripture.api.bible/v1/bibles/{bibleId}/search'
         )
 
-        if self.config:
-            self._headers = {'api-key': self.config.get('api_key', '')}
+        if config:
+            self._headers = {'api-key': config.get('api_key', '')}
         else:
             self._headers = {}
 
-    def _transform_verse_dict(
-        self, bible: Bible, verses: VerseRange, content: str
+    async def get_passage(
+        self, session: aiohttp.ClientSession, bible: Bible, verses: VerseRange
     ) -> Passage:
-        soup = BeautifulSoup(content, 'html.parser')
-
-        for number in soup.select('span.v'):
-            # Add a period after verse numbers
-            number.insert_before(' __BOLD__')
-            number.insert_after('__BOLD__ ')
-            number.string = f'{number.string}.'
-            number.unwrap()
-        for it in soup.select('span.add'):
-            it.insert_before('__ITALIC__')
-            it.insert_after('__ITALIC__')
-            it.unwrap()
-        for br in soup.select('br'):
-            br.replace_with('\n')
-
-        text = self._replace_special_escapes(bible, soup.get_text(''))
-
-        return Passage(text=text, range=verses, version=bible.abbr)
-
-    def _get_passage_id(self, verses: VerseRange) -> str:
-        book_id: str = book_map[verses.book]
-        passage_id: str = f'{book_id}.{verses.start.chapter}.{verses.start.verse}'
-
-        if verses.end is not None:
-            passage_id = (
-                f'{passage_id}-{book_id}.{verses.end.chapter}.{verses.end.verse}'
-            )
-
-        return passage_id
-
-    @asynccontextmanager
-    async def get_with_fums(
-        self, url: URL, query: Dict[str, Any]
-    ) -> AsyncIterator[Dict[str, Any]]:
-        async with self.get(url.with_query(query), headers=self._headers) as response:
-            if response.status != 200:
-                raise DoNotUnderstandError
-
-            obj = await response.json(loads=loads, content_type=None)
-
-            # Make a request for the image to report to the Fair Use Management System
-            meta: str = get(obj, 'meta.fumsNoScript')
-            if meta:
-                if (match := _img_re.search(meta)) is not None:
-                    try:
-                        async with self.get(match.group('src')) as fums_response:
-                            await fums_response.read()
-                    except asyncio.TimeoutError:
-                        pass
-
-            yield obj['data']
-
-    @asynccontextmanager
-    async def _request_passage(
-        self, bible: Bible, verses: VerseRange
-    ) -> AsyncIterator[Passage]:
-        async with self.get_with_fums(
+        async with session.get(
             self._passage_url.with_path(
                 self._passage_url.path.format(
                     bibleId=bible.service_version,
-                    passageId=self._get_passage_id(verses),
+                    passageId=_get_passage_id(verses),
                 )
-            ),
-            {
-                'include-notes': 'false',
-                'include-titles': 'false',
-                'include-chapter-numbers': 'false',
-                'include-verse-numbers': 'true',
-            },
+            ).with_query(
+                {
+                    'include-notes': 'false',
+                    'include-titles': 'false',
+                    'include-chapter-numbers': 'false',
+                    'include-verse-numbers': 'true',
+                }
+            )
         ) as response:
-            yield self._transform_verse_dict(bible, verses, response['content'])
+            data = await _process_response(session, response)
 
-    @asynccontextmanager
-    async def _request_search(
-        self, bible: Bible, terms: List[str], *, limit: int, offset: int
-    ) -> AsyncIterator[SearchResults]:
-        async with self.get_with_fums(
+            return _transform_verse(bible, verses, data['content'])
+
+    async def search(
+        self,
+        session: aiohttp.ClientSession,
+        bible: Bible,
+        terms: List[str],
+        *,
+        limit: int = 20,
+        offset: int = 0,
+    ) -> SearchResults:
+        async with session.get(
             self._search_url.with_path(
                 self._search_url.path.format(bibleId=bible.service_version)
-            ),
-            {
-                'query': ' '.join(terms),
-                'limit': limit,
-                'offset': offset,
-                'sort': 'canonical',
-            },
+            ).with_query(
+                {
+                    'query': ' '.join(terms),
+                    'limit': limit,
+                    'offset': offset,
+                    'sort': 'canonical',
+                }
+            )
         ) as response:
-            total: int = get(response, 'total') or 0
+            data = await _process_response(session, response)
+
+            total: int = get(data, 'total') or 0
 
             passages = [
                 Passage(
-                    text=self._replace_special_escapes(bible, verse['text']),
+                    text=replace_special_escapes(bible, verse['text']),
                     range=VerseRange.from_string(verse['reference']),
                     version=bible.abbr,
                 )
-                for verse in get(response, 'verses', [])
+                for verse in get(data, 'verses', [])
             ]
 
-            yield SearchResults(passages, total)
+            return SearchResults(passages, total)
