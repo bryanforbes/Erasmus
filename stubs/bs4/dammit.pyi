@@ -1,5 +1,7 @@
 from codecs import CodecInfo
+from collections.abc import Iterable, Iterator
 from logging import Logger
+from re import Pattern
 from typing import (
     Any,
     AnyStr,
@@ -7,12 +9,9 @@ from typing import (
     Dict,
     Final,
     Generic,
-    Iterable,
-    Iterator,
     List,
     Literal,
     Optional,
-    Pattern,
     Tuple,
     Type,
     Union,

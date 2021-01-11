@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from collections.abc import AsyncIterator, Sequence
 from enum import Enum
-from typing import Any, AsyncIterator, Sequence, cast
+from typing import Any, cast
 
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from .base import Base, db

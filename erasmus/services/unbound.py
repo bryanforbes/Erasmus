@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import AsyncIterator, Dict, List
+from typing import Dict, List
 
 from attr import attrib, dataclass
 from botus_receptus import re

@@ -3,8 +3,9 @@ from __future__ import annotations
 import asyncio
 import logging
 from abc import abstractmethod
-from contextlib import asynccontextmanager
-from typing import Any, AsyncContextManager, AsyncIterator, Dict, List, Optional
+from collections.abc import AsyncIterator
+from contextlib import AbstractAsyncContextManager, asynccontextmanager
+from typing import Any, Dict, List, Optional
 
 import aiohttp
 import async_timeout
@@ -54,13 +55,13 @@ class BaseService(object):
     @abstractmethod
     def _request_passage(
         self, bible: Bible, verses: VerseRange
-    ) -> AsyncContextManager[Passage]:
+    ) -> AbstractAsyncContextManager[Passage]:
         raise NotImplementedError
 
     @abstractmethod
     def _request_search(
         self, bible: Bible, terms: List[str], *, limit: int, offset: int
-    ) -> AsyncContextManager[SearchResults]:
+    ) -> AbstractAsyncContextManager[SearchResults]:
         raise NotImplementedError
 
     def _replace_special_escapes(self, bible: Bible, text: str) -> str:

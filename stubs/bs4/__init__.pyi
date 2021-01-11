@@ -1,9 +1,9 @@
 from collections import Counter
+from collections.abc import Mapping
 from typing import (
     Any,
     ClassVar,
     List,
-    Mapping,
     Optional,
     Protocol,
     Type,

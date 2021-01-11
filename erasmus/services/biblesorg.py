@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import asyncio
+from collections.abc import AsyncIterator
 from contextlib import asynccontextmanager
-from typing import Any, AsyncIterator, Dict, List, Optional, TypedDict
+from typing import Any, Dict, List, Optional, TypedDict
 
 from aiohttp import BasicAuth
 from attr import attrib, dataclass

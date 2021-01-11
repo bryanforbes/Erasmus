@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 import asyncio
-from typing import TYPE_CHECKING, Generic, List, Optional, Sequence, TypeVar, cast
+from collections.abc import Sequence
+from typing import TYPE_CHECKING, Generic, List, Optional, TypeVar, cast
 
 import discord
 from botus_receptus import formatting

@@ -1,16 +1,8 @@
 from __future__ import annotations
 
-from typing import (
-    Any,
-    AsyncIterator,
-    Callable,
-    List,
-    Match,
-    Optional,
-    Sequence,
-    Union,
-    cast,
-)
+from collections.abc import AsyncIterator, Callable, Sequence
+from re import Match
+from typing import Any, List, Optional, Union, cast
 
 from botus_receptus import Cog, re
 from botus_receptus.formatting import (

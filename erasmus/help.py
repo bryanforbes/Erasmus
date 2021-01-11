@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, List, Mapping, Optional
+from collections.abc import Mapping
+from typing import TYPE_CHECKING, Any, List, Optional
 
 from discord.ext import commands
 from more_itertools import unique_everseen

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import AsyncIterator, Optional, cast
+from collections.abc import AsyncIterator
+from typing import Optional, cast
 
 from botus_receptus.gino import Snowflake
 

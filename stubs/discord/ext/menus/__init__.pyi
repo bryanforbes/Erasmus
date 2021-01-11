@@ -1,16 +1,13 @@
 from collections import OrderedDict
+from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
 from typing import (
     Any,
-    AsyncIterator,
-    Awaitable,
-    Callable,
     Dict,
     Generic,
     Literal,
     NamedTuple,
     Optional,
     Protocol,
-    Sequence,
     Tuple,
     TypeVar,
     Union,

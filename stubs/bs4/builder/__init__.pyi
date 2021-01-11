@@ -1,10 +1,9 @@
+from collections.abc import Container, Iterator
 from typing import (
     Any,
     ClassVar,
-    Container,
     Dict,
     Final,
-    Iterator,
     List,
     NewType,
     Optional,
