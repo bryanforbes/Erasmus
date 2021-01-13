@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from typing import List
+from typing import Final, List
 
-_roman_pairs = tuple(
+_roman_pairs: Final = tuple(
     zip(
         ('M', 'CM', 'D', 'CD', 'C', 'XC', 'L', 'XL', 'X', 'IX', 'V', 'IV', 'I'),
         (1000, 900, 500, 400, 100, 90, 50, 40, 10, 9, 5, 4, 1),

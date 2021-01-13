@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import Any, cast
+from typing import Any, Final, cast
 
 import discord
 import pendulum
@@ -16,12 +16,12 @@ from .db import db
 from .exceptions import ErasmusError
 from .help import HelpCommand
 
-log = logging.getLogger(__name__)
+_log: Final = logging.getLogger(__name__)
 
-extensions = ('bible', 'confession', 'creeds', 'misc')
+_extensions: Final = ('bible', 'confession', 'creeds', 'misc')
 
 
-description = '''
+_description: Final = '''
 Erasmus:
 --------
 
@@ -53,16 +53,16 @@ class Erasmus(
                 'cooldown': commands.Cooldown(5, 30.0, commands.BucketType.channel),
             },
         )
-        kwargs['description'] = description
+        kwargs['description'] = _description
         kwargs['intents'] = discord.Intents(guilds=True, reactions=True, messages=True)
 
         super().__init__(config, *args, **kwargs)
 
-        for extension in extensions:
+        for extension in _extensions:
             try:
                 self.load_extension(f'erasmus.cogs.{extension}')
             except Exception:
-                log.exception('Failed to load extension %s.', extension)
+                _log.exception('Failed to load extension %s.', extension)
 
     async def on_message(self, message: discord.Message) -> None:
         if message.author.bot:
@@ -86,7 +86,7 @@ class Erasmus(
         )
 
         user = self.user
-        log.info('Erasmus ready. Logged in as %s %s', user.name, user.id)
+        _log.info('Erasmus ready. Logged in as %s %s', user.name, user.id)
 
     async def on_command_error(self, ctx: Context, exc: Exception) -> None:
         if (
@@ -160,7 +160,7 @@ class Erasmus(
             else:
                 content = ctx.message.content
 
-            log.exception(
+            _log.exception(
                 'Exception occurred in command "%s"\nInvoked by: %s',
                 qualified_name,
                 content,
@@ -171,4 +171,4 @@ class Erasmus(
         await ctx.send_error(formatting.escape(message, mass_mentions=True))
 
 
-__all__ = ['Erasmus']
+__all__: Final = ['Erasmus']

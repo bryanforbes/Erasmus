@@ -1,8 +1,10 @@
-import aiohttp
+from typing import Any, Dict, Type
+
 import pytest
 
 from erasmus.data import SearchResults, VerseRange
 from erasmus.exceptions import DoNotUnderstandError
+from erasmus.protocols import Bible, Service
 
 Galatians_3_10_11 = (
     '**10.** For as many as are of the works of the Law are under a '
@@ -20,12 +22,13 @@ Mark_5_1 = (
 
 class ServiceTest(object):
     @pytest.fixture
-    async def session(self, event_loop):
-        async with aiohttp.ClientSession(loop=event_loop) as session:
-            yield session
-
-    @pytest.fixture
-    def bible(self, request, default_version, default_abbr, MockBible):
+    def bible(
+        self,
+        request: pytest.FixtureRequest,
+        default_version: str,
+        default_abbr: str,
+        MockBible: Type[Any],
+    ) -> Any:
         name = request.function.__name__
 
         if name == 'test_search':
@@ -46,18 +49,32 @@ class ServiceTest(object):
 
     @pytest.mark.vcr
     @pytest.mark.asyncio
-    async def test_search(self, search_data, service, bible):
+    async def test_search(
+        self,
+        search_data: Dict[str, Any],
+        service: Service,
+        bible: Bible,
+    ) -> None:
         response = await service.search(bible, search_data['terms'])
         assert response == SearchResults(search_data['verses'], search_data['total'])
 
     @pytest.mark.vcr
     @pytest.mark.asyncio
-    async def test_get_passage(self, passage_data, service, bible):
+    async def test_get_passage(
+        self,
+        passage_data: Dict[str, Any],
+        service: Service,
+        bible: Bible,
+    ) -> None:
         response = await service.get_passage(bible, passage_data['verse'])
         assert response == passage_data['passage']
 
     @pytest.mark.vcr
     @pytest.mark.asyncio
-    async def test_get_passage_no_passages(self, service, bible):
+    async def test_get_passage_no_passages(
+        self,
+        service: Service,
+        bible: Bible,
+    ) -> None:
         with pytest.raises(DoNotUnderstandError):
             await service.get_passage(bible, VerseRange.from_string('John 50:1-4'))

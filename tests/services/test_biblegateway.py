@@ -1,7 +1,14 @@
+from __future__ import annotations
+
+from typing import Any, Dict, cast
+
+import _pytest
+import aiohttp
 import pytest
 
 from erasmus.data import Passage, VerseRange
-from erasmus.services import BibleGateway
+from erasmus.protocols import Service
+from erasmus.services.biblegateway import BibleGateway
 
 from . import Galatians_3_10_11, Mark_5_1, ServiceTest
 
@@ -250,8 +257,8 @@ class TestBibleGateway(ServiceTest):
         ],
         ids=['Melchizedek', 'faith', 'antidisestablishmentarianism'],
     )
-    def search_data(self, request):
-        return request.param
+    def search_data(self, request: _pytest.fixtures.SubRequest) -> Dict[str, Any]:
+        return cast(Dict[str, Any], request.param)
 
     @pytest.fixture(
         params=[
@@ -278,17 +285,17 @@ class TestBibleGateway(ServiceTest):
         ],
         ids=['Gal 3:10-11 NASB', 'Mark 5:1 NASB', 'Psalm 53:1 ESV'],
     )
-    def passage_data(self, request):
-        return request.param
+    def passage_data(self, request: _pytest.fixtures.SubRequest) -> Dict[str, Any]:
+        return cast(Dict[str, Any], request.param)
 
     @pytest.fixture
-    def default_version(self):
+    def default_version(self) -> str:
         return 'NASB'
 
     @pytest.fixture
-    def default_abbr(self):
+    def default_abbr(self) -> str:
         return 'NASB'
 
     @pytest.fixture
-    def service(self, session):
-        return BibleGateway(config={}, session=session)
+    def service(self, aiohttp_client_session: aiohttp.ClientSession) -> Service:
+        return BibleGateway(config={}, session=aiohttp_client_session)

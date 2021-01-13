@@ -20,6 +20,11 @@ class Service(Protocol):
         ...
 
     async def search(
-        self, bible: Bible, terms: List[str], *, limit: int = -1, offset: int = -1
+        self,
+        bible: Bible,
+        terms: List[str],
+        *,
+        limit: int = ...,
+        offset: int = ...,
     ) -> SearchResults:
         ...

@@ -3,7 +3,7 @@ from __future__ import annotations
 from itertools import chain
 from pathlib import Path
 from re import Match, Pattern
-from typing import TYPE_CHECKING, Dict, List, Optional, TypedDict, Union
+from typing import TYPE_CHECKING, Dict, Final, List, Optional, TypedDict, Union
 
 from attr import attrib, dataclass
 from botus_receptus import re
@@ -24,11 +24,11 @@ class BookDict(TypedDict):
 
 
 with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
-    books_data: List[BookDict] = load(f)
+    _books_data: Final[List[BookDict]] = load(f)
 
 # Inspired by
 # https://github.com/TehShrike/verse-reference-regex/blob/master/create-regex.js
-_book_re = re.compile(
+_book_re: Final = re.compile(
     re.named_group('book')(
         re.either(
             *re.escape_all(
@@ -36,7 +36,7 @@ _book_re = re.compile(
                     chain.from_iterable(
                         [
                             [book['name'], book['osis']] + book['alt']
-                            for book in books_data
+                            for book in _books_data
                         ]
                     )
                 )
@@ -46,17 +46,17 @@ _book_re = re.compile(
     re.optional(re.DOT),
 )
 
-_chapter_start_group = re.named_group('chapter_start')
-_chapter_end_group = re.named_group('chapter_end')
-_verse_start_group = re.named_group('verse_start')
-_verse_end_group = re.named_group('verse_end')
-_version_group = re.named_group('version')
-_one_or_more_digit = re.one_or_more(re.DIGIT)
-_colon = re.combine(
+_chapter_start_group: Final = re.named_group('chapter_start')
+_chapter_end_group: Final = re.named_group('chapter_end')
+_verse_start_group: Final = re.named_group('verse_start')
+_verse_end_group: Final = re.named_group('verse_end')
+_version_group: Final = re.named_group('version')
+_one_or_more_digit: Final = re.one_or_more(re.DIGIT)
+_colon: Final = re.combine(
     re.any_number_of(re.WHITESPACE), ':', re.any_number_of(re.WHITESPACE)
 )
 
-_reference_re = re.compile(
+_reference_re: Final = re.compile(
     _book_re,
     re.one_or_more(re.WHITESPACE),
     _chapter_start_group(_one_or_more_digit),
@@ -78,7 +78,7 @@ _reference_re = re.compile(
     flags=re.IGNORECASE,
 )
 
-_reference_with_version_re = re.compile(
+_reference_with_version_re: Final = re.compile(
     _reference_re,
     re.optional(
         re.group(
@@ -89,7 +89,7 @@ _reference_with_version_re = re.compile(
     flags=re.IGNORECASE,
 )
 
-_reference_or_bracketed_with_version_re = re.compile(
+_reference_or_bracketed_with_version_re: Final = re.compile(
     re.optional(
         re.named_group('bracket')(re.LEFT_BRACKET, re.any_number_of(re.WHITESPACE))
     ),
@@ -109,7 +109,7 @@ _reference_or_bracketed_with_version_re = re.compile(
     flags=re.IGNORECASE,
 )
 
-_bracketed_reference_with_version_re = re.compile(
+_bracketed_reference_with_version_re: Final = re.compile(
     re.LEFT_BRACKET,
     re.any_number_of(re.WHITESPACE),
     _reference_with_version_re,
@@ -118,11 +118,14 @@ _bracketed_reference_with_version_re = re.compile(
     flags=re.IGNORECASE,
 )
 
-_search_reference_re = re.compile(re.START, _reference_re, re.END, flags=re.IGNORECASE)
+_search_reference_re: Final = re.compile(
+    re.START, _reference_re, re.END, flags=re.IGNORECASE
+)
 
-_book_input_map: Dict[str, str] = {}
-_book_mask_map: Dict[str, int] = {}
-for _book in books_data:
+_book_input_map: Final[Dict[str, str]] = {}
+_book_mask_map: Final[Dict[str, int]] = {}
+
+for _book in _books_data:
     for input_string in [_book['name'], _book['osis']] + _book['alt']:  # type: str
         _book_input_map[input_string.lower()] = _book['name']
     _book_mask_map[_book['name']] = _book['section']
@@ -238,8 +241,8 @@ class VerseRange(object):
         return cls.from_string(argument)
 
 
-truncation_warning = 'The passage was too long and has been truncated:\n\n'
-truncation_warning_len = len(truncation_warning) + 3
+_truncation_warning: Final = 'The passage was too long and has been truncated:\n\n'
+_truncation_warning_len: Final = len(_truncation_warning) + 3
 
 
 @dataclass(slots=True)
@@ -257,9 +260,9 @@ class Passage(object):
 
     def get_truncated(self, limit: int) -> str:
         citation = self.citation
-        end = limit - (len(citation) + truncation_warning_len)
+        end = limit - (len(citation) + _truncation_warning_len)
         text = self.text[:end]
-        return f'{truncation_warning}{text}\u2026\n\n{citation}'
+        return f'{_truncation_warning}{text}\u2026\n\n{citation}'
 
     def __str__(self) -> str:
         return f'{self.text}\n\n{self.citation}'

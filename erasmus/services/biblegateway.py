@@ -1,9 +1,7 @@
 # Service for querying biblegateway.com
 from __future__ import annotations
 
-from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
-from typing import List
+from typing import Final, List
 
 from attr import attrib, dataclass
 from botus_receptus import re
@@ -15,10 +13,11 @@ from ..exceptions import DoNotUnderstandError
 from ..protocols import Bible
 from .base_service import BaseService
 
-total_re = re.compile(re.START, re.named_group('total')(re.one_or_more(re.DIGITS)))
+_total_re: Final = re.compile(
+    re.START, re.named_group('total')(re.one_or_more(re.DIGITS))
+)
 
 
-# TODO: Error handling
 @dataclass(slots=True)
 class BibleGateway(BaseService):
     _passage_url: URL = attrib(init=False)
@@ -28,7 +27,7 @@ class BibleGateway(BaseService):
         self._passage_url = URL('https://www.biblegateway.com/passage/')
         self._search_url = URL('https://www.biblegateway.com/quicksearch/')
 
-    def _transform_verse_node(
+    def __transform_verse_node(
         self,
         bible: Bible,
         verses: VerseRange,
@@ -69,15 +68,12 @@ class BibleGateway(BaseService):
             italic.insert_after('__ITALIC__')
             italic.unwrap()
 
-        text = self._replace_special_escapes(bible, verse_node.get_text(''))
+        text = self.replace_special_escapes(bible, verse_node.get_text(''))
 
         return Passage(text=text, range=verses, version=bible.abbr)
 
-    @asynccontextmanager
-    async def _request_passage(
-        self, bible: Bible, verses: VerseRange
-    ) -> AsyncIterator[Passage]:
-        async with self.get(
+    async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
+        async with self.session.get(
             self._passage_url.with_query(
                 {
                     'search': str(verses),
@@ -103,13 +99,17 @@ class BibleGateway(BaseService):
             if verse_block is None:
                 raise DoNotUnderstandError
 
-            yield self._transform_verse_node(bible, verses, verse_block)
+            return self.__transform_verse_node(bible, verses, verse_block)
 
-    @asynccontextmanager
-    async def _request_search(
-        self, bible: Bible, terms: List[str], *, limit: int, offset: int
-    ) -> AsyncIterator[SearchResults]:
-        async with self.get(
+    async def search(
+        self,
+        bible: Bible,
+        terms: List[str],
+        *,
+        limit: int = 20,
+        offset: int = 0,
+    ) -> SearchResults:
+        async with self.session.get(
             self._search_url.with_query(
                 {
                     'quicksearch': ' '.join(terms),
@@ -128,10 +128,9 @@ class BibleGateway(BaseService):
             total_node = soup.select_one('.showing-results')
 
             if verse_nodes is None or total_node is None:
-                yield SearchResults([], 0)
-                return
+                return SearchResults([], 0)
 
-            if (match := total_re.match(total_node.get_text(' ', strip=True))) is None:
+            if (match := _total_re.match(total_node.get_text(' ', strip=True))) is None:
                 raise DoNotUnderstandError
 
             def mapper(node: Tag) -> Passage:
@@ -147,8 +146,8 @@ class BibleGateway(BaseService):
 
                 verse = VerseRange.from_string(verse_reference_node.string.strip())
 
-                return self._transform_verse_node(bible, verse, verse_text_node, True)
+                return self.__transform_verse_node(bible, verse, verse_text_node, True)
 
             passages = list(map(mapper, verse_nodes))
 
-            yield SearchResults(passages, int(match.group('total')))
+            return SearchResults(passages, int(match.group('total')))

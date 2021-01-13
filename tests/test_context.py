@@ -1,17 +1,24 @@
+from __future__ import annotations
+
+import unittest.mock
+from typing import Any, Optional, cast
+
 import discord
 import pytest
+import pytest_mock
 
-from erasmus.erasmus import Context
+from erasmus.context import Context
 
 
 class MockUser(object):
     __slots__ = ('bot', 'id', 'mention')
-    bot: bool
-    id: int
-    mention: str
 
     def __init__(
-        self, *, bot: bool = None, id: int = None, mention: str = None
+        self,
+        *,
+        bot: Optional[bool] = None,
+        id: Optional[int] = None,
+        mention: Optional[str] = None,
     ) -> None:
         self.bot = bot
         self.id = id
@@ -20,11 +27,11 @@ class MockUser(object):
 
 class MockMessage(object):
     __slots__ = ('author', 'content', 'channel', '_state')
-    author: MockUser
-    content: str
-    channel: discord.abc.GuildChannel
+    channel: Optional[discord.abc.GuildChannel]
 
-    def __init__(self, *, author: MockUser = None, content: str = None) -> None:
+    def __init__(
+        self, *, author: Optional[MockUser] = None, content: Optional[str] = None
+    ) -> None:
         self.author = author
         self.content = content
         self.channel = None
@@ -33,14 +40,18 @@ class MockMessage(object):
 
 class TestContext(object):
     @pytest.fixture
-    def mock_context_send(self, mocker):
-        return mocker.patch(
-            'discord.ext.commands.Context.send', new_callable=mocker.CoroutineMock
-        )
+    def mock_context_send(
+        self, mocker: pytest_mock.MockFixture
+    ) -> unittest.mock.AsyncMock:
+        return mocker.patch('discord.ext.commands.Context.send')
 
     @pytest.mark.asyncio
-    async def test_send_embed(self, mocker, mock_context_send):
-        ctx = Context(prefix='~', message=MockMessage())
+    async def test_send_embed(
+        self,
+        mocker: pytest_mock.MockFixture,
+        mock_context_send: unittest.mock.AsyncMock,
+    ) -> None:
+        ctx = cast(Any, Context)(prefix='~', message=MockMessage())
 
         await ctx.send_embed('baz')
 

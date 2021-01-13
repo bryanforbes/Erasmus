@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import Any
+
 import pytest
 
 from erasmus.cogs.bible import Bible
@@ -5,8 +9,8 @@ from erasmus.erasmus import Erasmus
 
 
 class MockBot(object):
-    config = {}
-    session = {}
+    config: Any = {}
+    session: Any = {}
 
 
 class TestBible(object):

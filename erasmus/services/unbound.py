@@ -2,9 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import AsyncIterator
-from contextlib import asynccontextmanager
-from typing import Dict, List
+from typing import Dict, Final, List
 
 from attr import attrib, dataclass
 from botus_receptus import re
@@ -16,9 +14,8 @@ from ..exceptions import DoNotUnderstandError
 from ..protocols import Bible
 from .base_service import BaseService
 
-number_re = re.compile(re.capture(re.one_or_more(re.DIGITS), re.DOT))
-
-book_map: Dict[str, str] = {
+_number_re: Final = re.compile(re.capture(re.one_or_more(re.DIGITS), re.DOT))
+_book_map: Final[Dict[str, str]] = {
     'Genesis': '01O',
     'Exodus': '02O',
     'Leviticus': '03O',
@@ -118,16 +115,13 @@ class Unbound(BaseService):
             'http://unbound.biola.edu/index.cfm?method=searchResults.doSearch'
         )
 
-    @asynccontextmanager
-    async def _request_passage(
-        self, bible: Bible, verses: VerseRange
-    ) -> AsyncIterator[Passage]:
+    async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
         url = self._base_url.update_query(
             {
                 'search_type': 'simple_search',
                 'parallel_1': bible.service_version,
                 'book_section': '00',
-                'book': book_map[verses.book],
+                'book': _book_map[verses.book],
                 'displayFormat': 'normalNoHeader',
                 'from_chap': str(verses.start.chapter),
                 'from_verse': str(verses.start.verse),
@@ -139,7 +133,7 @@ class Unbound(BaseService):
                 {'to_chap': str(verses.end.chapter), 'to_verse': str(verses.end.verse)}
             )
 
-        async with self.get(url) as response:
+        async with self.session.get(url) as response:
             text = await response.text()
             soup = BeautifulSoup(text, 'html.parser')
 
@@ -169,33 +163,38 @@ class Unbound(BaseService):
                     cells[1].contents[0].insert_before(cells[1].contents[1])
                     cells[1].insert_before(cells[0])
 
-            yield Passage(
-                text=self._replace_special_escapes(
+            return Passage(
+                text=self.replace_special_escapes(
                     bible,
-                    number_re.sub(r'__BOLD__\1__BOLD__', verse_table.get_text('')),
+                    _number_re.sub(r'__BOLD__\1__BOLD__', verse_table.get_text('')),
                 ),
                 range=verses,
                 version=bible.abbr,
             )
 
-    @asynccontextmanager
-    async def _request_search(
-        self, bible: Bible, terms: List[str], *, limit: int, offset: int
-    ) -> AsyncIterator[SearchResults]:
-        async with self.post(
-            self._base_url,
-            {
-                'search_type': 'advanced_search',
-                'parallel_1': bible.service_version,
-                'displayFormat': 'normalNoHeader',
-                'book_section': 'ALL',
-                'book': 'ALL',
-                'search': ' AND '.join(terms),
-                'show_commentary': '0',
-                'show_context': '0',
-                'show_illustrations': '0',
-                'show_maps': '0',
-            },
+    async def search(
+        self,
+        bible: Bible,
+        terms: List[str],
+        *,
+        limit: int = 20,
+        offset: int = 0,
+    ) -> SearchResults:
+        async with self.session.post(
+            self._base_url.update_query(
+                {
+                    'search_type': 'advanced_search',
+                    'parallel_1': bible.service_version,
+                    'displayFormat': 'normalNoHeader',
+                    'book_section': 'ALL',
+                    'book': 'ALL',
+                    'search': ' AND '.join(terms),
+                    'show_commentary': '0',
+                    'show_context': '0',
+                    'show_illustrations': '0',
+                    'show_maps': '0',
+                }
+            )
         ) as response:
             text = await response.text()
             soup = BeautifulSoup(text, 'html.parser')
@@ -208,8 +207,7 @@ class Unbound(BaseService):
             rows = verse_table.select('tr')
 
             if rows[0].get_text('').strip() == 'No Verses Found':
-                yield SearchResults([], 0)
-                return
+                return SearchResults([], 0)
 
             rows[0].decompose()
             rows[-2].decompose()
@@ -229,7 +227,7 @@ class Unbound(BaseService):
                     passage_text = cells[1].get_text('')
                     passages.append(
                         Passage(
-                            text=self._replace_special_escapes(bible, passage_text),
+                            text=self.replace_special_escapes(bible, passage_text),
                             range=VerseRange.from_string(
                                 f'{chapter_string}:{verse_string}'
                             ),
@@ -237,4 +235,4 @@ class Unbound(BaseService):
                         )
                     )
 
-            yield SearchResults(passages, len(passages))
+            return SearchResults(passages, len(passages))

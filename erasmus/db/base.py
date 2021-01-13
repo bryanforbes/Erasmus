@@ -1,8 +1,8 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
 from botus_receptus.gino import Gino, ModelMixin
 
-db = Gino()
+db: Final = Gino()
 
 if TYPE_CHECKING:
     from gino.crud import CRUDModel
