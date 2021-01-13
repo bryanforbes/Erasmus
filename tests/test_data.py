@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import Any, List, Optional
+
 import pytest
 
 from erasmus.data import Passage, SearchResults, Verse, VerseRange
@@ -5,13 +9,13 @@ from erasmus.exceptions import ReferenceNotUnderstoodError
 
 
 class TestVerse(object):
-    def test_init(self):
+    def test_init(self) -> None:
         verse = Verse(1, 1)
 
         assert verse.chapter == 1
         assert verse.verse == 1
 
-    def test__str__(self):
+    def test__str__(self) -> None:
         verse = Verse(2, 4)
 
         assert str(verse) == '2:4'
@@ -19,18 +23,18 @@ class TestVerse(object):
     @pytest.mark.parametrize(
         'verse,expected', [(Verse(1, 1), None), (Verse(1, 1), Verse(1, 1))]
     )
-    def test__eq__(self, verse, expected):
+    def test__eq__(self, verse: Verse, expected: Optional[Verse]) -> None:
         assert verse == (expected or verse)
 
     @pytest.mark.parametrize(
         'verse,expected', [(Verse(1, 1), {}), (Verse(1, 1), Verse(1, 2))]
     )
-    def test__ne__(self, verse, expected):
+    def test__ne__(self, verse: Verse, expected: Any) -> None:
         assert verse != expected
 
 
 class TestVerseRange(object):
-    def test_init(self):
+    def test_init(self) -> None:
         verse_start = Verse(1, 1)
         verse_end = Verse(1, 4)
 
@@ -53,7 +57,7 @@ class TestVerseRange(object):
             (VerseRange('John', Verse(1, 1), Verse(2, 2)), 'John 1:1-2:2'),
         ],
     )
-    def test__str__(self, passage, expected):
+    def test__str__(self, passage: VerseRange, expected: str) -> None:
         assert str(passage) == expected
 
     @pytest.mark.parametrize(
@@ -71,7 +75,7 @@ class TestVerseRange(object):
             ),
         ],
     )
-    def test__eq__(self, passage, expected):
+    def test__eq__(self, passage: VerseRange, expected: Optional[VerseRange]) -> None:
         assert passage == (expected or passage)
 
     @pytest.mark.parametrize(
@@ -89,7 +93,7 @@ class TestVerseRange(object):
             ),
         ],
     )
-    def test__ne__(self, passage, expected):
+    def test__ne__(self, passage: VerseRange, expected: Any) -> None:
         assert passage != expected
 
     @pytest.mark.parametrize(
@@ -112,7 +116,7 @@ class TestVerseRange(object):
             ('Isa   54 : 2   - 23', 'Isaiah 54:2-23'),
         ],
     )
-    def test_from_string(self, passage_str, expected):
+    def test_from_string(self, passage_str: str, expected: Optional[str]) -> None:
         if expected is None:
             expected = passage_str
 
@@ -247,7 +251,9 @@ class TestVerseRange(object):
         ],
     )
     @pytest.mark.parametrize('only_bracketed', [False, True])
-    def test_get_all_from_string_optional(self, passage_str, only_bracketed, expected):
+    def test_get_all_from_string_optional(
+        self, passage_str: str, only_bracketed: bool, expected: List[List[VerseRange]]
+    ) -> None:
         passages = VerseRange.get_all_from_string(
             passage_str, only_bracketed=only_bracketed
         )
@@ -264,13 +270,13 @@ class TestVerseRange(object):
     @pytest.mark.parametrize(
         'passage_str', ['asdfc083u4r', 'Gen 1', 'Gen 1:', 'Gen 1:1 -', 'Gen 1:1 - 2:']
     )
-    def test_from_string_raises(self, passage_str):
+    def test_from_string_raises(self, passage_str: str) -> None:
         with pytest.raises(ReferenceNotUnderstoodError):
             VerseRange.from_string(passage_str)
 
 
 class TestPassage(object):
-    def test_init(self):
+    def test_init(self) -> None:
         text = 'foo bar baz'
         range = VerseRange('Exodus', Verse(1, 1))
         passage = Passage(text, range)
@@ -279,7 +285,7 @@ class TestPassage(object):
         assert passage.range == range
         assert passage.version is None
 
-    def test_get_truncated(self):
+    def test_get_truncated(self) -> None:
         text = 'foo bar baz' * 10
         range = VerseRange('Exodus', Verse(1, 1))
         passage = Passage(text, range)
@@ -305,7 +311,7 @@ class TestPassage(object):
             ),
         ],
     )
-    def test__str__(self, passage, expected):
+    def test__str__(self, passage: Passage, expected: str) -> None:
         assert str(passage) == expected
 
     @pytest.mark.parametrize(
@@ -322,8 +328,8 @@ class TestPassage(object):
             ),
         ],
     )
-    def test__eq__(self, passage, expected):
-        return passage == (expected or passage)
+    def test__eq__(self, passage: Passage, expected: Optional[Passage]) -> None:
+        assert passage == (expected or passage)
 
     @pytest.mark.parametrize(
         'passage,expected',
@@ -339,13 +345,13 @@ class TestPassage(object):
             ),
         ],
     )
-    def test__ne__(self, passage, expected):
-        return passage != expected
+    def test__ne__(self, passage: Passage, expected: Any) -> None:
+        assert passage != expected
 
 
 class TestSearchResults(object):
-    def test_init(self):
-        verses = [VerseRange('Exodus', Verse(1, 1))]
+    def test_init(self) -> None:
+        verses = [Passage('asdf', VerseRange('Exodus', Verse(1, 1)))]
         results = SearchResults(verses, 20)
 
         assert results.verses == verses
@@ -354,29 +360,53 @@ class TestSearchResults(object):
     @pytest.mark.parametrize(
         'results,expected',
         [
-            (SearchResults([VerseRange.from_string('Genesis 1:2-3')], 20), None),
             (
-                SearchResults([VerseRange.from_string('Genesis 1:2-3')], 20),
-                SearchResults([VerseRange.from_string('Genesis 1:2-3')], 20),
+                SearchResults(
+                    [Passage('asdf', VerseRange.from_string('Genesis 1:2-3'))], 20
+                ),
+                None,
+            ),
+            (
+                SearchResults(
+                    [Passage('asdf', VerseRange.from_string('Genesis 1:2-3'))], 20
+                ),
+                SearchResults(
+                    [Passage('asdf', VerseRange.from_string('Genesis 1:2-3'))], 20
+                ),
             ),
         ],
     )
-    def test__eq__(self, results, expected):
+    def test__eq__(
+        self, results: SearchResults, expected: Optional[SearchResults]
+    ) -> None:
         assert results == (expected or results)
 
     @pytest.mark.parametrize(
         'results,expected',
         [
-            (SearchResults([VerseRange.from_string('Genesis 1:2-3')], 20), {}),
             (
-                SearchResults([VerseRange.from_string('Genesis 1:2-3')], 20),
-                SearchResults([VerseRange.from_string('Genesis 1:2-3')], 30),
+                SearchResults(
+                    [Passage('asdf', VerseRange.from_string('Genesis 1:2-3'))], 20
+                ),
+                {},
             ),
             (
-                SearchResults([VerseRange.from_string('Genesis 1:2-3')], 20),
-                SearchResults([VerseRange.from_string('Genesis 1:2-4')], 20),
+                SearchResults(
+                    [Passage('asdf', VerseRange.from_string('Genesis 1:2-3'))], 20
+                ),
+                SearchResults(
+                    [Passage('asdf', VerseRange.from_string('Genesis 1:2-3'))], 30
+                ),
+            ),
+            (
+                SearchResults(
+                    [Passage('asdf', VerseRange.from_string('Genesis 1:2-3'))], 20
+                ),
+                SearchResults(
+                    [Passage('asdf', VerseRange.from_string('Genesis 1:2-4'))], 20
+                ),
             ),
         ],
     )
-    def test__ne__(self, results, expected):
+    def test__ne__(self, results: SearchResults, expected: Any) -> None:
         assert results != expected

@@ -1,9 +1,14 @@
+from __future__ import annotations
+
+from typing import Any, Dict
+
 import pytest
+import pytest_mock
 
 from erasmus.json import get, has, load, loads
 
 
-def test_load(mocker):
+def test_load(mocker: pytest_mock.MockFixture) -> None:
     mock = mocker.mock_open(read_data='{ "foo": { "bar": "baz" }, "spam": "ham" }')
 
     with mock() as fp:
@@ -12,7 +17,7 @@ def test_load(mocker):
     assert result == {'foo': {'bar': 'baz'}, 'spam': 'ham'}
 
 
-def test_loads():
+def test_loads() -> None:
     result = loads('{ "foo": { "bar": "baz" }, "spam": "ham" }')
 
     assert result == {'foo': {'bar': 'baz'}, 'spam': 'ham'}
@@ -28,7 +33,7 @@ def test_loads():
         ({'foo': 1}, 'foo.bar.baz', None),
     ],
 )
-def test_get(data, key, expected):
+def test_get(data: Dict[str, Any], key: str, expected: Any) -> None:
     assert get(data, key) == expected
 
 
@@ -42,5 +47,5 @@ def test_get(data, key, expected):
         ({'foo': 1}, 'foo.bar.baz', False),
     ],
 )
-def test_jsonobject_has(data, key, expected):
+def test_jsonobject_has(data: Dict[str, Any], key: str, expected: Any) -> None:
     assert has(data, key) == expected

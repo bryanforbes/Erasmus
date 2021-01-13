@@ -1,14 +1,13 @@
 from __future__ import annotations
 
-from typing import Any, AsyncIterator, Dict, List
+from collections.abc import AsyncIterator
+from typing import Any, Dict, List, Type
+from unittest.mock import MagicMock
 
 import aiohttp
-import asynctest.mock  # type: ignore
-import pytest  # type: ignore
-import pytest_mock.plugin  # type: ignore
+import pytest
+import pytest_mock
 from attr import dataclass
-
-pytest_mock.plugin._get_mock_module._module = asynctest.mock
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -27,21 +26,23 @@ class MockBible(object):
 
 
 @pytest.fixture(name='MockBible', scope='session')
-def fixture_MockBible() -> None:
+def fixture_MockBible() -> Type[MockBible]:
     return MockBible
 
 
 @pytest.fixture
-def mock_response(mocker: Any) -> None:
-    response = mocker.MagicMock()
+def mock_response(mocker: pytest_mock.MockerFixture) -> MagicMock:
+    response: MagicMock = mocker.MagicMock()
     response.__aenter__.return_value = response
 
     return response
 
 
 @pytest.fixture
-def mock_client_session(mocker: Any, mock_response: Any) -> None:
-    session = mocker.MagicMock()
+def mock_client_session(
+    mocker: pytest_mock.MockerFixture, mock_response: Any
+) -> MagicMock:
+    session: MagicMock = mocker.MagicMock()
     session.__aenter__.return_value = session
     session.get = mocker.Mock(return_value=mock_response)
     session.post = mocker.Mock(return_value=mock_response)
@@ -58,12 +59,9 @@ async def aiohttp_client_session(
 
 
 @pytest.fixture
-def mock_aiohttp(mocker: Any, mock_client_session) -> None:
+def mock_aiohttp(
+    mocker: pytest_mock.MockerFixture, mock_client_session: MagicMock
+) -> None:
     ClientSession = mocker.Mock()
     ClientSession.return_value = mock_client_session
     mocker.patch('aiohttp.ClientSession', return_value=ClientSession)
-
-
-@pytest.fixture(autouse=True)
-def add_async_mocks(mocker: Any) -> None:
-    mocker.CoroutineMock = mocker.mock_module.CoroutineMock

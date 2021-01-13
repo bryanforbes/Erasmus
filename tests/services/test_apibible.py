@@ -1,9 +1,15 @@
-from pathlib import Path
+from __future__ import annotations
 
+from pathlib import Path
+from typing import Any, Dict, cast
+
+import _pytest
+import aiohttp
 import pytest
 import toml
 
 from erasmus.data import Passage, VerseRange
+from erasmus.protocols import Service
 from erasmus.services.apibible import ApiBible
 
 from . import ServiceTest
@@ -239,8 +245,8 @@ class TestApiBible(ServiceTest):
         ],
         ids=['Melchizedek', 'faith', 'antidisestablishmentarianism'],
     )
-    def search_data(self, request):
-        return request.param
+    def search_data(self, request: _pytest.fixtures.SubRequest) -> Dict[str, Any]:
+        return cast(Dict[str, Any], request.param)
 
     @pytest.fixture(
         params=[
@@ -268,27 +274,29 @@ class TestApiBible(ServiceTest):
         ],
         ids=['Gal 3:10-11 KJV', 'Mark 5:1 KJV'],
     )
-    def passage_data(self, request):
-        return request.param
+    def passage_data(self, request: _pytest.fixtures.SubRequest) -> Dict[str, Any]:
+        return cast(Dict[str, Any], request.param)
 
     @pytest.fixture(scope="class")
-    def config(self):
+    def config(self) -> Dict[str, str]:
         try:
             config = toml.load(
                 str(Path(__file__).resolve().parent.parent.parent / 'config.toml')
             )
-            return config['bot']['services']['ApiBible']
+            return cast(Dict[str, str], config['bot']['services']['ApiBible'])
         except FileNotFoundError:
             return {'api_key': ''}
 
     @pytest.fixture
-    def default_version(self):
+    def default_version(self) -> str:
         return 'de4e12af7f28f599-02'
 
     @pytest.fixture
-    def default_abbr(self):
+    def default_abbr(self) -> str:
         return 'KJV'
 
     @pytest.fixture
-    def service(self, config):
-        return ApiBible(config=config)
+    def service(
+        self, config: Any, aiohttp_client_session: aiohttp.ClientSession
+    ) -> Service:
+        return ApiBible(config=config, session=aiohttp_client_session)

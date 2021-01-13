@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from typing import Any, Dict, Final, List
+from typing import Dict, Final, List
 
-import aiohttp
+from attr import attrib, dataclass
 from botus_receptus import re
 from bs4 import BeautifulSoup
 from yarl import URL
@@ -12,7 +12,7 @@ from yarl import URL
 from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import DoNotUnderstandError
 from ..protocols import Bible
-from .base_service import replace_special_escapes
+from .base_service import BaseService
 
 _number_re: Final = re.compile(re.capture(re.one_or_more(re.DIGITS), re.DOT))
 _book_map: Final[Dict[str, str]] = {
@@ -106,18 +106,17 @@ _book_map: Final[Dict[str, str]] = {
 }
 
 
-class Unbound(object):
-    __slots__ = ('_base_url',)
+@dataclass(slots=True)
+class Unbound(BaseService):
+    _base_url: URL = attrib(init=False)
 
-    def __init__(self, config: Any) -> None:
+    def __attrs_post_init__(self) -> None:
         self._base_url = URL(
             'http://unbound.biola.edu/index.cfm?method=searchResults.doSearch'
         )
 
-    async def get_passage(
-        self, session: aiohttp.ClientSession, bible: Bible, verses: VerseRange
-    ) -> Passage:
-        url = self._base_url.with_query(
+    async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
+        url = self._base_url.update_query(
             {
                 'search_type': 'simple_search',
                 'parallel_1': bible.service_version,
@@ -134,7 +133,7 @@ class Unbound(object):
                 {'to_chap': str(verses.end.chapter), 'to_verse': str(verses.end.verse)}
             )
 
-        async with session.get(url) as response:
+        async with self.session.get(url) as response:
             text = await response.text()
             soup = BeautifulSoup(text, 'html.parser')
 
@@ -165,7 +164,7 @@ class Unbound(object):
                     cells[1].insert_before(cells[0])
 
             return Passage(
-                text=replace_special_escapes(
+                text=self.replace_special_escapes(
                     bible,
                     _number_re.sub(r'__BOLD__\1__BOLD__', verse_table.get_text('')),
                 ),
@@ -175,15 +174,14 @@ class Unbound(object):
 
     async def search(
         self,
-        session: aiohttp.ClientSession,
         bible: Bible,
         terms: List[str],
         *,
         limit: int = 20,
         offset: int = 0,
     ) -> SearchResults:
-        async with session.post(
-            self._base_url.with_query(
+        async with self.session.post(
+            self._base_url.update_query(
                 {
                     'search_type': 'advanced_search',
                     'parallel_1': bible.service_version,
@@ -229,7 +227,7 @@ class Unbound(object):
                     passage_text = cells[1].get_text('')
                     passages.append(
                         Passage(
-                            text=replace_special_escapes(bible, passage_text),
+                            text=self.replace_special_escapes(bible, passage_text),
                             range=VerseRange.from_string(
                                 f'{chapter_string}:{verse_string}'
                             ),

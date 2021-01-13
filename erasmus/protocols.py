@@ -2,8 +2,6 @@ from __future__ import annotations
 
 from typing import List, Optional, Protocol
 
-import aiohttp
-
 from .data import Passage, SearchResults, VerseRange
 
 
@@ -18,14 +16,11 @@ class Bible(Protocol):
 
 
 class Service(Protocol):
-    async def get_passage(
-        self, session: aiohttp.ClientSession, bible: Bible, verses: VerseRange
-    ) -> Passage:
+    async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
         ...
 
     async def search(
         self,
-        session: aiohttp.ClientSession,
         bible: Bible,
         terms: List[str],
         *,

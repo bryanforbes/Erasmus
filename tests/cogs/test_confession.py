@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 import pytest
 
 from erasmus.cogs.confession import Confession

@@ -1,3 +1,7 @@
+from __future__ import annotations
+
+from typing import Optional
+
 import pytest  # noqa
 
 from erasmus.data import Passage, SearchResults  # noqa
@@ -6,13 +10,14 @@ from erasmus.exceptions import BibleNotSupportedError  # noqa
 
 
 class MockUser(object):
-    __slots__ = ('bot', 'id', 'mention')
-    bot: bool
-    id: int
-    mention: str
+    __slots__ = 'bot', 'id', 'mention'
 
     def __init__(
-        self, *, bot: bool = None, id: int = None, mention: str = None
+        self,
+        *,
+        bot: Optional[bool] = None,
+        id: Optional[int] = None,
+        mention: Optional[str] = None,
     ) -> None:
         self.bot = bot
         self.id = id
@@ -20,11 +25,11 @@ class MockUser(object):
 
 
 class MockMessage(object):
-    __slots__ = ('author', 'content', '_state')
-    author: MockUser
-    content: str
+    __slots__ = 'author', 'content', '_state'
 
-    def __init__(self, *, author: MockUser = None, content: str = None) -> None:
+    def __init__(
+        self, *, author: Optional[MockUser] = None, content: Optional[str] = None
+    ) -> None:
         self.author = author
         self.content = content
         self._state = None
@@ -32,7 +37,6 @@ class MockMessage(object):
 
 class MockCommand(object):
     __slots__ = ('name',)
-    name: str
 
     def __init__(self, name: str) -> None:
         self.name = name
@@ -40,7 +44,6 @@ class MockCommand(object):
 
 class MockContext(object):
     __slots__ = ('command',)
-    command: MockCommand
 
     def __init__(self, command: MockCommand) -> None:
         self.command = command
@@ -52,13 +55,13 @@ class MockContext(object):
 #         mocker.patch('discord.ext.commands.Bot.add_command')
 #         mocker.patch('discord.ext.commands.Bot.run')
 #         mocker.patch(
-#             'discord.ext.commands.Bot.invoke', new_callable=mocker.CoroutineMock
+#             'discord.ext.commands.Bot.invoke', new_callable=mocker.AsyncMock
 #         )
 #
 #     @pytest.fixture
 #     def mock_send_to_author(self, mocker):
 #         return mocker.patch(
-#             'erasmus.erasmus.Context.send_to_author', new_callable=mocker.CoroutineMock  # noqa
+#             'erasmus.erasmus.Context.send_to_author', new_callable=mocker.AsyncMock  # noqa
 #         )
 #
 #     @pytest.fixture(autouse=True)
@@ -81,10 +84,10 @@ class MockContext(object):
 #         )
 #         mocker.patch(
 #             'erasmus.erasmus.BibleManager.get_passage',
-#             new_callable=mocker.CoroutineMock,
+#             new_callable=mocker.AsyncMock,
 #         )
 #         mocker.patch(
-#             'erasmus.erasmus.BibleManager.search', new_callable=mocker.CoroutineMock
+#             'erasmus.erasmus.BibleManager.search', new_callable=mocker.AsyncMock
 #         )
 #
 #     def test_init(self, mocker, mock_load):
