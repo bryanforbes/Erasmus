@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
 import discord
 from botus_receptus import EmbedContext
@@ -10,8 +10,8 @@ from .data import Passage
 if TYPE_CHECKING:
     from .erasmus import Erasmus
 
-truncation_warning = '**The passage was too long and has been truncated:**\n\n'
-max_length = 2048 - (len(truncation_warning) + 1)
+_truncation_warning: Final = '**The passage was too long and has been truncated:**\n\n'
+_max_length: Final = 2048 - (len(_truncation_warning) + 1)
 
 
 class Context(EmbedContext):
@@ -24,7 +24,7 @@ class Context(EmbedContext):
         text = passage.text
 
         if len(text) > 2048:
-            text = f'{truncation_warning}{text[:max_length]}\u2026'
+            text = f'{_truncation_warning}{text[:_max_length]}\u2026'
 
         embed = discord.Embed.from_dict(
             {'description': text, 'footer': {'text': passage.citation}}

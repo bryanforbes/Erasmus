@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Dict, List
+from typing import Dict, Final, List
 
 import aiohttp
 import async_timeout
@@ -14,7 +14,7 @@ from .data import Passage, SearchResults, VerseRange
 from .exceptions import ServiceLookupTimeout, ServiceSearchTimeout
 from .protocols import Bible, Service
 
-log = logging.getLogger(__name__)
+_log: Final = logging.getLogger(__name__)
 
 
 @dataclass(slots=True)
@@ -32,11 +32,11 @@ class ServiceManager(object):
         service = self.service_map.get(bible.service)
         assert service is not None
         try:
-            log.debug(f'Getting passage {verses} ({bible.abbr})')
+            _log.debug(f'Getting passage {verses} ({bible.abbr})')
             with async_timeout.timeout(self.timeout):
                 passage = await service.get_passage(bible, verses)
                 passage.version = bible.abbr
-                log.debug(f'Got passage {passage.citation}')
+                _log.debug(f'Got passage {passage.citation}')
                 return passage
         except asyncio.TimeoutError:
             raise ServiceLookupTimeout(bible, verses)

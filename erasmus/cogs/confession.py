@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import AsyncIterator, Callable, Sequence
 from re import Match
-from typing import Any, List, Optional, Union, cast
+from typing import Any, Final, List, Optional, Union, cast
 
 from botus_receptus import Cog, re
 from botus_receptus.formatting import (
@@ -23,16 +23,16 @@ from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from ..format import int_to_roman, roman_to_int
 from ..menu_pages import EmbedPageSource, MenuPages, TotalListPageSource
 
-pluralize_match = pluralizer('match', 'es')
+_pluralize_match: Final = pluralizer('match', 'es')
 
-_roman_re = re.group(
+_roman_re: Final = re.group(
     re.between(0, 4, 'M'),
     re.either('CM', 'CD', re.group(re.optional('D'), re.between(0, 3, 'C'))),
     re.either('XC', 'XL', re.group(re.optional('L'), re.between(0, 3, 'X'))),
     re.either('IX', 'IV', re.group(re.optional('V'), re.between(0, 3, 'I'))),
 )
 
-reference_res = {
+_reference_res: Final = {
     ConfessionTypeEnum.CHAPTERS: re.compile(
         re.START,
         re.either(
@@ -68,19 +68,19 @@ reference_res = {
     ),
 }
 
-pluralizers = {
+_pluralizers: Final = {
     ConfessionTypeEnum.CHAPTERS: pluralizer('paragraph'),
     ConfessionTypeEnum.ARTICLES: pluralizer('article'),
     ConfessionTypeEnum.QA: pluralizer('question'),
 }
 
-number_formatters = {
+_number_formatters: Final = {
     NumberingTypeEnum.ARABIC: lambda n: str(n),
     NumberingTypeEnum.ROMAN: int_to_roman,
 }
 
 
-confess_help = '''
+_confess_help: Final = '''
 Arguments:
 ----------
     [confession] - A confession to query. Can be found by invoking {prefix}confess
@@ -184,7 +184,7 @@ class Confession(Cog[Context]):
 
         await ctx.send_error(escape(message, mass_mentions=True))
 
-    @commands.command(brief='Query confessions and catechisms', help=confess_help)
+    @commands.command(brief='Query confessions and catechisms', help=_confess_help)
     @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
     async def confess(
         self, ctx: Context, confession: Optional[str] = None, *args: str
@@ -199,7 +199,7 @@ class Confession(Cog[Context]):
             await self.list_contents(ctx, row)
             return
 
-        if not (match := reference_res[row.type].match(args[0])):
+        if not (match := _reference_res[row.type].match(args[0])):
             await self.search(ctx, row, *args)
             return
 
@@ -239,7 +239,7 @@ class Confession(Cog[Context]):
             number_key = 'article_number'
             title_key = 'title'
 
-        format_number = number_formatters[confession.numbering]
+        format_number = _number_formatters[confession.numbering]
         async for record in getter():
             paginator.add_line(
                 '**{number}**. {title}'.format(
@@ -255,7 +255,7 @@ class Confession(Cog[Context]):
 
     async def list_questions(self, ctx: Context, confession: ConfessionRecord) -> None:
         count = await confession.get_question_count()
-        question_str = pluralizers[ConfessionTypeEnum.QA](count)
+        question_str = _pluralizers[ConfessionTypeEnum.QA](count)
 
         await ctx.send_embed(f'`{confession.name}` has {question_str}')
 
@@ -287,7 +287,7 @@ class Confession(Cog[Context]):
         output: Optional[str] = None
 
         paginator = EmbedPaginator()
-        format_number = number_formatters[confession.numbering]
+        format_number = _number_formatters[confession.numbering]
 
         if confession.type == ConfessionTypeEnum.CHAPTERS:
             if match['chapter_roman']:

@@ -1,12 +1,14 @@
 from __future__ import annotations
 
+from typing import Final
+
 from botus_receptus import Cog, formatting
 from discord.ext import commands
 
 from ..context import Context
 from ..erasmus import Erasmus
 
-apostles_text = '''
+_apostles_text: Final = '''
 I believe in God, the Father Almighty,
     the Maker of heaven and earth,
     and in Jesus Christ, His only Son, our Lord:
@@ -34,7 +36,7 @@ I believe in the Holy Ghost;
 Amen.
 '''
 
-athanasian_text_1 = (
+_athanasian_text_1: Final = (
     'Whosoever will be saved, before all things it is necessary that he hold the '
     'catholic faith; Which faith except every one do keep whole and undefiled, '
     'without doubt he shall perish everlastingly. '
@@ -72,7 +74,7 @@ athanasian_text_1 = (
     'Spirit, not three Holy Spirits.'
 )
 
-athanasian_text_2 = (
+_athanasian_text_2: Final = (
     'And in this Trinity none is afore, nor after another; none is greater, or '
     'less than another. '
     'But the whole three persons are co-eternal, and co-equal. '
@@ -108,7 +110,7 @@ athanasian_text_2 = (
 )
 
 
-chalcedon_text = (
+_chalcedon_text: Final = (
     'Therefore, following the holy fathers, we all with one accord teach '
     'men to acknowledge one and the same Son, our Lord Jesus Christ, at once complete '
     'in Godhead and complete in manhood, truly God and truly man, consisting also of a '
@@ -128,7 +130,7 @@ chalcedon_text = (
 )
 
 
-nicene_325_text = (
+_nicene_325_text: Final = (
     'We believe in one God, the Father Almighty, Maker of all things visible and '
     'invisible.\n\n'
     'And in one Lord Jesus Christ, the Son of God, begotten of the Father the '
@@ -146,7 +148,7 @@ nicene_325_text = (
 )
 
 
-nicene_381_text = (
+_nicene_381_text: Final = (
     'We believe in one God, the Father Almighty, Maker of heaven and earth, and of all '
     'things visible and invisible.\n\n'
     'And in one Lord Jesus Christ, the only-begotten Son of God, begotten of the '
@@ -166,7 +168,7 @@ nicene_381_text = (
 )
 
 
-nicene_381_filioque_text = (
+_nicene_381_filioque_text: Final = (
     'We believe in one God, the Father Almighty, Maker of heaven and earth, and of all '
     'things visible and invisible.\n\n'
     'And in one Lord Jesus Christ, the only-begotten Son of God, begotten of the '
@@ -207,28 +209,28 @@ class Creeds(Cog[Context]):
 
     @commands.command(hidden=True)
     async def apostles(self, ctx: Context) -> None:
-        await ctx.send_embed(apostles_text, title="The Apostles' Creed")
+        await ctx.send_embed(_apostles_text, title="The Apostles' Creed")
 
     @commands.command(hidden=True)
     async def athanasian(self, ctx: Context) -> None:
-        await ctx.send_embed(athanasian_text_1, title='The Athanasian Creed')
-        await ctx.send_embed(athanasian_text_2, title='The Athanasian Creed (cont.)')
+        await ctx.send_embed(_athanasian_text_1, title='The Athanasian Creed')
+        await ctx.send_embed(_athanasian_text_2, title='The Athanasian Creed (cont.)')
 
     @commands.command(hidden=True)
     async def chalcedon(self, ctx: Context) -> None:
-        await ctx.send_embed(chalcedon_text, title='The Chalcedonian Definition')
+        await ctx.send_embed(_chalcedon_text, title='The Chalcedonian Definition')
 
     @commands.command(hidden=True)
     async def nicene(self, ctx: Context) -> None:
-        await ctx.send_embed(nicene_381_filioque_text, title='The Nicene Creed')
+        await ctx.send_embed(_nicene_381_filioque_text, title='The Nicene Creed')
 
     @commands.command(hidden=True)
     async def nicene325(self, ctx: Context) -> None:
-        await ctx.send_embed(nicene_325_text, title='The Nicene Creed (325 AD)')
+        await ctx.send_embed(_nicene_325_text, title='The Nicene Creed (325 AD)')
 
     @commands.command(hidden=True)
     async def nicene381(self, ctx: Context) -> None:
-        await ctx.send_embed(nicene_381_text, title='The Nicene Creed (381 AD)')
+        await ctx.send_embed(_nicene_381_text, title='The Nicene Creed (381 AD)')
 
 
 def setup(bot: Erasmus) -> None:

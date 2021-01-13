@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional, Protocol, TypeVar, cast
+from typing import Any, Dict, Final, List, Optional, Protocol, TypeVar, cast
 
 import discord
 from botus_receptus import Cog, checks, formatting
@@ -91,7 +91,7 @@ class SearchPageSource(EmbedPageSource[List[Passage]]):
             self.embed.add_field(name=str(entry.range), value=entry.text, inline=False)
 
 
-lookup_help = '''
+_lookup_help: Final = '''
 Arguments:
 ----------
     <reference> - A verse reference in one of the following forms:
@@ -106,7 +106,7 @@ Example:
 NOTE: Before this command will work, you MUST set your prefered Bible version
       using {prefix}setversion'''
 
-search_help = '''
+_search_help: Final = '''
 Arguments:
 ----------
     [terms...] - One or more terms to search for
@@ -118,7 +118,7 @@ Example:
 NOTE: Before this command will work, you MUST set your prefered Bible version
       using {prefix}setversion'''
 
-setversion_help = '''
+_setversion_help: Final = '''
 Arguments:
 ----------
     <version> - A supported version identifier listed in {prefix}versions
@@ -127,13 +127,13 @@ Example:
 --------
     {prefix}setversion nasb'''
 
-unsetversion_help = '''
+_unsetversion_help: Final = '''
 
 Example:
 --------
     {prefix}unsetversion'''
 
-setguildversion_help = '''
+_setguildversion_help: Final = '''
 Arguments:
 ----------
     <version> - A supported version identifier listed in {prefix}versions
@@ -142,13 +142,13 @@ Example:
 --------
     {prefix}setguildversion nasb'''
 
-unsetguildversion_help = '''
+_unsetguildversion_help: Final = '''
 
 Example:
 --------
     {prefix}unsetguildversion'''
 
-version_lookup_help = '''
+_version_lookup_help: Final = '''
 Arguments:
 ----------
     <reference> - A verse reference in one of the following forms:
@@ -161,7 +161,7 @@ Example:
     {prefix}{command} John 1:50-2:1'''
 
 
-version_search_help = '''
+_version_search_help: Final = '''
 Arguments:
 ----------
     [terms...] - One or more terms to search for
@@ -285,7 +285,7 @@ class Bible(Cog[Context]):
     @commands.command(
         aliases=[''],
         brief='Look up a verse in your preferred version',
-        help=lookup_help,
+        help=_lookup_help,
     )
     async def lookup(self, ctx: Context, *, reference: VerseRange) -> None:
         bible = await BibleVersion.get_for_user(
@@ -298,7 +298,7 @@ class Bible(Cog[Context]):
     @commands.command(
         aliases=['s'],
         brief='Search for terms in your preferred version',
-        help=search_help,
+        help=_search_help,
     )
     async def search(self, ctx: Context, *terms: str) -> None:
         bible = await BibleVersion.get_for_user(
@@ -327,7 +327,7 @@ class Bible(Cog[Context]):
         output = '\n'.join(lines)
         await ctx.send_embed(f'\n{output}\n')
 
-    @commands.command(brief='Set your preferred version', help=setversion_help)
+    @commands.command(brief='Set your preferred version', help=_setversion_help)
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
     async def setversion(self, ctx: Context, version: str) -> None:
         version = version.lower()
@@ -339,7 +339,7 @@ class Bible(Cog[Context]):
 
         await ctx.send_embed(f'Version set to `{version}`')
 
-    @commands.command(brief='Delete your preferred version', help=unsetversion_help)
+    @commands.command(brief='Delete your preferred version', help=_unsetversion_help)
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
     async def unsetversion(self, ctx: Context) -> None:
         user_prefs = await UserPref.get(ctx.author.id)
@@ -350,7 +350,7 @@ class Bible(Cog[Context]):
         else:
             await ctx.send_embed('Preferred version already deleted')
 
-    @commands.command(brief='Set the guild default version', help=setguildversion_help)
+    @commands.command(brief='Set the guild default version', help=_setguildversion_help)
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
@@ -367,7 +367,7 @@ class Bible(Cog[Context]):
         await ctx.send_embed(f'Guild version set to `{version}`')
 
     @commands.command(
-        brief='Delete the guild default version', help=unsetguildversion_help
+        brief='Delete the guild default version', help=_unsetguildversion_help
     )
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
@@ -498,14 +498,14 @@ class Bible(Cog[Context]):
         lookup = self.bot.command(
             name=command,
             brief=f'Look up a verse in {name}',
-            help=version_lookup_help.format(prefix='{prefix}', command=command),
+            help=_version_lookup_help.format(prefix='{prefix}', command=command),
             hidden=True,
         )(Bible.__version_lookup)
         lookup.cog = self
         search = self.bot.command(
             name=f's{command}',
             brief=f'Search in {name}',
-            help=version_search_help.format(prefix='{prefix}', command=f's{command}'),
+            help=_version_search_help.format(prefix='{prefix}', command=f's{command}'),
             hidden=True,
         )(Bible.__version_search)
         search.cog = self
