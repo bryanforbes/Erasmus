@@ -187,7 +187,7 @@ discord-ext-typed-commands = "^1.0.3"
 "discord.py" = "^1.6.0"
 "discord.py-stubs" = "^1.6.0.0"
 gino = {version = "^1.0.1", optional = true}
-gino-stubs = {version = "rev 3bbd15f77c1ac9b643f70874de1893fd2cccff2c", optional = true}
+gino-stubs = {version = "rev 35681f605a5488c94845efa9657ebaf720eae1b9", optional = true}
 pendulum = "~2.1.2"
 sqlalchemy = {version = "~1.2.18", optional = true}
 toml = "^0.10.2"
@@ -197,14 +197,14 @@ uvloop = {version = "~0.14.0", optional = true}
 db = ["asyncpg (>=0.18.2)"]
 db_typed = ["asyncpg (>=0.18.2)", "asyncpg-stubs @ git+https://github.com/bryanforbes/asyncpg-stubs.git@387549840fb72e47588e3bf3c8ca83449dedffec"]
 gino = ["gino (>=1.0.1,<2.0.0)", "sqlalchemy (>=1.2.18,<1.3.0)"]
-gino_typed = ["gino (>=1.0.1,<2.0.0)", "sqlalchemy (>=1.2.18,<1.3.0)", "asyncpg-stubs @ git+https://github.com/bryanforbes/asyncpg-stubs.git@387549840fb72e47588e3bf3c8ca83449dedffec", "gino-stubs @ git+https://github.com/bryanforbes/gino-stubs.git@3bbd15f77c1ac9b643f70874de1893fd2cccff2c"]
+gino_typed = ["gino (>=1.0.1,<2.0.0)", "sqlalchemy (>=1.2.18,<1.3.0)", "asyncpg-stubs @ git+https://github.com/bryanforbes/asyncpg-stubs.git@387549840fb72e47588e3bf3c8ca83449dedffec", "gino-stubs @ git+https://github.com/bryanforbes/gino-stubs.git@35681f605a5488c94845efa9657ebaf720eae1b9"]
 uvloop = ["uvloop (>=0.14.0,<0.15.0)"]
 
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "c3ce9dff6376c31243fcd6771fe0063cc7899378"
-resolved_reference = "c3ce9dff6376c31243fcd6771fe0063cc7899378"
+reference = "1d8c33d1a70ffa491f7c80e8f50d6bc93019d84c"
+resolved_reference = "1d8c33d1a70ffa491f7c80e8f50d6bc93019d84c"
 
 [[package]]
 name = "cchardet"
@@ -429,14 +429,14 @@ develop = false
 [package.dependencies]
 asyncpg-stubs = "rev 387549840fb72e47588e3bf3c8ca83449dedffec"
 mypy = ">=0.782"
-sqlalchemy-stubs = "^0.3"
+sqlalchemy-stubs = "^0.4"
 typing-extensions = ">=3.7.4"
 
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
-reference = "3bbd15f77c1ac9b643f70874de1893fd2cccff2c"
-resolved_reference = "3bbd15f77c1ac9b643f70874de1893fd2cccff2c"
+reference = "35681f605a5488c94845efa9657ebaf720eae1b9"
+resolved_reference = "35681f605a5488c94845efa9657ebaf720eae1b9"
 
 [[package]]
 name = "identify"
@@ -888,14 +888,14 @@ pymysql = ["pymysql"]
 
 [[package]]
 name = "sqlalchemy-stubs"
-version = "0.3"
+version = "0.4"
 description = "SQLAlchemy stubs and mypy plugin"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-mypy = ">=0.720"
+mypy = ">=0.790"
 typing-extensions = ">=3.7.4"
 
 [[package]]
@@ -1001,7 +1001,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "03db3783cae894c08716e2771bd6bd30429f204b9ccdefcec9b54b93f82d2288"
+content-hash = "e881d7e36c35cd7e10099c80939debe37208d81b5cb4df78fbb0a06445d192c3"
 
 [metadata.files]
 aiodns = [
@@ -1640,8 +1640,8 @@ sqlalchemy = [
     {file = "SQLAlchemy-1.2.19.tar.gz", hash = "sha256:5bb2c4fc2bcc3447ad45716c66581eab982c007dcf925482498d8733f86f17c7"},
 ]
 sqlalchemy-stubs = [
-    {file = "sqlalchemy-stubs-0.3.tar.gz", hash = "sha256:a3318c810697164e8c818aa2d90bac570c1a0e752ced3ec25455b309c0bee8fd"},
-    {file = "sqlalchemy_stubs-0.3-py3-none-any.whl", hash = "sha256:ca1250605a39648cc433f5c70cb1a6f9fe0b60bdda4c51e1f9a2ab3651daadc8"},
+    {file = "sqlalchemy-stubs-0.4.tar.gz", hash = "sha256:c665d6dd4482ef642f01027fa06c3d5e91befabb219dc71fc2a09e7d7695f7ae"},
+    {file = "sqlalchemy_stubs-0.4-py3-none-any.whl", hash = "sha256:5eec7aa110adf9b957b631799a72fef396b23ff99fe296df726645d01e312aa5"},
 ]
 termcolor = [
     {file = "termcolor-1.1.0.tar.gz", hash = "sha256:1d6d69ce66211143803fbc56652b41d73b4a400a2891d7bf7a1cdf4c02de613b"},
