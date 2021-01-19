@@ -83,7 +83,7 @@ class MenuPages(_MenuPages[TPS]):
         self.zero_results_text = zero_results_text
         self.help_task: Optional[asyncio.Task[None]] = None
 
-        super().__init__(source, check_embeds=True)
+        super().__init__(source, timeout=120, check_embeds=True)
 
     async def start(
         self,
