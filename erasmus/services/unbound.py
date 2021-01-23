@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Dict, Final, List
+from typing import Final
 
 from attr import attrib, dataclass
 from botus_receptus import re
@@ -15,7 +15,7 @@ from ..protocols import Bible
 from .base_service import BaseService
 
 _number_re: Final = re.compile(re.capture(re.one_or_more(re.DIGITS), re.DOT))
-_book_map: Final[Dict[str, str]] = {
+_book_map: Final[dict[str, str]] = {
     'Genesis': '01O',
     'Exodus': '02O',
     'Leviticus': '03O',
@@ -175,7 +175,7 @@ class Unbound(BaseService):
     async def search(
         self,
         bible: Bible,
-        terms: List[str],
+        terms: list[str],
         *,
         limit: int = 20,
         offset: int = 0,
@@ -213,7 +213,7 @@ class Unbound(BaseService):
             rows[-2].decompose()
             rows[-1].decompose()
 
-            passages: List[Passage] = []
+            passages: list[Passage] = []
             chapter_string = ''
 
             for row in verse_table.select('tr'):

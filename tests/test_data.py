@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, List, Optional
+from typing import Any
 
 import pytest
 
@@ -23,7 +23,7 @@ class TestVerse(object):
     @pytest.mark.parametrize(
         'verse,expected', [(Verse(1, 1), None), (Verse(1, 1), Verse(1, 1))]
     )
-    def test__eq__(self, verse: Verse, expected: Optional[Verse]) -> None:
+    def test__eq__(self, verse: Verse, expected: Verse | None) -> None:
         assert verse == (expected or verse)
 
     @pytest.mark.parametrize(
@@ -75,7 +75,7 @@ class TestVerseRange(object):
             ),
         ],
     )
-    def test__eq__(self, passage: VerseRange, expected: Optional[VerseRange]) -> None:
+    def test__eq__(self, passage: VerseRange, expected: VerseRange | None) -> None:
         assert passage == (expected or passage)
 
     @pytest.mark.parametrize(
@@ -116,7 +116,7 @@ class TestVerseRange(object):
             ('Isa   54 : 2   - 23', 'Isaiah 54:2-23'),
         ],
     )
-    def test_from_string(self, passage_str: str, expected: Optional[str]) -> None:
+    def test_from_string(self, passage_str: str, expected: str | None) -> None:
         if expected is None:
             expected = passage_str
 
@@ -252,7 +252,7 @@ class TestVerseRange(object):
     )
     @pytest.mark.parametrize('only_bracketed', [False, True])
     def test_get_all_from_string_optional(
-        self, passage_str: str, only_bracketed: bool, expected: List[List[VerseRange]]
+        self, passage_str: str, only_bracketed: bool, expected: list[list[VerseRange]]
     ) -> None:
         passages = VerseRange.get_all_from_string(
             passage_str, only_bracketed=only_bracketed
@@ -328,7 +328,7 @@ class TestPassage(object):
             ),
         ],
     )
-    def test__eq__(self, passage: Passage, expected: Optional[Passage]) -> None:
+    def test__eq__(self, passage: Passage, expected: Passage | None) -> None:
         assert passage == (expected or passage)
 
     @pytest.mark.parametrize(
@@ -377,7 +377,7 @@ class TestSearchResults(object):
         ],
     )
     def test__eq__(
-        self, results: SearchResults, expected: Optional[SearchResults]
+        self, results: SearchResults, expected: SearchResults | None
     ) -> None:
         assert results == (expected or results)
 

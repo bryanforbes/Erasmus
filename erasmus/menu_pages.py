@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Generic, List, Optional, TypeVar, cast
+from typing import TYPE_CHECKING, Generic, TypeVar, cast
 
 import discord
 from botus_receptus import formatting
@@ -81,7 +81,7 @@ class TotalListPageSource(_ListPageSource[T], TotalPageSource[Sequence[T]]):
 class MenuPages(_MenuPages[TPS]):
     def __init__(self, source: TPS, zero_results_text: str) -> None:
         self.zero_results_text = zero_results_text
-        self.help_task: Optional[asyncio.Task[None]] = None
+        self.help_task: asyncio.Task[None] | None = None
 
         super().__init__(source, timeout=120, check_embeds=True)
 
@@ -89,7 +89,7 @@ class MenuPages(_MenuPages[TPS]):
         self,
         ctx: commands.Context,
         *,
-        channel: Optional[discord.abc.Messageable] = None,
+        channel: discord.abc.Messageable | None = None,
         wait: bool = False,
     ) -> None:
         await self.source._prepare_once()
@@ -146,7 +146,7 @@ class MenuPages(_MenuPages[TPS]):
         channel = self.message.channel
         author_id = payload.user_id
 
-        to_delete: List[discord.Message] = []
+        to_delete: list[discord.Message] = []
         to_delete.append(await channel.send('What page do you want to go to?'))
 
         def message_check(msg: discord.Message) -> bool:

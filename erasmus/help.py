@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, List, Optional
+from typing import TYPE_CHECKING, Any
 
 from discord.ext import commands
 from more_itertools import unique_everseen
@@ -25,9 +25,7 @@ class HelpCommand(_DefaultHelpCommand):
 
     async def send_bot_help(
         self,
-        mapping: Mapping[
-            Optional[commands.Cog[Context]], List[commands.Command[Context]]
-        ],
+        mapping: Mapping[commands.Cog[Context] | None, list[commands.Command[Context]]],
     ) -> None:
         assert self.context is not None
         bot = self.context.bot
@@ -88,7 +86,7 @@ class HelpCommand(_DefaultHelpCommand):
             self.paginator.add_line(command.help.format(prefix=self.clean_prefix))
 
     async def command_callback(
-        self, ctx: Context, *, command: Optional[str] = None
+        self, ctx: Context, *, command: str | None = None
     ) -> Any:
         if command:
             if command[0] == ctx.prefix:

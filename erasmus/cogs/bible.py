@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, Final, List, Optional, Protocol, TypeVar, cast
+from typing import Any, Final, Protocol, TypeVar, cast
 
 import discord
 from botus_receptus import Cog, checks, formatting
@@ -35,14 +35,14 @@ class Search(Protocol):
         ...
 
 
-class SearchPageSource(EmbedPageSource[List[Passage]]):
+class SearchPageSource(EmbedPageSource[list[Passage]]):
     max_pages: int
     total: int
 
     def __init__(self, search: Search, *, per_page: int) -> None:
         self.search = search
         self.per_page = per_page
-        self.cache: Dict[int, List[Passage]] = {}
+        self.cache: dict[int, list[Passage]] = {}
 
     async def prepare(self) -> None:
         await super().prepare()
@@ -74,7 +74,7 @@ class SearchPageSource(EmbedPageSource[List[Passage]]):
     def is_paginating(self) -> bool:
         return self.total > self.per_page
 
-    async def get_page(self, page_number: int) -> List[Passage]:
+    async def get_page(self, page_number: int) -> list[Passage]:
         if page_number in self.cache:
             return self.cache[page_number]
 
@@ -86,7 +86,7 @@ class SearchPageSource(EmbedPageSource[List[Passage]]):
 
         return results.verses
 
-    async def set_page_text(self, entries: List[Passage]) -> None:
+    async def set_page_text(self, entries: list[Passage]) -> None:
         for entry in entries:
             self.embed.add_field(name=str(entry.range), value=entry.text, inline=False)
 
@@ -212,7 +212,7 @@ class Bible(Cog[Context]):
                 if i > 0:
                     bucket.update_rate_limit()
 
-                bible: Optional[BibleVersion] = None
+                bible: BibleVersion | None = None
 
                 try:
                     if isinstance(verse_range, Exception):

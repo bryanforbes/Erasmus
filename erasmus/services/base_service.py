@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from abc import abstractmethod
-from typing import Any, Dict, Final, List, Optional
+from typing import Any, Final
 
 import aiohttp
 from attr import dataclass
@@ -25,7 +25,7 @@ _number_re: Final = re.compile(
 @dataclass(slots=True)
 class BaseService(object):
     session: aiohttp.ClientSession
-    config: Optional[Dict[str, Any]]
+    config: dict[str, Any] | None
 
     @abstractmethod
     async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
@@ -33,7 +33,7 @@ class BaseService(object):
 
     @abstractmethod
     async def search(
-        self, bible: Bible, terms: List[str], *, limit: int = 20, offset: int = 0
+        self, bible: Bible, terms: list[str], *, limit: int = 20, offset: int = 0
     ) -> SearchResults:
         ...
 

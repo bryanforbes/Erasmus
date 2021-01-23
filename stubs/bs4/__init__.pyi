@@ -1,16 +1,6 @@
 from collections import Counter
 from collections.abc import Mapping
-from typing import (
-    Any,
-    ClassVar,
-    List,
-    Optional,
-    Protocol,
-    Type,
-    TypeVar,
-    Union,
-    type_check_only,
-)
+from typing import Any, ClassVar, Protocol, TypeVar, type_check_only
 
 from .builder import ParserRejectedMarkup as ParserRejectedMarkup
 from .builder import TreeBuilder
@@ -45,81 +35,81 @@ _BS = TypeVar('_BS', bound=BeautifulSoup)
 
 class BeautifulSoup(Tag):
     ROOT_TAG_NAME: ClassVar[str]
-    DEFAULT_BUILDER_FEATURES: ClassVar[List[str]]
+    DEFAULT_BUILDER_FEATURES: ClassVar[list[str]]
     ASCII_SPACES: ClassVar[str]
     NO_PARSER_SPECIFIED_WARNING: ClassVar[str]
-    element_classes: Mapping[Type[Any], Type[Any]]
+    element_classes: Mapping[type[Any], type[Any]]
     builder: TreeBuilder
     is_xml: bool
     known_xml: bool
-    parse_only: Optional[SoupStrainer]
+    parse_only: SoupStrainer | None
     markup: None
     current_data: Any
     currentTag: Any
-    tagStack: List[Any]
+    tagStack: list[Any]
     open_tag_counter: Counter[str]
-    preserve_whitespace_tag_stack: List[Any]
-    string_container_stack: List[Any]
+    preserve_whitespace_tag_stack: list[Any]
+    string_container_stack: list[Any]
     def __init__(
         self,
-        markup: Union[str, bytes, _FileLike[str], _FileLike[bytes]] = ...,
-        features: Optional[Union[str, List[str]]] = ...,
-        builder: Optional[Union[TreeBuilder, Type[TreeBuilder]]] = ...,
-        parse_only: Optional[SoupStrainer] = ...,
-        from_encoding: Optional[str] = ...,
-        exclude_encodings: Optional[List[str]] = ...,
-        element_classes: Optional[Mapping[Type[Any], Type[Any]]] = ...,
+        markup: str | bytes | _FileLike[str] | _FileLike[bytes] = ...,
+        features: str | list[str] | None = ...,
+        builder: TreeBuilder | type[TreeBuilder] | None = ...,
+        parse_only: SoupStrainer | None = ...,
+        from_encoding: str | None = ...,
+        exclude_encodings: list[str] | None = ...,
+        element_classes: Mapping[type[Any], type[Any]] | None = ...,
     ): ...
     def reset(self) -> None: ...
     def new_tag(
         self,
         name: str,
-        namespace: Optional[str] = ...,
-        nsprefix: Optional[str] = ...,
+        namespace: str | None = ...,
+        nsprefix: str | None = ...,
         attrs: Mapping[str, str] = ...,
-        sourceline: Optional[int] = ...,
-        sourcepos: Optional[int] = ...,
+        sourceline: int | None = ...,
+        sourcepos: int | None = ...,
         **kwattrs: str,
     ) -> Tag: ...
-    def string_container(self, base_class: Optional[Type[Any]] = ...) -> Type[Any]: ...
-    def new_string(self, s: str, subclass: Optional[Type[Any]] = ...) -> Any: ...
+    def string_container(self, base_class: type[Any] | None = ...) -> type[Any]: ...
+    def new_string(self, s: str, subclass: type[Any] | None = ...) -> Any: ...
     def popTag(self) -> Any: ...
     def pushTag(self, tag: Any) -> None: ...
-    def endData(self, containerClass: Optional[Any] = ...) -> None: ...
+    def endData(self, containerClass: Any | None = ...) -> None: ...
     def object_was_parsed(
         self,
         o: Any,
-        parent: Optional[Any] = ...,
-        most_recent_element: Optional[Any] = ...,
+        parent: Any | None = ...,
+        most_recent_element: Any | None = ...,
     ) -> None: ...
     def handle_starttag(
         self,
         name: str,
-        namespace: Optional[str],
-        nsprefix: Optional[str],
+        namespace: str | None,
+        nsprefix: str | None,
         attrs: Mapping[str, str],
-        sourceline: Optional[int] = ...,
-        sourcepos: Optional[int] = ...,
-    ) -> Optional[Tag]: ...
-    def handle_endtag(self, name: str, nsprefix: Optional[str] = ...) -> None: ...
+        sourceline: int | None = ...,
+        sourcepos: int | None = ...,
+    ) -> Tag | None: ...
+    def handle_endtag(self, name: str, nsprefix: str | None = ...) -> None: ...
     def handle_data(self, data: Any) -> None: ...
     def decode(  # type: ignore[override]
         self,
         pretty_print: bool = ...,
-        eventual_encoding: Optional[str] = ...,
+        eventual_encoding: str | None = ...,
         formatter: str = ...,
     ) -> str: ...
 
 class BeautifulStoneSoup(BeautifulSoup):
     def __init__(
         self,
-        markup: Union[str, bytes, _FileLike[str], _FileLike[bytes]] = ...,
-        features: Optional[Union[str, List[str]]] = ...,
-        builder: Optional[TreeBuilder] = ...,
-        parse_only: Optional[SoupStrainer] = ...,
-        from_encoding: Optional[str] = ...,
-        exclude_encodings: Optional[List[str]] = ...,
-        element_classes: Optional[Mapping[Type[Any], Type[Any]]] = ...,
+        markup: str | bytes | _FileLike[str] | _FileLike[bytes] = ...,
+        features: str | list[str] | None = ...,
+        builder: TreeBuilder | None = ...,
+        parse_only: SoupStrainer | None = ...,
+        from_encoding: str | None = ...,
+        exclude_encodings: list[str] | None = ...,
+        element_classes: Mapping[type[Any], type[Any]] | None = ...,
     ): ...
 
 class StopParsing(Exception): ...

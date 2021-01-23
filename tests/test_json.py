@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict
+from typing import Any
 
 import pytest
 import pytest_mock
@@ -33,7 +33,7 @@ def test_loads() -> None:
         ({'foo': 1}, 'foo.bar.baz', None),
     ],
 )
-def test_get(data: Dict[str, Any], key: str, expected: Any) -> None:
+def test_get(data: dict[str, Any], key: str, expected: Any) -> None:
     assert get(data, key) == expected
 
 
@@ -47,5 +47,5 @@ def test_get(data: Dict[str, Any], key: str, expected: Any) -> None:
         ({'foo': 1}, 'foo.bar.baz', False),
     ],
 )
-def test_jsonobject_has(data: Dict[str, Any], key: str, expected: Any) -> None:
+def test_jsonobject_has(data: dict[str, Any], key: str, expected: Any) -> None:
     assert has(data, key) == expected

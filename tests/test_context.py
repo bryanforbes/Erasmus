@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import unittest.mock
-from typing import Any, Optional, cast
+from typing import Any, cast
 
 import discord
 import pytest
@@ -16,9 +16,9 @@ class MockUser(object):
     def __init__(
         self,
         *,
-        bot: Optional[bool] = None,
-        id: Optional[int] = None,
-        mention: Optional[str] = None,
+        bot: bool | None = None,
+        id: int | None = None,
+        mention: str | None = None,
     ) -> None:
         self.bot = bot
         self.id = id
@@ -27,10 +27,10 @@ class MockUser(object):
 
 class MockMessage(object):
     __slots__ = ('author', 'content', 'channel', '_state')
-    channel: Optional[discord.abc.GuildChannel]
+    channel: discord.abc.GuildChannel | None
 
     def __init__(
-        self, *, author: Optional[MockUser] = None, content: Optional[str] = None
+        self, *, author: MockUser | None = None, content: str | None = None
     ) -> None:
         self.author = author
         self.content = content

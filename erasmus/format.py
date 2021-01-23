@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Final, List
+from typing import Final
 
 _roman_pairs: Final = tuple(
     zip(
@@ -11,7 +11,7 @@ _roman_pairs: Final = tuple(
 
 
 def int_to_roman(number: int) -> str:
-    numerals: List[str] = []
+    numerals: list[str] = []
 
     for letter, value in _roman_pairs:
         count, number = divmod(number, value)

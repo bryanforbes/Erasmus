@@ -4,18 +4,12 @@ from typing import (
     Any,
     AnyStr,
     ClassVar,
-    Dict,
     Final,
     Generic,
-    List,
     Literal,
     NewType,
     NoReturn,
-    Optional,
     Protocol,
-    Set,
-    Tuple,
-    Type,
     TypeVar,
     Union,
     overload,
@@ -30,7 +24,7 @@ DEFAULT_OUTPUT_ENCODING: Final[str]
 PY3K: Final[bool]
 nonwhitespace_re: Final[Pattern[Any]]
 whitespace_re: Final[Pattern[Any]]
-PYTHON_SPECIFIC_ENCODINGS: Final[Set[str]]
+PYTHON_SPECIFIC_ENCODINGS: Final[set[str]]
 
 _F = TypeVar('_F', bound=Formatter)
 _PE = TypeVar('_PE', bound=PageElement)
@@ -52,8 +46,8 @@ _FilterType = Union[
     _FilterItemType[_T, _U], _FilterIterableType[_FilterItemType[_T, _U]]
 ]
 _StringFilterType = _FilterType[NavigableString, Literal[True]]
-_TagStringFilterType = _FilterType[Optional[NavigableString], bool]
-_TagAttrFilterType = _FilterType[Optional[str], bool]
+_TagStringFilterType = _FilterType['NavigableString | None', bool]
+_TagAttrFilterType = _FilterType['str | None', bool]
 _TagFilterType = _FilterType[Tag, bool]
 @type_check_only
 class _FindOneMethod(Protocol):
@@ -64,7 +58,7 @@ class _FindOneMethod(Protocol):
         *,
         text: _StringFilterType,
         **kwargs: _Never,
-    ) -> Optional[NavigableString]: ...
+    ) -> NavigableString | None: ...
     @overload
     def __call__(
         self,
@@ -72,50 +66,48 @@ class _FindOneMethod(Protocol):
         *,
         string: _StringFilterType,
         **kwargs: _Never,
-    ) -> Optional[NavigableString]: ...
+    ) -> NavigableString | None: ...
     @overload
     def __call__(
         self,
-        name: Optional[_TagFilterType],
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ] = ...,
-        text: Optional[_TagStringFilterType] = ...,
+        name: _TagFilterType | None,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
+        text: _TagStringFilterType | None = ...,
         *,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
-    ) -> Optional[Tag]: ...
-    @overload
-    def __call__(
-        self,
-        *,
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ],
-        text: Optional[_TagStringFilterType] = ...,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
-    ) -> Optional[Tag]: ...
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
+    ) -> Tag | None: ...
     @overload
     def __call__(
         self,
         *,
-        text: Optional[_TagStringFilterType] = ...,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
-    ) -> Optional[Tag]: ...
+        attrs: _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None,
+        text: _TagStringFilterType | None = ...,
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
+    ) -> Tag | None: ...
     @overload
     def __call__(
         self,
-        name: Optional[Union[SoupStrainer, _TagFilterType]] = ...,
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ] = ...,
-        text: Optional[_TagStringFilterType] = ...,
         *,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
-    ) -> Optional[Union[Tag, NavigableString]]: ...
+        text: _TagStringFilterType | None = ...,
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
+    ) -> Tag | None: ...
+    @overload
+    def __call__(
+        self,
+        name: SoupStrainer | _TagFilterType | None = ...,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
+        text: _TagStringFilterType | None = ...,
+        *,
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
+    ) -> Tag | NavigableString | None: ...
 
 @type_check_only
 class _FindAllMethod(Protocol):
@@ -124,7 +116,7 @@ class _FindAllMethod(Protocol):
         self,
         name: None = ...,
         *,
-        limit: Optional[int] = ...,
+        limit: int | None = ...,
         text: _StringFilterType,
         **kwargs: _Never,
     ) -> ResultSet[NavigableString]: ...
@@ -133,62 +125,60 @@ class _FindAllMethod(Protocol):
         self,
         name: None = ...,
         *,
-        limit: Optional[int] = ...,
+        limit: int | None = ...,
         string: _StringFilterType,
         **kwargs: _Never,
     ) -> ResultSet[NavigableString]: ...
     @overload
     def __call__(
         self,
-        name: Optional[_TagFilterType],
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ] = ...,
-        text: Optional[_TagStringFilterType] = ...,
-        limit: Optional[int] = ...,
+        name: _TagFilterType | None,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
+        text: _TagStringFilterType | None = ...,
+        limit: int | None = ...,
         *,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
     ) -> ResultSet[Tag]: ...
     @overload
     def __call__(
         self,
         *,
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ],
-        text: Optional[_TagStringFilterType] = ...,
-        limit: Optional[int] = ...,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
+        attrs: _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None,
+        text: _TagStringFilterType | None = ...,
+        limit: int | None = ...,
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
     ) -> ResultSet[Tag]: ...
     @overload
     def __call__(
         self,
         *,
-        text: Optional[_TagStringFilterType] = ...,
-        limit: Optional[int] = ...,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
+        text: _TagStringFilterType | None = ...,
+        limit: int | None = ...,
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
     ) -> ResultSet[Tag]: ...
     @overload
     def __call__(
         self,
-        name: Optional[Union[SoupStrainer, _TagFilterType]] = ...,
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ] = ...,
-        text: Optional[_TagStringFilterType] = ...,
-        limit: Optional[int] = ...,
+        name: SoupStrainer | _TagFilterType | None = ...,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
+        text: _TagStringFilterType | None = ...,
+        limit: int | None = ...,
         *,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
-    ) -> Union[ResultSet[NavigableString], ResultSet[Tag]]: ...
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
+    ) -> ResultSet[NavigableString] | ResultSet[Tag]: ...
 
 class NamespacedAttribute(str):
     prefix: str
-    name: Optional[str]
-    namespace: Optional[str]
+    name: str | None
+    namespace: str | None
 
 class AttributeValueWithCharsetSubstitution(str): ...
 
@@ -199,22 +189,22 @@ class ContentMetaAttributeValue(AttributeValueWithCharsetSubstitution):
     CHARSET_RE: ClassVar[Pattern[Any]]
 
 class PageElement:
-    parent: Optional[Tag]
-    previous_element: Optional[PageElement]
-    next_element: Optional[PageElement]
-    previous_sibling: Optional[PageElement]
-    next_sibling: Optional[PageElement]
-    previousSibling: Optional[PageElement]
-    nextSibling: Optional[PageElement]
+    parent: Tag | None
+    previous_element: PageElement | None
+    next_element: PageElement | None
+    previous_sibling: PageElement | None
+    next_sibling: PageElement | None
+    previousSibling: PageElement | None
+    nextSibling: PageElement | None
     def setup(
         self,
-        parent: Optional[Tag] = ...,
-        previous_element: Optional[PageElement] = ...,
-        next_element: Optional[PageElement] = ...,
-        previous_sibling: Optional[PageElement] = ...,
-        next_sibling: Optional[PageElement] = ...,
+        parent: Tag | None = ...,
+        previous_element: PageElement | None = ...,
+        next_element: PageElement | None = ...,
+        previous_sibling: PageElement | None = ...,
+        next_sibling: PageElement | None = ...,
     ) -> None: ...
-    def format_string(self, s: str, formatter: Optional[Formatter]) -> str: ...
+    def format_string(self, s: str, formatter: Formatter | None) -> str: ...
     @overload
     def formatter_for_name(self, formatter: _F) -> _F: ...
     @overload
@@ -223,20 +213,18 @@ class PageElement:
     ) -> Formatter: ...
     @overload
     def formatter_for_name(self, formatter: str) -> Formatter: ...
-    def replace_with(
-        self: _PE, replace_with: Union[str, PageElement]
-    ) -> Optional[_PE]: ...
+    def replace_with(self: _PE, replace_with: str | PageElement) -> _PE | None: ...
     replaceWith = replace_with
     def unwrap(self: _PE) -> _PE: ...
     replace_with_children = unwrap
     replaceWithChildren = unwrap
     def wrap(self, wrap_inside: _PE) -> _PE: ...
-    def extract(self: _PE, _self_index: Optional[int] = ...) -> _PE: ...
+    def extract(self: _PE, _self_index: int | None = ...) -> _PE: ...
     def insert(self, position: int, new_child: PageElement) -> None: ...
     def append(self, tag: PageElement) -> None: ...
-    def extend(self, tags: Union[PageElement, Iterable[PageElement]]) -> None: ...
-    def insert_before(self, *args: Union[str, PageElement]) -> None: ...
-    def insert_after(self, *args: Union[str, PageElement]) -> None: ...
+    def extend(self, tags: PageElement | Iterable[PageElement]) -> None: ...
+    def insert_before(self, *args: str | PageElement) -> None: ...
+    def insert_after(self, *args: str | PageElement) -> None: ...
     find_next: ClassVar[_FindOneMethod]
     findNext: ClassVar[_FindOneMethod]
     find_all_next: ClassVar[_FindAllMethod]
@@ -258,28 +246,28 @@ class PageElement:
     fetchPreviousSiblings: ClassVar[_FindAllMethod]
     def find_parent(
         self,
-        name: Optional[Union[SoupStrainer, _TagFilterType]] = ...,
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ] = ...,
+        name: SoupStrainer | _TagFilterType | None = ...,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
         **kwargs: _TagAttrFilterType,
-    ) -> Optional[Tag]: ...
+    ) -> Tag | None: ...
     findParent = find_parent
     def find_parents(
         self,
-        name: Optional[Union[SoupStrainer, _TagFilterType]] = ...,
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ] = ...,
-        limit: Optional[int] = ...,
+        name: SoupStrainer | _TagFilterType | None = ...,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
+        limit: int | None = ...,
         **kwargs: _TagAttrFilterType,
     ) -> ResultSet[Tag]: ...
     findParents = find_parents
     fetchParents = find_parents
     @property
-    def next(self) -> Optional[PageElement]: ...
+    def next(self) -> PageElement | None: ...
     @property
-    def previous(self) -> Optional[PageElement]: ...
+    def previous(self) -> PageElement | None: ...
     @property
     def next_elements(self) -> Iterable[PageElement]: ...
     @property
@@ -301,18 +289,18 @@ class PageElement:
 class NavigableString(str, PageElement):
     PREFIX: ClassVar[str]
     SUFFIX: ClassVar[str]
-    known_xml: Optional[bool]
+    known_xml: bool | None
     def __init__(self, value: AnyStr) -> None: ...
     @property
     def string(self) -> str: ...
-    def output_ready(self, formatter: Union[str, Formatter] = ...) -> str: ...
+    def output_ready(self, formatter: str | Formatter = ...) -> str: ...
     @property
     def name(self) -> None: ...
 
 class PreformattedString(NavigableString):
     PREFIX: ClassVar[str]
     SUFFIX: ClassVar[str]
-    def output_ready(self, formatter: Optional[Union[str, Formatter]] = ...) -> str: ...
+    def output_ready(self, formatter: str | Formatter | None = ...) -> str: ...
 
 class CData(PreformattedString):
     PREFIX: ClassVar[str]
@@ -345,51 +333,51 @@ class Script(NavigableString): ...
 class TemplateString(NavigableString): ...
 
 class Tag(PageElement):
-    parser_class: Type[BeautifulSoup]
-    name: Optional[str]
-    namespace: Optional[str]
-    prefix: Optional[str]
-    sourceline: Optional[int]
-    sourcepos: Optional[int]
+    parser_class: type[BeautifulSoup]
+    name: str | None
+    namespace: str | None
+    prefix: str | None
+    sourceline: int | None
+    sourcepos: int | None
     known_xml: bool
-    attrs: Dict[str, Union[str, List[str]]]
-    contents: List[PageElement]
+    attrs: dict[str, str | list[str]]
+    contents: list[PageElement]
     hidden: bool
-    can_be_empty_element: Optional[bool]
-    cdata_list_attributes: Optional[bool]
-    preserve_whitespace_tags: Optional[bool]
-    builder: Optional[TreeBuilder]
-    parserClass: Type[BeautifulSoup]
+    can_be_empty_element: bool | None
+    cdata_list_attributes: bool | None
+    preserve_whitespace_tags: bool | None
+    builder: TreeBuilder | None
+    parserClass: type[BeautifulSoup]
     string: str
     def __init__(
         self,
-        parser: Optional[BeautifulSoup] = ...,
-        builder: Optional[TreeBuilder] = ...,
-        name: Optional[str] = ...,
-        namespace: Optional[str] = ...,
-        prefix: Optional[str] = ...,
-        attrs: Optional[Mapping[str, Union[str, List[str]]]] = ...,
-        parent: Optional[Tag] = ...,
-        previous: Optional[PageElement] = ...,
-        is_xml: Optional[bool] = ...,
-        sourceline: Optional[int] = ...,
-        sourcepos: Optional[int] = ...,
-        can_be_empty_element: Optional[bool] = ...,
-        cdata_list_attributes: Optional[bool] = ...,
-        preserve_whitespace_tags: Optional[bool] = ...,
+        parser: BeautifulSoup | None = ...,
+        builder: TreeBuilder | None = ...,
+        name: str | None = ...,
+        namespace: str | None = ...,
+        prefix: str | None = ...,
+        attrs: Mapping[str, str | list[str]] | None = ...,
+        parent: Tag | None = ...,
+        previous: PageElement | None = ...,
+        is_xml: bool | None = ...,
+        sourceline: int | None = ...,
+        sourcepos: int | None = ...,
+        can_be_empty_element: bool | None = ...,
+        cdata_list_attributes: bool | None = ...,
+        preserve_whitespace_tags: bool | None = ...,
     ) -> None: ...
     @property
     def is_empty_element(self) -> bool: ...
     isSelfClosing = is_empty_element
     @property
-    def strings(self) -> Iterator[Union[NavigableString, CData]]: ...
+    def strings(self) -> Iterator[NavigableString | CData]: ...
     @property
     def stripped_strings(self) -> Iterator[str]: ...
     def get_text(
         self,
         separator: str = ...,
         strip: bool = ...,
-        types: Container[Type[PageElement]] = ...,
+        types: Container[type[PageElement]] = ...,
     ) -> str: ...
     getText = get_text
     @property
@@ -399,61 +387,59 @@ class Tag(PageElement):
     def smooth(self) -> None: ...
     def index(self, element: PageElement) -> int: ...
     @overload
-    def get(self, key: str) -> Optional[Union[str, List[str]]]: ...
+    def get(self, key: str) -> str | list[str] | None: ...
     @overload
-    def get(self, key: str, default: _T) -> Union[str, List[str], _T]: ...
+    def get(self, key: str, default: _T) -> str | list[str] | _T: ...
     @overload
-    def get_attribute_list(self, key: str) -> List[Optional[str]]: ...
+    def get_attribute_list(self, key: str) -> list[str | None]: ...
     @overload
-    def get_attribute_list(self, key: str, default: _T) -> List[Union[str, _T]]: ...
+    def get_attribute_list(self, key: str, default: _T) -> list[str | _T]: ...
     def has_attr(self, key: str) -> bool: ...
     def __hash__(self) -> int: ...
-    def __getitem__(self, key: str) -> Union[str, List[str]]: ...
+    def __getitem__(self, key: str) -> str | list[str]: ...
     def __iter__(self) -> Iterator[PageElement]: ...
     def __len__(self) -> int: ...
     def __contains__(self, x: Any) -> bool: ...
     def __bool__(self) -> bool: ...
-    def __setitem__(self, key: str, value: Union[str, List[str]]) -> None: ...
+    def __setitem__(self, key: str, value: str | list[str]) -> None: ...
     def __delitem__(self, key: str) -> None: ...
-    def __getattr__(self, tag: str) -> Optional[Tag]: ...
+    def __getattr__(self, tag: str) -> Tag | None: ...
     def __eq__(self, other: Any) -> bool: ...
     def __ne__(self, other: Any) -> bool: ...
     def encode(
         self,
         encoding: str = ...,
-        indent_level: Optional[int] = ...,
-        formatter: Union[str, Formatter] = ...,
+        indent_level: int | None = ...,
+        formatter: str | Formatter = ...,
         errors: str = ...,
     ) -> bytes: ...
     def decode(
         self,
-        indent_level: Optional[int] = ...,
+        indent_level: int | None = ...,
         eventual_encoding: str = ...,
-        formatter: Union[str, Formatter] = ...,
+        formatter: str | Formatter = ...,
+    ) -> str: ...
+    @overload
+    def prettify(self, encoding: str, formatter: str | Formatter = ...) -> bytes: ...
+    @overload
+    def prettify(
+        self, encoding: None = ..., formatter: str | Formatter = ...
     ) -> str: ...
     @overload
     def prettify(
-        self, encoding: str, formatter: Union[str, Formatter] = ...
-    ) -> bytes: ...
-    @overload
-    def prettify(
-        self, encoding: None = ..., formatter: Union[str, Formatter] = ...
-    ) -> str: ...
-    @overload
-    def prettify(
-        self, encoding: Optional[str], formatter: Union[str, Formatter] = ...
-    ) -> Union[str, bytes]: ...
+        self, encoding: str | None, formatter: str | Formatter = ...
+    ) -> str | bytes: ...
     def decode_contents(
         self,
-        indent_level: Optional[int] = ...,
+        indent_level: int | None = ...,
         eventual_encoding: str = ...,
-        formatter: Union[str, Formatter] = ...,
+        formatter: str | Formatter = ...,
     ) -> str: ...
     def encode_contents(
         self,
-        indent_level: Optional[int] = ...,
+        indent_level: int | None = ...,
         encoding: str = ...,
-        formatter: Union[str, Formatter] = ...,
+        formatter: str | Formatter = ...,
     ) -> bytes: ...
     def renderContents(
         self, encoding: str = ..., prettyPrint: bool = ..., indentLevel: int = ...
@@ -466,7 +452,7 @@ class Tag(PageElement):
         recursive: bool = ...,
         text: _StringFilterType,
         **kwargs: _Never,
-    ) -> Optional[NavigableString]: ...
+    ) -> NavigableString | None: ...
     @overload
     def find(
         self,
@@ -475,54 +461,52 @@ class Tag(PageElement):
         recursive: bool = ...,
         string: _StringFilterType,
         **kwargs: _Never,
-    ) -> Optional[NavigableString]: ...
+    ) -> NavigableString | None: ...
     @overload
     def find(
         self,
-        name: Optional[_TagFilterType],
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ] = ...,
+        name: _TagFilterType | None,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
         recursive: bool = ...,
-        text: Optional[_TagStringFilterType] = ...,
+        text: _TagStringFilterType | None = ...,
         *,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
-    ) -> Optional[Tag]: ...
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
+    ) -> Tag | None: ...
     @overload
     def find(
         self,
         *,
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ],
+        attrs: _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None,
         recursive: bool = ...,
-        text: Optional[_TagStringFilterType] = ...,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
-    ) -> Optional[Tag]: ...
+        text: _TagStringFilterType | None = ...,
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
+    ) -> Tag | None: ...
     @overload
     def find(
         self,
         *,
         recursive: bool = ...,
-        text: Optional[_TagStringFilterType] = ...,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
-    ) -> Optional[Tag]: ...
+        text: _TagStringFilterType | None = ...,
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
+    ) -> Tag | None: ...
     @overload
     def find(
         self,
-        name: Optional[Union[SoupStrainer, _TagFilterType]] = ...,
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ] = ...,
+        name: SoupStrainer | _TagFilterType | None = ...,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
         recursive: bool = ...,
-        text: Optional[_TagStringFilterType] = ...,
+        text: _TagStringFilterType | None = ...,
         *,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
-    ) -> Optional[Union[Tag, NavigableString]]: ...
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
+    ) -> Tag | NavigableString | None: ...
     findChild = find
     @overload
     def find_all(
@@ -530,7 +514,7 @@ class Tag(PageElement):
         *,
         recursive: bool = ...,
         text: _StringFilterType,
-        limit: Optional[int] = ...,
+        limit: int | None = ...,
         **kwargs: _Never,
     ) -> ResultSet[NavigableString]: ...
     @overload
@@ -538,61 +522,59 @@ class Tag(PageElement):
         self,
         *,
         recursive: bool = ...,
-        limit: Optional[int] = ...,
+        limit: int | None = ...,
         string: _StringFilterType,
         **kwargs: _Never,
     ) -> ResultSet[NavigableString]: ...
     @overload
     def find_all(
         self,
-        name: Optional[_TagFilterType],
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ] = ...,
+        name: _TagFilterType | None,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
         recursive: bool = ...,
-        text: Optional[_TagStringFilterType] = ...,
-        limit: Optional[int] = ...,
+        text: _TagStringFilterType | None = ...,
+        limit: int | None = ...,
         *,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
     ) -> ResultSet[Tag]: ...
     @overload
     def find_all(
         self,
         *,
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ],
+        attrs: _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None,
         recursive: bool = ...,
-        text: Optional[_TagStringFilterType] = ...,
-        limit: Optional[int] = ...,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
+        text: _TagStringFilterType | None = ...,
+        limit: int | None = ...,
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
     ) -> ResultSet[Tag]: ...
     @overload
     def find_all(
         self,
         *,
         recursive: bool = ...,
-        text: Optional[_TagStringFilterType] = ...,
-        limit: Optional[int] = ...,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
+        text: _TagStringFilterType | None = ...,
+        limit: int | None = ...,
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
     ) -> ResultSet[Tag]: ...
     @overload
     def find_all(
         self,
-        name: Optional[Union[SoupStrainer, _TagFilterType]] = ...,
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ] = ...,
+        name: SoupStrainer | _TagFilterType | None = ...,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
         recursive: bool = ...,
-        text: Optional[_TagStringFilterType] = ...,
-        limit: Optional[int] = ...,
+        text: _TagStringFilterType | None = ...,
+        limit: int | None = ...,
         *,
-        string: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
-    ) -> Union[ResultSet[NavigableString], ResultSet[Tag]]: ...
+        string: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
+    ) -> ResultSet[NavigableString] | ResultSet[Tag]: ...
     findAll = find_all
     findChildren = find_all
     __call__ = find_all
@@ -603,14 +585,14 @@ class Tag(PageElement):
     def select_one(
         self,
         selector: str,
-        namespaces: Optional[Mapping[str, str]] = ...,
+        namespaces: Mapping[str, str] | None = ...,
         **kwargs: Any,
-    ) -> Optional[Tag]: ...
+    ) -> Tag | None: ...
     def select(
         self,
         selector: str,
-        namespaces: Optional[Mapping[str, str]] = ...,
-        limit: Optional[int] = ...,
+        namespaces: Mapping[str, str] | None = ...,
+        limit: int | None = ...,
         **kwargs: Any,
     ) -> ResultSet[Tag]: ...
     def childGenerator(self) -> Iterator[PageElement]: ...
@@ -618,30 +600,30 @@ class Tag(PageElement):
     def has_key(self, key: str) -> bool: ...
 
 class SoupStrainer:
-    name: Optional[_StrainerAttrType[Tag]]
-    attrs: Dict[str, Optional[_StrainerAttrType[Optional[str]]]]
-    text: Optional[_StrainerAttrType[Optional[NavigableString]]]
+    name: _StrainerAttrType[Tag] | None
+    attrs: dict[str, _StrainerAttrType[str | None] | None]
+    text: _StrainerAttrType[NavigableString | None] | None
     def __init__(
         self,
-        name: Optional[_TagFilterType] = ...,
-        attrs: Optional[
-            Union[_TagAttrFilterType, Mapping[str, Optional[_TagAttrFilterType]]]
-        ] = ...,
-        text: Optional[_TagStringFilterType] = ...,
-        **kwargs: Optional[_TagAttrFilterType],
+        name: _TagFilterType | None = ...,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
+        text: _TagStringFilterType | None = ...,
+        **kwargs: _TagAttrFilterType | None,
     ) -> None: ...
     def search_tag(
         self,
-        markup_name: Optional[Union[str, Tag]] = ...,
-        markup_attrs: Dict[str, Union[List[str], Tuple[str, ...]]] = ...,
-    ) -> Optional[PageElement]: ...
+        markup_name: str | Tag | None = ...,
+        markup_attrs: dict[str, list[str] | tuple[str, ...]] = ...,
+    ) -> PageElement | None: ...
     searchTag = search_tag
     def search(
         self,
-        markup: Union[str, Tag, Iterable[Union[str, Tag]]],
-    ) -> Optional[Union[Tag, NavigableString]]: ...
+        markup: str | Tag | Iterable[str | Tag],
+    ) -> Tag | NavigableString | None: ...
 
-class ResultSet(List[_T]):
+class ResultSet(list[_T]):
     source: SoupStrainer
     def __init__(self, source: SoupStrainer, result: Iterable[_T] = ...) -> None: ...
     def __getattr__(self, key: Any) -> None: ...

@@ -3,7 +3,7 @@ from __future__ import annotations
 from itertools import chain
 from pathlib import Path
 from re import Match, Pattern
-from typing import TYPE_CHECKING, Dict, Final, List, Optional, TypedDict, Union
+from typing import TYPE_CHECKING, Final, TypedDict
 
 from attr import attrib, dataclass
 from botus_receptus import re
@@ -19,12 +19,12 @@ if TYPE_CHECKING:
 class BookDict(TypedDict):
     name: str
     osis: str
-    alt: List[str]
+    alt: list[str]
     section: int
 
 
 with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
-    _books_data: Final[List[BookDict]] = load(f)
+    _books_data: Final[list[BookDict]] = load(f)
 
 # Inspired by
 # https://github.com/TehShrike/verse-reference-regex/blob/master/create-regex.js
@@ -122,11 +122,11 @@ _search_reference_re: Final = re.compile(
     re.START, _reference_re, re.END, flags=re.IGNORECASE
 )
 
-_book_input_map: Final[Dict[str, str]] = {}
-_book_mask_map: Final[Dict[str, int]] = {}
+_book_input_map: Final[dict[str, str]] = {}
+_book_mask_map: Final[dict[str, int]] = {}
 
 for _book in _books_data:
-    for input_string in [_book['name'], _book['osis']] + _book['alt']:  # type: str
+    for input_string in [_book['name'], _book['osis']] + _book['alt']:
         _book_input_map[input_string.lower()] = _book['name']
     _book_mask_map[_book['name']] = _book['section']
 
@@ -157,8 +157,8 @@ class Verse(object):
 class VerseRange(object):
     book: str
     start: Verse
-    end: Optional[Verse] = None
-    version: Optional[str] = None
+    end: Verse | None = None
+    version: str | None = None
     book_mask: int = attrib(init=False)
 
     def __attrs_post_init__(self) -> None:
@@ -194,7 +194,7 @@ class VerseRange(object):
         chapter_start_int = int(groups['chapter_start'])
         start = Verse(chapter_start_int, int(groups['verse_start']))
 
-        end = None  # type: Optional[Verse]
+        end: Verse | None = None
         end_str = groups['verse_end']
 
         if end_str is not None:
@@ -207,7 +207,7 @@ class VerseRange(object):
 
             end = Verse(chapter_end_int, end_int)
 
-        version: Optional[str] = None
+        version: str | None = None
         if 'version' in groups:
             version = groups['version']
 
@@ -216,8 +216,8 @@ class VerseRange(object):
     @classmethod
     def get_all_from_string(
         cls, string: str, *, only_bracketed: bool = False
-    ) -> List[Union[VerseRange, Exception]]:
-        ranges: List[Union[VerseRange, Exception]] = []
+    ) -> list[VerseRange | Exception]:
+        ranges: list[VerseRange | Exception] = []
         lookup_pattern: Pattern[str]
 
         if only_bracketed:
@@ -249,7 +249,7 @@ _truncation_warning_len: Final = len(_truncation_warning) + 3
 class Passage(object):
     text: str
     range: VerseRange
-    version: Optional[str] = None
+    version: str | None = None
 
     @property
     def citation(self) -> str:
@@ -270,5 +270,5 @@ class Passage(object):
 
 @dataclass(slots=True)
 class SearchResults(object):
-    verses: List[Passage]
+    verses: list[Passage]
     total: int

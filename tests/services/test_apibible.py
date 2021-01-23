@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict, cast
+from typing import Any, cast
 
 import _pytest
 import aiohttp
@@ -245,8 +245,8 @@ class TestApiBible(ServiceTest):
         ],
         ids=['Melchizedek', 'faith', 'antidisestablishmentarianism'],
     )
-    def search_data(self, request: _pytest.fixtures.SubRequest) -> Dict[str, Any]:
-        return cast(Dict[str, Any], request.param)
+    def search_data(self, request: _pytest.fixtures.SubRequest) -> dict[str, Any]:
+        return cast(dict[str, Any], request.param)
 
     @pytest.fixture(
         params=[
@@ -274,16 +274,16 @@ class TestApiBible(ServiceTest):
         ],
         ids=['Gal 3:10-11 KJV', 'Mark 5:1 KJV'],
     )
-    def passage_data(self, request: _pytest.fixtures.SubRequest) -> Dict[str, Any]:
-        return cast(Dict[str, Any], request.param)
+    def passage_data(self, request: _pytest.fixtures.SubRequest) -> dict[str, Any]:
+        return cast(dict[str, Any], request.param)
 
     @pytest.fixture(scope="class")
-    def config(self) -> Dict[str, str]:
+    def config(self) -> dict[str, str]:
         try:
             config = toml.load(
                 str(Path(__file__).resolve().parent.parent.parent / 'config.toml')
             )
-            return cast(Dict[str, str], config['bot']['services']['ApiBible'])
+            return cast(dict[str, str], config['bot']['services']['ApiBible'])
         except FileNotFoundError:
             return {'api_key': ''}
 

@@ -1,7 +1,7 @@
 # Service for querying biblegateway.com
 from __future__ import annotations
 
-from typing import Final, List
+from typing import Final
 
 from attr import attrib, dataclass
 from botus_receptus import re
@@ -104,7 +104,7 @@ class BibleGateway(BaseService):
     async def search(
         self,
         bible: Bible,
-        terms: List[str],
+        terms: list[str],
         *,
         limit: int = 20,
         offset: int = 0,

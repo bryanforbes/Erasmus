@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import AsyncIterator, Callable, Sequence
 from re import Match
-from typing import Any, Final, List, Optional, Union, cast
+from typing import Any, Final, Optional, Union, cast
 
 from botus_receptus import Cog, re
 from botus_receptus.formatting import (
@@ -117,13 +117,13 @@ ConfessionSearchResult = Union[Paragraph, Article, Question]
 
 class ConfessionSearchSource(
     TotalListPageSource[ConfessionSearchResult],
-    EmbedPageSource[List[ConfessionSearchResult]],
+    EmbedPageSource[list[ConfessionSearchResult]],
 ):
     entry_text_string: str
 
     def __init__(
         self,
-        entries: List[ConfessionSearchResult],
+        entries: list[ConfessionSearchResult],
         *,
         per_page: int,
         type: ConfessionTypeEnum,
@@ -142,8 +142,8 @@ class ConfessionSearchSource(
                 '**{entry.question_number}**. {entry.question_text}'
             )
 
-    async def set_page_text(self, entries: List[ConfessionSearchResult]) -> None:
-        lines: List[str] = []
+    async def set_page_text(self, entries: list[ConfessionSearchResult]) -> None:
+        lines: list[str] = []
 
         for entry in entries:
             lines.append(self.entry_text_string.format(entry=entry))
@@ -226,9 +226,9 @@ class Confession(Cog[Context]):
 
     async def list_sections(self, ctx: Context, confession: ConfessionRecord) -> None:
         paginator = EmbedPaginator()
-        getter: Optional[Callable[[], AsyncIterator[Any]]] = None
-        number_key: Optional[str] = None
-        title_key: Optional[str] = None
+        getter: Callable[[], AsyncIterator[Any]] | None = None
+        number_key: str | None = None
+        title_key: str | None = None
 
         if confession.type == ConfessionTypeEnum.CHAPTERS:
             getter = confession.get_chapters
@@ -283,8 +283,8 @@ class Confession(Cog[Context]):
     async def show_item(
         self, ctx: Context, confession: ConfessionRecord, match: Match[str]
     ) -> None:
-        title: Optional[str] = None
-        output: Optional[str] = None
+        title: str | None = None
+        output: str | None = None
 
         paginator = EmbedPaginator()
         format_number = _number_formatters[confession.numbering]

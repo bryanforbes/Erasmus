@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import Optional
-
 import pytest  # noqa
 
 from erasmus.data import Passage, SearchResults  # noqa
@@ -15,9 +13,9 @@ class MockUser(object):
     def __init__(
         self,
         *,
-        bot: Optional[bool] = None,
-        id: Optional[int] = None,
-        mention: Optional[str] = None,
+        bot: bool | None = None,
+        id: int | None = None,
+        mention: str | None = None,
     ) -> None:
         self.bot = bot
         self.id = id
@@ -28,7 +26,7 @@ class MockMessage(object):
     __slots__ = 'author', 'content', '_state'
 
     def __init__(
-        self, *, author: Optional[MockUser] = None, content: Optional[str] = None
+        self, *, author: MockUser | None = None, content: str | None = None
     ) -> None:
         self.author = author
         self.content = content

@@ -2,33 +2,19 @@ from codecs import CodecInfo
 from collections.abc import Iterable, Iterator
 from logging import Logger
 from re import Pattern
-from typing import (
-    Any,
-    AnyStr,
-    ClassVar,
-    Dict,
-    Final,
-    Generic,
-    List,
-    Literal,
-    Optional,
-    Tuple,
-    Type,
-    Union,
-    overload,
-)
+from typing import Any, AnyStr, ClassVar, Final, Generic, Literal, overload
 
-def chardet_dammit(s: Any) -> Optional[str]: ...
+def chardet_dammit(s: Any) -> str | None: ...
 
 xml_encoding: Final[str]
 html_meta: Final[str]
-encoding_res: Final[Dict[Type[Any], Dict[str, Pattern[Any]]]]
+encoding_res: Final[dict[type[Any], dict[str, Pattern[Any]]]]
 
 class EntitySubstitution:
-    CHARACTER_TO_HTML_ENTITY: ClassVar[Dict[str, str]]
-    HTML_ENTITY_TO_CHARACTER: ClassVar[Dict[str, str]]
+    CHARACTER_TO_HTML_ENTITY: ClassVar[dict[str, str]]
+    HTML_ENTITY_TO_CHARACTER: ClassVar[dict[str, str]]
     CHARACTER_TO_HTML_ENTITY_RE: ClassVar[Pattern[Any]]
-    CHARACTER_TO_XML_ENTITY: ClassVar[Dict[str, str]]
+    CHARACTER_TO_XML_ENTITY: ClassVar[dict[str, str]]
     BARE_AMPERSAND_OR_BRACKET: ClassVar[Pattern[Any]]
     AMPERSAND_OR_BRACKET: ClassVar[Pattern[Any]]
     @classmethod
@@ -44,12 +30,12 @@ class EntitySubstitution:
 
 class EncodingDetector(Generic[AnyStr]):
     markup: AnyStr
-    sniffed_encoding: Optional[str]
+    sniffed_encoding: str | None
     override_encodings: Iterable[str]
     exclude_encodings: Iterable[str]
-    chardet_encoding: Optional[str]
+    chardet_encoding: str | None
     is_html: bool
-    declared_encoding: Optional[str]
+    declared_encoding: str | None
     def __init__(
         self,
         markup: AnyStr,
@@ -61,53 +47,53 @@ class EncodingDetector(Generic[AnyStr]):
     def encodings(self) -> Iterator[str]: ...
     @overload
     @classmethod
-    def strip_byte_order_mark(cls, data: str) -> Tuple[str, None]: ...
+    def strip_byte_order_mark(cls, data: str) -> tuple[str, None]: ...
     @overload
     @classmethod
-    def strip_byte_order_mark(cls, data: bytes) -> Tuple[bytes, Optional[str]]: ...
+    def strip_byte_order_mark(cls, data: bytes) -> tuple[bytes, str | None]: ...
     @overload
     @classmethod
     def strip_byte_order_mark(
-        cls, data: Union[str, bytes]
-    ) -> Tuple[Union[str, bytes], Optional[str]]: ...
+        cls, data: str | bytes
+    ) -> tuple[str | bytes, str | None]: ...
     @classmethod
     def find_declared_encoding(
         cls,
-        markup: Union[str, bytes],
+        markup: str | bytes,
         is_html: bool = ...,
         search_entire_document: bool = ...,
-    ) -> Optional[str]: ...
+    ) -> str | None: ...
 
 class UnicodeDammit(Generic[AnyStr]):
-    CHARSET_ALIASES: ClassVar[Dict[str, str]]
-    ENCODINGS_WITH_SMART_QUOTES: ClassVar[List[str]]
-    smart_quotes_to: Optional[Literal['ascii', 'html', 'xml']]
-    tried_encodings: List[Tuple[str, Literal['strict', 'replace']]]
+    CHARSET_ALIASES: ClassVar[dict[str, str]]
+    ENCODINGS_WITH_SMART_QUOTES: ClassVar[list[str]]
+    smart_quotes_to: Literal['ascii', 'html', 'xml'] | None
+    tried_encodings: list[tuple[str, Literal['strict', 'replace']]]
     contains_replacement_characters: bool
     is_html: bool
     log: Logger
     detector: EncodingDetector[AnyStr]
     markup: AnyStr
-    unicode_markup: Optional[str]
-    original_encoding: Optional[str]
+    unicode_markup: str | None
+    original_encoding: str | None
     def __init__(
         self,
         markup: AnyStr,
         override_encodings: Iterable[str] = ...,
-        smart_quotes_to: Optional[Literal['ascii', 'html', 'xml']] = ...,
+        smart_quotes_to: Literal['ascii', 'html', 'xml'] | None = ...,
         is_html: bool = ...,
         exclude_encodings: Iterable[str] = ...,
     ) -> None: ...
     @property
-    def declared_html_encoding(self) -> Optional[str]: ...
-    def find_codec(self, charset: str) -> Optional[CodecInfo]: ...
-    MS_CHARS: ClassVar[Dict[bytes, Union[str, Tuple[str, str]]]]
-    MS_CHARS_TO_ASCII: ClassVar[Dict[bytes, Union[str, Tuple[str, str]]]]
-    WINDOWS_1252_TO_UTF8: ClassVar[Dict[int, bytes]]
-    MULTIBYTE_MARKERS_AND_SIZES: ClassVar[List[Tuple[int, int, int]]]
+    def declared_html_encoding(self) -> str | None: ...
+    def find_codec(self, charset: str) -> CodecInfo | None: ...
+    MS_CHARS: ClassVar[dict[bytes, str | tuple[str, str]]]
+    MS_CHARS_TO_ASCII: ClassVar[dict[bytes, str | tuple[str, str]]]
+    WINDOWS_1252_TO_UTF8: ClassVar[dict[int, bytes]]
+    MULTIBYTE_MARKERS_AND_SIZES: ClassVar[list[tuple[int, int, int]]]
     FIRST_MULTIBYTE_MARKER: ClassVar[int]
     LAST_MULTIBYTE_MARKER: ClassVar[int]
     @classmethod
     def detwingle(
         cls, in_bytes: AnyStr, main_encoding: str = ..., embedded_encoding: str = ...
-    ) -> Union[str, bytes]: ...
+    ) -> str | bytes: ...

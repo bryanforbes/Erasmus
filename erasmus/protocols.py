@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import List, Optional, Protocol
+from typing import Protocol
 
 from .data import Passage, SearchResults, VerseRange
 
@@ -11,7 +11,7 @@ class Bible(Protocol):
     abbr: str
     service: str
     service_version: str
-    rtl: Optional[bool]
+    rtl: bool | None
     books: int
 
 
@@ -22,7 +22,7 @@ class Service(Protocol):
     async def search(
         self,
         bible: Bible,
-        terms: List[str],
+        terms: list[str],
         *,
         limit: int = ...,
         offset: int = ...,

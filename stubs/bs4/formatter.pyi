@@ -1,15 +1,4 @@
-from typing import (
-    Any,
-    ClassVar,
-    Dict,
-    List,
-    Literal,
-    Optional,
-    Protocol,
-    Set,
-    Tuple,
-    type_check_only,
-)
+from typing import Any, ClassVar, Literal, Protocol, type_check_only
 
 from .dammit import EntitySubstitution as EntitySubstitution
 from .element import Tag
@@ -20,40 +9,40 @@ class _EntitySubstitutionCallback(Protocol):
     def __call__(self, __value: str) -> str: ...
 
 class Formatter(EntitySubstitution):
-    XML_FORMATTERS: ClassVar[Dict[str, Formatter]]
-    HTML_FORMATTERS: ClassVar[Dict[str, Formatter]]
+    XML_FORMATTERS: ClassVar[dict[str, Formatter]]
+    HTML_FORMATTERS: ClassVar[dict[str, Formatter]]
     HTML: ClassVar[Literal['html']]
     XML: ClassVar[Literal['xml']]
-    HTML_DEFAULTS: Dict[str, Set[str]]
-    language: Optional[Literal['html', 'xml']]
-    entity_substitution: Optional[_EntitySubstitutionCallback]
+    HTML_DEFAULTS: dict[str, set[str]]
+    language: Literal['html', 'xml'] | None
+    entity_substitution: _EntitySubstitutionCallback | None
     void_element_close_prefix: Any = ...
     cdata_containing_tags: Any = ...
     def __init__(
         self,
-        language: Optional[Literal['html', 'xml']] = ...,
-        entity_substitution: Optional[_EntitySubstitutionCallback] = ...,
+        language: Literal['html', 'xml'] | None = ...,
+        entity_substitution: _EntitySubstitutionCallback | None = ...,
         void_element_close_prefix: str = ...,
-        cdata_containing_tags: Optional[List[str]] = ...,
+        cdata_containing_tags: list[str] | None = ...,
     ) -> None: ...
     def substitute(self, ns: str) -> str: ...
     def attribute_value(self, value: str) -> str: ...
-    def attributes(self, tag: Tag) -> List[Tuple[str, str]]: ...
+    def attributes(self, tag: Tag) -> list[tuple[str, str]]: ...
 
 class HTMLFormatter(Formatter):
-    REGISTRY: ClassVar[Dict[str, HTMLFormatter]]
+    REGISTRY: ClassVar[dict[str, HTMLFormatter]]
     def __init__(
         self,
-        entity_substitution: Optional[_EntitySubstitutionCallback] = ...,
+        entity_substitution: _EntitySubstitutionCallback | None = ...,
         void_element_close_prefix: str = ...,
-        cdata_containing_tags: Optional[List[str]] = ...,
+        cdata_containing_tags: list[str] | None = ...,
     ) -> None: ...
 
 class XMLFormatter(Formatter):
-    REGISTRY: ClassVar[Dict[str, XMLFormatter]]
+    REGISTRY: ClassVar[dict[str, XMLFormatter]]
     def __init__(
         self,
-        entity_substitution: Optional[_EntitySubstitutionCallback] = ...,
+        entity_substitution: _EntitySubstitutionCallback | None = ...,
         void_element_close_prefix: str = ...,
-        cdata_containing_tags: Optional[List[str]] = ...,
+        cdata_containing_tags: list[str] | None = ...,
     ) -> None: ...

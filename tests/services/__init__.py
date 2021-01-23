@@ -1,4 +1,4 @@
-from typing import Any, Dict, Type
+from typing import Any
 
 import pytest
 
@@ -27,7 +27,7 @@ class ServiceTest(object):
         request: pytest.FixtureRequest,
         default_version: str,
         default_abbr: str,
-        MockBible: Type[Any],
+        MockBible: type[Any],
     ) -> Any:
         name = request.function.__name__
 
@@ -51,7 +51,7 @@ class ServiceTest(object):
     @pytest.mark.asyncio
     async def test_search(
         self,
-        search_data: Dict[str, Any],
+        search_data: dict[str, Any],
         service: Service,
         bible: Bible,
     ) -> None:
@@ -62,7 +62,7 @@ class ServiceTest(object):
     @pytest.mark.asyncio
     async def test_get_passage(
         self,
-        passage_data: Dict[str, Any],
+        passage_data: dict[str, Any],
         service: Service,
         bible: Bible,
     ) -> None:

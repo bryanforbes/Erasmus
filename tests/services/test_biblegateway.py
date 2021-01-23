@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, Dict, cast
+from typing import Any, cast
 
 import _pytest
 import aiohttp
@@ -257,8 +257,8 @@ class TestBibleGateway(ServiceTest):
         ],
         ids=['Melchizedek', 'faith', 'antidisestablishmentarianism'],
     )
-    def search_data(self, request: _pytest.fixtures.SubRequest) -> Dict[str, Any]:
-        return cast(Dict[str, Any], request.param)
+    def search_data(self, request: _pytest.fixtures.SubRequest) -> dict[str, Any]:
+        return cast(dict[str, Any], request.param)
 
     @pytest.fixture(
         params=[
@@ -285,8 +285,8 @@ class TestBibleGateway(ServiceTest):
         ],
         ids=['Gal 3:10-11 NASB', 'Mark 5:1 NASB', 'Psalm 53:1 ESV'],
     )
-    def passage_data(self, request: _pytest.fixtures.SubRequest) -> Dict[str, Any]:
-        return cast(Dict[str, Any], request.param)
+    def passage_data(self, request: _pytest.fixtures.SubRequest) -> dict[str, Any]:
+        return cast(dict[str, Any], request.param)
 
     @pytest.fixture
     def default_version(self) -> str:

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
-from typing import Optional, cast
+from typing import cast
 
 from botus_receptus.gino import Snowflake
 
@@ -58,13 +58,13 @@ class BibleVersion(Base):
         return bible
 
     @staticmethod
-    async def get_by_abbr(abbr: str) -> Optional[BibleVersion]:
+    async def get_by_abbr(abbr: str) -> BibleVersion | None:
         return await BibleVersion.query.where(
             BibleVersion.command.ilike(abbr)
         ).gino.first()
 
     @staticmethod
-    async def get_for_user(user_id: int, guild_id: Optional[int]) -> BibleVersion:
+    async def get_for_user(user_id: int, guild_id: int | None) -> BibleVersion:
         user_pref = (
             await UserPref.load(bible_version=BibleVersion)
             .query.where(UserPref.user_id == user_id)
@@ -90,7 +90,7 @@ class BibleVersion(Base):
 class UserPref(Base):
     __tablename__ = 'user_prefs'
 
-    bible_version: Optional[BibleVersion]
+    bible_version: BibleVersion | None
 
     user_id = db.Column(Snowflake, primary_key=True)
     bible_id = db.Column(db.Integer, db.ForeignKey('bible_versions.id'))
@@ -99,7 +99,7 @@ class UserPref(Base):
 class GuildPref(Base):
     __tablename__ = 'guild_prefs'
 
-    bible_version: Optional[BibleVersion]
+    bible_version: BibleVersion | None
 
     guild_id = db.Column(Snowflake, primary_key=True)
     bible_id = db.Column(db.Integer, db.ForeignKey('bible_versions.id'))

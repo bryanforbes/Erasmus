@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
-from typing import Any, Dict, List, Type
+from typing import Any
 from unittest.mock import MagicMock
 
 import aiohttp
@@ -11,7 +11,7 @@ from attr import dataclass
 
 
 @pytest.fixture(scope='session', autouse=True)
-def vcr_config() -> Dict[str, List[str]]:
+def vcr_config() -> dict[str, list[str]]:
     return {'filter_headers': ['authorization', 'api-key']}
 
 
@@ -26,7 +26,7 @@ class MockBible(object):
 
 
 @pytest.fixture(name='MockBible', scope='session')
-def fixture_MockBible() -> Type[MockBible]:
+def fixture_MockBible() -> type[MockBible]:
     return MockBible
 
 

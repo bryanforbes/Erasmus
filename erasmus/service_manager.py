@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import Dict, Final, List
+from typing import Final
 
 import aiohttp
 import async_timeout
@@ -19,7 +19,7 @@ _log: Final = logging.getLogger(__name__)
 
 @dataclass(slots=True)
 class ServiceManager(object):
-    service_map: Dict[str, Service] = attrib(factory=dict)
+    service_map: dict[str, Service] = attrib(factory=dict)
     timeout: float = 10
 
     def __contains__(self, key: str) -> bool:
@@ -42,7 +42,7 @@ class ServiceManager(object):
             raise ServiceLookupTimeout(bible, verses)
 
     async def search(
-        self, bible: Bible, terms: List[str], *, limit: int = 20, offset: int = 0
+        self, bible: Bible, terms: list[str], *, limit: int = 20, offset: int = 0
     ) -> SearchResults:
         service = self.service_map.get(bible.service)
         assert service is not None
@@ -56,7 +56,7 @@ class ServiceManager(object):
     def from_config(
         cls, config: Config, session: aiohttp.ClientSession
     ) -> ServiceManager:
-        service_map: Dict[str, Service] = {}
+        service_map: dict[str, Service] = {}
         service_configs = config.get('services', {})
 
         for name, service_cls in services.__dict__.items():

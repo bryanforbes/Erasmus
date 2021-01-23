@@ -13,7 +13,7 @@ beautifulsoup4 = "^4.9"
 cchardet = "^2.1"
 psycopg2 = "^2.8"
 ujson = "^4.0.0"
-"botus_receptus" = {rev = "d51a401a84a96ea0ffa62353185d4edaf78c7afd", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
+"botus_receptus" = {rev = "2a59e2a2a5aa8d7f3ff8c506b3dfd2260539a44f", git = "https://github.com/bryanforbes/botus_receptus.git", extras = ["gino_typed", "uvloop"]}
 more-itertools = {version = "~8.6.0"}
 discord-ext-menus = {git = "https://github.com/Rapptz/discord-ext-menus", rev = "6f2b873bf0d28903eb752aa1166b3aac26dc9007"}
 
@@ -24,7 +24,7 @@ flake8 = "~3.8"
 flake8-bugbear = ">=20.11.1"
 flake8-pyi = "^20.10"
 isort = "^5.7"
-mypy = ">=0.790"
+mypy = ">=0.800"
 pre-commit = "^2.9"
 pytest = "^6.2"
 pytest-asyncio = "^0.14.0"

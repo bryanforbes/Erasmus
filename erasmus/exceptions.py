@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, List
+from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .data import VerseRange
@@ -68,9 +68,9 @@ class ServiceLookupTimeout(ServiceTimeout):
 
 
 class ServiceSearchTimeout(ServiceTimeout):
-    terms: List[str]
+    terms: list[str]
 
-    def __init__(self, bible: Bible, terms: List[str]) -> None:
+    def __init__(self, bible: Bible, terms: list[str]) -> None:
         super().__init__(bible)
         self.terms = terms
 

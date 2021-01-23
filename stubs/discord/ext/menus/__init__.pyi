@@ -1,18 +1,6 @@
 from collections import OrderedDict
 from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
-from typing import (
-    Any,
-    Dict,
-    Generic,
-    Literal,
-    NamedTuple,
-    Optional,
-    Protocol,
-    Tuple,
-    TypeVar,
-    Union,
-    overload,
-)
+from typing import Any, Generic, Literal, NamedTuple, Protocol, TypeVar, overload
 
 import discord
 from discord.ext import commands
@@ -71,11 +59,11 @@ class Button:
     action: _ButtonAction
     def __init__(
         self,
-        emoji: Union[str, discord.PartialEmoji],
+        emoji: str | discord.PartialEmoji,
         action: _ButtonAction,
         *,
-        skip_if: Optional[_SkipIfCallback] = ...,
-        position: Optional[Any] = ...,
+        skip_if: _SkipIfCallback | None = ...,
+        position: Any | None = ...,
         lock: bool = ...,
     ) -> None: ...
     async def __call__(
@@ -84,18 +72,18 @@ class Button:
     def is_valid(self, menu: Menu) -> bool: ...
 
 def button(
-    emoji: Union[str, discord.PartialEmoji], **kwargs: Any
+    emoji: str | discord.PartialEmoji, **kwargs: Any
 ) -> Callable[[_AF], _AF]: ...
 
 class _MenuMeta(type):
     @classmethod
     def __prepare__(
-        metacls, __name: str, __bases: Tuple[type, ...], **kwargs: Any
+        metacls, __name: str, __bases: tuple[type, ...], **kwargs: Any
     ) -> OrderedDict[str, Any]: ...
     def __new__(
         metacls,
         name: str,
-        bases: Tuple[type, ...],
+        bases: tuple[type, ...],
         attrs: OrderedDict[str, Any],
         **kwargs: Any,
     ) -> Any: ...
@@ -118,10 +106,10 @@ class Menu(metaclass=_MenuMeta):
         delete_message_after: bool = ...,
         clear_reactions_after: bool = ...,
         check_embeds: bool = ...,
-        message: Optional[discord.Message] = ...,
+        message: discord.Message | None = ...,
     ) -> None: ...
     @discord.utils.cached_property
-    def buttons(self) -> Dict[str, Button]: ...
+    def buttons(self) -> dict[str, Button]: ...
     @overload
     def add_button(
         self, button: Button, *, react: Literal[True]
@@ -130,12 +118,12 @@ class Menu(metaclass=_MenuMeta):
     def add_button(self, button: Button, *, react: Literal[False] = ...) -> None: ...
     @overload
     def remove_button(
-        self, emoji: Union[Button, str, discord.PartialEmoji], *, react: Literal[True]
+        self, emoji: Button | str | discord.PartialEmoji, *, react: Literal[True]
     ) -> Awaitable[None]: ...
     @overload
     def remove_button(
         self,
-        emoji: Union[Button, str, discord.PartialEmoji],
+        emoji: Button | str | discord.PartialEmoji,
         *,
         react: Literal[False] = ...,
     ) -> None: ...
@@ -150,7 +138,7 @@ class Menu(metaclass=_MenuMeta):
         self,
         ctx: commands.Context,
         *,
-        channel: Optional[discord.abc.Messageable] = ...,
+        channel: discord.abc.Messageable | None = ...,
         wait: bool = ...,
     ) -> None: ...
     async def finalize(self, timed_out: bool) -> None: ...
@@ -165,11 +153,11 @@ class PageSource(Generic[_T]):
     async def _prepare_once(self) -> None: ...
     async def prepare(self) -> None: ...
     def is_paginating(self) -> bool: ...
-    def get_max_pages(self) -> Optional[int]: ...
+    def get_max_pages(self) -> int | None: ...
     async def get_page(self, page_number: int) -> _T: ...
     async def format_page(
         self: _PS, menu: MenuPages[_PS], page: _T
-    ) -> Union[str, discord.Embed, Dict[str, Any]]: ...
+    ) -> str | discord.Embed | dict[str, Any]: ...
 
 _S = TypeVar('_S', bound=PageSource[Any])
 
@@ -183,7 +171,7 @@ class MenuPages(Menu, Generic[_S]):
         delete_message_after: bool = ...,
         clear_reactions_after: bool = ...,
         check_embeds: bool = ...,
-        message: Optional[discord.Message] = ...,
+        message: discord.Message | None = ...,
     ) -> None: ...
     @property
     def source(self) -> _S: ...
@@ -197,7 +185,7 @@ class MenuPages(Menu, Generic[_S]):
         self,
         ctx: commands.Context,
         *,
-        channel: Optional[discord.abc.Messageable] = ...,
+        channel: discord.abc.Messageable | None = ...,
         wait: bool = ...,
     ) -> None: ...
     async def show_checked_page(self, page_number: int) -> None: ...
@@ -224,7 +212,7 @@ class ListPageSource(PageSource[Sequence[_T]]):
     def get_max_pages(self) -> int: ...
     async def get_page(  # type: ignore[override]
         self, page_number: int
-    ) -> Union[_T, Sequence[_T]]: ...
+    ) -> _T | Sequence[_T]: ...
 
 class _GroupByEntry(Generic[_T]):
     key: Any
@@ -247,7 +235,7 @@ class GroupByPageSource(ListPageSource[_GroupByEntry[_T]], Generic[_T]):
     ) -> _GroupByEntry[_T]: ...
     async def format_page(  # type: ignore[override]
         self: _GBS, menu: MenuPages[_GBS], entry: _GroupByEntry[_T]
-    ) -> Union[str, discord.Embed, Dict[str, Any]]: ...
+    ) -> str | discord.Embed | dict[str, Any]: ...
 
 class AsyncIteratorPageSource(PageSource[_T]):
     iterator: AsyncIterator[_T]

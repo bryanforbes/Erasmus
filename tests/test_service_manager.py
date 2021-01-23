@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, Dict, Optional, cast
+from typing import Any, cast
 
 import aiohttp
 import pytest
@@ -32,7 +32,7 @@ class MockBible(object):
         abbr: str,
         service: str,
         service_version: str,
-        rtl: Optional[bool] = False,
+        rtl: bool | None = False,
     ) -> None:
         self.command = command
         self.name = name
@@ -45,7 +45,7 @@ class MockBible(object):
 
 class TestServiceManager(object):
     @pytest.fixture(autouse=True)
-    def services(self, mocker: pytest_mock.MockerFixture) -> Dict[str, Any]:
+    def services(self, mocker: pytest_mock.MockerFixture) -> dict[str, Any]:
         services = {
             '__all__': ['ServiceOne', 'ServiceTwo'],
             'ServiceOne': mocker.Mock(return_value=mocker.sentinel.SERVICE_ONE),
@@ -91,7 +91,7 @@ class TestServiceManager(object):
     def test_from_config(
         self,
         mocker: pytest_mock.MockerFixture,
-        services: Dict[str, Any],
+        services: dict[str, Any],
         config: Any,
         mock_client_session: aiohttp.ClientSession,
     ) -> None:

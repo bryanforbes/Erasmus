@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, Dict, Final, List, Optional, TypedDict
+from typing import Any, Final, TypedDict
 
 import aiohttp
 from attr import attrib, dataclass
@@ -16,7 +16,7 @@ from ..protocols import Bible
 from .base_service import BaseService
 
 _img_re: Final = re.compile('src="', re.named_group('src')('[^"]+'), '"')
-_book_map: Final[Dict[str, str]] = {
+_book_map: Final[dict[str, str]] = {
     'Genesis': 'GEN',
     'Exodus': 'EXO',
     'Leviticus': 'LEV',
@@ -101,19 +101,19 @@ _book_map: Final[Dict[str, str]] = {
 
 
 class _ResponseMetaDict(TypedDict):
-    fumsNoScript: Optional[str]
+    fumsNoScript: str | None
 
 
 class _ResponseDict(TypedDict):
-    data: Dict[str, Any]
-    meta: Optional[_ResponseMetaDict]
+    data: dict[str, Any]
+    meta: _ResponseMetaDict | None
 
 
 @dataclass(slots=True)
 class ApiBible(BaseService):
     _passage_url: URL = attrib(init=False)
     _search_url: URL = attrib(init=False)
-    _headers: Dict[str, str] = attrib(init=False)
+    _headers: dict[str, str] = attrib(init=False)
 
     def __attrs_post_init__(self) -> None:
         self._passage_url = URL(
@@ -163,14 +163,14 @@ class ApiBible(BaseService):
 
     async def __process_response(
         self, response: aiohttp.ClientResponse
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         if response.status != 200:
             raise DoNotUnderstandError
 
         json: _ResponseDict = await response.json(loads=loads, content_type=None)
 
         # Make a request for the image to report to the Fair Use Management System
-        meta: Optional[str] = get(json, 'meta.fumsNoScript')
+        meta: str | None = get(json, 'meta.fumsNoScript')
         if meta:
             if (match := _img_re.search(meta)) is not None:
                 try:
@@ -204,7 +204,7 @@ class ApiBible(BaseService):
     async def search(
         self,
         bible: Bible,
-        terms: List[str],
+        terms: list[str],
         *,
         limit: int = 20,
         offset: int = 0,
