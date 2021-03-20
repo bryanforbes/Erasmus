@@ -170,11 +170,11 @@ d = ["aiohttp (>=3.3.2)", "aiohttp-cors"]
 
 [[package]]
 name = "botus-receptus"
-version = "0.0.1a"
+version = "1.0.0dev0"
 description = ""
 category = "main"
 optional = false
-python-versions = "^3.7"
+python-versions = "^3.8"
 develop = false
 
 [package.dependencies]
@@ -183,23 +183,23 @@ async-timeout = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=6.7"
 discord-ext-typed-commands = "^1.0.3"
-"discord.py" = "^1.6.0"
+"discord.py" = "~1.6.0"
 gino = {version = "^1.0.1", optional = true}
 pendulum = "~2.1.2"
 toml = "^0.10.2"
-uvloop = {version = "~0.15.0", optional = true}
+uvloop = {version = "~0.15.2", optional = true}
 
 [package.extras]
-db = ["asyncpg (>=0.18.2)"]
-dev = ["asyncpg (>=0.18.2)", "gino (>=1.0.1,<2.0.0)", "uvloop (>=0.15.0,<0.16.0)"]
+db = ["asyncpg (>=0.22.0)"]
+dev = ["asyncpg (>=0.22.0)", "gino (>=1.0.1,<2.0.0)", "uvloop (>=0.15.2,<0.16.0)"]
 gino = ["gino (>=1.0.1,<2.0.0)"]
-uvloop = ["uvloop (>=0.15.0,<0.16.0)"]
+uvloop = ["uvloop (>=0.15.2,<0.16.0)"]
 
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "027936cc7b226cb1738bf7be91a8c035c20d6d0d"
-resolved_reference = "027936cc7b226cb1738bf7be91a8c035c20d6d0d"
+reference = "a23c259fb6fb8119c1b558b3e95f345ea6e52092"
+resolved_reference = "a23c259fb6fb8119c1b558b3e95f345ea6e52092"
 
 [[package]]
 name = "cchardet"
@@ -312,13 +312,14 @@ voice = ["PyNaCl (>=1.3.0,<1.5)"]
 
 [[package]]
 name = "discord.py-stubs"
-version = "1.6.0.1"
+version = "1.6.2"
 description = "discord.py stubs"
 category = "dev"
 optional = false
 python-versions = ">=3.6.1,<4.0.0"
 
 [package.dependencies]
+"discord.py" = ">=1.6.0,<1.7.0"
 mypy = ">=0.782"
 typing-extensions = ">=3.7.4,<4.0.0"
 
@@ -1002,7 +1003,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "8df2cd7e58c6058867347e3e7880b4e62bcc10c6a6e400e0b2bd727b407911fa"
+content-hash = "e48d22c73e93cec2e18fbb082bff501e8cae40be7c25ff9e54a1f0a065d19630"
 
 [metadata.files]
 aiodns = [
@@ -1248,8 +1249,8 @@ discord-ext-typed-commands = [
     {file = "discord.py-1.6.0.tar.gz", hash = "sha256:ba8be99ff1b8c616f7b6dcb700460d0222b29d4c11048e74366954c465fdd05f"},
 ]
 "discord.py-stubs" = [
-    {file = "discord.py-stubs-1.6.0.1.tar.gz", hash = "sha256:1a9960998cd17cfe1d447d7ac3133982010b7a20913c5c0e17b4fa1be94c5233"},
-    {file = "discord.py_stubs-1.6.0.1-py3-none-any.whl", hash = "sha256:43956bf7d6a28769bf854318b395dfd39dcac53f41c293b3b32de0bd7bf02ac7"},
+    {file = "discord.py-stubs-1.6.2.tar.gz", hash = "sha256:c334ba6790f6b5873ccde22cf433b9f38161bd0e882115f2f1fadcf03ca22fa1"},
+    {file = "discord.py_stubs-1.6.2-py3-none-any.whl", hash = "sha256:1c33afbbce2fbdd95781a87e7872e554e1c67b0c9b7af4c966c52d24dbbacf68"},
 ]
 distlib = [
     {file = "distlib-0.3.1-py2.py3-none-any.whl", hash = "sha256:8c09de2c67b3e7deef7184574fc060ab8a793e7adbb183d942c389c8b13c52fb"},
