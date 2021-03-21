@@ -22,15 +22,15 @@ class BibleVersion(Base):
     rtl = db.Column(db.Boolean)
     books = db.Column(db.BigInteger, nullable=False)
 
-    def as_bible(self) -> Bible:
+    def as_bible(self, /) -> Bible:
         return cast(Bible, self)
 
-    async def set_for_user(self, user_id: int) -> None:
+    async def set_for_user(self, user_id: int, /) -> None:
         await UserPref.create_or_update(
             set_=('bible_id',), user_id=user_id, bible_id=self.id
         )
 
-    async def set_for_guild(self, guild_id: int) -> None:
+    async def set_for_guild(self, guild_id: int, /) -> None:
         await GuildPref.create_or_update(
             set_=('bible_id',), guild_id=guild_id, bible_id=self.id
         )
@@ -47,7 +47,7 @@ class BibleVersion(Base):
                 yield version
 
     @staticmethod
-    async def get_by_command(command: str) -> BibleVersion:
+    async def get_by_command(command: str, /) -> BibleVersion:
         bible = await BibleVersion.query.where(
             BibleVersion.command == command
         ).gino.first()
@@ -58,13 +58,13 @@ class BibleVersion(Base):
         return bible
 
     @staticmethod
-    async def get_by_abbr(abbr: str) -> BibleVersion | None:
+    async def get_by_abbr(abbr: str, /) -> BibleVersion | None:
         return await BibleVersion.query.where(
             BibleVersion.command.ilike(abbr)
         ).gino.first()
 
     @staticmethod
-    async def get_for_user(user_id: int, guild_id: int | None) -> BibleVersion:
+    async def get_for_user(user_id: int, guild_id: int | None, /) -> BibleVersion:
         user_pref = (
             await UserPref.load(bible_version=BibleVersion)
             .query.where(UserPref.user_id == user_id)

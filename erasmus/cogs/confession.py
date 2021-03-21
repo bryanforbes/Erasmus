@@ -124,6 +124,7 @@ class ConfessionSearchSource(
     def __init__(
         self,
         entries: list[ConfessionSearchResult],
+        /,
         *,
         per_page: int,
         type: ConfessionTypeEnum,
@@ -142,7 +143,7 @@ class ConfessionSearchSource(
                 '**{entry.question_number}**. {entry.question_text}'
             )
 
-    async def set_page_text(self, entries: list[ConfessionSearchResult]) -> None:
+    async def set_page_text(self, entries: list[ConfessionSearchResult], /) -> None:
         lines: list[str] = []
 
         for entry in entries:
@@ -152,10 +153,10 @@ class ConfessionSearchSource(
 
 
 class Confession(Cog[Context]):
-    def __init__(self, bot: Erasmus) -> None:
+    def __init__(self, bot: Erasmus, /) -> None:
         self.bot = bot
 
-    async def cog_command_error(self, ctx: Context, error: Exception) -> None:
+    async def cog_command_error(self, ctx: Context, error: Exception, /) -> None:
         if (
             isinstance(
                 error,
@@ -187,7 +188,7 @@ class Confession(Cog[Context]):
     @commands.command(brief='Query confessions and catechisms', help=_confess_help)
     @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
     async def confess(
-        self, ctx: Context, confession: Optional[str] = None, *args: str
+        self, ctx: Context, confession: Optional[str] = None, /, *args: str
     ) -> None:
         if confession is None:
             await self.list(ctx)
@@ -205,7 +206,7 @@ class Confession(Cog[Context]):
 
         await self.show_item(ctx, row, match)
 
-    async def list(self, ctx: Context) -> None:
+    async def list(self, ctx: Context, /) -> None:
         paginator = EmbedPaginator()
         paginator.add_line('I support the following confessions:', empty=True)
 
@@ -215,7 +216,12 @@ class Confession(Cog[Context]):
         for page in paginator:
             await ctx.send_embed(page)
 
-    async def list_contents(self, ctx: Context, confession: ConfessionRecord) -> None:
+    async def list_contents(
+        self,
+        ctx: Context,
+        confession: ConfessionRecord,
+        /,
+    ) -> None:
         if (
             confession.type == ConfessionTypeEnum.CHAPTERS
             or confession.type == ConfessionTypeEnum.ARTICLES
@@ -224,7 +230,12 @@ class Confession(Cog[Context]):
         elif confession.type == ConfessionTypeEnum.QA:
             await self.list_questions(ctx, confession)
 
-    async def list_sections(self, ctx: Context, confession: ConfessionRecord) -> None:
+    async def list_sections(
+        self,
+        ctx: Context,
+        confession: ConfessionRecord,
+        /,
+    ) -> None:
         paginator = EmbedPaginator()
         getter: Callable[[], AsyncIterator[Any]] | None = None
         number_key: str | None = None
@@ -253,14 +264,19 @@ class Confession(Cog[Context]):
                 page, title=(underline(bold(confession.name)) if index == 0 else None)
             )
 
-    async def list_questions(self, ctx: Context, confession: ConfessionRecord) -> None:
+    async def list_questions(
+        self,
+        ctx: Context,
+        confession: ConfessionRecord,
+        /,
+    ) -> None:
         count = await confession.get_question_count()
         question_str = _pluralizers[ConfessionTypeEnum.QA](count)
 
         await ctx.send_embed(f'`{confession.name}` has {question_str}')
 
     async def search(
-        self, ctx: Context, confession: ConfessionRecord, *terms: str
+        self, ctx: Context, confession: ConfessionRecord, /, *terms: str
     ) -> None:
         if confession.type == ConfessionTypeEnum.CHAPTERS:
             search_func: Callable[
@@ -281,7 +297,11 @@ class Confession(Cog[Context]):
         await menu.start(ctx)
 
     async def show_item(
-        self, ctx: Context, confession: ConfessionRecord, match: Match[str]
+        self,
+        ctx: Context,
+        confession: ConfessionRecord,
+        match: Match[str],
+        /,
     ) -> None:
         title: str | None = None
         output: str | None = None
@@ -346,5 +366,5 @@ class Confession(Cog[Context]):
             title = None
 
 
-def setup(bot: Erasmus) -> None:
+def setup(bot: Erasmus, /) -> None:
     bot.add_cog(Confession(bot))

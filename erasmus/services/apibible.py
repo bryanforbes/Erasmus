@@ -115,7 +115,7 @@ class ApiBible(BaseService):
     _search_url: URL = attrib(init=False)
     _headers: dict[str, str] = attrib(init=False)
 
-    def __attrs_post_init__(self) -> None:
+    def __attrs_post_init__(self, /) -> None:
         self._passage_url = URL(
             'https://api.scripture.api.bible/v1/bibles/{bibleId}/passages/{passageId}'
         )
@@ -128,7 +128,7 @@ class ApiBible(BaseService):
         else:
             self._headers = {}
 
-    def __get_passage_id(self, verses: VerseRange) -> str:
+    def __get_passage_id(self, verses: VerseRange, /) -> str:
         book_id: str = _book_map[verses.book]
         passage_id: str = f'{book_id}.{verses.start.chapter}.{verses.start.verse}'
 
@@ -140,7 +140,11 @@ class ApiBible(BaseService):
         return passage_id
 
     def __transform_verse(
-        self, bible: Bible, verses: VerseRange, content: str
+        self,
+        bible: Bible,
+        verses: VerseRange,
+        content: str,
+        /,
     ) -> Passage:
         soup = BeautifulSoup(content, 'html.parser')
 
@@ -162,7 +166,9 @@ class ApiBible(BaseService):
         return Passage(text=text, range=verses, version=bible.abbr)
 
     async def __process_response(
-        self, response: aiohttp.ClientResponse
+        self,
+        response: aiohttp.ClientResponse,
+        /,
     ) -> dict[str, Any]:
         if response.status != 200:
             raise DoNotUnderstandError
@@ -181,7 +187,7 @@ class ApiBible(BaseService):
 
         return json['data']
 
-    async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
+    async def get_passage(self, bible: Bible, verses: VerseRange, /) -> Passage:
         async with self.session.get(
             self._passage_url.with_path(
                 self._passage_url.path.format(
@@ -205,6 +211,7 @@ class ApiBible(BaseService):
         self,
         bible: Bible,
         terms: list[str],
+        /,
         *,
         limit: int = 20,
         offset: int = 0,

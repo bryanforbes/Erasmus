@@ -38,7 +38,7 @@ else:
 
 
 class TotalPageSource(_PageSource[T]):
-    def get_total(self) -> int:
+    def get_total(self, /) -> int:
         return 0
 
 
@@ -48,11 +48,14 @@ EPS = TypeVar('EPS', bound='EmbedPageSource[Any]')
 class EmbedPageSource(TotalPageSource[T]):
     embed: discord.Embed
 
-    async def prepare(self) -> None:
+    async def prepare(self, /) -> None:
         self.embed = discord.Embed()
 
     async def format_page(
-        self: EPS, menu: menus.MenuPages[EPS], page: T
+        self: EPS,
+        menu: menus.MenuPages[EPS],
+        page: T,
+        /,
     ) -> discord.Embed:
         self.embed.clear_fields()
         self.embed.description = discord.Embed.Empty
@@ -69,17 +72,17 @@ class EmbedPageSource(TotalPageSource[T]):
 
         return self.embed
 
-    async def set_page_text(self, page: T) -> None:
+    async def set_page_text(self, page: T, /) -> None:
         ...
 
 
 class TotalListPageSource(_ListPageSource[T], TotalPageSource[Sequence[T]]):
-    def get_total(self) -> int:
+    def get_total(self, /) -> int:
         return len(self.entries)
 
 
 class MenuPages(_MenuPages[TPS]):
-    def __init__(self, source: TPS, zero_results_text: str) -> None:
+    def __init__(self, source: TPS, zero_results_text: str, /) -> None:
         self.zero_results_text = zero_results_text
         self.help_task: asyncio.Task[None] | None = None
 
@@ -88,6 +91,7 @@ class MenuPages(_MenuPages[TPS]):
     async def start(
         self,
         ctx: commands.Context,
+        /,
         *,
         channel: discord.abc.Messageable | None = None,
         wait: bool = False,
@@ -100,7 +104,7 @@ class MenuPages(_MenuPages[TPS]):
             await ctx.send(embed=discord.Embed(description='I found 0 results'))
 
     @menus.button('\N{INFORMATION SOURCE}', position=menus.Last(3))
-    async def show_help(self, payload: discord.RawReactionActionEvent) -> None:
+    async def show_help(self, payload: discord.RawReactionActionEvent, /) -> None:
         '''shows this message'''
         messages = [
             'Welcome to the interactive pager!\n',
@@ -141,7 +145,7 @@ class MenuPages(_MenuPages[TPS]):
         self.help_task = self.bot.loop.create_task(go_back_to_current_page())
 
     @menus.button('\N{INPUT SYMBOL FOR NUMBERS}', position=menus.Last(1.5))
-    async def numbered_page(self, payload: discord.RawReactionActionEvent) -> None:
+    async def numbered_page(self, payload: discord.RawReactionActionEvent, /) -> None:
         '''lets you type a page number to go to'''
         channel = self.message.channel
         author_id = payload.user_id
@@ -149,7 +153,7 @@ class MenuPages(_MenuPages[TPS]):
         to_delete: list[discord.Message] = []
         to_delete.append(await channel.send('What page do you want to go to?'))
 
-        def message_check(msg: discord.Message) -> bool:
+        def message_check(msg: discord.Message, /) -> bool:
             return (
                 msg.author.id == author_id
                 and channel == msg.channel
@@ -180,7 +184,7 @@ class MenuPages(_MenuPages[TPS]):
         except Exception:
             pass
 
-    async def finalize(self, timed_out: bool) -> None:
+    async def finalize(self, timed_out: bool, /) -> None:
         if self.help_task is not None:
             self.help_task.cancel()
             self.help_task = None
@@ -193,7 +197,7 @@ class MenuPages(_MenuPages[TPS]):
         except discord.HTTPException:
             pass
 
-    def reaction_check(self, payload: discord.RawReactionActionEvent) -> bool:
+    def reaction_check(self, payload: discord.RawReactionActionEvent, /) -> bool:
         process = super().reaction_check(payload)
 
         if process and self.help_task:

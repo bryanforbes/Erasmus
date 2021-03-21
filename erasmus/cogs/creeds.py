@@ -189,11 +189,11 @@ _nicene_381_filioque_text: Final = (
 
 
 class Creeds(Cog[Context]):
-    def __init__(self, bot: Erasmus) -> None:
+    def __init__(self, bot: Erasmus, /) -> None:
         self.bot = bot
 
     @commands.command(brief='List the supported creeds')
-    async def creeds(self, ctx: Context) -> None:
+    async def creeds(self, ctx: Context, /) -> None:
         prefix = ctx.prefix
         await ctx.send_embed(
             f'''
@@ -208,30 +208,30 @@ class Creeds(Cog[Context]):
         )
 
     @commands.command(hidden=True)
-    async def apostles(self, ctx: Context) -> None:
+    async def apostles(self, ctx: Context, /) -> None:
         await ctx.send_embed(_apostles_text, title="The Apostles' Creed")
 
     @commands.command(hidden=True)
-    async def athanasian(self, ctx: Context) -> None:
+    async def athanasian(self, ctx: Context, /) -> None:
         await ctx.send_embed(_athanasian_text_1, title='The Athanasian Creed')
         await ctx.send_embed(_athanasian_text_2, title='The Athanasian Creed (cont.)')
 
     @commands.command(hidden=True)
-    async def chalcedon(self, ctx: Context) -> None:
+    async def chalcedon(self, ctx: Context, /) -> None:
         await ctx.send_embed(_chalcedon_text, title='The Chalcedonian Definition')
 
     @commands.command(hidden=True)
-    async def nicene(self, ctx: Context) -> None:
+    async def nicene(self, ctx: Context, /) -> None:
         await ctx.send_embed(_nicene_381_filioque_text, title='The Nicene Creed')
 
     @commands.command(hidden=True)
-    async def nicene325(self, ctx: Context) -> None:
+    async def nicene325(self, ctx: Context, /) -> None:
         await ctx.send_embed(_nicene_325_text, title='The Nicene Creed (325 AD)')
 
     @commands.command(hidden=True)
-    async def nicene381(self, ctx: Context) -> None:
+    async def nicene381(self, ctx: Context, /) -> None:
         await ctx.send_embed(_nicene_381_text, title='The Nicene Creed (381 AD)')
 
 
-def setup(bot: Erasmus) -> None:
+def setup(bot: Erasmus, /) -> None:
     bot.add_cog(Creeds(bot))

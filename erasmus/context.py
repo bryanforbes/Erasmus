@@ -17,10 +17,10 @@ _max_length: Final = 2048 - (len(_truncation_warning) + 1)
 class Context(EmbedContext):
     bot: Erasmus
 
-    async def send_error(self, text: str) -> discord.Message:
+    async def send_error(self, text: str, /) -> discord.Message:
         return await self.send_embed(text, color=discord.Color.red())
 
-    async def send_passage(self, passage: Passage) -> discord.Message:
+    async def send_passage(self, passage: Passage, /) -> discord.Message:
         text = passage.text
 
         if len(text) > 2048:

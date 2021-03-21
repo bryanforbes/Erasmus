@@ -23,7 +23,7 @@ class BibleGateway(BaseService):
     _passage_url: URL = attrib(init=False)
     _search_url: URL = attrib(init=False)
 
-    def __attrs_post_init__(self) -> None:
+    def __attrs_post_init__(self, /) -> None:
         self._passage_url = URL('https://www.biblegateway.com/passage/')
         self._search_url = URL('https://www.biblegateway.com/quicksearch/')
 
@@ -33,6 +33,7 @@ class BibleGateway(BaseService):
         verses: VerseRange,
         verse_node: Tag,
         for_search: bool = False,
+        /,
     ) -> Passage:
         for node in verse_node.select(
             f'h1, {"h3, " if not for_search else ""}.footnotes, .footnote, .crossrefs, '
@@ -72,7 +73,7 @@ class BibleGateway(BaseService):
 
         return Passage(text=text, range=verses, version=bible.abbr)
 
-    async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
+    async def get_passage(self, bible: Bible, verses: VerseRange, /) -> Passage:
         async with self.session.get(
             self._passage_url.with_query(
                 {
@@ -105,6 +106,7 @@ class BibleGateway(BaseService):
         self,
         bible: Bible,
         terms: list[str],
+        /,
         *,
         limit: int = 20,
         offset: int = 0,
@@ -133,7 +135,7 @@ class BibleGateway(BaseService):
             if (match := _total_re.match(total_node.get_text(' ', strip=True))) is None:
                 raise DoNotUnderstandError
 
-            def mapper(node: Tag) -> Passage:
+            def mapper(node: Tag, /) -> Passage:
                 extras_node = node.select_one('.bible-item-extras')
                 if extras_node:
                     extras_node.decompose()

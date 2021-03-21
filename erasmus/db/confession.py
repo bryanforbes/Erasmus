@@ -13,7 +13,7 @@ class ConfessionTypeEnum(Enum):
     CHAPTERS = 'CHAPTERS'
     QA = 'QA'
 
-    def __repr__(self) -> str:
+    def __repr__(self, /) -> str:
         return '<%s.%s>' % (self.__class__.__name__, self.name)
 
 
@@ -28,7 +28,7 @@ class NumberingTypeEnum(Enum):
     ARABIC = 'ARABIC'
     ROMAN = 'ROMAN'
 
-    def __repr__(self) -> str:
+    def __repr__(self, /) -> str:
         return '<%s.%s>' % (self.__class__.__name__, self.name)
 
 
@@ -96,7 +96,7 @@ class Confession(Base):
         db.Integer, db.ForeignKey('confession_numbering_types.id'), nullable=False
     )
 
-    async def get_chapters(self) -> AsyncIterator[Chapter]:
+    async def get_chapters(self, /) -> AsyncIterator[Chapter]:
         count = 0
         async with db.transaction():
             async for chapter in Chapter.query.where(
@@ -108,7 +108,7 @@ class Confession(Base):
         if count == 0:
             raise NoSectionsError(self.name, 'chapters')
 
-    async def get_paragraph(self, chapter: int, paragraph: int) -> Paragraph:
+    async def get_paragraph(self, chapter: int, paragraph: int, /) -> Paragraph:
         loader = Paragraph.load(
             chapter=Chapter.on(
                 db.and_(
@@ -130,7 +130,11 @@ class Confession(Base):
 
         return result
 
-    async def search_paragraphs(self, terms: Sequence[str]) -> AsyncIterator[Paragraph]:
+    async def search_paragraphs(
+        self,
+        terms: Sequence[str],
+        /,
+    ) -> AsyncIterator[Paragraph]:
         loader = Paragraph.load(
             chapter=Chapter.on(
                 db.and_(
@@ -151,14 +155,14 @@ class Confession(Base):
             ).gino.iterate():
                 yield paragraph
 
-    async def get_questions(self) -> AsyncIterator[Question]:
+    async def get_questions(self, /) -> AsyncIterator[Question]:
         async with db.transaction():
             async for question in Question.query.where(
                 Question.confess_id == self.id
             ).order_by(db.asc(Question.question_number)).gino.iterate():
                 yield question
 
-    async def get_question_count(self) -> int:
+    async def get_question_count(self, /) -> int:
         return cast(
             int,
             await db.scalar(
@@ -168,7 +172,7 @@ class Confession(Base):
             ),
         )
 
-    async def get_question(self, question_number: int) -> Question:
+    async def get_question(self, question_number: int, /) -> Question:
         question = (
             await Question.query.where(Question.confess_id == self.id)
             .where(Question.question_number == question_number)
@@ -180,7 +184,11 @@ class Confession(Base):
 
         return question
 
-    async def search_questions(self, terms: Sequence[str]) -> AsyncIterator[Question]:
+    async def search_questions(
+        self,
+        terms: Sequence[str],
+        /,
+    ) -> AsyncIterator[Question]:
         async with db.transaction():
             async for question in Question.query.where(
                 Question.confess_id == self.id
@@ -194,7 +202,7 @@ class Confession(Base):
             ).gino.iterate():
                 yield question
 
-    async def get_articles(self) -> AsyncIterator[Article]:
+    async def get_articles(self, /) -> AsyncIterator[Article]:
         count = 0
         async with db.transaction():
             async for article in Article.query.where(
@@ -206,7 +214,7 @@ class Confession(Base):
         if count == 0:
             raise NoSectionsError(self.name, 'articles')
 
-    async def get_article(self, article_number: int) -> Article:
+    async def get_article(self, article_number: int, /) -> Article:
         article = (
             await Article.query.where(Article.confess_id == self.id)
             .where(Article.article_number == article_number)
@@ -218,7 +226,7 @@ class Confession(Base):
 
         return article
 
-    async def search_articles(self, terms: Sequence[str]) -> AsyncIterator[Article]:
+    async def search_articles(self, terms: Sequence[str], /) -> AsyncIterator[Article]:
         async with db.transaction():
             async for article in Article.query.where(
                 Article.confess_id == self.id
@@ -232,19 +240,19 @@ class Confession(Base):
                 yield article
 
     @property
-    def type(self) -> ConfessionTypeEnum:
+    def type(self, /) -> ConfessionTypeEnum:
         return self._type
 
     @type.setter
-    def type(self, value: ConfessionType) -> None:
+    def type(self, value: ConfessionType, /) -> None:
         self._type = cast(Any, value.value)
 
     @property
-    def numbering(self) -> NumberingTypeEnum:
+    def numbering(self, /) -> NumberingTypeEnum:
         return self._numbering
 
     @numbering.setter
-    def numbering(self, value: ConfessionNumberingType) -> None:
+    def numbering(self, value: ConfessionNumberingType, /) -> None:
         self._numbering = cast(Any, value.numbering)
 
     @staticmethod
@@ -256,7 +264,7 @@ class Confession(Base):
                 yield confession
 
     @staticmethod
-    async def get_by_command(command: str) -> Confession:
+    async def get_by_command(command: str, /) -> Confession:
         c = (
             await Confession.load(
                 type=ConfessionType, numbering=ConfessionNumberingType

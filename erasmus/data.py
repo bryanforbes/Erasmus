@@ -131,7 +131,7 @@ for _book in _books_data:
     _book_mask_map[_book['name']] = _book['section']
 
 
-def get_book(book_name_or_abbr: str) -> str:
+def get_book(book_name_or_abbr: str, /) -> str:
     book = _book_input_map.get(book_name_or_abbr.lower(), '')
 
     if book == '':
@@ -140,7 +140,7 @@ def get_book(book_name_or_abbr: str) -> str:
     return book
 
 
-def get_book_mask(book_name: str) -> int:
+def get_book_mask(book_name: str, /) -> int:
     return _book_mask_map.get(book_name, 0)
 
 
@@ -149,7 +149,7 @@ class Verse(object):
     chapter: int
     verse: int
 
-    def __str__(self) -> str:
+    def __str__(self, /) -> str:
         return f'{self.chapter}:{self.verse}'
 
 
@@ -161,12 +161,12 @@ class VerseRange(object):
     version: str | None = None
     book_mask: int = attrib(init=False)
 
-    def __attrs_post_init__(self) -> None:
+    def __attrs_post_init__(self, /) -> None:
         self.book = get_book(self.book)
         self.book_mask = get_book_mask(self.book)
 
     @property
-    def verses(self) -> str:
+    def verses(self, /) -> str:
         verse = str(self.start)
 
         if self.end is not None:
@@ -177,18 +177,18 @@ class VerseRange(object):
 
         return verse
 
-    def __str__(self) -> str:
+    def __str__(self, /) -> str:
         return f'{self.book} {self.verses}'
 
     @classmethod
-    def from_string(cls, verse: str) -> VerseRange:
+    def from_string(cls, verse: str, /) -> VerseRange:
         if (match := _search_reference_re.match(verse)) is None:
             raise ReferenceNotUnderstoodError(verse)
 
         return cls.from_match(match)
 
     @classmethod
-    def from_match(cls, match: Match[str]) -> VerseRange:
+    def from_match(cls, match: Match[str], /) -> VerseRange:
         groups = match.groupdict()
 
         chapter_start_int = int(groups['chapter_start'])
@@ -215,7 +215,7 @@ class VerseRange(object):
 
     @classmethod
     def get_all_from_string(
-        cls, string: str, *, only_bracketed: bool = False
+        cls, string: str, /, *, only_bracketed: bool = False
     ) -> list[VerseRange | Exception]:
         ranges: list[VerseRange | Exception] = []
         lookup_pattern: Pattern[str]
@@ -237,7 +237,7 @@ class VerseRange(object):
         return ranges
 
     @classmethod
-    async def convert(cls, ctx: Context, argument: str) -> VerseRange:
+    async def convert(cls, ctx: Context, argument: str, /) -> VerseRange:
         return cls.from_string(argument)
 
 
@@ -252,19 +252,19 @@ class Passage(object):
     version: str | None = None
 
     @property
-    def citation(self) -> str:
+    def citation(self, /) -> str:
         if self.version is not None:
             return f'{self.range} ({self.version})'
         else:
             return str(self.range)
 
-    def get_truncated(self, limit: int) -> str:
+    def get_truncated(self, limit: int, /) -> str:
         citation = self.citation
         end = limit - (len(citation) + _truncation_warning_len)
         text = self.text[:end]
         return f'{_truncation_warning}{text}\u2026\n\n{citation}'
 
-    def __str__(self) -> str:
+    def __str__(self, /) -> str:
         return f'{self.text}\n\n{self.citation}'
 
 

@@ -15,7 +15,7 @@ else:
 
 
 class HelpCommand(_DefaultHelpCommand):
-    def _get_command_title(self, command: commands.Command[Context]) -> str:
+    def _get_command_title(self, command: commands.Command[Context], /) -> str:
         return ', '.join(
             map(
                 lambda s: f'{self.clean_prefix}{s}',
@@ -28,6 +28,7 @@ class HelpCommand(_DefaultHelpCommand):
         mapping: Mapping[
             Optional[commands.Cog[Context]], list[commands.Command[Context]]
         ],
+        /,
     ) -> None:
         assert self.context is not None
         bot = self.context.bot
@@ -65,7 +66,7 @@ class HelpCommand(_DefaultHelpCommand):
 
         await self.send_pages()
 
-    def add_command_formatting(self, command: commands.Command[Context]) -> None:
+    def add_command_formatting(self, command: commands.Command[Context], /) -> None:
         if command.brief:
             self.paginator.add_line(command.brief, empty=True)
 
@@ -88,7 +89,7 @@ class HelpCommand(_DefaultHelpCommand):
             self.paginator.add_line(command.help.format(prefix=self.clean_prefix))
 
     async def command_callback(
-        self, ctx: Context, *, command: Optional[str] = None
+        self, ctx: Context, /, *, command: Optional[str] = None
     ) -> Any:
         if command:
             if command[0] == ctx.prefix:

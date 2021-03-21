@@ -10,7 +10,7 @@ _roman_pairs: Final = tuple(
 )
 
 
-def int_to_roman(number: int) -> str:
+def int_to_roman(number: int, /) -> str:
     numerals: list[str] = []
 
     for letter, value in _roman_pairs:
@@ -20,7 +20,7 @@ def int_to_roman(number: int) -> str:
     return ''.join(numerals)
 
 
-def roman_to_int(numerals: str) -> int:
+def roman_to_int(numerals: str, /) -> int:
     numerals = numerals.upper()
     index = result = 0
 

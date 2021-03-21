@@ -45,7 +45,7 @@ class Erasmus(
     context_cls = Context
     db = db
 
-    def __init__(self, config: Config, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         kwargs['help_command'] = HelpCommand(
             paginator=formatting.Paginator(),
             command_attrs={
@@ -64,13 +64,13 @@ class Erasmus(
             except Exception:
                 _log.exception('Failed to load extension %s.', extension)
 
-    async def on_message(self, message: discord.Message) -> None:
+    async def on_message(self, message: discord.Message, /) -> None:
         if message.author.bot:
             return
 
         await self.process_commands(message)
 
-    async def process_commands(self, message: discord.Message) -> None:
+    async def process_commands(self, message: discord.Message, /) -> None:
         ctx = await self.get_context(message)
 
         if ctx.command is None:
@@ -79,7 +79,7 @@ class Erasmus(
 
         await self.invoke(ctx)
 
-    async def on_ready(self) -> None:
+    async def on_ready(self, /) -> None:
         await super().on_ready()
         await self.change_presence(
             activity=discord.Game(name=f'| {self.default_prefix}help')
@@ -88,7 +88,7 @@ class Erasmus(
         user = self.user
         _log.info('Erasmus ready. Logged in as %s %s', user.name, user.id)
 
-    async def on_command_error(self, ctx: Context, exc: Exception) -> None:
+    async def on_command_error(self, ctx: Context, exc: Exception, /) -> None:
         if (
             isinstance(
                 exc,

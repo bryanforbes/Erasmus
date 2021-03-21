@@ -28,16 +28,16 @@ class BaseService(object):
     config: dict[str, Any] | None
 
     @abstractmethod
-    async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
+    async def get_passage(self, bible: Bible, verses: VerseRange, /) -> Passage:
         ...
 
     @abstractmethod
     async def search(
-        self, bible: Bible, terms: list[str], *, limit: int = 20, offset: int = 0
+        self, bible: Bible, terms: list[str], /, *, limit: int = 20, offset: int = 0
     ) -> SearchResults:
         ...
 
-    def replace_special_escapes(self, bible: Bible, text: str) -> str:
+    def replace_special_escapes(self, bible: Bible, text: str, /) -> str:
         text = _whitespace_re.sub(' ', text.strip())
         text = _specials_re.sub(r'\\\1', text)
         text = _bold_re.sub('**', text)

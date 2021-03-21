@@ -22,13 +22,13 @@ class ServiceManager(object):
     service_map: dict[str, Service] = attrib(factory=dict)
     timeout: float = 10
 
-    def __contains__(self, key: str) -> bool:
+    def __contains__(self, key: str, /) -> bool:
         return key in self.service_map
 
-    def __len__(self) -> int:
+    def __len__(self, /) -> int:
         return len(self.service_map)
 
-    async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
+    async def get_passage(self, bible: Bible, verses: VerseRange, /) -> Passage:
         service = self.service_map.get(bible.service)
         assert service is not None
         try:
@@ -42,7 +42,7 @@ class ServiceManager(object):
             raise ServiceLookupTimeout(bible, verses)
 
     async def search(
-        self, bible: Bible, terms: list[str], *, limit: int = 20, offset: int = 0
+        self, bible: Bible, terms: list[str], /, *, limit: int = 20, offset: int = 0
     ) -> SearchResults:
         service = self.service_map.get(bible.service)
         assert service is not None
@@ -54,7 +54,10 @@ class ServiceManager(object):
 
     @classmethod
     def from_config(
-        cls, config: Config, session: aiohttp.ClientSession
+        cls,
+        config: Config,
+        session: aiohttp.ClientSession,
+        /,
     ) -> ServiceManager:
         service_map: dict[str, Service] = {}
         service_configs = config.get('services', {})

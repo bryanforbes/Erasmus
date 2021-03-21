@@ -110,12 +110,12 @@ _book_map: Final[dict[str, str]] = {
 class Unbound(BaseService):
     _base_url: URL = attrib(init=False)
 
-    def __attrs_post_init__(self) -> None:
+    def __attrs_post_init__(self, /) -> None:
         self._base_url = URL(
             'http://unbound.biola.edu/index.cfm?method=searchResults.doSearch'
         )
 
-    async def get_passage(self, bible: Bible, verses: VerseRange) -> Passage:
+    async def get_passage(self, bible: Bible, verses: VerseRange, /) -> Passage:
         url = self._base_url.update_query(
             {
                 'search_type': 'simple_search',
@@ -176,6 +176,7 @@ class Unbound(BaseService):
         self,
         bible: Bible,
         terms: list[str],
+        /,
         *,
         limit: int = 20,
         offset: int = 0,
