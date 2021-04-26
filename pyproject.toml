@@ -23,7 +23,7 @@ discord-ext-menus = {git = "https://github.com/Rapptz/discord-ext-menus", rev = 
 [tool.poetry.dev-dependencies]
 "discord.py-stubs" = {version = "~1.6.0"}
 gino-stubs = {rev = "e480c360932593c24af9a43ca8862a432e081266", git = "https://github.com/bryanforbes/gino-stubs.git"}
-black = "^20.8b1"
+black = "^21.4b0"
 coverage = {version = "^5.5", extras = ["toml"]}
 flake8 = "~3.9"
 flake8-bugbear = ">=21.3.1"
