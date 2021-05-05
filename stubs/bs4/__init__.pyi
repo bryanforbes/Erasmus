@@ -24,6 +24,7 @@ from .element import TemplateString as TemplateString
 
 _T = TypeVar('_T')
 _T_co = TypeVar('_T_co', covariant=True)
+
 @type_check_only
 class _FileLike(Protocol[_T_co]):
     def read(self) -> _T_co: ...

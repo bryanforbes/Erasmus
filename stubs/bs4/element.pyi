@@ -32,6 +32,7 @@ _T = TypeVar('_T')
 _U = TypeVar('_U')
 _T_contra = TypeVar('_T_contra', contravariant=True)
 _Never = NewType('_Never', object)
+
 @type_check_only
 class _StrainerCallable(Protocol[_T_contra]):
     def __call__(self, __markup: _T_contra) -> bool: ...
@@ -49,6 +50,7 @@ _StringFilterType = _FilterType[NavigableString, Literal[True]]
 _TagStringFilterType = _FilterType['NavigableString | None', bool]
 _TagAttrFilterType = _FilterType['str | None', bool]
 _TagFilterType = _FilterType[Tag, bool]
+
 @type_check_only
 class _FindOneMethod(Protocol):
     @overload
