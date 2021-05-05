@@ -4,8 +4,8 @@ from typing import Any, Final, Protocol, TypeVar, cast
 
 import discord
 from botus_receptus import Cog, checks, formatting
-from botus_receptus.db import UniqueViolationError
 from discord.ext import commands
+from sqlalchemy import exc
 
 from ..context import Context
 from ..data import Passage, SearchResults, VerseRange, get_book, get_book_mask
@@ -187,8 +187,9 @@ class Bible(Cog[Context]):
         self.bot.loop.run_until_complete(self.__init())
 
     async def __init(self, /) -> None:
-        async for version in BibleVersion.get_all():
-            self.__add_bible_commands(version.command, version.name)
+        async with self.bot.Session.begin() as session:
+            async for version in BibleVersion.get_all(session):
+                self.__add_bible_commands(version.command, version.name)
 
     async def lookup_from_message(
         self,
@@ -209,29 +210,36 @@ class Bible(Cog[Context]):
             return
 
         async with ctx.typing():
-            user_bible = await BibleVersion.get_for_user(
-                ctx.author.id, ctx.guild.id if ctx.guild is not None else None
-            )
+            async with ctx.begin() as session:
+                user_bible: BibleVersion | None = None
 
-            for i, verse_range in enumerate(verse_ranges):
-                if i > 0:
-                    bucket.update_rate_limit()
+                for i, verse_range in enumerate(verse_ranges):
+                    if i > 0:
+                        bucket.update_rate_limit()
 
-                bible: BibleVersion | None = None
+                    bible: BibleVersion | None = None
 
-                try:
-                    if isinstance(verse_range, Exception):
-                        raise verse_range
+                    try:
+                        if isinstance(verse_range, Exception):
+                            raise verse_range
 
-                    if verse_range.version is not None:
-                        bible = await BibleVersion.get_by_abbr(verse_range.version)
+                        if verse_range.version is not None:
+                            bible = await BibleVersion.get_by_abbr(
+                                session, verse_range.version
+                            )
 
-                    if bible is None:
-                        bible = user_bible
+                        if bible is None:
+                            if user_bible is None:
+                                user_bible = await BibleVersion.get_for_user(
+                                    session,
+                                    ctx.author.id,
+                                    ctx.guild.id if ctx.guild is not None else None,
+                                )
+                            bible = user_bible
 
-                    await self.__lookup(ctx, bible, verse_range)
-                except Exception as exc:
-                    await self.bot.on_command_error(ctx, exc)
+                        await self.__lookup(ctx, bible, verse_range)
+                    except Exception as exc:
+                        await self.bot.on_command_error(ctx, exc)
 
     async def cog_command_error(self, ctx: Context, error: Exception, /) -> None:
         if (
@@ -293,12 +301,18 @@ class Bible(Cog[Context]):
         help=_lookup_help,
     )
     async def lookup(self, ctx: Context, /, *, reference: VerseRange) -> None:
-        bible = await BibleVersion.get_for_user(
-            ctx.author.id, ctx.guild.id if ctx.guild is not None else None
-        )
-
-        async with ctx.typing():
-            await self.__lookup(ctx, bible, reference)
+        try:
+            async with ctx.begin() as session:
+                bible = await BibleVersion.get_for_user(
+                    session,
+                    ctx.author.id,
+                    ctx.guild.id if ctx.guild is not None else None,
+                )
+        except BaseException:
+            raise
+        else:
+            async with ctx.typing():
+                await self.__lookup(ctx, bible, reference)
 
     @commands.command(
         aliases=['s'],
@@ -306,31 +320,38 @@ class Bible(Cog[Context]):
         help=_search_help,
     )
     async def search(self, ctx: Context, /, *terms: str) -> None:
-        bible = await BibleVersion.get_for_user(
-            ctx.author.id, ctx.guild.id if ctx.guild is not None else None
-        )
-
-        await self.__search(ctx, bible, *terms)
+        try:
+            async with ctx.begin() as session:
+                bible = await BibleVersion.get_for_user(
+                    session,
+                    ctx.author.id,
+                    ctx.guild.id if ctx.guild is not None else None,
+                )
+        except BaseException:
+            raise
+        else:
+            await self.__search(ctx, bible, *terms)
 
     @commands.command(
         brief='List which Bible versions are available for lookup and search'
     )
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
     async def versions(self, ctx: Context, /) -> None:
-        lines = ['I support the following Bible versions:', '']
+        async with ctx.begin() as session:
+            lines = ['I support the following Bible versions:', '']
 
-        lines += [
-            f'  `{ctx.prefix}{version.command}`: {version.name}'
-            async for version in BibleVersion.get_all(ordered=True)
-        ]
+            lines += [
+                f'  `{ctx.prefix}{version.command}`: {version.name}'
+                async for version in BibleVersion.get_all(session, ordered=True)
+            ]
 
-        lines.append(
-            "\nYou can search any version by prefixing the version command with 's' "
-            f'(ex. `{ctx.prefix}sesv terms...`)'
-        )
+            lines.append(
+                "\nYou can search any version by prefixing the version command "
+                f"with 's' (ex. `{ctx.prefix}sesv terms...`)"
+            )
 
-        output = '\n'.join(lines)
-        await ctx.send_embed(f'\n{output}\n')
+            output = '\n'.join(lines)
+            await ctx.send_embed(f'\n{output}\n')
 
     @commands.command(brief='Set your preferred version', help=_setversion_help)
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
@@ -339,21 +360,21 @@ class Bible(Cog[Context]):
         if version[0] == ctx.prefix:
             version = version[1:]
 
-        existing = await BibleVersion.get_by_command(version)
-        await existing.set_for_user(ctx.author.id)
+        async with ctx.begin() as session:
+            existing = await BibleVersion.get_by_command(session, version)
+            await existing.set_for_user(session, ctx.author.id)
 
-        await ctx.send_embed(f'Version set to `{version}`')
+            await ctx.send_embed(f'Version set to `{version}`')
 
     @commands.command(brief='Delete your preferred version', help=_unsetversion_help)
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
     async def unsetversion(self, ctx: Context, /) -> None:
-        user_prefs = await UserPref.get(ctx.author.id)
-
-        if user_prefs is not None:
-            await user_prefs.delete()
-            await ctx.send_embed('Preferred version deleted')
-        else:
-            await ctx.send_embed('Preferred version already deleted')
+        async with ctx.begin() as session:
+            if (user_prefs := await UserPref.get(session, ctx.author.id)) is not None:
+                await session.delete(user_prefs)
+                await ctx.send_embed('Preferred version deleted')
+            else:
+                await ctx.send_embed('Preferred version already deleted')
 
     @commands.command(brief='Set the guild default version', help=_setguildversion_help)
     @commands.has_permissions(administrator=True)
@@ -366,10 +387,11 @@ class Bible(Cog[Context]):
         if version[0] == ctx.prefix:
             version = version[1:]
 
-        existing = await BibleVersion.get_by_command(version)
-        await existing.set_for_guild(ctx.guild.id)
+        async with ctx.begin() as session:
+            existing = await BibleVersion.get_by_command(session, version)
+            await existing.set_for_guild(session, ctx.guild.id)
 
-        await ctx.send_embed(f'Guild version set to `{version}`')
+            await ctx.send_embed(f'Guild version set to `{version}`')
 
     @commands.command(
         brief='Delete the guild default version', help=_unsetguildversion_help
@@ -380,11 +402,12 @@ class Bible(Cog[Context]):
     async def unsetguildversion(self, ctx: Context, /) -> None:
         assert ctx.guild is not None
 
-        if (guild_prefs := await GuildPref.get(ctx.guild.id)) is not None:
-            await guild_prefs.delete()
-            await ctx.send_embed('Guild version deleted')
-        else:
-            await ctx.send_embed('Guild version already deleted')
+        async with ctx.begin() as session:
+            if (guild_prefs := await GuildPref.get(session, ctx.guild.id)) is not None:
+                await session.delete(guild_prefs)
+                await ctx.send_embed('Guild version deleted')
+            else:
+                await ctx.send_embed('Guild version already deleted')
 
     @commands.command(name='addbible')
     @checks.dm_only()
@@ -416,16 +439,19 @@ class Bible(Cog[Context]):
 
                 book_mask = book_mask | get_book_mask(get_book(book))
 
-            await BibleVersion.create(
-                command=command,
-                name=name,
-                abbr=abbr,
-                service=service,
-                service_version=service_version,
-                rtl=rtl,
-                books=book_mask,
-            )
-        except UniqueViolationError:
+            async with ctx.begin() as session:
+                session.add(
+                    BibleVersion(
+                        command=command,
+                        name=name,
+                        abbr=abbr,
+                        service=service,
+                        service_version=service_version,
+                        rtl=rtl,
+                        books=book_mask,
+                    )
+                )
+        except exc.IntegrityError:
             await ctx.send_error(f'`{command}` already exists')
         else:
             self.__add_bible_commands(command, name)
@@ -435,12 +461,13 @@ class Bible(Cog[Context]):
     @checks.dm_only()
     @commands.is_owner()
     async def delete_bible(self, ctx: Context, command: str, /) -> None:
-        version = await BibleVersion.get_by_command(command)
-        await version.delete()
+        async with ctx.begin() as session:
+            version = await BibleVersion.get_by_command(session, command)
+            await session.delete(version)
 
-        self.__remove_bible_commands(command)
+            self.__remove_bible_commands(command)
 
-        await ctx.send_embed(f'Removed `{command}`')
+            await ctx.send_embed(f'Removed `{command}`')
 
     @commands.command(name='upbible')
     @checks.dm_only()
@@ -453,27 +480,32 @@ class Bible(Cog[Context]):
         service_version: str,
         /,
     ) -> None:
-        version = await BibleVersion.get_by_command(command)
-
         try:
-            await version.update(
-                service=service, service_version=service_version
-            ).apply()
+            async with ctx.begin() as session:
+                version = await BibleVersion.get_by_command(session, command)
+                version.service = service
+                version.service_version = service_version
         except Exception:
             await ctx.send_error(f'Error updating `{command}`')
         else:
             await ctx.send_embed(f'Updated `{command}`')
 
     async def __version_lookup(self, ctx: Context, /, *, reference: VerseRange) -> None:
-        bible = await BibleVersion.get_by_command(cast(str, ctx.invoked_with))
+        async with ctx.begin() as session:
+            bible = await BibleVersion.get_by_command(
+                session, cast(str, ctx.invoked_with)
+            )
 
-        async with ctx.typing():
-            await self.__lookup(ctx, bible, reference)
+            async with ctx.typing():
+                await self.__lookup(ctx, bible, reference)
 
     async def __version_search(self, ctx: Context, /, *terms: str) -> None:
-        bible = await BibleVersion.get_by_command(cast(str, ctx.invoked_with)[1:])
+        async with ctx.begin() as session:
+            bible = await BibleVersion.get_by_command(
+                session, cast(str, ctx.invoked_with)[1:]
+            )
 
-        await self.__search(ctx, bible, *terms)
+            await self.__search(ctx, bible, *terms)
 
     async def __lookup(
         self,

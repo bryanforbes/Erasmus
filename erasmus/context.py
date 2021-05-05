@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Final
+from typing import TYPE_CHECKING, AsyncContextManager, Final
 
 import discord
 from botus_receptus import EmbedContext
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from .data import Passage
 
@@ -31,3 +32,6 @@ class Context(EmbedContext):
         )
 
         return await self.send(embed=embed)
+
+    def begin(self) -> AsyncContextManager[AsyncSession]:
+        return self.bot.Session.begin()

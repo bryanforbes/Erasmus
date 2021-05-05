@@ -1,29 +1,5 @@
-from .base import Base, db  # noqa
-from .bible import BibleVersion, UserPref  # noqa
-from .confession import (  # noqa
-    Article,
-    Chapter,
-    Confession,
-    ConfessionNumberingType,
-    ConfessionType,
-    ConfessionTypeEnum,
-    NumberingTypeEnum,
-    Paragraph,
-    Question,
-)
+from __future__ import annotations
 
-__all__ = (
-    'db',
-    'Base',
-    'BibleVersion',
-    'UserPref',
-    'ConfessionTypeEnum',
-    'ConfessionType',
-    'NumberingTypeEnum',
-    'ConfessionNumberingType',
-    'Chapter',
-    'Paragraph',
-    'Question',
-    'Article',
-    'Confession',
-)
+from .base import Base  # noqa
+
+__all__ = ('Base',)

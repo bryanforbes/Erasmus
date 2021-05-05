@@ -6,13 +6,13 @@ from typing import Any, Final, cast
 import discord
 import pendulum
 from botus_receptus import DblBot, abc, exceptions, formatting
-from botus_receptus.gino import Bot as GinoBot
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
 from discord.ext import commands, menus
+from sqlalchemy.ext.asyncio import AsyncEngine, AsyncSession, create_async_engine
+from sqlalchemy.orm import sessionmaker
 
 from .config import Config
 from .context import Context
-from .db import db
 from .exceptions import ErasmusError
 from .help import HelpCommand
 
@@ -35,15 +35,15 @@ You can look up all verses in a message one of two ways:
 
 
 class Erasmus(
-    GinoBot[Context],
     DblBot[Context],
     abc.OnMessage,
     abc.OnCommandError[Context],
 ):
     config: Config
+    engine: AsyncEngine
+    Session: sessionmaker[AsyncSession]
 
     context_cls = Context
-    db = db
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         kwargs['help_command'] = HelpCommand(
@@ -58,11 +58,21 @@ class Erasmus(
 
         super().__init__(config, *args, **kwargs)
 
+        self.engine = create_async_engine(self.config.get('db_url', ''))
+        self.Session = sessionmaker(
+            self.engine, expire_on_commit=False, class_=AsyncSession
+        )
+
         for extension in _extensions:
             try:
                 self.load_extension(f'erasmus.cogs.{extension}')
             except Exception:
                 _log.exception('Failed to load extension %s.', extension)
+
+    async def close(self, /) -> None:
+        await self.engine.dispose()
+
+        await super().close()
 
     async def on_message(self, message: discord.Message, /) -> None:
         if message.author.bot:

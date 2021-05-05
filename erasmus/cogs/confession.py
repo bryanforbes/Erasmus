@@ -13,6 +13,7 @@ from botus_receptus.formatting import (
     underline,
 )
 from discord.ext import commands
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..context import Context
 from ..db.confession import Article
@@ -194,7 +195,8 @@ class Confession(Cog[Context]):
             await self.list(ctx)
             return
 
-        row = await ConfessionRecord.get_by_command(confession)
+        async with ctx.begin() as session:
+            row = await ConfessionRecord.get_by_command(session, confession)
 
         if len(args) == 0:
             await self.list_contents(ctx, row)
@@ -210,8 +212,9 @@ class Confession(Cog[Context]):
         paginator = EmbedPaginator()
         paginator.add_line('I support the following confessions:', empty=True)
 
-        async for conf in ConfessionRecord.get_all():
-            paginator.add_line(f'  `{conf.command}`: {conf.name}')
+        async with ctx.begin() as session:
+            async for conf in ConfessionRecord.get_all(session):
+                paginator.add_line(f'  `{conf.command}`: {conf.name}')
 
         for page in paginator:
             await ctx.send_embed(page)
@@ -237,7 +240,7 @@ class Confession(Cog[Context]):
         /,
     ) -> None:
         paginator = EmbedPaginator()
-        getter: Callable[[], AsyncIterator[Any]] | None = None
+        getter: Callable[[AsyncSession], AsyncIterator[Any]] | None = None
         number_key: str | None = None
         title_key: str | None = None
 
@@ -251,13 +254,14 @@ class Confession(Cog[Context]):
             title_key = 'title'
 
         format_number = _number_formatters[confession.numbering]
-        async for record in getter():
-            paginator.add_line(
-                '**{number}**. {title}'.format(
-                    number=format_number(getattr(record, number_key)),
-                    title=getattr(record, title_key),
+        async with ctx.begin() as session:
+            async for record in getter(session):
+                paginator.add_line(
+                    '**{number}**. {title}'.format(
+                        number=format_number(getattr(record, number_key)),
+                        title=getattr(record, title_key),
+                    )
                 )
-            )
 
         for index, page in enumerate(paginator):
             await ctx.send_embed(
@@ -270,7 +274,8 @@ class Confession(Cog[Context]):
         confession: ConfessionRecord,
         /,
     ) -> None:
-        count = await confession.get_question_count()
+        async with ctx.begin() as session:
+            count = await confession.get_question_count(session)
         question_str = _pluralizers[ConfessionTypeEnum.QA](count)
 
         await ctx.send_embed(f'`{confession.name}` has {question_str}')
@@ -280,18 +285,19 @@ class Confession(Cog[Context]):
     ) -> None:
         if confession.type == ConfessionTypeEnum.CHAPTERS:
             search_func: Callable[
-                [Sequence[str]], AsyncIterator[ConfessionSearchResult]
+                [AsyncSession, Sequence[str]], AsyncIterator[ConfessionSearchResult]
             ] = confession.search_paragraphs
         elif confession.type == ConfessionTypeEnum.ARTICLES:
             search_func = confession.search_articles
         else:  # ConfessionTypeEnum.QA
             search_func = confession.search_questions
 
-        source = ConfessionSearchSource(
-            [result async for result in search_func(terms)],
-            type=confession.type,
-            per_page=20,
-        )
+        async with ctx.begin() as session:
+            source = ConfessionSearchSource(
+                [result async for result in search_func(session, terms)],
+                type=confession.type,
+                per_page=20,
+            )
         menu = MenuPages(source, 'I found 0 results')
 
         await menu.start(ctx)
@@ -317,7 +323,10 @@ class Confession(Cog[Context]):
                 chapter_num = int(match['chapter'])
                 paragraph_num = int(match['paragraph'])
 
-            paragraph = await confession.get_paragraph(chapter_num, paragraph_num)
+            async with ctx.begin() as session:
+                paragraph = await confession.get_paragraph(
+                    session, chapter_num, paragraph_num
+                )
 
             paragraph_number = format_number(paragraph.paragraph_number)
             chapter_number = format_number(paragraph.chapter.chapter_number)
@@ -333,7 +342,8 @@ class Confession(Cog[Context]):
             else:
                 question_number = int(match['number'])
 
-            question = await confession.get_question(question_number)
+            async with ctx.begin() as session:
+                question = await confession.get_question(session, question_number)
 
             question_number_str = format_number(question_number)
 
@@ -353,7 +363,8 @@ class Confession(Cog[Context]):
             else:
                 article_number = int(match['article'])
 
-            article = await confession.get_article(article_number)
+            async with ctx.begin() as session:
+                article = await confession.get_article(session, article_number)
 
             title = underline(bold(f'{format_number(article_number)}. {article.title}'))
             output = article.text

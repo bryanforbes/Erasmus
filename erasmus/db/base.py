@@ -1,15 +1,37 @@
-from typing import TYPE_CHECKING, Final
+from __future__ import annotations
 
-from botus_receptus.gino import Gino, ModelMixin
+from typing import TYPE_CHECKING, Any
 
-db: Final = Gino()
+from sqlalchemy.orm import declarative_base
+from sqlalchemy.types import String, TypeDecorator
+
+Base = declarative_base()
+
 
 if TYPE_CHECKING:
-    from gino.crud import CRUDModel
-
-    class Base(CRUDModel, ModelMixin):
-        pass
-
-
+    _TypeDecorator = TypeDecorator[int]
 else:
-    Base = db.Model
+    _TypeDecorator = TypeDecorator
+
+
+class Snowflake(_TypeDecorator):
+    impl = String
+
+    def process_bind_param(
+        self,
+        value: Any,
+        dialect: Any,
+        /,
+    ) -> str | None:
+        return str(value) if value is not None else value
+
+    def process_result_value(
+        self,
+        value: Any,
+        dialect: Any,
+        /,
+    ) -> int | None:
+        return int(value) if value is not None else value
+
+    def copy(self, /, **kwargs: Any) -> Snowflake:
+        return Snowflake(self.impl.length)
