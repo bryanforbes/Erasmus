@@ -16,13 +16,13 @@ beautifulsoup4 = "^4.9"
 cchardet = "^2.1"
 psycopg2 = "^2.8"
 ujson = "^4.0"
-"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "a23c259fb6fb8119c1b558b3e95f345ea6e52092", extras = ["gino", "uvloop"]}
+"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "bb01cdea477293b5ac5a85242962bbcd54596afe", extras = ["gino", "uvloop"]}
 more-itertools = {version = "~8.7.0"}
 discord-ext-menus = {git = "https://github.com/Rapptz/discord-ext-menus", rev = "6f2b873bf0d28903eb752aa1166b3aac26dc9007"}
 
 [tool.poetry.dev-dependencies]
 "discord.py-stubs" = {version = "~1.6.0"}
-gino-stubs = {rev = "e480c360932593c24af9a43ca8862a432e081266", git = "https://github.com/bryanforbes/gino-stubs.git"}
+gino-stubs = {rev = "80d655b9218c24553ca6083e12f587bf00234981", git = "https://github.com/bryanforbes/gino-stubs.git"}
 black = "^20.8b1"
 coverage = {version = "^5.5", extras = ["toml"]}
 flake8 = "~3.9"

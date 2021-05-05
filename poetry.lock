@@ -92,22 +92,22 @@ test = ["pycodestyle (>=2.5.0,<2.6.0)", "flake8 (>=3.7.9,<3.8.0)", "uvloop (>=0.
 
 [[package]]
 name = "asyncpg-stubs"
-version = "0.20.1+0"
+version = "0.22.0"
 description = "asyncpg stubs"
 category = "dev"
 optional = false
-python-versions = "^3.6.1"
+python-versions = "^3.6.2"
 develop = false
 
 [package.dependencies]
 mypy = ">=0.800"
-typing-extensions = "^3.7.4"
+typing-extensions = "^3.10.0"
 
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
-reference = "ecec5efc851bcdd6995a1c468acf40187fa0028d"
-resolved_reference = "ecec5efc851bcdd6995a1c468acf40187fa0028d"
+reference = "0ac9262dfa4333d6d30b83b0edef969d537b9b45"
+resolved_reference = "0ac9262dfa4333d6d30b83b0edef969d537b9b45"
 
 [[package]]
 name = "atomicwrites"
@@ -198,8 +198,8 @@ uvloop = ["uvloop (>=0.15.2,<0.16.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "a23c259fb6fb8119c1b558b3e95f345ea6e52092"
-resolved_reference = "a23c259fb6fb8119c1b558b3e95f345ea6e52092"
+reference = "bb01cdea477293b5ac5a85242962bbcd54596afe"
+resolved_reference = "bb01cdea477293b5ac5a85242962bbcd54596afe"
 
 [[package]]
 name = "cchardet"
@@ -419,11 +419,11 @@ version = "1.0.1+0"
 description = "Gino stubs and mypy plugin"
 category = "dev"
 optional = false
-python-versions = "^3.6.1"
+python-versions = "^3.6.2"
 develop = false
 
 [package.dependencies]
-asyncpg-stubs = "rev ecec5efc851bcdd6995a1c468acf40187fa0028d"
+asyncpg-stubs = "rev 0ac9262dfa4333d6d30b83b0edef969d537b9b45"
 mypy = ">=0.800"
 sqlalchemy-stubs = "^0.4"
 typing-extensions = ">=3.7.4"
@@ -431,8 +431,8 @@ typing-extensions = ">=3.7.4"
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
-reference = "e480c360932593c24af9a43ca8862a432e081266"
-resolved_reference = "e480c360932593c24af9a43ca8862a432e081266"
+reference = "80d655b9218c24553ca6083e12f587bf00234981"
+resolved_reference = "80d655b9218c24553ca6083e12f587bf00234981"
 
 [[package]]
 name = "identify"
@@ -921,7 +921,7 @@ python-versions = "*"
 
 [[package]]
 name = "typing-extensions"
-version = "3.7.4.3"
+version = "3.10.0.0"
 description = "Backported and Experimental Type Hints for Python 3.5+"
 category = "main"
 optional = false
@@ -1003,7 +1003,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "03a68e591e499787ff3e8e0aef6646a629f88fbfabc770ac59e18480f4f20ef9"
+content-hash = "3982d95d80ba84a05fc033bfe8937a4cf4b0576e61c988b5e58a6d1632dd5b85"
 
 [metadata.files]
 aiodns = [
@@ -1723,9 +1723,9 @@ typed-ast = [
     {file = "typed_ast-1.4.2.tar.gz", hash = "sha256:9fc0b3cb5d1720e7141d103cf4819aea239f7d136acf9ee4a69b047b7986175a"},
 ]
 typing-extensions = [
-    {file = "typing_extensions-3.7.4.3-py2-none-any.whl", hash = "sha256:dafc7639cde7f1b6e1acc0f457842a83e722ccca8eef5270af2d74792619a89f"},
-    {file = "typing_extensions-3.7.4.3-py3-none-any.whl", hash = "sha256:7cb407020f00f7bfc3cb3e7881628838e69d8f3fcab2f64742a5e76b2f841918"},
-    {file = "typing_extensions-3.7.4.3.tar.gz", hash = "sha256:99d4073b617d30288f569d3f13d2bd7548c3a7e4c8de87db09a9d29bb3a4a60c"},
+    {file = "typing_extensions-3.10.0.0-py2-none-any.whl", hash = "sha256:0ac0f89795dd19de6b97debb0c6af1c70987fd80a2d62d1958f7e56fcc31b497"},
+    {file = "typing_extensions-3.10.0.0-py3-none-any.whl", hash = "sha256:779383f6086d90c99ae41cf0ff39aac8a7937a9283ce0a414e5dd782f4c94a84"},
+    {file = "typing_extensions-3.10.0.0.tar.gz", hash = "sha256:50b6f157849174217d0656f99dc82fe932884fb250826c18350e159ec6cdf342"},
 ]
 ujson = [
     {file = "ujson-4.0.2-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:e390df0dcc7897ffb98e17eae1f4c442c39c91814c298ad84d935a3c5c7a32fa"},
