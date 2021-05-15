@@ -201,7 +201,8 @@ class ApiBible(BaseService):
                     'include-chapter-numbers': 'false',
                     'include-verse-numbers': 'true',
                 }
-            )
+            ),
+            headers=self._headers,
         ) as response:
             data = await self.__process_response(response)
 
@@ -226,7 +227,8 @@ class ApiBible(BaseService):
                     'offset': offset,
                     'sort': 'canonical',
                 }
-            )
+            ),
+            headers=self._headers,
         ) as response:
             data = await self.__process_response(response)
 
