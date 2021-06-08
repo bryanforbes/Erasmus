@@ -21,7 +21,7 @@ more-itertools = {version = "~8.7.0"}
 discord-ext-menus = {git = "https://github.com/Rapptz/discord-ext-menus", rev = "6f2b873bf0d28903eb752aa1166b3aac26dc9007"}
 
 [tool.poetry.dev-dependencies]
-"discord.py-stubs" = {version = "~1.7.0"}
+"discord.py-stubs" = {version = "~1.7.3"}
 gino-stubs = {rev = "80d655b9218c24553ca6083e12f587bf00234981", git = "https://github.com/bryanforbes/gino-stubs.git"}
 black = "^21.5b0"
 coverage = {version = "^5.5", extras = ["toml"]}
