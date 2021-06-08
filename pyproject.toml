@@ -10,7 +10,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.9"
-aiodns = "^2.0"
+aiodns = "^3.0"
 alembic = "^1.6"
 beautifulsoup4 = "^4.9"
 cchardet = "^2.1"
