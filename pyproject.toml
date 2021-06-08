@@ -17,7 +17,7 @@ cchardet = "^2.1"
 psycopg2 = "^2.8"
 ujson = "^4.0"
 "botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "000d81b3ace6730a2883c97bbac9ae646527c8b4", extras = ["gino", "uvloop"]}
-more-itertools = {version = "~8.7.0"}
+more-itertools = {version = "~8.8.0"}
 discord-ext-menus = {git = "https://github.com/Rapptz/discord-ext-menus", rev = "6f2b873bf0d28903eb752aa1166b3aac26dc9007"}
 
 [tool.poetry.dev-dependencies]
