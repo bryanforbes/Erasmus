@@ -14,7 +14,7 @@ aiodns = "^3.0"
 alembic = "^1.6"
 beautifulsoup4 = "^4.9"
 cchardet = "^2.1"
-psycopg2 = "^2.8"
+psycopg2 = "^2.9"
 ujson = "^4.0"
 "botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "9ef50b1fc4d2fb77fb58911cba63121b873c7621", extras = ["gino", "uvloop"]}
 more-itertools = {version = "~8.8.0"}
