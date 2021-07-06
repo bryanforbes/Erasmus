@@ -972,7 +972,7 @@ python-versions = "*"
 
 [[package]]
 name = "types-ujson"
-version = "0.1.0"
+version = "0.1.1"
 description = "Typing stubs for ujson"
 category = "dev"
 optional = false
@@ -1062,7 +1062,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "10ff96a1521fee44b8e0265fd17605b0753e1ac48b7db6d14f9d224fa7af512c"
+content-hash = "ccfbd2c36413dbadaa8663a3e31014b6fbc3339a16d44d586166280872742778"
 
 [metadata.files]
 aiodns = [
@@ -1792,7 +1792,8 @@ types-toml = [
     {file = "types_toml-0.1.3-py2.py3-none-any.whl", hash = "sha256:d4add39a90993173d49ff0b069edd122c66ad4cf5c01082b590e380ca670ee1a"},
 ]
 types-ujson = [
-    {file = "types_ujson-0.1.0-py2.py3-none-any.whl", hash = "sha256:b7dce4c6353098a33441f06cb51ade8f482bc791f274c1f4af358c6f5c7cad30"},
+    {file = "types-ujson-0.1.1.tar.gz", hash = "sha256:92042cb7a0ba0ded003642da3367aa2a7b22a7d16ce840336b50977781526ed0"},
+    {file = "types_ujson-0.1.1-py2.py3-none-any.whl", hash = "sha256:f465118573d69c1cf570144de95c11a596abee4b48cf45c9c54abf0613d8956a"},
 ]
 typing-extensions = [
     {file = "typing_extensions-3.10.0.0-py2-none-any.whl", hash = "sha256:0ac0f89795dd19de6b97debb0c6af1c70987fd80a2d62d1958f7e56fcc31b497"},
