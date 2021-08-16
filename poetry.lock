@@ -81,7 +81,7 @@ python-versions = ">=3.5.3"
 name = "asyncpg"
 version = "0.23.0"
 description = "An asyncio PostgreSQL driver"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.5.0"
 
@@ -185,10 +185,8 @@ attrs = ">=18.2.0"
 click = ">=8.0"
 discord-ext-typed-commands = "^1.0.3"
 "discord.py" = "~1.7.0"
-gino = {version = "^1.0.1", optional = true}
 pendulum = "~2.1.2"
 toml = "^0.10.2"
-uvloop = {version = "~0.15.2", optional = true}
 
 [package.extras]
 db = ["asyncpg (>=0.22.0)"]
@@ -413,7 +411,7 @@ pyflakes = ">=2.1.1"
 name = "gino"
 version = "1.0.1"
 description = "GINO Is Not ORM - a Python asyncio ORM on SQLAlchemy core."
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.5,<4.0"
 
@@ -989,24 +987,11 @@ python-versions = "*"
 
 [[package]]
 name = "ujson"
-version = "4.0.2"
+version = "4.1.0"
 description = "Ultra fast JSON encoder and decoder for Python"
 category = "main"
 optional = false
 python-versions = ">=3.6"
-
-[[package]]
-name = "uvloop"
-version = "0.15.2"
-description = "Fast implementation of asyncio event loop on top of libuv"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-
-[package.extras]
-dev = ["Cython (>=0.29.20,<0.30.0)", "pytest (>=3.6.0)", "Sphinx (>=1.7.3,<1.8.0)", "sphinxcontrib-asyncio (>=0.2.0,<0.3.0)", "sphinx-rtd-theme (>=0.2.4,<0.3.0)", "aiohttp", "flake8 (>=3.8.4,<3.9.0)", "psutil", "pycodestyle (>=2.6.0,<2.7.0)", "pyOpenSSL (>=19.0.0,<19.1.0)", "mypy (>=0.800)"]
-docs = ["Sphinx (>=1.7.3,<1.8.0)", "sphinxcontrib-asyncio (>=0.2.0,<0.3.0)", "sphinx-rtd-theme (>=0.2.4,<0.3.0)"]
-test = ["aiohttp", "flake8 (>=3.8.4,<3.9.0)", "psutil", "pycodestyle (>=2.6.0,<2.7.0)", "pyOpenSSL (>=19.0.0,<19.1.0)", "mypy (>=0.800)"]
 
 [[package]]
 name = "vcrpy"
@@ -1063,7 +1048,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "60b28552013f74344ead906b1a9d4746c62e2cbcec65e9ba577c37fc888f6115"
+content-hash = "a35d955bc19dab5c61060732714640d012500c6481187cd9fca264f7b1f24c68"
 
 [metadata.files]
 aiodns = [
@@ -1802,39 +1787,27 @@ typing-extensions = [
     {file = "typing_extensions-3.10.0.0.tar.gz", hash = "sha256:50b6f157849174217d0656f99dc82fe932884fb250826c18350e159ec6cdf342"},
 ]
 ujson = [
-    {file = "ujson-4.0.2-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:e390df0dcc7897ffb98e17eae1f4c442c39c91814c298ad84d935a3c5c7a32fa"},
-    {file = "ujson-4.0.2-cp36-cp36m-manylinux1_i686.whl", hash = "sha256:84b1dca0d53b0a8d58835f72ea2894e4d6cf7a5dd8f520ab4cbd698c81e49737"},
-    {file = "ujson-4.0.2-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:91396a585ba51f84dc71c8da60cdc86de6b60ba0272c389b6482020a1fac9394"},
-    {file = "ujson-4.0.2-cp36-cp36m-manylinux2014_aarch64.whl", hash = "sha256:eb6b25a7670c7537a5998e695fa62ff13c7f9c33faf82927adf4daa460d5f62e"},
-    {file = "ujson-4.0.2-cp36-cp36m-win_amd64.whl", hash = "sha256:f8aded54c2bc554ce20b397f72101737dd61ee7b81c771684a7dd7805e6cca0c"},
-    {file = "ujson-4.0.2-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:30962467c36ff6de6161d784cd2a6aac1097f0128b522d6e9291678e34fb2b47"},
-    {file = "ujson-4.0.2-cp37-cp37m-manylinux1_i686.whl", hash = "sha256:fc51e545d65689c398161f07fd405104956ec27f22453de85898fa088b2cd4bb"},
-    {file = "ujson-4.0.2-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:e6e90330670c78e727d6637bb5a215d3e093d8e3570d439fd4922942f88da361"},
-    {file = "ujson-4.0.2-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:5e1636b94c7f1f59a8ead4c8a7bab1b12cc52d4c21ababa295ffec56b445fd2a"},
-    {file = "ujson-4.0.2-cp37-cp37m-win_amd64.whl", hash = "sha256:e2cadeb0ddc98e3963bea266cc5b884e5d77d73adf807f0bda9eca64d1c509d5"},
-    {file = "ujson-4.0.2-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:a214ba5a21dad71a43c0f5aef917cd56a2d70bc974d845be211c66b6742a471c"},
-    {file = "ujson-4.0.2-cp38-cp38-manylinux1_i686.whl", hash = "sha256:0190d26c0e990c17ad072ec8593647218fe1c675d11089cd3d1440175b568967"},
-    {file = "ujson-4.0.2-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:f273a875c0b42c2a019c337631bc1907f6fdfbc84210cc0d1fff0e2019bbfaec"},
-    {file = "ujson-4.0.2-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:d3a87888c40b5bfcf69b4030427cd666893e826e82cc8608d1ba8b4b5e04ea99"},
-    {file = "ujson-4.0.2-cp38-cp38-win_amd64.whl", hash = "sha256:7333e8bc45ea28c74ae26157eacaed5e5629dbada32e0103c23eb368f93af108"},
-    {file = "ujson-4.0.2-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:b3a6dcc660220539aa718bcc9dbd6dedf2a01d19c875d1033f028f212e36d6bb"},
-    {file = "ujson-4.0.2-cp39-cp39-manylinux1_i686.whl", hash = "sha256:0ea07fe57f9157118ca689e7f6db72759395b99121c0ff038d2e38649c626fb1"},
-    {file = "ujson-4.0.2-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:4d6d061563470cac889c0a9fd367013a5dbd8efc36ad01ab3e67a57e56cad720"},
-    {file = "ujson-4.0.2-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:b5c70704962cf93ec6ea3271a47d952b75ae1980d6c56b8496cec2a722075939"},
-    {file = "ujson-4.0.2-cp39-cp39-win_amd64.whl", hash = "sha256:aad6d92f4d71e37ea70e966500f1951ecd065edca3a70d3861b37b176dd6702c"},
-    {file = "ujson-4.0.2.tar.gz", hash = "sha256:c615a9e9e378a7383b756b7e7a73c38b22aeb8967a8bfbffd4741f7ffd043c4d"},
-]
-uvloop = [
-    {file = "uvloop-0.15.2-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:19fa1d56c91341318ac5d417e7b61c56e9a41183946cc70c411341173de02c69"},
-    {file = "uvloop-0.15.2-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:e5e5f855c9bf483ee6cd1eb9a179b740de80cb0ae2988e3fa22309b78e2ea0e7"},
-    {file = "uvloop-0.15.2-cp37-cp37m-manylinux2014_aarch64.whl", hash = "sha256:42eda9f525a208fbc4f7cecd00fa15c57cc57646c76632b3ba2fe005004f051d"},
-    {file = "uvloop-0.15.2-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:90e56f17755e41b425ad19a08c41dc358fa7bf1226c0f8e54d4d02d556f7af7c"},
-    {file = "uvloop-0.15.2-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:7ae39b11a5f4cec1432d706c21ecc62f9e04d116883178b09671aa29c46f7a47"},
-    {file = "uvloop-0.15.2-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:b45218c99795803fb8bdbc9435ff7f54e3a591b44cd4c121b02fa83affb61c7c"},
-    {file = "uvloop-0.15.2-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:114543c84e95df1b4ff546e6e3a27521580466a30127f12172a3278172ad68bc"},
-    {file = "uvloop-0.15.2-cp39-cp39-manylinux2010_x86_64.whl", hash = "sha256:44cac8575bf168601424302045234d74e3561fbdbac39b2b54cc1d1d00b70760"},
-    {file = "uvloop-0.15.2-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:6de130d0cb78985a5d080e323b86c5ecaf3af82f4890492c05981707852f983c"},
-    {file = "uvloop-0.15.2.tar.gz", hash = "sha256:2bb0624a8a70834e54dde8feed62ed63b50bad7a1265c40d6403a2ac447bce01"},
+    {file = "ujson-4.1.0-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:148680f2bc6e52f71c56908b65f59b36a13611ac2f75a86f2cb2bce2b2c2588c"},
+    {file = "ujson-4.1.0-cp36-cp36m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:d1c2fb32976982e4e75ca0843a1e7b2254b8c5d8c45d979ebf2db29305b4fa31"},
+    {file = "ujson-4.1.0-cp36-cp36m-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:971d4b450e689bfec8ad6b22060fb9b9bec1e0860dbdf0fa7cfe4068adbc5f58"},
+    {file = "ujson-4.1.0-cp36-cp36m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:f453480b275192ae40ef350a4e8288977f00b02e504ed34245ebd12d633620cb"},
+    {file = "ujson-4.1.0-cp36-cp36m-win_amd64.whl", hash = "sha256:f135db442e5470d9065536745968efc42a60233311c8509b9327bcd59a8821c7"},
+    {file = "ujson-4.1.0-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:2251fc9395ba4498cbdc48136a179b8f20914fa8b815aa9453b20b48ad120f43"},
+    {file = "ujson-4.1.0-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:9005d0d952d0c1b3dff5cdb79df2bde35a3499e2de3f708a22c45bbb4089a1f6"},
+    {file = "ujson-4.1.0-cp37-cp37m-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:117855246a9ea3f61f3b69e5ca1b1d11d622b3126f50a0ec08b577cb5c87e56e"},
+    {file = "ujson-4.1.0-cp37-cp37m-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:989bed422e7e20c7ba740a4e1bbeb28b3b6324e04f023ea238a2e5449fc53668"},
+    {file = "ujson-4.1.0-cp37-cp37m-win_amd64.whl", hash = "sha256:44993136fd2ecade747b6db95917e4f015a3279e09a08113f70cbbd0d241e66a"},
+    {file = "ujson-4.1.0-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:9e962df227fd1d851ff095382a9f8432c2470c3ee640f02ae14231dc5728e6f3"},
+    {file = "ujson-4.1.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:be6013cda610c5149fb80a84ee815b210aa2e7fe4edf1d2bce42c02336715208"},
+    {file = "ujson-4.1.0-cp38-cp38-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:41b7e5422184249b5b94d1571206f76e5d91e8d721ce51abe341a88f41dd6692"},
+    {file = "ujson-4.1.0-cp38-cp38-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:807bb0585f30a650ec981669827721ed3ee1ee24f2c6f333a64982a40eb66b82"},
+    {file = "ujson-4.1.0-cp38-cp38-win_amd64.whl", hash = "sha256:d2955dd5cce0e76ba56786d647aaedca2cebb75eda9f0ec1787110c3646751a8"},
+    {file = "ujson-4.1.0-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:a873c93d43f9bd14d9e9a6d2c6eb7aae4aad9717fe40c748d0cd4b6ed7767c62"},
+    {file = "ujson-4.1.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8e8fe9bbeca130debb10eea7910433a0714c8efc057fad36353feccb87c1d07f"},
+    {file = "ujson-4.1.0-cp39-cp39-manylinux_2_5_i686.manylinux1_i686.whl", hash = "sha256:81a49dbf176ae041fc86d2da564f5b9b46faf657306035632da56ecfd7203193"},
+    {file = "ujson-4.1.0-cp39-cp39-manylinux_2_5_x86_64.manylinux1_x86_64.whl", hash = "sha256:1fb2455e62f20ab4a6d49f78b5dc4ff99c72fdab9466e761120e9757fa35f4d7"},
+    {file = "ujson-4.1.0-cp39-cp39-win_amd64.whl", hash = "sha256:44db30b8fc52e70a6f67def11804f74818addafef0a65cd7f0abb98b7830920f"},
+    {file = "ujson-4.1.0.tar.gz", hash = "sha256:22b63ec4409f0d2f2c4c9d5aa331997e02470b7a15a3233f3cc32f2f9b92d58c"},
 ]
 vcrpy = [
     {file = "vcrpy-4.1.1-py2.py3-none-any.whl", hash = "sha256:12c3fcdae7b88ecf11fc0d3e6d77586549d4575a2ceee18e82eee75c1f626162"},
