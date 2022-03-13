@@ -28,7 +28,7 @@ A Bible bot for Discord
 
 Erasmus stores the following data:
 
-* A user's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if they set a preferred version (this can be deleted using `$unsetversion`)
+* A user's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if the user set a preferred version (this can be deleted using `$unsetversion`)
 * A guild's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if a guild administrator sets a preferred version for the guild (this can be deleted using `unsetguildversion`)
 
 While Erasmus uses message content to determine when it should execute a command, **no message content is ever stored**.
