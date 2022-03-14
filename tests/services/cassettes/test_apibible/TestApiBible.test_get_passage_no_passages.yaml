@@ -9,6 +9,10 @@ interactions:
       string: '{"statusCode":404,"error":"Not Found","message":"Could not find that
         passage"}'
     headers:
+      Access-Control-Expose-Headers:
+      - WWW-Authenticate,Server-Authorization
+      Cache-Control:
+      - no-cache
       Connection:
       - keep-alive
       Content-Encoding:
@@ -16,16 +20,12 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 07 Oct 2020 14:32:41 GMT
+      - Mon, 14 Mar 2022 18:57:15 GMT
       Server:
       - nginx/1.16.1
       Transfer-Encoding:
       - chunked
-      access-control-expose-headers:
-      - WWW-Authenticate,Server-Authorization
-      cache-control:
-      - no-cache
-      vary:
+      Vary:
       - origin
     status:
       code: 404

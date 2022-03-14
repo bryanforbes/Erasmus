@@ -34,7 +34,7 @@ class TestApiBible(ServiceTest):
                         version='KJV',
                     ),
                     Passage(
-                        text='As he saith also in another place , Thou art a priest '
+                        text='As he saith also in another place, Thou art a priest '
                         'for ever after the order of Melchisedec.',
                         range=VerseRange.from_string('Hebrews 5:6'),
                         version='KJV',
@@ -100,6 +100,19 @@ class TestApiBible(ServiceTest):
                 'terms': ['faith'],
                 'verses': [
                     Passage(
+                        text='My servant Moses is not so, who is faithful in all mine '
+                        'house.',
+                        range=VerseRange.from_string('Numbers 12:7'),
+                        version='KJV',
+                    ),
+                    Passage(
+                        text='Know therefore that the LORD thy God, he is God, the '
+                        'faithful God, which keepeth covenant and mercy with them that '
+                        'love him and keep his commandments to a thousand generations;',
+                        range=VerseRange.from_string('Deuteronomy 7:9'),
+                        version='KJV',
+                    ),
+                    Passage(
                         text='And he said, I will hide my face from them, I will see '
                         'what their end shall be: for they are a very froward '
                         'generation, children in whom is no faith.',
@@ -107,139 +120,129 @@ class TestApiBible(ServiceTest):
                         version='KJV',
                     ),
                     Passage(
-                        text='Behold, his soul which is lifted up is not upright in '
-                        'him: but the just shall live by his faith.',
-                        range=VerseRange.from_string('Habakkuk 2:4'),
+                        text='And I will raise me up a faithful priest, that shall do '
+                        'according to that which is in mine heart and in my mind: '
+                        'and I will build him a sure house; and he shall walk before '
+                        'mine anointed for ever.',
+                        range=VerseRange.from_string('1 Samuel 2:35'),
                         version='KJV',
                     ),
                     Passage(
-                        text='Wherefore, if God so clothe the grass of the field, '
-                        'which to day is, and to morrow is cast into the oven, shall '
-                        'he not much more clothe you, O ye of little faith?',
-                        range=VerseRange.from_string('Matthew 6:30'),
+                        text='Then Ahimelech answered the king, and said, And who is '
+                        'so faithful among all thy servants as David, which is the '
+                        'king\u2019s son in law, and goeth at thy bidding, and is '
+                        'honourable in thine house?',
+                        range=VerseRange.from_string('1 Samuel 22:14'),
                         version='KJV',
                     ),
                     Passage(
-                        text='When Jesus heard it , he marvelled, and said to them '
-                        'that followed, Verily I say unto you, I have not found so '
-                        'great faith, no, not in Israel.',
-                        range=VerseRange.from_string('Matthew 8:10'),
+                        text='The LORD render to every man his righteousness and his '
+                        'faithfulness: for the LORD delivered thee into my hand to '
+                        'day, but I would not stretch forth mine hand against the '
+                        'LORD\u2019s anointed.',
+                        range=VerseRange.from_string('1 Samuel 26:23'),
                         version='KJV',
                     ),
                     Passage(
-                        text='And he saith unto them, Why are ye fearful, O ye of '
-                        'little faith? Then he arose, and rebuked the winds and the '
-                        'sea; and there was a great calm.',
-                        range=VerseRange.from_string('Matthew 8:26'),
+                        text='I am one of them that are peaceable and faithful in '
+                        'Israel: thou seekest to destroy a city and a mother in '
+                        'Israel: why wilt thou swallow up the inheritance of the '
+                        'LORD ?',
+                        range=VerseRange.from_string('2 Samuel 20:19'),
                         version='KJV',
                     ),
                     Passage(
-                        text='And, behold, they brought to him a man sick of the '
-                        'palsy, lying on a bed: and Jesus seeing their faith said unto '
-                        'the sick of the palsy; Son, be of good cheer; thy sins be '
-                        'forgiven thee.',
-                        range=VerseRange.from_string('Matthew 9:2'),
+                        text='That I gave my brother Hanani, and Hananiah the ruler '
+                        'of the palace, charge over Jerusalem: for he was a faithful '
+                        'man, and feared God above many.',
+                        range=VerseRange.from_string('Nehemiah 7:2'),
                         version='KJV',
                     ),
                     Passage(
-                        text='But Jesus turned him about, and when he saw her, he '
-                        'said, Daughter, be of good comfort; thy faith hath made thee '
-                        'whole. And the woman was made whole from that hour.',
-                        range=VerseRange.from_string('Matthew 9:22'),
+                        text='And foundest his heart faithful before thee, and madest '
+                        'a covenant with him to give the land of the Canaanites, the '
+                        'Hittites, the Amorites, and the Perizzites, and the '
+                        'Jebusites, and the Girgashites, to give it, I say, to his '
+                        'seed, and hast performed thy words; for thou art righteous:',
+                        range=VerseRange.from_string('Nehemiah 9:8'),
                         version='KJV',
                     ),
                     Passage(
-                        text='Then touched he their eyes, saying, According to your '
-                        'faith be it unto you.',
-                        range=VerseRange.from_string('Matthew 9:29'),
+                        text='And I made treasurers over the treasuries, Shelemiah '
+                        'the priest, and Zadok the scribe, and of the Levites, '
+                        'Pedaiah: and next to them was Hanan the son of Zaccur, the '
+                        'son of Mattaniah: for they were counted faithful, and their '
+                        'office was to distribute unto their brethren.',
+                        range=VerseRange.from_string('Nehemiah 13:13'),
                         version='KJV',
                     ),
                     Passage(
-                        text='And immediately Jesus stretched forth his hand, and '
-                        'caught him, and said unto him, O thou of little faith, '
-                        'wherefore didst thou doubt?',
-                        range=VerseRange.from_string('Matthew 14:31'),
+                        text='For there is no faithfulness in their mouth; their '
+                        'inward part is very wickedness; their throat is an open '
+                        'sepulchre; they flatter with their tongue.',
+                        range=VerseRange.from_string('Psalm 5:9'),
                         version='KJV',
                     ),
                     Passage(
-                        text='Then Jesus answered and said unto her, O woman, great is '
-                        'thy faith: be it unto thee even as thou wilt. And her '
-                        'daughter was made whole from that very hour.',
-                        range=VerseRange.from_string('Matthew 15:28'),
+                        text='Help, LORD; for the godly man ceaseth; for the faithful '
+                        'fail from among the children of men.',
+                        range=VerseRange.from_string('Psalm 12:1'),
                         version='KJV',
                     ),
                     Passage(
-                        text='Which when Jesus perceived, he said unto them, O ye of '
-                        'little faith, why reason ye among yourselves, because ye have '
-                        'brought no bread?',
-                        range=VerseRange.from_string('Matthew 16:8'),
+                        text='O love the LORD, all ye his saints: for the LORD '
+                        'preserveth the faithful, and plentifully rewardeth the proud '
+                        'doer.',
+                        range=VerseRange.from_string('Psalm 31:23'),
                         version='KJV',
                     ),
                     Passage(
-                        text='And Jesus said unto them, Because of your unbelief: for '
-                        'verily I say unto you, If ye have faith as a grain of mustard '
-                        'seed, ye shall say unto this mountain, Remove hence to yonder '
-                        'place; and it shall remove; and nothing shall be impossible '
-                        'unto you.',
-                        range=VerseRange.from_string('Matthew 17:20'),
+                        text='Thy mercy, O LORD, is in the heavens; and thy '
+                        'faithfulness reacheth unto the clouds.',
+                        range=VerseRange.from_string('Psalm 36:5'),
                         version='KJV',
                     ),
                     Passage(
-                        text='Jesus answered and said unto them, Verily I say unto '
-                        'you, If ye have faith, and doubt not, ye shall not only do '
-                        'this which is done to the fig tree, but also if ye shall say '
-                        'unto this mountain, Be thou removed, and be thou cast into '
-                        'the sea; it shall be done.',
-                        range=VerseRange.from_string('Matthew 21:21'),
+                        text='I have not hid thy righteousness within my heart; I '
+                        'have declared thy faithfulness and thy salvation: I have not '
+                        'concealed thy lovingkindness and thy truth from the great '
+                        'congregation.',
+                        range=VerseRange.from_string('Psalm 40:10'),
                         version='KJV',
                     ),
                     Passage(
-                        text='Woe unto you, scribes and Pharisees, hypocrites! for ye '
-                        'pay tithe of mint and anise and cummin, and have omitted the '
-                        'weightier matters of the law, judgment, mercy, and faith: '
-                        'these ought ye to have done, and not to leave the other '
-                        'undone.',
-                        range=VerseRange.from_string('Matthew 23:23'),
+                        text='Shall thy lovingkindness be declared in the grave? or '
+                        'thy faithfulness in destruction?',
+                        range=VerseRange.from_string('Psalm 88:11'),
                         version='KJV',
                     ),
                     Passage(
-                        text='When Jesus saw their faith, he said unto the sick of the '
-                        'palsy, Son, thy sins be forgiven thee.',
-                        range=VerseRange.from_string('Mark 2:5'),
+                        text='I will sing of the mercies of the LORD for ever: with '
+                        'my mouth will I make known thy faithfulness to all '
+                        'generations.',
+                        range=VerseRange.from_string('Psalm 89:1'),
                         version='KJV',
                     ),
                     Passage(
-                        text='And he said unto them, Why are ye so fearful? how is it '
-                        'that ye have no faith?',
-                        range=VerseRange.from_string('Mark 4:40'),
+                        text='For I have said, Mercy shall be built up for ever: thy '
+                        'faithfulness shalt thou establish in the very heavens.',
+                        range=VerseRange.from_string('Psalm 89:2'),
                         version='KJV',
                     ),
                     Passage(
-                        text='And he said unto her, Daughter, thy faith hath made '
-                        'thee whole; go in peace, and be whole of thy plague.',
-                        range=VerseRange.from_string('Mark 5:34'),
+                        text='And the heavens shall praise thy wonders, O LORD: thy '
+                        'faithfulness also in the congregation of the saints.',
+                        range=VerseRange.from_string('Psalm 89:5'),
                         version='KJV',
                     ),
                     Passage(
-                        text='And Jesus said unto him, Go thy way; thy faith hath '
-                        'made thee whole. And immediately he received his sight, and '
-                        'followed Jesus in the way.',
-                        range=VerseRange.from_string('Mark 10:52'),
-                        version='KJV',
-                    ),
-                    Passage(
-                        text='And Jesus answering saith unto them, Have faith in God.',
-                        range=VerseRange.from_string('Mark 11:22'),
-                        version='KJV',
-                    ),
-                    Passage(
-                        text='And when he saw their faith, he said unto him, Man, thy '
-                        'sins are forgiven thee.',
-                        range=VerseRange.from_string('Luke 5:20'),
+                        text='O LORD God of hosts, who is a strong LORD like unto '
+                        'thee? or to thy faithfulness round about thee?',
+                        range=VerseRange.from_string('Psalm 89:8'),
                         version='KJV',
                     ),
                 ],
-                'total': 231,
+                'total': 328,
             },
             {'terms': ['antidisestablishmentarianism'], 'verses': [], 'total': 0},
         ],

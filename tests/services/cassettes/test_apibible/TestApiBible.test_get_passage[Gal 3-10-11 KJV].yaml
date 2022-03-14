@@ -7,41 +7,42 @@ interactions:
   response:
     body:
       string: '{"data":{"id":"GAL.3.10-GAL.3.11","orgId":"GAL.3.10-GAL.3.11","bibleId":"de4e12af7f28f599-02","bookId":"GAL","chapterIds":["GAL.3"],"reference":"Galatians
-        3:10-11","content":"<p class=\"p\"><span data-number=\"10\" class=\"v\">10</span>For
-        as many as are of the works of the law are under the curse: for it is written,
-        Cursed <span class=\"add\">is</span> every one that continueth not in all
-        things which are written in the book of the law to do them. <span data-number=\"11\"
-        class=\"v\">11</span>But that no man is justified by the law in the sight
-        of God, <span class=\"add\">it is</span> evident: for, The just shall live
-        by faith. </p>","copyright":"PUBLIC DOMAIN except in the United Kingdom, where
-        a Crown Copyright applies to printing the KJV. See http://www.cambridge.org/about-us/who-we-are/queens-printers-patent"},"meta":{"fums":"<script>\nvar
+        3:10-11","content":"<p class=\"p\"><span data-number=\"10\" data-sid=\"GAL
+        3:10\" class=\"v\">10</span>For as many as are of the works of the law are
+        under the curse: for it is written, Cursed <span class=\"add\">is</span> every
+        one that continueth not in all things which are written in the book of the
+        law to do them. <span data-number=\"11\" data-sid=\"GAL 3:11\" class=\"v\">11</span>But
+        that no man is justified by the law in the sight of God, <span class=\"add\">it
+        is</span> evident: for, The just shall live by faith. </p>","verseCount":2,"copyright":"PUBLIC
+        DOMAIN except in the United Kingdom, where a Crown Copyright applies to printing
+        the KJV. See http://www.cambridge.org/about-us/who-we-are/queens-printers-patent"},"meta":{"fums":"<script>\nvar
         _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''d60a36a5-d206-4b2f-b8eb-6f08f2c14db2'');\\x3C/script\\x3E\");\n</script><noscript><img
-        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''d60a36a5-d206-4b2f-b8eb-6f08f2c14db2''\"
+        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''711cc6ad-e50e-48b0-96da-dfa5aeb346be'');\\x3C/script\\x3E\");\n</script><noscript><img
+        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''711cc6ad-e50e-48b0-96da-dfa5aeb346be''\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        /></noscript>","fumsId":"d60a36a5-d206-4b2f-b8eb-6f08f2c14db2","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''d60a36a5-d206-4b2f-b8eb-6f08f2c14db2'');
-        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=d60a36a5-d206-4b2f-b8eb-6f08f2c14db2\"
+        /></noscript>","fumsId":"711cc6ad-e50e-48b0-96da-dfa5aeb346be","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''711cc6ad-e50e-48b0-96da-dfa5aeb346be'');
+        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=711cc6ad-e50e-48b0-96da-dfa5aeb346be\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
         />"}}'
     headers:
+      Access-Control-Expose-Headers:
+      - WWW-Authenticate,Server-Authorization
+      Cache-Control:
+      - no-cache
       Connection:
       - keep-alive
+      Content-Encoding:
+      - gzip
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 07 Oct 2020 14:32:39 GMT
+      - Mon, 14 Mar 2022 18:57:14 GMT
       Server:
       - nginx/1.16.1
       Transfer-Encoding:
       - chunked
-      access-control-expose-headers:
-      - WWW-Authenticate,Server-Authorization
-      cache-control:
-      - no-cache
-      content-encoding:
-      - gzip
-      vary:
+      Vary:
       - origin,accept-encoding
       x-request-wants-bypass:
       - static
@@ -55,7 +56,7 @@ interactions:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=d60a36a5-d206-4b2f-b8eb-6f08f2c14db2
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=711cc6ad-e50e-48b0-96da-dfa5aeb346be
   response:
     body:
       string: !!binary |
@@ -64,7 +65,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '40985'
+      - '78225'
       Connection:
       - keep-alive
       Content-Length:
@@ -72,17 +73,17 @@ interactions:
       Content-Type:
       - image/gif
       Date:
-      - Wed, 07 Oct 2020 03:09:36 GMT
-      ETag:
+      - Sun, 13 Mar 2022 21:13:30 GMT
+      Etag:
       - '"28d6814f309ea289f847c69cf91194c6"'
       Last-Modified:
       - Wed, 10 May 2017 13:35:25 GMT
       Server:
       - AmazonS3
       Via:
-      - 1.1 372acd46bcc36af725daf90153b73977.cloudfront.net (CloudFront)
+      - 1.1 075cbfecdb7a7b3711dffaa6c5a5c160.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - vurUrKSgS6iOB8gZ9RnupADAllzfSgwElVJ-lxMqwXXro-o68Ulbbg==
+      - x0ZwsJazIAfGvnsWjSrEa8Pbm9VcfDu-_liYOee3-Zl4oR2MD5oVnA==
       X-Amz-Cf-Pop:
       - ORD53-C2
       X-Cache:
@@ -90,5 +91,5 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=d60a36a5-d206-4b2f-b8eb-6f08f2c14db2
+    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=711cc6ad-e50e-48b0-96da-dfa5aeb346be
 version: 1

@@ -14,6 +14,9 @@ from ..protocols import Bible
 _log: Final = logging.getLogger(__name__)
 
 _whitespace_re: Final = re.compile(re.one_or_more(re.WHITESPACE))
+_punctuation_re: Final = re.compile(
+    re.one_or_more(re.WHITESPACE), re.capture(r'[,.;:]'), re.one_or_more(re.WHITESPACE)
+)
 _bold_re: Final = re.compile(r'__BOLD__')
 _italic_re: Final = re.compile(r'__ITALIC__')
 _specials_re: Final = re.compile(re.capture(r'[\*`]'))
@@ -39,6 +42,7 @@ class BaseService(object):
 
     def replace_special_escapes(self, bible: Bible, text: str, /) -> str:
         text = _whitespace_re.sub(' ', text.strip())
+        text = _punctuation_re.sub(r'\1 ', text)
         text = _specials_re.sub(r'\\\1', text)
         text = _bold_re.sub('**', text)
         text = _italic_re.sub('_', text)

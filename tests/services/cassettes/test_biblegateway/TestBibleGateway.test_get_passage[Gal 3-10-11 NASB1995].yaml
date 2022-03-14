@@ -3,22 +3,45 @@ interactions:
     body: null
     headers: {}
     method: GET
-    uri: https://www.biblegateway.com/quicksearch/?quicksearch=Melchizedek&version=NASB1995&limit=20&interface=print&startnumber=1
+    uri: https://www.biblegateway.com/passage/?search=Galatians+3:10-11&version=NASB1995&interface=print
   response:
     body:
       string: "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n<meta charset='utf-8'>\n\
         <meta http-equiv=\"Content-Language\" content=\"en\">\n<meta name=\"google\"\
         \ content=\"notranslate\" />\n<meta content='width=device-width, initial-scale=1'\
-        \ name='viewport'>\n<title>BibleGateway - Keyword Search: Melchizedek</title>\n\
-        <link rel=\"canonical\" href=\"https://www.biblegateway.com/quicksearch/?quicksearch=Melchizedek&amp;version=NASB1995&amp;limit=20&amp;interface=print&amp;startnumber=1\"\
-        \ />\n<meta property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?e6e395a2\"\
+        \ name='viewport'>\n<title>Galatians 3:10-11 NASB1995 - For as many as are\
+        \ of the works of the - Bible Gateway</title>\n<link rel=\"canonical\" href=\"\
+        https://www.biblegateway.com/passage/?search=Galatians%203%3A10-11&amp;version=NASB1995\"\
+        \ />\n<link rel=\"amphtml\" href=\"https://www.biblegateway.com/passage/?search=Galatians%203%3A10-11&amp;version=NASB1995&amp;interface=amp\"\
+        >\n<meta property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?e6e395a2\"\
         />\n<meta property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?e6e395a2\"\
         />\n<meta property=\"og:image:type\" content=\"image/png\"/>\n<meta property=\"\
         og:image:width\" content=\"200\"/>\n<meta property=\"og:image:height\" content=\"\
-        200\"/>\n<link rel=\"favorite icon\" href=\"/favicon.ico?e6e395a2\" type=\"\
-        image/x-icon\" />\n<link rel=\"search\" type=\"application/opensearchdescription+xml\"\
-        \ title=\"Bible Gateway\" href=\"/resources/opensearch/bgsearch.xml?e6e395a2\"\
-        >\n\n<link rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"/assets/images/ios/touch-icon-ipad.png\"\
+        200\"/>\n<meta property=\"og:title\" content=\"Bible Gateway passage: Galatians\
+        \ 3:10-11 - New American Standard Bible 1995\"/>\n<meta property=\"og:type\"\
+        \ content=\"website\"/>\n<meta property=\"og:url\" content=\"https://www.biblegateway.com/passage/?search=Galatians%203%3A10-11&amp;version=NASB1995\"\
+        />\n<meta property=\"og:site_name\" content=\"Bible Gateway\"/>\n<meta property=\"\
+        og:description\" content=\"For as many as are of the works of the Law are\
+        \ under a curse; for it is written, \u201CCURSED IS EVERYONE WHO DOES NOT\
+        \ ABIDE BY ALL THINGS WRITTEN IN THE BOOK OF THE LAW, TO PERFORM THEM.\u201D\
+        \ Now that no one is justified by the Law before God is evident; for, \u201C\
+        THE RIGHTEOUS MAN SHALL LIVE BY FAITH.\u201D\"/>\n<meta name=\"twitter:card\"\
+        \ content=\"summary\" />\n<meta name=\"twitter:site\" content=\"@biblegateway\"\
+        \ />\n<meta name=\"twitter:url\" content=\"https://www.biblegateway.com/passage/?search=Galatians%203%3A10-11&amp;version=NASB1995\"\
+        \ />\n<meta name=\"twitter:title\" content=\"Galatians 3:10-11 (NASB1995)\"\
+        \ />\n<meta name=\"twitter:description\" content=\"For as many as are of the\
+        \ works of the Law are under a curse; for it is written, \u201CCURSED IS EVERYONE\
+        \ WHO DOES NOT ABIDE BY ALL THINGS WRITTEN IN THE BOOK OF THE LAW, TO PERFORM\
+        \ THEM.\u201D Now that no one is ...\" />\n<meta name=\"description\" content=\"\
+        For as many as are of the works of the Law are under a curse; for it is written,\
+        \ \u201CCURSED IS EVERYONE WHO DOES NOT ABIDE BY ALL THINGS WRITTEN IN THE\"\
+        \ />\n<meta property=\"al:ios:url\" content=\"biblegateway://bible/Gal.3.10/NASB1995\"\
+        \ />\n<meta property=\"al:ios:app_store_id\" content=\"506512797\" />\n<meta\
+        \ property=\"al:ios:app_name\" content=\"Bible Gateway\" />\n<link rel=\"\
+        favorite icon\" href=\"/favicon.ico?e6e395a2\" type=\"image/x-icon\" />\n\
+        <link rel=\"search\" type=\"application/opensearchdescription+xml\" title=\"\
+        Bible Gateway\" href=\"/resources/opensearch/bgsearch.xml?e6e395a2\">\n\n\
+        <link rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"/assets/images/ios/touch-icon-ipad.png\"\
         >\n<link rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"/assets/images/ios/touch-icon-iphone-retina.png\"\
         >\n<link rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"/assets/images/ios/touch-icon-ipad-retina.png\"\
         >\n<script type=\"text/javascript\">\n(function() {\n  var apis = [window.fetch,\
@@ -28,29 +51,30 @@ interactions:
         \ = \"e6e395a2\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?e6e395a2\"\
         \ type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\"\
         :\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"assets_version\":\"e6e395a2\"\
-        ,\"locale\":\"en\",\"cdn_host\":\"\",\"version0\":{\"version_id\":\"NASB1995\"\
-        },\"books\":{\"NASB1995\":[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\"\
-        :\"OT\",\"num_chapters\":50,\"chapters\":null,\"intro\":false},{\"display\"\
-        :\"Exodus\",\"osis\":\"Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"\
-        chapters\":null,\"intro\":false},{\"display\":\"Leviticus\",\"osis\":\"Lev\"\
-        ,\"testament\":\"OT\",\"num_chapters\":27,\"chapters\":null,\"intro\":false},{\"\
-        display\":\"Numbers\",\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\"\
-        :36,\"chapters\":null,\"intro\":false},{\"display\":\"Deuteronomy\",\"osis\"\
-        :\"Deut\",\"testament\":\"OT\",\"num_chapters\":34,\"chapters\":null,\"intro\"\
-        :false},{\"display\":\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"\
-        num_chapters\":24,\"chapters\":null,\"intro\":false},{\"display\":\"Judges\"\
-        ,\"osis\":\"Judg\",\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null,\"\
-        intro\":false},{\"display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\"\
-        ,\"num_chapters\":4,\"chapters\":null,\"intro\":false},{\"display\":\"1 Samuel\"\
-        ,\"osis\":\"1Sam\",\"testament\":\"OT\",\"num_chapters\":31,\"chapters\":null,\"\
-        intro\":false},{\"display\":\"2 Samuel\",\"osis\":\"2Sam\",\"testament\":\"\
-        OT\",\"num_chapters\":24,\"chapters\":null,\"intro\":false},{\"display\":\"\
-        1 Kings\",\"osis\":\"1Kgs\",\"testament\":\"OT\",\"num_chapters\":22,\"chapters\"\
-        :null,\"intro\":false},{\"display\":\"2 Kings\",\"osis\":\"2Kgs\",\"testament\"\
-        :\"OT\",\"num_chapters\":25,\"chapters\":null,\"intro\":false},{\"display\"\
-        :\"1 Chronicles\",\"osis\":\"1Chr\",\"testament\":\"OT\",\"num_chapters\"\
-        :29,\"chapters\":null,\"intro\":false},{\"display\":\"2 Chronicles\",\"osis\"\
-        :\"2Chr\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null,\"intro\"\
+        ,\"locale\":\"en\",\"cdn_host\":\"\",\"il_versions\":[\"NIV\"],\"version0\"\
+        :{\"version_id\":\"NASB1995\"},\"il_option\":false,\"books\":{\"NASB1995\"\
+        :[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\"\
+        :50,\"chapters\":null,\"intro\":false},{\"display\":\"Exodus\",\"osis\":\"\
+        Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"chapters\":null,\"intro\"\
+        :false},{\"display\":\"Leviticus\",\"osis\":\"Lev\",\"testament\":\"OT\",\"\
+        num_chapters\":27,\"chapters\":null,\"intro\":false},{\"display\":\"Numbers\"\
+        ,\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null,\"\
+        intro\":false},{\"display\":\"Deuteronomy\",\"osis\":\"Deut\",\"testament\"\
+        :\"OT\",\"num_chapters\":34,\"chapters\":null,\"intro\":false},{\"display\"\
+        :\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"num_chapters\":24,\"\
+        chapters\":null,\"intro\":false},{\"display\":\"Judges\",\"osis\":\"Judg\"\
+        ,\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null,\"intro\":false},{\"\
+        display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\",\"num_chapters\"\
+        :4,\"chapters\":null,\"intro\":false},{\"display\":\"1 Samuel\",\"osis\":\"\
+        1Sam\",\"testament\":\"OT\",\"num_chapters\":31,\"chapters\":null,\"intro\"\
+        :false},{\"display\":\"2 Samuel\",\"osis\":\"2Sam\",\"testament\":\"OT\",\"\
+        num_chapters\":24,\"chapters\":null,\"intro\":false},{\"display\":\"1 Kings\"\
+        ,\"osis\":\"1Kgs\",\"testament\":\"OT\",\"num_chapters\":22,\"chapters\":null,\"\
+        intro\":false},{\"display\":\"2 Kings\",\"osis\":\"2Kgs\",\"testament\":\"\
+        OT\",\"num_chapters\":25,\"chapters\":null,\"intro\":false},{\"display\":\"\
+        1 Chronicles\",\"osis\":\"1Chr\",\"testament\":\"OT\",\"num_chapters\":29,\"\
+        chapters\":null,\"intro\":false},{\"display\":\"2 Chronicles\",\"osis\":\"\
+        2Chr\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null,\"intro\"\
         :false},{\"display\":\"Ezra\",\"osis\":\"Ezra\",\"testament\":\"OT\",\"num_chapters\"\
         :10,\"chapters\":null,\"intro\":false},{\"display\":\"Nehemiah\",\"osis\"\
         :\"Neh\",\"testament\":\"OT\",\"num_chapters\":13,\"chapters\":null,\"intro\"\
@@ -103,38 +127,49 @@ interactions:
         intro\":false},{\"display\":\"2 Corinthians\",\"osis\":\"2Cor\",\"testament\"\
         :\"NT\",\"num_chapters\":13,\"chapters\":null,\"intro\":false},{\"display\"\
         :\"Galatians\",\"osis\":\"Gal\",\"testament\":\"NT\",\"num_chapters\":6,\"\
-        chapters\":null,\"intro\":false},{\"display\":\"Ephesians\",\"osis\":\"Eph\"\
-        ,\"testament\":\"NT\",\"num_chapters\":6,\"chapters\":null,\"intro\":false},{\"\
-        display\":\"Philippians\",\"osis\":\"Phil\",\"testament\":\"NT\",\"num_chapters\"\
-        :4,\"chapters\":null,\"intro\":false},{\"display\":\"Colossians\",\"osis\"\
-        :\"Col\",\"testament\":\"NT\",\"num_chapters\":4,\"chapters\":null,\"intro\"\
-        :false},{\"display\":\"1 Thessalonians\",\"osis\":\"1Thess\",\"testament\"\
-        :\"NT\",\"num_chapters\":5,\"chapters\":null,\"intro\":false},{\"display\"\
-        :\"2 Thessalonians\",\"osis\":\"2Thess\",\"testament\":\"NT\",\"num_chapters\"\
-        :3,\"chapters\":null,\"intro\":false},{\"display\":\"1 Timothy\",\"osis\"\
-        :\"1Tim\",\"testament\":\"NT\",\"num_chapters\":6,\"chapters\":null,\"intro\"\
-        :false},{\"display\":\"2 Timothy\",\"osis\":\"2Tim\",\"testament\":\"NT\"\
-        ,\"num_chapters\":4,\"chapters\":null,\"intro\":false},{\"display\":\"Titus\"\
-        ,\"osis\":\"Titus\",\"testament\":\"NT\",\"num_chapters\":3,\"chapters\":null,\"\
-        intro\":false},{\"display\":\"Philemon\",\"osis\":\"Phlm\",\"testament\":\"\
-        NT\",\"num_chapters\":1,\"chapters\":null,\"intro\":false},{\"display\":\"\
-        Hebrews\",\"osis\":\"Heb\",\"testament\":\"NT\",\"num_chapters\":13,\"chapters\"\
-        :null,\"intro\":false},{\"display\":\"James\",\"osis\":\"Jas\",\"testament\"\
-        :\"NT\",\"num_chapters\":5,\"chapters\":null,\"intro\":false},{\"display\"\
-        :\"1 Peter\",\"osis\":\"1Pet\",\"testament\":\"NT\",\"num_chapters\":5,\"\
-        chapters\":null,\"intro\":false},{\"display\":\"2 Peter\",\"osis\":\"2Pet\"\
+        chapters\":[{\"chapter\":1,\"type\":\"heading\",\"content\":[\"Introduction\"\
+        ,\"Perversion of the Gospel\",\"Paul Defends His Ministry\"]},{\"chapter\"\
+        :2,\"type\":\"heading\",\"content\":[\"The Council at Jerusalem\",\"Peter\
+        \ (Cephas) Opposed by Paul\"]},{\"chapter\":3,\"type\":\"heading\",\"content\"\
+        :[\"Faith Brings Righteousness\",\"Intent of the Law\"]},{\"chapter\":4,\"\
+        type\":\"heading\",\"content\":[\"Sonship in Christ\",\"Bond and Free\"]},{\"\
+        chapter\":5,\"type\":\"heading\",\"content\":[\"Walk by the Spirit\"]},{\"\
+        chapter\":6,\"type\":\"heading\",\"content\":[\"Bear One Another\\u2019s Burdens\"\
+        ]}],\"intro\":false},{\"display\":\"Ephesians\",\"osis\":\"Eph\",\"testament\"\
+        :\"NT\",\"num_chapters\":6,\"chapters\":null,\"intro\":false},{\"display\"\
+        :\"Philippians\",\"osis\":\"Phil\",\"testament\":\"NT\",\"num_chapters\":4,\"\
+        chapters\":null,\"intro\":false},{\"display\":\"Colossians\",\"osis\":\"Col\"\
+        ,\"testament\":\"NT\",\"num_chapters\":4,\"chapters\":null,\"intro\":false},{\"\
+        display\":\"1 Thessalonians\",\"osis\":\"1Thess\",\"testament\":\"NT\",\"\
+        num_chapters\":5,\"chapters\":null,\"intro\":false},{\"display\":\"2 Thessalonians\"\
+        ,\"osis\":\"2Thess\",\"testament\":\"NT\",\"num_chapters\":3,\"chapters\"\
+        :null,\"intro\":false},{\"display\":\"1 Timothy\",\"osis\":\"1Tim\",\"testament\"\
+        :\"NT\",\"num_chapters\":6,\"chapters\":null,\"intro\":false},{\"display\"\
+        :\"2 Timothy\",\"osis\":\"2Tim\",\"testament\":\"NT\",\"num_chapters\":4,\"\
+        chapters\":null,\"intro\":false},{\"display\":\"Titus\",\"osis\":\"Titus\"\
         ,\"testament\":\"NT\",\"num_chapters\":3,\"chapters\":null,\"intro\":false},{\"\
-        display\":\"1 John\",\"osis\":\"1John\",\"testament\":\"NT\",\"num_chapters\"\
-        :5,\"chapters\":null,\"intro\":false},{\"display\":\"2 John\",\"osis\":\"\
-        2John\",\"testament\":\"NT\",\"num_chapters\":1,\"chapters\":null,\"intro\"\
-        :false},{\"display\":\"3 John\",\"osis\":\"3John\",\"testament\":\"NT\",\"\
-        num_chapters\":1,\"chapters\":null,\"intro\":false},{\"display\":\"Jude\"\
-        ,\"osis\":\"Jude\",\"testament\":\"NT\",\"num_chapters\":1,\"chapters\":null,\"\
-        intro\":false},{\"display\":\"Revelation\",\"osis\":\"Rev\",\"testament\"\
-        :\"NT\",\"num_chapters\":22,\"chapters\":null,\"intro\":false}]},\"ad_data\"\
-        :{\"anchor\":\"hide-ba\"},\"show_translation_dropdown\":true});</script>\n\
-        <script type=\"text/javascript\" src=\"/user/consents.js\"></script>\n<!--\
-        \ Google Analytics -->\n<script>\n(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n\
+        display\":\"Philemon\",\"osis\":\"Phlm\",\"testament\":\"NT\",\"num_chapters\"\
+        :1,\"chapters\":null,\"intro\":false},{\"display\":\"Hebrews\",\"osis\":\"\
+        Heb\",\"testament\":\"NT\",\"num_chapters\":13,\"chapters\":null,\"intro\"\
+        :false},{\"display\":\"James\",\"osis\":\"Jas\",\"testament\":\"NT\",\"num_chapters\"\
+        :5,\"chapters\":null,\"intro\":false},{\"display\":\"1 Peter\",\"osis\":\"\
+        1Pet\",\"testament\":\"NT\",\"num_chapters\":5,\"chapters\":null,\"intro\"\
+        :false},{\"display\":\"2 Peter\",\"osis\":\"2Pet\",\"testament\":\"NT\",\"\
+        num_chapters\":3,\"chapters\":null,\"intro\":false},{\"display\":\"1 John\"\
+        ,\"osis\":\"1John\",\"testament\":\"NT\",\"num_chapters\":5,\"chapters\":null,\"\
+        intro\":false},{\"display\":\"2 John\",\"osis\":\"2John\",\"testament\":\"\
+        NT\",\"num_chapters\":1,\"chapters\":null,\"intro\":false},{\"display\":\"\
+        3 John\",\"osis\":\"3John\",\"testament\":\"NT\",\"num_chapters\":1,\"chapters\"\
+        :null,\"intro\":false},{\"display\":\"Jude\",\"osis\":\"Jude\",\"testament\"\
+        :\"NT\",\"num_chapters\":1,\"chapters\":null,\"intro\":false},{\"display\"\
+        :\"Revelation\",\"osis\":\"Rev\",\"testament\":\"NT\",\"num_chapters\":22,\"\
+        chapters\":null,\"intro\":false}]},\"passage_displays\":[\"Galatians 3:10-11\"\
+        ],\"featured_resources\":[\"niv-study-bible\",\"ebc-abridged-ot\",\"ebc-abridged-nt\"\
+        ,\"mounce-expository-dictionary\"],\"translations\":[\"NASB1995\"],\"osis\"\
+        :\"Gal.3.10-Gal.3.11\\/nasb1995\",\"osis_w_verse\":\"Gal.3.10-Gal.3.11\\/nasb1995\"\
+        ,\"ad_data\":{\"anchor\":\"hide-ba\"}});</script>\n<script type=\"text/javascript\"\
+        \ src=\"/user/consents.js\"></script>\n<!-- Google Analytics -->\n<script>\n\
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n\
         (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n\
         m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;\nBG.Consents.onConsent(2).then(function()\
         \ {m.parentNode.insertBefore(a,m)});\n})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\n\
@@ -143,15 +178,18 @@ interactions:
         \ = googletag || {};\n  googletag.cmd = googletag.cmd || [];\n\n  googletag.cmd.push(function()\
         \ {\n    googletag.pubads().disableInitialLoad();\n    googletag.pubads().enableSingleRequest();\n\
         \    googletag.pubads().setTargeting(\"version\", \"NASB1995\");\n    googletag.pubads().setTargeting(\"\
-        interface\", \"www\");\n    googletag.pubads().setTargeting(\"lang\", \"en\"\
-        );\n    googletag.enableServices();\n  });\n\n  BG.Consents.onConsent(2).then(function()\
-        \ {\n    var gads = document.createElement('script');\n    gads.async = true;\n\
-        \    gads.type = 'text/javascript';\n    var useSSL = 'https:' == document.location.protocol;\n\
-        \    gads.src = (useSSL ? 'https:' : 'http:') +\n      '//securepubads.g.doubleclick.net/tag/js/gpt.js';\n\
+        versionlang\", \"en\");\n    googletag.pubads().setTargeting(\"biblebook\"\
+        , \"Gal\");\n        googletag.pubads().setTargeting(\"interface\", \"www\"\
+        );\n    googletag.pubads().setTargeting(\"lang\", \"en\");\n    googletag.enableServices();\n\
+        \  });\n\n  BG.Consents.onConsent(2).then(function() {\n    var gads = document.createElement('script');\n\
+        \    gads.async = true;\n    gads.type = 'text/javascript';\n    var useSSL\
+        \ = 'https:' == document.location.protocol;\n    gads.src = (useSSL ? 'https:'\
+        \ : 'http:') +\n      '//securepubads.g.doubleclick.net/tag/js/gpt.js';\n\
         \    var node = document.getElementsByTagName('script')[0];\n    node.parentNode.insertBefore(gads,\
         \ node);\n  });\n\nrequire(['./main.min'], function() {\n  BG.registerBGA('sidetall');\n\
-        BG.registerBGA('anchor');\n    BG.BGAInit('/6177/slm.bg7/misc', true);\n \
-        \ });\n</script><script>\n  ga('create', 'UA-40541058-9',\n    {'sampleRate':100,'cookieDomain':'biblegateway.com',\
+        BG.registerBGA('anchor');\nBG.registerBGA('bottom');\nBG.registerBGA('sponsor1');\n\
+        \    BG.BGAInit('/6177/slm.bg7/bible', true);\n  });\n</script><script>\n\
+        \  ga('create', 'UA-40541058-9',\n    {'sampleRate':100,'cookieDomain':'biblegateway.com',\
         \ 'name':'pubTracker'}\n  );\n  ga('pubTracker.set', 'referrer', '');\n  ga('pubTracker.set',\
         \ 'title', '');\n  ga('pubTracker.send', {'hitType':'pageview','page':'/www/nasb1995'});\n\
         </script>\n<script type='text/javascript'>\nBG.Consents.onConsent(2).then(function()\
@@ -175,13 +213,13 @@ interactions:
         BG.Consents.onConsent(4).then(function() {\nvar scriptTag = document.createElement(\"\
         script\");\nscriptTag.src = \"https://0cf17917-395b-4f25-91cc-db3bdd6044b0.edge.permutive.app/0cf17917-395b-4f25-91cc-db3bdd6044b0-web.js\"\
         ;\nscriptTag.setAttribute(\"async\", \"async\");\ndocument.head.appendChild(scriptTag);\n\
-        });\n</script>\n\n<link href=\"/assets/css/search.min.css?e6e395a2\" media=\"\
-        screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/search.min.css?e6e395a2\"\
+        });\n</script>\n\n<link href=\"/assets/css/passage.min.css?e6e395a2\" media=\"\
+        screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/passage.min.css?e6e395a2\"\
         \ media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?e6e395a2\"\
         \ media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"\
         /assets/css/printer.min.css?e6e395a2\" media=\"print\" rel=\"stylesheet\"\
         \ type=\"text/css\" />\n</head>\n\n<body class=\" s-footnotes s-versenums\
-        \ s-headings  page-search no-eu us\">\n    <svg xmlns=\"http://www.w3.org/2000/svg\"\
+        \ s-headings hide-resources page-passage no-eu us\">\n    <svg xmlns=\"http://www.w3.org/2000/svg\"\
         \ style=\"display: none;\"><symbol id=\"icon-read\" xmlns=\"http://www.w3.org/2000/svg\"\
         \ viewBox=\"0 0 24.5 33.53\" width=\"24.5\" height=\"33.53\"><path d=\"M3.94\
         \ 0A4 4 0 0 0 0 3.94v22.94a3.9 3.9 0 0 0 3.94 3.62h8.81v2.38a.65.65 0 0 0\
@@ -265,11 +303,74 @@ interactions:
         \ 27.84l.13 100.32V433zm272-45.29c0 14.33-12.05 26.16-27.45 26.93-42.92 2.18-129.46\
         \ 9.3-191.91 32.51-1.8.67-3.62.98-5.39.98-8.11 0-15.26-6.52-15.26-15.13V230.46l.13-100.32c.01-12.09\
         \ 7.4-22.84 18.66-27.84 69.66-30.91 172.84-38.19 192.12-38.29 16.03 0 29.09\
-        \ 12.11 29.09 27v296.7z\"/></symbol> <symbol id=\"icon-dropdown\" xmlns=\"\
-        http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5 6.5\" width=\"11.5\" height=\"\
-        6.5\"><path d=\"M11.28.22a.75.75 0 0 0-1.06 0L5.75 4.69 1.28.22A.75.75 0 0\
-        \ 0 .22 1.28l5 5a.73.73 0 0 0 .53.22.74.74 0 0 0 .53-.22l5-5a.75.75 0 0 0\
-        \ 0-1.06z\"/></symbol>\n</svg>    <script>BG.UserInfo.updateBodyLayout();</script>\n\
+        \ 12.11 29.09 27v296.7z\"/></symbol> <symbol id=\"icon-favorite\" xmlns=\"\
+        http://www.w3.org/2000/svg\" viewBox=\"0 0 18.35 17.52\" width=\"18.35\" height=\"\
+        17.52\"><path d=\"M14.38 17.52a.81.81 0 0 1-.34-.08L9.17 15l-4.86 2.44a.75.75\
+        \ 0 0 1-.78-.06.75.75 0 0 1-.3-.73l.85-5.39L.22 7.4A.74.74 0 0 1 0 6.64a.72.72\
+        \ 0 0 1 .59-.51L6 5.27 8.51.41A.73.73 0 0 1 9.17 0a.75.75 0 0 1 .67.41l2.48\
+        \ 4.86 5.39.86a.75.75 0 0 1 .6.51.74.74 0 0 1-.18.76l-3.86 3.86.85 5.39a.77.77\
+        \ 0 0 1-.3.73.79.79 0 0 1-.44.14zM2.32 7.38l3.09 3.09a.74.74 0 0 1 .21.65l-.68\
+        \ 4.32 3.89-2a.74.74 0 0 1 .68 0l3.9 2-.68-4.32a.74.74 0 0 1 .21-.65L16 7.38l-4.32-.69a.71.71\
+        \ 0 0 1-.55-.4l-2-3.89-2 3.89a.73.73 0 0 1-.55.4z\"/></symbol>\n <symbol id=\"\
+        icon-edit\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 18.6 16.2\"\
+        \ width=\"18.6\" height=\"16.2\"><path d=\"M12.62 14.45a.25.25 0 0 1-.25.25H1.75a.25.25\
+        \ 0 0 1-.25-.25V3.83a.25.25 0 0 1 .25-.25H9l1.5-1.5H1.75A1.75 1.75 0 0 0 0\
+        \ 3.83v10.62a1.76 1.76 0 0 0 1.75 1.75h10.62a1.75 1.75 0 0 0 1.75-1.75v-4L12.62\
+        \ 12z\"/><path d=\"M17.6 1a3.36 3.36 0 0 0-1.92-1 2.35 2.35 0 0 0-1.93.6L5.6\
+        \ 8.77a.74.74 0 0 0-.29.59v3.18a.79.79 0 0 0 .22.54.75.75 0 0 0 .53.22h3.18a.71.71\
+        \ 0 0 0 .57-.3l8.12-8.1A2.78 2.78 0 0 0 17.6 1zM8.92 11.79H6.8V9.68l6.45-6.46a3.45\
+        \ 3.45 0 0 0 .82 1.3 3.41 3.41 0 0 0 1.3.81zm8-8c-.38.37-1.19.21-1.76-.36a1.89\
+        \ 1.89 0 0 1-.55-1 .86.86 0 0 1 .2-.71.77.77 0 0 1 .55-.2h.16a1.9 1.9 0 0\
+        \ 1 1 .55c.6.56.76 1.37.38 1.75z\"/></symbol>\n <symbol id=\"icon-delete\"\
+        \ viewBox=\"0 0 15.95 16.5\" xmlns=\"http://www.w3.org/2000/svg\" width=\"\
+        15.95\" height=\"16.5\"><path d=\"M15.2 2H12V.75a.76.76 0 0 0-.8-.75H4.76A.75.75\
+        \ 0 0 0 4 .75V2H.75a.75.75 0 0 0 0 1.5h.81l1.15 12.32a.74.74 0 0 0 .74.68h9.05a.76.76\
+        \ 0 0 0 .75-.66l1.2-10.42A.75.75 0 0 0 13 5.25L11.83 15H4.14L3.07 3.48H15.2a.75.75\
+        \ 0 0 0 0-1.5zm-9.69-.5h4.94V2H5.51z\"/><path d=\"M8.53 6.24v6a.75.75 0 0\
+        \ 0 1.5 0v-6a.75.75 0 0 0-1.5 0zM5.92 6.24v4a.75.75 0 0 0 1.5 0v-4a.75.75\
+        \ 0 0 0-1.5 0z\"/></symbol>\n <symbol id=\"icon-compare\" xmlns=\"http://www.w3.org/2000/svg\"\
+        \ viewBox=\"0 0 20 21\" width=\"20\" height=\"21\"><path d=\"M16.55 7.75h-4a.5.5\
+        \ 0 0 0 0 1h4a.5.5 0 0 0 0-1zm0 2h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm0 2h-4a.5.5\
+        \ 0 0 0 0 1h4a.5.5 0 0 0 0-1zm0 2h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1z\"/><path\
+        \ d=\"M18.06 3H10.5V0H1.88A1.79 1.79 0 0 0 0 1.69v14.12a1.79 1.79 0 0 0 1.88\
+        \ 1.69H9V21h9.06A1.84 1.84 0 0 0 20 19.28V4.72A1.84 1.84 0 0 0 18.06 3zM1.88\
+        \ 16c-.25 0-.38-.14-.38-.19V1.69c0-.05.13-.19.38-.19H9V16zm16.62 3.28c0 .06-.15.22-.44.22H10.5v-15h7.56c.29\
+        \ 0 .44.16.44.22z\"/><path d=\"M7.25 4.75h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm0\
+        \ 2h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0 0-1zm0 2h-4a.5.5 0 0 0 0 1h4a.5.5 0 0 0\
+        \ 0-1z\"/></symbol>\n <symbol id=\"icon-external\" xmlns=\"http://www.w3.org/2000/svg\"\
+        \ viewBox=\"0 0 15.72 19.76\" width=\"15.72\" height=\"19.76\"><path d=\"\
+        M15 0H8.29a.76.76 0 0 0-.75.75.76.76 0 0 0 .75.75h4.85L8.7 6 6.43 8.21a.75.75\
+        \ 0 0 0 0 1.06.76.76 0 0 0 1.07 0l6.72-6.72v4.88a.75.75 0 0 0 1.5 0V.75A.76.76\
+        \ 0 0 0 15 0z\"/><path d=\"M12 8.66a.74.74 0 0 0-.75.75V18a.25.25 0 0 1-.25.25H1.75A.25.25\
+        \ 0 0 1 1.5 18V4.73a.25.25 0 0 1 .25-.25h4.49a.75.75 0 0 0 0-1.5H1.75A1.75\
+        \ 1.75 0 0 0 0 4.73V18a1.76 1.76 0 0 0 1.75 1.75H11A1.76 1.76 0 0 0 12.72\
+        \ 18V9.41a.75.75 0 0 0-.72-.75z\"/></symbol>\n <symbol id=\"icon-print\" xmlns=\"\
+        http://www.w3.org/2000/svg\" viewBox=\"0 0 18.52 18.91\" width=\"18.52\" height=\"\
+        18.91\"><path d=\"M16.77 6.67H15.5V3.11a.74.74 0 0 0-.21-.53L12.92.22a.75.75\
+        \ 0 0 0-.53-.22H3.76A.76.76 0 0 0 3 .75v5.92H1.75A1.75 1.75 0 0 0 0 8.42v5.92a1.75\
+        \ 1.75 0 0 0 1.75 1.75h1.6v2.07a.75.75 0 0 0 .75.75h10.32a.76.76 0 0 0 .75-.75v-2.07h1.6a1.75\
+        \ 1.75 0 0 0 1.75-1.75V8.42a1.75 1.75 0 0 0-1.75-1.75zM4.51 1.5h7.57L14 3.42v3.25H4.51zm9.16\
+        \ 15.91H4.85v-2.84h8.82zM17 14.34a.25.25 0 0 1-.25.25h-1.6v-.77a.75.75 0 0\
+        \ 0-.75-.75H4.1a.74.74 0 0 0-.75.75v.77h-1.6a.25.25 0 0 1-.25-.25V8.42a.25.25\
+        \ 0 0 1 .25-.25h15a.25.25 0 0 1 .25.25z\"/><path d=\"M14.74 9.07a.87.87 0\
+        \ 1 0 .87.87.87.87 0 0 0-.87-.87z\"/></symbol>\n <symbol id=\"icon-settings\"\
+        \ xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 18.95 19.53\" width=\"\
+        18.95\" height=\"19.53\"><path d=\"M11.16 19.53H7.8a1.36 1.36 0 0 1-1.34-1.12l-.27-1.51c-.22-.1-.44-.21-.65-.33s-.4-.25-.6-.39l-1.44.52a1.37\
+        \ 1.37 0 0 1-1.64-.6L.18 13.19a1.37 1.37 0 0 1 .3-1.72l1.17-1V9.03l-1.17-1a1.35\
+        \ 1.35 0 0 1-.3-1.71l1.68-2.89a1.35 1.35 0 0 1 1.64-.6l1.44.51c.2-.14.4-.27.61-.39a6.42\
+        \ 6.42 0 0 1 .64-.33l.27-1.5A1.36 1.36 0 0 1 7.8 0h3.36a1.36 1.36 0 0 1 1.34\
+        \ 1.12l.27 1.5a7.862 7.862 0 0 1 1.25.72l1.43-.51a1.37 1.37 0 0 1 1.64.6l1.68\
+        \ 2.91a1.35 1.35 0 0 1-.3 1.71L17.31 9v1.44l1.16 1a1.37 1.37 0 0 1 .3 1.72l-1.68\
+        \ 2.94a1.35 1.35 0 0 1-1.64.6L14 16.18c-.2.14-.41.27-.61.39s-.42.23-.64.33l-.27\
+        \ 1.51a1.36 1.36 0 0 1-1.32 1.12zM7.91 18H11l.4-2.2.38-.15a6.52 6.52 0 0 0\
+        \ .84-.41 6.13 6.13 0 0 0 .77-.52l.32-.26 2.1.76 1.56-2.71-1.7-1.44.06-.41a5.82\
+        \ 5.82 0 0 0 .07-.93 5.7 5.7 0 0 0-.07-.92l-.06-.42L17.41 7l-1.56-2.72-2.1.72-.32-.26c-.25-.19-.51-.36-.77-.52a6.46\
+        \ 6.46 0 0 0-.84-.4l-.38-.16L11 1.5H7.91l-.39 2.2-.39.15a6.39 6.39 0 0 0-1.6.92L5.2\
+        \ 5l-2.1-.72L1.54 7l1.7 1.44-.06.41a7.12 7.12 0 0 0-.07.92 7.28 7.28 0 0 0\
+        \ .07.93l.06.41-1.7 1.44 1.56 2.7 2.1-.76.33.26a5.77 5.77 0 0 0 .77.52 5.82\
+        \ 5.82 0 0 0 .83.41l.39.15zm9.59-5.42zm-8 .84a3.69 3.69 0 1 1 3.68-3.69 3.7\
+        \ 3.7 0 0 1-3.7 3.72zm0-5.87a2.19 2.19 0 1 0 2.18 2.18 2.19 2.19 0 0 0-2.2-2.15z\"\
+        /></symbol>\n</svg>    <script>BG.UserInfo.updateBodyLayout();</script>\n\
         \    <div id='recaptcha-container'></div>\n    <div class=\"nav-content\"\
         >\n        <nav>\n            <div class=\"logo-menu-user\">\n           \
         \     <div class=\"menu-icon\">\n                  <svg xmlns=\"http://www.w3.org/2000/svg\"\
@@ -396,38 +497,38 @@ interactions:
         \                <div class=\"wrapper\">\n                  <div class=\"\
         sys-announce-content\">\n                    <div class='sys-announce-body'>\n\
         \                        <div class='sys-announce-body-inner'>\n         \
-        \                     <a href=\"https://www.biblegateway.com/plus?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_value1028\"\
-        >The best value in digital Bible study. No software to install. $3.99 a month\
-        \ for 50+ reference books. Try it FREE.</a>                        </div>\n\
-        \                    </div>\n                    <div class='close'><svg xmlns=\"\
-        http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5 11.5\" width=\"11.5\" height=\"\
-        11.5\"><title>close</title><use xlink:href=\"#icon-close\"></use></svg>\n\
-        </div>\n                  </div>\n                </div>\n               \
-        \ <div class=\"login\">\n                  <span class=\"user-icon\"><svg\
-        \ xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 28 28\" width=\"28\"\
-        \ height=\"28\"><title>account</title><use xlink:href=\"#icon-account\"></use></svg>\n\
-        </span>\n                  <a href=\"/login/\" class=\"login-text\">Log In/Sign\
-        \ Up</a>\n                  <span class=\"user-name\"></span>\n          \
-        \        <span class=\"user-menu-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\"\
-        \ viewBox=\"0 0 11.5 6.5\" width=\"11.5\" height=\"6.5\"><title>show menu</title><path\
-        \ d=\"M11.28.22a.75.75 0 0 0-1.06 0L5.75 4.69 1.28.22A.75.75 0 0 0 .22 1.28l5\
-        \ 5a.73.73 0 0 0 .53.22.74.74 0 0 0 .53-.22l5-5a.75.75 0 0 0 0-1.06z\"/></svg>\n\
-        </span>\n                </div>\n              </section>\n              <script>\n\
-        \                  BG.UserInfo.updateFullname();\n              </script>\n\
-        \            </div><!-- user and search -->\n            <section class=\"\
-        content\">\n                <div role=\"banner\" class=\"float-header\">\n\
-        \                    <div class=\"search-form-nav\">\n                   \
-        \   <form class=\"search-form\" role=\"search\" action=\"/quicksearch/\">\n\
-        \                        <div class=\"search-and-submit\">\n             \
-        \               <div class=\"search-bar\">\n                             \
-        \   <input aria-label=\"Quick Search\" name=\"quicksearch\" class=\"quick-search\"\
+        \                     <a href=\"https://www.biblegateway.com/plus?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_bestvalue0311\"\
+        >The best value in digital Bible study. No software to install. 50+ reference\
+        \ books. Try it FREE.</a>                        </div>\n                \
+        \    </div>\n                    <div class='close'><svg xmlns=\"http://www.w3.org/2000/svg\"\
+        \ viewBox=\"0 0 11.5 11.5\" width=\"11.5\" height=\"11.5\"><title>close</title><use\
+        \ xlink:href=\"#icon-close\"></use></svg>\n</div>\n                  </div>\n\
+        \                </div>\n                <div class=\"login\">\n         \
+        \         <span class=\"user-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\"\
+        \ viewBox=\"0 0 28 28\" width=\"28\" height=\"28\"><title>account</title><use\
+        \ xlink:href=\"#icon-account\"></use></svg>\n</span>\n                  <a\
+        \ href=\"/login/\" class=\"login-text\">Log In/Sign Up</a>\n             \
+        \     <span class=\"user-name\"></span>\n                  <span class=\"\
+        user-menu-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5\
+        \ 6.5\" width=\"11.5\" height=\"6.5\"><title>show menu</title><path d=\"M11.28.22a.75.75\
+        \ 0 0 0-1.06 0L5.75 4.69 1.28.22A.75.75 0 0 0 .22 1.28l5 5a.73.73 0 0 0 .53.22.74.74\
+        \ 0 0 0 .53-.22l5-5a.75.75 0 0 0 0-1.06z\"/></svg>\n</span>\n            \
+        \    </div>\n              </section>\n              <script>\n          \
+        \        BG.UserInfo.updateFullname();\n              </script>\n        \
+        \    </div><!-- user and search -->\n            <section class=\"content\"\
+        >\n                <div role=\"banner\" class=\"float-header\">\n        \
+        \            <div class=\"search-form-nav\">\n                      <form\
+        \ class=\"search-form\" role=\"search\" action=\"/quicksearch/\">\n      \
+        \                  <div class=\"search-and-submit\">\n                   \
+        \         <div class=\"search-bar\">\n                                <input\
+        \ aria-label=\"Quick Search\" name=\"quicksearch\" class=\"quick-search\"\
         \ type=\"text\" placeholder=\"Enter passage, keyword, or topic\" value=\"\
-        Melchizedek\" autocomplete=\"off\" />\n                                  \
-        \  <span class=\"autocomplete\"></span>\n                                \
-        \                                <div id=\"resultspp\"></div>\n          \
-        \                  </div>\n                            <div class=\"search-submit-small\"\
-        >\n                                <button class=\"search-submit\" type=\"\
-        submit\" aria-label=\"Search\" value=\"Search\"> <svg xmlns=\"http://www.w3.org/2000/svg\"\
+        Galatians 3:10-11\" autocomplete=\"off\" />\n                            \
+        \        <span class=\"autocomplete\"></span>\n                          \
+        \                                      <div id=\"resultspp\"></div>\n    \
+        \                        </div>\n                            <div class=\"\
+        search-submit-small\">\n                                <button class=\"search-submit\"\
+        \ type=\"submit\" aria-label=\"Search\" value=\"Search\"> <svg xmlns=\"http://www.w3.org/2000/svg\"\
         \ viewBox=\"0 0 512 512\" width=\"20\" height=\"20\"><title>BibleGateway</title><path\
         \ d=\"M345 298c15-24 23-52 23-82 0-84-68-152-152-152S64 132 64 216s68 153\
         \ 152 153c31 0 59-9 83-25l7-5 108 109 34-34-108-109zm-44-167c23 23 36 53 36\
@@ -820,38 +921,66 @@ interactions:
         \           </div>\n                  </div>\n                </div>\n   \
         \             <div class=\"float-header-spacer\"></div>\n                <hr\
         \ class=\"content-divider\"/>\n                <div role=\"main\">\n     \
-        \             <div class=\"search\">\n    <ul class=\"menu\">\n        <li\
-        \ class=\"iv-tab-1 active\">\n            <a href=\"#serp-bible-pane\">\n\
-        \              Bible (10)\n            </a>\n        </li>\n        <li class=\"\
-        iv-tab-2\">\n            <a href=\"#serp-topical-pane\">\n              Topical\
-        \ (16)\n            </a>\n        </li>\n    </ul>\n</div>\n\n<section>\n\
-        \    <form class=\"info-viewer-form\" method=\"get\" action=\"/quicksearch/\"\
-        >\n            <div id=\"serp-bible-pane\" class=\"iv-pane-1 d-none d-block\"\
-        >\n                <div class=\"results-container\">\n                  <div>\n\
-        \                    <div class=\"content-section\">\n                   \
-        \     <div class=\"search-tools\">\n                            <input type=\"\
-        hidden\" name=\"quicksearch\" value=\"Melchizedek\" /><input class=\"dropdowns\"\
-        \ type=\"submit\" value=\"Change\" />                            <div class=\"\
-        results-info\"><span class=\"showing-results\"> 10 Bible results for <span\
-        \ class=\"search-term\">&ldquo;Melchizedek&rdquo;</span></span>&nbsp;from&nbsp;<span><div\
-        \ class=\"js-dropdowns\"><div class=\"version\"><span class=\"dropdown-display\"\
-        >New American Standard Bible 1995.<span class=\"dropdown-icon\"><svg xmlns=\"\
-        http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5 6.5\" width=\"11.5\" height=\"\
-        6.5\"><title>dropdown</title><use xlink:href=\"#icon-dropdown\"></use></svg>\n\
-        </span></span></div></div><div class=\"d-flex dropdowns\"><select aria-label=\"\
-        Biblical Version\" class=\"dropdown\" name=\"version\"><option class=\"lang\"\
-        \ value=\"AMU\">---Amuzgo de Guerrero (AMU)---</option>\n<option value=\"\
-        AMU\" >Amuzgo de Guerrero (AMU)</option>\n<option class=\"spacer\" value=\"\
-        AMU\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-AR\">---\u0627\u0644\
-        \u0639\u0631\u0628\u064A\u0629 (AR)---</option>\n<option value=\"ERV-AR\"\
-        \ >Arabic Bible: Easy-to-Read Version (ERV-AR)</option>\n<option value=\"\
-        NAV\" >Ketab El Hayat (NAV)</option>\n<option class=\"spacer\" value=\"NAV\"\
-        >&nbsp;</option>\n<option class=\"lang\" value=\"ERV-AWA\">---\u0905\u0935\
-        \u0927\u0940 (AWA)---</option>\n<option value=\"ERV-AWA\" >Awadhi Bible: Easy-to-Read\
-        \ Version (ERV-AWA)</option>\n<option class=\"spacer\" value=\"ERV-AWA\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"BG1940\">---\u0411\u044A\u043B\u0433\u0430\u0440\
-        \u0441\u043A\u0438 (BG)---</option>\n<option value=\"BG1940\" >1940 Bulgarian\
-        \ Bible (BG1940)</option>\n<option value=\"BULG\" >Bulgarian Bible (BULG)</option>\n\
+        \             <script>BG.Prefs.pagePrefs('passage');</script>\n<div class=\"\
+        passage-resources-container\">\n  <div class=\"top-bar\">\n    <div class=\"\
+        flex-7\"></div>\n    <div class=\"sidebar-tabs flex-5\"></div>\n  </div>\n\
+        \  <div class=\"passage-resources\">\n    <section class=\"passage-box flex-7\"\
+        >\n        <div class=\"passage-table\" data-osis=\"Gal.3.10-Gal.3.11\">\n\
+        \            <div class=\"passage-cols\">\n              <div class=\"prev-next\"\
+        >\n<a class=\"prev-chapter\" href=\"/passage/?search=Galatians%202&amp;version=NASB1995\"\
+        \ title=\"Galatians 2\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"\
+        0 0 11.5 21.5\" width=\"11.5\" height=\"21.5\"><title>Previous</title><path\
+        \ d=\"M10.75 0a.74.74 0 0 1 .53.22.75.75 0 0 1 0 1.06l-9.47 9.47 9.47 9.47a.75.75\
+        \ 0 1 1-1.06 1.06l-10-10a.75.75 0 0 1 0-1.06l10-10a.73.73 0 0 1 .53-.22z\"\
+        /></svg>\n</a>\n<a class=\"next-chapter\" href=\"/passage/?search=Galatians%204&amp;version=NASB1995\"\
+        \ title=\"Galatians 4\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"\
+        0 0 11.5 21.5\" width=\"11.5\" height=\"21.5\"><title>Next</title><path d=\"\
+        M.75 21.5a.74.74 0 0 1-.53-.22.75.75 0 0 1 0-1.06l9.47-9.47L.22 1.28A.75.75\
+        \ 0 0 1 1.28.22l10 10a.75.75 0 0 1 0 1.06l-10 10a.74.74 0 0 1-.53.22z\"/></svg>\n\
+        </a>\n</div>\n\n<div class=\"passage-col-tools\"><div class=\"passage-tools\"\
+        ><a href=\"/passage/?search=Galatians%203%3A10-11&amp;version=NASB1995;NIV\"\
+        \ class=\"parallel\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"\
+        0 0 20 21\" width=\"20\" height=\"21\"><title>Add parallel</title><use xlink:href=\"\
+        #icon-compare\"></use></svg>\n</a><span class=\"share\"><svg xmlns=\"http://www.w3.org/2000/svg\"\
+        \ viewBox=\"0 0 15.72 19.76\" width=\"15.72\" height=\"19.76\"><title>Share</title><use\
+        \ xlink:href=\"#icon-external\"></use></svg>\n</span> <a href=\"/passage/?search=Galatians+3:10-11&amp;version=NASB1995&amp;interface=print\"\
+        \ class=\"print\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0\
+        \ 18.52 18.91\" width=\"18.52\" height=\"18.91\"><title>Print</title><use\
+        \ xlink:href=\"#icon-print\"></use></svg>\n</a> <span class=\"settings\"><svg\
+        \ xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 18.95 19.53\" width=\"\
+        18.95\" height=\"19.53\"><title>Page Options</title><use xlink:href=\"#icon-settings\"\
+        ></use></svg>\n</span><a  class=\"audio-link\" href=\"/audio/mcconachie/nasb1995/Gal.3.10-Gal.3.11\"\
+        \ title=\"Listen to Galatians 3:10-11\" ><svg xmlns=\"http://www.w3.org/2000/svg\"\
+        \ viewBox=\"0 0 22.89 16.73\" width=\"22.89\" height=\"16.73\"><title>Listen\
+        \ to Galatians 3:10-11</title><path d=\"M16.49 3.53a.75.75 0 0 0-.74 1.31\
+        \ 4 4 0 0 1 2 3.52 4 4 0 0 1-2 3.53.74.74 0 0 0-.28 1 .73.73 0 0 0 .65.39.82.82\
+        \ 0 0 0 .37-.1 5.49 5.49 0 0 0 2.79-4.84 5.47 5.47 0 0 0-2.79-4.81z\"/><path\
+        \ d=\"M20.09 1.78A.75.75 0 0 0 19.17 3a6.76 6.76 0 0 1 2.22 5.4 6.75 6.75\
+        \ 0 0 1-2.22 5.39.74.74 0 0 0-.17 1.02.72.72 0 0 0 .59.29.79.79 0 0 0 .46-.15\
+        \ 8.27 8.27 0 0 0 2.8-6.58 8.28 8.28 0 0 0-2.76-6.59zM12.53.09l-7 3.75H2.07A2\
+        \ 2 0 0 0 0 5.82v5.08a2 2 0 0 0 2.07 2h3.41l7 3.75a.77.77 0 0 0 .36.09.73.73\
+        \ 0 0 0 .38-.11.74.74 0 0 0 .37-.64V.75a.74.74 0 0 0-.37-.64.73.73 0 0 0-.69-.02zM1.5\
+        \ 10.9V5.82a.54.54 0 0 1 .57-.46h3v6h-3a.53.53 0 0 1-.57-.46zm10.64 3.83l-5.52-3V4.94L12.14\
+        \ 2z\"/><path d=\"M7.85 6.51a.62.62 0 0 0 .55.33.59.59 0 0 0 .29-.07l2.09-1.11a.63.63\
+        \ 0 0 0-.59-1.11L8.1 5.67a.62.62 0 0 0-.25.84z\"/></svg>\n</a></div><div class=\"\
+        passage-col version-NASB1995\" data-translation=\"NASB1995\" ><h1 class='passage-display'>\n\
+        <div class='bcv'><div class=\"dropdown-display\"><div class=\"dropdown-display-text\"\
+        >Galatians 3:10-11</div></div></div>\n<div class='translation'><div class=\"\
+        dropdown-display\"><div class=\"dropdown-display-text\">New American Standard\
+        \ Bible 1995</div></div></div><div class='clearfix'></div>\n</h1>\n<div class=\"\
+        dropdowns\"><select class=\"dropdown\"><option class=\"lang\" value=\"AMU\"\
+        >&mdash;Amuzgo de Guerrero (AMU)&mdash;</option>\n<option value=\"AMU\" >Amuzgo\
+        \ de Guerrero (AMU)</option>\n<option class=\"spacer\" value=\"AMU\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"ERV-AR\">&mdash;\u0627\u0644\u0639\u0631\u0628\
+        \u064A\u0629 (AR)&mdash;</option>\n<option value=\"ERV-AR\" >Arabic Bible:\
+        \ Easy-to-Read Version (ERV-AR)</option>\n<option value=\"NAV\" >Ketab El\
+        \ Hayat (NAV)</option>\n<option class=\"spacer\" value=\"NAV\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"ERV-AWA\">&mdash;\u0905\u0935\u0927\u0940 (AWA)&mdash;</option>\n\
+        <option value=\"ERV-AWA\" >Awadhi Bible: Easy-to-Read Version (ERV-AWA)</option>\n\
+        <option class=\"spacer\" value=\"ERV-AWA\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"BG1940\">&mdash;\u0411\u044A\u043B\u0433\u0430\u0440\u0441\u043A\
+        \u0438 (BG)&mdash;</option>\n<option value=\"BG1940\" >1940 Bulgarian Bible\
+        \ (BG1940)</option>\n<option value=\"BULG\" >Bulgarian Bible (BULG)</option>\n\
         <option value=\"ERV-BG\" >Bulgarian New Testament: Easy-to-Read Version (ERV-BG)</option>\n\
         <option value=\"CBT\" >\u0411\u0438\u0431\u043B\u0438\u044F, \u043D\u043E\u0432\
         \ \u043F\u0440\u0435\u0432\u043E\u0434 \u043E\u0442 \u043E\u0440\u0438\u0433\
@@ -863,37 +992,38 @@ interactions:
         <option value=\"BPB\" >\u0411\u0438\u0431\u043B\u0438\u044F, \u0440\u0435\u0432\
         \u0438\u0437\u0438\u0440\u0430\u043D\u043E \u0438\u0437\u0434\u0430\u043D\u0438\
         \u0435 (BPB)</option>\n<option class=\"spacer\" value=\"BPB\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"CCO\">---Chinanteco de Comaltepec (CCO)---</option>\n\
+        <option class=\"lang\" value=\"CCO\">&mdash;Chinanteco de Comaltepec (CCO)&mdash;</option>\n\
         <option value=\"CCO\" >Chinanteco de Comaltepec (CCO)</option>\n<option class=\"\
         spacer\" value=\"CCO\">&nbsp;</option>\n<option class=\"lang\" value=\"APSD-CEB\"\
-        >---Cebuano (CEB)---</option>\n<option value=\"APSD-CEB\" >Ang Pulong Sa Dios\
-        \ (APSD-CEB)</option>\n<option class=\"spacer\" value=\"APSD-CEB\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"CHR\">---\u13E3\u13B3\u13A9 \u13A6\u13EC\u13C2\
-        \u13AF\u13CD (CHR)---</option>\n<option value=\"CHR\" >Cherokee New Testament\
-        \ (CHR)</option>\n<option class=\"spacer\" value=\"CHR\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"KSS\">---\u0643\u0648\u0631\u062F\u06CC \u0633\
-        \u06C6\u0631\u0627\u0646\u06CC (CKB)---</option>\n<option value=\"KSS\" >Kurdi\
-        \ Sorani Standard (KSS)</option>\n<option class=\"spacer\" value=\"KSS\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"CKW\">---Cakchiquel Occidental (CKW)---</option>\n\
-        <option value=\"CKW\" >Cakchiquel Occidental (CKW)</option>\n<option class=\"\
-        spacer\" value=\"CKW\">&nbsp;</option>\n<option class=\"lang\" value=\"B21\"\
-        >---\u010Ce\u0161tina (CS)---</option>\n<option value=\"B21\" >Bible 21 (B21)</option>\n\
+        >&mdash;Cebuano (CEB)&mdash;</option>\n<option value=\"APSD-CEB\" >Ang Pulong\
+        \ Sa Dios (APSD-CEB)</option>\n<option class=\"spacer\" value=\"APSD-CEB\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"CHR\">&mdash;\u13E3\u13B3\
+        \u13A9 \u13A6\u13EC\u13C2\u13AF\u13CD (CHR)&mdash;</option>\n<option value=\"\
+        CHR\" >Cherokee New Testament (CHR)</option>\n<option class=\"spacer\" value=\"\
+        CHR\">&nbsp;</option>\n<option class=\"lang\" value=\"KSS\">&mdash;\u0643\u0648\
+        \u0631\u062F\u06CC \u0633\u06C6\u0631\u0627\u0646\u06CC (CKB)&mdash;</option>\n\
+        <option value=\"KSS\" >Kurdi Sorani Standard (KSS)</option>\n<option class=\"\
+        spacer\" value=\"KSS\">&nbsp;</option>\n<option class=\"lang\" value=\"CKW\"\
+        >&mdash;Cakchiquel Occidental (CKW)&mdash;</option>\n<option value=\"CKW\"\
+        \ >Cakchiquel Occidental (CKW)</option>\n<option class=\"spacer\" value=\"\
+        CKW\">&nbsp;</option>\n<option class=\"lang\" value=\"B21\">&mdash;\u010C\
+        e\u0161tina (CS)&mdash;</option>\n<option value=\"B21\" >Bible 21 (B21)</option>\n\
         <option value=\"SNC\" >Slovo na cestu (SNC)</option>\n<option class=\"spacer\"\
-        \ value=\"SNC\">&nbsp;</option>\n<option class=\"lang\" value=\"BWM\">---Cymraeg\
-        \ (CY)---</option>\n<option value=\"BWM\" >Beibl William Morgan (BWM)</option>\n\
+        \ value=\"SNC\">&nbsp;</option>\n<option class=\"lang\" value=\"BWM\">&mdash;Cymraeg\
+        \ (CY)&mdash;</option>\n<option value=\"BWM\" >Beibl William Morgan (BWM)</option>\n\
         <option class=\"spacer\" value=\"BWM\">&nbsp;</option>\n<option class=\"lang\"\
-        \ value=\"BPH\">---Dansk (DA)---</option>\n<option value=\"BPH\" >Bibelen\
+        \ value=\"BPH\">&mdash;Dansk (DA)&mdash;</option>\n<option value=\"BPH\" >Bibelen\
         \ p\xE5 hverdagsdansk (BPH)</option>\n<option value=\"DN1933\" >Dette er Biblen\
         \ p\xE5 dansk (DN1933)</option>\n<option class=\"spacer\" value=\"DN1933\"\
-        >&nbsp;</option>\n<option class=\"lang\" value=\"HOF\">---Deutsch (DE)---</option>\n\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"HOF\">&mdash;Deutsch (DE)&mdash;</option>\n\
         <option value=\"HOF\" >Hoffnung f\xFCr Alle (HOF)</option>\n<option value=\"\
         LUTH1545\" >Luther Bibel 1545 (LUTH1545)</option>\n<option value=\"NGU-DE\"\
         \ >Neue Genfer \xDCbersetzung (NGU-DE)</option>\n<option value=\"SCH1951\"\
         \ >Schlachter 1951 (SCH1951)</option>\n<option value=\"SCH2000\" >Schlachter\
         \ 2000 (SCH2000)</option>\n<option class=\"spacer\" value=\"SCH2000\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"KJ21\">---English (EN)---</option>\n<option\
-        \ value=\"KJ21\" >21st Century King James Version (KJ21)</option>\n<option\
-        \ value=\"ASV\" >American Standard Version (ASV)</option>\n<option value=\"\
+        <option class=\"lang\" value=\"KJ21\">&mdash;English (EN)&mdash;</option>\n\
+        <option value=\"KJ21\" >21st Century King James Version (KJ21)</option>\n\
+        <option value=\"ASV\" >American Standard Version (ASV)</option>\n<option value=\"\
         AMP\" >Amplified Bible (AMP)</option>\n<option value=\"AMPC\" >Amplified Bible,\
         \ Classic Edition (AMPC)</option>\n<option value=\"BRG\" >BRG Bible (BRG)</option>\n\
         <option value=\"CSB\" >Christian Standard Bible (CSB)</option>\n<option value=\"\
@@ -925,10 +1055,10 @@ interactions:
         \  selected=\"selected\" >New American Standard Bible 1995 (NASB1995)</option>\n\
         <option value=\"NCB\" >New Catholic Bible (NCB)</option>\n<option value=\"\
         NCV\" >New Century Version (NCV)</option>\n<option value=\"NET\" >New English\
-        \ Translation (NET)</option>\n<option value=\"NIRV\" >New International Reader&#039;s\
-        \ Version (NIRV)</option>\n<option value=\"NIV\" >New International Version\
-        \ (NIV)</option>\n<option value=\"NIVUK\" >New International Version - UK\
-        \ (NIVUK)</option>\n<option value=\"NKJV\" >New King James Version (NKJV)</option>\n\
+        \ Translation (NET Bible)</option>\n<option value=\"NIRV\" >New International\
+        \ Reader&#039;s Version (NIRV)</option>\n<option value=\"NIV\" >New International\
+        \ Version (NIV)</option>\n<option value=\"NIVUK\" >New International Version\
+        \ - UK (NIVUK)</option>\n<option value=\"NKJV\" >New King James Version (NKJV)</option>\n\
         <option value=\"NLV\" >New Life Version (NLV)</option>\n<option value=\"NLT\"\
         \ >New Living Translation (NLT)</option>\n<option value=\"NMB\" >New Matthew\
         \ Bible (NMB)</option>\n<option value=\"NRSV\" >New Revised Standard Version\
@@ -946,229 +1076,235 @@ interactions:
         WE\" >Worldwide English (New Testament) (WE)</option>\n<option value=\"WYC\"\
         \ >Wycliffe Bible (WYC)</option>\n<option value=\"YLT\" >Young&#039;s Literal\
         \ Translation (YLT)</option>\n<option class=\"spacer\" value=\"YLT\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"LBLA\">---Espa\xF1ol (ES)---</option>\n<option\
-        \ value=\"LBLA\" >La Biblia de las Am\xE9ricas (LBLA)</option>\n<option value=\"\
-        JBS\" >Biblia del Jubileo (JBS)</option>\n<option value=\"DHH\" >Dios Habla\
-        \ Hoy (DHH)</option>\n<option value=\"NBLA\" >Nueva Biblia de las Am\xE9ricas\
-        \ (NBLA)</option>\n<option value=\"NBV\" >Nueva Biblia Viva (NBV)</option>\n\
-        <option value=\"NTV\" >Nueva Traducci\xF3n Viviente (NTV)</option>\n<option\
-        \ value=\"NVI\" >Nueva Versi\xF3n Internacional (NVI)</option>\n<option value=\"\
-        CST\" >Nueva Versi\xF3n Internacional (Castilian) (CST)</option>\n<option\
-        \ value=\"PDT\" >Palabra de Dios para Todos (PDT)</option>\n<option value=\"\
-        BLP\" >La Palabra (Espa\xF1a) (BLP)</option>\n<option value=\"BLPH\" >La Palabra\
-        \ (Hispanoam\xE9rica) (BLPH)</option>\n<option value=\"RVA-2015\" >Reina Valera\
-        \ Actualizada (RVA-2015)</option>\n<option value=\"RVC\" >Reina Valera Contempor\xE1\
-        nea (RVC)</option>\n<option value=\"RVR1960\" >Reina-Valera 1960 (RVR1960)</option>\n\
-        <option value=\"RVR1977\" >Reina Valera Revisada (RVR1977)</option>\n<option\
-        \ value=\"RVR1995\" >Reina-Valera 1995 (RVR1995)</option>\n<option value=\"\
-        RVA\" >Reina-Valera Antigua (RVA)</option>\n<option value=\"SRV-BRG\" >Spanish\
-        \ Blue Red and Gold Letter Edition (SRV-BRG)</option>\n<option value=\"TLA\"\
-        \ >Traducci\xF3n en lenguaje actual (TLA)</option>\n<option class=\"spacer\"\
-        \ value=\"TLA\">&nbsp;</option>\n<option class=\"lang\" value=\"R1933\">---Suomi\
-        \ (FI)---</option>\n<option value=\"R1933\" >Raamattu 1933/38 (R1933)</option>\n\
-        <option class=\"spacer\" value=\"R1933\">&nbsp;</option>\n<option class=\"\
-        lang\" value=\"BDS\">---Fran\xE7ais (FR)---</option>\n<option value=\"BDS\"\
-        \ >La Bible du Semeur (BDS)</option>\n<option value=\"LSG\" >Louis Segond\
-        \ (LSG)</option>\n<option value=\"NEG1979\" >Nouvelle Edition de Gen\xE8ve\
-        \ \u2013 NEG1979 (NEG1979)</option>\n<option value=\"SG21\" >Segond 21 (SG21)</option>\n\
-        <option class=\"spacer\" value=\"SG21\">&nbsp;</option>\n<option class=\"\
-        lang\" value=\"TR1550\">---\u039A\u03BF\u03B9\u03BD\u03B7 (GRC)---</option>\n\
-        <option value=\"TR1550\" >1550 Stephanus New Testament (TR1550)</option>\n\
-        <option value=\"WHNU\" >1881 Westcott-Hort New Testament (WHNU)</option>\n\
-        <option value=\"TR1894\" >1894 Scrivener New Testament (TR1894)</option>\n\
-        <option value=\"SBLGNT\" >SBL Greek New Testament (SBLGNT)</option>\n<option\
-        \ value=\"THGNT\" >Tyndale House Greek New Testament (THGNT)</option>\n<option\
-        \ class=\"spacer\" value=\"THGNT\">&nbsp;</option>\n<option class=\"lang\"\
-        \ value=\"GERV\">---\u0A97\u0AC1\u0A9C\u0AB0\u0ABE\u0AA4\u0AC0 (GU)---</option>\n\
+        <option class=\"lang\" value=\"LBLA\">&mdash;Espa\xF1ol (ES)&mdash;</option>\n\
+        <option value=\"LBLA\" >La Biblia de las Am\xE9ricas (LBLA)</option>\n<option\
+        \ value=\"JBS\" >Biblia del Jubileo (JBS)</option>\n<option value=\"DHH\"\
+        \ >Dios Habla Hoy (DHH)</option>\n<option value=\"NBLA\" >Nueva Biblia de\
+        \ las Am\xE9ricas (NBLA)</option>\n<option value=\"NBV\" >Nueva Biblia Viva\
+        \ (NBV)</option>\n<option value=\"NTV\" >Nueva Traducci\xF3n Viviente (NTV)</option>\n\
+        <option value=\"NVI\" >Nueva Versi\xF3n Internacional (NVI)</option>\n<option\
+        \ value=\"CST\" >Nueva Versi\xF3n Internacional (Castilian) (CST)</option>\n\
+        <option value=\"PDT\" >Palabra de Dios para Todos (PDT)</option>\n<option\
+        \ value=\"BLP\" >La Palabra (Espa\xF1a) (BLP)</option>\n<option value=\"BLPH\"\
+        \ >La Palabra (Hispanoam\xE9rica) (BLPH)</option>\n<option value=\"RVA-2015\"\
+        \ >Reina Valera Actualizada (RVA-2015)</option>\n<option value=\"RVC\" >Reina\
+        \ Valera Contempor\xE1nea (RVC)</option>\n<option value=\"RVR1960\" >Reina-Valera\
+        \ 1960 (RVR1960)</option>\n<option value=\"RVR1977\" >Reina Valera Revisada\
+        \ (RVR1977)</option>\n<option value=\"RVR1995\" >Reina-Valera 1995 (RVR1995)</option>\n\
+        <option value=\"RVA\" >Reina-Valera Antigua (RVA)</option>\n<option value=\"\
+        SRV-BRG\" >Spanish Blue Red and Gold Letter Edition (SRV-BRG)</option>\n<option\
+        \ value=\"TLA\" >Traducci\xF3n en lenguaje actual (TLA)</option>\n<option\
+        \ class=\"spacer\" value=\"TLA\">&nbsp;</option>\n<option class=\"lang\" value=\"\
+        R1933\">&mdash;Suomi (FI)&mdash;</option>\n<option value=\"R1933\" >Raamattu\
+        \ 1933/38 (R1933)</option>\n<option class=\"spacer\" value=\"R1933\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"BDS\">&mdash;Fran\xE7ais (FR)&mdash;</option>\n\
+        <option value=\"BDS\" >La Bible du Semeur (BDS)</option>\n<option value=\"\
+        LSG\" >Louis Segond (LSG)</option>\n<option value=\"NEG1979\" >Nouvelle Edition\
+        \ de Gen\xE8ve \u2013 NEG1979 (NEG1979)</option>\n<option value=\"SG21\" >Segond\
+        \ 21 (SG21)</option>\n<option class=\"spacer\" value=\"SG21\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"TR1550\">&mdash;\u039A\u03BF\u03B9\u03BD\u03B7\
+        \ (GRC)&mdash;</option>\n<option value=\"TR1550\" >1550 Stephanus New Testament\
+        \ (TR1550)</option>\n<option value=\"WHNU\" >1881 Westcott-Hort New Testament\
+        \ (WHNU)</option>\n<option value=\"TR1894\" >1894 Scrivener New Testament\
+        \ (TR1894)</option>\n<option value=\"SBLGNT\" >SBL Greek New Testament (SBLGNT)</option>\n\
+        <option value=\"THGNT\" >Tyndale House Greek New Testament (THGNT)</option>\n\
+        <option class=\"spacer\" value=\"THGNT\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"GERV\">&mdash;\u0A97\u0AC1\u0A9C\u0AB0\u0ABE\u0AA4\u0AC0 (GU)&mdash;</option>\n\
         <option value=\"GERV\" >Gujarati: \u0AAA\u0AB5\u0ABF\u0AA4\u0ACD\u0AB0 \u0AAC\
         \u0ABE\u0A88\u0AAC\u0AB2 (GERV)</option>\n<option class=\"spacer\" value=\"\
-        GERV\">&nbsp;</option>\n<option class=\"lang\" value=\"HHH\">---\u05E2\u05D1\
-        \u05E8\u05D9\u05EA (HE)---</option>\n<option value=\"HHH\" >Habrit Hakhadasha/Haderekh\
-        \ (HHH)</option>\n<option value=\"WLC\" >The Westminster Leningrad Codex (WLC)</option>\n\
-        <option class=\"spacer\" value=\"WLC\">&nbsp;</option>\n<option class=\"lang\"\
-        \ value=\"ERV-HI\">---\u0939\u093F\u0928\u094D\u0926\u0940 (HI)---</option>\n\
-        <option value=\"ERV-HI\" >Hindi Bible: Easy-to-Read Version (ERV-HI)</option>\n\
-        <option value=\"SHB\" >Saral Hindi Bible (SHB)</option>\n<option class=\"\
-        spacer\" value=\"SHB\">&nbsp;</option>\n<option class=\"lang\" value=\"HLGN\"\
-        >---Ilonggo (HIL)---</option>\n<option value=\"HLGN\" >Ang Pulong Sang Dios\
-        \ (HLGN)</option>\n<option class=\"spacer\" value=\"HLGN\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"NCA\">---Chhattisgarhi (HNE)---</option>\n\
-        <option value=\"NCA\" >New Chhattisgarhi Translation (\u0928\u0935\u093E\u0902\
-        \ \u0928\u093F\u092F\u092E \u091B\u0924\u094D\u0924\u0940\u0938\u0917\u0922\
-        \u093C\u0940) (NCA)</option>\n<option class=\"spacer\" value=\"NCA\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"SHP\">---Hrvatski (HR)---</option>\n<option\
-        \ value=\"SHP\" >Biblija: suvremeni hrvatski prijevod (SHP)</option>\n<option\
-        \ value=\"HNZ-RI\" >Hrvatski Novi Zavjet \u2013 Rijeka 2001 (HNZ-RI)</option>\n\
-        <option value=\"CRO\" >Knijga O Kristu (CRO)</option>\n<option class=\"spacer\"\
-        \ value=\"CRO\">&nbsp;</option>\n<option class=\"lang\" value=\"HCV\">---Krey\xF2\
-        l ayisyen (HT)---</option>\n<option value=\"HCV\" >Haitian Creole Version\
-        \ (HCV)</option>\n<option value=\"VKF\" >Nouvo Testaman: V\xE8syon Krey\xF2\
-        l Fasil (VKF)</option>\n<option class=\"spacer\" value=\"VKF\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"KAR\">---Magyar (HU)---</option>\n<option value=\"\
-        KAR\" >Hungarian K\xE1roli (KAR)</option>\n<option value=\"ERV-HU\" >Hungarian\
-        \ Bible: Easy-to-Read Version (ERV-HU)</option>\n<option value=\"NT-HU\" >Hungarian\
-        \ New Translation (NT-HU)</option>\n<option class=\"spacer\" value=\"NT-HU\"\
-        >&nbsp;</option>\n<option class=\"lang\" value=\"HWP\">---Hawai\u2018i Pidgin\
-        \ (HWC)---</option>\n<option value=\"HWP\" >Hawai\u2018i Pidgin (HWP)</option>\n\
-        <option class=\"spacer\" value=\"HWP\">&nbsp;</option>\n<option class=\"lang\"\
-        \ value=\"ICELAND\">---\xCDslenska (IS)---</option>\n<option value=\"ICELAND\"\
-        \ >Icelandic Bible (ICELAND)</option>\n<option class=\"spacer\" value=\"ICELAND\"\
-        >&nbsp;</option>\n<option class=\"lang\" value=\"BDG\">---Italiano (IT)---</option>\n\
+        GERV\">&nbsp;</option>\n<option class=\"lang\" value=\"HHH\">&mdash;\u05E2\
+        \u05D1\u05E8\u05D9\u05EA (HE)&mdash;</option>\n<option value=\"HHH\" >Habrit\
+        \ Hakhadasha/Haderekh (HHH)</option>\n<option value=\"WLC\" >The Westminster\
+        \ Leningrad Codex (WLC)</option>\n<option class=\"spacer\" value=\"WLC\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"ERV-HI\">&mdash;\u0939\u093F\u0928\u094D\u0926\
+        \u0940 (HI)&mdash;</option>\n<option value=\"ERV-HI\" >Hindi Bible: Easy-to-Read\
+        \ Version (ERV-HI)</option>\n<option value=\"SHB\" >Saral Hindi Bible (SHB)</option>\n\
+        <option class=\"spacer\" value=\"SHB\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"HLGN\">&mdash;Ilonggo (HIL)&mdash;</option>\n<option value=\"HLGN\"\
+        \ >Ang Pulong Sang Dios (HLGN)</option>\n<option class=\"spacer\" value=\"\
+        HLGN\">&nbsp;</option>\n<option class=\"lang\" value=\"NCA\">&mdash;Chhattisgarhi\
+        \ (HNE)&mdash;</option>\n<option value=\"NCA\" >New Chhattisgarhi Translation\
+        \ (\u0928\u0935\u093E\u0902 \u0928\u093F\u092F\u092E \u091B\u0924\u094D\u0924\
+        \u0940\u0938\u0917\u0922\u093C\u0940) (NCA)</option>\n<option class=\"spacer\"\
+        \ value=\"NCA\">&nbsp;</option>\n<option class=\"lang\" value=\"SHP\">&mdash;Hrvatski\
+        \ (HR)&mdash;</option>\n<option value=\"SHP\" >Biblija: suvremeni hrvatski\
+        \ prijevod (SHP)</option>\n<option value=\"HNZ-RI\" >Hrvatski Novi Zavjet\
+        \ \u2013 Rijeka 2001 (HNZ-RI)</option>\n<option value=\"CRO\" >Knijga O Kristu\
+        \ (CRO)</option>\n<option class=\"spacer\" value=\"CRO\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"HCV\">&mdash;Krey\xF2l ayisyen (HT)&mdash;</option>\n\
+        <option value=\"HCV\" >Haitian Creole Version (HCV)</option>\n<option value=\"\
+        VKF\" >Nouvo Testaman: V\xE8syon Krey\xF2l Fasil (VKF)</option>\n<option class=\"\
+        spacer\" value=\"VKF\">&nbsp;</option>\n<option class=\"lang\" value=\"KAR\"\
+        >&mdash;Magyar (HU)&mdash;</option>\n<option value=\"KAR\" >Hungarian K\xE1\
+        roli (KAR)</option>\n<option value=\"ERV-HU\" >Hungarian Bible: Easy-to-Read\
+        \ Version (ERV-HU)</option>\n<option value=\"NT-HU\" >Hungarian New Translation\
+        \ (NT-HU)</option>\n<option class=\"spacer\" value=\"NT-HU\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"HWP\">&mdash;Hawai\u2018i Pidgin (HWC)&mdash;</option>\n\
+        <option value=\"HWP\" >Hawai\u2018i Pidgin (HWP)</option>\n<option class=\"\
+        spacer\" value=\"HWP\">&nbsp;</option>\n<option class=\"lang\" value=\"ICELAND\"\
+        >&mdash;\xCDslenska (IS)&mdash;</option>\n<option value=\"ICELAND\" >Icelandic\
+        \ Bible (ICELAND)</option>\n<option class=\"spacer\" value=\"ICELAND\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"BDG\">&mdash;Italiano (IT)&mdash;</option>\n\
         <option value=\"BDG\" >La Bibbia della Gioia (BDG)</option>\n<option value=\"\
         CEI\" >Conferenza Episcopale Italiana (CEI)</option>\n<option value=\"LND\"\
         \ >La Nuova Diodati (LND)</option>\n<option value=\"NR1994\" >Nuova Riveduta\
         \ 1994 (NR1994)</option>\n<option value=\"NR2006\" >Nuova Riveduta 2006 (NR2006)</option>\n\
         <option class=\"spacer\" value=\"NR2006\">&nbsp;</option>\n<option class=\"\
-        lang\" value=\"JLB\">---\u65E5\u672C\u8A9E (JA)---</option>\n<option value=\"\
-        JLB\" >Japanese Living Bible (JLB)</option>\n<option class=\"spacer\" value=\"\
-        JLB\">&nbsp;</option>\n<option class=\"lang\" value=\"JAC\">---Jacalteco,\
-        \ Oriental (JAC)---</option>\n<option value=\"JAC\" >Jacalteco, Oriental (JAC)</option>\n\
-        <option class=\"spacer\" value=\"JAC\">&nbsp;</option>\n<option class=\"lang\"\
-        \ value=\"KEK\">---Kekchi (KEK)---</option>\n<option value=\"KEK\" >Kekchi\
-        \ (KEK)</option>\n<option class=\"spacer\" value=\"KEK\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"KLB\">---\uD55C\uAD6D\uC5B4 (KO)---</option>\n\
-        <option value=\"KLB\" >Korean Living Bible (KLB)</option>\n<option class=\"\
-        spacer\" value=\"KLB\">&nbsp;</option>\n<option class=\"lang\" value=\"VULGATE\"\
-        >---Latina (LA)---</option>\n<option value=\"VULGATE\" >Biblia Sacra Vulgata\
-        \ (VULGATE)</option>\n<option class=\"spacer\" value=\"VULGATE\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"LCB\">---Luganda (LG)---</option>\n<option\
-        \ value=\"LCB\" >Endagaano Enkadde n\u02BCEndagaano Empya (LCB)</option>\n\
-        <option class=\"spacer\" value=\"LCB\">&nbsp;</option>\n<option class=\"lang\"\
-        \ value=\"MAORI\">---M\u0101ori (MI)---</option>\n<option value=\"MAORI\"\
-        \ >Maori Bible (MAORI)</option>\n<option class=\"spacer\" value=\"MAORI\"\
-        >&nbsp;</option>\n<option class=\"lang\" value=\"MNT\">---\u041C\u0430\u043A\
-        \u0435\u0434\u043E\u043D\u0441\u043A\u0438 (MK)---</option>\n<option value=\"\
-        MNT\" >Macedonian New Testament (MNT)</option>\n<option class=\"spacer\" value=\"\
-        MNT\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-MR\">---\u092E\u0930\
-        \u093E\u0920\u0940 (MR)---</option>\n<option value=\"ERV-MR\" >Marathi Bible:\
-        \ Easy-to-Read Version (ERV-MR)</option>\n<option class=\"spacer\" value=\"\
-        ERV-MR\">&nbsp;</option>\n<option class=\"lang\" value=\"MVC\">---Mam, Central\
-        \ (MVC)---</option>\n<option value=\"MVC\" >Mam, Central (MVC)</option>\n\
-        <option class=\"spacer\" value=\"MVC\">&nbsp;</option>\n<option class=\"lang\"\
-        \ value=\"MVJ\">---Mam, Todos Santos (MVJ)---</option>\n<option value=\"MVJ\"\
-        \ >Mam de Todos Santos Chuchumat\xE1n (MVJ)</option>\n<option class=\"spacer\"\
-        \ value=\"MVJ\">&nbsp;</option>\n<option class=\"lang\" value=\"REIMER\">---Plautdietsch\
-        \ (NDS)---</option>\n<option value=\"REIMER\" >Reimer 2001 (REIMER)</option>\n\
-        <option class=\"spacer\" value=\"REIMER\">&nbsp;</option>\n<option class=\"\
-        lang\" value=\"ERV-NE\">---\u0928\u0947\u092A\u093E\u0932\u0940 (NE)---</option>\n\
-        <option value=\"ERV-NE\" >Nepali Bible: Easy-to-Read Version (ERV-NE)</option>\n\
-        <option class=\"spacer\" value=\"ERV-NE\">&nbsp;</option>\n<option class=\"\
-        lang\" value=\"NGU\">---N\xE1huatl de Guerrero (NGU)---</option>\n<option\
-        \ value=\"NGU\" >N\xE1huatl de Guerrero (NGU)</option>\n<option class=\"spacer\"\
-        \ value=\"NGU\">&nbsp;</option>\n<option class=\"lang\" value=\"BB\">---Nederlands\
-        \ (NL)---</option>\n<option value=\"BB\" >BasisBijbel (BB)</option>\n<option\
-        \ value=\"HTB\" >Het Boek (HTB)</option>\n<option class=\"spacer\" value=\"\
-        HTB\">&nbsp;</option>\n<option class=\"lang\" value=\"DNB1930\">---Norsk (NO)---</option>\n\
-        <option value=\"DNB1930\" >Det Norsk Bibelselskap 1930 (DNB1930)</option>\n\
-        <option value=\"LB\" >En Levende Bok (LB)</option>\n<option class=\"spacer\"\
-        \ value=\"LB\">&nbsp;</option>\n<option class=\"lang\" value=\"CCL\">---Chichewa\
-        \ (NY)---</option>\n<option value=\"CCL\" >Mawu a Mulungu mu Chichewa Chalero\
-        \ (CCL)</option>\n<option class=\"spacer\" value=\"CCL\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"ERV-OR\">---\u0B13\u0B21\u0B3C\u0B3F\u0B06\
-        \ (OR)---</option>\n<option value=\"ERV-OR\" >Oriya Bible: Easy-to-Read Version\
-        \ (ERV-OR)</option>\n<option class=\"spacer\" value=\"ERV-OR\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"ERV-PA\">---\u0A2A\u0A70\u0A1C\u0A3E\u0A2C\u0A40\
-        \ (PA)---</option>\n<option value=\"ERV-PA\" >Punjabi Bible: Easy-to-Read\
-        \ Version (ERV-PA)</option>\n<option class=\"spacer\" value=\"ERV-PA\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"NP\">---Polski (PL)---</option>\n<option value=\"\
-        NP\" >Nowe Przymierze (NP)</option>\n<option value=\"SZ-PL\" >S\u0142owo \u017B\
+        lang\" value=\"JLB\">&mdash;\u65E5\u672C\u8A9E (JA)&mdash;</option>\n<option\
+        \ value=\"JLB\" >Japanese Living Bible (JLB)</option>\n<option class=\"spacer\"\
+        \ value=\"JLB\">&nbsp;</option>\n<option class=\"lang\" value=\"JAC\">&mdash;Jacalteco,\
+        \ Oriental (JAC)&mdash;</option>\n<option value=\"JAC\" >Jacalteco, Oriental\
+        \ (JAC)</option>\n<option class=\"spacer\" value=\"JAC\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"KEK\">&mdash;Kekchi (KEK)&mdash;</option>\n\
+        <option value=\"KEK\" >Kekchi (KEK)</option>\n<option class=\"spacer\" value=\"\
+        KEK\">&nbsp;</option>\n<option class=\"lang\" value=\"KLB\">&mdash;\uD55C\uAD6D\
+        \uC5B4 (KO)&mdash;</option>\n<option value=\"KLB\" >Korean Living Bible (KLB)</option>\n\
+        <option class=\"spacer\" value=\"KLB\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"VULGATE\">&mdash;Latina (LA)&mdash;</option>\n<option value=\"VULGATE\"\
+        \ >Biblia Sacra Vulgata (VULGATE)</option>\n<option class=\"spacer\" value=\"\
+        VULGATE\">&nbsp;</option>\n<option class=\"lang\" value=\"LCB\">&mdash;Luganda\
+        \ (LG)&mdash;</option>\n<option value=\"LCB\" >Endagaano Enkadde n\u02BCEndagaano\
+        \ Empya (LCB)</option>\n<option class=\"spacer\" value=\"LCB\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"MAORI\">&mdash;M\u0101ori (MI)&mdash;</option>\n\
+        <option value=\"MAORI\" >Maori Bible (MAORI)</option>\n<option class=\"spacer\"\
+        \ value=\"MAORI\">&nbsp;</option>\n<option class=\"lang\" value=\"MNT\">&mdash;\u041C\
+        \u0430\u043A\u0435\u0434\u043E\u043D\u0441\u043A\u0438 (MK)&mdash;</option>\n\
+        <option value=\"MNT\" >Macedonian New Testament (MNT)</option>\n<option class=\"\
+        spacer\" value=\"MNT\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-MR\"\
+        >&mdash;\u092E\u0930\u093E\u0920\u0940 (MR)&mdash;</option>\n<option value=\"\
+        ERV-MR\" >Marathi Bible: Easy-to-Read Version (ERV-MR)</option>\n<option class=\"\
+        spacer\" value=\"ERV-MR\">&nbsp;</option>\n<option class=\"lang\" value=\"\
+        MVC\">&mdash;Mam, Central (MVC)&mdash;</option>\n<option value=\"MVC\" >Mam,\
+        \ Central (MVC)</option>\n<option class=\"spacer\" value=\"MVC\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"MVJ\">&mdash;Mam, Todos Santos (MVJ)&mdash;</option>\n\
+        <option value=\"MVJ\" >Mam de Todos Santos Chuchumat\xE1n (MVJ)</option>\n\
+        <option class=\"spacer\" value=\"MVJ\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"REIMER\">&mdash;Plautdietsch (NDS)&mdash;</option>\n<option value=\"\
+        REIMER\" >Reimer 2001 (REIMER)</option>\n<option class=\"spacer\" value=\"\
+        REIMER\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-NE\">&mdash;\u0928\
+        \u0947\u092A\u093E\u0932\u0940 (NE)&mdash;</option>\n<option value=\"ERV-NE\"\
+        \ >Nepali Bible: Easy-to-Read Version (ERV-NE)</option>\n<option class=\"\
+        spacer\" value=\"ERV-NE\">&nbsp;</option>\n<option class=\"lang\" value=\"\
+        NGU\">&mdash;N\xE1huatl de Guerrero (NGU)&mdash;</option>\n<option value=\"\
+        NGU\" >N\xE1huatl de Guerrero (NGU)</option>\n<option class=\"spacer\" value=\"\
+        NGU\">&nbsp;</option>\n<option class=\"lang\" value=\"BB\">&mdash;Nederlands\
+        \ (NL)&mdash;</option>\n<option value=\"BB\" >BasisBijbel (BB)</option>\n\
+        <option value=\"HTB\" >Het Boek (HTB)</option>\n<option class=\"spacer\" value=\"\
+        HTB\">&nbsp;</option>\n<option class=\"lang\" value=\"DNB1930\">&mdash;Norsk\
+        \ (NO)&mdash;</option>\n<option value=\"DNB1930\" >Det Norsk Bibelselskap\
+        \ 1930 (DNB1930)</option>\n<option value=\"LB\" >En Levende Bok (LB)</option>\n\
+        <option class=\"spacer\" value=\"LB\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"CCL\">&mdash;Chichewa (NY)&mdash;</option>\n<option value=\"CCL\"\
+        \ >Mawu a Mulungu mu Chichewa Chalero (CCL)</option>\n<option class=\"spacer\"\
+        \ value=\"CCL\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-OR\">&mdash;\u0B13\
+        \u0B21\u0B3C\u0B3F\u0B06 (OR)&mdash;</option>\n<option value=\"ERV-OR\" >Oriya\
+        \ Bible: Easy-to-Read Version (ERV-OR)</option>\n<option class=\"spacer\"\
+        \ value=\"ERV-OR\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-PA\"\
+        >&mdash;\u0A2A\u0A70\u0A1C\u0A3E\u0A2C\u0A40 (PA)&mdash;</option>\n<option\
+        \ value=\"ERV-PA\" >Punjabi Bible: Easy-to-Read Version (ERV-PA)</option>\n\
+        <option class=\"spacer\" value=\"ERV-PA\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"NP\">&mdash;Polski (PL)&mdash;</option>\n<option value=\"NP\"\
+        \ >Nowe Przymierze (NP)</option>\n<option value=\"SZ-PL\" >S\u0142owo \u017B\
         ycia (SZ-PL)</option>\n<option value=\"UBG\" >Updated Gda\u0144sk Bible (UBG)</option>\n\
         <option class=\"spacer\" value=\"UBG\">&nbsp;</option>\n<option class=\"lang\"\
-        \ value=\"NBTN\">---Nawat (PPL)---</option>\n<option value=\"NBTN\" >Ne Bibliaj\
-        \ Tik Nawat (NBTN)</option>\n<option class=\"spacer\" value=\"NBTN\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"ARC\">---Portugu\xEAs (PT)---</option>\n<option\
-        \ value=\"ARC\" >Almeida Revista e Corrigida 2009 (ARC)</option>\n<option\
-        \ value=\"VFL\" >Portuguese New Testament: Easy-to-Read Version (VFL)</option>\n\
-        <option value=\"NTLH\" >Nova Tradu\u04AB\xE3o na Linguagem de Hoje 2000 (NTLH)</option>\n\
-        <option value=\"NVT\" >Nova Vers\xE3o Transformadora (NVT)</option>\n<option\
-        \ value=\"NVI-PT\" >Nova Vers\xE3o Internacional (NVI-PT)</option>\n<option\
-        \ value=\"OL\" >O Livro (OL)</option>\n<option class=\"spacer\" value=\"OL\"\
-        >&nbsp;</option>\n<option class=\"lang\" value=\"MTDS\">---Quichua (QU)---</option>\n\
-        <option value=\"MTDS\" >Mushuj Testamento Diospaj Shimi (MTDS)</option>\n\
-        <option class=\"spacer\" value=\"MTDS\">&nbsp;</option>\n<option class=\"\
-        lang\" value=\"QUT\">---Quich\xE9, Centro Occidenta (QUT)---</option>\n<option\
-        \ value=\"QUT\" >Quich\xE9, Centro Occidental (QUT)</option>\n<option class=\"\
-        spacer\" value=\"QUT\">&nbsp;</option>\n<option class=\"lang\" value=\"RMNN\"\
-        >---Rom\xE2n\u0103 (RO)---</option>\n<option value=\"RMNN\" >Cornilescu 1924\
-        \ - Revised 2010, 2014 (RMNN)</option>\n<option value=\"NTLR\" >Nou\u0103\
-        \ Traducere \xCEn Limba Rom\xE2n\u0103 (NTLR)</option>\n<option class=\"spacer\"\
-        \ value=\"NTLR\">&nbsp;</option>\n<option class=\"lang\" value=\"NRT\">---\u0420\
-        \u0443\u0441\u0441\u043A\u0438\u0439 (RU)---</option>\n<option value=\"NRT\"\
-        \ >New Russian Translation (NRT)</option>\n<option value=\"CARS\" >\u0421\u0432\
-        \u044F\u0449\u0435\u043D\u043D\u043E\u0435 \u041F\u0438\u0441\u0430\u043D\u0438\
-        \u0435 (\u0412\u043E\u0441\u0442\u043E\u0447\u043D\u044B\u0439 \u041F\u0435\
-        \u0440\u0435\u0432\u043E\u0434) (CARS)</option>\n<option value=\"CARST\" >\u0421\
+        \ value=\"NBTN\">&mdash;Nawat (PPL)&mdash;</option>\n<option value=\"NBTN\"\
+        \ >Ne Bibliaj Tik Nawat (NBTN)</option>\n<option class=\"spacer\" value=\"\
+        NBTN\">&nbsp;</option>\n<option class=\"lang\" value=\"ARC\">&mdash;Portugu\xEA\
+        s (PT)&mdash;</option>\n<option value=\"ARC\" >Almeida Revista e Corrigida\
+        \ 2009 (ARC)</option>\n<option value=\"VFL\" >Portuguese New Testament: Easy-to-Read\
+        \ Version (VFL)</option>\n<option value=\"NTLH\" >Nova Tradu\u04AB\xE3o na\
+        \ Linguagem de Hoje 2000 (NTLH)</option>\n<option value=\"NVT\" >Nova Vers\xE3\
+        o Transformadora (NVT)</option>\n<option value=\"NVI-PT\" >Nova Vers\xE3o\
+        \ Internacional (NVI-PT)</option>\n<option value=\"OL\" >O Livro (OL)</option>\n\
+        <option class=\"spacer\" value=\"OL\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"MTDS\">&mdash;Quichua (QU)&mdash;</option>\n<option value=\"MTDS\"\
+        \ >Mushuj Testamento Diospaj Shimi (MTDS)</option>\n<option class=\"spacer\"\
+        \ value=\"MTDS\">&nbsp;</option>\n<option class=\"lang\" value=\"QUT\">&mdash;Quich\xE9\
+        , Centro Occidenta (QUT)&mdash;</option>\n<option value=\"QUT\" >Quich\xE9\
+        , Centro Occidental (QUT)</option>\n<option class=\"spacer\" value=\"QUT\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"RMNN\">&mdash;Rom\xE2n\u0103\
+        \ (RO)&mdash;</option>\n<option value=\"RMNN\" >Cornilescu 1924 - Revised\
+        \ 2010, 2014 (RMNN)</option>\n<option value=\"NTLR\" >Nou\u0103 Traducere\
+        \ \xCEn Limba Rom\xE2n\u0103 (NTLR)</option>\n<option class=\"spacer\" value=\"\
+        NTLR\">&nbsp;</option>\n<option class=\"lang\" value=\"NRT\">&mdash;\u0420\
+        \u0443\u0441\u0441\u043A\u0438\u0439 (RU)&mdash;</option>\n<option value=\"\
+        NRT\" >New Russian Translation (NRT)</option>\n<option value=\"CARS\" >\u0421\
+        \u0432\u044F\u0449\u0435\u043D\u043D\u043E\u0435 \u041F\u0438\u0441\u0430\u043D\
+        \u0438\u0435 (\u0412\u043E\u0441\u0442\u043E\u0447\u043D\u044B\u0439 \u041F\
+        \u0435\u0440\u0435\u0432\u043E\u0434) (CARS)</option>\n<option value=\"CARST\"\
+        \ >\u0421\u0432\u044F\u0449\u0435\u043D\u043D\u043E\u0435 \u041F\u0438\u0441\
+        \u0430\u043D\u0438\u0435 (\u0412\u043E\u0441\u0442\u043E\u0447\u043D\u044B\
+        \u0439 \u043F\u0435\u0440\u0435\u0432\u043E\u0434), \u0432\u0435\u0440\u0441\
+        \u0438\u044F \u0434\u043B\u044F \u0422\u0430\u0434\u0436\u0438\u043A\u0438\
+        \u0441\u0442\u0430\u043D\u0430 (CARST)</option>\n<option value=\"CARSA\" >\u0421\
         \u0432\u044F\u0449\u0435\u043D\u043D\u043E\u0435 \u041F\u0438\u0441\u0430\u043D\
         \u0438\u0435 (\u0412\u043E\u0441\u0442\u043E\u0447\u043D\u044B\u0439 \u043F\
         \u0435\u0440\u0435\u0432\u043E\u0434), \u0432\u0435\u0440\u0441\u0438\u044F\
-        \ \u0434\u043B\u044F \u0422\u0430\u0434\u0436\u0438\u043A\u0438\u0441\u0442\
-        \u0430\u043D\u0430 (CARST)</option>\n<option value=\"CARSA\" >\u0421\u0432\
-        \u044F\u0449\u0435\u043D\u043D\u043E\u0435 \u041F\u0438\u0441\u0430\u043D\u0438\
-        \u0435 (\u0412\u043E\u0441\u0442\u043E\u0447\u043D\u044B\u0439 \u043F\u0435\
-        \u0440\u0435\u0432\u043E\u0434), \u0432\u0435\u0440\u0441\u0438\u044F \u0441\
-        \ \xAB\u0410\u043B\u043B\u0430\u0445\u043E\u043C\xBB (CARSA)</option>\n<option\
-        \ value=\"ERV-RU\" >Russian New Testament: Easy-to-Read Version (ERV-RU)</option>\n\
+        \ \u0441 \xAB\u0410\u043B\u043B\u0430\u0445\u043E\u043C\xBB (CARSA)</option>\n\
+        <option value=\"ERV-RU\" >Russian New Testament: Easy-to-Read Version (ERV-RU)</option>\n\
         <option value=\"RUSV\" >Russian Synodal Version (RUSV)</option>\n<option class=\"\
         spacer\" value=\"RUSV\">&nbsp;</option>\n<option class=\"lang\" value=\"NPK\"\
-        >---Sloven\u010Dina (SK)---</option>\n<option value=\"NPK\" >N\xE1dej pre\
-        \ kazd\xE9ho (NPK)</option>\n<option class=\"spacer\" value=\"NPK\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"SOM\">---Somali (SO)---</option>\n<option value=\"\
-        SOM\" >Somali Bible (SOM)</option>\n<option class=\"spacer\" value=\"SOM\"\
-        >&nbsp;</option>\n<option class=\"lang\" value=\"ALB\">---Shqip (SQ)---</option>\n\
-        <option value=\"ALB\" >Albanian Bible (ALB)</option>\n<option class=\"spacer\"\
-        \ value=\"ALB\">&nbsp;</option>\n<option class=\"lang\" value=\"NSP\">---\u0421\
-        \u0440\u043F\u0441\u043A\u0438 (SR)---</option>\n<option value=\"NSP\" >New\
-        \ Serbian Translation (NSP)</option>\n<option value=\"ERV-SR\" >Serbian New\
-        \ Testament: Easy-to-Read Version (ERV-SR)</option>\n<option class=\"spacer\"\
-        \ value=\"ERV-SR\">&nbsp;</option>\n<option class=\"lang\" value=\"NUB\">---Svenska\
-        \ (SV)---</option>\n<option value=\"NUB\" >nuBibeln (Swedish Contemporary\
-        \ Bible) (NUB)</option>\n<option value=\"SV1917\" >Svenska 1917 (SV1917)</option>\n\
-        <option value=\"SFB\" >Svenska Folkbibeln (SFB)</option>\n<option value=\"\
-        SFB15\" >Svenska Folkbibeln 2015 (SFB15)</option>\n<option value=\"SVL\" >Swedish\
-        \ New Living Bible (Nya Levande Bibeln) (SVL)</option>\n<option class=\"spacer\"\
-        \ value=\"SVL\">&nbsp;</option>\n<option class=\"lang\" value=\"TKU\">---Kiswahili\
-        \ (SW)---</option>\n<option value=\"TKU\" >Agano Jipya: Tafsiri ya Kusoma-Kwa-Urahisi\
-        \ (TKU)</option>\n<option value=\"SNT\" >Neno: Bibilia Takatifu (SNT)</option>\n\
-        <option class=\"spacer\" value=\"SNT\">&nbsp;</option>\n<option class=\"lang\"\
-        \ value=\"ERV-TA\">---\u0BA4\u0BAE\u0BBF\u0BB4\u0BCD (TA)---</option>\n<option\
-        \ value=\"ERV-TA\" >Tamil Bible: Easy-to-Read Version (ERV-TA)</option>\n\
-        <option class=\"spacer\" value=\"ERV-TA\">&nbsp;</option>\n<option class=\"\
-        lang\" value=\"NTV-BIBLE\">---\u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22 (TH)---</option>\n\
+        >&mdash;Sloven\u010Dina (SK)&mdash;</option>\n<option value=\"NPK\" >N\xE1\
+        dej pre kazd\xE9ho (NPK)</option>\n<option class=\"spacer\" value=\"NPK\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"SOM\">&mdash;Somali (SO)&mdash;</option>\n\
+        <option value=\"SOM\" >Somali Bible (SOM)</option>\n<option class=\"spacer\"\
+        \ value=\"SOM\">&nbsp;</option>\n<option class=\"lang\" value=\"ALB\">&mdash;Shqip\
+        \ (SQ)&mdash;</option>\n<option value=\"ALB\" >Albanian Bible (ALB)</option>\n\
+        <option class=\"spacer\" value=\"ALB\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"NSP\">&mdash;\u0421\u0440\u043F\u0441\u043A\u0438 (SR)&mdash;</option>\n\
+        <option value=\"NSP\" >New Serbian Translation (NSP)</option>\n<option value=\"\
+        ERV-SR\" >Serbian New Testament: Easy-to-Read Version (ERV-SR)</option>\n\
+        <option class=\"spacer\" value=\"ERV-SR\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"NUB\">&mdash;Svenska (SV)&mdash;</option>\n<option value=\"\
+        NUB\" >nuBibeln (Swedish Contemporary Bible) (NUB)</option>\n<option value=\"\
+        SV1917\" >Svenska 1917 (SV1917)</option>\n<option value=\"SFB\" >Svenska Folkbibeln\
+        \ (SFB)</option>\n<option value=\"SFB15\" >Svenska Folkbibeln 2015 (SFB15)</option>\n\
+        <option value=\"SVL\" >Swedish New Living Bible (Nya Levande Bibeln) (SVL)</option>\n\
+        <option class=\"spacer\" value=\"SVL\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"TKU\">&mdash;Kiswahili (SW)&mdash;</option>\n<option value=\"TKU\"\
+        \ >Agano Jipya: Tafsiri ya Kusoma-Kwa-Urahisi (TKU)</option>\n<option value=\"\
+        SNT\" >Neno: Bibilia Takatifu (SNT)</option>\n<option class=\"spacer\" value=\"\
+        SNT\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-TA\">&mdash;\u0BA4\
+        \u0BAE\u0BBF\u0BB4\u0BCD (TA)&mdash;</option>\n<option value=\"ERV-TA\" >Tamil\
+        \ Bible: Easy-to-Read Version (ERV-TA)</option>\n<option class=\"spacer\"\
+        \ value=\"ERV-TA\">&nbsp;</option>\n<option class=\"lang\" value=\"NTV-BIBLE\"\
+        >&mdash;\u0E20\u0E32\u0E29\u0E32\u0E44\u0E17\u0E22 (TH)&mdash;</option>\n\
         <option value=\"NTV-BIBLE\" >New Thai Version (NTV-BIBLE)</option>\n<option\
         \ value=\"ERV-TH\" >Thai New Testament: Easy-to-Read Version (ERV-TH)</option>\n\
         <option value=\"TNCV\" >Thai New Contemporary Bible (TNCV)</option>\n<option\
         \ class=\"spacer\" value=\"TNCV\">&nbsp;</option>\n<option class=\"lang\"\
-        \ value=\"FSV\">---Tagalog (TL)---</option>\n<option value=\"FSV\" >Ang Bagong\
-        \ Tipan: Filipino Standard Version (FSV)</option>\n<option value=\"ABTAG1978\"\
-        \ >Ang Biblia (1978) (ABTAG1978)</option>\n<option value=\"ABTAG2001\" >Ang\
-        \ Biblia, 2001 (ABTAG2001)</option>\n<option value=\"ADB1905\" >Ang Dating\
-        \ Biblia (1905) (ADB1905)</option>\n<option value=\"SND\" >Ang Salita ng Diyos\
-        \ (SND)</option>\n<option value=\"ASND\" >Ang Salita ng Dios (Tagalog Contemporary\
-        \ Bible) (ASND)</option>\n<option value=\"MBBTAG\" >Magandang Balita Biblia\
-        \ (MBBTAG)</option>\n<option value=\"MBBTAG-DC\" >Magandang Balita Biblia\
-        \ (with Deuterocanon) (MBBTAG-DC)</option>\n<option class=\"spacer\" value=\"\
-        MBBTAG-DC\">&nbsp;</option>\n<option class=\"lang\" value=\"NA-TWI\">---Twi\
-        \ (TWI)---</option>\n<option value=\"NA-TWI\" >Nkwa Asem (NA-TWI)</option>\n\
-        <option class=\"spacer\" value=\"NA-TWI\">&nbsp;</option>\n<option class=\"\
-        lang\" value=\"UKR\">---\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\
-        \u0430 (UK)---</option>\n<option value=\"UKR\" >Ukrainian Bible (UKR)</option>\n\
-        <option value=\"ERV-UK\" >Ukrainian New Testament: Easy-to-Read Version (ERV-UK)</option>\n\
-        <option class=\"spacer\" value=\"ERV-UK\">&nbsp;</option>\n<option class=\"\
-        lang\" value=\"ERV-UR\">---\u0627\u0631\u062F\u0648 (UR)---</option>\n<option\
-        \ value=\"ERV-UR\" >Urdu Bible: Easy-to-Read Version (ERV-UR)</option>\n<option\
-        \ class=\"spacer\" value=\"ERV-UR\">&nbsp;</option>\n<option class=\"lang\"\
-        \ value=\"USP\">---Uspanteco (USP)---</option>\n<option value=\"USP\" >Uspanteco\
-        \ (USP)</option>\n<option class=\"spacer\" value=\"USP\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"BD2011\">---Ti\xEAng Vi\xEAt (VI)---</option>\n\
-        <option value=\"BD2011\" >B\u1EA3n D\u1ECBch 2011 (BD2011)</option>\n<option\
-        \ value=\"NVB\" >New Vietnamese Bible (NVB)</option>\n<option value=\"BPT\"\
-        \ >Vietnamese Bible: Easy-to-Read Version (BPT)</option>\n<option class=\"\
-        spacer\" value=\"BPT\">&nbsp;</option>\n<option class=\"lang\" value=\"BYO\"\
-        >---Yor\xF9b\xE1 (YO)---</option>\n<option value=\"BYO\" >B\xEDb\xE9l\xEC\
-        \ M\xEDm\u1ECD\u0301 Yor\xF9b\xE1 \xD2de \xD2n (BYO)</option>\n<option class=\"\
-        spacer\" value=\"BYO\">&nbsp;</option>\n<option class=\"lang\" value=\"CCB\"\
-        >---\u6C49\u8BED (ZH)---</option>\n<option value=\"CCB\" >Chinese Contemporary\
-        \ Bible (Simplified) (CCB)</option>\n<option value=\"CCBT\" >Chinese Contemporary\
+        \ value=\"FSV\">&mdash;Tagalog (TL)&mdash;</option>\n<option value=\"FSV\"\
+        \ >Ang Bagong Tipan: Filipino Standard Version (FSV)</option>\n<option value=\"\
+        ABTAG1978\" >Ang Biblia (1978) (ABTAG1978)</option>\n<option value=\"ABTAG2001\"\
+        \ >Ang Biblia, 2001 (ABTAG2001)</option>\n<option value=\"ADB1905\" >Ang Dating\
+        \ Biblia (1905) (ADB1905)</option>\n<option value=\"ASND\" >Ang Salita ng\
+        \ Dios (Tagalog Contemporary Bible) (ASND)</option>\n<option value=\"SND\"\
+        \ >Ang Salita ng Diyos (SND)</option>\n<option value=\"MBBTAG\" >Magandang\
+        \ Balita Biblia (MBBTAG)</option>\n<option value=\"MBBTAG-DC\" >Magandang\
+        \ Balita Biblia (with Deuterocanon) (MBBTAG-DC)</option>\n<option class=\"\
+        spacer\" value=\"MBBTAG-DC\">&nbsp;</option>\n<option class=\"lang\" value=\"\
+        NA-TWI\">&mdash;Twi (TWI)&mdash;</option>\n<option value=\"NA-TWI\" >Nkwa\
+        \ Asem (NA-TWI)</option>\n<option class=\"spacer\" value=\"NA-TWI\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"UKR\">&mdash;\u0423\u043A\u0440\u0430\u0457\
+        \u043D\u0441\u044C\u043A\u0430 (UK)&mdash;</option>\n<option value=\"UKR\"\
+        \ >Ukrainian Bible (UKR)</option>\n<option value=\"ERV-UK\" >Ukrainian New\
+        \ Testament: Easy-to-Read Version (ERV-UK)</option>\n<option class=\"spacer\"\
+        \ value=\"ERV-UK\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-UR\"\
+        >&mdash;\u0627\u0631\u062F\u0648 (UR)&mdash;</option>\n<option value=\"ERV-UR\"\
+        \ >Urdu Bible: Easy-to-Read Version (ERV-UR)</option>\n<option class=\"spacer\"\
+        \ value=\"ERV-UR\">&nbsp;</option>\n<option class=\"lang\" value=\"USP\">&mdash;Uspanteco\
+        \ (USP)&mdash;</option>\n<option value=\"USP\" >Uspanteco (USP)</option>\n\
+        <option class=\"spacer\" value=\"USP\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"BD2011\">&mdash;Ti\xEAng Vi\xEAt (VI)&mdash;</option>\n<option value=\"\
+        BD2011\" >B\u1EA3n D\u1ECBch 2011 (BD2011)</option>\n<option value=\"NVB\"\
+        \ >New Vietnamese Bible (NVB)</option>\n<option value=\"BPT\" >Vietnamese\
+        \ Bible: Easy-to-Read Version (BPT)</option>\n<option class=\"spacer\" value=\"\
+        BPT\">&nbsp;</option>\n<option class=\"lang\" value=\"BYO\">&mdash;Yor\xF9\
+        b\xE1 (YO)&mdash;</option>\n<option value=\"BYO\" >B\xEDb\xE9l\xEC M\xEDm\u1ECD\
+        \u0301 Yor\xF9b\xE1 \xD2de \xD2n (BYO)</option>\n<option class=\"spacer\"\
+        \ value=\"BYO\">&nbsp;</option>\n<option class=\"lang\" value=\"CCB\">&mdash;\u6C49\
+        \u8BED (ZH)&mdash;</option>\n<option value=\"CCB\" >Chinese Contemporary Bible\
+        \ (Simplified) (CCB)</option>\n<option value=\"CCBT\" >Chinese Contemporary\
         \ Bible (Traditional) (CCBT)</option>\n<option value=\"ERV-ZH\" >Chinese New\
         \ Testament: Easy-to-Read Version (ERV-ZH)</option>\n<option value=\"CNVS\"\
         \ >Chinese New Version (Simplified) (CNVS)</option>\n<option value=\"CNVT\"\
@@ -1182,221 +1318,331 @@ interactions:
         \ (CUVMPT)</option>\n<option value=\"RCU17SS\" >Revised Chinese Union Version\
         \ (Simplified Script) Shen Edition (RCU17SS)</option>\n<option value=\"RCU17TS\"\
         \ >Revised Chinese Union Version (Traditional Script) Shen Edition (RCU17TS)</option>\n\
-        </select></div></span>&nbsp;Results&nbsp;1-10.&nbsp;</div>               \
-        \             <div class=\"filter-dropdown\"><span>Filter by&nbsp;</span><span\
-        \ class=\"js-dropdowns\"><span class=\"filter\"><span class=\"dropdown-display\"\
-        ></span><span class=\"dropdown-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\"\
-        \ viewBox=\"0 0 11.5 6.5\" width=\"11.5\" height=\"6.5\"><title>dropdown</title><use\
-        \ xlink:href=\"#icon-dropdown\"></use></svg>\n</span></span></span><div class=\"\
-        dropdowns\"><div class=\"iv-filters\"><select aria-label=\"Searched Portion\"\
-        \ class=\"dropdown\" name=\"filter\"><option class=\"active divider\" value\
-        \ = \"ALL\" data-display=\"All\" selected>All (10)</option><option class=\"\
-        divider\" value=\"OT\" data-display=\"the Old Testament\">Old Testament (2)</option><option\
-        \ value=\"1\" data-display=\"the book of Genesis\">Genesis (1)</option><option\
-        \ value=\"23\" data-display=\"Psalms\">Psalm (1)</option><option class=\"\
-        divider\" value=\"NT\" data-display=\"the New Testament\">New Testament (8)</option><option\
-        \ value=\"65\" data-display=\"the book of Hebrews\">Hebrews (8)</option></select></div><!--\
-        \ .iv-filters --></div></div>                            <div class=\"mobile-rpp\"\
-        >\n                                <div class=\"js-dropdowns\">\n        \
-        \                            <span class=\"mobile-rpp-display\"></span>\n\
-        \                                    <span class=\"dropdown-icon\"><svg xmlns=\"\
-        http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5 6.5\" width=\"11.5\" height=\"\
-        6.5\"><title>dropdown</title><use xlink:href=\"#icon-dropdown\"></use></svg>\n\
-        </span>\n                                </div>\n                        \
-        \        <span> results per page</span>\n                            </div>\n\
-        \                        </div>\n                                        \
-        \    <div class=\"search-suggested-result\"><h4 class=\"search-result-heading\"\
-        >Suggested result</h4><div class=\"text-html\"><article class=\"bible-item\"\
-        \ data-osis=\"Heb.7\"><span class=\"bible-item-title-wrap\"><a class=\"bible-item-title\"\
-        \ href=\"/passage/?search=Hebrews%207&amp;version=NASB1995\">Hebrews 7</a></span><br\
-        \ />\n<div class=\"bible-item-text\"><h3><b>Melchizedek</b>\u2019s Priesthood\
-        \ Like Christ\u2019s</h3> For this <b>Melchizedek</b>, king of Salem, priest\
-        \ of the Most High God, who met Abraham as he was returning from the slaughter\
-        \ of the kings and blessed him, to whom also Abraham apportioned a tenth part\
-        \ of all <i>the spoils</i>, was first of all, by the translation <i>of his\
-        \ name</i>, king of righteousness, and then also king of Salem, which is king\
-        \ of peace. Without father, without mother, without genealogy, having neither\
-        \ beginning of days nor end of life, but made like the Son of God, he remains\
-        \ a priest perpetually.  ...<div class=\"bible-item-extras\"><a href=\"/passage/?search=Hebrews%207%3A1%2D3&amp;version=NASB1995\"\
-        >In Context</a>\n | <a href=\"/passage/?search=Hebrews%207&amp;version=NASB1995\"\
-        >Full Chapter</a>\n | <a href=\"/verse/en/Hebrews%207%3A3\">Other Translations</a>\
-        \ \n</div><!-- .bible-item-extras -->\n</div><!-- .bible-item-text --></article>\n\
-        </div></div><!-- .search-suggested-result --><h4 class=\"search-result-heading\"\
-        >Bible search results</h4><div class=\"search-result-list\"><div class=\"\
-        text-html\"><ol start =\"1\"><li class=\"row bible-item\" data-osis=\"Gen.14.18\"\
-        ><div class=\"bible-item-title-wrap col-sm-3\"><a class=\"bible-item-title\"\
-        \ href=\"/passage/?search=Genesis%2014%3A18&amp;version=NASB1995\">Genesis\
-        \ 14:18</a></div>\n<div class=\"bible-item-text col-sm-9\">\nAnd <b>Melchizedek</b>\
-        \ king of Salem brought out bread and wine; now he was a priest of God Most\
-        \ High.<div class=\"bible-item-extras\"><a href=\"/passage/?search=Genesis%2014%3A17%2D19&amp;version=NASB1995\"\
-        >In Context</a>\n | <a href=\"/passage/?search=Genesis%2014&amp;version=NASB1995\"\
-        >Full Chapter</a>\n | <a href=\"/verse/en/Genesis%2014%3A18\">Other Translations</a>\
-        \ \n</div><!-- .bible-item-extras -->\n</div><!-- bible-item-text -->\n</li>\n\
-        <li class=\"row bible-item\" data-osis=\"Ps.110.4\"><div class=\"bible-item-title-wrap\
-        \ col-sm-3\"><a class=\"bible-item-title\" href=\"/passage/?search=Psalm%20110%3A4&amp;version=NASB1995\"\
-        >Psalm 110:4</a></div>\n<div class=\"bible-item-text col-sm-9\">\nThe <span\
-        \ class=\"small-caps\" >Lord</span> has sworn and will not change His mind,\
-        \ \u201CYou are a priest forever According to the order of <b>Melchizedek</b>.\u201D\
-        <div class=\"bible-item-extras\"><a href=\"/passage/?search=Psalm%20110%3A3%2D5&amp;version=NASB1995\"\
-        >In Context</a>\n | <a href=\"/passage/?search=Psalm%20110&amp;version=NASB1995\"\
-        >Full Chapter</a>\n | <a href=\"/verse/en/Psalm%20110%3A4\">Other Translations</a>\
-        \ \n</div><!-- .bible-item-extras -->\n</div><!-- bible-item-text -->\n</li>\n\
-        <li class=\"row bible-item\" data-osis=\"Heb.5.6\"><div class=\"bible-item-title-wrap\
-        \ col-sm-3\"><a class=\"bible-item-title\" href=\"/passage/?search=Hebrews%205%3A6&amp;version=NASB1995\"\
-        >Hebrews 5:6</a></div>\n<div class=\"bible-item-text col-sm-9\">\njust as\
-        \ He says also in another <i>passage</i>, \u201C<span class=\"small-caps\"\
-        \ >You are a priest forever</span> <span class=\"small-caps\" >According to</span>\
-        \ <span class=\"small-caps\" >the order of <b>Melchizedek</b></span>.\u201D\
-        <div class=\"bible-item-extras\"><a href=\"/passage/?search=Hebrews%205%3A5%2D7&amp;version=NASB1995\"\
-        >In Context</a>\n | <a href=\"/passage/?search=Hebrews%205&amp;version=NASB1995\"\
-        >Full Chapter</a>\n | <a href=\"/verse/en/Hebrews%205%3A6\">Other Translations</a>\
-        \ \n</div><!-- .bible-item-extras -->\n</div><!-- bible-item-text -->\n</li>\n\
-        <li class=\"row bible-item\" data-osis=\"Heb.5.10\"><div class=\"bible-item-title-wrap\
-        \ col-sm-3\"><a class=\"bible-item-title\" href=\"/passage/?search=Hebrews%205%3A10&amp;version=NASB1995\"\
-        >Hebrews 5:10</a></div>\n<div class=\"bible-item-text col-sm-9\">\nbeing designated\
-        \ by God as a high priest according to the order of <b>Melchizedek</b>.<div\
-        \ class=\"bible-item-extras\"><a href=\"/passage/?search=Hebrews%205%3A9%2D11&amp;version=NASB1995\"\
-        >In Context</a>\n | <a href=\"/passage/?search=Hebrews%205&amp;version=NASB1995\"\
-        >Full Chapter</a>\n | <a href=\"/verse/en/Hebrews%205%3A10\">Other Translations</a>\
-        \ \n</div><!-- .bible-item-extras -->\n</div><!-- bible-item-text -->\n</li>\n\
-        <li class=\"row bible-item\" data-osis=\"Heb.6.20\"><div class=\"bible-item-title-wrap\
-        \ col-sm-3\"><a class=\"bible-item-title\" href=\"/passage/?search=Hebrews%206%3A20&amp;version=NASB1995\"\
-        >Hebrews 6:20</a></div>\n<div class=\"bible-item-text col-sm-9\">\nwhere Jesus\
-        \ has entered as a forerunner for us, having become a high priest forever\
-        \ according to the order of <b>Melchizedek</b>.<div class=\"bible-item-extras\"\
-        ><a href=\"/passage/?search=Hebrews%206%3A19%2D20&amp;version=NASB1995\">In\
-        \ Context</a>\n | <a href=\"/passage/?search=Hebrews%206&amp;version=NASB1995\"\
-        >Full Chapter</a>\n | <a href=\"/verse/en/Hebrews%206%3A20\">Other Translations</a>\
-        \ \n</div><!-- .bible-item-extras -->\n</div><!-- bible-item-text -->\n</li>\n\
-        <li class=\"row bible-item\" data-osis=\"Heb.7.1\"><div class=\"bible-item-title-wrap\
-        \ col-sm-3\"><a class=\"bible-item-title\" href=\"/passage/?search=Hebrews%207%3A1&amp;version=NASB1995\"\
-        >Hebrews 7:1</a></div>\n<div class=\"bible-item-text col-sm-9\">\n<h3><b>Melchizedek</b>\u2019\
-        s Priesthood Like Christ\u2019s</h3> For this <b>Melchizedek</b>, king of\
-        \ Salem, priest of the Most High God, who met Abraham as he was returning\
-        \ from the slaughter of the kings and blessed him,<div class=\"bible-item-extras\"\
-        ><a href=\"/passage/?search=Hebrews%207%3A1%2D3&amp;version=NASB1995\">In\
-        \ Context</a>\n | <a href=\"/passage/?search=Hebrews%207&amp;version=NASB1995\"\
-        >Full Chapter</a>\n | <a href=\"/verse/en/Hebrews%207%3A1\">Other Translations</a>\
-        \ \n</div><!-- .bible-item-extras -->\n</div><!-- bible-item-text -->\n</li>\n\
-        <li class=\"row bible-item\" data-osis=\"Heb.7.10\"><div class=\"bible-item-title-wrap\
-        \ col-sm-3\"><a class=\"bible-item-title\" href=\"/passage/?search=Hebrews%207%3A10&amp;version=NASB1995\"\
-        >Hebrews 7:10</a></div>\n<div class=\"bible-item-text col-sm-9\">\nfor he\
-        \ was still in the loins of his father when <b>Melchizedek</b> met him.<div\
-        \ class=\"bible-item-extras\"><a href=\"/passage/?search=Hebrews%207%3A9%2D11&amp;version=NASB1995\"\
-        >In Context</a>\n | <a href=\"/passage/?search=Hebrews%207&amp;version=NASB1995\"\
-        >Full Chapter</a>\n | <a href=\"/verse/en/Hebrews%207%3A10\">Other Translations</a>\
-        \ \n</div><!-- .bible-item-extras -->\n</div><!-- bible-item-text -->\n</li>\n\
-        <li class=\"row bible-item\" data-osis=\"Heb.7.11\"><div class=\"bible-item-title-wrap\
-        \ col-sm-3\"><a class=\"bible-item-title\" href=\"/passage/?search=Hebrews%207%3A11&amp;version=NASB1995\"\
-        >Hebrews 7:11</a></div>\n<div class=\"bible-item-text col-sm-9\">\nNow if\
-        \ perfection was through the Levitical priesthood (for on the basis of it\
-        \ the people received the Law), what further need <i>was there</i> for another\
-        \ priest to arise according to the order of <b>Melchizedek</b>, and not be\
-        \ designated according to the order of Aaron?<div class=\"bible-item-extras\"\
-        ><a href=\"/passage/?search=Hebrews%207%3A10%2D12&amp;version=NASB1995\">In\
-        \ Context</a>\n | <a href=\"/passage/?search=Hebrews%207&amp;version=NASB1995\"\
-        >Full Chapter</a>\n | <a href=\"/verse/en/Hebrews%207%3A11\">Other Translations</a>\
-        \ \n</div><!-- .bible-item-extras -->\n</div><!-- bible-item-text -->\n</li>\n\
-        <li class=\"row bible-item\" data-osis=\"Heb.7.15\"><div class=\"bible-item-title-wrap\
-        \ col-sm-3\"><a class=\"bible-item-title\" href=\"/passage/?search=Hebrews%207%3A15&amp;version=NASB1995\"\
-        >Hebrews 7:15</a></div>\n<div class=\"bible-item-text col-sm-9\">\nAnd this\
-        \ is clearer still, if another priest arises according to the likeness of\
-        \ <b>Melchizedek</b>,<div class=\"bible-item-extras\"><a href=\"/passage/?search=Hebrews%207%3A14%2D16&amp;version=NASB1995\"\
-        >In Context</a>\n | <a href=\"/passage/?search=Hebrews%207&amp;version=NASB1995\"\
-        >Full Chapter</a>\n | <a href=\"/verse/en/Hebrews%207%3A15\">Other Translations</a>\
-        \ \n</div><!-- .bible-item-extras -->\n</div><!-- bible-item-text -->\n</li>\n\
-        <li class=\"row bible-item\" data-osis=\"Heb.7.17\"><div class=\"bible-item-title-wrap\
-        \ col-sm-3\"><a class=\"bible-item-title\" href=\"/passage/?search=Hebrews%207%3A17&amp;version=NASB1995\"\
-        >Hebrews 7:17</a></div>\n<div class=\"bible-item-text col-sm-9\">\nFor it\
-        \ is attested <i>of Him</i>, \u201C<span class=\"small-caps\" >You are a priest\
-        \ forever</span> <span class=\"small-caps\" >According to the order of <b>Melchizedek</b></span>.\u201D\
-        <div class=\"bible-item-extras\"><a href=\"/passage/?search=Hebrews%207%3A16%2D18&amp;version=NASB1995\"\
-        >In Context</a>\n | <a href=\"/passage/?search=Hebrews%207&amp;version=NASB1995\"\
-        >Full Chapter</a>\n | <a href=\"/verse/en/Hebrews%207%3A17\">Other Translations</a>\
-        \ \n</div><!-- .bible-item-extras -->\n</div><!-- bible-item-text -->\n</li>\n\
-        </ol>\n</div></div>                      <div class=\"info-viewer-footer d-flex\"\
-        >\n                          <div class=\"iv-prev-page\">\n              \
-        \                                        </div>\n                        \
-        \  <div class=\"iv-next-page\">\n                                        \
-        \              </div>\n                        </div>\n                  \
-        \    </div>\n                      <div class=\"publisher-info-section\">\n\
-        \                        <div class=\"ad-and-publisher-info\"><div class=\"\
-        publisher-info\"><strong><a href=\"/versions/New-American-Standard-Bible-NASB1995/\"\
+        </select><select class=\"dropdown-small\"><option class=\"lang\" value=\"\
+        AMU\">&mdash;AMU&mdash;</option>\n<option value=\"AMU\" >AMU</option>\n<option\
+        \ class=\"spacer\" value=\"AMU\">&nbsp;</option>\n<option class=\"lang\" value=\"\
+        ERV-AR\">&mdash;AR&mdash;</option>\n<option value=\"ERV-AR\" >ERV-AR</option>\n\
+        <option value=\"NAV\" >NAV</option>\n<option class=\"spacer\" value=\"NAV\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"ERV-AWA\">&mdash;AWA&mdash;</option>\n\
+        <option value=\"ERV-AWA\" >ERV-AWA</option>\n<option class=\"spacer\" value=\"\
+        ERV-AWA\">&nbsp;</option>\n<option class=\"lang\" value=\"BG1940\">&mdash;BG&mdash;</option>\n\
+        <option value=\"BG1940\" >BG1940</option>\n<option value=\"BULG\" >BULG</option>\n\
+        <option value=\"ERV-BG\" >ERV-BG</option>\n<option value=\"CBT\" >CBT</option>\n\
+        <option value=\"BOB\" >BOB</option>\n<option value=\"BPB\" >BPB</option>\n\
+        <option class=\"spacer\" value=\"BPB\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"CCO\">&mdash;CCO&mdash;</option>\n<option value=\"CCO\" >CCO</option>\n\
+        <option class=\"spacer\" value=\"CCO\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"APSD-CEB\">&mdash;CEB&mdash;</option>\n<option value=\"APSD-CEB\"\
+        \ >APSD-CEB</option>\n<option class=\"spacer\" value=\"APSD-CEB\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"CHR\">&mdash;CHR&mdash;</option>\n<option value=\"\
+        CHR\" >CHR</option>\n<option class=\"spacer\" value=\"CHR\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"KSS\">&mdash;CKB&mdash;</option>\n<option value=\"\
+        KSS\" >KSS</option>\n<option class=\"spacer\" value=\"KSS\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"CKW\">&mdash;CKW&mdash;</option>\n<option value=\"\
+        CKW\" >CKW</option>\n<option class=\"spacer\" value=\"CKW\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"B21\">&mdash;CS&mdash;</option>\n<option value=\"\
+        B21\" >B21</option>\n<option value=\"SNC\" >SNC</option>\n<option class=\"\
+        spacer\" value=\"SNC\">&nbsp;</option>\n<option class=\"lang\" value=\"BWM\"\
+        >&mdash;CY&mdash;</option>\n<option value=\"BWM\" >BWM</option>\n<option class=\"\
+        spacer\" value=\"BWM\">&nbsp;</option>\n<option class=\"lang\" value=\"BPH\"\
+        >&mdash;DA&mdash;</option>\n<option value=\"BPH\" >BPH</option>\n<option value=\"\
+        DN1933\" >DN1933</option>\n<option class=\"spacer\" value=\"DN1933\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"HOF\">&mdash;DE&mdash;</option>\n<option value=\"\
+        HOF\" >HOF</option>\n<option value=\"LUTH1545\" >LUTH1545</option>\n<option\
+        \ value=\"NGU-DE\" >NGU-DE</option>\n<option value=\"SCH1951\" >SCH1951</option>\n\
+        <option value=\"SCH2000\" >SCH2000</option>\n<option class=\"spacer\" value=\"\
+        SCH2000\">&nbsp;</option>\n<option class=\"lang\" value=\"KJ21\">&mdash;EN&mdash;</option>\n\
+        <option value=\"KJ21\" >KJ21</option>\n<option value=\"ASV\" >ASV</option>\n\
+        <option value=\"AMP\" >AMP</option>\n<option value=\"AMPC\" >AMPC</option>\n\
+        <option value=\"BRG\" >BRG</option>\n<option value=\"CSB\" >CSB</option>\n\
+        <option value=\"CEB\" >CEB</option>\n<option value=\"CJB\" >CJB</option>\n\
+        <option value=\"CEV\" >CEV</option>\n<option value=\"DARBY\" >DARBY</option>\n\
+        <option value=\"DLNT\" >DLNT</option>\n<option value=\"DRA\" >DRA</option>\n\
+        <option value=\"ERV\" >ERV</option>\n<option value=\"EHV\" >EHV</option>\n\
+        <option value=\"ESV\" >ESV</option>\n<option value=\"ESVUK\" >ESVUK</option>\n\
+        <option value=\"EXB\" >EXB</option>\n<option value=\"GNV\" >GNV</option>\n\
+        <option value=\"GW\" >GW</option>\n<option value=\"GNT\" >GNT</option>\n<option\
+        \ value=\"HCSB\" >HCSB</option>\n<option value=\"ICB\" >ICB</option>\n<option\
+        \ value=\"ISV\" >ISV</option>\n<option value=\"PHILLIPS\" >PHILLIPS</option>\n\
+        <option value=\"JUB\" >JUB</option>\n<option value=\"KJV\" >KJV</option>\n\
+        <option value=\"AKJV\" >AKJV</option>\n<option value=\"LEB\" >LEB</option>\n\
+        <option value=\"TLB\" >TLB</option>\n<option value=\"MSG\" >MSG</option>\n\
+        <option value=\"MEV\" >MEV</option>\n<option value=\"MOUNCE\" >MOUNCE</option>\n\
+        <option value=\"NOG\" >NOG</option>\n<option value=\"NABRE\" >NABRE</option>\n\
+        <option value=\"NASB\" >NASB</option>\n<option value=\"NASB1995\"  selected=\"\
+        selected\" >NASB1995</option>\n<option value=\"NCB\" >NCB</option>\n<option\
+        \ value=\"NCV\" >NCV</option>\n<option value=\"NET\" >NET</option>\n<option\
+        \ value=\"NIRV\" >NIRV</option>\n<option value=\"NIV\" >NIV</option>\n<option\
+        \ value=\"NIVUK\" >NIVUK</option>\n<option value=\"NKJV\" >NKJV</option>\n\
+        <option value=\"NLV\" >NLV</option>\n<option value=\"NLT\" >NLT</option>\n\
+        <option value=\"NMB\" >NMB</option>\n<option value=\"NRSV\" >NRSV</option>\n\
+        <option value=\"NRSVA\" >NRSVA</option>\n<option value=\"NRSVACE\" >NRSVACE</option>\n\
+        <option value=\"NRSVCE\" >NRSVCE</option>\n<option value=\"NTE\" >NTE</option>\n\
+        <option value=\"OJB\" >OJB</option>\n<option value=\"RGT\" >RGT</option>\n\
+        <option value=\"RSV\" >RSV</option>\n<option value=\"RSVCE\" >RSVCE</option>\n\
+        <option value=\"TLV\" >TLV</option>\n<option value=\"VOICE\" >VOICE</option>\n\
+        <option value=\"WEB\" >WEB</option>\n<option value=\"WE\" >WE</option>\n<option\
+        \ value=\"WYC\" >WYC</option>\n<option value=\"YLT\" >YLT</option>\n<option\
+        \ class=\"spacer\" value=\"YLT\">&nbsp;</option>\n<option class=\"lang\" value=\"\
+        LBLA\">&mdash;ES&mdash;</option>\n<option value=\"LBLA\" >LBLA</option>\n\
+        <option value=\"JBS\" >JBS</option>\n<option value=\"DHH\" >DHH</option>\n\
+        <option value=\"NBLA\" >NBLA</option>\n<option value=\"NBV\" >NBV</option>\n\
+        <option value=\"NTV\" >NTV</option>\n<option value=\"NVI\" >NVI</option>\n\
+        <option value=\"CST\" >CST</option>\n<option value=\"PDT\" >PDT</option>\n\
+        <option value=\"BLP\" >BLP</option>\n<option value=\"BLPH\" >BLPH</option>\n\
+        <option value=\"RVA-2015\" >RVA-2015</option>\n<option value=\"RVC\" >RVC</option>\n\
+        <option value=\"RVR1960\" >RVR1960</option>\n<option value=\"RVR1977\" >RVR1977</option>\n\
+        <option value=\"RVR1995\" >RVR1995</option>\n<option value=\"RVA\" >RVA</option>\n\
+        <option value=\"SRV-BRG\" >SRV-BRG</option>\n<option value=\"TLA\" >TLA</option>\n\
+        <option class=\"spacer\" value=\"TLA\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"R1933\">&mdash;FI&mdash;</option>\n<option value=\"R1933\" >R1933</option>\n\
+        <option class=\"spacer\" value=\"R1933\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"BDS\">&mdash;FR&mdash;</option>\n<option value=\"BDS\" >BDS</option>\n\
+        <option value=\"LSG\" >LSG</option>\n<option value=\"NEG1979\" >NEG1979</option>\n\
+        <option value=\"SG21\" >SG21</option>\n<option class=\"spacer\" value=\"SG21\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"TR1550\">&mdash;GRC&mdash;</option>\n\
+        <option value=\"TR1550\" >TR1550</option>\n<option value=\"WHNU\" >WHNU</option>\n\
+        <option value=\"TR1894\" >TR1894</option>\n<option value=\"SBLGNT\" >SBLGNT</option>\n\
+        <option value=\"THGNT\" >THGNT</option>\n<option class=\"spacer\" value=\"\
+        THGNT\">&nbsp;</option>\n<option class=\"lang\" value=\"GERV\">&mdash;GU&mdash;</option>\n\
+        <option value=\"GERV\" >GERV</option>\n<option class=\"spacer\" value=\"GERV\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"HHH\">&mdash;HE&mdash;</option>\n\
+        <option value=\"HHH\" >HHH</option>\n<option value=\"WLC\" >WLC</option>\n\
+        <option class=\"spacer\" value=\"WLC\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"ERV-HI\">&mdash;HI&mdash;</option>\n<option value=\"ERV-HI\" >ERV-HI</option>\n\
+        <option value=\"SHB\" >SHB</option>\n<option class=\"spacer\" value=\"SHB\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"HLGN\">&mdash;HIL&mdash;</option>\n\
+        <option value=\"HLGN\" >HLGN</option>\n<option class=\"spacer\" value=\"HLGN\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"NCA\">&mdash;HNE&mdash;</option>\n\
+        <option value=\"NCA\" >NCA</option>\n<option class=\"spacer\" value=\"NCA\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"SHP\">&mdash;HR&mdash;</option>\n\
+        <option value=\"SHP\" >SHP</option>\n<option value=\"HNZ-RI\" >HNZ-RI</option>\n\
+        <option value=\"CRO\" >CRO</option>\n<option class=\"spacer\" value=\"CRO\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"HCV\">&mdash;HT&mdash;</option>\n\
+        <option value=\"HCV\" >HCV</option>\n<option value=\"VKF\" >VKF</option>\n\
+        <option class=\"spacer\" value=\"VKF\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"KAR\">&mdash;HU&mdash;</option>\n<option value=\"KAR\" >KAR</option>\n\
+        <option value=\"ERV-HU\" >ERV-HU</option>\n<option value=\"NT-HU\" >NT-HU</option>\n\
+        <option class=\"spacer\" value=\"NT-HU\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"HWP\">&mdash;HWC&mdash;</option>\n<option value=\"HWP\" >HWP</option>\n\
+        <option class=\"spacer\" value=\"HWP\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"ICELAND\">&mdash;IS&mdash;</option>\n<option value=\"ICELAND\" >ICELAND</option>\n\
+        <option class=\"spacer\" value=\"ICELAND\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"BDG\">&mdash;IT&mdash;</option>\n<option value=\"BDG\" >BDG</option>\n\
+        <option value=\"CEI\" >CEI</option>\n<option value=\"LND\" >LND</option>\n\
+        <option value=\"NR1994\" >NR1994</option>\n<option value=\"NR2006\" >NR2006</option>\n\
+        <option class=\"spacer\" value=\"NR2006\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"JLB\">&mdash;JA&mdash;</option>\n<option value=\"JLB\" >JLB</option>\n\
+        <option class=\"spacer\" value=\"JLB\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"JAC\">&mdash;JAC&mdash;</option>\n<option value=\"JAC\" >JAC</option>\n\
+        <option class=\"spacer\" value=\"JAC\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"KEK\">&mdash;KEK&mdash;</option>\n<option value=\"KEK\" >KEK</option>\n\
+        <option class=\"spacer\" value=\"KEK\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"KLB\">&mdash;KO&mdash;</option>\n<option value=\"KLB\" >KLB</option>\n\
+        <option class=\"spacer\" value=\"KLB\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"VULGATE\">&mdash;LA&mdash;</option>\n<option value=\"VULGATE\" >VULGATE</option>\n\
+        <option class=\"spacer\" value=\"VULGATE\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"LCB\">&mdash;LG&mdash;</option>\n<option value=\"LCB\" >LCB</option>\n\
+        <option class=\"spacer\" value=\"LCB\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"MAORI\">&mdash;MI&mdash;</option>\n<option value=\"MAORI\" >MAORI</option>\n\
+        <option class=\"spacer\" value=\"MAORI\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"MNT\">&mdash;MK&mdash;</option>\n<option value=\"MNT\" >MNT</option>\n\
+        <option class=\"spacer\" value=\"MNT\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"ERV-MR\">&mdash;MR&mdash;</option>\n<option value=\"ERV-MR\" >ERV-MR</option>\n\
+        <option class=\"spacer\" value=\"ERV-MR\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"MVC\">&mdash;MVC&mdash;</option>\n<option value=\"MVC\" >MVC</option>\n\
+        <option class=\"spacer\" value=\"MVC\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"MVJ\">&mdash;MVJ&mdash;</option>\n<option value=\"MVJ\" >MVJ</option>\n\
+        <option class=\"spacer\" value=\"MVJ\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"REIMER\">&mdash;NDS&mdash;</option>\n<option value=\"REIMER\" >REIMER</option>\n\
+        <option class=\"spacer\" value=\"REIMER\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"ERV-NE\">&mdash;NE&mdash;</option>\n<option value=\"ERV-NE\"\
+        \ >ERV-NE</option>\n<option class=\"spacer\" value=\"ERV-NE\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"NGU\">&mdash;NGU&mdash;</option>\n<option value=\"\
+        NGU\" >NGU</option>\n<option class=\"spacer\" value=\"NGU\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"BB\">&mdash;NL&mdash;</option>\n<option value=\"\
+        BB\" >BB</option>\n<option value=\"HTB\" >HTB</option>\n<option class=\"spacer\"\
+        \ value=\"HTB\">&nbsp;</option>\n<option class=\"lang\" value=\"DNB1930\"\
+        >&mdash;NO&mdash;</option>\n<option value=\"DNB1930\" >DNB1930</option>\n\
+        <option value=\"LB\" >LB</option>\n<option class=\"spacer\" value=\"LB\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"CCL\">&mdash;NY&mdash;</option>\n<option value=\"\
+        CCL\" >CCL</option>\n<option class=\"spacer\" value=\"CCL\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"ERV-OR\">&mdash;OR&mdash;</option>\n<option\
+        \ value=\"ERV-OR\" >ERV-OR</option>\n<option class=\"spacer\" value=\"ERV-OR\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"ERV-PA\">&mdash;PA&mdash;</option>\n\
+        <option value=\"ERV-PA\" >ERV-PA</option>\n<option class=\"spacer\" value=\"\
+        ERV-PA\">&nbsp;</option>\n<option class=\"lang\" value=\"NP\">&mdash;PL&mdash;</option>\n\
+        <option value=\"NP\" >NP</option>\n<option value=\"SZ-PL\" >SZ-PL</option>\n\
+        <option value=\"UBG\" >UBG</option>\n<option class=\"spacer\" value=\"UBG\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"NBTN\">&mdash;PPL&mdash;</option>\n\
+        <option value=\"NBTN\" >NBTN</option>\n<option class=\"spacer\" value=\"NBTN\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"ARC\">&mdash;PT&mdash;</option>\n\
+        <option value=\"ARC\" >ARC</option>\n<option value=\"VFL\" >VFL</option>\n\
+        <option value=\"NTLH\" >NTLH</option>\n<option value=\"NVT\" >NVT</option>\n\
+        <option value=\"NVI-PT\" >NVI-PT</option>\n<option value=\"OL\" >OL</option>\n\
+        <option class=\"spacer\" value=\"OL\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"MTDS\">&mdash;QU&mdash;</option>\n<option value=\"MTDS\" >MTDS</option>\n\
+        <option class=\"spacer\" value=\"MTDS\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"QUT\">&mdash;QUT&mdash;</option>\n<option value=\"QUT\" >QUT</option>\n\
+        <option class=\"spacer\" value=\"QUT\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"RMNN\">&mdash;RO&mdash;</option>\n<option value=\"RMNN\" >RMNN</option>\n\
+        <option value=\"NTLR\" >NTLR</option>\n<option class=\"spacer\" value=\"NTLR\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"NRT\">&mdash;RU&mdash;</option>\n\
+        <option value=\"NRT\" >NRT</option>\n<option value=\"CARS\" >CARS</option>\n\
+        <option value=\"CARST\" >CARST</option>\n<option value=\"CARSA\" >CARSA</option>\n\
+        <option value=\"ERV-RU\" >ERV-RU</option>\n<option value=\"RUSV\" >RUSV</option>\n\
+        <option class=\"spacer\" value=\"RUSV\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"NPK\">&mdash;SK&mdash;</option>\n<option value=\"NPK\" >NPK</option>\n\
+        <option class=\"spacer\" value=\"NPK\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"SOM\">&mdash;SO&mdash;</option>\n<option value=\"SOM\" >SOM</option>\n\
+        <option class=\"spacer\" value=\"SOM\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"ALB\">&mdash;SQ&mdash;</option>\n<option value=\"ALB\" >ALB</option>\n\
+        <option class=\"spacer\" value=\"ALB\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"NSP\">&mdash;SR&mdash;</option>\n<option value=\"NSP\" >NSP</option>\n\
+        <option value=\"ERV-SR\" >ERV-SR</option>\n<option class=\"spacer\" value=\"\
+        ERV-SR\">&nbsp;</option>\n<option class=\"lang\" value=\"NUB\">&mdash;SV&mdash;</option>\n\
+        <option value=\"NUB\" >NUB</option>\n<option value=\"SV1917\" >SV1917</option>\n\
+        <option value=\"SFB\" >SFB</option>\n<option value=\"SFB15\" >SFB15</option>\n\
+        <option value=\"SVL\" >SVL</option>\n<option class=\"spacer\" value=\"SVL\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"TKU\">&mdash;SW&mdash;</option>\n\
+        <option value=\"TKU\" >TKU</option>\n<option value=\"SNT\" >SNT</option>\n\
+        <option class=\"spacer\" value=\"SNT\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"ERV-TA\">&mdash;TA&mdash;</option>\n<option value=\"ERV-TA\" >ERV-TA</option>\n\
+        <option class=\"spacer\" value=\"ERV-TA\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"NTV-BIBLE\">&mdash;TH&mdash;</option>\n<option value=\"NTV-BIBLE\"\
+        \ >NTV-BIBLE</option>\n<option value=\"ERV-TH\" >ERV-TH</option>\n<option\
+        \ value=\"TNCV\" >TNCV</option>\n<option class=\"spacer\" value=\"TNCV\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"FSV\">&mdash;TL&mdash;</option>\n<option value=\"\
+        FSV\" >FSV</option>\n<option value=\"ABTAG1978\" >ABTAG1978</option>\n<option\
+        \ value=\"ABTAG2001\" >ABTAG2001</option>\n<option value=\"ADB1905\" >ADB1905</option>\n\
+        <option value=\"ASND\" >ASND</option>\n<option value=\"SND\" >SND</option>\n\
+        <option value=\"MBBTAG\" >MBBTAG</option>\n<option value=\"MBBTAG-DC\" >MBBTAG-DC</option>\n\
+        <option class=\"spacer\" value=\"MBBTAG-DC\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"NA-TWI\">&mdash;TWI&mdash;</option>\n<option value=\"NA-TWI\"\
+        \ >NA-TWI</option>\n<option class=\"spacer\" value=\"NA-TWI\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"UKR\">&mdash;UK&mdash;</option>\n<option value=\"\
+        UKR\" >UKR</option>\n<option value=\"ERV-UK\" >ERV-UK</option>\n<option class=\"\
+        spacer\" value=\"ERV-UK\">&nbsp;</option>\n<option class=\"lang\" value=\"\
+        ERV-UR\">&mdash;UR&mdash;</option>\n<option value=\"ERV-UR\" >ERV-UR</option>\n\
+        <option class=\"spacer\" value=\"ERV-UR\">&nbsp;</option>\n<option class=\"\
+        lang\" value=\"USP\">&mdash;USP&mdash;</option>\n<option value=\"USP\" >USP</option>\n\
+        <option class=\"spacer\" value=\"USP\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"BD2011\">&mdash;VI&mdash;</option>\n<option value=\"BD2011\" >BD2011</option>\n\
+        <option value=\"NVB\" >NVB</option>\n<option value=\"BPT\" >BPT</option>\n\
+        <option class=\"spacer\" value=\"BPT\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"BYO\">&mdash;YO&mdash;</option>\n<option value=\"BYO\" >BYO</option>\n\
+        <option class=\"spacer\" value=\"BYO\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"CCB\">&mdash;ZH&mdash;</option>\n<option value=\"CCB\" >CCB</option>\n\
+        <option value=\"CCBT\" >CCBT</option>\n<option value=\"ERV-ZH\" >ERV-ZH</option>\n\
+        <option value=\"CNVS\" >CNVS</option>\n<option value=\"CNVT\" >CNVT</option>\n\
+        <option value=\"CSBS\" >CSBS</option>\n<option value=\"CSBT\" >CSBT</option>\n\
+        <option value=\"CUVS\" >CUVS</option>\n<option value=\"CUV\" >CUV</option>\n\
+        <option value=\"CUVMPS\" >CUVMPS</option>\n<option value=\"CUVMPT\" >CUVMPT</option>\n\
+        <option value=\"RCU17SS\" >RCU17SS</option>\n<option value=\"RCU17TS\" >RCU17TS</option>\n\
+        </select><button>Update</button></div><div class=\"passage-text\">\n<div class='passage-content\
+        \ passage-class-0'><div class=\"version-NASB1995 result-text-style-normal\
+        \ text-html\">\n <p><span id=\"en-NASB1995-29113\" class=\"text Gal-3-10\"\
+        ><sup class=\"versenum\">10\_</sup>For as many as are of the works of <sup\
+        \ data-fn='#fen-NASB1995-29113a' class='footnote' data-link='[&lt;a href=&quot;#fen-NASB1995-29113a&quot;\
+        \ title=&quot;See footnote a&quot;&gt;a&lt;/a&gt;]'>[<a href=\"#fen-NASB1995-29113a\"\
+        \ title=\"See footnote a\">a</a>]</sup>the Law are under a curse; for it is\
+        \ written, \u201C<sup class='crossreference' data-cr='#cen-NASB1995-29113A'\
+        \  data-link='(&lt;a href=&quot;#cen-NASB1995-29113A&quot; title=&quot;See\
+        \ cross-reference A&quot;&gt;A&lt;/a&gt;)'>(<a href=\"#cen-NASB1995-29113A\"\
+        \ title=\"See cross-reference A\">A</a>)</sup><span style=\"font-variant:\
+        \ small-caps\" class=\"small-caps\">Cursed is everyone who does not abide\
+        \ by all things written in the book of the law, to perform them</span>.\u201D\
+        </span> <span id=\"en-NASB1995-29114\" class=\"text Gal-3-11\"><sup class=\"\
+        versenum\">11\_</sup>Now that <sup class='crossreference' data-cr='#cen-NASB1995-29114B'\
+        \  data-link='(&lt;a href=&quot;#cen-NASB1995-29114B&quot; title=&quot;See\
+        \ cross-reference B&quot;&gt;B&lt;/a&gt;)'>(<a href=\"#cen-NASB1995-29114B\"\
+        \ title=\"See cross-reference B\">B</a>)</sup>no one is justified <sup data-fn='#fen-NASB1995-29114b'\
+        \ class='footnote' data-link='[&lt;a href=&quot;#fen-NASB1995-29114b&quot;\
+        \ title=&quot;See footnote b&quot;&gt;b&lt;/a&gt;]'>[<a href=\"#fen-NASB1995-29114b\"\
+        \ title=\"See footnote b\">b</a>]</sup>by <sup data-fn='#fen-NASB1995-29114c'\
+        \ class='footnote' data-link='[&lt;a href=&quot;#fen-NASB1995-29114c&quot;\
+        \ title=&quot;See footnote c&quot;&gt;c&lt;/a&gt;]'>[<a href=\"#fen-NASB1995-29114c\"\
+        \ title=\"See footnote c\">c</a>]</sup>the Law before God is evident; for,\
+        \ \u201C<sup data-fn='#fen-NASB1995-29114d' class='footnote' data-link='[&lt;a\
+        \ href=&quot;#fen-NASB1995-29114d&quot; title=&quot;See footnote d&quot;&gt;d&lt;/a&gt;]'>[<a\
+        \ href=\"#fen-NASB1995-29114d\" title=\"See footnote d\">d</a>]</sup><sup\
+        \ class='crossreference' data-cr='#cen-NASB1995-29114C'  data-link='(&lt;a\
+        \ href=&quot;#cen-NASB1995-29114C&quot; title=&quot;See cross-reference C&quot;&gt;C&lt;/a&gt;)'>(<a\
+        \ href=\"#cen-NASB1995-29114C\" title=\"See cross-reference C\">C</a>)</sup><span\
+        \ style=\"font-variant: small-caps\" class=\"small-caps\">The righteous man\
+        \ shall live by faith</span>.\u201D</span> </p><a class=\"full-chap-link\"\
+        \ href=\"/passage/?search=Galatians+3&version=NASB1995\" title=\"View Full\
+        \ Chapter\">Read full chapter</a>\n<div class=\"footnotes\">\n<h4>Footnotes</h4><ol><li\
+        \ id=\"fen-NASB1995-29113a\"><a href=\"#en-NASB1995-29113\" title=\"Go to\
+        \ Galatians 3:10\">Galatians 3:10</a> <span class='footnote-text'>Or <i>law</i></span></li>\n\
+        \n<li id=\"fen-NASB1995-29114b\"><a href=\"#en-NASB1995-29114\" title=\"Go\
+        \ to Galatians 3:11\">Galatians 3:11</a> <span class='footnote-text'>Or <i>in</i></span></li>\n\
+        \n<li id=\"fen-NASB1995-29114c\"><a href=\"#en-NASB1995-29114\" title=\"Go\
+        \ to Galatians 3:11\">Galatians 3:11</a> <span class='footnote-text'>Or <i>law</i></span></li>\n\
+        \n<li id=\"fen-NASB1995-29114d\"><a href=\"#en-NASB1995-29114\" title=\"Go\
+        \ to Galatians 3:11\">Galatians 3:11</a> <span class='footnote-text'>Or <i>But\
+        \ he who is righteous by faith shall live</i></span></li>\n\n</ol></div> <!--end\
+        \ of footnotes-->\n<div class=\"crossrefs hidden\">\n<h4>Cross references</h4><ol><li\
+        \ id=\"cen-NASB1995-29113A\"><a href=\"#en-NASB1995-29113\" title=\"Go to\
+        \ Galatians 3:10\">Galatians 3:10</a> : <a class=\"crossref-link\" href=\"\
+        /passage/?search=Deuteronomy+27%3A26&version=NASB1995\" data-bibleref=\"Deuteronomy\
+        \ 27:26\">Deut 27:26</a></li>\n\n<li id=\"cen-NASB1995-29114B\"><a href=\"\
+        #en-NASB1995-29114\" title=\"Go to Galatians 3:11\">Galatians 3:11</a> : <a\
+        \ class=\"crossref-link\" href=\"/passage/?search=Galatians+2%3A16&version=NASB1995\"\
+        \ data-bibleref=\"Galatians 2:16\">Gal 2:16</a></li>\n\n<li id=\"cen-NASB1995-29114C\"\
+        ><a href=\"#en-NASB1995-29114\" title=\"Go to Galatians 3:11\">Galatians 3:11</a>\
+        \ : <a class=\"crossref-link\" href=\"/passage/?search=Habakkuk+2%3A4%2CRomans+1%3A17%2CHebrews+10%3A38&version=NASB1995\"\
+        \ data-bibleref=\"Habakkuk 2:4, Romans 1:17, Hebrews 10:38\">Hab 2:4; Rom\
+        \ 1:17; Heb 10:38</a></li>\n\n</ol></div> <!--end of crossrefs-->\n</div>\n\
+        </div>\n</div>\n</div>\n</div>\n            </div>\n            <div class=\"\
+        passage-scroller\">\n<a class=\"prev-link\" href=\"/passage/?search=Galatians%202&amp;version=NASB1995\"\
+        \ title=\"Galatians 2\"><div class=\"nav\"><div class=\"icon-passage-prev\"\
+        ><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5 21.5\" width=\"\
+        11.5\" height=\"21.5\"><title>Next</title><path d=\"M10.75 0a.74.74 0 0 1\
+        \ .53.22.75.75 0 0 1 0 1.06l-9.47 9.47 9.47 9.47a.75.75 0 1 1-1.06 1.06l-10-10a.75.75\
+        \ 0 0 1 0-1.06l10-10a.73.73 0 0 1 .53-.22z\"/></svg>\n</div><div class=\"\
+        heading\">Galatians 2</div></div></a><a class=\"next-link\" href=\"/passage/?search=Galatians%204&amp;version=NASB1995\"\
+        \ title=\"Galatians 4\"><div class=\"nav\"><div class=\"heading\">Galatians\
+        \ 4</div><div class=\"icon-passage-next\"><svg xmlns=\"http://www.w3.org/2000/svg\"\
+        \ viewBox=\"0 0 11.5 21.5\" width=\"11.5\" height=\"21.5\"><title>Next</title><path\
+        \ d=\"M.75 21.5a.74.74 0 0 1-.53-.22.75.75 0 0 1 0-1.06l9.47-9.47L.22 1.28A.75.75\
+        \ 0 0 1 1.28.22l10 10a.75.75 0 0 1 0 1.06l-10 10a.74.74 0 0 1-.53.22z\"/></svg>\n\
+        </div></div></a>        </div>\n        </div>\n    <div class=\"dropdown-icon\"\
+        ><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5 6.5\" width=\"\
+        11.5\" height=\"6.5\"><title>dropdown</title><path d=\"M11.28.22a.75.75 0\
+        \ 0 0-1.06 0L5.75 4.69 1.28.22A.75.75 0 0 0 .22 1.28l5 5a.73.73 0 0 0 .53.22.74.74\
+        \ 0 0 0 .53-.22l5-5a.75.75 0 0 0 0-1.06z\"/></svg>\n</div>\n    </section>\
+        \ <!-- passage-box -->\n    <div class=\"resources flex-5\">\n      <div class=\"\
+        sticky-resources\">\n        <div class=\"sidebar-box\">\n        </div>\n\
+        \      </div>\n    </div>\n  </div>\n  <div class=\"copyright-table\">\n \
+        \   <div class=\"copyright-table-content flex-7\">\n<div class=\"publisher-info-bottom\
+        \ with-bga\">\n<strong><a href=\"/versions/New-American-Standard-Bible-NASB1995/\"\
         >New American Standard Bible 1995</a> (NASB1995)</strong> <p><p>New American\
         \ Standard Bible\xAE, Copyright \xA9 1960, 1971, 1977, 1995 by <a href=\"\
-        http://www.lockman.org/\">The Lockman Foundation</a>. All rights reserved.</p></p></div></div>\
-        \                      </div>\n                    </div>\n              \
-        \      <div class=\"serp-filters\">\n                        <ul>\n      \
-        \                      <li><div class=\"results-per-page\"><div class=\"js-dropdowns\"\
-        ><div class=\"rpp_form\"><span class=\"dropdown-display\"></span><span class=\"\
-        dropdown-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5\
-        \ 6.5\" width=\"11.5\" height=\"6.5\"><title>dropdown</title><use xlink:href=\"\
-        #icon-dropdown\"></use></svg>\n</span></div></div><div class=\"dropdowns\"\
-        ><select aria-label=\"Results per Page\" class=\"dropdown\" name=\"resultspp\"\
-        ><option value=\"25\">25</option><option value=\"50\">50</option><option value=\"\
-        100\">100</option><option value=\"250\">250</option></select></div>&nbsp;results\
-        \ per page</div></li>\n                            <li><h3>Filter by</h3></li>\n\
-        \                          <li class=\"divider active\"><a href=\"?qs_version=NASB1995&quicksearch=Melchizedek&startnumber=1&resultspp=20\"\
-        >All (10)</a></li><li class=\"divider \"><a href=\"?qs_version=NASB1995&quicksearch=Melchizedek&begin=1&end=46&resultspp=20\"\
-        >Old Testament (2)</a></li><li class=\"\"><a href=\"?qs_version=NASB1995&quicksearch=Melchizedek&begin=1&end=1&resultspp=20\"\
-        >Genesis (1)</a></li><li class=\"\"><a href=\"?qs_version=NASB1995&quicksearch=Melchizedek&begin=23&end=23&resultspp=20\"\
-        >Psalm (1)</a></li><li class=\"divider \"><a href=\"?qs_version=NASB1995&quicksearch=Melchizedek&begin=47&end=73&resultspp=20\"\
-        >New Testament (8)</a></li><li class=\"\"><a href=\"?qs_version=NASB1995&quicksearch=Melchizedek&begin=65&end=65&resultspp=20\"\
-        >Hebrews (8)</a></li>                        </ul>\n                    </div>\n\
-        \                </div>\n            </div>\n                <div id=\"serp-topical-pane\"\
-        \ class=\"iv-pane-2 d-none  content-section\">\n                  <p class=\"\
-        search-total-results\">16 topical index results for <span class=\"search-term\"\
-        >&ldquo;Melchizedek&rdquo;</span></p><div class=\"topical-results\"><article><a\
-        \ title='MELCHIZEDEK' href='/topical/Melchizedek/Nave/'>MELCHIZEDEK</a></article><article><span\
-        \ class='topic'>ABRAHAM </span> : <span class='reference'><span>Is blessed\
-        \ by Melchizedek</span> <span>(<a href='/passage/?search=Genesis 14:18-20;\
-        \ Hebrews 7:1-10'>Genesis 14:18-20; Hebrews 7:1-10</a>)</span></span></article><article><span\
-        \ class='topic'>JERUSALEM </span> : <span class='reference'><span>Melchizedek\
-        \ was the ancient king and priest of</span> <span>(<a href='/passage/?search=Genesis\
-        \ 14:18'>Genesis 14:18</a>)</span></span></article><article><span class='topic'>MELCHESEDEC\
-        \ </span> : <span class='reference'>See <a title='MELCHIZEDEK' href='/topical/Melchizedek/Nave/'>MELCHIZEDEK</a></span></article><article><span\
-        \ class='topic'>TITHES </span> : <span class='reference'><span>Paid by Abraham\
-        \ to Melchizedek</span> <span>(<a href='/passage/?search=Genesis 14:20; Hebrews\
-        \ 7:2-6'>Genesis 14:20; Hebrews 7:2-6</a>)</span></span></article><article><span\
-        \ class='topic'>WINE </span> : <span class='reference'><span>Given by Melchizedek\
-        \ to Abraham</span> <span>(<a href='/passage/?search=Genesis 14:18'>Genesis\
-        \ 14:18</a>)</span></span></article><article><span>BENEDICTIONS</span> &raquo;<span>\
-        \ INSTANCES OF</span> &raquo; <strong><span>By Melchizedek. upon Abraham</span>\
-        \ <span>(<a href='/passage/?search=Genesis 14:19,20; Hebrews 7:7'>Genesis\
-        \ 14:19,20; Hebrews 7:7</a>)</span></strong></article><article><span>HEATHEN</span>\
-        \ &raquo;<span> INSTANCES OF</span> &raquo; <strong><span>Melchizedek</span>\
-        \ <span>(<a href='/passage/?search=Genesis 14:18-20'>Genesis 14:18-20</a>)</span></strong></article><article><span>HOSPITALITY</span>\
-        \ &raquo;<span> INSTANCES OF</span> &raquo; <strong><span>Melchizedek to Abraham</span>\
-        \ <span>(<a href='/passage/?search=Genesis 14:18'>Genesis 14:18</a>)</span></strong></article><article><span>JERUSALEM</span>\
-        \ &raquo;<span> HISTORICAL NOTICES OF</span> &raquo; <strong><span>Melchizedek\
-        \ was ancient king of</span> <span>(<a href='/passage/?search=Genesis 14:18'>Genesis\
-        \ 14:18</a>)</span></strong></article><article><span>PRIEST</span> &raquo;<span>\
-        \ BEFORE MOSES</span> &raquo; <strong><span>Melchizedek</span> <span>(<a href='/passage/?search=Genesis\
-        \ 14:18; Hebrews 5:6,10,11;6:20;7:1-21'>Genesis 14:18; Hebrews 5:6,10,11;6:20;7:1-21</a>)</span></strong></article><article><span>RULERS</span>\
-        \ &raquo;<span> INSTANCES OF</span> &raquo; <strong><span>Melchizedek</span>\
-        \ <span>(<a href='/passage/?search=Genesis 14:18'>Genesis 14:18</a>)</span></strong></article><article><span>THANKFULNESS</span>\
-        \ &raquo;<span> TO GOD, INSTANCES OF</span> &raquo; <strong><span>Of Melchizedek</span>\
-        \ <span>(<a href='/passage/?search=Genesis 14:20'>Genesis 14:20</a>)</span></strong></article><article><span>TYPES</span>\
-        \ &raquo;<span> OF THE SAVIOUR</span> &raquo; <strong><span>Melchizedek</span>\
-        \ <span>(<a href='/passage/?search=Hebrews 7:1-17'>Hebrews 7:1-17</a>)</span></strong></article><article><span>PRESCIENCE\
-        \ OF</span> &raquo;<span> PRIESTHOOD OF</span> &raquo; <strong><span>After\
-        \ the order of Melchizedek</span> <span>(<a href='/passage/?search=Psalms\
-        \ 110:4; with Hebrews 5:6;6:20;7:15,17'>Psalms 110:4; with Hebrews 5:6;6:20;7:15,17</a>)</span></strong></article><article><span>PRESCIENCE\
-        \ OF</span> &raquo;<span> PRIESTHOOD OF</span> &raquo; <strong><span>Melchizedek</span>\
-        \ <span>(<a href='/passage/?search=Genesis 14:18-20'>Genesis 14:18-20</a>)</span></strong></article></div>\
-        \                </div>\n    </form>\n</section>\n\n                </div>\n\
-        \            </section>\n            <footer class=\"footer-flex-row\">\n\
-        \                <div class=\"footer-wrapper\">\n  <div class=\"footer-menu\"\
-        >\n    <h3>About</h3>\n    <ul>\n      <li><a href=\"/about/\">About</a></li>\n\
-        \      <li><a href=\"/about/faith/\">Statement of Faith</a></li>\n      <li><a\
-        \ href=\"/app/\">Mobile App</a></li>\n      <li><a href=\"//biblegateway.christianbook.com/?p=1182478\"\
-        >Store</a></li>\n      <li><a href=\"//biblegateway.com/blog/\">Blog</a></li>\n\
-        \      <li><a href=\"/newsroom/\">Newsroom</a></li>\n      <li><a href=\"\
-        /supporting-biblegateway/\">Support Us</a></li>\n    </ul>\n  </div>\n  <div\
-        \ class=\"footer-menu\">\n    <h3>Help</h3>\n    <ul>\n      <li><a href=\"\
-        //support.biblegateway.com/hc/en-us\">FAQs</a></li>\n      <li><a href=\"\
-        /help/tutorial/\">Tutorials</a></li>\n      <li><a href=\"/usage/\">Use Bible\
-        \ Gateway on Your Site</a></li>\n      <li>\n        <a href=\"//www.salemoffers.com/campaign/advertise-with-us/\"\
+        http://www.lockman.org/\">The Lockman Foundation</a>. All rights reserved.</p></p><div\
+        \ class=\"bga-copyright-multi\"><a href=\"https://www.lockman.org/\"><img\
+        \ alt=\"New American Standard Bible is made available by The Lockman Foundation\"\
+        \ src=\"https://staticu.bgcdn.com/pub-bug-images/bug_lockman.png\" /></a></div><!--\
+        \ .bga-copyright --></div>\n    </div>\n    <div class=\"flex-5\">&nbsp;</div>\n\
+        \  </div>\n</div>\n\n<section class=\"other-resources\">\n  <div class=\"\
+        sponsor-ad\">\n    <div class=\"bga\" id=\"bga-gt-sponsor1\">\n<script type=\"\
+        text/javascript\">\nrequire(['./main.min'], function() {\nBG.renderBGA('sponsor1');\n\
+        });\n</script>\n</div>  </div>\n</section>\n\n<section class=\"passage-bottom-ad\"\
+        >\n  <div class=\"bga\" id=\"bga-gt-bottom\">\n<script type=\"text/javascript\"\
+        >\nrequire(['./main.min'], function() {\nBG.renderBGA('bottom');\n});\n</script>\n\
+        </div></section>\n                </div>\n            </section>\n       \
+        \     <footer class=\"footer-flex-row\">\n                <div class=\"footer-wrapper\"\
+        >\n  <div class=\"footer-menu\">\n    <h3>About</h3>\n    <ul>\n      <li><a\
+        \ href=\"/about/\">About</a></li>\n      <li><a href=\"/about/faith/\">Statement\
+        \ of Faith</a></li>\n      <li><a href=\"/app/\">Mobile App</a></li>\n   \
+        \   <li><a href=\"//biblegateway.christianbook.com/?p=1182478\">Store</a></li>\n\
+        \      <li><a href=\"//biblegateway.com/blog/\">Blog</a></li>\n      <li><a\
+        \ href=\"/newsroom/\">Newsroom</a></li>\n      <li><a href=\"/supporting-biblegateway/\"\
+        >Support Us</a></li>\n    </ul>\n  </div>\n  <div class=\"footer-menu\">\n\
+        \    <h3>Help</h3>\n    <ul>\n      <li><a href=\"//support.biblegateway.com/hc/en-us\"\
+        >FAQs</a></li>\n      <li><a href=\"/help/tutorial/\">Tutorials</a></li>\n\
+        \      <li><a href=\"/usage/\">Use Bible Gateway on Your Site</a></li>\n \
+        \     <li>\n        <a href=\"//www.salemoffers.com/campaign/advertise-with-us/\"\
         \n          >Advertise with us</a\n        >\n      </li>\n      <li><a href=\"\
         /feedback/\">Contact us</a></li>\n      <li>\n        <strong><a href=\"/legal/privacy/\"\
         >Privacy policy</a></strong>\n      </li>\n      <li class=\"us-only\">\n\
@@ -1456,19 +1702,18 @@ interactions:
         <div class=\"bg-modal-root\"></div>\n<div class=\"bg-tooltip-root\"></div>\n\
         <div class=\"default-tooltip\" aria-label=\"tooltip\" role=\"complementary\"\
         ></div>\n\n<script type=\"text/javascript\">\nrequire(['./main.min'], function()\
-        \ {\n  bgLogger.logPageview(\"/search/nasb1995\",\n    \"A024\",\n    {\"\
-        search_query\":\"Melchizedek\",\"search_page\":1,\"search_total\":10},\n \
-        \   null,\n    \"\", 'p');\n});\n</script>\n<!-- Begin comScore Tag -->\n\
-        <script>\n  var _comscore = _comscore || [];\n  _comscore.push(\n  { c1: \"\
-        2\", c2: \"7735391\" }\n  );\n  BG.Consents.onConsent(4).then(function(){var\
+        \ {\n  bgLogger.logPageview(\"/bible/Gal.3.10-Gal.3.11/nasb1995\",\n    \"\
+        G003\",\n    {},\n    null,\n    \"\", 'p');\n});\n</script>\n<!-- Begin comScore\
+        \ Tag -->\n<script>\n  var _comscore = _comscore || [];\n  _comscore.push(\n\
+        \  { c1: \"2\", c2: \"7735391\" }\n  );\n  BG.Consents.onConsent(4).then(function(){var\
         \ e=document.createElement(\"script\"),n=document.getElementsByTagName(\"\
         script\")[0];e.async=!0,e.src=\"https://sb.scorecardresearch.com/beacon.js\"\
         ,n.parentNode.insertBefore(e,n)});\n</script>\n<script>BG.Consents.onConsent(3).then(function(){if(0==(100*Math.random()|0)){var\
         \ e=document.createElement(\"script\"),n=document.getElementsByTagName(\"\
         script\")[0];e.defer=!0,e.async=!0,e.src=\"//d22xmn10vbouk4.cloudfront.net/54f2676af4be11eb84940a75710ece7f.js\"\
         ,n.parentNode.insertBefore(e,n)}});</script>\n<script type=\"text/javascript\"\
-        >\nga('send', 'event', 'translation',\n  'NASB1995',\n  'quick');\nrequire(['./main.min'],\
-        \ function() {\n  bgLogger.logCE('keyword', null,\n    \"Melchizedek/nasb1995\"\
+        >\nga('send', 'event', 'translation',\n  'NASB1995',\n  'passage');\nrequire(['./main.min'],\
+        \ function() {\n  bgLogger.logCE('passage', null,\n    \"Gal.3.10-Gal.3.11/nasb1995\"\
         );\n});\n</script>\n</body>\n\n</html>\n"
     headers:
       Connection:
@@ -1478,7 +1723,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Mon, 14 Mar 2022 18:57:13 GMT
+      - Mon, 14 Mar 2022 18:57:14 GMT
       Strict-Transport-Security:
       - max-age=2592000
       Transfer-Encoding:
@@ -1486,9 +1731,9 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 688e3f09a2447eda2ae46655f5644a34.cloudfront.net (CloudFront)
+      - 1.1 ed7c847a3126b3d5afe52e9d3f6800e0.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - RSYIyamC8I7JNo6kDsb64MoFhUq4A6CBVYRQIymwp1bhDVg0m5-6rg==
+      - uqk7VOCmAXEqewL_KaSHsLh1DXc8aKRnM-2g38v3L_V25SbUgklpoA==
       X-Amz-Cf-Pop:
       - ORD53-C2
       X-Cache:
@@ -1496,5 +1741,5 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://www.biblegateway.com/quicksearch/?quicksearch=Melchizedek&version=NASB1995&limit=20&interface=print&startnumber=1
+    url: https://www.biblegateway.com/passage/?search=Galatians+3:10-11&version=NASB1995&interface=print
 version: 1
