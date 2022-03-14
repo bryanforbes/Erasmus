@@ -10,6 +10,5 @@ if TYPE_CHECKING:
     class Base(CRUDModel, ModelMixin):
         pass
 
-
 else:
     Base = db.Model

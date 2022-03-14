@@ -24,7 +24,6 @@ if TYPE_CHECKING:
     class _MenuPages(menus.MenuPages[PS]):
         ...
 
-
 else:
 
     class _PageSource(menus.PageSource, Generic[T]):
