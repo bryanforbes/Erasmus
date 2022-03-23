@@ -2,17 +2,8 @@ from __future__ import annotations
 
 import inspect
 from abc import abstractmethod
-from collections.abc import Awaitable, Sequence
-from typing import (
-    Any,
-    AsyncIterable,
-    Callable,
-    Iterable,
-    ParamSpec,
-    Protocol,
-    TypeVar,
-    runtime_checkable,
-)
+from collections.abc import AsyncIterable, Awaitable, Callable, Iterable, Sequence
+from typing import Any, ParamSpec, Protocol, TypeVar, runtime_checkable
 
 import discord
 

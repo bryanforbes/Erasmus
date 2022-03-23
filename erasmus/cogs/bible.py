@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import Any, Final, Iterable, Optional, cast
+from collections.abc import Iterable, Sequence
+from typing import Any, Final, Optional, cast
 
 import discord
 from botus_receptus import Cog, checks, formatting

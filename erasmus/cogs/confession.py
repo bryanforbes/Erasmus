@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from collections.abc import AsyncIterator, Callable, Sequence
 from re import Match
-from typing import Any, Final, Optional, Union, cast
+from typing import Any, Final, Optional, TypeAlias, cast
 
 import discord
 from botus_receptus import Cog, re
@@ -113,7 +113,7 @@ Examples:
 '''
 
 
-ConfessionSearchResult = Union[Paragraph, Article, Question]
+ConfessionSearchResult: TypeAlias = Paragraph | Article | Question
 
 
 class ConfessionSearchSource(
