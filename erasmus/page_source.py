@@ -3,7 +3,7 @@ from __future__ import annotations
 import inspect
 from abc import abstractmethod
 from collections.abc import AsyncIterable, Awaitable, Callable, Iterable, Sequence
-from typing import Any, ParamSpec, Protocol, TypeVar, runtime_checkable
+from typing import Any, ParamSpec, Protocol, TypeAlias, TypeVar, runtime_checkable
 
 import discord
 
@@ -12,7 +12,7 @@ T_co = TypeVar('T_co', covariant=True)
 P = ParamSpec('P')
 
 
-MaybeAwaitable = Callable[P, T | Awaitable[T]]
+MaybeAwaitable: TypeAlias = Callable[P, T | Awaitable[T]]
 
 
 async def _maybe_await(f: MaybeAwaitable[P, T], *args: P.args, **kwargs: P.kwargs) -> T:

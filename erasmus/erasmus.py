@@ -185,4 +185,4 @@ class Erasmus(
         await context.send_error(formatting.escape(message, mass_mentions=True))
 
 
-__all__: Final = ['Erasmus']
+__all__: Final = ('Erasmus',)
