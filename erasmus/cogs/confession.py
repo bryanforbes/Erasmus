@@ -4,6 +4,7 @@ from collections.abc import AsyncIterator, Callable, Sequence
 from re import Match
 from typing import Any, Final, Optional, Union, cast
 
+import discord
 from botus_receptus import Cog, re
 from botus_receptus.formatting import (
     EmbedPaginator,
@@ -12,6 +13,7 @@ from botus_receptus.formatting import (
     pluralizer,
     underline,
 )
+from discord import app_commands
 from discord.ext import commands
 
 from ..context import Context
@@ -21,9 +23,8 @@ from ..db.confession import ConfessionTypeEnum, NumberingTypeEnum, Paragraph, Qu
 from ..erasmus import Erasmus
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from ..format import int_to_roman, roman_to_int
-from ..menu_pages import EmbedPageSource, MenuPages, TotalListPageSource
-
-_pluralize_match: Final = pluralizer('match', 'es')
+from ..page_source import EmbedPageSource, ListPageSource
+from ..ui_pages import ContextUIPages
 
 _roman_re: Final = re.group(
     re.between(0, 4, 'M'),
@@ -74,7 +75,7 @@ _pluralizers: Final = {
     ConfessionTypeEnum.QA: pluralizer('question'),
 }
 
-_number_formatters: Final = {
+_number_formatters: Final[dict[NumberingTypeEnum, Callable[[int], str]]] = {
     NumberingTypeEnum.ARABIC: lambda n: str(n),
     NumberingTypeEnum.ROMAN: int_to_roman,
 }
@@ -116,8 +117,8 @@ ConfessionSearchResult = Union[Paragraph, Article, Question]
 
 
 class ConfessionSearchSource(
-    TotalListPageSource[ConfessionSearchResult],
-    EmbedPageSource[list[ConfessionSearchResult]],
+    EmbedPageSource[Sequence[ConfessionSearchResult]],
+    ListPageSource[ConfessionSearchResult],
 ):
     entry_text_string: str
 
@@ -143,7 +144,15 @@ class ConfessionSearchSource(
                 '**{entry.question_number}**. {entry.question_text}'
             )
 
-    async def set_page_text(self, entries: list[ConfessionSearchResult], /) -> None:
+    async def set_page_text(
+        self,
+        entries: Sequence[ConfessionSearchResult] | None,
+        /,
+    ) -> None:
+        if entries is None:
+            self.embed.description = 'I found 0 results'
+            return
+
         lines: list[str] = []
 
         for entry in entries:
@@ -152,11 +161,15 @@ class ConfessionSearchSource(
         self.embed.description = '\n'.join(lines)
 
 
-class Confession(Cog[Context]):
+class ConfessionBase(Cog):
+    bot: Erasmus
+
     def __init__(self, bot: Erasmus, /) -> None:
         self.bot = bot
 
-    async def cog_command_error(self, ctx: Context, error: Exception, /) -> None:
+
+class Confession(ConfessionBase):
+    async def cog_command_error(self, ctx: Context, error: Exception, /) -> None:  # type: ignore  # noqa: B950
         if (
             isinstance(
                 error,
@@ -292,9 +305,8 @@ class Confession(Cog[Context]):
             type=confession.type,
             per_page=20,
         )
-        menu = MenuPages(source, 'I found 0 results')
-
-        await menu.start(ctx)
+        pages = ContextUIPages(source, ctx=ctx)
+        await pages.start()
 
     async def show_item(
         self,
@@ -366,5 +378,35 @@ class Confession(Cog[Context]):
             title = None
 
 
-def setup(bot: Erasmus, /) -> None:
-    bot.add_cog(Confession(bot))
+class ConfessionAppCommands(ConfessionBase):
+    async def cog_load(self) -> None:
+        async for conf in ConfessionRecord.get_all():
+            self.__add_confession(conf)
+
+    confess = app_commands.Group(name='confess', description='Confessions')
+
+    def __add_confession(self, confession: ConfessionRecord, /) -> None:
+        command = app_commands.Command(
+            name=confession.command,
+            description=confession.name,
+            callback=ConfessionAppCommands.__confess_callback,
+        )
+        command.binding = self
+        self.confess.add_command(command)
+
+    @app_commands.describe(ref_or_search='The section or search terms')
+    async def __confess_callback(
+        self, interaction: discord.Interaction, ref_or_search: str
+    ) -> None:
+        assert interaction.command is not None
+        print(interaction.command.name)
+
+        confession = await ConfessionRecord.get_by_command(interaction.command.name)
+        print(confession)
+
+        await interaction.response.send_message('blah')
+
+
+async def setup(bot: Erasmus, /) -> None:
+    await bot.add_cog(Confession(bot))
+    await bot.add_cog(ConfessionAppCommands(bot))

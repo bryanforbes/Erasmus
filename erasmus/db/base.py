@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from typing import TYPE_CHECKING, Final
 
 from botus_receptus.gino import Gino, ModelMixin

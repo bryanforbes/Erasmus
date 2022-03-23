@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 import unittest.mock
-from typing import Any, cast
+from typing import cast
 
 import discord
 import pytest
 import pytest_mock
+from discord.ext.commands.view import StringView  # type: ignore
 
 from erasmus.context import Context
+from erasmus.erasmus import Erasmus
 
 
 class MockUser(object):
@@ -45,13 +47,23 @@ class TestContext(object):
     ) -> unittest.mock.AsyncMock:
         return mocker.patch('discord.ext.commands.Context.send')
 
+    @pytest.fixture
+    def string_view(self) -> StringView:
+        return StringView('')
+
     @pytest.mark.asyncio
     async def test_send_embed(
         self,
         mocker: pytest_mock.MockFixture,
         mock_context_send: unittest.mock.AsyncMock,
+        string_view: StringView,
     ) -> None:
-        ctx = cast(Any, Context)(prefix='~', message=MockMessage())
+        ctx = Context(
+            prefix='~',
+            message=cast(discord.Message, MockMessage()),
+            view=string_view,
+            bot=cast(Erasmus, object()),
+        )
 
         await ctx.send_embed('baz')
 

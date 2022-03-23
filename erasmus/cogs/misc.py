@@ -8,7 +8,7 @@ from ..context import Context
 from ..erasmus import Erasmus
 
 
-class Misc(Cog[Context]):
+class Misc(Cog):
     def __init__(self, bot: Erasmus, /) -> None:
         self.bot = bot
 
@@ -20,9 +20,11 @@ class Misc(Cog[Context]):
             attach_files=True,
             embed_links=True,
             manage_messages=True,
+            manage_threads=True,
             read_message_history=True,
             read_messages=True,
             send_messages=True,
+            send_messages_in_threads=True,
             use_external_emojis=True,
         )
         await ctx.send(
@@ -40,5 +42,5 @@ Users: {len(self.bot.users)}'''
         )
 
 
-def setup(bot: Erasmus, /) -> None:
-    bot.add_cog(Misc(bot))
+async def setup(bot: Erasmus, /) -> None:
+    await bot.add_cog(Misc(bot))

@@ -8,17 +8,17 @@ from botus_receptus import EmbedContext
 from .data import Passage
 
 if TYPE_CHECKING:
-    from .erasmus import Erasmus
+    from .erasmus import Erasmus  # noqa: F401
 
 _truncation_warning: Final = '**The passage was too long and has been truncated:**\n\n'
 _max_length: Final = 2048 - (len(_truncation_warning) + 1)
 
 
-class Context(EmbedContext):
-    bot: Erasmus
-
+class Context(EmbedContext['Erasmus']):
     async def send_error(self, text: str, /) -> discord.Message:
-        return await self.send_embed(text, color=discord.Color.red())
+        return await self.send_embed(
+            text, color=discord.Color.red(), reference=self.message
+        )
 
     async def send_passage(self, passage: Passage, /) -> discord.Message:
         text = passage.text
@@ -30,4 +30,4 @@ class Context(EmbedContext):
             {'description': text, 'footer': {'text': passage.citation}}
         )
 
-        return await self.send(embed=embed)
+        return await self.send(embed=embed, reference=self.message)

@@ -6,18 +6,19 @@ import ujson
 
 
 def get(obj: Any, key: str, fallback: Any = None, /) -> Any:
+    result: Any = obj
     for part in key.split('.'):
         try:
-            if isinstance(obj, list):
-                obj = obj[int(part)]
-            elif isinstance(obj, dict):
-                obj = obj[part]
+            if isinstance(result, list):
+                result: Any = result[int(part)]
+            elif isinstance(result, dict):
+                result: Any = result[part]
             else:
                 return fallback
         except (KeyError, TypeError, IndexError):
             return fallback
 
-    return obj
+    return result
 
 
 def has(obj: Any, key: str, /) -> bool:

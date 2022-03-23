@@ -1,10 +1,13 @@
 from __future__ import annotations
 
+from collections.abc import Iterator
 from itertools import chain
 from pathlib import Path
 from re import Match, Pattern
 from typing import TYPE_CHECKING, Final, TypedDict
+from typing_extensions import Self
 
+import discord
 from attr import attrib, dataclass
 from botus_receptus import re
 from more_itertools import unique_everseen
@@ -28,7 +31,7 @@ with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
 
 # Inspired by
 # https://github.com/TehShrike/verse-reference-regex/blob/master/create-regex.js
-_book_re: Final = re.compile(
+_book_re: Final[Pattern[str]] = re.compile(
     re.named_group('book')(
         re.either(
             *re.escape_all(
@@ -56,7 +59,7 @@ _colon: Final = re.combine(
     re.any_number_of(re.WHITESPACE), ':', re.any_number_of(re.WHITESPACE)
 )
 
-_reference_re: Final = re.compile(
+_reference_re: Final[Pattern[str]] = re.compile(
     _book_re,
     re.one_or_more(re.WHITESPACE),
     _chapter_start_group(_one_or_more_digit),
@@ -78,7 +81,7 @@ _reference_re: Final = re.compile(
     flags=re.IGNORECASE,
 )
 
-_reference_with_version_re: Final = re.compile(
+_reference_with_version_re: Final[Pattern[str]] = re.compile(
     _reference_re,
     re.optional(
         re.group(
@@ -89,7 +92,7 @@ _reference_with_version_re: Final = re.compile(
     flags=re.IGNORECASE,
 )
 
-_reference_or_bracketed_with_version_re: Final = re.compile(
+_reference_or_bracketed_with_version_re: Final[Pattern[str]] = re.compile(
     re.optional(
         re.named_group('bracket')(re.LEFT_BRACKET, re.any_number_of(re.WHITESPACE))
     ),
@@ -109,7 +112,7 @@ _reference_or_bracketed_with_version_re: Final = re.compile(
     flags=re.IGNORECASE,
 )
 
-_bracketed_reference_with_version_re: Final = re.compile(
+_bracketed_reference_with_version_re: Final[Pattern[str]] = re.compile(
     re.LEFT_BRACKET,
     re.any_number_of(re.WHITESPACE),
     _reference_with_version_re,
@@ -118,8 +121,12 @@ _bracketed_reference_with_version_re: Final = re.compile(
     flags=re.IGNORECASE,
 )
 
-_search_reference_re: Final = re.compile(
+_search_reference_re: Final[Pattern[str]] = re.compile(
     re.START, _reference_re, re.END, flags=re.IGNORECASE
+)
+
+_search_reference_with_version_re: Final[Pattern[str]] = re.compile(
+    re.START, _reference_with_version_re, re.END, flags=re.IGNORECASE
 )
 
 _book_input_map: Final[dict[str, str]] = {}
@@ -154,7 +161,7 @@ class Verse(object):
 
 
 @dataclass(slots=True)
-class VerseRange(object):
+class VerseRange(discord.app_commands.Transformer):
     book: str
     start: Verse
     end: Verse | None = None
@@ -183,6 +190,13 @@ class VerseRange(object):
     @classmethod
     def from_string(cls, verse: str, /) -> VerseRange:
         if (match := _search_reference_re.match(verse)) is None:
+            raise ReferenceNotUnderstoodError(verse)
+
+        return cls.from_match(match)
+
+    @classmethod
+    def from_string_with_version(cls, verse: str, /) -> VerseRange:
+        if (match := _search_reference_with_version_re.match(verse)) is None:
             raise ReferenceNotUnderstoodError(verse)
 
         return cls.from_match(match)
@@ -240,6 +254,10 @@ class VerseRange(object):
     async def convert(cls, ctx: Context, argument: str, /) -> VerseRange:
         return cls.from_string(argument)
 
+    @classmethod
+    async def transform(cls, interaction: discord.Interaction, value: str) -> Self:
+        return cls.from_string_with_version(value)
+
 
 _truncation_warning: Final = 'The passage was too long and has been truncated:\n\n'
 _truncation_warning_len: Final = len(_truncation_warning) + 3
@@ -272,3 +290,6 @@ class Passage(object):
 class SearchResults(object):
     verses: list[Passage]
     total: int
+
+    def __iter__(self, /) -> Iterator[Passage]:
+        return self.verses.__iter__()

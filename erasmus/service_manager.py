@@ -11,7 +11,11 @@ from attr import attrib, dataclass
 from . import services
 from .config import Config
 from .data import Passage, SearchResults, VerseRange
-from .exceptions import ServiceLookupTimeout, ServiceSearchTimeout
+from .exceptions import (
+    ServiceLookupTimeout,
+    ServiceNotSupportedError,
+    ServiceSearchTimeout,
+)
 from .protocols import Bible, Service
 
 _log: Final = logging.getLogger(__name__)
@@ -30,7 +34,10 @@ class ServiceManager(object):
 
     async def get_passage(self, bible: Bible, verses: VerseRange, /) -> Passage:
         service = self.service_map.get(bible.service)
-        assert service is not None
+
+        if service is None:
+            raise ServiceNotSupportedError(bible)
+
         try:
             _log.debug(f'Getting passage {verses} ({bible.abbr})')
             with async_timeout.timeout(self.timeout):

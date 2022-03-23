@@ -6,6 +6,7 @@ import pytest
 
 from erasmus.cogs.bible import Bible
 from erasmus.erasmus import Erasmus
+from erasmus.service_manager import ServiceManager
 
 
 class MockBot(object):
@@ -13,11 +14,21 @@ class MockBot(object):
     session: Any = {}
 
 
+class MockServiceManager(object):
+    ...
+
+
 class TestBible(object):
     @pytest.fixture
     def mock_bot(self) -> MockBot:
         return MockBot()
 
-    def test_instantiate(self, mock_bot: Erasmus) -> None:
-        cog = Bible(mock_bot)
+    @pytest.fixture
+    def mock_service_manager(self) -> MockServiceManager:
+        return MockServiceManager()
+
+    def test_instantiate(
+        self, mock_bot: Erasmus, mock_service_manager: ServiceManager
+    ) -> None:
+        cog = Bible(mock_bot, mock_service_manager)
         assert cog is not None

@@ -49,7 +49,7 @@ class BibleVersion(Base):
     @staticmethod
     async def get_by_command(command: str, /) -> BibleVersion:
         bible = await BibleVersion.query.where(
-            BibleVersion.command == command
+            BibleVersion.command == command  # type: ignore
         ).gino.first()
 
         if not bible:
@@ -60,14 +60,14 @@ class BibleVersion(Base):
     @staticmethod
     async def get_by_abbr(abbr: str, /) -> BibleVersion | None:
         return await BibleVersion.query.where(
-            BibleVersion.command.ilike(abbr)
+            BibleVersion.command.ilike(abbr)  # type: ignore
         ).gino.first()
 
     @staticmethod
     async def get_for_user(user_id: int, guild_id: int | None, /) -> BibleVersion:
         user_pref = (
             await UserPref.load(bible_version=BibleVersion)
-            .query.where(UserPref.user_id == user_id)
+            .query.where(UserPref.user_id == user_id)  # type: ignore
             .gino.first()
         )
 
@@ -77,7 +77,7 @@ class BibleVersion(Base):
         if guild_id is not None:
             guild_pref = (
                 await GuildPref.load(bible_version=BibleVersion)
-                .query.where(GuildPref.guild_id == guild_id)
+                .query.where(GuildPref.guild_id == guild_id)  # type: ignore
                 .gino.first()
             )
 

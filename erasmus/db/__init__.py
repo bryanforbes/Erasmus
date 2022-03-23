@@ -1,3 +1,5 @@
+from __future__ import annotations
+
 from .base import Base, db  # noqa
 from .bible import BibleVersion, UserPref  # noqa
 from .confession import (  # noqa

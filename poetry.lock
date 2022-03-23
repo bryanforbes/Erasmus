@@ -100,13 +100,13 @@ develop = false
 [package.dependencies]
 asyncpg = "^0.23.0"
 mypy = ">=0.800"
-typing-extensions = "^3.10.0"
+typing-extensions = "^4.1.0"
 
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/asyncpg-stubs.git"
-reference = "0894bcb5f773d413f54bc956b83880f225258337"
-resolved_reference = "0894bcb5f773d413f54bc956b83880f225258337"
+reference = "bb92f810baaa157c3750610a2ac946dfd903a5b8"
+resolved_reference = "bb92f810baaa157c3750610a2ac946dfd903a5b8"
 
 [[package]]
 name = "atomicwrites"
@@ -118,17 +118,17 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [[package]]
 name = "attrs"
-version = "20.3.0"
+version = "21.4.0"
 description = "Classes Without Boilerplate"
 category = "main"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [package.extras]
-dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface", "furo", "sphinx", "pre-commit"]
-docs = ["furo", "sphinx", "zope.interface"]
-tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "zope.interface"]
-tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six"]
+dev = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "zope.interface", "furo", "sphinx", "sphinx-notfound-page", "pre-commit", "cloudpickle"]
+docs = ["furo", "sphinx", "zope.interface", "sphinx-notfound-page"]
+tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "zope.interface", "cloudpickle"]
+tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "six", "mypy", "pytest-mypy-plugins", "cloudpickle"]
 
 [[package]]
 name = "beautifulsoup4"
@@ -159,7 +159,6 @@ mypy-extensions = ">=0.4.3"
 pathspec = ">=0.9.0"
 platformdirs = ">=2"
 tomli = ">=1.1.0"
-typing-extensions = {version = ">=3.10.0.0", markers = "python_version < \"3.10\""}
 
 [package.extras]
 colorama = ["colorama (>=0.4.3)"]
@@ -181,11 +180,11 @@ aioitertools = "^0.8.0"
 async-timeout = ">=3.0.0"
 attrs = ">=18.2.0"
 click = ">=8.0"
-discord-ext-typed-commands = "^1.0.3"
-"discord.py" = "~1.7.0"
+"discord.py" = {git = "https://github.com/Rapptz/discord.py", branch = "master"}
 gino = {version = "^1.0.1", optional = true}
 pendulum = "~2.1.2"
 toml = "^0.10.2"
+typing_extensions = ">=4.1.0"
 uvloop = {version = "~0.16.0", optional = true}
 
 [package.extras]
@@ -197,8 +196,8 @@ uvloop = ["uvloop (>=0.16.0,<0.17.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "5163f2745934af188b3f728dd4a366fa7828fe07"
-resolved_reference = "5163f2745934af188b3f728dd4a366fa7828fe07"
+reference = "feature/dpy-2.0"
+resolved_reference = "ba1c349df3c861bbd3ed9edfd447ed298f9c75b0"
 
 [[package]]
 name = "cchardet"
@@ -280,61 +279,28 @@ tomli = {version = "*", optional = true, markers = "extra == \"toml\""}
 toml = ["tomli"]
 
 [[package]]
-name = "discord-ext-menus"
-version = "1.0.0a31+gfbb8803"
-description = "An extension module to make reaction based menus with discord.py"
-category = "main"
-optional = false
-python-versions = ">=3.5.3"
-develop = false
-
-[package.dependencies]
-"discord.py" = ">=1.2.5"
-
-[package.source]
-type = "git"
-url = "https://github.com/Rapptz/discord-ext-menus"
-reference = "fbb8803779373357e274e1540b368365fd9d8074"
-resolved_reference = "fbb8803779373357e274e1540b368365fd9d8074"
-
-[[package]]
-name = "discord-ext-typed-commands"
-version = "1.0.3"
-description = "Typed commands for discord.py"
-category = "main"
-optional = false
-python-versions = ">=3.6.1,<4.0.0"
-
-[package.dependencies]
-"discord.py" = ">=1.4.1,<2.0.0"
-
-[[package]]
 name = "discord.py"
-version = "1.7.3"
+version = "2.0.0a3959+g181fc42b"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
-python-versions = ">=3.5.3"
+python-versions = ">=3.8.0"
+develop = false
 
 [package.dependencies]
-aiohttp = ">=3.6.0,<3.8.0"
+aiohttp = ">=3.6.0,<4"
 
 [package.extras]
-docs = ["sphinx (==3.0.3)", "sphinxcontrib-trio (==1.1.2)", "sphinxcontrib-websupport"]
-voice = ["PyNaCl (>=1.3.0,<1.5)"]
+docs = ["sphinx (==4.4.0)", "sphinxcontrib-trio (==1.1.2)", "sphinxcontrib-websupport", "typing-extensions"]
+speed = ["orjson (>=3.5.4)"]
+test = ["coverage", "pytest", "pytest-asyncio", "pytest-cov", "pytest-mock"]
+voice = ["PyNaCl (>=1.3.0,<1.6)"]
 
-[[package]]
-name = "discord.py-stubs"
-version = "1.7.3"
-description = "discord.py stubs"
-category = "dev"
-optional = false
-python-versions = ">=3.6.2,<4.0.0"
-
-[package.dependencies]
-"discord.py" = ">=1.7.0,<1.8.0"
-mypy = ">=0.800"
-typing-extensions = ">=3.7.4,<4.0.0"
+[package.source]
+type = "git"
+url = "https://github.com/Rapptz/discord.py"
+reference = "master"
+resolved_reference = "181fc42b9ba71692226400b9c5008fb126c84aa0"
 
 [[package]]
 name = "distlib"
@@ -435,17 +401,17 @@ python-versions = "^3.6.2"
 develop = false
 
 [package.dependencies]
-asyncpg-stubs = {git = "https://github.com/bryanforbes/asyncpg-stubs.git", rev = "0894bcb5f773d413f54bc956b83880f225258337"}
+asyncpg-stubs = {git = "https://github.com/bryanforbes/asyncpg-stubs.git", rev = "bb92f810baaa157c3750610a2ac946dfd903a5b8"}
 gino = "~1.0.1"
-mypy = ">=0.800"
+mypy = ">=0.931"
 sqlalchemy-stubs = "^0.4"
 typing-extensions = ">=3.7.4"
 
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/gino-stubs.git"
-reference = "5914eaf2c5c9624cc457faa3a3fef629f027f830"
-resolved_reference = "5914eaf2c5c9624cc457faa3a3fef629f027f830"
+reference = "07171af1658b0e4ecbfac29e832eddf4b7e4733e"
+resolved_reference = "07171af1658b0e4ecbfac29e832eddf4b7e4733e"
 
 [[package]]
 name = "identify"
@@ -983,11 +949,11 @@ python-versions = "*"
 
 [[package]]
 name = "typing-extensions"
-version = "3.10.0.0"
-description = "Backported and Experimental Type Hints for Python 3.5+"
+version = "4.1.1"
+description = "Backported and Experimental Type Hints for Python 3.6+"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.6"
 
 [[package]]
 name = "ujson"
@@ -1064,8 +1030,8 @@ multidict = ">=4.0"
 
 [metadata]
 lock-version = "1.1"
-python-versions = "^3.9"
-content-hash = "6b09752128ad46f820e8cfd8974399f1a5bd6041c2b1a47df3147e8814276ae6"
+python-versions = "^3.10"
+content-hash = "b97b41d6165c5fa585a324de6b172f5ce5b4e94a9a8ede17298aab30d69d3426"
 
 [metadata.files]
 aiodns = [
@@ -1154,8 +1120,8 @@ atomicwrites = [
     {file = "atomicwrites-1.4.0.tar.gz", hash = "sha256:ae70396ad1a434f9c7046fd2dd196fc04b12f9e91ffb859164193be8b6168a7a"},
 ]
 attrs = [
-    {file = "attrs-20.3.0-py2.py3-none-any.whl", hash = "sha256:31b2eced602aa8423c2aea9c76a724617ed67cf9513173fd3a4f03e3a929c7e6"},
-    {file = "attrs-20.3.0.tar.gz", hash = "sha256:832aa3cde19744e49938b91fea06d69ecb9e649c93ba974535d08ad92164f700"},
+    {file = "attrs-21.4.0-py2.py3-none-any.whl", hash = "sha256:2d27e3784d7a565d36ab851fe94887c5eccd6a463168875832a1be79c82828b4"},
+    {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.10.0-py3-none-any.whl", hash = "sha256:9a315ce70049920ea4572a4055bc4bd700c940521d36fc858205ad4fcde149bf"},
@@ -1320,19 +1286,7 @@ coverage = [
     {file = "coverage-6.3.2-pp36.pp37.pp38-none-any.whl", hash = "sha256:18d520c6860515a771708937d2f78f63cc47ab3b80cb78e86573b0a760161faf"},
     {file = "coverage-6.3.2.tar.gz", hash = "sha256:03e2a7826086b91ef345ff18742ee9fc47a6839ccd517061ef8fa1976e652ce9"},
 ]
-discord-ext-menus = []
-discord-ext-typed-commands = [
-    {file = "discord-ext-typed-commands-1.0.3.tar.gz", hash = "sha256:9bffb46dfc93b50356624bfe7756a4f0dad3a8933ffc160c9a44babaa7bc194d"},
-    {file = "discord_ext_typed_commands-1.0.3-py3-none-any.whl", hash = "sha256:8d19e01bef9b256df7506d735ca7a42e4ecb49f8a68fc4536d4221e1921d8c5c"},
-]
-"discord.py" = [
-    {file = "discord.py-1.7.3-py3-none-any.whl", hash = "sha256:c6f64db136de0e18e090f6752ea68bdd4ab0a61b82dfe7acecefa22d6477bb0c"},
-    {file = "discord.py-1.7.3.tar.gz", hash = "sha256:462cd0fe307aef8b29cbfa8dd613e548ae4b2cb581d46da9ac0d46fb6ea19408"},
-]
-"discord.py-stubs" = [
-    {file = "discord.py-stubs-1.7.3.tar.gz", hash = "sha256:d28d218540217794ff12b7c0afd8ee4d65fc91bd169c53475781ac99413819ec"},
-    {file = "discord.py_stubs-1.7.3-py3-none-any.whl", hash = "sha256:ec6283e08beff4660c2d28a3fb48f501eb74988d8d6e5859b3838ac897016c95"},
-]
+"discord.py" = []
 distlib = [
     {file = "distlib-0.3.1-py2.py3-none-any.whl", hash = "sha256:8c09de2c67b3e7deef7184574fc060ab8a793e7adbb183d942c389c8b13c52fb"},
     {file = "distlib-0.3.1.zip", hash = "sha256:edf6116872c863e1aa9d5bb7cb5e05a022c519a4594dc703843343a9ddd9bff1"},
@@ -1776,9 +1730,8 @@ types-ujson = [
     {file = "types_ujson-4.2.1-py3-none-any.whl", hash = "sha256:dd6ef2d1a29561e8fbbe4fa95e3509a1104c8f1d7d77004ae50ff99bfa89320c"},
 ]
 typing-extensions = [
-    {file = "typing_extensions-3.10.0.0-py2-none-any.whl", hash = "sha256:0ac0f89795dd19de6b97debb0c6af1c70987fd80a2d62d1958f7e56fcc31b497"},
-    {file = "typing_extensions-3.10.0.0-py3-none-any.whl", hash = "sha256:779383f6086d90c99ae41cf0ff39aac8a7937a9283ce0a414e5dd782f4c94a84"},
-    {file = "typing_extensions-3.10.0.0.tar.gz", hash = "sha256:50b6f157849174217d0656f99dc82fe932884fb250826c18350e159ec6cdf342"},
+    {file = "typing_extensions-4.1.1-py3-none-any.whl", hash = "sha256:21c85e0fe4b9a155d0799430b0ad741cdce7e359660ccbd8b530613e8df88ce2"},
+    {file = "typing_extensions-4.1.1.tar.gz", hash = "sha256:1a9462dcc3347a79b1f1c0271fbe79e844580bb598bafa1ed208b94da3cdcd42"},
 ]
 ujson = [
     {file = "ujson-5.1.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:644552d1e89983c08d0c24358fbcb5829ae5b5deee9d876e16d20085cfa7dc81"},

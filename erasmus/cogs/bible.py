@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from typing import Any, Final, Protocol, TypeVar, cast
+from collections.abc import Sequence
+from typing import Any, Final, Iterable, Optional, cast
 
 import discord
 from botus_receptus import Cog, checks, formatting
 from botus_receptus.db import UniqueViolationError
+from discord import app_commands
 from discord.ext import commands
 
 from ..context import Context
@@ -22,73 +24,20 @@ from ..exceptions import (
     ServiceLookupTimeout,
     ServiceNotSupportedError,
     ServiceSearchTimeout,
-    ServiceTimeout,
 )
-from ..menu_pages import EmbedPageSource, MenuPages
+from ..page_source import AsyncPageSource, FieldPageSource
 from ..service_manager import ServiceManager
-
-SPS = TypeVar('SPS', bound='SearchPageSource')
-
-
-class Search(Protocol):
-    async def __call__(self, /, *, per_page: int, page_number: int) -> SearchResults:
-        ...
+from ..ui_pages import ContextUIPages, InteractionUIPages
 
 
-class SearchPageSource(EmbedPageSource[list[Passage]]):
-    max_pages: int
-    total: int
-
-    def __init__(self, search: Search, /, *, per_page: int) -> None:
-        self.search = search
-        self.per_page = per_page
-        self.cache: dict[int, list[Passage]] = {}
-
-    async def prepare(self, /) -> None:
-        await super().prepare()
-
-        initial_results = await self.search(per_page=self.per_page, page_number=0)
-        max_pages, left_over = divmod(initial_results.total, self.per_page)
-
-        if left_over:
-            max_pages += 1
-
-        self.total = initial_results.total
-        self.max_pages = max_pages
-
-        if len(initial_results.verses) == self.total:
-            for page in range(0, self.max_pages):
-                page_start = page * self.per_page
-                self.cache[page] = initial_results.verses[
-                    page_start : page_start * self.per_page
-                ]
-        else:
-            self.cache[0] = initial_results.verses
-
-    def get_max_pages(self, /) -> int:
-        return self.max_pages
-
-    def get_total(self, /) -> int:
-        return self.total
-
-    def is_paginating(self, /) -> bool:
-        return self.total > self.per_page
-
-    async def get_page(self, page_number: int, /) -> list[Passage]:
-        if page_number in self.cache:
-            return self.cache[page_number]
-
-        results = await self.search(
-            per_page=self.per_page, page_number=page_number * self.per_page
-        )
-
-        self.cache[page_number] = results.verses
-
-        return results.verses
-
-    async def set_page_text(self, entries: list[Passage], /) -> None:
+class SearchPageSource(FieldPageSource[Sequence[Passage]], AsyncPageSource[Passage]):
+    def get_field_values(
+        self,
+        entries: Sequence[Passage],
+        /,
+    ) -> Iterable[tuple[str, str]]:
         for entry in entries:
-            self.embed.add_field(name=str(entry.range), value=entry.text, inline=False)
+            yield str(entry.range), entry.text
 
 
 _lookup_help: Final = '''
@@ -171,11 +120,17 @@ Example:
     {prefix}{command} faith hope'''
 
 
-class Bible(Cog[Context]):
-    def __init__(self, bot: Erasmus, /) -> None:
-        self.bot = bot
+class BibleBase(Cog):
+    bot: Erasmus
+    service_manager: ServiceManager
 
-        self.service_manager = ServiceManager.from_config(bot.config, bot.session)
+    def __init__(self, bot: Erasmus, service_manager: ServiceManager, /) -> None:
+        self.bot = bot
+        self.service_manager = service_manager
+
+
+class Bible(BibleBase):
+    async def cog_load(self) -> None:
         self._user_cooldown = commands.CooldownMapping.from_cooldown(
             8, 60.0, commands.BucketType.user
         )
@@ -183,12 +138,12 @@ class Bible(Cog[Context]):
         # Share cooldown across commands
         self.lookup._buckets = self.search._buckets = self._user_cooldown
 
-    def __pre_inject__(self, bot: commands.Bot[Context], /) -> None:
-        self.bot.loop.run_until_complete(self.__init())
-
-    async def __init(self, /) -> None:
         async for version in BibleVersion.get_all():
             self.__add_bible_commands(version.command, version.name)
+
+    async def cog_unload(self) -> None:
+        async for version in BibleVersion.get_all():
+            self.__remove_bible_commands(version.command)
 
     async def lookup_from_message(
         self,
@@ -199,10 +154,15 @@ class Bible(Cog[Context]):
         bucket = self._user_cooldown.get_bucket(ctx.message)
         retry_after = bucket.update_rate_limit()
         if retry_after:
-            raise commands.CommandOnCooldown(bucket, retry_after)
+            raise commands.CommandOnCooldown(
+                bucket, retry_after, commands.BucketType.user
+            )
 
         verse_ranges = VerseRange.get_all_from_string(
-            message.content, only_bracketed=not self.bot.user.mentioned_in(message)
+            message.content,
+            only_bracketed=not cast(discord.ClientUser, self.bot.user).mentioned_in(
+                message
+            ),
         )
 
         if len(verse_ranges) == 0:
@@ -233,7 +193,7 @@ class Bible(Cog[Context]):
                 except Exception as exc:
                     await self.bot.on_command_error(ctx, exc)
 
-    async def cog_command_error(self, ctx: Context, error: Exception, /) -> None:
+    async def cog_command_error(self, ctx: Context, error: Exception, /) -> None:  # type: ignore  # noqa: B950
         if (
             isinstance(
                 error,
@@ -271,17 +231,16 @@ class Bible(Cog[Context]):
                 f'The service configured for '
                 f'`{self.bot.default_prefix}{ctx.invoked_with}` is not supported'
             )
-        elif isinstance(error, ServiceTimeout):
-            if isinstance(error, ServiceLookupTimeout):
-                message = (
-                    f'The request timed out looking up {error.verses} in '
-                    + error.bible.name
-                )
-            elif isinstance(error, ServiceSearchTimeout):
-                message = (
-                    f'The request timed out searching for '
-                    f'"{" ".join(error.terms)}" in {error.bible.name}'
-                )
+        elif isinstance(error, ServiceLookupTimeout):
+            message = (
+                f'The request timed out looking up {error.verses} in '
+                + error.bible.name
+            )
+        elif isinstance(error, ServiceSearchTimeout):
+            message = (
+                f'The request timed out searching for '
+                f'"{" ".join(error.terms)}" in {error.bible.name}'
+            )
         else:
             return
 
@@ -331,6 +290,21 @@ class Bible(Cog[Context]):
 
         output = '\n'.join(lines)
         await ctx.send_embed(f'\n{output}\n')
+
+    @app_commands.command(name='versions')
+    async def _versions(self, interaction: discord.Interaction, /) -> None:
+        '''List which Bible versions are available for lookup and search'''
+
+        lines = ['I support the following Bible versions:', '']
+
+        lines += [
+            f'  `{version.command}`: {version.name}'
+            async for version in BibleVersion.get_all(ordered=True)
+        ]
+
+        output = '\n'.join(lines)
+        embed = discord.Embed(description=output)
+        await interaction.response.send_message(embed=embed)
 
     @commands.command(brief='Set your preferred version', help=_setversion_help)
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
@@ -504,34 +478,131 @@ class Bible(Cog[Context]):
             )
 
         source = SearchPageSource(search, per_page=5)
-        menu = MenuPages(source, 'I found 0 results')
-
-        async with ctx.typing():
-            await menu.start(ctx)
+        view = ContextUIPages(source, ctx=ctx)
+        await view.start()
 
     def __add_bible_commands(self, command: str, name: str, /) -> None:
-        lookup = self.bot.command(
+        lookup = commands.Command(
+            Bible.__version_lookup,
             name=command,
             brief=f'Look up a verse in {name}',
             help=_version_lookup_help.format(prefix='{prefix}', command=command),
             hidden=True,
-        )(Bible.__version_lookup)
+        )
         lookup.cog = self
-        search = self.bot.command(
+        search = commands.Command(
+            Bible.__version_search,
             name=f's{command}',
             brief=f'Search in {name}',
             help=_version_search_help.format(prefix='{prefix}', command=f's{command}'),
             hidden=True,
-        )(Bible.__version_search)
+        )
         search.cog = self
 
         # Share cooldown across commands
         lookup._buckets = search._buckets = self._user_cooldown
+
+        self.bot.add_command(lookup)  # type: ignore
+        self.bot.add_command(search)  # type: ignore
 
     def __remove_bible_commands(self, command: str, /) -> None:
         self.bot.remove_command(command)
         self.bot.remove_command(f's{command}')
 
 
-def setup(bot: Erasmus, /) -> None:
-    bot.add_cog(Bible(bot))
+class BibleAppCommands(BibleBase):
+    @app_commands.command()
+    @app_commands.describe(terms='Terms to search for')
+    async def search(
+        self,
+        interaction: discord.Interaction,
+        terms: str,
+        version: Optional[str] = None,
+    ) -> None:
+        '''Search in the Bible'''
+
+        bible: BibleVersion | None = None
+
+        if version is not None:
+            bible = await BibleVersion.get_by_abbr(version)
+
+        if bible is None:
+            bible = await BibleVersion.get_for_user(
+                interaction.user.id,
+                interaction.guild.id if interaction.guild is not None else None,
+            )
+
+        async def search(*, per_page: int, page_number: int) -> SearchResults:
+            return await self.service_manager.search(
+                bible.as_bible(), terms.split(' '), limit=per_page, offset=page_number
+            )
+
+        source = SearchPageSource(search, per_page=5)
+        view = InteractionUIPages(source, interaction=interaction)
+        await view.start()
+
+    @app_commands.command()
+    @app_commands.describe(reference='A verse reference')
+    async def lookup(
+        self, interaction: discord.Interaction, reference: VerseRange
+    ) -> None:
+        '''Look up a verse'''
+
+        bible: BibleVersion | None = None
+
+        if reference.version is not None:
+            bible = await BibleVersion.get_by_abbr(reference.version)
+
+        if bible is None:
+            bible = await BibleVersion.get_for_user(
+                interaction.user.id,
+                interaction.guild.id if interaction.guild is not None else None,
+            )
+
+        if not (bible.books & reference.book_mask):
+            raise BookNotInVersionError(reference.book, bible.name)
+
+        await interaction.response.defer(thinking=True)
+        passage = await self.service_manager.get_passage(cast(Any, bible), reference)
+        await interaction.followup.send(
+            embed=discord.Embed.from_dict(
+                {'description': passage.text, 'footer': {'text': passage.citation}}
+            )
+        )
+
+    @lookup.error
+    async def _app_lookup_error(
+        self,
+        interaction: discord.Interaction,
+        error: Exception,
+    ) -> None:
+        if error.__cause__ is not None:
+            error = cast(Exception, error.__cause__)
+
+        if isinstance(error, BookNotUnderstoodError):
+            message = f'I do not understand the book "{error.book}"'
+        elif isinstance(error, BookNotInVersionError):
+            message = f'{error.version} does not contain {error.book}'
+        elif isinstance(error, DoNotUnderstandError):
+            message = 'I do not understand that request'
+        elif isinstance(error, ReferenceNotUnderstoodError):
+            message = f'I do not understand the reference "{error.reference}"'
+        elif isinstance(error, ServiceNotSupportedError):
+            message = (
+                f'The service configured for "{error.bible.name}" is not supported'
+            )
+        else:
+            return
+
+        embed = discord.Embed(description=message, color=discord.Color.red())
+        if not interaction.response.is_done():
+            await interaction.response.send_message(embed=embed)
+        else:
+            await interaction.followup.send(embed=embed)
+
+
+async def setup(bot: Erasmus, /) -> None:
+    service_manager = ServiceManager.from_config(bot.config, bot.session)
+
+    await bot.add_cog(Bible(bot, service_manager))
+    await bot.add_cog(BibleAppCommands(bot, service_manager))

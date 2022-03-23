@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
-from typing import Any
+from typing import Any, cast
 from unittest.mock import MagicMock
 
 import aiohttp
@@ -32,8 +32,8 @@ def fixture_MockBible() -> type[MockBible]:
 
 @pytest.fixture
 def mock_response(mocker: pytest_mock.MockerFixture) -> MagicMock:
-    response: MagicMock = mocker.MagicMock()
-    response.__aenter__.return_value = response
+    response = mocker.MagicMock()
+    cast(Any, response).__aenter__.return_value = response
 
     return response
 
@@ -43,7 +43,7 @@ def mock_client_session(
     mocker: pytest_mock.MockerFixture, mock_response: Any
 ) -> MagicMock:
     session: MagicMock = mocker.MagicMock()
-    session.__aenter__.return_value = session
+    cast(Any, session).__aenter__.return_value = session
     session.get = mocker.Mock(return_value=mock_response)
     session.post = mocker.Mock(return_value=mock_response)
 

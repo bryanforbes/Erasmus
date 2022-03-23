@@ -46,10 +46,10 @@ class ReferenceNotUnderstoodError(ErasmusError):
 
 
 class ServiceNotSupportedError(ErasmusError):
-    service_name: str
+    bible: Bible
 
-    def __init__(self, service_name: str, /) -> None:
-        self.service_name = service_name
+    def __init__(self, bible: Bible, /) -> None:
+        self.bible = bible
 
 
 class ServiceTimeout(ErasmusError):

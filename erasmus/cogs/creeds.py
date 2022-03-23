@@ -2,7 +2,9 @@ from __future__ import annotations
 
 from typing import Final
 
+import discord
 from botus_receptus import Cog, formatting
+from discord import app_commands
 from discord.ext import commands
 
 from ..context import Context
@@ -188,10 +190,14 @@ _nicene_381_filioque_text: Final = (
 )
 
 
-class Creeds(Cog[Context]):
+class CreedsBase(Cog):
+    bot: Erasmus
+
     def __init__(self, bot: Erasmus, /) -> None:
         self.bot = bot
 
+
+class Creeds(CreedsBase):
     @commands.command(brief='List the supported creeds')
     async def creeds(self, ctx: Context, /) -> None:
         prefix = ctx.prefix
@@ -233,5 +239,66 @@ class Creeds(Cog[Context]):
         await ctx.send_embed(_nicene_381_text, title='The Nicene Creed (381 AD)')
 
 
-def setup(bot: Erasmus, /) -> None:
-    bot.add_cog(Creeds(bot))
+class CreedsAppCommands(CreedsBase):
+    creed = app_commands.Group(name='creed', description='Historic creeds')
+
+    async def __send(
+        self, interaction: discord.Interaction, /, *, title: str, text: str
+    ) -> None:
+        embed = discord.Embed(title=title, description=text)
+
+        if not interaction.response.is_done():
+            await interaction.response.send_message(embed=embed)
+        else:
+            await interaction.followup.send(embed=embed)
+
+    @creed.command()
+    async def apostles(self, interaction: discord.Interaction, /) -> None:
+        '''The Apostles' Creed'''
+
+        await self.__send(interaction, title="The Apostles' Creed", text=_apostles_text)
+
+    @creed.command()
+    async def athanasian(self, interaction: discord.Interaction, /) -> None:
+        '''The Athanasian Creed'''
+
+        await self.__send(
+            interaction, title='The Athanasian Creed', text=_athanasian_text_1
+        )
+        await self.__send(
+            interaction, title='The Athanasian Creed (cont.)', text=_athanasian_text_2
+        )
+
+    @creed.command()
+    async def chalcedon(self, interaction: discord.Interaction, /) -> None:
+        '''The Chalcedonian Definition'''
+
+        await self.__send(
+            interaction, title='The Chalcedonian Definition', text=_chalcedon_text
+        )
+
+    @creed.command()
+    async def nicene(self, interaction: discord.Interaction, /) -> None:
+        '''The Nicene Creed'''
+        await self.__send(
+            interaction, title='The Nicene Creed', text=_nicene_381_filioque_text
+        )
+
+    @creed.command()
+    async def nicene325(self, interaction: discord.Interaction, /) -> None:
+        '''The Nicene Creed (325 AD)'''
+        await self.__send(
+            interaction, title='The Nicene Creed (325 AD)', text=_nicene_325_text
+        )
+
+    @creed.command()
+    async def nicene381(self, interaction: discord.Interaction, /) -> None:
+        '''The Nicene Creed (382 AD)'''
+        await self.__send(
+            interaction, title='The Nicene Creed (381 AD)', text=_nicene_381_text
+        )
+
+
+async def setup(bot: Erasmus, /) -> None:
+    await bot.add_cog(Creeds(bot))
+    await bot.add_cog(CreedsAppCommands(bot))

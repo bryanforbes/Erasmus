@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any, cast
 
 import _pytest
+import _pytest.fixtures
 import aiohttp
 import pytest
 import toml

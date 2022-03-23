@@ -3,6 +3,7 @@ from __future__ import annotations
 from typing import Any, cast
 
 import _pytest
+import _pytest.fixtures
 import aiohttp
 import pytest
 
