@@ -197,7 +197,7 @@ uvloop = ["uvloop (>=0.16.0,<0.17.0)"]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 reference = "feature/dpy-2.0"
-resolved_reference = "ba1c349df3c861bbd3ed9edfd447ed298f9c75b0"
+resolved_reference = "cef964357878ec6ebb6fa482ffa69fb098930b38"
 
 [[package]]
 name = "cchardet"
@@ -1031,7 +1031,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "fbddacbb13b01d8a21826d1f27b4fb96df8d1cdf3ca60030e30287520f32c333"
+content-hash = "da8ad0dd24ed7ad6fb608c5bf75fa9508b94fc61e4d4afb75cb5f9831edc02fc"
 
 [metadata.files]
 aiodns = [
