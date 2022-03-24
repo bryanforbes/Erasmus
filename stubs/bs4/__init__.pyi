@@ -22,7 +22,6 @@ from .element import Stylesheet as Stylesheet
 from .element import Tag as Tag
 from .element import TemplateString as TemplateString
 
-_T = TypeVar('_T')
 _T_co = TypeVar('_T_co', covariant=True)
 
 @type_check_only
@@ -31,8 +30,6 @@ class _FileLike(Protocol[_T_co]):
 
 class GuessedAtParserWarning(UserWarning): ...
 class MarkupResemblesLocatorWarning(UserWarning): ...
-
-_BS = TypeVar('_BS', bound=BeautifulSoup)
 
 class BeautifulSoup(Tag):
     ROOT_TAG_NAME: ClassVar[str]
