@@ -1,20 +1,21 @@
-from collections.abc import Callable, Container, Generator, Iterable, Iterator, Mapping
+from collections.abc import Container, Generator, Iterable, Iterator, Mapping
 from re import Pattern
 from typing import (
     Any,
     AnyStr,
     ClassVar,
     Final,
-    Generic,
     Literal,
     NewType,
-    NoReturn,
     Protocol,
     TypeVar,
     Union,
     overload,
     type_check_only,
 )
+from typing_extensions import TypeAlias
+
+from _typeshed import Self
 
 from . import BeautifulSoup
 from .builder import TreeBuilder
@@ -37,19 +38,19 @@ _Never = NewType('_Never', object)
 class _StrainerCallable(Protocol[_T_contra]):
     def __call__(self, __markup: _T_contra) -> bool: ...
 
-_FilterBaseType = Union[str, _StrainerCallable[_T], Pattern[Any], _U]
-_FilterIterableType = Iterable[Union[None, _T, Iterable[Any]]]
-_StrainerAttrType = Union[
+_FilterBaseType: TypeAlias = Union[str, _StrainerCallable[_T], Pattern[Any], _U]
+_FilterIterableType: TypeAlias = Iterable[Union[None, _T, Iterable[Any]]]
+_StrainerAttrType: TypeAlias = Union[
     _FilterBaseType[_T, bool], _FilterIterableType[_FilterBaseType[_T, bool]]
 ]
-_FilterItemType = Union[bytes, _FilterBaseType[_T, _U]]
-_FilterType = Union[
+_FilterItemType: TypeAlias = Union[bytes, _FilterBaseType[_T, _U]]
+_FilterType: TypeAlias = Union[
     _FilterItemType[_T, _U], _FilterIterableType[_FilterItemType[_T, _U]]
 ]
-_StringFilterType = _FilterType[NavigableString, Literal[True]]
-_TagStringFilterType = _FilterType['NavigableString | None', bool]
-_TagAttrFilterType = _FilterType['str | None', bool]
-_TagFilterType = _FilterType[Tag, bool]
+_StringFilterType: TypeAlias = _FilterType[NavigableString, Literal[True]]
+_TagStringFilterType: TypeAlias = _FilterType[NavigableString | None, bool]
+_TagAttrFilterType: TypeAlias = _FilterType[str | None, bool]
+_TagFilterType: TypeAlias = _FilterType[Tag, bool]
 
 @type_check_only
 class _FindOneMethod(Protocol):
@@ -215,13 +216,13 @@ class PageElement:
     ) -> Formatter: ...
     @overload
     def formatter_for_name(self, formatter: str) -> Formatter: ...
-    def replace_with(self: _PE, replace_with: str | PageElement) -> _PE | None: ...
-    replaceWith = replace_with
-    def unwrap(self: _PE) -> _PE: ...
-    replace_with_children = unwrap
-    replaceWithChildren = unwrap
+    def replace_with(self: Self, replace_with: str | PageElement) -> Self | None: ...
+    replaceWith = replace_with  # noqa: Y026
+    def unwrap(self: Self) -> Self: ...
+    replace_with_children = unwrap  # noqa: Y026
+    replaceWithChildren = unwrap  # noqa: Y026
     def wrap(self, wrap_inside: _PE) -> _PE: ...
-    def extract(self: _PE, _self_index: int | None = ...) -> _PE: ...
+    def extract(self: Self, _self_index: int | None = ...) -> Self: ...
     def insert(self, position: int, new_child: PageElement) -> None: ...
     def append(self, tag: PageElement) -> None: ...
     def extend(self, tags: PageElement | Iterable[PageElement]) -> None: ...
@@ -254,7 +255,7 @@ class PageElement:
         | None = ...,
         **kwargs: _TagAttrFilterType,
     ) -> Tag | None: ...
-    findParent = find_parent
+    findParent = find_parent  # noqa: Y026
     def find_parents(
         self,
         name: SoupStrainer | _TagFilterType | None = ...,
@@ -264,8 +265,8 @@ class PageElement:
         limit: int | None = ...,
         **kwargs: _TagAttrFilterType,
     ) -> ResultSet[Tag]: ...
-    findParents = find_parents
-    fetchParents = find_parents
+    findParents = find_parents  # noqa: Y026
+    fetchParents = find_parents  # noqa: Y026
     @property
     def next(self) -> PageElement | None: ...
     @property
@@ -370,7 +371,7 @@ class Tag(PageElement):
     ) -> None: ...
     @property
     def is_empty_element(self) -> bool: ...
-    isSelfClosing = is_empty_element
+    isSelfClosing = is_empty_element  # noqa: Y026
     @property
     def strings(self) -> Iterator[NavigableString | CData]: ...
     @property
@@ -381,7 +382,7 @@ class Tag(PageElement):
         strip: bool = ...,
         types: Container[type[PageElement]] = ...,
     ) -> str: ...
-    getText = get_text
+    getText = get_text  # noqa: Y026
     @property
     def text(self) -> str: ...
     def decompose(self) -> None: ...
@@ -406,8 +407,8 @@ class Tag(PageElement):
     def __setitem__(self, key: str, value: str | list[str]) -> None: ...
     def __delitem__(self, key: str) -> None: ...
     def __getattr__(self, tag: str) -> Tag | None: ...
-    def __eq__(self, other: Any) -> bool: ...
-    def __ne__(self, other: Any) -> bool: ...
+    def __eq__(self, other: object) -> bool: ...
+    def __ne__(self, other: object) -> bool: ...
     def encode(
         self,
         encoding: str = ...,
@@ -509,7 +510,7 @@ class Tag(PageElement):
         string: _TagStringFilterType | None = ...,
         **kwargs: _TagAttrFilterType | None,
     ) -> Tag | NavigableString | None: ...
-    findChild = find
+    findChild = find  # noqa: Y026
     @overload
     def find_all(
         self,
@@ -577,9 +578,9 @@ class Tag(PageElement):
         string: _TagStringFilterType | None = ...,
         **kwargs: _TagAttrFilterType | None,
     ) -> ResultSet[NavigableString] | ResultSet[Tag]: ...
-    findAll = find_all
-    findChildren = find_all
-    __call__ = find_all
+    findAll = find_all  # noqa: Y026
+    findChildren = find_all  # noqa: Y026
+    __call__ = find_all  # noqa: Y026
     @property
     def children(self) -> Iterator[PageElement]: ...
     @property
@@ -619,7 +620,7 @@ class SoupStrainer:
         markup_name: str | Tag | None = ...,
         markup_attrs: dict[str, list[str] | tuple[str, ...]] = ...,
     ) -> PageElement | None: ...
-    searchTag = search_tag
+    searchTag = search_tag  # noqa: Y026
     def search(
         self,
         markup: str | Tag | Iterable[str | Tag],
