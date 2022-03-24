@@ -38,8 +38,8 @@ class ServiceManager(object):
                 passage.version = bible.abbr
                 _log.debug(f'Got passage {passage.citation}')
                 return passage
-        except asyncio.TimeoutError:
-            raise ServiceLookupTimeout(bible, verses)
+        except asyncio.TimeoutError as e:
+            raise ServiceLookupTimeout(bible, verses) from e
 
     async def search(
         self, bible: Bible, terms: list[str], /, *, limit: int = 20, offset: int = 0
@@ -49,8 +49,8 @@ class ServiceManager(object):
         try:
             with async_timeout.timeout(self.timeout):
                 return await service.search(bible, terms, limit=limit, offset=offset)
-        except asyncio.TimeoutError:
-            raise ServiceSearchTimeout(bible, terms)
+        except asyncio.TimeoutError as e:
+            raise ServiceSearchTimeout(bible, terms) from e
 
     @classmethod
     def from_config(
