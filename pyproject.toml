@@ -24,7 +24,7 @@ discord-ext-menus = {git = "https://github.com/Rapptz/discord-ext-menus", rev = 
 "discord.py-stubs" = {version = "~1.7.3"}
 gino-stubs = {rev = "5914eaf2c5c9624cc457faa3a3fef629f027f830", git = "https://github.com/bryanforbes/gino-stubs.git"}
 black = "^22.1"
-coverage = {version = "^5.5", extras = ["toml"]}
+coverage = {version = "^6.3", extras = ["toml"]}
 flake8 = "~3.9"
 flake8-bugbear = ">=21.3.1"
 flake8-pyi = "^20.10"
