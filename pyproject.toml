@@ -77,7 +77,7 @@ virtual_env = ".venv"
 profile = "black"
 
 [tool.pyright]
-include = ["erasmus", "tests"]
+include = ["erasmus", "tests", "stubs"]
 stubPath = "./stubs"
 
 pythonVersion = "3.10"

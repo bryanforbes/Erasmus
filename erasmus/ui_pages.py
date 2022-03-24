@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-import asyncio
 from abc import abstractmethod
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Generic, TypeVar
+from typing import TYPE_CHECKING, Any, Generic, TypeVar
 
 if TYPE_CHECKING:
     from typing_extensions import Self
@@ -16,11 +15,44 @@ from .page_source import BasePages, PageSource
 T = TypeVar('T')
 
 
+class PagesModal(discord.ui.Modal, title='Skip to page…'):
+    pages: 'UIPages[Any]'
+
+    def __init__(self, pages: 'UIPages[Any]', *, timeout: float | None = None) -> None:
+        super().__init__(timeout=timeout)
+
+        self.pages = pages
+
+    page_number: discord.ui.TextInput[Self] = discord.ui.TextInput(
+        label='Page', placeholder='Page number here…'
+    )
+
+    async def on_submit(self, interaction: discord.Interaction) -> None:
+        assert self.page_number.value is not None
+
+        if not self.page_number.value.isdigit():
+            raise ValueError('You must enter a number')
+
+        await self.pages.show_checked_page(interaction, int(self.page_number.value) - 1)
+
+    async def on_error(
+        self, error: Exception, interaction: discord.Interaction
+    ) -> None:
+        message = 'An error occurred'
+
+        if isinstance(error, ValueError):
+            message = error.args[0]
+
+        await interaction.response.send_message(
+            embed=discord.Embed(description=message, color=discord.Color.red()),
+            ephemeral=True,
+        )
+
+
 class UIPages(discord.ui.View, BasePages[T], Generic[T]):
     check_embeds: bool
     compact: bool
     message: discord.Message | None
-    input_lock: asyncio.Lock
 
     def __init__(
         self,
@@ -39,7 +71,6 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         self.message = None
         self.current_page = 0
         self.compact = compact
-        self.input_lock = asyncio.Lock()
         self.clear_items()
 
     @abstractmethod
@@ -73,7 +104,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
 
     def fill_items(self, /) -> None:
         if not self.compact:
-            self.numbered_page.row = 1
+            # self.numbered_page.row = 1
             self.stop_pages.row = 1
 
         if self.source.needs_pagination:
@@ -83,12 +114,10 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
                 self.add_item(self.go_to_first_page)
             self.add_item(self.go_to_previous_page)
             if not self.compact:
-                self.add_item(self.go_to_current_page)
+                self.add_item(self.skip_to_page)
             self.add_item(self.go_to_next_page)
             if use_last_and_first:
                 self.add_item(self.go_to_last_page)
-            if not self.compact:
-                self.add_item(self.numbered_page)
             self.add_item(self.stop_pages)
 
     async def show_page(
@@ -121,9 +150,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
             self.go_to_previous_page.disabled = page_number == 0
             return
 
-        self.go_to_current_page.label = str(page_number + 1)
-        self.go_to_previous_page.label = str(page_number)
-        self.go_to_next_page.label = str(page_number + 2)
+        self.skip_to_page.label = str(page_number + 1)
         self.go_to_next_page.disabled = False
         self.go_to_previous_page.disabled = False
         self.go_to_first_page.disabled = False
@@ -133,10 +160,8 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
             self.go_to_last_page.disabled = (page_number + 1) >= max_pages
             if (page_number + 1) >= max_pages:
                 self.go_to_next_page.disabled = True
-                self.go_to_next_page.label = '…'
             if page_number == 0:
                 self.go_to_previous_page.disabled = True
-                self.go_to_previous_page.label = '…'
 
     async def show_checked_page(
         self,
@@ -214,19 +239,19 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
     ) -> None:
         await self.show_page(interaction, 0)
 
-    @discord.ui.button(label='Back', style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label='<', style=discord.ButtonStyle.blurple)
     async def go_to_previous_page(
         self, button: discord.ui.Button[Self], interaction: discord.Interaction
     ) -> None:
         await self.show_checked_page(interaction, self.current_page - 1)
 
-    @discord.ui.button(label='Current', style=discord.ButtonStyle.grey, disabled=True)
-    async def go_to_current_page(
+    @discord.ui.button(label='Current', style=discord.ButtonStyle.blurple)
+    async def skip_to_page(
         self, button: discord.ui.Button[Self], interaction: discord.Interaction
     ) -> None:
-        ...
+        await interaction.response.send_modal(PagesModal(self))
 
-    @discord.ui.button(label='Next', style=discord.ButtonStyle.blurple)
+    @discord.ui.button(label='>', style=discord.ButtonStyle.blurple)
     async def go_to_next_page(
         self, button: discord.ui.Button[Self], interaction: discord.Interaction
     ) -> None:
@@ -240,47 +265,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         assert max_pages is not None
         await self.show_page(interaction, max_pages - 1)
 
-    @discord.ui.button(label='Skip to page...', style=discord.ButtonStyle.grey)
-    async def numbered_page(
-        self, button: discord.ui.Button[Self], interaction: discord.Interaction
-    ) -> None:
-        if self.input_lock.locked():
-            await interaction.response.send_message(
-                'Already waiting for your response...', ephemeral=True
-            )
-            return
-
-        if self.message is None:
-            return
-
-        async with self.input_lock:
-            channel_id = interaction.channel_id
-            author_id = interaction.user.id
-
-            await interaction.response.send_message(
-                'What page do you want to go to?', ephemeral=True
-            )
-
-            def message_check(m: discord.Message) -> bool:
-                return (
-                    m.author.id == author_id
-                    and channel_id == m.channel.id
-                    and m.content.isdigit()
-                )
-
-            try:
-                msg = await interaction.client.wait_for(
-                    'message', check=message_check, timeout=30.0
-                )
-            except asyncio.TimeoutError:
-                await interaction.followup.send('Took too long.', ephemeral=True)
-                await asyncio.sleep(5)
-            else:
-                page = int(msg.content)
-                await msg.delete()
-                await self.show_checked_page(interaction, page - 1)
-
-    @discord.ui.button(label='Quit', style=discord.ButtonStyle.red)
+    @discord.ui.button(label='Stop', style=discord.ButtonStyle.red)
     async def stop_pages(
         self, button: discord.ui.Button[Self], interaction: discord.Interaction
     ) -> None:

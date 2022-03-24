@@ -5,8 +5,7 @@ from typing import TYPE_CHECKING, Any, Final, cast
 
 import discord
 import pendulum
-from botus_receptus import DblBot, exceptions, formatting
-from botus_receptus.gino import Bot as GinoBot
+from botus_receptus import exceptions, formatting, gino, topgg
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
 from discord.ext import commands
 from pendulum.period import Period
@@ -39,8 +38,8 @@ You can look up all verses in a message one of two ways:
 
 
 class Erasmus(
-    GinoBot,
-    DblBot,
+    gino.Bot,
+    topgg.Bot,
 ):
     config: Config
 
@@ -61,7 +60,6 @@ class Erasmus(
         kwargs['intents'] = discord.Intents(
             guilds=True, reactions=True, messages=True, message_content=True
         )
-        kwargs['application_id'] = config['application_id']
 
         super().__init__(config, *args, **kwargs)
 
