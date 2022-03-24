@@ -168,11 +168,11 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "botus-receptus"
-version = "1.0.0dev0"
+version = "2.0.0dev1"
 description = ""
 category = "main"
 optional = false
-python-versions = "^3.8"
+python-versions = "^3.9"
 develop = false
 
 [package.dependencies]
@@ -197,7 +197,7 @@ uvloop = ["uvloop (>=0.16.0,<0.17.0)"]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 reference = "feature/dpy-2.0"
-resolved_reference = "8016c6ce6dca5092d38ff7381b6b630ad405a753"
+resolved_reference = "2ba4c71cc1dd5e3c79077b06e2f88cd0880a44ed"
 
 [[package]]
 name = "cchardet"
