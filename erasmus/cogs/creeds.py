@@ -3,10 +3,11 @@ from __future__ import annotations
 from typing import Final
 
 import discord
-from botus_receptus import Cog, formatting
+from botus_receptus import formatting, util
 from discord import app_commands
 from discord.ext import commands
 
+from ..cog import ErasmusCog
 from ..context import Context
 from ..erasmus import Erasmus
 
@@ -190,19 +191,13 @@ _nicene_381_filioque_text: Final = (
 )
 
 
-class CreedsBase(Cog):
-    bot: Erasmus
-
-    def __init__(self, bot: Erasmus, /) -> None:
-        self.bot = bot
-
-
-class Creeds(CreedsBase):
+class Creeds(ErasmusCog):
     @commands.command(brief='List the supported creeds')
     async def creeds(self, ctx: Context, /) -> None:
         prefix = ctx.prefix
-        await ctx.send_embed(
-            f'''
+        await util.send_context(
+            ctx,
+            description=f'''
 {formatting.bold(f'{prefix}apostles')} - The Apostles' Creed
 {formatting.bold(f'{prefix}athanasian')} - The Athanasian Creed
 {formatting.bold(f'{prefix}chalcedon')} - The Chalcedonian Definition
@@ -215,87 +210,101 @@ class Creeds(CreedsBase):
 
     @commands.command(hidden=True)
     async def apostles(self, ctx: Context, /) -> None:
-        await ctx.send_embed(_apostles_text, title="The Apostles' Creed")
+        await util.send_context(
+            ctx, description=_apostles_text, title="The Apostles' Creed"
+        )
 
     @commands.command(hidden=True)
     async def athanasian(self, ctx: Context, /) -> None:
-        await ctx.send_embed(_athanasian_text_1, title='The Athanasian Creed')
-        await ctx.send_embed(_athanasian_text_2, title='The Athanasian Creed (cont.)')
+        await util.send_context(
+            ctx, description=_athanasian_text_1, title='The Athanasian Creed'
+        )
+        await util.send_context(
+            ctx, description=_athanasian_text_2, title='The Athanasian Creed (cont.)'
+        )
 
     @commands.command(hidden=True)
     async def chalcedon(self, ctx: Context, /) -> None:
-        await ctx.send_embed(_chalcedon_text, title='The Chalcedonian Definition')
+        await util.send_context(
+            ctx, description=_chalcedon_text, title='The Chalcedonian Definition'
+        )
 
     @commands.command(hidden=True)
     async def nicene(self, ctx: Context, /) -> None:
-        await ctx.send_embed(_nicene_381_filioque_text, title='The Nicene Creed')
+        await util.send_context(
+            ctx, description=_nicene_381_filioque_text, title='The Nicene Creed'
+        )
 
     @commands.command(hidden=True)
     async def nicene325(self, ctx: Context, /) -> None:
-        await ctx.send_embed(_nicene_325_text, title='The Nicene Creed (325 AD)')
+        await util.send_context(
+            ctx, description=_nicene_325_text, title='The Nicene Creed (325 AD)'
+        )
 
     @commands.command(hidden=True)
     async def nicene381(self, ctx: Context, /) -> None:
-        await ctx.send_embed(_nicene_381_text, title='The Nicene Creed (381 AD)')
+        await util.send_context(
+            ctx, description=_nicene_381_text, title='The Nicene Creed (381 AD)'
+        )
 
 
-class CreedsAppCommands(CreedsBase):
-    creed = app_commands.Group(name='creed', description='Historic creeds')
+class CreedsAppCommands(  # type: ignore
+    ErasmusCog, app_commands.Group, name='creed', description='Historic creeds'
+):
+    def __init__(self, bot: Erasmus, /) -> None:
+        app_commands.Group.__init__(self)
+        super().__init__(bot)
 
-    async def __send(
-        self, interaction: discord.Interaction, /, *, title: str, text: str
-    ) -> None:
-        embed = discord.Embed(title=title, description=text)
-
-        if not interaction.response.is_done():
-            await interaction.response.send_message(embed=embed)
-        else:
-            await interaction.followup.send(embed=embed)
-
-    @creed.command()
+    @app_commands.command()
     async def apostles(self, interaction: discord.Interaction, /) -> None:
         '''The Apostles' Creed'''
 
-        await self.__send(interaction, title="The Apostles' Creed", text=_apostles_text)
+        await util.send_interaction(
+            interaction, title="The Apostles' Creed", description=_apostles_text
+        )
 
-    @creed.command()
+    @app_commands.command()
     async def athanasian(self, interaction: discord.Interaction, /) -> None:
         '''The Athanasian Creed'''
 
-        await self.__send(
-            interaction, title='The Athanasian Creed', text=_athanasian_text_1
+        await util.send_interaction(
+            interaction, title='The Athanasian Creed', description=_athanasian_text_1
         )
-        await self.__send(
-            interaction, title='The Athanasian Creed (cont.)', text=_athanasian_text_2
+        await util.send_interaction(
+            interaction,
+            title='The Athanasian Creed (cont.)',
+            description=_athanasian_text_2,
         )
 
-    @creed.command()
+    @app_commands.command()
     async def chalcedon(self, interaction: discord.Interaction, /) -> None:
         '''The Chalcedonian Definition'''
 
-        await self.__send(
-            interaction, title='The Chalcedonian Definition', text=_chalcedon_text
+        await util.send_interaction(
+            interaction,
+            title='The Chalcedonian Definition',
+            description=_chalcedon_text,
         )
 
-    @creed.command()
+    @app_commands.command()
     async def nicene(self, interaction: discord.Interaction, /) -> None:
         '''The Nicene Creed'''
-        await self.__send(
-            interaction, title='The Nicene Creed', text=_nicene_381_filioque_text
+        await util.send_interaction(
+            interaction, title='The Nicene Creed', description=_nicene_381_filioque_text
         )
 
-    @creed.command()
+    @app_commands.command()
     async def nicene325(self, interaction: discord.Interaction, /) -> None:
         '''The Nicene Creed (325 AD)'''
-        await self.__send(
-            interaction, title='The Nicene Creed (325 AD)', text=_nicene_325_text
+        await util.send_interaction(
+            interaction, title='The Nicene Creed (325 AD)', description=_nicene_325_text
         )
 
-    @creed.command()
+    @app_commands.command()
     async def nicene381(self, interaction: discord.Interaction, /) -> None:
         '''The Nicene Creed (382 AD)'''
-        await self.__send(
-            interaction, title='The Nicene Creed (381 AD)', text=_nicene_381_text
+        await util.send_interaction(
+            interaction, title='The Nicene Creed (381 AD)', description=_nicene_381_text
         )
 
 

@@ -5,8 +5,9 @@ from typing import TYPE_CHECKING, Any, Final, cast
 
 import discord
 import pendulum
-from botus_receptus import exceptions, formatting, gino, topgg
+from botus_receptus import exceptions, formatting, gino, topgg, util
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
+from discord import app_commands
 from discord.ext import commands
 from pendulum.period import Period
 
@@ -63,6 +64,8 @@ class Erasmus(
 
         super().__init__(config, *args, **kwargs)
 
+        self.tree.error(self.on_app_command_error)
+
     async def setup_hook(self) -> None:
         await super().setup_hook()
 
@@ -73,6 +76,14 @@ class Erasmus(
                 _log.exception('Failed to load extension %s.', extension)
 
         await self.sync_app_commands()
+
+        _log.info(
+            'Global commands: '
+            f'{list(self.tree._global_commands.keys())!r}'  # type: ignore
+        )
+
+        for guild_id, _commands in self.tree._guild_commands.items():  # type: ignore
+            _log.info(f'Commands for {guild_id}: {list(_commands)!r}')  # type: ignore
 
     async def on_message(self, message: discord.Message, /) -> None:
         if message.author.bot:
@@ -180,7 +191,70 @@ class Erasmus(
                 stack_info=True,
             )
 
-        await context.send_error(formatting.escape(message, mass_mentions=True))
+        await util.send_context_error(
+            context, description=formatting.escape(message, mass_mentions=True)
+        )
+
+    async def on_app_command_error(
+        self,
+        interaction: discord.Interaction,
+        command: app_commands.Command[Any, ..., Any] | app_commands.ContextMenu | None,
+        error: Exception,
+        /,
+    ) -> None:
+        if (
+            isinstance(
+                error, (app_commands.CommandInvokeError, app_commands.TransformerError)
+            )
+            and error.__cause__ is not None
+        ):
+            error = cast(Exception, error.__cause__)
+
+        message = 'An error occurred'
+
+        if isinstance(error, commands.NoPrivateMessage):
+            message = 'This command is not available in private messages'
+        # elif isinstance(error, commands.CommandOnCooldown):
+        #     message = ''
+        #     if error.type == commands.BucketType.user:
+        #         message = 'You have used this command too many times.'
+        #     elif error.type == commands.BucketType.channel:
+        #         message = (
+        #             f'`/{command.name}` has been used too many '
+        #             'times in this channel.'
+        #         )
+        #     retry_period: Period = (
+        #         pendulum.now()
+        #         .add(seconds=int(error.retry_after))
+        #         .diff()  # type: ignore
+        #     )
+        #     message = (
+        #         f'{message} You can retry again in '
+        #         f'{retry_period.in_words()}.'  # type: ignore
+        #     )
+        elif isinstance(error, app_commands.CommandOnCooldown):
+            retry_period: Period = (
+                pendulum.now()
+                .add(seconds=int(error.retry_after))
+                .diff()  # type: ignore
+            )
+            message = (
+                'You have used this command too many times. You can retry again in '
+                f'{retry_period.in_words()}.'  # type: ignore
+            )
+        elif isinstance(error, app_commands.MissingPermissions):
+            message = 'You do not have permission to run this command'
+        elif isinstance(error, CannotPaginate):
+            if error.reason == CannotPaginateReason.embed_links:
+                message = 'I need the "Embed Links" permission'
+            elif error.reason == CannotPaginateReason.send_messages:
+                message = 'I need the "Send Messages" permission'
+            elif error.reason == CannotPaginateReason.add_reactions:
+                message = 'I need the "Add Reactions" permission'
+            elif error.reason == CannotPaginateReason.read_message_history:
+                message = 'I need the "Read Message History" permission'
+
+        await util.send_interaction_error(interaction, description=message)
 
 
 __all__: Final = ('Erasmus',)

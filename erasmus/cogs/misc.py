@@ -1,11 +1,12 @@
 from __future__ import annotations
 
 import discord
-from botus_receptus import Cog, formatting
+from botus_receptus import formatting
 from botus_receptus.app_commands import admin_guild_only
 from discord import app_commands
 from discord.ext import commands
 
+from ..cog import ErasmusCog
 from ..context import Context
 from ..erasmus import Erasmus
 
@@ -35,14 +36,7 @@ class InviteView(discord.ui.View):
         )
 
 
-class MiscBase(Cog):
-    bot: Erasmus
-
-    def __init__(self, bot: Erasmus, /) -> None:
-        self.bot = bot
-
-
-class Misc(MiscBase):
+class Misc(ErasmusCog):
     @commands.command(brief='Get the invite link for Erasmus')
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
     async def invite(self, ctx: Context, /) -> None:
@@ -59,8 +53,11 @@ Users: {len(self.bot.users)}'''
         )
 
 
-class MiscAppCommands(MiscBase):
+class MiscAppCommands(ErasmusCog):
     @app_commands.command()
+    @app_commands.checks.cooldown(
+        rate=2, per=30.0, key=lambda i: (i.guild_id, i.user.id)
+    )
     async def invite(self, interaction: discord.Interaction, /) -> None:
         '''Get a link to invite the bot to your server'''
         await interaction.response.send_message(
@@ -68,7 +65,7 @@ class MiscAppCommands(MiscBase):
         )
 
     @app_commands.command()
-    @admin_guild_only()
+    @admin_guild_only
     async def stats(self, interaction: discord.Interaction, /) -> None:
         '''Show stats about Erasmus'''
         await interaction.response.send_message(

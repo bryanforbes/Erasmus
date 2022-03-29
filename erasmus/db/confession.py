@@ -258,7 +258,7 @@ class Confession(Base):
     @staticmethod
     async def get_all() -> AsyncIterator[Confession]:
         async with db.transaction():
-            async for confession in Confession.query.order_by(
+            async for confession in Confession.load(type=ConfessionType).query.order_by(
                 db.asc(Confession.command)
             ).gino.iterate():
                 yield confession

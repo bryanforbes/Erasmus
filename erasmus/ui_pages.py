@@ -235,31 +235,31 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
 
     @discord.ui.button(label='≪', style=discord.ButtonStyle.grey)
     async def go_to_first_page(
-        self, button: discord.ui.Button[Self], interaction: discord.Interaction
+        self, interaction: discord.Interaction, button: discord.ui.Button[Self]
     ) -> None:
         await self.show_page(interaction, 0)
 
     @discord.ui.button(label='<', style=discord.ButtonStyle.blurple)
     async def go_to_previous_page(
-        self, button: discord.ui.Button[Self], interaction: discord.Interaction
+        self, interaction: discord.Interaction, button: discord.ui.Button[Self]
     ) -> None:
         await self.show_checked_page(interaction, self.current_page - 1)
 
     @discord.ui.button(label='Current', style=discord.ButtonStyle.blurple)
     async def skip_to_page(
-        self, button: discord.ui.Button[Self], interaction: discord.Interaction
+        self, interaction: discord.Interaction, button: discord.ui.Button[Self]
     ) -> None:
         await interaction.response.send_modal(PagesModal(self))
 
     @discord.ui.button(label='>', style=discord.ButtonStyle.blurple)
     async def go_to_next_page(
-        self, button: discord.ui.Button[Self], interaction: discord.Interaction
+        self, interaction: discord.Interaction, button: discord.ui.Button[Self]
     ) -> None:
         await self.show_checked_page(interaction, self.current_page + 1)
 
     @discord.ui.button(label='≫', style=discord.ButtonStyle.grey)
     async def go_to_last_page(
-        self, button: discord.ui.Button[Self], interaction: discord.Interaction
+        self, interaction: discord.Interaction, button: discord.ui.Button[Self]
     ) -> None:
         max_pages = self.source.get_max_pages()
         assert max_pages is not None
@@ -267,7 +267,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
 
     @discord.ui.button(label='Stop', style=discord.ButtonStyle.red)
     async def stop_pages(
-        self, button: discord.ui.Button[Self], interaction: discord.Interaction
+        self, interaction: discord.Interaction, button: discord.ui.Button[Self]
     ) -> None:
         if self.message:
             await self.message.edit(view=None)

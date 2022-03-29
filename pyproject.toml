@@ -81,6 +81,7 @@ include = ["erasmus", "tests", "stubs"]
 stubPath = "./stubs"
 
 pythonVersion = "3.10"
+reportUnnecessaryTypeIgnoreComment = "warning"
 typeCheckingMode = "strict"
 reportPrivateUsage = "none"
 reportUnusedImport = "none"
