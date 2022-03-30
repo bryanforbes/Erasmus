@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from collections.abc import AsyncIterator, Callable, Hashable, Sequence
+from collections.abc import AsyncIterator, Callable, Sequence
 from re import Match
-from typing import TYPE_CHECKING, Any, Final, NamedTuple, Optional, TypeAlias, cast
+from typing import Any, Final, NamedTuple, Optional, TypeAlias, cast
 
 import discord
 from botus_receptus import re, util
@@ -27,13 +27,6 @@ from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from ..format import int_to_roman, roman_to_int
 from ..page_source import EmbedPageSource, ListPageSource
 from ..ui_pages import ContextUIPages, InteractionUIPages
-
-if TYPE_CHECKING:
-    from discord.types.interactions import (
-        ApplicationCommandInteractionDataOption,
-        ChatInputApplicationCommandInteractionData,
-    )
-
 
 _roman_re: Final = re.group(
     re.between(0, 4, 'M'),
@@ -386,36 +379,6 @@ class Confession(ErasmusCog):
             title = None
 
 
-def _get_command_key(interaction: discord.Interaction) -> Hashable | None:
-    data: ChatInputApplicationCommandInteractionData | None = (
-        interaction.data  # type: ignore
-    )
-
-    if data is None:
-        return None
-
-    first_options: list[ApplicationCommandInteractionDataOption] = data.get(
-        'options'
-    )  # type: ignore
-
-    second_options: list[ApplicationCommandInteractionDataOption] = first_options[
-        0
-    ].get(
-        'options'
-    )  # type: ignore
-
-    return (
-        f'{data["id"]}-{first_options[0]["name"]}-{second_options[0]["name"]}',
-        interaction.guild_id,
-        interaction.user.id,
-    )
-
-
-_confession_cooldown = app_commands.checks.cooldown(
-    rate=2, per=30.0, key=lambda i: (i.guild_id, i.user.id)
-)
-
-
 class _SectionInfo(NamedTuple):
     section: str
     text: str
@@ -532,7 +495,9 @@ class ConfessionAppCommands(  # type: ignore
         ][:25]
 
     @app_commands.command()
-    @_confession_cooldown
+    @app_commands.checks.cooldown(
+        rate=2, per=30.0, key=lambda i: (i.guild_id, i.user.id)
+    )
     @app_commands.describe(
         source='The confession or catechism to search in', terms='Terms to search for'
     )
@@ -562,7 +527,9 @@ class ConfessionAppCommands(  # type: ignore
         await pages.start()
 
     @app_commands.command()
-    @app_commands.checks.cooldown(rate=8, per=60.0, key=_get_command_key)
+    @app_commands.checks.cooldown(
+        rate=8, per=60.0, key=lambda i: (i.guild_id, i.user.id)
+    )
     @app_commands.describe(
         source='The confession or catechism to cite', section='The section to cite'
     )
