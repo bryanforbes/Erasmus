@@ -1,14 +1,15 @@
 from __future__ import annotations
 
-from collections.abc import AsyncIterator, Callable, Sequence
+from collections.abc import AsyncIterator, Callable, Hashable, Sequence
 from re import Match
-from typing import TYPE_CHECKING, Any, Final, Hashable, Optional, TypeAlias, cast
+from typing import TYPE_CHECKING, Any, Final, NamedTuple, Optional, TypeAlias, cast
 
 import discord
 from botus_receptus import re, util
 from botus_receptus.formatting import (
     EmbedPaginator,
     bold,
+    ellipsize,
     escape,
     pluralizer,
     underline,
@@ -415,41 +416,133 @@ _confession_cooldown = app_commands.checks.cooldown(
 )
 
 
-class ConfessionGroupBase(app_commands.Group):
-    def __init_subclass__(
-        cls,
-        *,
-        name: str = discord.utils.MISSING,
-        description: str = discord.utils.MISSING,
-    ) -> None:
-        children: list[app_commands.Command[Any, ..., Any] | app_commands.Group] = []
+class _SectionInfo(NamedTuple):
+    section: str
+    text: str
+    text_lower: str
+    text_ellipsized: str
 
-        for base in reversed(cls.__mro__):
-            for member in base.__dict__.values():
-                if (
-                    isinstance(member, (app_commands.Group, app_commands.Command))
-                    and not member.parent
-                ):
-                    children.append(member)  # type: ignore
 
-        cls.__discord_app_commands_group_children__ = children
+class _ConfessionInfo(NamedTuple):
+    command: str
+    command_lower: str
+    name: str
+    name_lower: str
+    type: ConfessionTypeEnum
+    section_info: list[_SectionInfo]
 
-        found: set[str] = set()
-        for child in children:
-            if child.name in found:
-                raise TypeError(f'Command {child.name!r} is a duplicate')
-            found.add(child.name)
 
-        if len(children) > 25:
-            raise TypeError('groups cannot have more than 25 commands')
+def _create_section_info(section: str, title: str, /) -> _SectionInfo:
+    text = f'{section}. {title}'
+    return _SectionInfo(
+        section=section,
+        text=text,
+        text_lower=text.lower(),
+        text_ellipsized=ellipsize(text, max_length=100),
+    )
 
-        return super().__init_subclass__(name=name, description=description)
+
+class ConfessionAppCommands(  # type: ignore
+    ErasmusCog, app_commands.Group, name='confess', description='Confessions'
+):
+    __confession_info: dict[str, _ConfessionInfo]
+
+    def __init__(self, bot: Erasmus, /) -> None:
+        app_commands.Group.__init__(self)
+        super().__init__(bot)
+
+    async def cog_load(self) -> None:
+        self.__confession_info = {}
+
+        async for confession in ConfessionRecord.get_all():
+            format_number = _number_formatters[confession.numbering]
+            match confession.type:
+                case ConfessionTypeEnum.CHAPTERS:
+                    section_info = [
+                        _create_section_info(
+                            f'{format_number(paragraph.chapter_number)}.'
+                            f'{format_number(paragraph.paragraph_number)}',
+                            paragraph.chapter.chapter_title,
+                        )
+                        async for paragraph in confession.get_paragraphs()
+                    ]
+                case ConfessionTypeEnum.ARTICLES:
+                    section_info = [
+                        _create_section_info(
+                            format_number(article.article_number), article.title
+                        )
+                        async for article in confession.get_articles()
+                    ]
+                case ConfessionTypeEnum.QA:
+                    section_info = [
+                        _create_section_info(
+                            format_number(question.question_number),
+                            question.question_text,
+                        )
+                        async for question in confession.get_questions()
+                    ]
+
+            self.__confession_info[confession.command] = _ConfessionInfo(
+                command=confession.command,
+                command_lower=confession.command.lower(),
+                name=confession.name,
+                name_lower=confession.name.lower(),
+                type=confession.type,
+                section_info=section_info,
+            )
+
+    async def __source_autocomplete(
+        self,
+        interaction: discord.Interaction,
+        current: str,
+    ) -> list[app_commands.Choice[str]]:
+        current = current.lower().strip()
+
+        return [
+            app_commands.Choice(name=data.name, value=data.command)
+            for data in self.__confession_info.values()
+            if not current
+            or current in data.name_lower
+            or current in data.command_lower
+        ][:25]
+
+    async def __section_autocomplete(
+        self,
+        interaction: discord.Interaction,
+        current: str,
+    ) -> list[app_commands.Choice[str]]:
+        if (
+            interaction.data is None
+            or (options := interaction.data.get('options')) is None
+            or len(options) != 1
+            or (options := options[0].get('options')) is None
+            or len(options) == 0
+            or options[0].get('name') != 'source'
+            or (source := options[0].get('value')) is None  # type: ignore
+            or (info := self.__confession_info.get(source)) is None  # type: ignore
+        ):
+            return []
+
+        return [
+            app_commands.Choice(
+                name=section_info.text_ellipsized, value=section_info.section
+            )
+            for section_info in info.section_info
+            if current in section_info.text_lower
+        ][:25]
 
     @app_commands.command()
     @_confession_cooldown
-    @app_commands.describe(terms='Terms to search for')
-    async def search(self, interaction: discord.Interaction, /, terms: str) -> None:
-        confession = await ConfessionRecord.get_by_command(self.name)
+    @app_commands.describe(
+        source='The confession or catechism to search in', terms='Terms to search for'
+    )
+    @app_commands.autocomplete(source=__source_autocomplete)
+    async def search(
+        self, interaction: discord.Interaction, /, source: str, terms: str
+    ) -> None:
+        '''Search for terms in a confession or catechism'''
+
+        confession = await ConfessionRecord.get_by_command(source)
 
         if confession.type == ConfessionTypeEnum.CHAPTERS:
             search_func: Callable[
@@ -460,18 +553,28 @@ class ConfessionGroupBase(app_commands.Group):
         else:  # ConfessionTypeEnum.QA
             search_func = confession.search_questions
 
-        source = ConfessionSearchSource(
+        search_source = ConfessionSearchSource(
             [result async for result in search_func(terms.split(' '))],
             type=confession.type,
             per_page=20,
         )
-        pages = InteractionUIPages(source, interaction=interaction)
+        pages = InteractionUIPages(search_source, interaction=interaction)
         await pages.start()
 
     @app_commands.command()
     @app_commands.checks.cooldown(rate=8, per=60.0, key=_get_command_key)
-    async def cite(self, interaction: discord.Interaction, /, section: str) -> None:
-        confession = await ConfessionRecord.get_by_command(self.name)
+    @app_commands.describe(
+        source='The confession or catechism to cite', section='The section to cite'
+    )
+    @app_commands.autocomplete(
+        source=__source_autocomplete, section=__section_autocomplete
+    )
+    async def cite(
+        self, interaction: discord.Interaction, /, source: str, section: str
+    ) -> None:
+        '''Cite a section from a confession or catechism'''
+
+        confession = await ConfessionRecord.get_by_command(source)
         match = _reference_res[confession.type].match(section)
 
         if match is None:
@@ -541,97 +644,6 @@ class ConfessionGroupBase(app_commands.Group):
         for page in paginator:
             await util.send_interaction(interaction, description=page, title=title)
             title = None
-
-
-class ChaptersConfessionGroup(ConfessionGroupBase):
-    @app_commands.command(name='chapters')
-    @_confession_cooldown
-    async def list_chapters(self, interaction: discord.Interaction, /) -> None:
-        confession = await ConfessionRecord.get_by_command(self.name)
-
-        paginator = EmbedPaginator()
-        format_number = _number_formatters[confession.numbering]
-
-        async for chapter in confession.get_chapters():
-            paginator.add_line(
-                '**{number}**. {title}'.format(
-                    number=format_number(chapter.chapter_number),
-                    title=chapter.chapter_title,
-                )
-            )
-
-        title: str | None = underline(bold(confession.name))
-
-        for page in paginator:
-            await util.send_interaction(interaction, description=page, title=title)
-            title = None
-
-    @app_commands.command(name='paragraphs')
-    @_confession_cooldown
-    async def list_paragraphs(
-        self, interaction: discord.Interaction, /, chapter: str
-    ) -> None:
-        ...
-
-
-class ArticlesConfessionGroup(ConfessionGroupBase):
-    @app_commands.command(name='articles')
-    @_confession_cooldown
-    async def list_articles(self, interaction: discord.Interaction, /) -> None:
-        confession = await ConfessionRecord.get_by_command(self.name)
-
-        paginator = EmbedPaginator()
-        format_number = _number_formatters[confession.numbering]
-
-        async for article in confession.get_articles():
-            paginator.add_line(
-                '**{number}**. {title}'.format(
-                    number=format_number(article.article_number),
-                    title=article.title,
-                )
-            )
-
-        title: str | None = underline(bold(confession.name))
-
-        for page in paginator:
-            await util.send_interaction(interaction, description=page, title=title)
-            title = None
-
-
-class CatechismConfessionGroup(ConfessionGroupBase):
-    @app_commands.command(name='questions')
-    @_confession_cooldown
-    async def list_questions(self, interaction: discord.Interaction, /) -> None:
-        confession = await ConfessionRecord.get_by_command(self.name)
-        count = await confession.get_question_count()
-        question_str = _pluralizers[ConfessionTypeEnum.QA](count)
-
-        await util.send_interaction(
-            interaction, description=f'`{confession.name}` has {question_str}'
-        )
-
-
-_group_cls_map: Final[dict[ConfessionTypeEnum, type[app_commands.Group]]] = {
-    ConfessionTypeEnum.CHAPTERS: ChaptersConfessionGroup,
-    ConfessionTypeEnum.ARTICLES: ArticlesConfessionGroup,
-    ConfessionTypeEnum.QA: CatechismConfessionGroup,
-}
-
-
-class ConfessionAppCommands(  # type: ignore
-    ErasmusCog, app_commands.Group, name='confess', description='Confessions'
-):
-    def __init__(self, bot: Erasmus, /) -> None:
-        app_commands.Group.__init__(self)
-        super().__init__(bot)
-
-    async def cog_load(self) -> None:
-        async for conf in ConfessionRecord.get_all():
-            self.__add_confession(conf)
-
-    def __add_confession(self, confession: ConfessionRecord, /) -> None:
-        group = _group_cls_map[confession.type](name=confession.command)
-        self.add_command(group)
 
 
 async def setup(bot: Erasmus, /) -> None:

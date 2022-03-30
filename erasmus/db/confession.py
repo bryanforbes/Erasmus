@@ -108,6 +108,32 @@ class Confession(Base):
         if count == 0:
             raise NoSectionsError(self.name, 'chapters')
 
+    async def get_paragraphs(self, /) -> AsyncIterator[Paragraph]:
+        loader = Paragraph.load(
+            chapter=Chapter.on(
+                db.and_(
+                    Paragraph.chapter_number == Chapter.chapter_number,  # type: ignore
+                    Paragraph.confess_id == Chapter.confess_id,  # type: ignore
+                )
+            )
+        )
+
+        count = 0
+        async with db.transaction():
+            async for paragraph in (
+                loader.query.where(Paragraph.confess_id == self.id)  # type: ignore
+                .order_by(
+                    db.asc(Paragraph.chapter_number),
+                    db.asc(Paragraph.paragraph_number),
+                )
+                .gino.iterate()
+            ):
+                count += 1
+                yield paragraph
+
+        if count == 0:
+            raise NoSectionsError(self.name, 'paragraphs')
+
     async def get_paragraph(self, chapter: int, paragraph: int, /) -> Paragraph:
         loader = Paragraph.load(
             chapter=Chapter.on(
@@ -258,9 +284,9 @@ class Confession(Base):
     @staticmethod
     async def get_all() -> AsyncIterator[Confession]:
         async with db.transaction():
-            async for confession in Confession.load(type=ConfessionType).query.order_by(
-                db.asc(Confession.command)
-            ).gino.iterate():
+            async for confession in Confession.load(
+                type=ConfessionType, numbering=ConfessionNumberingType
+            ).query.order_by(db.asc(Confession.command)).gino.iterate():
                 yield confession
 
     @staticmethod
