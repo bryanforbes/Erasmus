@@ -2,10 +2,8 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from collections.abc import Sequence
-from typing import TYPE_CHECKING, Any, Generic, TypeVar
-
-if TYPE_CHECKING:
-    from typing_extensions import Self
+from typing import Any, Generic, TypeVar
+from typing_extensions import Self
 
 import discord
 

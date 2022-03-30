@@ -137,59 +137,61 @@ class Erasmus(
 
         message = 'An error occurred'
 
-        if isinstance(exception, commands.NoPrivateMessage):
-            message = 'This command is not available in private messages'
-        elif isinstance(exception, commands.CommandOnCooldown):
-            message = ''
-            if exception.type == commands.BucketType.user:
-                message = 'You have used this command too many times.'
-            elif exception.type == commands.BucketType.channel:
-                message = (
-                    f'`{context.prefix}{context.invoked_with}` has been used too many '
-                    'times in this channel.'
+        match exception:
+            case commands.NoPrivateMessage():
+                message = 'This command is not available in private messages'
+            case commands.CommandOnCooldown():
+                message = ''
+                if exception.type == commands.BucketType.user:
+                    message = 'You have used this command too many times.'
+                elif exception.type == commands.BucketType.channel:
+                    message = (
+                        f'`{context.prefix}{context.invoked_with}` has been used too '
+                        'many times in this channel.'
+                    )
+                retry_period: Period = (
+                    pendulum.now()
+                    .add(seconds=int(exception.retry_after))
+                    .diff()  # type: ignore
                 )
-            retry_period: Period = (
-                pendulum.now()
-                .add(seconds=int(exception.retry_after))
-                .diff()  # type: ignore
-            )
-            message = (
-                f'{message} You can retry again in '
-                f'{retry_period.in_words()}.'  # type: ignore
-            )
-        elif isinstance(exception, commands.MissingPermissions):
-            message = 'You do not have the correct permissions to run this command'
-        elif isinstance(exception, exceptions.OnlyDirectMessage):
-            message = 'This command is only available in private messages'
-        elif isinstance(exception, commands.MissingRequiredArgument):
-            message = f'The required argument `{exception.param.name}` is missing'
-        elif isinstance(exception, CannotPaginate):
-            if exception.reason == CannotPaginateReason.embed_links:
-                message = 'I need the "Embed Links" permission'
-            elif exception.reason == CannotPaginateReason.send_messages:
-                message = 'I need the "Send Messages" permission'
-            elif exception.reason == CannotPaginateReason.add_reactions:
-                message = 'I need the "Add Reactions" permission'
-            elif exception.reason == CannotPaginateReason.read_message_history:
-                message = 'I need the "Read Message History" permission'
-        else:
-            if context.command is None:
-                qualified_name = 'NO COMMAND'
-            else:
-                qualified_name = context.command.qualified_name
+                message = (
+                    f'{message} You can retry again in '
+                    f'{retry_period.in_words()}.'  # type: ignore
+                )
+            case commands.MissingPermissions():
+                message = 'You do not have the correct permissions to run this command'
+            case exceptions.OnlyDirectMessage():
+                message = 'This command is only available in private messages'
+            case commands.MissingRequiredArgument():
+                message = f'The required argument `{exception.param.name}` is missing'
+            case CannotPaginate():
+                match exception.reason:
+                    case CannotPaginateReason.embed_links:
+                        message = 'I need the "Embed Links" permission'
+                    case CannotPaginateReason.send_messages:
+                        message = 'I need the "Send Messages" permission'
+                    case CannotPaginateReason.add_reactions:
+                        message = 'I need the "Add Reactions" permission'
+                    case CannotPaginateReason.read_message_history:
+                        message = 'I need the "Read Message History" permission'
+            case _:
+                if context.command is None:
+                    qualified_name = 'NO COMMAND'
+                else:
+                    qualified_name = context.command.qualified_name
 
-            if context.message is None:
-                content = 'NO MESSAGE'
-            else:
-                content = context.message.content
+                if context.message is None:
+                    content = 'NO MESSAGE'
+                else:
+                    content = context.message.content
 
-            _log.exception(
-                'Exception occurred in command "%s"\nInvoked by: %s',
-                qualified_name,
-                content,
-                exc_info=exception,
-                stack_info=True,
-            )
+                _log.exception(
+                    'Exception occurred in command "%s"\nInvoked by: %s',
+                    qualified_name,
+                    content,
+                    exc_info=exception,
+                    stack_info=True,
+                )
 
         await util.send_context_error(
             context, description=formatting.escape(message, mass_mentions=True)
@@ -212,47 +214,55 @@ class Erasmus(
 
         message = 'An error occurred'
 
-        if isinstance(error, commands.NoPrivateMessage):
-            message = 'This command is not available in private messages'
-        # elif isinstance(error, commands.CommandOnCooldown):
-        #     message = ''
-        #     if error.type == commands.BucketType.user:
-        #         message = 'You have used this command too many times.'
-        #     elif error.type == commands.BucketType.channel:
-        #         message = (
-        #             f'`/{command.name}` has been used too many '
-        #             'times in this channel.'
-        #         )
-        #     retry_period: Period = (
-        #         pendulum.now()
-        #         .add(seconds=int(error.retry_after))
-        #         .diff()  # type: ignore
-        #     )
-        #     message = (
-        #         f'{message} You can retry again in '
-        #         f'{retry_period.in_words()}.'  # type: ignore
-        #     )
-        elif isinstance(error, app_commands.CommandOnCooldown):
-            retry_period: Period = (
-                pendulum.now()
-                .add(seconds=int(error.retry_after))
-                .diff()  # type: ignore
-            )
-            message = (
-                'You have used this command too many times. You can retry again in '
-                f'{retry_period.in_words()}.'  # type: ignore
-            )
-        elif isinstance(error, app_commands.MissingPermissions):
-            message = 'You do not have permission to run this command'
-        elif isinstance(error, CannotPaginate):
-            if error.reason == CannotPaginateReason.embed_links:
-                message = 'I need the "Embed Links" permission'
-            elif error.reason == CannotPaginateReason.send_messages:
-                message = 'I need the "Send Messages" permission'
-            elif error.reason == CannotPaginateReason.add_reactions:
-                message = 'I need the "Add Reactions" permission'
-            elif error.reason == CannotPaginateReason.read_message_history:
-                message = 'I need the "Read Message History" permission'
+        match error:
+            case commands.NoPrivateMessage():
+                message = 'This command is not available in private messages'
+            case app_commands.CommandOnCooldown():
+                retry_period: Period = (
+                    pendulum.now()
+                    .add(seconds=int(error.retry_after))
+                    .diff()  # type: ignore
+                )
+                message = (
+                    'You have used this command too many times. You can retry again in '
+                    f'{retry_period.in_words()}.'  # type: ignore
+                )
+            case app_commands.MissingPermissions():
+                message = 'You do not have permission to run this command'
+            case CannotPaginate():
+                match error.reason:
+                    case CannotPaginateReason.embed_links:
+                        message = 'I need the "Embed Links" permission'
+                    case CannotPaginateReason.send_messages:
+                        message = 'I need the "Send Messages" permission'
+                    case CannotPaginateReason.add_reactions:
+                        message = 'I need the "Add Reactions" permission'
+                    case CannotPaginateReason.read_message_history:
+                        message = 'I need the "Read Message History" permission'
+            case _:
+                if interaction.command is None:
+                    qualified_name = 'NO INTERACTION'
+                else:
+                    command = interaction.command
+                    if isinstance(command, app_commands.Command):
+                        qualified_name = f'{command.name}'
+                        parent = command.parent
+                        if parent is not None:
+                            qualified_name = f'{parent.name} {qualified_name}'
+                            parent_parent = parent.parent
+                            if parent_parent is not None:
+                                qualified_name = (
+                                    f'{parent_parent.name} {qualified_name}'
+                                )
+                    else:
+                        qualified_name = command.name
+
+                _log.exception(
+                    'Exception occurred in interaction "%s"',
+                    qualified_name,
+                    exc_info=error,
+                    stack_info=True,
+                )
 
         await util.send_interaction_error(interaction, description=message)
 

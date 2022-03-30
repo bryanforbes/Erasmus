@@ -1,7 +1,8 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Sequence
-from typing import TYPE_CHECKING, Any, Final, cast
+from typing import Any, Final, cast
+from typing_extensions import Self
 
 import discord
 from botus_receptus import checks, formatting, util
@@ -32,9 +33,6 @@ from ..protocols import Bible as _Bible
 from ..service_manager import ServiceManager
 from ..ui_pages import ContextUIPages, InteractionUIPages
 from ..utils import send_context_passage, send_interaction_passage
-
-if TYPE_CHECKING:
-    from typing_extensions import Self
 
 
 def _book_mask_from_books(books: str, /) -> int:

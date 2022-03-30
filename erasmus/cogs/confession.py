@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import AsyncIterator, Callable, Sequence
+from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
 from re import Match
 from typing import Any, Final, NamedTuple, Optional, TypeAlias, cast
 
@@ -80,6 +80,95 @@ _pluralizers: Final = {
 _number_formatters: Final[dict[NumberingTypeEnum, Callable[[int], str]]] = {
     NumberingTypeEnum.ARABIC: lambda n: str(n),
     NumberingTypeEnum.ROMAN: int_to_roman,
+}
+
+
+async def _get_chapters_output(
+    confession: ConfessionRecord,
+    match: Match[str],
+    /,
+) -> tuple[str | None, str]:
+    format_number = _number_formatters[confession.numbering]
+
+    if match['chapter_roman']:
+        chapter_num = roman_to_int(match['chapter_roman'])
+        paragraph_num = roman_to_int(match['paragraph_roman'])
+    else:
+        chapter_num = int(match['chapter'])
+        paragraph_num = int(match['paragraph'])
+
+    paragraph = await confession.get_paragraph(chapter_num, paragraph_num)
+
+    paragraph_number = format_number(paragraph.paragraph_number)
+    chapter_number = format_number(paragraph.chapter.chapter_number)
+    title = underline(bold(f'{chapter_number}. {paragraph.chapter.chapter_title}'))
+    output = f'**{paragraph_number}.** {paragraph.text}'
+
+    return title, output
+
+
+async def _get_articles_output(
+    confession: ConfessionRecord,
+    match: Match[str],
+    /,
+) -> tuple[str | None, str]:
+    format_number = _number_formatters[confession.numbering]
+
+    if match['article_roman']:
+        article_number = roman_to_int(match['article_roman'])
+    else:
+        article_number = int(match['article'])
+
+    article = await confession.get_article(article_number)
+
+    title = underline(bold(f'{format_number(article_number)}. {article.title}'))
+    output = article.text
+
+    return title, output
+
+
+async def _get_qa_output(
+    confession: ConfessionRecord,
+    match: Match[str],
+    /,
+) -> tuple[str | None, str]:
+    format_number = _number_formatters[confession.numbering]
+
+    q_or_a = match['qa']
+    if match['number_roman']:
+        question_number = roman_to_int(match['number_roman'])
+    else:
+        question_number = int(match['number'])
+
+    question = await confession.get_question(question_number)
+
+    question_number_str = format_number(question_number)
+
+    title: str | None = None
+
+    if q_or_a is None:
+        title = underline(bold(f'{question_number_str}. {question.question_text}'))
+        output = f'{question.answer_text}'
+    elif q_or_a.lower() == 'q':
+        output = f'**Q{question_number_str}**. {question.question_text}'
+    else:
+        output = f'**A{question_number_str}**: {question.answer_text}'
+
+    return title, output
+
+
+_OUTPUT_GETTER: TypeAlias = Callable[
+    [
+        ConfessionRecord,
+        Match[str],
+    ],
+    Awaitable[tuple[str | None, str]],
+]
+
+_output_getters: Final[dict[ConfessionTypeEnum, _OUTPUT_GETTER]] = {
+    ConfessionTypeEnum.CHAPTERS: _get_chapters_output,
+    ConfessionTypeEnum.ARTICLES: _get_articles_output,
+    ConfessionTypeEnum.QA: _get_qa_output,
 }
 
 
@@ -164,7 +253,7 @@ class ConfessionSearchSource(
 
 
 class Confession(ErasmusCog):
-    async def cog_command_error(self, ctx: Context, error: Exception, /) -> None:  # type: ignore  # noqa: B950
+    async def cog_command_error(self, ctx: Context, error: Exception) -> None:  # type: ignore  # noqa: B950
         if (
             isinstance(
                 error,
@@ -316,60 +405,10 @@ class Confession(ErasmusCog):
         match: Match[str],
         /,
     ) -> None:
-        title: str | None = None
-        output: str | None = None
-
         paginator = EmbedPaginator()
-        format_number = _number_formatters[confession.numbering]
+        get_output = _output_getters[confession.type]
 
-        if confession.type == ConfessionTypeEnum.CHAPTERS:
-            if match['chapter_roman']:
-                chapter_num = roman_to_int(match['chapter_roman'])
-                paragraph_num = roman_to_int(match['paragraph_roman'])
-            else:
-                chapter_num = int(match['chapter'])
-                paragraph_num = int(match['paragraph'])
-
-            paragraph = await confession.get_paragraph(chapter_num, paragraph_num)
-
-            paragraph_number = format_number(paragraph.paragraph_number)
-            chapter_number = format_number(paragraph.chapter.chapter_number)
-            title = underline(
-                bold(f'{chapter_number}. {paragraph.chapter.chapter_title}')
-            )
-            output = f'**{paragraph_number}.** {paragraph.text}'
-
-        elif confession.type == ConfessionTypeEnum.QA:
-            q_or_a = match['qa']
-            if match['number_roman']:
-                question_number = roman_to_int(match['number_roman'])
-            else:
-                question_number = int(match['number'])
-
-            question = await confession.get_question(question_number)
-
-            question_number_str = format_number(question_number)
-
-            if q_or_a is None:
-                title = underline(
-                    bold(f'{question_number_str}. {question.question_text}')
-                )
-                output = f'{question.answer_text}'
-            elif q_or_a.lower() == 'q':
-                output = f'**Q{question_number_str}**. {question.question_text}'
-            else:
-                output = f'**A{question_number_str}**: {question.answer_text}'
-
-        elif confession.type == ConfessionTypeEnum.ARTICLES:
-            if match['article_roman']:
-                article_number = roman_to_int(match['article_roman'])
-            else:
-                article_number = int(match['article'])
-
-            article = await confession.get_article(article_number)
-
-            title = underline(bold(f'{format_number(article_number)}. {article.title}'))
-            output = article.text
+        title, output = await get_output(confession, match)
 
         if output:
             paginator.add_line(output)
@@ -474,6 +513,8 @@ class ConfessionAppCommands(  # type: ignore
         interaction: discord.Interaction,
         current: str,
     ) -> list[app_commands.Choice[str]]:
+        current = current.lower().strip()
+
         if (
             interaction.data is None
             or (options := interaction.data.get('options')) is None
@@ -491,7 +532,9 @@ class ConfessionAppCommands(  # type: ignore
                 name=section_info.text_ellipsized, value=section_info.section
             )
             for section_info in info.section_info
-            if current in section_info.text_lower
+            if not current
+            or current in section_info.text_lower
+            or current in section_info.section
         ][:25]
 
     @app_commands.command()
@@ -509,14 +552,15 @@ class ConfessionAppCommands(  # type: ignore
 
         confession = await ConfessionRecord.get_by_command(source)
 
-        if confession.type == ConfessionTypeEnum.CHAPTERS:
-            search_func: Callable[
-                [Sequence[str]], AsyncIterator[ConfessionSearchResult]
-            ] = confession.search_paragraphs
-        elif confession.type == ConfessionTypeEnum.ARTICLES:
-            search_func = confession.search_articles
-        else:  # ConfessionTypeEnum.QA
-            search_func = confession.search_questions
+        match confession.type:
+            case ConfessionTypeEnum.CHAPTERS:
+                search_func: Callable[
+                    [Sequence[str]], AsyncIterator[ConfessionSearchResult]
+                ] = confession.search_paragraphs
+            case ConfessionTypeEnum.ARTICLES:
+                search_func = confession.search_articles
+            case ConfessionTypeEnum.QA:
+                search_func = confession.search_questions
 
         search_source = ConfessionSearchSource(
             [result async for result in search_func(terms.split(' '))],
@@ -550,60 +594,10 @@ class ConfessionAppCommands(  # type: ignore
             )
             return
 
-        title: str | None = None
-        output: str | None = None
-
         paginator = EmbedPaginator()
-        format_number = _number_formatters[confession.numbering]
 
-        if confession.type == ConfessionTypeEnum.CHAPTERS:
-            if match['chapter_roman']:
-                chapter_num = roman_to_int(match['chapter_roman'])
-                paragraph_num = roman_to_int(match['paragraph_roman'])
-            else:
-                chapter_num = int(match['chapter'])
-                paragraph_num = int(match['paragraph'])
-
-            paragraph = await confession.get_paragraph(chapter_num, paragraph_num)
-
-            paragraph_number = format_number(paragraph.paragraph_number)
-            chapter_number = format_number(paragraph.chapter.chapter_number)
-            title = underline(
-                bold(f'{chapter_number}. {paragraph.chapter.chapter_title}')
-            )
-            output = f'**{paragraph_number}.** {paragraph.text}'
-
-        elif confession.type == ConfessionTypeEnum.QA:
-            q_or_a = match['qa']
-            if match['number_roman']:
-                question_number = roman_to_int(match['number_roman'])
-            else:
-                question_number = int(match['number'])
-
-            question = await confession.get_question(question_number)
-
-            question_number_str = format_number(question_number)
-
-            if q_or_a is None:
-                title = underline(
-                    bold(f'{question_number_str}. {question.question_text}')
-                )
-                output = f'{question.answer_text}'
-            elif q_or_a.lower() == 'q':
-                output = f'**Q{question_number_str}**. {question.question_text}'
-            else:
-                output = f'**A{question_number_str}**: {question.answer_text}'
-
-        elif confession.type == ConfessionTypeEnum.ARTICLES:
-            if match['article_roman']:
-                article_number = roman_to_int(match['article_roman'])
-            else:
-                article_number = int(match['article'])
-
-            article = await confession.get_article(article_number)
-
-            title = underline(bold(f'{format_number(article_number)}. {article.title}'))
-            output = article.text
+        get_output = _output_getters[confession.type]
+        title, output = await get_output(confession, match)
 
         if output:
             paginator.add_line(output)
