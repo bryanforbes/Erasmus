@@ -16,15 +16,12 @@ class InviteView(discord.ui.View):
 
         perms = discord.Permissions(
             add_reactions=True,
-            attach_files=True,
             embed_links=True,
             manage_messages=True,
-            manage_threads=True,
             read_message_history=True,
             read_messages=True,
             send_messages=True,
             send_messages_in_threads=True,
-            use_external_emojis=True,
         )
 
         self.add_item(
