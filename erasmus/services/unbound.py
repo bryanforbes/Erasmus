@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from attr import attrib, dataclass
+from attrs import define, field
 from botus_receptus import re
 from bs4 import BeautifulSoup
 from yarl import URL
@@ -106,9 +106,9 @@ _book_map: Final[dict[str, str]] = {
 }
 
 
-@dataclass(slots=True)
+@define
 class Unbound(BaseService):
-    _base_url: URL = attrib(init=False)
+    _base_url: URL = field(init=False)
 
     def __attrs_post_init__(self, /) -> None:
         self._base_url = URL(

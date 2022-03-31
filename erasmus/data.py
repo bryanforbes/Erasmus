@@ -8,7 +8,7 @@ from typing import TYPE_CHECKING, Final, TypedDict
 from typing_extensions import Self
 
 import discord
-from attr import attrib, dataclass
+from attrs import define, field
 from botus_receptus import re
 from more_itertools import unique_everseen
 
@@ -151,7 +151,7 @@ def get_book_mask(book_name: str, /) -> int:
     return _book_mask_map.get(book_name, 0)
 
 
-@dataclass(slots=True)
+@define
 class Verse(object):
     chapter: int
     verse: int
@@ -160,13 +160,13 @@ class Verse(object):
         return f'{self.chapter}:{self.verse}'
 
 
-@dataclass(slots=True)
+@define
 class VerseRange(discord.app_commands.Transformer):
     book: str
     start: Verse
     end: Verse | None = None
     version: str | None = None
-    book_mask: int = attrib(init=False)
+    book_mask: int = field(init=False)
 
     def __attrs_post_init__(self, /) -> None:
         self.book = get_book(self.book)
@@ -263,7 +263,7 @@ _truncation_warning: Final = 'The passage was too long and has been truncated:\n
 _truncation_warning_len: Final = len(_truncation_warning) + 3
 
 
-@dataclass(slots=True)
+@define
 class Passage(object):
     text: str
     range: VerseRange
@@ -286,7 +286,7 @@ class Passage(object):
         return f'{self.text}\n\n{self.citation}'
 
 
-@dataclass(slots=True)
+@define
 class SearchResults(object):
     verses: list[Passage]
     total: int

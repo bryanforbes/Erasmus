@@ -6,7 +6,7 @@ from typing import Final
 
 import aiohttp
 import async_timeout
-from attr import attrib, dataclass
+from attrs import define, field
 
 from . import services
 from .config import Config
@@ -21,9 +21,9 @@ from .protocols import Bible, Service
 _log: Final = logging.getLogger(__name__)
 
 
-@dataclass(slots=True)
+@define
 class ServiceManager(object):
-    service_map: dict[str, Service] = attrib(factory=dict)
+    service_map: dict[str, Service] = field(factory=dict)
     timeout: float = 10
 
     def __contains__(self, key: str, /) -> bool:

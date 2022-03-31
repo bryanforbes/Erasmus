@@ -3,7 +3,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from attr import attrib, dataclass
+from attrs import define, field
 from botus_receptus import re
 from bs4 import BeautifulSoup, NavigableString, SoupStrainer, Tag
 from yarl import URL
@@ -18,10 +18,10 @@ _total_re: Final = re.compile(
 )
 
 
-@dataclass(slots=True)
+@define
 class BibleGateway(BaseService):
-    _passage_url: URL = attrib(init=False)
-    _search_url: URL = attrib(init=False)
+    _passage_url: URL = field(init=False)
+    _search_url: URL = field(init=False)
 
     def __attrs_post_init__(self, /) -> None:
         self._passage_url = URL('https://www.biblegateway.com/passage/')

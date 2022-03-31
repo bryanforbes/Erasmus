@@ -4,7 +4,7 @@ import asyncio
 from typing import Any, Final, TypedDict
 
 import aiohttp
-from attr import attrib, dataclass
+from attrs import define, field
 from botus_receptus import re
 from bs4 import BeautifulSoup
 from yarl import URL
@@ -109,11 +109,11 @@ class _ResponseDict(TypedDict):
     meta: _ResponseMetaDict | None
 
 
-@dataclass(slots=True)
+@define
 class ApiBible(BaseService):
-    _passage_url: URL = attrib(init=False)
-    _search_url: URL = attrib(init=False)
-    _headers: dict[str, str] = attrib(init=False)
+    _passage_url: URL = field(init=False)
+    _search_url: URL = field(init=False)
+    _headers: dict[str, str] = field(init=False)
 
     def __attrs_post_init__(self, /) -> None:
         self._passage_url = URL(

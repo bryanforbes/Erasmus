@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 import aiohttp
 import pytest
 import pytest_mock
-from attr import dataclass
+from attrs import define
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -15,7 +15,7 @@ def vcr_config() -> dict[str, list[str]]:
     return {'filter_headers': ['authorization', 'api-key']}
 
 
-@dataclass(slots=True)
+@define
 class MockBible(object):
     command: str
     name: str
