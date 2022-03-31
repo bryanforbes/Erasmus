@@ -267,18 +267,19 @@ class Confession(Cog[Erasmus]):
         ):
             error = cast(Exception, error.__cause__)
 
-        if isinstance(error, InvalidConfessionError):
-            message = f'`{error.confession}` is not a valid confession.'
-        elif isinstance(error, NoSectionError):
-            message = (
-                f'`{error.confession}` does not have '
-                f'{"an" if error.section_type == "article" else "a"} '
-                f'{error.section_type} `{error.section}`'
-            )
-        elif isinstance(error, NoSectionsError):
-            message = f'`{error.confession}` has no {error.section_type}'
-        else:
-            return
+        match error:
+            case InvalidConfessionError():
+                message = f'`{error.confession}` is not a valid confession.'
+            case NoSectionError():
+                message = (
+                    f'`{error.confession}` does not have '
+                    f'{"an" if error.section_type == "article" else "a"} '
+                    f'{error.section_type} `{error.section}`'
+                )
+            case NoSectionsError():
+                message = f'`{error.confession}` has no {error.section_type}'
+            case _:
+                return
 
         await util.send_context_error(
             ctx, description=escape(message, mass_mentions=True)
@@ -617,18 +618,19 @@ class ConfessionAppCommands(  # type: ignore
         ):
             error = cast(Exception, error.__cause__)
 
-        if isinstance(error, InvalidConfessionError):
-            message = f'`{error.confession}` is not a valid confession.'
-        elif isinstance(error, NoSectionError):
-            message = (
-                f'`{error.confession}` does not have '
-                f'{"an" if error.section_type == "article" else "a"} '
-                f'{error.section_type} `{error.section}`'
-            )
-        elif isinstance(error, NoSectionsError):
-            message = f'`{error.confession}` has no {error.section_type}'
-        else:
-            return
+        match error:
+            case InvalidConfessionError():
+                message = f'`{error.confession}` is not a valid confession.'
+            case NoSectionError():
+                message = (
+                    f'`{error.confession}` does not have '
+                    f'{"an" if error.section_type == "article" else "a"} '
+                    f'{error.section_type} `{error.section}`'
+                )
+            case NoSectionsError():
+                message = f'`{error.confession}` has no {error.section_type}'
+            case _:
+                return
 
         await util.send_interaction_error(interaction, description=message)
 
