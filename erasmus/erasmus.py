@@ -212,6 +212,10 @@ class Erasmus(
         ):
             error = cast(Exception, error.__cause__)
 
+        if isinstance(error, ErasmusError):
+            # All of these are handled in their respective cogs
+            return
+
         message = 'An error occurred'
 
         match error:

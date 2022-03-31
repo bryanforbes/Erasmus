@@ -1,15 +1,13 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import Any, Optional
+from typing import Any
 
 from discord.ext import commands
 from more_itertools import unique_everseen
 
-from .context import Context
 
-
-class HelpCommand(commands.DefaultHelpCommand[Context]):
+class HelpCommand(commands.DefaultHelpCommand):
     def _get_command_title(self, command: commands.Command[Any, ..., Any], /) -> str:
         return ', '.join(
             map(
@@ -20,7 +18,7 @@ class HelpCommand(commands.DefaultHelpCommand[Context]):
 
     async def send_bot_help(
         self,
-        mapping: Mapping[Optional[commands.Cog], list[commands.Command[Any, ..., Any]]],
+        mapping: Mapping[commands.Cog | None, list[commands.Command[Any, ..., Any]]],
         /,
     ) -> None:
         bot = self.context.bot
@@ -89,7 +87,7 @@ class HelpCommand(commands.DefaultHelpCommand[Context]):
             )
 
     async def command_callback(
-        self, ctx: Context, /, *, command: Optional[str] = None
+        self, ctx: commands.Context[Any], /, *, command: str | None = None
     ) -> Any:
         if command:
             if command[0] == ctx.prefix:

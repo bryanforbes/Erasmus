@@ -2,10 +2,11 @@ from __future__ import annotations
 
 from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
 from re import Match
-from typing import Any, Final, NamedTuple, Optional, TypeAlias, cast
+from typing import Any, Final, NamedTuple, TypeAlias, cast
+from typing_extensions import Self
 
 import discord
-from botus_receptus import re, util
+from botus_receptus import Cog, re, util
 from botus_receptus.formatting import (
     EmbedPaginator,
     bold,
@@ -17,7 +18,6 @@ from botus_receptus.formatting import (
 from discord import app_commands
 from discord.ext import commands
 
-from ..cog import ErasmusCog
 from ..context import Context
 from ..db.confession import Article
 from ..db.confession import Confession as ConfessionRecord
@@ -252,7 +252,7 @@ class ConfessionSearchSource(
         self.embed.description = '\n'.join(lines)
 
 
-class Confession(ErasmusCog):
+class Confession(Cog[Erasmus]):
     async def cog_command_error(self, ctx: Context, error: Exception) -> None:  # type: ignore  # noqa: B950
         if (
             isinstance(
@@ -287,7 +287,7 @@ class Confession(ErasmusCog):
     @commands.command(brief='Query confessions and catechisms', help=_confess_help)
     @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
     async def confess(
-        self, ctx: Context, confession: Optional[str] = None, /, *args: str
+        self, ctx: Context, confession: str | None = None, /, *args: str
     ) -> None:
         if confession is None:
             await self.list(ctx)
@@ -445,13 +445,9 @@ def _create_section_info(section: str, title: str, /) -> _SectionInfo:
 
 
 class ConfessionAppCommands(  # type: ignore
-    ErasmusCog, app_commands.Group, name='confess', description='Confessions'
+    Cog[Erasmus], app_commands.Group, name='confess', description='Confessions'
 ):
     __confession_info: dict[str, _ConfessionInfo]
-
-    def __init__(self, bot: Erasmus, /) -> None:
-        app_commands.Group.__init__(self)
-        super().__init__(bot)
 
     async def cog_load(self) -> None:
         self.__confession_info = {}
@@ -606,7 +602,37 @@ class ConfessionAppCommands(  # type: ignore
             await util.send_interaction(interaction, description=page, title=title)
             title = None
 
+    async def cog_app_command_error(
+        self,
+        interaction: discord.Interaction,
+        command: app_commands.Command[Self, ..., Any],
+        error: Exception,
+        /,
+    ) -> None:
+        if (
+            isinstance(
+                error, (app_commands.CommandInvokeError, app_commands.TransformerError)
+            )
+            and error.__cause__ is not None
+        ):
+            error = cast(Exception, error.__cause__)
+
+        if isinstance(error, InvalidConfessionError):
+            message = f'`{error.confession}` is not a valid confession.'
+        elif isinstance(error, NoSectionError):
+            message = (
+                f'`{error.confession}` does not have '
+                f'{"an" if error.section_type == "article" else "a"} '
+                f'{error.section_type} `{error.section}`'
+            )
+        elif isinstance(error, NoSectionsError):
+            message = f'`{error.confession}` has no {error.section_type}'
+        else:
+            return
+
+        await util.send_interaction_error(interaction, description=message)
+
 
 async def setup(bot: Erasmus, /) -> None:
     await bot.add_cog(Confession(bot))
-    await bot.add_cog(ConfessionAppCommands(bot))
+    # await bot.add_cog(ConfessionAppCommands(bot))

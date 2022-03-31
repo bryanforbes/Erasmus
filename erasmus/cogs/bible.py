@@ -5,13 +5,12 @@ from typing import Any, Final, cast
 from typing_extensions import Self
 
 import discord
-from botus_receptus import checks, formatting, util
+from botus_receptus import Cog, checks, formatting, util
 from botus_receptus.app_commands import admin_guild_only
 from botus_receptus.db import UniqueViolationError
 from discord import app_commands
 from discord.ext import commands
 
-from ..cog import ErasmusCog
 from ..context import Context
 from ..data import Passage, SearchResults, VerseRange, get_book, get_book_mask
 from ..db.bible import BibleVersion, GuildPref, UserPref
@@ -154,7 +153,7 @@ Example:
     {prefix}{command} faith hope'''
 
 
-class BibleBase(ErasmusCog):
+class BibleBase(Cog[Erasmus]):
     service_manager: ServiceManager
 
     def __init__(self, bot: Erasmus, service_manager: ServiceManager, /) -> None:
@@ -239,42 +238,44 @@ class Bible(BibleBase):
         ):
             error = cast(Exception, error.__cause__)
 
-        if isinstance(error, BookNotUnderstoodError):
-            message = f'I do not understand the book "{error.book}"'
-        elif isinstance(error, BookNotInVersionError):
-            message = f'{error.version} does not contain {error.book}'
-        elif isinstance(error, DoNotUnderstandError):
-            message = 'I do not understand that request'
-        elif isinstance(error, ReferenceNotUnderstoodError):
-            message = f'I do not understand the reference "{error.reference}"'
-        elif isinstance(error, BibleNotSupportedError):
-            message = f'`{ctx.prefix}{error.version}` is not supported'
-        elif isinstance(error, NoUserVersionError):
-            message = (
-                f'You must first set your default version with `{ctx.prefix}setversion`'
-            )
-        elif isinstance(error, InvalidVersionError):
-            message = (
-                f'`{error.version}` is not a valid version. Check '
-                f'`{ctx.prefix}versions` for valid versions'
-            )
-        elif isinstance(error, ServiceNotSupportedError):
-            message = (
-                f'The service configured for '
-                f'`{self.bot.default_prefix}{ctx.invoked_with}` is not supported'
-            )
-        elif isinstance(error, ServiceLookupTimeout):
-            message = (
-                f'The request timed out looking up {error.verses} in '
-                + error.bible.name
-            )
-        elif isinstance(error, ServiceSearchTimeout):
-            message = (
-                f'The request timed out searching for '
-                f'"{" ".join(error.terms)}" in {error.bible.name}'
-            )
-        else:
-            return
+        match error:
+            case BookNotUnderstoodError():
+                message = f'I do not understand the book "{error.book}"'
+            case BookNotInVersionError():
+                message = f'{error.version} does not contain {error.book}'
+            case DoNotUnderstandError():
+                message = 'I do not understand that request'
+            case ReferenceNotUnderstoodError():
+                message = f'I do not understand the reference "{error.reference}"'
+            case BibleNotSupportedError():
+                message = f'`{ctx.prefix}{error.version}` is not supported'
+            case NoUserVersionError():
+                message = (
+                    'You must first set your default version with '
+                    f'`{ctx.prefix}setversion`'
+                )
+            case InvalidVersionError():
+                message = (
+                    f'`{error.version}` is not a valid version. Check '
+                    f'`{ctx.prefix}versions` for valid versions'
+                )
+            case ServiceNotSupportedError():
+                message = (
+                    f'The service configured for '
+                    f'`{self.bot.default_prefix}{ctx.invoked_with}` is not supported'
+                )
+            case ServiceLookupTimeout():
+                message = (
+                    f'The request timed out looking up {error.verses} in '
+                    + error.bible.name
+                )
+            case ServiceSearchTimeout():
+                message = (
+                    f'The request timed out searching for '
+                    f'"{" ".join(error.terms)}" in {error.bible.name}'
+                )
+            case _:
+                return
 
         await util.send_context_error(
             ctx, description=formatting.escape(message, mass_mentions=True)
@@ -589,8 +590,6 @@ class GuildVersion(app_commands.Group, name='guildversion'):
             interaction, description=description, ephemeral=True
         )
 
-        raise ValueError()
-
 
 async def _version_autocomplete(
     interaction: discord.Interaction,
@@ -602,9 +601,47 @@ async def _version_autocomplete(
     ]
 
 
-_shared_cooldown = app_commands.checks.cooldown(
-    rate=8, per=60.0, key=lambda i: (i.guild_id, i.user.id)
-)
+class UserVersion(app_commands.Group, name='version'):
+    @app_commands.command(name='set')
+    @app_commands.checks.cooldown(
+        rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
+    )
+    @app_commands.autocomplete(version=_version_autocomplete)
+    async def set(
+        self,
+        interaction: discord.Interaction,
+        /,
+        version: str,
+    ) -> None:
+        '''Set your preferred version'''
+        version = version.lower()
+
+        existing = await BibleVersion.get_by_command(version)
+        await existing.set_for_user(interaction.user)
+
+        await util.send_interaction(
+            interaction,
+            description=f'Version set to `{version}`',
+            ephemeral=True,
+        )
+
+    @app_commands.command(name='delete')
+    @app_commands.checks.cooldown(
+        rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
+    )
+    async def delete(self, interaction: discord.Interaction, /) -> None:
+        '''Delete your preferred version'''
+        user_prefs = await UserPref.get(interaction.user.id)
+
+        if user_prefs is not None:
+            await user_prefs.delete()
+            description = 'Preferred version deleted'
+        else:
+            description = 'Preferred version already deleted'
+
+        await util.send_interaction(
+            interaction, description=description, ephemeral=True
+        )
 
 
 class BibleAdmin(app_commands.Group, name='bible'):
@@ -749,9 +786,15 @@ class BibleAdmin(app_commands.Group, name='bible'):
             await util.send_interaction(interaction, description=f'Updated `{version}`')
 
 
+_shared_cooldown = app_commands.checks.cooldown(
+    rate=8, per=60.0, key=lambda i: (i.guild_id, i.user.id)
+)
+
+
 class BibleAppCommands(BibleBase):
     bible_admin = admin_guild_only(BibleAdmin())
     guildversion = GuildVersion(description='Guild version commands')
+    version = UserVersion(description='Bible version commands')
 
     def __init__(self, bot: Erasmus, service_manager: ServiceManager, /) -> None:
         super().__init__(bot, service_manager)
@@ -773,45 +816,42 @@ class BibleAppCommands(BibleBase):
         ):
             error = cast(Exception, error.__cause__)
 
-        if isinstance(error, BookNotUnderstoodError):
-            message = f'I do not understand the book "{error.book}"'
-        elif isinstance(error, BookNotInVersionError):
-            message = f'{error.version} does not contain {error.book}'
-        elif isinstance(error, DoNotUnderstandError):
-            message = 'I do not understand that request'
-        elif isinstance(error, ReferenceNotUnderstoodError):
-            message = f'I do not understand the reference "{error.reference}"'
-        elif isinstance(error, BibleNotSupportedError):
-            message = f'The version `{error.version}` is not supported'
-        elif isinstance(error, NoUserVersionError):
-            message = 'You must first set your default version with `/version set`'
-        elif isinstance(error, InvalidVersionError):
-            message = (
-                f'`{error.version}` is not a valid version. Check '
-                '`/versions` for valid versions'
-            )
-        elif isinstance(error, ServiceNotSupportedError):
-            message = (
-                f'The service configured for "{error.bible.name}" is not supported'
-            )
-        elif isinstance(error, ServiceLookupTimeout):
-            message = (
-                f'The request timed out looking up {error.verses} in '
-                + error.bible.name
-            )
-        elif isinstance(error, ServiceSearchTimeout):
-            message = (
-                f'The request timed out searching for '
-                f'"{" ".join(error.terms)}" in {error.bible.name}'
-            )
-        else:
-            return
+        match error:
+            case BookNotUnderstoodError():
+                message = f'I do not understand the book "{error.book}"'
+            case BookNotInVersionError():
+                message = f'{error.version} does not contain {error.book}'
+            case DoNotUnderstandError():
+                message = 'I do not understand that request'
+            case ReferenceNotUnderstoodError():
+                message = f'I do not understand the reference "{error.reference}"'
+            case BibleNotSupportedError():
+                message = f'The version `{error.version}` is not supported'
+            case NoUserVersionError():
+                message = 'You must first set your default version with `/version set`'
+            case InvalidVersionError():
+                message = (
+                    f'`{error.version}` is not a valid version. Check '
+                    '`/versions` for valid versions'
+                )
+            case ServiceNotSupportedError():
+                message = (
+                    f'The service configured for "{error.bible.name}" is not supported'
+                )
+            case ServiceLookupTimeout():
+                message = (
+                    f'The request timed out looking up {error.verses} in '
+                    + error.bible.name
+                )
+            case ServiceSearchTimeout():
+                message = (
+                    f'The request timed out searching for '
+                    f'"{" ".join(error.terms)}" in {error.bible.name}'
+                )
+            case _:
+                return
 
-        embed = discord.Embed(description=message, color=discord.Color.red())
-        if not interaction.response.is_done():
-            await interaction.response.send_message(embed=embed)
-        else:
-            await interaction.followup.send(embed=embed)
+        await util.send_interaction_error(interaction, description=message)
 
     @app_commands.command()
     @_shared_cooldown
@@ -895,49 +935,6 @@ class BibleAppCommands(BibleBase):
 
         output = '\n'.join(lines)
         await util.send_interaction(interaction, description=output)
-
-    version = app_commands.Group(name='version', description='Bible version commands')
-
-    @version.command(name='set')
-    @app_commands.checks.cooldown(
-        rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
-    )
-    @app_commands.autocomplete(version=_version_autocomplete)
-    async def version_set(
-        self,
-        interaction: discord.Interaction,
-        /,
-        version: str,
-    ) -> None:
-        '''Set your preferred version'''
-        version = version.lower()
-
-        existing = await BibleVersion.get_by_command(version)
-        await existing.set_for_user(interaction.user)
-
-        await util.send_interaction(
-            interaction,
-            description=f'Version set to `{version}`',
-            ephemeral=True,
-        )
-
-    @version.command(name='delete')
-    @app_commands.checks.cooldown(
-        rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
-    )
-    async def version_delete(self, interaction: discord.Interaction, /) -> None:
-        '''Delete your preferred version'''
-        user_prefs = await UserPref.get(interaction.user.id)
-
-        if user_prefs is not None:
-            await user_prefs.delete()
-            description = 'Preferred version deleted'
-        else:
-            description = 'Preferred version already deleted'
-
-        await util.send_interaction(
-            interaction, description=description, ephemeral=True
-        )
 
 
 async def setup(bot: Erasmus, /) -> None:
