@@ -297,4 +297,4 @@ class CreedsAppCommands(  # type: ignore
 
 async def setup(bot: Erasmus, /) -> None:
     await bot.add_cog(Creeds(bot))
-    # await bot.add_cog(CreedsAppCommands(bot))
+    await bot.add_cog(CreedsAppCommands(bot))
