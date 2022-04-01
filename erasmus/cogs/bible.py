@@ -599,7 +599,7 @@ async def _version_autocomplete(
     return [
         app_commands.Choice(name=bible.name, value=bible.command)
         async for bible in BibleVersion.get_all(ordered=True, search_term=current)
-    ]
+    ][:25]
 
 
 class UserVersion(app_commands.Group, name='version'):
@@ -655,7 +655,7 @@ class BibleAdmin(app_commands.Group, name='bible'):
             app_commands.Choice(name=service_name, value=service_name)
             for service_name in self.service_manager.service_map.keys()
             if current.lower() in service_name.lower()
-        ]
+        ][:25]
 
     @app_commands.command()
     @app_commands.describe(
