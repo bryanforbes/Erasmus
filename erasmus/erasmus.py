@@ -39,8 +39,8 @@ You can look up all verses in a message one of two ways:
 
 
 class Erasmus(
-    gino.Bot,
-    topgg.Bot,
+    gino.AutoShardedBot,
+    topgg.AutoShardedBot,
 ):
     config: Config
 
