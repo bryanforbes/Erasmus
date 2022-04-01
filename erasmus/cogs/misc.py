@@ -44,6 +44,12 @@ class AboutView(InviteView):
             )
         )
 
+        self.add_item(
+            discord.ui.Button(
+                label='Github', url='https://github.com/bryanforbes/Erasmus'
+            )
+        )
+
 
 def get_about_embed(bot: Erasmus) -> discord.Embed:
     total_members = 0
