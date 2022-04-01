@@ -291,7 +291,7 @@ class CreedsAppCommands(  # type: ignore
 
     @app_commands.command()
     async def nicene381(self, interaction: discord.Interaction, /) -> None:
-        '''The Nicene Creed (382 AD)'''
+        '''The Nicene Creed (381 AD)'''
         await util.send_interaction(interaction, **_nicene_381)
 
 

@@ -5,6 +5,7 @@ from typing import Any, Final, cast
 from typing_extensions import Self
 
 import discord
+from attrs import define
 from botus_receptus import Cog, checks, formatting, util
 from botus_receptus.app_commands import admin_guild_only
 from botus_receptus.db import UniqueViolationError
@@ -31,7 +32,7 @@ from ..page_source import AsyncCallback, AsyncPageSource, FieldPageSource
 from ..protocols import Bible as _Bible
 from ..service_manager import ServiceManager
 from ..ui_pages import ContextUIPages, InteractionUIPages
-from ..utils import send_context_passage, send_interaction_passage
+from ..utils import InfoContainer, send_context_passage, send_interaction_passage
 
 
 def _book_mask_from_books(books: str, /) -> int:
@@ -544,117 +545,66 @@ class Bible(BibleBase):
         self.bot.remove_command(f's{command}')
 
 
-async def is_administrator(interaction: discord.Interaction, /) -> bool:
-    if interaction.channel is None or interaction.guild is None:
-        raise commands.NoPrivateMessage()
+@define
+class _BibleInfo:
+    name: str
+    name_lower: str
+    command: str
+    command_lower: str
+    abbreviation: str
+    abbreviation_lower: str
 
-    channel = interaction.channel
+    @property
+    def display_name(self) -> str:
+        return self.name
 
-    if isinstance(channel, discord.PartialMessageable):
-        channel = await interaction.client.fetch_channel(channel.id)
+    def update(self, version: BibleVersion, /) -> None:
+        self.name = version.name
+        self.name_lower = version.name.lower()
+        self.abbreviation = version.abbr
+        self.abbreviation_lower = version.abbr.lower()
 
-    if isinstance(channel, discord.abc.PrivateChannel):
-        raise commands.NoPrivateMessage()
-
-    permissions = channel.permissions_for(cast(discord.Member, interaction.user))
-
-    if not permissions.administrator:
-        raise commands.MissingPermissions(['administrator'])
-
-    return True
-
-
-class GuildVersion(app_commands.Group, name='guildversion'):
-    @app_commands.command()
-    @app_commands.describe(version='Bible version')
-    @app_commands.checks.has_permissions(administrator=True)
-    async def set(
-        self,
-        interaction: discord.Interaction,
-        /,
-        version: str,
-    ) -> None:
-        '''Set the default version for the guild (admin-only)'''
-
-        assert interaction.guild is not None
-
-        version = version.lower()
-
-        existing = await BibleVersion.get_by_command(version)
-        await existing.set_for_guild(interaction.guild)
-
-        await util.send_interaction(
-            interaction,
-            description=f'Guild version set to `{version}`',
-            ephemeral=True,
+    def matches(self, text: str, /) -> bool:
+        return (
+            self.command_lower.startswith(text)
+            or text in self.name_lower
+            or text in self.abbreviation_lower
         )
 
-    @app_commands.command()
-    @app_commands.checks.has_permissions(administrator=True)
-    async def delete(self, interaction: discord.Interaction, /) -> None:
-        '''Delete the default version for the guild (admin-only)'''
-
-        assert interaction.guild is not None
-
-        if (guild_prefs := await GuildPref.get(interaction.guild.id)) is not None:
-            await guild_prefs.delete()
-            description = 'Guild version deleted'
-        else:
-            description = 'Guild version already deleted'
-
-        await util.send_interaction(
-            interaction, description=description, ephemeral=True
+    @classmethod
+    def create(cls, version: BibleVersion, /) -> Self:
+        return cls(
+            name=version.name,
+            name_lower=version.name.lower(),
+            command=version.command,
+            command_lower=version.command.lower(),
+            abbreviation=version.abbr,
+            abbreviation_lower=version.abbr.lower(),
         )
+
+
+_bible_info = InfoContainer(info_cls=_BibleInfo)
 
 
 async def _version_autocomplete(
     interaction: discord.Interaction,
     current: str,
 ) -> list[app_commands.Choice[str]]:
-    current = current.strip()
-    return [
-        app_commands.Choice(name=bible.name, value=bible.command)
-        async for bible in BibleVersion.get_all(
-            ordered=True, search_term=current if current else None, limit=25
-        )
-    ]
+    return _bible_info.choices(current)
 
 
-class UserVersion(app_commands.Group, name='version'):
+class PreferencesGroup(app_commands.Group, name='prefs'):
     @app_commands.command()
-    @app_commands.describe(version='The version to get information for')
+    @app_commands.describe(version='Bible version')
+    @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
     @app_commands.autocomplete(version=_version_autocomplete)
-    async def info(self, interaction: discord.Interaction, /, version: str) -> None:
-        '''Get information for a Bible version'''
-
-        existing = await BibleVersion.get_by_command(version)
-
-        await util.send_interaction(
-            interaction,
-            title=existing.name,
-            fields=[
-                {
-                    'name': 'Books',
-                    'value': '\n'.join(
-                        [name for name in _book_names_from_book_mask(existing.books)]
-                    ),
-                    'inline': False,
-                },
-            ],
-        )
-
-    @app_commands.command(name='set')
-    @app_commands.checks.cooldown(
-        rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
-    )
-    @app_commands.autocomplete(version=_version_autocomplete)
-    async def set(
+    async def setdefault(
         self,
         interaction: discord.Interaction,
         /,
         version: str,
     ) -> None:
-        '''Set your preferred version'''
+        '''Set your default Bible version'''
         version = version.lower()
 
         existing = await BibleVersion.get_by_command(version)
@@ -666,26 +616,72 @@ class UserVersion(app_commands.Group, name='version'):
             ephemeral=True,
         )
 
-    @app_commands.command(name='delete')
-    @app_commands.checks.cooldown(
-        rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
-    )
-    async def delete(self, interaction: discord.Interaction, /) -> None:
-        '''Delete your preferred version'''
+    @app_commands.command()
+    @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
+    async def unsetdefault(self, interaction: discord.Interaction, /) -> None:
+        '''Unset your default Bible version'''
         user_prefs = await UserPref.get(interaction.user.id)
 
         if user_prefs is not None:
             await user_prefs.delete()
-            description = 'Preferred version deleted'
+            description = 'Default version unset'
         else:
-            description = 'Preferred version already deleted'
+            description = 'Default version already unset'
+
+        await util.send_interaction(
+            interaction, description=description, ephemeral=True
+        )
+
+    @app_commands.command()
+    @app_commands.describe(version='Bible version')
+    @app_commands.checks.cooldown(
+        rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
+    )
+    @app_commands.autocomplete(version=_version_autocomplete)
+    @app_commands.checks.has_permissions(administrator=True)
+    async def setserverdefault(
+        self,
+        interaction: discord.Interaction,
+        /,
+        version: str,
+    ) -> None:
+        '''Set the default version for this server (admin-only)'''
+
+        assert interaction.guild is not None
+
+        version = version.lower()
+
+        existing = await BibleVersion.get_by_command(version)
+        await existing.set_for_guild(interaction.guild)
+
+        await util.send_interaction(
+            interaction,
+            description=f'Server version set to `{version}`',
+            ephemeral=True,
+        )
+
+    @app_commands.command()
+    @app_commands.checks.cooldown(
+        rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
+    )
+    @app_commands.checks.has_permissions(administrator=True)
+    async def unsetserverdefault(self, interaction: discord.Interaction, /) -> None:
+        '''Unset the default version for this server (admin-only)'''
+
+        assert interaction.guild is not None
+
+        if (guild_prefs := await GuildPref.get(interaction.guild.id)) is not None:
+            await guild_prefs.delete()
+            description = 'Server version deleted'
+        else:
+            description = 'Server version already deleted'
 
         await util.send_interaction(
             interaction, description=description, ephemeral=True
         )
 
 
-class BibleAdmin(app_commands.Group, name='bible'):
+class BibleAdminGroup(app_commands.Group, name='admin'):
     service_manager: ServiceManager
 
     async def _service_autocomplete(
@@ -698,9 +694,11 @@ class BibleAdmin(app_commands.Group, name='bible'):
         ][:25]
 
     @app_commands.command()
-    @app_commands.describe(version='The version to get information for')
+    @app_commands.describe(version='The Bible version to get information for')
     @app_commands.autocomplete(version=_version_autocomplete)
-    async def info(self, interaction: discord.Interaction, /, version: str) -> None:
+    async def bibleinfo(
+        self, interaction: discord.Interaction, /, version: str
+    ) -> None:
         '''Get information for a Bible version'''
 
         existing = await BibleVersion.get_by_command(version)
@@ -735,7 +733,7 @@ class BibleAdmin(app_commands.Group, name='bible'):
         rtl='Whether text is right-to-left or not',
     )
     @app_commands.autocomplete(service=_service_autocomplete)
-    async def add(
+    async def addbible(
         self,
         interaction: discord.Interaction,
         /,
@@ -757,7 +755,7 @@ class BibleAdmin(app_commands.Group, name='bible'):
             return
 
         try:
-            await BibleVersion.create(
+            bible = await BibleVersion.create(
                 command=command,
                 name=name,
                 abbr=abbreviation,
@@ -766,6 +764,7 @@ class BibleAdmin(app_commands.Group, name='bible'):
                 rtl=rtl,
                 books=_book_mask_from_books(books),
             )
+            _bible_info.add(bible)
         except UniqueViolationError:
             await util.send_interaction_error(
                 interaction,
@@ -781,7 +780,9 @@ class BibleAdmin(app_commands.Group, name='bible'):
     @app_commands.command()
     @app_commands.describe(version='The version to delete')
     @app_commands.autocomplete(version=_version_autocomplete)
-    async def delete(self, interaction: discord.Interaction, /, version: str) -> None:
+    async def deletebible(
+        self, interaction: discord.Interaction, /, version: str
+    ) -> None:
         '''Delete a Bible'''
 
         existing = await BibleVersion.get_by_command(version)
@@ -801,7 +802,7 @@ class BibleAdmin(app_commands.Group, name='bible'):
     @app_commands.autocomplete(
         version=_version_autocomplete, service=_service_autocomplete
     )
-    async def update(
+    async def updatebible(
         self,
         interaction: discord.Interaction,
         /,
@@ -846,6 +847,8 @@ class BibleAdmin(app_commands.Group, name='bible'):
                 args['books'] = _book_mask_from_books(books)
 
             await bible.update(**args).apply()
+            _bible_info.update(bible)
+
         except Exception:
             await util.send_interaction_error(
                 interaction, description=f'Error updating `{version}`'
@@ -860,14 +863,21 @@ _shared_cooldown = app_commands.checks.cooldown(
 
 
 class BibleAppCommands(BibleBase):
-    bible_admin = admin_guild_only(BibleAdmin())
-    guildversion = GuildVersion(description='Guild version commands')
-    version = UserVersion(description='Bible version commands')
+    admin = admin_guild_only(BibleAdminGroup())
+    preferences = PreferencesGroup(description='Preferences commands')
 
     def __init__(self, bot: Erasmus, service_manager: ServiceManager, /) -> None:
         super().__init__(bot, service_manager)
 
-        self.bible_admin.service_manager = service_manager
+        self.admin.service_manager = service_manager
+
+    async def cog_load(self) -> None:
+        _bible_info.set(
+            [version async for version in BibleVersion.get_all(ordered=True)]
+        )
+
+    async def cog_unload(self) -> None:
+        _bible_info.clear()
 
     async def cog_app_command_error(
         self,
@@ -924,6 +934,42 @@ class BibleAppCommands(BibleBase):
     @app_commands.command()
     @_shared_cooldown
     @app_commands.describe(
+        reference='A verse reference',
+        version='The version in which to look up the verse',
+        only_me='Whether to display the verse to yourself or everyone',
+    )
+    @app_commands.autocomplete(version=_version_autocomplete)
+    async def verse(
+        self,
+        interaction: discord.Interaction,
+        /,
+        reference: VerseRange,
+        version: str | None = None,
+        only_me: bool = False,
+    ) -> None:
+        '''Look up a verse'''
+
+        bible: BibleVersion | None = None
+
+        if version is not None:
+            reference.version = version
+
+        if reference.version is not None:
+            bible = await BibleVersion.get_by_abbr(reference.version)
+
+        if bible is None:
+            bible = await BibleVersion.get_for_user(interaction.user, interaction.guild)
+
+        if reference.book_mask == 'DC' or not (bible.books & reference.book_mask):
+            raise BookNotInVersionError(reference.book, bible.name)
+
+        await interaction.response.defer(thinking=True, ephemeral=only_me)
+        passage = await self.service_manager.get_passage(cast(Any, bible), reference)
+        await send_interaction_passage(interaction, passage, ephemeral=only_me)
+
+    @app_commands.command()
+    @_shared_cooldown
+    @app_commands.describe(
         terms='Terms to search for', version='The Bible version to search within'
     )
     @app_commands.autocomplete(version=_version_autocomplete)
@@ -954,55 +1000,47 @@ class BibleAppCommands(BibleBase):
         await view.start()
 
     @app_commands.command()
-    @_shared_cooldown
-    @app_commands.describe(
-        reference='A verse reference',
-        version='The version in which to look up the verse',
-        only_me='Whether to display the verse to yourself or everyone',
+    @app_commands.checks.cooldown(
+        rate=2, per=30.0, key=lambda i: (i.guild_id, i.user.id)
     )
-    @app_commands.autocomplete(version=_version_autocomplete)
-    async def lookup(
-        self,
-        interaction: discord.Interaction,
-        /,
-        reference: VerseRange,
-        version: str | None = None,
-        only_me: bool = False,
-    ) -> None:
-        '''Look up a verse'''
-
-        bible: BibleVersion | None = None
-
-        if version is not None:
-            reference.version = version
-
-        if reference.version is not None:
-            bible = await BibleVersion.get_by_abbr(reference.version)
-
-        if bible is None:
-            bible = await BibleVersion.get_for_user(interaction.user, interaction.guild)
-
-        if reference.book_mask == 'DC' or not (bible.books & reference.book_mask):
-            raise BookNotInVersionError(reference.book, bible.name)
-
-        await interaction.response.defer(thinking=True, ephemeral=only_me)
-        passage = await self.service_manager.get_passage(cast(Any, bible), reference)
-        await send_interaction_passage(interaction, passage, ephemeral=only_me)
-
-    @app_commands.command()
-    @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda i: i.channel_id)
-    async def versions(self, interaction: discord.Interaction, /) -> None:
+    async def bibles(self, interaction: discord.Interaction, /) -> None:
         '''List which Bible versions are available for lookup and search'''
 
         lines = ['I support the following Bible versions:', '']
 
-        lines += [
-            f'  `{version.command}`: {version.name}'
-            async for version in BibleVersion.get_all(ordered=True)
-        ]
+        lines += [f'  `{version.command}`: {version.name}' for version in _bible_info]
 
         output = '\n'.join(lines)
         await util.send_interaction(interaction, description=output)
+
+    @app_commands.command()
+    @_shared_cooldown
+    @app_commands.describe(version='The Bible version to get information for')
+    @app_commands.autocomplete(version=_version_autocomplete)
+    async def bibleinfo(
+        self, interaction: discord.Interaction, /, version: str
+    ) -> None:
+        '''Get information about a Bible version'''
+
+        existing = await BibleVersion.get_by_command(version)
+
+        await util.send_interaction(
+            interaction,
+            title=existing.name,
+            fields=[
+                {
+                    'name': 'Abbreviation',
+                    'value': existing.command,
+                },
+                {
+                    'name': 'Books',
+                    'value': '\n'.join(
+                        [name for name in _book_names_from_book_mask(existing.books)]
+                    ),
+                    'inline': False,
+                },
+            ],
+        )
 
 
 async def setup(bot: Erasmus, /) -> None:
