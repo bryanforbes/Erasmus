@@ -53,13 +53,16 @@ class Erasmus(
             command_attrs={
                 'brief': 'List commands for this bot or get help for commands',
                 'cooldown': commands.CooldownMapping.from_cooldown(
-                    5, 30.0, commands.BucketType.channel
+                    5, 30.0, commands.BucketType.user
                 ),
             },
         )
         kwargs['description'] = _description
         kwargs['intents'] = discord.Intents(
             guilds=True, reactions=True, messages=True, message_content=True
+        )
+        kwargs['allowed_mentions'] = discord.AllowedMentions(
+            roles=False, everyone=False, users=True
         )
 
         super().__init__(config, *args, **kwargs)
