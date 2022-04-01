@@ -38,12 +38,18 @@ class BibleVersion(Base):
 
     @staticmethod
     async def get_all(
-        *, ordered: bool = False, search_term: str | None = None
+        *,
+        ordered: bool = False,
+        search_term: str | None = None,
+        limit: int | None = None,
     ) -> AsyncIterator[BibleVersion]:
         query = BibleVersion.query
 
         if ordered:
             query = query.order_by(db.asc(BibleVersion.command))
+
+        if limit:
+            query = query.limit(limit)
 
         if search_term is not None:
             search_term = search_term.lower()

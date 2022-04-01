@@ -596,10 +596,13 @@ async def _version_autocomplete(
     interaction: discord.Interaction,
     current: str,
 ) -> list[app_commands.Choice[str]]:
+    current = current.strip()
     return [
         app_commands.Choice(name=bible.name, value=bible.command)
-        async for bible in BibleVersion.get_all(ordered=True, search_term=current)
-    ][:25]
+        async for bible in BibleVersion.get_all(
+            ordered=True, search_term=current if current else None, limit=25
+        )
+    ]
 
 
 class UserVersion(app_commands.Group, name='version'):
