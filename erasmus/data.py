@@ -4,7 +4,7 @@ from collections.abc import Iterator
 from itertools import chain
 from pathlib import Path
 from re import Match, Pattern
-from typing import TYPE_CHECKING, Final, TypedDict
+from typing import TYPE_CHECKING, Final, Literal, TypedDict
 from typing_extensions import Self
 
 import discord
@@ -24,7 +24,7 @@ class BookDict(TypedDict):
     osis: str
     paratext: str | None
     alt: list[str]
-    section: int
+    section: int | Literal['DC']
 
 
 with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
@@ -132,7 +132,7 @@ _search_reference_with_version_re: Final[Pattern[str]] = re.compile(
 
 _book_input_map: Final[dict[str, str]] = {}
 _book_data_map: Final[dict[str, BookDict]] = {}
-_book_mask_map: Final[dict[str, int]] = {}
+_book_mask_map: Final[dict[str, int | Literal['DC']]] = {}
 
 for _book in _books_data:
     for input_string in [_book['name'], _book['osis']] + _book['alt']:
@@ -150,6 +150,20 @@ def get_book_data(book_name_or_abbr: str, /) -> BookDict:
     return book
 
 
+def get_books_for_mask(book_mask: int, /) -> Iterator[BookDict]:
+    if book_mask & 1:
+        yield _book_data_map['genesis']
+    if book_mask & 2:
+        yield _book_data_map['matthew']
+
+    for book in _books_data:
+        if book['section'] == 1 or book['section'] == 2 or book['section'] == 'DC':
+            continue
+
+        if book_mask & book['section']:
+            yield book
+
+
 @define
 class Verse(object):
     chapter: int
@@ -165,7 +179,7 @@ class VerseRange(discord.app_commands.Transformer):
     start: Verse
     end: Verse | None = None
     version: str | None = None
-    book_mask: int = field(init=False)
+    book_mask: int | Literal['DC'] = field(init=False)
     osis: str = field(init=False)
     paratext: str | None = field(init=False)
 

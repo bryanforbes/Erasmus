@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable, Iterator, Sequence
 from typing import Any, Final, cast
 from typing_extensions import Self
 
@@ -12,7 +12,7 @@ from discord import app_commands
 from discord.ext import commands
 
 from ..context import Context
-from ..data import Passage, SearchResults, VerseRange, get_book_data
+from ..data import Passage, SearchResults, VerseRange, get_book_data, get_books_for_mask
 from ..db.bible import BibleVersion, GuildPref, UserPref
 from ..erasmus import Erasmus
 from ..exceptions import (
@@ -45,9 +45,24 @@ def _book_mask_from_books(books: str, /) -> int:
             book = 'Matthew'
 
         book_data = get_book_data(book)
+
+        if book_data['section'] == 'DC':
+            continue
+
         book_mask = book_mask | book_data['section']
 
     return book_mask
+
+
+def _book_names_from_book_mask(book_mask: int, /) -> Iterator[str]:
+    for book in get_books_for_mask(book_mask):
+        match book['name']:
+            case 'Genesis':
+                yield 'Old Testament'
+            case 'Matthew':
+                yield 'New Testament'
+            case _:
+                yield book['name']
 
 
 class SearchPageSource(FieldPageSource[Sequence[Passage]], AsyncPageSource[Passage]):
@@ -471,7 +486,7 @@ class Bible(BibleBase):
         reference: VerseRange,
         /,
     ) -> None:
-        if not (bible.books & reference.book_mask):
+        if reference.book_mask == 'DC' or not (bible.books & reference.book_mask):
             raise BookNotInVersionError(reference.book, bible.name)
 
         if reference is not None:
@@ -606,6 +621,28 @@ async def _version_autocomplete(
 
 
 class UserVersion(app_commands.Group, name='version'):
+    @app_commands.command()
+    @app_commands.describe(version='The version to get information for')
+    @app_commands.autocomplete(version=_version_autocomplete)
+    async def info(self, interaction: discord.Interaction, /, version: str) -> None:
+        '''Get information for a Bible version'''
+
+        existing = await BibleVersion.get_by_command(version)
+
+        await util.send_interaction(
+            interaction,
+            title=existing.name,
+            fields=[
+                {
+                    'name': 'Books',
+                    'value': '\n'.join(
+                        [name for name in _book_names_from_book_mask(existing.books)]
+                    ),
+                    'inline': False,
+                },
+            ],
+        )
+
     @app_commands.command(name='set')
     @app_commands.checks.cooldown(
         rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
@@ -659,6 +696,33 @@ class BibleAdmin(app_commands.Group, name='bible'):
             for service_name in self.service_manager.service_map.keys()
             if current.lower() in service_name.lower()
         ][:25]
+
+    @app_commands.command()
+    @app_commands.describe(version='The version to get information for')
+    @app_commands.autocomplete(version=_version_autocomplete)
+    async def info(self, interaction: discord.Interaction, /, version: str) -> None:
+        '''Get information for a Bible version'''
+
+        existing = await BibleVersion.get_by_command(version)
+
+        await util.send_interaction(
+            interaction,
+            title=existing.name,
+            fields=[
+                {'name': 'Command', 'value': existing.command},
+                {'name': 'Abbreviation', 'value': existing.abbr},
+                {'name': 'Right to left', 'value': 'Yes' if existing.rtl else 'No'},
+                {
+                    'name': 'Books',
+                    'value': '\n'.join(
+                        [name for name in _book_names_from_book_mask(existing.books)]
+                    ),
+                    'inline': False,
+                },
+                {'name': 'Service', 'value': existing.service},
+                {'name': 'Service Version', 'value': existing.service_version},
+            ],
+        )
 
     @app_commands.command()
     @app_commands.describe(
@@ -918,7 +982,7 @@ class BibleAppCommands(BibleBase):
         if bible is None:
             bible = await BibleVersion.get_for_user(interaction.user, interaction.guild)
 
-        if not (bible.books & reference.book_mask):
+        if reference.book_mask == 'DC' or not (bible.books & reference.book_mask):
             raise BookNotInVersionError(reference.book, bible.name)
 
         await interaction.response.defer(thinking=True, ephemeral=only_me)
