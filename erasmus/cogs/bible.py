@@ -12,7 +12,7 @@ from discord import app_commands
 from discord.ext import commands
 
 from ..context import Context
-from ..data import Passage, SearchResults, VerseRange, get_book, get_book_mask
+from ..data import Passage, SearchResults, VerseRange, get_book_data
 from ..db.bible import BibleVersion, GuildPref, UserPref
 from ..erasmus import Erasmus
 from ..exceptions import (
@@ -44,7 +44,8 @@ def _book_mask_from_books(books: str, /) -> int:
         elif book == 'NT':
             book = 'Matthew'
 
-        book_mask = book_mask | get_book_mask(get_book(book))
+        book_data = get_book_data(book)
+        book_mask = book_mask | book_data['section']
 
     return book_mask
 

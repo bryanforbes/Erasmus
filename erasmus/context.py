@@ -1,17 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Final
+from typing import TYPE_CHECKING
 
 import discord
 from botus_receptus import EmbedContext
 
-from .data import Passage
-
 if TYPE_CHECKING:
     from .erasmus import Erasmus  # noqa: F401
-
-_truncation_warning: Final = '**The passage was too long and has been truncated:**\n\n'
-_max_length: Final = 2048 - (len(_truncation_warning) + 1)
 
 
 class Context(EmbedContext['Erasmus']):
@@ -19,15 +14,3 @@ class Context(EmbedContext['Erasmus']):
         return await self.send_embed(
             text, color=discord.Color.red(), reference=self.message
         )
-
-    async def send_passage(self, passage: Passage, /) -> discord.Message:
-        text = passage.text
-
-        if len(text) > 2048:
-            text = f'{_truncation_warning}{text[:_max_length]}\u2026'
-
-        embed = discord.Embed.from_dict(
-            {'description': text, 'footer': {'text': passage.citation}}
-        )
-
-        return await self.send(embed=embed, reference=self.message)

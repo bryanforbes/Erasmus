@@ -22,6 +22,7 @@ if TYPE_CHECKING:
 class BookDict(TypedDict):
     name: str
     osis: str
+    paratext: str | None
     alt: list[str]
     section: int
 
@@ -130,25 +131,23 @@ _search_reference_with_version_re: Final[Pattern[str]] = re.compile(
 )
 
 _book_input_map: Final[dict[str, str]] = {}
+_book_data_map: Final[dict[str, BookDict]] = {}
 _book_mask_map: Final[dict[str, int]] = {}
 
 for _book in _books_data:
     for input_string in [_book['name'], _book['osis']] + _book['alt']:
         _book_input_map[input_string.lower()] = _book['name']
+        _book_data_map[input_string.lower()] = _book
     _book_mask_map[_book['name']] = _book['section']
 
 
-def get_book(book_name_or_abbr: str, /) -> str:
-    book = _book_input_map.get(book_name_or_abbr.lower(), '')
+def get_book_data(book_name_or_abbr: str, /) -> BookDict:
+    book = _book_data_map.get(book_name_or_abbr.lower())
 
-    if book == '':
-        raise BookNotUnderstoodError(book)
+    if book is None:
+        raise BookNotUnderstoodError(book_name_or_abbr)
 
     return book
-
-
-def get_book_mask(book_name: str, /) -> int:
-    return _book_mask_map.get(book_name, 0)
 
 
 @define
@@ -167,10 +166,16 @@ class VerseRange(discord.app_commands.Transformer):
     end: Verse | None = None
     version: str | None = None
     book_mask: int = field(init=False)
+    osis: str = field(init=False)
+    paratext: str | None = field(init=False)
 
     def __attrs_post_init__(self, /) -> None:
-        self.book = get_book(self.book)
-        self.book_mask = get_book_mask(self.book)
+        book = get_book_data(self.book)
+
+        self.book = book['name']
+        self.book_mask = book['section']
+        self.osis = book['osis']
+        self.paratext = book['paratext']
 
     @property
     def verses(self, /) -> str:
@@ -259,10 +264,6 @@ class VerseRange(discord.app_commands.Transformer):
         return cls.from_string_with_version(value)
 
 
-_truncation_warning: Final = 'The passage was too long and has been truncated:\n\n'
-_truncation_warning_len: Final = len(_truncation_warning) + 3
-
-
 @define
 class Passage(object):
     text: str
@@ -275,12 +276,6 @@ class Passage(object):
             return f'{self.range} ({self.version})'
         else:
             return str(self.range)
-
-    def get_truncated(self, limit: int, /) -> str:
-        citation = self.citation
-        end = limit - (len(citation) + _truncation_warning_len)
-        text = self.text[:end]
-        return f'{_truncation_warning}{text}\u2026\n\n{citation}'
 
     def __str__(self, /) -> str:
         return f'{self.text}\n\n{self.citation}'
