@@ -1,12 +1,22 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Iterator
-from typing import TYPE_CHECKING, Any, Final, Generic, Protocol, TypeVar, overload
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    ClassVar,
+    Final,
+    Generic,
+    Protocol,
+    TypeAlias,
+    TypeVar,
+    overload,
+)
 from typing_extensions import Self
 
 import discord
 from attrs import define, field
-from botus_receptus import util
+from botus_receptus import utils
 from discord import app_commands
 from discord.ext import commands
 
@@ -39,7 +49,7 @@ async def send_context_passage(
     ctx: commands.Context[Erasmus],
     passage: Passage,
 ) -> discord.Message:
-    return await util.send_context(
+    return await utils.send_context(
         ctx, description=_get_passage_text(passage), footer={'text': passage.citation}
     )
 
@@ -50,13 +60,49 @@ async def send_interaction_passage(
     /,
     *,
     ephemeral: bool = False,
-) -> None:
-    await util.send_interaction(
+) -> discord.Message:
+    return await utils.send_interaction(
         interaction,
         description=_get_passage_text(passage),
         footer={'text': passage.citation},
         ephemeral=ephemeral,
     )
+
+
+@overload
+async def send_passage(
+    ctx: commands.Context[Erasmus],
+    passage: Passage,
+    /,
+) -> discord.Message:
+    ...
+
+
+@overload
+async def send_passage(
+    interaction: discord.Interaction, passage: Passage, /, *, ephemeral: bool = False
+) -> discord.Message:
+    ...
+
+
+async def send_passage(
+    ctx_or_intx: commands.Context[Erasmus] | discord.Interaction,
+    passage: Passage,
+    /,
+    **kwargs: Any,
+) -> discord.Message:
+    return await utils.send(
+        ctx_or_intx,
+        description=_get_passage_text(passage),
+        footer={'text': passage.citation},
+        **kwargs,
+    )
+
+
+class ReadOnlyRecord(Protocol):
+    @property
+    def command(self) -> str:
+        ...
 
 
 class Descriptor(Protocol[_DV_co]):
@@ -69,8 +115,11 @@ class Descriptor(Protocol[_DV_co]):
         ...
 
 
-class Record(Protocol):
-    command: Descriptor[str] | str
+class DescriptorRecord(Protocol):
+    command: ClassVar[Descriptor[str]]
+
+
+Record: TypeAlias = ReadOnlyRecord | DescriptorRecord
 
 
 class Info(Protocol[_R_contra]):

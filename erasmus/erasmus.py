@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any, Final, cast
 
 import discord
 import pendulum
-from botus_receptus import exceptions, formatting, gino, topgg, util
+from botus_receptus import exceptions, formatting, gino, topgg, utils
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
 from discord import app_commands
 from discord.ext import commands
@@ -196,7 +196,7 @@ class Erasmus(
                     stack_info=True,
                 )
 
-        await util.send_context_error(
+        await utils.send_error(
             context, description=formatting.escape(message, mass_mentions=True)
         )
 
@@ -271,7 +271,7 @@ class Erasmus(
                     stack_info=True,
                 )
 
-        await util.send_interaction_error(interaction, description=message)
+        await utils.send_error(interaction, description=message)
 
 
 __all__: Final = ('Erasmus',)

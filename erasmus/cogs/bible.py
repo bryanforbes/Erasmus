@@ -6,7 +6,7 @@ from typing_extensions import Self
 
 import discord
 from attrs import define
-from botus_receptus import Cog, checks, formatting, util
+from botus_receptus import Cog, checks, formatting, utils
 from botus_receptus.app_commands import admin_guild_only
 from botus_receptus.db import UniqueViolationError
 from discord import app_commands
@@ -32,7 +32,7 @@ from ..page_source import AsyncCallback, AsyncPageSource, FieldPageSource
 from ..protocols import Bible as _Bible
 from ..service_manager import ServiceManager
 from ..ui_pages import ContextUIPages, InteractionUIPages
-from ..utils import InfoContainer, send_context_passage, send_interaction_passage
+from ..utils import InfoContainer, send_passage
 
 
 def _book_mask_from_books(books: str, /) -> int:
@@ -294,7 +294,7 @@ class Bible(BibleBase):
             case _:
                 return
 
-        await util.send_context_error(
+        await utils.send_error(
             ctx, description=formatting.escape(message, mass_mentions=True)
         )
 
@@ -337,7 +337,7 @@ class Bible(BibleBase):
         )
 
         output = '\n'.join(lines)
-        await util.send_context(ctx, description=f'\n{output}\n')
+        await utils.send(ctx, description=f'\n{output}\n')
 
     @commands.command(brief='Set your preferred version', help=_setversion_help)
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
@@ -349,7 +349,7 @@ class Bible(BibleBase):
         existing = await BibleVersion.get_by_command(version)
         await existing.set_for_user(ctx.author)
 
-        await util.send_context(ctx, description=f'Version set to `{version}`')
+        await utils.send(ctx, description=f'Version set to `{version}`')
 
     @commands.command(brief='Delete your preferred version', help=_unsetversion_help)
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
@@ -358,11 +358,9 @@ class Bible(BibleBase):
 
         if user_prefs is not None:
             await user_prefs.delete()
-            await util.send_context(ctx, description='Preferred version deleted')
+            await utils.send(ctx, description='Preferred version deleted')
         else:
-            await util.send_context(
-                ctx, description='Preferred version already deleted'
-            )
+            await utils.send(ctx, description='Preferred version already deleted')
 
     @commands.command(brief='Set the guild default version', help=_setguildversion_help)
     @commands.has_permissions(administrator=True)
@@ -378,7 +376,7 @@ class Bible(BibleBase):
         existing = await BibleVersion.get_by_command(version)
         await existing.set_for_guild(ctx.guild)
 
-        await util.send_context(ctx, description=f'Guild version set to `{version}`')
+        await utils.send(ctx, description=f'Guild version set to `{version}`')
 
     @commands.command(
         brief='Delete the guild default version', help=_unsetguildversion_help
@@ -391,9 +389,9 @@ class Bible(BibleBase):
 
         if (guild_prefs := await GuildPref.get(ctx.guild.id)) is not None:
             await guild_prefs.delete()
-            await util.send_context(ctx, description='Guild version deleted')
+            await utils.send(ctx, description='Guild version deleted')
         else:
-            await util.send_context(ctx, description='Guild version already deleted')
+            await utils.send(ctx, description='Guild version already deleted')
 
     @commands.command(name='addbible')
     @checks.dm_only()
@@ -411,7 +409,7 @@ class Bible(BibleBase):
         /,
     ) -> None:
         if service not in self.service_manager:
-            await util.send_context_error(
+            await utils.send_error(
                 ctx, description=f'`{service}` is not a valid service'
             )
             return
@@ -427,12 +425,10 @@ class Bible(BibleBase):
                 books=_book_mask_from_books(books),
             )
         except UniqueViolationError:
-            await util.send_context_error(
-                ctx, description=f'`{command}` already exists'
-            )
+            await utils.send_error(ctx, description=f'`{command}` already exists')
         else:
             self.__add_bible_commands(command, name)
-            await util.send_context(ctx, description=f'Added `{command}` as "{name}"')
+            await utils.send(ctx, description=f'Added `{command}` as "{name}"')
 
     @commands.command(name='delbible')
     @checks.dm_only()
@@ -443,7 +439,7 @@ class Bible(BibleBase):
 
         self.__remove_bible_commands(command)
 
-        await util.send_context(ctx, description=f'Removed `{command}`')
+        await utils.send(ctx, description=f'Removed `{command}`')
 
     @commands.command(name='upbible')
     @checks.dm_only()
@@ -463,11 +459,9 @@ class Bible(BibleBase):
                 service=service, service_version=service_version
             ).apply()
         except Exception:
-            await util.send_context_error(
-                ctx, description=f'Error updating `{command}`'
-            )
+            await utils.send_error(ctx, description=f'Error updating `{command}`')
         else:
-            await util.send_context(ctx, description=f'Updated `{command}`')
+            await utils.send(ctx, description=f'Updated `{command}`')
 
     async def __version_lookup(self, ctx: Context, /, *, reference: VerseRange) -> None:
         bible = await BibleVersion.get_by_command(cast(str, ctx.invoked_with))
@@ -494,15 +488,15 @@ class Bible(BibleBase):
             passage = await self.service_manager.get_passage(
                 cast(Any, bible), reference
             )
-            await send_context_passage(ctx, passage)
+            await send_passage(ctx, passage)
         else:
-            await util.send_context_error(
+            await utils.send_error(
                 ctx, description=f'I do not understand the request `${reference}`'
             )
 
     async def __search(self, ctx: Context, bible: BibleVersion, /, *terms: str) -> None:
         if not terms:
-            await util.send_context_error(
+            await utils.send_error(
                 ctx, description='Please include some terms to search for'
             )
             return
@@ -537,8 +531,8 @@ class Bible(BibleBase):
         # Share cooldown across commands
         lookup._buckets = search._buckets = self._user_cooldown
 
-        self.bot.add_command(lookup)  # type: ignore
-        self.bot.add_command(search)  # type: ignore
+        self.bot.add_command(lookup)
+        self.bot.add_command(search)
 
     def __remove_bible_commands(self, command: str, /) -> None:
         self.bot.remove_command(command)
@@ -610,7 +604,7 @@ class PreferencesGroup(app_commands.Group, name='prefs'):
         existing = await BibleVersion.get_by_command(version)
         await existing.set_for_user(interaction.user)
 
-        await util.send_interaction(
+        await utils.send(
             interaction,
             description=f'Version set to `{version}`',
             ephemeral=True,
@@ -628,9 +622,7 @@ class PreferencesGroup(app_commands.Group, name='prefs'):
         else:
             description = 'Default version already unset'
 
-        await util.send_interaction(
-            interaction, description=description, ephemeral=True
-        )
+        await utils.send(interaction, description=description, ephemeral=True)
 
     @app_commands.command()
     @app_commands.describe(version='Bible version')
@@ -654,7 +646,7 @@ class PreferencesGroup(app_commands.Group, name='prefs'):
         existing = await BibleVersion.get_by_command(version)
         await existing.set_for_guild(interaction.guild)
 
-        await util.send_interaction(
+        await utils.send(
             interaction,
             description=f'Server version set to `{version}`',
             ephemeral=True,
@@ -676,9 +668,7 @@ class PreferencesGroup(app_commands.Group, name='prefs'):
         else:
             description = 'Server version already deleted'
 
-        await util.send_interaction(
-            interaction, description=description, ephemeral=True
-        )
+        await utils.send(interaction, description=description, ephemeral=True)
 
 
 class BibleAdminGroup(app_commands.Group, name='admin'):
@@ -703,7 +693,7 @@ class BibleAdminGroup(app_commands.Group, name='admin'):
 
         existing = await BibleVersion.get_by_command(version)
 
-        await util.send_interaction(
+        await utils.send(
             interaction,
             title=existing.name,
             fields=[
@@ -748,7 +738,7 @@ class BibleAdminGroup(app_commands.Group, name='admin'):
         '''Add a Bible version'''
 
         if service not in self.service_manager:
-            await util.send_interaction_error(
+            await utils.send_error(
                 interaction,
                 description=f'`{service}` is not a valid service',
             )
@@ -764,14 +754,14 @@ class BibleAdminGroup(app_commands.Group, name='admin'):
                 rtl=rtl,
                 books=_book_mask_from_books(books),
             )
-            _bible_info.add(bible)
+            _bible_info.add(bible)  # type: ignore
         except UniqueViolationError:
-            await util.send_interaction_error(
+            await utils.send_error(
                 interaction,
                 description=f'`{command}` already exists',
             )
         else:
-            await util.send_interaction(
+            await utils.send(
                 interaction,
                 description=f'Added `{command}` as "{name}"',
                 color=discord.Colour.green(),
@@ -788,7 +778,7 @@ class BibleAdminGroup(app_commands.Group, name='admin'):
         existing = await BibleVersion.get_by_command(version)
         await existing.delete()
 
-        await util.send_interaction(
+        await utils.send(
             interaction,
             description=f'Removed `{existing.command}`',
         )
@@ -817,7 +807,7 @@ class BibleAdminGroup(app_commands.Group, name='admin'):
         '''Update a Bible'''
 
         if service is not None and service not in self.service_manager:
-            await util.send_interaction_error(
+            await utils.send_error(
                 interaction,
                 description=f'`{service}` is not a valid service',
             ),
@@ -847,14 +837,14 @@ class BibleAdminGroup(app_commands.Group, name='admin'):
                 args['books'] = _book_mask_from_books(books)
 
             await bible.update(**args).apply()
-            _bible_info.update(bible)
+            _bible_info.update(bible)  # type: ignore
 
         except Exception:
-            await util.send_interaction_error(
+            await utils.send_error(
                 interaction, description=f'Error updating `{version}`'
             )
         else:
-            await util.send_interaction(interaction, description=f'Updated `{version}`')
+            await utils.send(interaction, description=f'Updated `{version}`')
 
 
 _shared_cooldown = app_commands.checks.cooldown(
@@ -873,7 +863,9 @@ class BibleAppCommands(BibleBase):
 
     async def cog_load(self) -> None:
         _bible_info.set(
-            [version async for version in BibleVersion.get_all(ordered=True)]
+            [  # type: ignore
+                version async for version in BibleVersion.get_all(ordered=True)
+            ]
         )
 
     async def cog_unload(self) -> None:
@@ -929,7 +921,7 @@ class BibleAppCommands(BibleBase):
             case _:
                 return
 
-        await util.send_interaction_error(interaction, description=message)
+        await utils.send_error(interaction, description=message)
 
     @app_commands.command()
     @_shared_cooldown
@@ -965,7 +957,7 @@ class BibleAppCommands(BibleBase):
 
         await interaction.response.defer(thinking=True, ephemeral=only_me)
         passage = await self.service_manager.get_passage(cast(Any, bible), reference)
-        await send_interaction_passage(interaction, passage, ephemeral=only_me)
+        await send_passage(interaction, passage, ephemeral=only_me)
 
     @app_commands.command()
     @_shared_cooldown
@@ -1011,7 +1003,7 @@ class BibleAppCommands(BibleBase):
         lines += [f'  `{version.command}`: {version.name}' for version in _bible_info]
 
         output = '\n'.join(lines)
-        await util.send_interaction(interaction, description=output)
+        await utils.send(interaction, description=output)
 
     @app_commands.command()
     @_shared_cooldown
@@ -1024,7 +1016,7 @@ class BibleAppCommands(BibleBase):
 
         existing = await BibleVersion.get_by_command(version)
 
-        await util.send_interaction(
+        await utils.send(
             interaction,
             title=existing.name,
             fields=[

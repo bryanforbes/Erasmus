@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from collections.abc import Sequence
-from typing import Any, Generic, TypeVar
+from typing import Any, Final, Generic, TypeVar
 from typing_extensions import Self
 
 import discord
@@ -11,6 +11,9 @@ from .context import Context
 from .page_source import BasePages, PageSource
 
 T = TypeVar('T')
+
+
+_MISSING: Final = discord.utils.MISSING
 
 
 class PagesModal(discord.ui.Modal, title='Skip to page…'):
@@ -82,20 +85,20 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
     @abstractmethod
     async def send_initial_message(
         self,
-        content: str = discord.utils.MISSING,
+        content: str = _MISSING,
         *,
         tts: bool = False,
-        ephemeral: bool = discord.utils.MISSING,
-        embed: discord.Embed = discord.utils.MISSING,
-        embeds: Sequence[discord.Embed] = discord.utils.MISSING,
-        file: discord.File = discord.utils.MISSING,
-        files: Sequence[discord.File] = discord.utils.MISSING,
+        ephemeral: bool = _MISSING,
+        embed: discord.Embed = _MISSING,
+        embeds: Sequence[discord.Embed] = _MISSING,
+        file: discord.File = _MISSING,
+        files: Sequence[discord.File] = _MISSING,
         stickers: Sequence[discord.GuildSticker | discord.StickerItem] | None = None,
         delete_after: float | None = None,
         nonce: str | int | None = None,
-        allowed_mentions: discord.AllowedMentions = discord.utils.MISSING,
+        allowed_mentions: discord.AllowedMentions = _MISSING,
         mention_author: bool | None = None,
-        view: discord.ui.View = discord.utils.MISSING,
+        view: discord.ui.View = _MISSING,
         suppress_embeds: bool = False,
     ) -> discord.Message:
         ...
@@ -194,9 +197,9 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
 
     async def on_error(
         self,
+        interaction: discord.Interaction,
         error: Exception,
         item: discord.ui.Item[Self],
-        interaction: discord.Interaction,
     ) -> None:
         print(error)
         if interaction.response.is_done():
@@ -306,23 +309,23 @@ class ContextUIPages(UIPages[T]):
 
     async def send_initial_message(
         self,
-        content: str = discord.utils.MISSING,
+        content: str = _MISSING,
         *,
         tts: bool = False,
-        ephemeral: bool = discord.utils.MISSING,
-        embed: discord.Embed = discord.utils.MISSING,
-        embeds: Sequence[discord.Embed] = discord.utils.MISSING,
-        file: discord.File = discord.utils.MISSING,
-        files: Sequence[discord.File] = discord.utils.MISSING,
+        ephemeral: bool = _MISSING,
+        embed: discord.Embed = _MISSING,
+        embeds: Sequence[discord.Embed] = _MISSING,
+        file: discord.File = _MISSING,
+        files: Sequence[discord.File] = _MISSING,
         stickers: Sequence[discord.GuildSticker | discord.StickerItem] | None = None,
         delete_after: float | None = None,
         nonce: str | int | None = None,
-        allowed_mentions: discord.AllowedMentions = discord.utils.MISSING,
+        allowed_mentions: discord.AllowedMentions = _MISSING,
         mention_author: bool | None = None,
-        view: discord.ui.View = discord.utils.MISSING,
+        view: discord.ui.View = _MISSING,
         suppress_embeds: bool = False,
     ) -> discord.Message:
-        return await self.ctx.send(  # type: ignore
+        return await self.ctx.send(
             content,
             tts=tts,
             embed=embed,
@@ -371,20 +374,20 @@ class InteractionUIPages(UIPages[T]):
 
     async def send_initial_message(
         self,
-        content: str = discord.utils.MISSING,
+        content: str = _MISSING,
         *,
         tts: bool = False,
-        ephemeral: bool = discord.utils.MISSING,
-        embed: discord.Embed = discord.utils.MISSING,
-        embeds: Sequence[discord.Embed] = discord.utils.MISSING,
-        file: discord.File = discord.utils.MISSING,
-        files: Sequence[discord.File] = discord.utils.MISSING,
+        ephemeral: bool = _MISSING,
+        embed: discord.Embed = _MISSING,
+        embeds: Sequence[discord.Embed] = _MISSING,
+        file: discord.File = _MISSING,
+        files: Sequence[discord.File] = _MISSING,
         stickers: Sequence[discord.GuildSticker | discord.StickerItem] | None = None,
         delete_after: float | None = None,
         nonce: str | int | None = None,
-        allowed_mentions: discord.AllowedMentions = discord.utils.MISSING,
+        allowed_mentions: discord.AllowedMentions = _MISSING,
         mention_author: bool | None = None,
-        view: discord.ui.View = discord.utils.MISSING,
+        view: discord.ui.View = _MISSING,
         suppress_embeds: bool = False,
     ) -> discord.Message:
         if self.interaction.response.is_done():

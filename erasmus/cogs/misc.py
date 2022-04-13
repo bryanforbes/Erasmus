@@ -3,8 +3,7 @@ from __future__ import annotations
 from importlib import metadata
 
 import discord
-from botus_receptus import Cog
-from botus_receptus.util import create_embed, send_context, send_interaction
+from botus_receptus import Cog, utils
 from discord import app_commands
 from discord.ext import commands
 
@@ -73,7 +72,7 @@ def get_about_embed(bot: Erasmus) -> discord.Embed:
 
     dpy_version = metadata.distribution('discord.py').version
 
-    return create_embed(
+    return utils.create_embed(
         fields=[
             {'name': 'Guilds', 'value': str(guilds)},
             {
@@ -97,12 +96,12 @@ class Misc(Cog[Erasmus]):
     @commands.command(brief='Get the invite link for Erasmus')
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
     async def invite(self, ctx: Context, /) -> None:
-        await send_context(ctx, view=InviteView(self.bot.application_id))
+        await utils.send(ctx, view=InviteView(self.bot.application_id))
 
     @commands.command(brief='Get info about Erasmus')
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
     async def about(self, ctx: Context, /) -> None:
-        await send_context(
+        await utils.send(
             ctx,
             embed=get_about_embed(self.bot),
             view=AboutView(self.bot.application_id),
@@ -125,7 +124,7 @@ class MiscAppCommands(Cog[Erasmus]):
     async def about(self, interaction: discord.Interaction, /) -> None:
         '''Get info about Erasmus'''
 
-        await send_interaction(
+        await utils.send(
             interaction,
             embed=get_about_embed(self.bot),
             view=AboutView(self.bot.application_id),

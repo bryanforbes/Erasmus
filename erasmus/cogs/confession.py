@@ -6,7 +6,7 @@ from typing import Any, Final, NamedTuple, TypeAlias, cast
 from typing_extensions import Self
 
 import discord
-from botus_receptus import Cog, re, util
+from botus_receptus import Cog, re, utils
 from botus_receptus.formatting import (
     EmbedPaginator,
     bold,
@@ -281,9 +281,7 @@ class Confession(Cog[Erasmus]):
             case _:
                 return
 
-        await util.send_context_error(
-            ctx, description=escape(message, mass_mentions=True)
-        )
+        await utils.send_error(ctx, description=escape(message, mass_mentions=True))
 
     @commands.command(brief='Query confessions and catechisms', help=_confess_help)
     @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
@@ -314,7 +312,7 @@ class Confession(Cog[Erasmus]):
             paginator.add_line(f'  `{conf.command}`: {conf.name}')
 
         for page in paginator:
-            await util.send_context(ctx, description=page)
+            await utils.send(ctx, description=page)
 
     async def list_contents(
         self,
@@ -360,7 +358,7 @@ class Confession(Cog[Erasmus]):
             )
 
         for index, page in enumerate(paginator):
-            await util.send_context(
+            await utils.send(
                 ctx,
                 description=page,
                 title=(underline(bold(confession.name)) if index == 0 else None),
@@ -375,9 +373,7 @@ class Confession(Cog[Erasmus]):
         count = await confession.get_question_count()
         question_str = _pluralizers[ConfessionTypeEnum.QA](count)
 
-        await util.send_context(
-            ctx, description=f'`{confession.name}` has {question_str}'
-        )
+        await utils.send(ctx, description=f'`{confession.name}` has {question_str}')
 
     async def search(
         self, ctx: Context, confession: ConfessionRecord, /, *terms: str
@@ -415,7 +411,7 @@ class Confession(Cog[Erasmus]):
             paginator.add_line(output)
 
         for page in paginator:
-            await util.send_context(ctx, description=page, title=title)
+            await utils.send(ctx, description=page, title=title)
             title = None
 
 
@@ -586,7 +582,7 @@ class ConfessionAppCommands(  # type: ignore
         match = _reference_res[confession.type].match(section)
 
         if match is None:
-            await util.send_interaction_error(
+            await utils.send_error(
                 interaction, description='Section is not formatted correctly'
             )
             return
@@ -600,7 +596,7 @@ class ConfessionAppCommands(  # type: ignore
             paginator.add_line(output)
 
         for page in paginator:
-            await util.send_interaction(interaction, description=page, title=title)
+            await utils.send(interaction, description=page, title=title)
             title = None
 
     async def cog_app_command_error(
@@ -632,7 +628,7 @@ class ConfessionAppCommands(  # type: ignore
             case _:
                 return
 
-        await util.send_interaction_error(interaction, description=message)
+        await utils.send_error(interaction, description=message)
 
 
 async def setup(bot: Erasmus, /) -> None:

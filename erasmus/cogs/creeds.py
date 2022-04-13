@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import Final
 
 import discord
-from botus_receptus import Cog, formatting, util
+from botus_receptus import Cog, formatting, utils
 from discord import app_commands
 from discord.ext import commands
 
@@ -218,7 +218,7 @@ class Creeds(Cog[Erasmus]):
     @commands.command(brief='List the supported creeds')
     async def creeds(self, ctx: Context, /) -> None:
         prefix = ctx.prefix
-        await util.send_context(
+        await utils.send(
             ctx,
             description=f'''
 {formatting.bold(f'{prefix}apostles')} - The Apostles' Creed
@@ -233,28 +233,28 @@ class Creeds(Cog[Erasmus]):
 
     @commands.command(hidden=True)
     async def apostles(self, ctx: Context, /) -> None:
-        await util.send_context(ctx, **_apostles_creed)
+        await utils.send(ctx, **_apostles_creed)
 
     @commands.command(hidden=True)
     async def athanasian(self, ctx: Context, /) -> None:
-        await util.send_context(ctx, **_athanasian_creed_1)
-        await util.send_context(ctx, **_athanasian_creed_2)
+        await utils.send(ctx, **_athanasian_creed_1)
+        await utils.send(ctx, **_athanasian_creed_2)
 
     @commands.command(hidden=True)
     async def chalcedon(self, ctx: Context, /) -> None:
-        await util.send_context(ctx, **_chalcedon)
+        await utils.send(ctx, **_chalcedon)
 
     @commands.command(hidden=True)
     async def nicene(self, ctx: Context, /) -> None:
-        await util.send_context(ctx, **_nicene_381_filioque)
+        await utils.send(ctx, **_nicene_381_filioque)
 
     @commands.command(hidden=True)
     async def nicene325(self, ctx: Context, /) -> None:
-        await util.send_context(ctx, **_nicene_325)
+        await utils.send(ctx, **_nicene_325)
 
     @commands.command(hidden=True)
     async def nicene381(self, ctx: Context, /) -> None:
-        await util.send_context(ctx, **_nicene_381)
+        await utils.send(ctx, **_nicene_381)
 
 
 class CreedsAppCommands(  # type: ignore
@@ -264,35 +264,35 @@ class CreedsAppCommands(  # type: ignore
     async def apostles(self, interaction: discord.Interaction, /) -> None:
         '''The Apostles' Creed'''
 
-        await util.send_interaction(interaction, **_apostles_creed)
+        await utils.send(interaction, **_apostles_creed)
 
     @app_commands.command()
     async def athanasian(self, interaction: discord.Interaction, /) -> None:
         '''The Athanasian Creed'''
 
-        await util.send_interaction(interaction, **_athanasian_creed_1)
-        await util.send_interaction(interaction, **_athanasian_creed_2)
+        await utils.send(interaction, **_athanasian_creed_1)
+        await utils.send(interaction, **_athanasian_creed_2)
 
     @app_commands.command()
     async def chalcedon(self, interaction: discord.Interaction, /) -> None:
         '''The Chalcedonian Definition'''
 
-        await util.send_interaction(interaction, **_chalcedon)
+        await utils.send(interaction, **_chalcedon)
 
     @app_commands.command()
     async def nicene(self, interaction: discord.Interaction, /) -> None:
         '''The Nicene Creed'''
-        await util.send_interaction(interaction, **_nicene_381_filioque)
+        await utils.send(interaction, **_nicene_381_filioque)
 
     @app_commands.command()
     async def nicene325(self, interaction: discord.Interaction, /) -> None:
         '''The Nicene Creed (325 AD)'''
-        await util.send_interaction(interaction, **_nicene_325)
+        await utils.send(interaction, **_nicene_325)
 
     @app_commands.command()
     async def nicene381(self, interaction: discord.Interaction, /) -> None:
         '''The Nicene Creed (381 AD)'''
-        await util.send_interaction(interaction, **_nicene_381)
+        await utils.send(interaction, **_nicene_381)
 
 
 async def setup(bot: Erasmus, /) -> None:
