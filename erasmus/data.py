@@ -8,12 +8,12 @@ from typing import TYPE_CHECKING, Final, Literal, TypedDict
 from typing_extensions import Self
 
 import discord
+import orjson
 from attrs import define, field
 from botus_receptus import re
 from more_itertools import unique_everseen
 
 from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
-from .json import load
 
 if TYPE_CHECKING:
     from .context import Context
@@ -28,7 +28,7 @@ class BookDict(TypedDict):
 
 
 with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
-    _books_data: Final[list[BookDict]] = load(f)
+    _books_data: Final[list[BookDict]] = orjson.loads(f.read())
 
 # Inspired by
 # https://github.com/TehShrike/verse-reference-regex/blob/master/create-regex.js

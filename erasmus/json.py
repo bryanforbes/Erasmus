@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-from typing import IO, Any, AnyStr
-
-import ujson
+from typing import Any
 
 
 def get(obj: Any, key: str, fallback: Any = None, /) -> Any:
@@ -26,11 +24,3 @@ def has(obj: Any, key: str, /) -> bool:
     result = get(obj, key, fallback)
 
     return result is not fallback
-
-
-def loads(s: AnyStr, /, *args: Any, **kwargs: Any) -> Any:
-    return ujson.loads(s, *args, **kwargs)
-
-
-def load(fp: IO[str], /, *args: Any, **kwargs: Any) -> Any:
-    return ujson.load(fp, *args, **kwargs)

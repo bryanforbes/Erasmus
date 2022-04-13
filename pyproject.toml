@@ -16,9 +16,9 @@ attrs = "^21.4.0"
 beautifulsoup4 = "^4.10"
 cchardet = "^2.1"
 psycopg2 = "^2.9"
-ujson = "^5.1"
 "botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", branch = "feature/dpy-2.0", extras = ["gino", "uvloop"]}
 more-itertools = {version = "~8.12.0"}
+orjson = "^3.6.7"
 
 [tool.poetry.dev-dependencies]
 gino-stubs = {rev = "07171af1658b0e4ecbfac29e832eddf4b7e4733e", git = "https://github.com/bryanforbes/gino-stubs.git"}
@@ -38,7 +38,6 @@ pytest-mock = "^3.7"
 pytest-recording = "^0.12.0"
 pytest-sugar = "^0.9.4"
 pytest-xdist = "^2.5"
-types-ujson = "^4.2.1"
 types-toml = "^0.10.4"
 
 [tool.poetry.scripts]

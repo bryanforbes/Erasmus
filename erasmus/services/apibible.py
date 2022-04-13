@@ -4,6 +4,7 @@ import asyncio
 from typing import Any, Final, TypedDict
 
 import aiohttp
+import orjson
 from attrs import define, field
 from botus_receptus import re
 from bs4 import BeautifulSoup
@@ -11,7 +12,7 @@ from yarl import URL
 
 from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import BookNotInVersionError, DoNotUnderstandError
-from ..json import get, loads
+from ..json import get
 from ..protocols import Bible
 from .base_service import BaseService
 
@@ -96,7 +97,7 @@ class ApiBible(BaseService):
         if response.status != 200:
             raise DoNotUnderstandError()
 
-        json: _ResponseDict = await response.json(loads=loads, content_type=None)
+        json: _ResponseDict = await response.json(loads=orjson.loads, content_type=None)
 
         # Make a request for the image to report to the Fair Use Management System
         meta: str | None = get(json, 'meta.fumsNoScript')

@@ -3,24 +3,8 @@ from __future__ import annotations
 from typing import Any
 
 import pytest
-import pytest_mock
 
-from erasmus.json import get, has, load, loads
-
-
-def test_load(mocker: pytest_mock.MockFixture) -> None:
-    mock = mocker.mock_open(read_data='{ "foo": { "bar": "baz" }, "spam": "ham" }')
-
-    with mock() as fp:
-        result = load(fp)
-
-    assert result == {'foo': {'bar': 'baz'}, 'spam': 'ham'}
-
-
-def test_loads() -> None:
-    result = loads('{ "foo": { "bar": "baz" }, "spam": "ham" }')
-
-    assert result == {'foo': {'bar': 'baz'}, 'spam': 'ham'}
+from erasmus.json import get, has
 
 
 @pytest.mark.parametrize(
