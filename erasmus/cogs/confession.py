@@ -633,4 +633,4 @@ class ConfessionAppCommands(  # type: ignore
 
 async def setup(bot: Erasmus, /) -> None:
     await bot.add_cog(Confession(bot))
-    # await bot.add_cog(ConfessionAppCommands(bot))
+    await bot.add_cog(ConfessionAppCommands(bot))
