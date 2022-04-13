@@ -1,17 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Iterator
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    ClassVar,
-    Final,
-    Generic,
-    Protocol,
-    TypeAlias,
-    TypeVar,
-    overload,
-)
+from typing import TYPE_CHECKING, Any, Final, Generic, Protocol, TypeVar, overload
 from typing_extensions import Self
 
 import discord
@@ -26,7 +16,6 @@ if TYPE_CHECKING:
     from .erasmus import Erasmus
 
 
-_DV_co = TypeVar('_DV_co', covariant=True)
 _R_contra = TypeVar('_R_contra', contravariant=True)
 _T = TypeVar('_T')
 _V = TypeVar('_V', bound='Info[Any]')
@@ -99,27 +88,10 @@ async def send_passage(
     )
 
 
-class ReadOnlyRecord(Protocol):
+class Record(Protocol):
     @property
     def command(self) -> str:
         ...
-
-
-class Descriptor(Protocol[_DV_co]):
-    @overload
-    def __get__(self, instance: None, owner: Any) -> Self:
-        ...
-
-    @overload
-    def __get__(self, instance: object, owner: Any) -> _DV_co:
-        ...
-
-
-class DescriptorRecord(Protocol):
-    command: ClassVar[Descriptor[str]]
-
-
-Record: TypeAlias = ReadOnlyRecord | DescriptorRecord
 
 
 class Info(Protocol[_R_contra]):
