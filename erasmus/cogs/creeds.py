@@ -44,12 +44,12 @@ Amen.
 ''',
 }
 
-_athanasian_creed_1: Final = {
+_athanasian_creed: Final = {
     'title': 'The Athanasian Creed',
     'description': (
         'Whosoever will be saved, before all things it is necessary that he hold the '
         'catholic faith; Which faith except every one do keep whole and undefiled, '
-        'without doubt he shall perish everlastingly. '
+        'without doubt he shall perish everlastingly.\n\n'
         'And the catholic faith is this: That we worship one God in Trinity, and '
         'Trinity in Unity; '
         'Neither confounding the persons, nor dividing the substance. '
@@ -75,26 +75,20 @@ _athanasian_creed_1: Final = {
         'For like as we are compelled by the Christian verity to acknowledge every '
         'person by himself to be God and Lord; '
         'so are we forbidden by the catholic religion to say: There are three Gods or '
-        'three Lords. '
+        'three Lords.\n\n'
         'The Father is made of none, neither created nor begotten. '
         'The Son is of the Father alone; not made nor created, but begotten. '
         'The Holy Spirit is of the Father and of the Son; neither made, nor created, '
         'nor begotten, but proceeding. '
         'So there is one Father, not three Fathers; one Son, not three Sons; one Holy '
         'Spirit, not three Holy Spirits.'
-    ),
-}
-
-_athanasian_creed_2: Final = {
-    'title': 'The Athanasian Creed (cont.)',
-    'description': (
         'And in this Trinity none is afore, nor after another; none is greater, or '
         'less than another. '
         'But the whole three persons are co-eternal, and co-equal. '
         'So that in all things, as aforesaid, the Unity in Trinity and the Trinity in '
         'Unity is to be worshipped. '
-        'He therefore that will be saved must thus think of the Trinity. '
-        '\n\nFurthermore it is necessary to everlasting salvation that he also believe '
+        'He therefore that will be saved must thus think of the Trinity.\n\n'
+        'Furthermore it is necessary to everlasting salvation that he also believe '
         'rightly the incarnation of our Lord Jesus Christ. '
         'For the right faith is that we believe and confess that our Lord Jesus '
         'Christ, the Son of God, is God and man. '
@@ -117,7 +111,7 @@ _athanasian_creed_2: Final = {
         'At whose coming all men shall rise again with their bodies; '
         'And shall give account of their own works. '
         'And they that have done good shall go into life everlasting, and they that '
-        'have done evil into everlasting fire. '
+        'have done evil into everlasting fire.\n\n'
         'This is the catholic faith, which except a man believe faithfully, he cannot '
         'be saved.'
     ),
@@ -247,8 +241,7 @@ class CreedsBase(Cog[Erasmus]):
     async def athanasian(self, ctx: Context | discord.Interaction, /) -> None:
         '''The Athanasian Creed'''
 
-        await utils.send(ctx, **_athanasian_creed_1)
-        await utils.send(ctx, **_athanasian_creed_2)
+        await utils.send(ctx, **_athanasian_creed)
 
     async def chalcedon(self, ctx: Context | discord.Interaction, /) -> None:
         '''The Chalcedonian Definition'''
