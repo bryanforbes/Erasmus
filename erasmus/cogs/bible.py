@@ -874,7 +874,6 @@ class BibleAppCommands(BibleBase):
     async def cog_app_command_error(
         self,
         interaction: discord.Interaction,
-        command: app_commands.Command[Self, ..., Any],
         error: Exception,
         /,
     ) -> None:

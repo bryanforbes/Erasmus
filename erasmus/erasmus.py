@@ -203,7 +203,6 @@ class Erasmus(
     async def on_app_command_error(
         self,
         interaction: discord.Interaction,
-        command: app_commands.Command[Any, ..., Any] | app_commands.ContextMenu | None,
         error: Exception,
         /,
     ) -> None:

@@ -3,7 +3,6 @@ from __future__ import annotations
 from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
 from re import Match
 from typing import Any, Final, NamedTuple, TypeAlias, cast
-from typing_extensions import Self
 
 import discord
 from botus_receptus import Cog, re, utils
@@ -602,7 +601,6 @@ class ConfessionAppCommands(  # type: ignore
     async def cog_app_command_error(
         self,
         interaction: discord.Interaction,
-        command: app_commands.Command[Self, ..., Any],
         error: Exception,
         /,
     ) -> None:
