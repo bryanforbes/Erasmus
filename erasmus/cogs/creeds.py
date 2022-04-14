@@ -264,6 +264,11 @@ class CreedsBase(Cog[Erasmus]):
         await utils.send(ctx, **_nicene_381)
 
 
+_shared_command_cooldown: Final = commands.CooldownMapping.from_cooldown(
+    2, 60.0, commands.BucketType.user
+)
+
+
 class Creeds(CreedsBase):
     def _create_command(
         self,
@@ -272,7 +277,9 @@ class Creeds(CreedsBase):
         ],
         /,
     ) -> None:
-        command = commands.Command(callback, hidden=True)
+        command = commands.Command(
+            callback, hidden=True, cooldown=_shared_command_cooldown
+        )
         command.cog = self
         self.bot.add_command(command)
 
@@ -293,6 +300,11 @@ class Creeds(CreedsBase):
         )
 
 
+_shared_app_cooldown: Final = app_commands.checks.cooldown(
+    rate=2, per=60.0, key=lambda i: i.user.id
+)
+
+
 class CreedsAppCommands(  # type: ignore
     CreedsBase, app_commands.Group, name='creed', description='Historic creeds'
 ):
@@ -304,6 +316,7 @@ class CreedsAppCommands(  # type: ignore
         /,
     ) -> None:
         command = self.command()(callback)
+        _shared_app_cooldown(command)
         command.binding = self
 
 

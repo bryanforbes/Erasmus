@@ -517,6 +517,8 @@ class Bible(BibleBase):
             brief=f'Look up a verse in {name}',
             help=_version_lookup_help.format(prefix='{prefix}', command=command),
             hidden=True,
+            # Share cooldown across commands
+            cooldown=self._user_cooldown,
         )
         lookup.cog = self
         search = commands.Command(
@@ -525,11 +527,10 @@ class Bible(BibleBase):
             brief=f'Search in {name}',
             help=_version_search_help.format(prefix='{prefix}', command=f's{command}'),
             hidden=True,
+            # Share cooldown across commands
+            cooldown=self._user_cooldown,
         )
         search.cog = self
-
-        # Share cooldown across commands
-        lookup._buckets = search._buckets = self._user_cooldown
 
         self.bot.add_command(lookup)
         self.bot.add_command(search)
