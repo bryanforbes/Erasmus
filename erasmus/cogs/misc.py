@@ -103,7 +103,7 @@ class Misc(Cog[Erasmus]):
     async def about(self, ctx: Context, /) -> None:
         await utils.send(
             ctx,
-            embed=get_about_embed(self.bot),
+            embeds=[get_about_embed(self.bot)],
             view=AboutView(self.bot.application_id),
         )
 
@@ -115,9 +115,7 @@ class MiscAppCommands(Cog[Erasmus]):
     )
     async def invite(self, interaction: discord.Interaction, /) -> None:
         '''Get a link to invite the bot to your server'''
-        await interaction.response.send_message(
-            view=InviteView(self.bot.application_id)
-        )
+        await utils.send(interaction, view=InviteView(self.bot.application_id))
 
     @app_commands.command()
     @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda i: i.user.id)
@@ -126,7 +124,7 @@ class MiscAppCommands(Cog[Erasmus]):
 
         await utils.send(
             interaction,
-            embed=get_about_embed(self.bot),
+            embeds=[get_about_embed(self.bot)],
             view=AboutView(self.bot.application_id),
         )
 

@@ -34,30 +34,6 @@ def _get_passage_text(passage: Passage, /) -> str:
     return text
 
 
-async def send_context_passage(
-    ctx: commands.Context[Erasmus],
-    passage: Passage,
-) -> discord.Message:
-    return await utils.send_context(
-        ctx, description=_get_passage_text(passage), footer={'text': passage.citation}
-    )
-
-
-async def send_interaction_passage(
-    interaction: discord.Interaction,
-    passage: Passage,
-    /,
-    *,
-    ephemeral: bool = False,
-) -> discord.Message:
-    return await utils.send_interaction(
-        interaction,
-        description=_get_passage_text(passage),
-        footer={'text': passage.citation},
-        ephemeral=ephemeral,
-    )
-
-
 @overload
 async def send_passage(
     ctx: commands.Context[Erasmus],
@@ -78,13 +54,13 @@ async def send_passage(
     ctx_or_intx: commands.Context[Erasmus] | discord.Interaction,
     passage: Passage,
     /,
-    **kwargs: Any,
+    ephemeral: bool = discord.utils.MISSING,
 ) -> discord.Message:
     return await utils.send(
-        ctx_or_intx,
+        ctx_or_intx,  # type: ignore
         description=_get_passage_text(passage),
         footer={'text': passage.citation},
-        **kwargs,
+        ephemeral=ephemeral,
     )
 
 

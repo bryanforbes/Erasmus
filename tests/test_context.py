@@ -67,4 +67,6 @@ class TestContext(object):
 
         await ctx.send_embed('baz')
 
-        assert type(mock_context_send.call_args_list[0][1]['embed']) == discord.Embed
+        assert (
+            type(mock_context_send.call_args_list[0][1]['embeds'][0]) == discord.Embed
+        )
