@@ -196,7 +196,7 @@ class Erasmus(
                     stack_info=True,
                 )
 
-        await utils.send_error(
+        await utils.send_embed_error(
             context, description=formatting.escape(message, mass_mentions=True)
         )
 
@@ -270,7 +270,7 @@ class Erasmus(
                     stack_info=True,
                 )
 
-        await utils.send_error(interaction, description=message)
+        await utils.send_embed_error(interaction, description=message)
 
 
 __all__: Final = ('Erasmus',)

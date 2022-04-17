@@ -3,7 +3,7 @@ from __future__ import annotations
 from importlib import metadata
 
 import discord
-from botus_receptus import Cog, utils
+from botus_receptus import Cog, Embed, utils
 from discord import app_commands
 from discord.ext import commands
 
@@ -50,7 +50,7 @@ class AboutView(InviteView):
         )
 
 
-def get_about_embed(bot: Erasmus) -> discord.Embed:
+def get_about_embed(bot: Erasmus) -> Embed:
     total_members = 0
     total_unique = len(bot.users)
 
@@ -72,7 +72,7 @@ def get_about_embed(bot: Erasmus) -> discord.Embed:
 
     dpy_version = metadata.distribution('discord.py').version
 
-    return utils.create_embed(
+    return Embed(
         fields=[
             {'name': 'Guilds', 'value': str(guilds)},
             {

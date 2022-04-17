@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from abc import abstractmethod
 from collections.abc import Callable, Coroutine
-from typing import Any, Final
+from typing import Any, Final, TypedDict
 from typing_extensions import Self
 
 import discord
@@ -13,7 +13,13 @@ from discord.ext import commands
 from ..context import Context
 from ..erasmus import Erasmus
 
-_apostles_creed: Final = {
+
+class CreedDict(TypedDict):
+    title: str
+    description: str
+
+
+_apostles_creed: Final[CreedDict] = {
     'title': "The Apostles' Creed",
     'description': '''
 I believe in God, the Father Almighty,
@@ -44,7 +50,7 @@ Amen.
 ''',
 }
 
-_athanasian_creed: Final = {
+_athanasian_creed: Final[CreedDict] = {
     'title': 'The Athanasian Creed',
     'description': (
         'Whosoever will be saved, before all things it is necessary that he hold the '
@@ -118,7 +124,7 @@ _athanasian_creed: Final = {
 }
 
 
-_chalcedon: Final = {
+_chalcedon: Final[CreedDict] = {
     'title': 'The Chalcedonian Definition',
     'description': (
         'Therefore, following the holy fathers, we all with one accord teach '
@@ -142,7 +148,7 @@ _chalcedon: Final = {
 }
 
 
-_nicene_325: Final = {
+_nicene_325: Final[CreedDict] = {
     'title': 'The Nicene Creed (325 AD)',
     'description': (
         'We believe in one God, the Father Almighty, Maker of all things visible and '
@@ -163,7 +169,7 @@ _nicene_325: Final = {
 }
 
 
-_nicene_381: Final = {
+_nicene_381: Final[CreedDict] = {
     'title': 'The Nicene Creed (381 AD)',
     'description': (
         'We believe in one God, the Father Almighty, Maker of heaven and earth, and of '
@@ -187,7 +193,7 @@ _nicene_381: Final = {
 }
 
 
-_nicene_381_filioque: Final = {
+_nicene_381_filioque: Final[CreedDict] = {
     'title': 'The Nicene Creed',
     'description': (
         'We believe in one God, the Father Almighty, Maker of heaven and earth, and of '
@@ -236,32 +242,32 @@ class CreedsBase(Cog[Erasmus]):
     async def apostles(self, ctx: Context | discord.Interaction, /) -> None:
         '''The Apostles' Creed'''
 
-        await utils.send(ctx, **_apostles_creed)
+        await utils.send_embed(ctx, **_apostles_creed)
 
     async def athanasian(self, ctx: Context | discord.Interaction, /) -> None:
         '''The Athanasian Creed'''
 
-        await utils.send(ctx, **_athanasian_creed)
+        await utils.send_embed(ctx, **_athanasian_creed)
 
     async def chalcedon(self, ctx: Context | discord.Interaction, /) -> None:
         '''The Chalcedonian Definition'''
 
-        await utils.send(ctx, **_chalcedon)
+        await utils.send_embed(ctx, **_chalcedon)
 
     async def nicene(self, ctx: Context | discord.Interaction, /) -> None:
         '''The Nicene Creed'''
 
-        await utils.send(ctx, **_nicene_381_filioque)
+        await utils.send_embed(ctx, **_nicene_381_filioque)
 
     async def nicene325(self, ctx: Context | discord.Interaction, /) -> None:
         '''The Nicene Creed (325 AD)'''
 
-        await utils.send(ctx, **_nicene_325)
+        await utils.send_embed(ctx, **_nicene_325)
 
     async def nicene381(self, ctx: Context | discord.Interaction, /) -> None:
         '''The Nicene Creed (381 AD)'''
 
-        await utils.send(ctx, **_nicene_381)
+        await utils.send_embed(ctx, **_nicene_381)
 
 
 _shared_command_cooldown: Final = commands.CooldownMapping.from_cooldown(
@@ -286,7 +292,7 @@ class Creeds(CreedsBase):
     @commands.command(brief='List the supported creeds')
     async def creeds(self, ctx: Context, /) -> None:
         prefix = ctx.prefix
-        await utils.send(
+        await utils.send_embed(
             ctx,
             description=f'''
 {formatting.bold(f'{prefix}apostles')} - The Apostles' Creed
