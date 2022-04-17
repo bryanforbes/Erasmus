@@ -16,7 +16,7 @@ attrs = "^21.4.0"
 beautifulsoup4 = "^4.10"
 cchardet = "^2.1"
 psycopg2 = "^2.9"
-"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", branch = "feature/dpy-2.0", extras = ["gino", "uvloop"]}
+"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", branch = "52c1d8a8fe534fad23b660d4f4f4e2de42ba46b1", extras = ["gino", "uvloop"]}
 more-itertools = {version = "~8.12.0"}
 orjson = "^3.6.7"
 
