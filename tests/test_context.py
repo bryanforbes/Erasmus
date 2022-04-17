@@ -6,6 +6,7 @@ from typing import cast
 import discord
 import pytest
 import pytest_mock
+from botus_receptus import Embed
 from discord.ext.commands.view import StringView  # type: ignore
 
 from erasmus.context import Context
@@ -67,6 +68,4 @@ class TestContext(object):
 
         await ctx.send_embed('baz')
 
-        assert (
-            type(mock_context_send.call_args_list[0][1]['embeds'][0]) == discord.Embed
-        )
+        assert isinstance(mock_context_send.call_args_list[0][1]['embeds'][0], Embed)
