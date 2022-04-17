@@ -178,7 +178,7 @@ develop = false
 [package.dependencies]
 aioitertools = "^0.8.0"
 async-timeout = ">=3.0.0"
-attrs = ">=18.2.0"
+attrs = ">=21.4.0"
 click = ">=8.0"
 "discord.py" = {git = "https://github.com/Rapptz/discord.py", branch = "master"}
 gino = {version = "^1.0.1", optional = true}
@@ -197,7 +197,7 @@ uvloop = ["uvloop (>=0.16.0,<0.17.0)"]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
 reference = "feature/dpy-2.0"
-resolved_reference = "574e54105af1857d5c8fe0d6fea18d16ce14db04"
+resolved_reference = "bf908e72153dd3de03775cbb6c1735e13e1046be"
 
 [[package]]
 name = "cchardet"
