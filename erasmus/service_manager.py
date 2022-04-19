@@ -40,7 +40,7 @@ class ServiceManager(object):
 
         try:
             _log.debug(f'Getting passage {verses} ({bible.abbr})')
-            with async_timeout.timeout(self.timeout):
+            async with async_timeout.timeout(self.timeout):
                 passage = await service.get_passage(bible, verses)
                 passage.version = bible.abbr
                 _log.debug(f'Got passage {passage.citation}')
@@ -54,7 +54,7 @@ class ServiceManager(object):
         service = self.service_map.get(bible.service)
         assert service is not None
         try:
-            with async_timeout.timeout(self.timeout):
+            async with async_timeout.timeout(self.timeout):
                 return await service.search(bible, terms, limit=limit, offset=offset)
         except asyncio.TimeoutError as e:
             raise ServiceSearchTimeout(bible, terms) from e
