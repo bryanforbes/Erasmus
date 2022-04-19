@@ -4,6 +4,7 @@ import logging
 from typing import TYPE_CHECKING, Any, Final, cast
 
 import discord
+import discord.http
 import pendulum
 from botus_receptus import exceptions, formatting, gino, topgg, utils
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
@@ -37,6 +38,9 @@ You can look up all verses in a message one of two ways:
 '''
 
 
+discord.http._set_api_version(9)
+
+
 class Erasmus(
     gino.AutoShardedBot,
     topgg.AutoShardedBot,
@@ -56,9 +60,7 @@ class Erasmus(
             },
         )
         kwargs['description'] = _description
-        kwargs['intents'] = discord.Intents(
-            guilds=True, reactions=True, messages=True, message_content=True
-        )
+        kwargs['intents'] = discord.Intents(guilds=True, reactions=True, messages=True)
         kwargs['allowed_mentions'] = discord.AllowedMentions(
             roles=False, everyone=False, users=True
         )
