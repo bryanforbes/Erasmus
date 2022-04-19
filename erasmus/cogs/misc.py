@@ -49,38 +49,24 @@ class AboutView(InviteView):
 
 
 def get_about_embed(bot: Erasmus) -> Embed:
-    total_members = 0
-    total_unique = len(bot.users)
+    channel_count = 0
+    guild_count = 0
 
-    text = 0
-    voice = 0
-    guilds = 0
     for guild in bot.guilds:
-        guilds += 1
+        guild_count += 1
 
         if guild.unavailable or guild.member_count is None:
             continue
 
-        total_members += guild.member_count
-        for channel in guild.channels:
-            if isinstance(channel, discord.TextChannel):
-                text += 1
-            elif isinstance(channel, discord.VoiceChannel):
-                voice += 1
+        channels = filter(lambda c: isinstance(c, discord.TextChannel), guild.channels)
+        channel_count += len(list(channels))
 
     dpy_version = metadata.distribution('discord.py').version
 
     return Embed(
         fields=[
-            {'name': 'Guilds', 'value': str(guilds)},
-            {
-                'name': 'Members',
-                'value': f'{total_members} total\n{total_unique} unique',
-            },
-            {
-                'name': 'Channels',
-                'value': f'{text + voice} total\n{text} text\n{voice} voice',
-            },
+            {'name': 'Guilds', 'value': str(guild_count)},
+            {'name': 'Channels', 'value': str(channel_count)},
         ],
         footer={
             'text': f'Made with discord.py v{dpy_version}',
