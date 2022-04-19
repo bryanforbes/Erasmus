@@ -1,4 +1,7 @@
-from typing import Any
+from __future__ import annotations
+
+from collections.abc import Callable
+from typing import Any, cast
 
 import pytest
 
@@ -29,7 +32,9 @@ class ServiceTest(object):
         default_abbr: str,
         MockBible: type[Any],
     ) -> Any:
-        name = request.function.__name__
+        name = cast(Callable[..., Any], cast(Any, request).function).__name__
+
+        data: dict[str, Any]
 
         if name == 'test_search':
             data = request.getfixturevalue('search_data')

@@ -100,7 +100,7 @@ class Confession(Base):
         count = 0
         async with db.transaction():
             async for chapter in Chapter.query.where(
-                Chapter.confess_id == self.id
+                Chapter.confess_id == self.id  # type: ignore
             ).order_by(db.asc(Chapter.chapter_number)).gino.iterate():
                 count += 1
                 yield chapter
@@ -108,20 +108,46 @@ class Confession(Base):
         if count == 0:
             raise NoSectionsError(self.name, 'chapters')
 
+    async def get_paragraphs(self, /) -> AsyncIterator[Paragraph]:
+        loader = Paragraph.load(
+            chapter=Chapter.on(
+                db.and_(
+                    Paragraph.chapter_number == Chapter.chapter_number,  # type: ignore
+                    Paragraph.confess_id == Chapter.confess_id,  # type: ignore
+                )
+            )
+        )
+
+        count = 0
+        async with db.transaction():
+            async for paragraph in (
+                loader.query.where(Paragraph.confess_id == self.id)  # type: ignore
+                .order_by(
+                    db.asc(Paragraph.chapter_number),
+                    db.asc(Paragraph.paragraph_number),
+                )
+                .gino.iterate()
+            ):
+                count += 1
+                yield paragraph
+
+        if count == 0:
+            raise NoSectionsError(self.name, 'paragraphs')
+
     async def get_paragraph(self, chapter: int, paragraph: int, /) -> Paragraph:
         loader = Paragraph.load(
             chapter=Chapter.on(
                 db.and_(
-                    Paragraph.chapter_number == Chapter.chapter_number,
-                    Paragraph.confess_id == Chapter.confess_id,
+                    Paragraph.chapter_number == Chapter.chapter_number,  # type: ignore
+                    Paragraph.confess_id == Chapter.confess_id,  # type: ignore
                 )
             )
         )
 
         result = (
-            await loader.query.where(Paragraph.confess_id == self.id)
-            .where(Paragraph.chapter_number == chapter)
-            .where(Paragraph.paragraph_number == paragraph)
+            await loader.query.where(Paragraph.confess_id == self.id)  # type: ignore
+            .where(Paragraph.chapter_number == chapter)  # type: ignore
+            .where(Paragraph.paragraph_number == paragraph)  # type: ignore
             .gino.first()
         )
 
@@ -138,14 +164,14 @@ class Confession(Base):
         loader = Paragraph.load(
             chapter=Chapter.on(
                 db.and_(
-                    Paragraph.chapter_number == Chapter.chapter_number,
-                    Paragraph.confess_id == Chapter.confess_id,
+                    Paragraph.chapter_number == Chapter.chapter_number,  # type: ignore
+                    Paragraph.confess_id == Chapter.confess_id,  # type: ignore
                 )
             )
         )
         async with db.transaction():
             async for paragraph in loader.query.where(
-                Paragraph.confess_id == self.id
+                Paragraph.confess_id == self.id  # type: ignore
             ).where(
                 db.func.to_tsvector(
                     'english', Chapter.chapter_title + db.text("' '") + Paragraph.text
@@ -158,24 +184,24 @@ class Confession(Base):
     async def get_questions(self, /) -> AsyncIterator[Question]:
         async with db.transaction():
             async for question in Question.query.where(
-                Question.confess_id == self.id
+                Question.confess_id == self.id  # type: ignore
             ).order_by(db.asc(Question.question_number)).gino.iterate():
                 yield question
 
     async def get_question_count(self, /) -> int:
         return cast(
             int,
-            await db.scalar(
+            await db.scalar(  # type: ignore
                 db.select([db.func.count(Question.id)]).where(
-                    Question.confess_id == self.id
+                    Question.confess_id == self.id  # type: ignore
                 )
             ),
         )
 
     async def get_question(self, question_number: int, /) -> Question:
         question = (
-            await Question.query.where(Question.confess_id == self.id)
-            .where(Question.question_number == question_number)
+            await Question.query.where(Question.confess_id == self.id)  # type: ignore
+            .where(Question.question_number == question_number)  # type: ignore
             .gino.first()
         )
 
@@ -191,7 +217,7 @@ class Confession(Base):
     ) -> AsyncIterator[Question]:
         async with db.transaction():
             async for question in Question.query.where(
-                Question.confess_id == self.id
+                Question.confess_id == self.id  # type: ignore
             ).where(
                 db.func.to_tsvector(
                     'english',
@@ -206,7 +232,7 @@ class Confession(Base):
         count = 0
         async with db.transaction():
             async for article in Article.query.where(
-                Article.confess_id == self.id
+                Article.confess_id == self.id  # type: ignore
             ).order_by(db.asc(Article.article_number)).gino.iterate():
                 count += 1
                 yield article
@@ -216,8 +242,8 @@ class Confession(Base):
 
     async def get_article(self, article_number: int, /) -> Article:
         article = (
-            await Article.query.where(Article.confess_id == self.id)
-            .where(Article.article_number == article_number)
+            await Article.query.where(Article.confess_id == self.id)  # type: ignore
+            .where(Article.article_number == article_number)  # type: ignore
             .gino.first()
         )
 
@@ -229,7 +255,7 @@ class Confession(Base):
     async def search_articles(self, terms: Sequence[str], /) -> AsyncIterator[Article]:
         async with db.transaction():
             async for article in Article.query.where(
-                Article.confess_id == self.id
+                Article.confess_id == self.id  # type: ignore
             ).where(
                 db.func.to_tsvector(
                     'english', Article.title + db.text("' '") + Article.text
@@ -258,9 +284,9 @@ class Confession(Base):
     @staticmethod
     async def get_all() -> AsyncIterator[Confession]:
         async with db.transaction():
-            async for confession in Confession.query.order_by(
-                db.asc(Confession.command)
-            ).gino.iterate():
+            async for confession in Confession.load(
+                type=ConfessionType, numbering=ConfessionNumberingType
+            ).query.order_by(db.asc(Confession.command)).gino.iterate():
                 yield confession
 
     @staticmethod
@@ -269,7 +295,7 @@ class Confession(Base):
             await Confession.load(
                 type=ConfessionType, numbering=ConfessionNumberingType
             )
-            .query.where(Confession.command == command.lower())
+            .query.where(Confession.command == command.lower())  # type: ignore
             .gino.first()
         )
 

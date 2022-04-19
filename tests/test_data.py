@@ -285,19 +285,6 @@ class TestPassage(object):
         assert passage.range == range
         assert passage.version is None
 
-    def test_get_truncated(self) -> None:
-        text = 'foo bar baz' * 10
-        range = VerseRange('Exodus', Verse(1, 1))
-        passage = Passage(text, range)
-
-        truncated = passage.get_truncated(100)
-
-        assert (
-            truncated
-            == f'The passage was too long and has been truncated:\n\n{text[:37]}'
-            '\u2026\n\nExodus 1:1'
-        )
-
     @pytest.mark.parametrize(
         'passage,expected',
         [

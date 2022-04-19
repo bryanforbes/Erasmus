@@ -5,7 +5,7 @@ from abc import abstractmethod
 from typing import Any, Final
 
 import aiohttp
-from attr import dataclass
+from attrs import define
 from botus_receptus import re
 
 from ..data import Passage, SearchResults, VerseRange
@@ -25,7 +25,7 @@ _number_re: Final = re.compile(
 )
 
 
-@dataclass(slots=True)
+@define
 class BaseService(object):
     session: aiohttp.ClientSession
     config: dict[str, Any] | None

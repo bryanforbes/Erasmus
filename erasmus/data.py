@@ -1,34 +1,36 @@
 from __future__ import annotations
 
+from collections.abc import Iterator
 from itertools import chain
 from pathlib import Path
 from re import Match, Pattern
-from typing import TYPE_CHECKING, Final, TypedDict
+from typing import Any, Final, Literal, TypedDict
+from typing_extensions import Self
 
-from attr import attrib, dataclass
+import discord
+import orjson
+from attrs import define, field
 from botus_receptus import re
+from discord.ext import commands
 from more_itertools import unique_everseen
 
 from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
-from .json import load
-
-if TYPE_CHECKING:
-    from .context import Context
 
 
 class BookDict(TypedDict):
     name: str
     osis: str
+    paratext: str | None
     alt: list[str]
-    section: int
+    section: int | Literal['DC']
 
 
 with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
-    _books_data: Final[list[BookDict]] = load(f)
+    _books_data: Final[list[BookDict]] = orjson.loads(f.read())
 
 # Inspired by
 # https://github.com/TehShrike/verse-reference-regex/blob/master/create-regex.js
-_book_re: Final = re.compile(
+_book_re: Final[Pattern[str]] = re.compile(
     re.named_group('book')(
         re.either(
             *re.escape_all(
@@ -56,7 +58,7 @@ _colon: Final = re.combine(
     re.any_number_of(re.WHITESPACE), ':', re.any_number_of(re.WHITESPACE)
 )
 
-_reference_re: Final = re.compile(
+_reference_re: Final[Pattern[str]] = re.compile(
     _book_re,
     re.one_or_more(re.WHITESPACE),
     _chapter_start_group(_one_or_more_digit),
@@ -78,7 +80,7 @@ _reference_re: Final = re.compile(
     flags=re.IGNORECASE,
 )
 
-_reference_with_version_re: Final = re.compile(
+_reference_with_version_re: Final[Pattern[str]] = re.compile(
     _reference_re,
     re.optional(
         re.group(
@@ -89,7 +91,7 @@ _reference_with_version_re: Final = re.compile(
     flags=re.IGNORECASE,
 )
 
-_reference_or_bracketed_with_version_re: Final = re.compile(
+_reference_or_bracketed_with_version_re: Final[Pattern[str]] = re.compile(
     re.optional(
         re.named_group('bracket')(re.LEFT_BRACKET, re.any_number_of(re.WHITESPACE))
     ),
@@ -109,7 +111,7 @@ _reference_or_bracketed_with_version_re: Final = re.compile(
     flags=re.IGNORECASE,
 )
 
-_bracketed_reference_with_version_re: Final = re.compile(
+_bracketed_reference_with_version_re: Final[Pattern[str]] = re.compile(
     re.LEFT_BRACKET,
     re.any_number_of(re.WHITESPACE),
     _reference_with_version_re,
@@ -118,33 +120,49 @@ _bracketed_reference_with_version_re: Final = re.compile(
     flags=re.IGNORECASE,
 )
 
-_search_reference_re: Final = re.compile(
+_search_reference_re: Final[Pattern[str]] = re.compile(
     re.START, _reference_re, re.END, flags=re.IGNORECASE
 )
 
+_search_reference_with_version_re: Final[Pattern[str]] = re.compile(
+    re.START, _reference_with_version_re, re.END, flags=re.IGNORECASE
+)
+
 _book_input_map: Final[dict[str, str]] = {}
-_book_mask_map: Final[dict[str, int]] = {}
+_book_data_map: Final[dict[str, BookDict]] = {}
+_book_mask_map: Final[dict[str, int | Literal['DC']]] = {}
 
 for _book in _books_data:
     for input_string in [_book['name'], _book['osis']] + _book['alt']:
         _book_input_map[input_string.lower()] = _book['name']
+        _book_data_map[input_string.lower()] = _book
     _book_mask_map[_book['name']] = _book['section']
 
 
-def get_book(book_name_or_abbr: str, /) -> str:
-    book = _book_input_map.get(book_name_or_abbr.lower(), '')
+def get_book_data(book_name_or_abbr: str, /) -> BookDict:
+    book = _book_data_map.get(book_name_or_abbr.lower())
 
-    if book == '':
-        raise BookNotUnderstoodError(book)
+    if book is None:
+        raise BookNotUnderstoodError(book_name_or_abbr)
 
     return book
 
 
-def get_book_mask(book_name: str, /) -> int:
-    return _book_mask_map.get(book_name, 0)
+def get_books_for_mask(book_mask: int, /) -> Iterator[BookDict]:
+    if book_mask & 1:
+        yield _book_data_map['genesis']
+    if book_mask & 2:
+        yield _book_data_map['matthew']
+
+    for book in _books_data:
+        if book['section'] == 1 or book['section'] == 2 or book['section'] == 'DC':
+            continue
+
+        if book_mask & book['section']:
+            yield book
 
 
-@dataclass(slots=True)
+@define
 class Verse(object):
     chapter: int
     verse: int
@@ -153,17 +171,23 @@ class Verse(object):
         return f'{self.chapter}:{self.verse}'
 
 
-@dataclass(slots=True)
-class VerseRange(object):
+@define
+class VerseRange(discord.app_commands.Transformer):
     book: str
     start: Verse
     end: Verse | None = None
     version: str | None = None
-    book_mask: int = attrib(init=False)
+    book_mask: int | Literal['DC'] = field(init=False)
+    osis: str = field(init=False)
+    paratext: str | None = field(init=False)
 
     def __attrs_post_init__(self, /) -> None:
-        self.book = get_book(self.book)
-        self.book_mask = get_book_mask(self.book)
+        book = get_book_data(self.book)
+
+        self.book = book['name']
+        self.book_mask = book['section']
+        self.osis = book['osis']
+        self.paratext = book['paratext']
 
     @property
     def verses(self, /) -> str:
@@ -183,6 +207,13 @@ class VerseRange(object):
     @classmethod
     def from_string(cls, verse: str, /) -> VerseRange:
         if (match := _search_reference_re.match(verse)) is None:
+            raise ReferenceNotUnderstoodError(verse)
+
+        return cls.from_match(match)
+
+    @classmethod
+    def from_string_with_version(cls, verse: str, /) -> VerseRange:
+        if (match := _search_reference_with_version_re.match(verse)) is None:
             raise ReferenceNotUnderstoodError(verse)
 
         return cls.from_match(match)
@@ -237,15 +268,15 @@ class VerseRange(object):
         return ranges
 
     @classmethod
-    async def convert(cls, ctx: Context, argument: str, /) -> VerseRange:
+    async def convert(cls, ctx: commands.Context[Any], argument: str, /) -> VerseRange:
         return cls.from_string(argument)
 
+    @classmethod
+    async def transform(cls, interaction: discord.Interaction, value: str) -> Self:
+        return cls.from_string_with_version(value)
 
-_truncation_warning: Final = 'The passage was too long and has been truncated:\n\n'
-_truncation_warning_len: Final = len(_truncation_warning) + 3
 
-
-@dataclass(slots=True)
+@define
 class Passage(object):
     text: str
     range: VerseRange
@@ -258,17 +289,14 @@ class Passage(object):
         else:
             return str(self.range)
 
-    def get_truncated(self, limit: int, /) -> str:
-        citation = self.citation
-        end = limit - (len(citation) + _truncation_warning_len)
-        text = self.text[:end]
-        return f'{_truncation_warning}{text}\u2026\n\n{citation}'
-
     def __str__(self, /) -> str:
         return f'{self.text}\n\n{self.citation}'
 
 
-@dataclass(slots=True)
+@define
 class SearchResults(object):
     verses: list[Passage]
     total: int
+
+    def __iter__(self, /) -> Iterator[Passage]:
+        return self.verses.__iter__()

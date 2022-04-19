@@ -1,36 +1,26 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from typing import TYPE_CHECKING, Any, Optional
+from typing import Any
 
 from discord.ext import commands
 from more_itertools import unique_everseen
 
-from .context import Context
 
-if TYPE_CHECKING:
-    _DefaultHelpCommand = commands.DefaultHelpCommand[Context]
-else:
-    _DefaultHelpCommand = commands.DefaultHelpCommand
-
-
-class HelpCommand(_DefaultHelpCommand):
-    def _get_command_title(self, command: commands.Command[Context], /) -> str:
+class HelpCommand(commands.DefaultHelpCommand):
+    def _get_command_title(self, command: commands.Command[Any, ..., Any], /) -> str:
         return ', '.join(
             map(
-                lambda s: f'{self.clean_prefix}{s}',
+                lambda s: f'{self.context.clean_prefix}{s}',
                 [command.name] + list(command.aliases),
             )
         )
 
     async def send_bot_help(
         self,
-        mapping: Mapping[
-            Optional[commands.Cog[Context]], list[commands.Command[Context]]
-        ],
+        mapping: Mapping[commands.Cog | None, list[commands.Command[Any, ..., Any]]],
         /,
     ) -> None:
-        assert self.context is not None
         bot = self.context.bot
 
         self.paginator.add_line(bot.description, empty=True)
@@ -44,16 +34,16 @@ class HelpCommand(_DefaultHelpCommand):
             self.paginator.add_line(self._get_command_title(command))
             self.paginator.add_line('    ' + command.short_doc, empty=True)
 
-        self.paginator.add_line(f'{self.clean_prefix}<version>')
+        self.paginator.add_line(f'{self.context.clean_prefix}<version>')
         self.paginator.add_line(
             '    Look up a verse in a specific version (see '
-            f'{self.clean_prefix}versions)',
+            f'{self.context.clean_prefix}versions)',
             empty=True,
         )
-        self.paginator.add_line(f'{self.clean_prefix}s<version>')
+        self.paginator.add_line(f'{self.context.clean_prefix}s<version>')
         self.paginator.add_line(
             '    Search for terms in a specific version (see '
-            f'{self.clean_prefix}versions)',
+            f'{self.context.clean_prefix}versions)',
             empty=True,
         )
 
@@ -61,12 +51,16 @@ class HelpCommand(_DefaultHelpCommand):
         self.paginator.add_line(
             f'''You can type the following for more information on a command:
 
-    {self.clean_prefix}{self.context.invoked_with} <command>'''
+    {self.context.clean_prefix}{self.context.invoked_with} <command>'''
         )
 
         await self.send_pages()
 
-    def add_command_formatting(self, command: commands.Command[Context], /) -> None:
+    def add_command_formatting(
+        self,
+        command: commands.Command[Any, ..., Any],
+        /,
+    ) -> None:
         if command.brief:
             self.paginator.add_line(command.brief, empty=True)
 
@@ -81,15 +75,19 @@ class HelpCommand(_DefaultHelpCommand):
         names.extend(command.aliases)
 
         for name in names:
-            self.paginator.add_line('    ' + self.clean_prefix + name + ' ' + signature)
+            self.paginator.add_line(
+                '    ' + self.context.clean_prefix + name + ' ' + signature
+            )
 
         if command.help:
             if command.help[0] != '\n':
                 self.paginator.add_line()
-            self.paginator.add_line(command.help.format(prefix=self.clean_prefix))
+            self.paginator.add_line(
+                command.help.format(prefix=self.context.clean_prefix)
+            )
 
     async def command_callback(
-        self, ctx: Context, /, *, command: Optional[str] = None
+        self, ctx: commands.Context[Any], /, *, command: str | None = None
     ) -> Any:
         if command:
             if command[0] == ctx.prefix:

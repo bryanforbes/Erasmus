@@ -9,20 +9,19 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 aiodns = "^3.0"
 alembic = "^1.7"
+attrs = "^21.4.0"
 beautifulsoup4 = "^4.10"
 cchardet = "^2.1"
 psycopg2 = "^2.9"
-ujson = "^5.1"
-"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "5163f2745934af188b3f728dd4a366fa7828fe07", extras = ["gino", "uvloop"]}
+"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", branch = "15615cdd0030cf965436413fb9e34912822e8609", extras = ["gino", "uvloop"]}
 more-itertools = {version = "~8.12.0"}
-discord-ext-menus = {git = "https://github.com/Rapptz/discord-ext-menus", rev = "fbb8803779373357e274e1540b368365fd9d8074"}
+orjson = "^3.6.7"
 
 [tool.poetry.dev-dependencies]
-"discord.py-stubs" = {version = "~1.7.3"}
-gino-stubs = {rev = "5914eaf2c5c9624cc457faa3a3fef629f027f830", git = "https://github.com/bryanforbes/gino-stubs.git"}
+gino-stubs = {rev = "07171af1658b0e4ecbfac29e832eddf4b7e4733e", git = "https://github.com/bryanforbes/gino-stubs.git"}
 black = "^22.1"
 coverage = {version = "^6.3", extras = ["toml"]}
 flake8 = "~4.0"
@@ -39,7 +38,6 @@ pytest-mock = "^3.7"
 pytest-recording = "^0.12.0"
 pytest-sugar = "^0.9.4"
 pytest-xdist = "^2.5"
-types-ujson = "^4.2.1"
 types-toml = "^0.10.4"
 
 [tool.poetry.scripts]
@@ -47,7 +45,7 @@ erasmus = 'erasmus.run:main'
 
 [tool.black]
 line-length = 88
-target-version = ["py37"]
+target-version = ["py310"]
 skip-string-normalization = true
 include = '\.pyi?$'
 exclude = '''
@@ -76,6 +74,18 @@ extra_standard_library = ["typing_extensions"]
 known_first_party = ["erasmus"]
 virtual_env = ".venv"
 profile = "black"
+
+[tool.pyright]
+include = ["erasmus", "tests", "stubs"]
+stubPath = "./stubs"
+
+pythonVersion = "3.10"
+reportUnnecessaryTypeIgnoreComment = "warning"
+typeCheckingMode = "strict"
+reportPrivateUsage = "none"
+reportUnusedImport = "none"
+reportUnusedVariable = "none"
+reportImportCycles = "none"
 
 [tool.pytest.ini_options]
 minversion = "6.0"

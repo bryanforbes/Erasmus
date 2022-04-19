@@ -6,20 +6,24 @@ from typing import Final
 
 import aiohttp
 import async_timeout
-from attr import attrib, dataclass
+from attrs import define, field
 
 from . import services
 from .config import Config
 from .data import Passage, SearchResults, VerseRange
-from .exceptions import ServiceLookupTimeout, ServiceSearchTimeout
+from .exceptions import (
+    ServiceLookupTimeout,
+    ServiceNotSupportedError,
+    ServiceSearchTimeout,
+)
 from .protocols import Bible, Service
 
 _log: Final = logging.getLogger(__name__)
 
 
-@dataclass(slots=True)
+@define
 class ServiceManager(object):
-    service_map: dict[str, Service] = attrib(factory=dict)
+    service_map: dict[str, Service] = field(factory=dict)
     timeout: float = 10
 
     def __contains__(self, key: str, /) -> bool:
@@ -30,7 +34,10 @@ class ServiceManager(object):
 
     async def get_passage(self, bible: Bible, verses: VerseRange, /) -> Passage:
         service = self.service_map.get(bible.service)
-        assert service is not None
+
+        if service is None:
+            raise ServiceNotSupportedError(bible)
+
         try:
             _log.debug(f'Getting passage {verses} ({bible.abbr})')
             with async_timeout.timeout(self.timeout):

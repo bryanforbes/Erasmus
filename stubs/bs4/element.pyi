@@ -8,14 +8,12 @@ from typing import (
     Literal,
     NewType,
     Protocol,
+    TypeAlias,
     TypeVar,
-    Union,
     overload,
     type_check_only,
 )
-from typing_extensions import TypeAlias
-
-from _typeshed import Self
+from typing_extensions import Self
 
 from . import BeautifulSoup
 from .builder import TreeBuilder
@@ -38,15 +36,15 @@ _Never = NewType('_Never', object)
 class _StrainerCallable(Protocol[_T_contra]):
     def __call__(self, __markup: _T_contra) -> bool: ...
 
-_FilterBaseType: TypeAlias = Union[str, _StrainerCallable[_T], Pattern[Any], _U]
-_FilterIterableType: TypeAlias = Iterable[Union[None, _T, Iterable[Any]]]
-_StrainerAttrType: TypeAlias = Union[
-    _FilterBaseType[_T, bool], _FilterIterableType[_FilterBaseType[_T, bool]]
-]
-_FilterItemType: TypeAlias = Union[bytes, _FilterBaseType[_T, _U]]
-_FilterType: TypeAlias = Union[
-    _FilterItemType[_T, _U], _FilterIterableType[_FilterItemType[_T, _U]]
-]
+_FilterBaseType: TypeAlias = str | _StrainerCallable[_T] | Pattern[Any] | _U
+_FilterIterableType: TypeAlias = Iterable[None | _T | Iterable[Any]]
+_StrainerAttrType: TypeAlias = (
+    _FilterBaseType[_T, bool] | _FilterIterableType[_FilterBaseType[_T, bool]]
+)
+_FilterItemType: TypeAlias = bytes | _FilterBaseType[_T, _U]
+_FilterType: TypeAlias = (
+    _FilterItemType[_T, _U] | _FilterIterableType[_FilterItemType[_T, _U]]
+)
 _StringFilterType: TypeAlias = _FilterType[NavigableString, Literal[True]]
 _TagStringFilterType: TypeAlias = _FilterType[NavigableString | None, bool]
 _TagAttrFilterType: TypeAlias = _FilterType[str | None, bool]
@@ -92,7 +90,7 @@ class _FindOneMethod(Protocol):
         **kwargs: _TagAttrFilterType | None,
     ) -> Tag | None: ...
     @overload
-    def __call__(
+    def __call__(  # type: ignore
         self,
         *,
         text: _TagStringFilterType | None = ...,
@@ -156,7 +154,7 @@ class _FindAllMethod(Protocol):
         **kwargs: _TagAttrFilterType | None,
     ) -> ResultSet[Tag]: ...
     @overload
-    def __call__(
+    def __call__(  # type: ignore
         self,
         *,
         text: _TagStringFilterType | None = ...,
@@ -216,13 +214,13 @@ class PageElement:
     ) -> Formatter: ...
     @overload
     def formatter_for_name(self, formatter: str) -> Formatter: ...
-    def replace_with(self: Self, replace_with: str | PageElement) -> Self | None: ...
+    def replace_with(self, replace_with: str | PageElement) -> Self | None: ...
     replaceWith = replace_with  # noqa: Y026
-    def unwrap(self: Self) -> Self: ...
+    def unwrap(self) -> Self: ...
     replace_with_children = unwrap  # noqa: Y026
     replaceWithChildren = unwrap  # noqa: Y026
     def wrap(self, wrap_inside: _PE) -> _PE: ...
-    def extract(self: Self, _self_index: int | None = ...) -> Self: ...
+    def extract(self, _self_index: int | None = ...) -> Self: ...
     def insert(self, position: int, new_child: PageElement) -> None: ...
     def append(self, tag: PageElement) -> None: ...
     def extend(self, tags: PageElement | Iterable[PageElement]) -> None: ...
@@ -489,7 +487,7 @@ class Tag(PageElement):
         **kwargs: _TagAttrFilterType | None,
     ) -> Tag | None: ...
     @overload
-    def find(
+    def find(  # type: ignore
         self,
         *,
         recursive: bool = ...,
@@ -555,7 +553,7 @@ class Tag(PageElement):
         **kwargs: _TagAttrFilterType | None,
     ) -> ResultSet[Tag]: ...
     @overload
-    def find_all(
+    def find_all(  # type: ignore
         self,
         *,
         recursive: bool = ...,

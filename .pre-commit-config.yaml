@@ -19,8 +19,15 @@ repos:
         name: flake8
         language: system
         entry: poetry run flake8
-    -   id: mypy
-        name: mypy
-        language: system
-        entry: poetry run mypy
-        exclude: \.pyi$
+    # -   id: mypy
+    #     name: mypy
+    #     language: system
+    #     entry: poetry run mypy
+    #     exclude: \.pyi$
+    -   id: pyright
+        name: pyright
+        entry: pyright
+        language: node
+        pass_filenames: false
+        types: [python]
+        additional_dependencies: ['pyright@1.1.238']

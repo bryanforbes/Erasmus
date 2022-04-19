@@ -4,100 +4,19 @@ import asyncio
 from typing import Any, Final, TypedDict
 
 import aiohttp
-from attr import attrib, dataclass
+import orjson
+from attrs import define, field
 from botus_receptus import re
 from bs4 import BeautifulSoup
 from yarl import URL
 
 from ..data import Passage, SearchResults, VerseRange
-from ..exceptions import DoNotUnderstandError
-from ..json import get, loads
+from ..exceptions import BookNotInVersionError, DoNotUnderstandError
+from ..json import get
 from ..protocols import Bible
 from .base_service import BaseService
 
 _img_re: Final = re.compile('src="', re.named_group('src')('[^"]+'), '"')
-_book_map: Final[dict[str, str]] = {
-    'Genesis': 'GEN',
-    'Exodus': 'EXO',
-    'Leviticus': 'LEV',
-    'Numbers': 'NUM',
-    'Deuteronomy': 'DEU',
-    'Joshua': 'JOS',
-    'Judges': 'JDG',
-    'Ruth': 'RUT',
-    '1 Samuel': '1SA',
-    '2 Samuel': '2SA',
-    '1 Kings': '1KI',
-    '2 Kings': '2KI',
-    '1 Chronicles': '1CH',
-    '2 Chronicles': '2CH',
-    'Ezra': 'EZR',
-    'Nehemiah': 'NEH',
-    'Esther': 'EST',
-    'Job': 'JOB',
-    'Psalm': 'PSA',
-    'Proverbs': 'PRO',
-    'Ecclesiastes': 'ECC',
-    'Song of Solomon': 'SNG',
-    'Isaiah': 'ISA',
-    'Jeremiah': 'JER',
-    'Lamentations': 'LAM',
-    'Ezekiel': 'EZK',
-    'Daniel': 'DAN',
-    'Hosea': 'HOS',
-    'Joel': 'JOL',
-    'Amos': 'AMO',
-    'Obadiah': 'OBA',
-    'Jonah': 'JON',
-    'Micah': 'MIC',
-    'Nahum': 'NAM',
-    'Habakkuk': 'HAB',
-    'Zephaniah': 'ZEP',
-    'Haggai': 'HAG',
-    'Zechariah': 'ZEC',
-    'Malachi': 'MAL',
-    '1 Esdras': '1ES',
-    '2 Esdras': '2ES',
-    'Tobit': 'TOB',
-    'Judith': 'JDT',
-    'Additions to Esther': 'ESG',
-    'Wisdom': 'WIS',
-    'Sirach': 'SIR',
-    'Baruch': 'BAR',
-    'Prayer of Azariah': 'S3Y',
-    'Susanna': 'SUS',
-    'Bel and the Dragon': 'BEL',
-    'Prayer of Manasseh': 'MAN',
-    '1 Maccabees': '1MA',
-    '2 Maccabees': '2MA',
-    'Matthew': 'MAT',
-    'Mark': 'MRK',
-    'Luke': 'LUK',
-    'John': 'JHN',
-    'Acts': 'ACT',
-    'Romans': 'ROM',
-    '1 Corinthians': '1CO',
-    '2 Corinthians': '2CO',
-    'Galatians': 'GAL',
-    'Ephesians': 'EPH',
-    'Philippians': 'PHP',
-    'Colossians': 'COL',
-    '1 Thessalonians': '1TH',
-    '2 Thessalonians': '2TH',
-    '1 Timothy': '1TI',
-    '2 Timothy': '2TI',
-    'Titus': 'TIT',
-    'Philemon': 'PHM',
-    'Hebrews': 'HEB',
-    'James': 'JAS',
-    '1 Peter': '1PE',
-    '2 Peter': '2PE',
-    '1 John': '1JN',
-    '2 John': '2JN',
-    '3 John': '3JN',
-    'Jude': 'JUD',
-    'Revelation': 'REV',
-}
 
 
 class _ResponseMetaDict(TypedDict):
@@ -109,11 +28,11 @@ class _ResponseDict(TypedDict):
     meta: _ResponseMetaDict | None
 
 
-@dataclass(slots=True)
+@define
 class ApiBible(BaseService):
-    _passage_url: URL = attrib(init=False)
-    _search_url: URL = attrib(init=False)
-    _headers: dict[str, str] = attrib(init=False)
+    _passage_url: URL = field(init=False)
+    _search_url: URL = field(init=False)
+    _headers: dict[str, str] = field(init=False)
 
     def __attrs_post_init__(self, /) -> None:
         self._passage_url = URL(
@@ -129,12 +48,17 @@ class ApiBible(BaseService):
             self._headers = {}
 
     def __get_passage_id(self, verses: VerseRange, /) -> str:
-        book_id: str = _book_map[verses.book]
-        passage_id: str = f'{book_id}.{verses.start.chapter}.{verses.start.verse}'
+        if verses.paratext is None:
+            raise BookNotInVersionError(verses.book, verses.version or 'default')
+
+        passage_id: str = (
+            f'{verses.paratext}.{verses.start.chapter}.{verses.start.verse}'
+        )
 
         if verses.end is not None:
             passage_id = (
-                f'{passage_id}-{book_id}.{verses.end.chapter}.{verses.end.verse}'
+                f'{passage_id}-{verses.paratext}.'
+                f'{verses.end.chapter}.{verses.end.verse}'
             )
 
         return passage_id
@@ -171,9 +95,9 @@ class ApiBible(BaseService):
         /,
     ) -> dict[str, Any]:
         if response.status != 200:
-            raise DoNotUnderstandError
+            raise DoNotUnderstandError()
 
-        json: _ResponseDict = await response.json(loads=loads, content_type=None)
+        json: _ResponseDict = await response.json(loads=orjson.loads, content_type=None)
 
         # Make a request for the image to report to the Fair Use Management System
         meta: str | None = get(json, 'meta.fumsNoScript')
