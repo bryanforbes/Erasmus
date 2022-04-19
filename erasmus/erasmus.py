@@ -69,6 +69,10 @@ class Erasmus(
 
         self.tree.error(self.on_app_command_error)
 
+    @property
+    def bible_cog(self) -> 'Bible':
+        return self.cogs['Bible']  # type: ignore
+
     async def setup_hook(self) -> None:
         await super().setup_hook()
 
@@ -88,17 +92,18 @@ class Erasmus(
         for guild_id, _commands in self.tree._guild_commands.items():  # type: ignore
             _log.info(f'Commands for {guild_id}: {list(_commands)!r}')  # type: ignore
 
-    async def on_message(self, message: discord.Message, /) -> None:
+    async def process_commands(self, message: discord.Message, /) -> None:
         if message.author.bot:
             return
 
-        await self.process_commands(message)
-
-    async def process_commands(self, message: discord.Message, /) -> None:
         ctx = await self.get_context(message)
 
         if ctx.command is None:
-            await cast('Bible', self.cogs['Bible']).lookup_from_message(ctx, message)
+            try:
+                await self.bible_cog.lookup_from_message(ctx, message)
+            except commands.CommandError as exc:
+                self.dispatch('command_error', ctx, exc)
+
             return
 
         await self.invoke(ctx)

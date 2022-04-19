@@ -200,33 +200,34 @@ class Bible(BibleBase):
         message: discord.Message,
         /,
     ) -> None:
-        bucket = self._user_cooldown.get_bucket(ctx.message)
-        retry_after = bucket.update_rate_limit()
-        if retry_after:
-            raise commands.CommandOnCooldown(
-                bucket, retry_after, commands.BucketType.user
+        try:
+            bucket = self._user_cooldown.get_bucket(ctx.message)
+            retry_after = bucket.update_rate_limit()
+
+            if retry_after:
+                raise commands.CommandOnCooldown(
+                    bucket, retry_after, commands.BucketType.user
+                )
+
+            verse_ranges = VerseRange.get_all_from_string(
+                message.content,
+                only_bracketed=not cast(discord.ClientUser, self.bot.user).mentioned_in(
+                    message
+                ),
             )
 
-        verse_ranges = VerseRange.get_all_from_string(
-            message.content,
-            only_bracketed=not cast(discord.ClientUser, self.bot.user).mentioned_in(
-                message
-            ),
-        )
+            if len(verse_ranges) == 0:
+                return
 
-        if len(verse_ranges) == 0:
-            return
+            async with ctx.typing():
+                user_bible = await BibleVersion.get_for_user(ctx.author, ctx.guild)
 
-        async with ctx.typing():
-            user_bible = await BibleVersion.get_for_user(ctx.author, ctx.guild)
+                for i, verse_range in enumerate(verse_ranges):
+                    if i > 0:
+                        bucket.update_rate_limit()
 
-            for i, verse_range in enumerate(verse_ranges):
-                if i > 0:
-                    bucket.update_rate_limit()
+                    bible: BibleVersion | None = None
 
-                bible: BibleVersion | None = None
-
-                try:
                     if isinstance(verse_range, Exception):
                         raise verse_range
 
@@ -237,8 +238,9 @@ class Bible(BibleBase):
                         bible = user_bible
 
                     await self.__lookup(ctx, bible, verse_range)
-                except Exception as exc:
-                    await self.bot.on_command_error(ctx, exc)
+        except Exception as exc:
+            await self.cog_command_error(ctx, exc)
+            await self.bot.on_command_error(ctx, exc)
 
     async def cog_command_error(self, ctx: commands.Context[Erasmus], error: Exception, /) -> None:  # type: ignore  # noqa: B950
         if (
