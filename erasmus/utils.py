@@ -56,8 +56,8 @@ async def send_passage(
     /,
     ephemeral: bool = discord.utils.MISSING,
 ) -> discord.Message:
-    return await utils.send(
-        ctx_or_intx,  # type: ignore
+    return await utils.send_embed(
+        ctx_or_intx,
         description=_get_passage_text(passage),
         footer={'text': passage.citation},
         ephemeral=ephemeral,
