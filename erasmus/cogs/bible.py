@@ -12,7 +12,6 @@ from botus_receptus.db import UniqueViolationError
 from discord import app_commands
 from discord.ext import commands
 
-from ..context import Context
 from ..data import Passage, SearchResults, VerseRange, get_book_data, get_books_for_mask
 from ..db.bible import BibleVersion, GuildPref, UserPref
 from ..erasmus import Erasmus
@@ -197,7 +196,7 @@ class Bible(BibleBase):
 
     async def lookup_from_message(
         self,
-        ctx: Context,
+        ctx: commands.Context[Erasmus],
         message: discord.Message,
         /,
     ) -> None:
@@ -241,7 +240,7 @@ class Bible(BibleBase):
                 except Exception as exc:
                     await self.bot.on_command_error(ctx, exc)
 
-    async def cog_command_error(self, ctx: Context, error: Exception, /) -> None:  # type: ignore  # noqa: B950
+    async def cog_command_error(self, ctx: commands.Context[Erasmus], error: Exception, /) -> None:  # type: ignore  # noqa: B950
         if (
             isinstance(
                 error,
@@ -303,7 +302,9 @@ class Bible(BibleBase):
         brief='Look up a verse in your preferred version',
         help=_lookup_help,
     )
-    async def lookup(self, ctx: Context, /, *, reference: VerseRange) -> None:
+    async def lookup(
+        self, ctx: commands.Context[Erasmus], /, *, reference: VerseRange
+    ) -> None:
         bible = await BibleVersion.get_for_user(ctx.author, ctx.guild)
 
         async with ctx.typing():
@@ -314,7 +315,7 @@ class Bible(BibleBase):
         brief='Search for terms in your preferred version',
         help=_search_help,
     )
-    async def search(self, ctx: Context, /, *terms: str) -> None:
+    async def search(self, ctx: commands.Context[Erasmus], /, *terms: str) -> None:
         bible = await BibleVersion.get_for_user(ctx.author, ctx.guild)
 
         await self.__search(ctx, bible, *terms)
@@ -323,7 +324,7 @@ class Bible(BibleBase):
         brief='List which Bible versions are available for lookup and search'
     )
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
-    async def versions(self, ctx: Context, /) -> None:
+    async def versions(self, ctx: commands.Context[Erasmus], /) -> None:
         lines = ['I support the following Bible versions:', '']
 
         lines += [
@@ -341,7 +342,7 @@ class Bible(BibleBase):
 
     @commands.command(brief='Set your preferred version', help=_setversion_help)
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
-    async def setversion(self, ctx: Context, version: str, /) -> None:
+    async def setversion(self, ctx: commands.Context[Erasmus], version: str, /) -> None:
         version = version.lower()
         if version[0] == ctx.prefix:
             version = version[1:]
@@ -353,7 +354,7 @@ class Bible(BibleBase):
 
     @commands.command(brief='Delete your preferred version', help=_unsetversion_help)
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
-    async def unsetversion(self, ctx: Context, /) -> None:
+    async def unsetversion(self, ctx: commands.Context[Erasmus], /) -> None:
         user_prefs = await UserPref.get(ctx.author.id)
 
         if user_prefs is not None:
@@ -366,7 +367,12 @@ class Bible(BibleBase):
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
-    async def setguildversion(self, ctx: Context, version: str, /) -> None:
+    async def setguildversion(
+        self,
+        ctx: commands.Context[Erasmus],
+        version: str,
+        /,
+    ) -> None:
         assert ctx.guild is not None
 
         version = version.lower()
@@ -384,7 +390,7 @@ class Bible(BibleBase):
     @commands.has_permissions(administrator=True)
     @commands.guild_only()
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
-    async def unsetguildversion(self, ctx: Context, /) -> None:
+    async def unsetguildversion(self, ctx: commands.Context[Erasmus], /) -> None:
         assert ctx.guild is not None
 
         if (guild_prefs := await GuildPref.get(ctx.guild.id)) is not None:
@@ -398,7 +404,7 @@ class Bible(BibleBase):
     @commands.is_owner()
     async def add_bible(
         self,
-        ctx: Context,
+        ctx: commands.Context[Erasmus],
         command: str,
         name: str,
         abbr: str,
@@ -433,7 +439,12 @@ class Bible(BibleBase):
     @commands.command(name='delbible')
     @checks.dm_only()
     @commands.is_owner()
-    async def delete_bible(self, ctx: Context, command: str, /) -> None:
+    async def delete_bible(
+        self,
+        ctx: commands.Context[Erasmus],
+        command: str,
+        /,
+    ) -> None:
         version = await BibleVersion.get_by_command(command)
         await version.delete()
 
@@ -446,7 +457,7 @@ class Bible(BibleBase):
     @commands.is_owner()
     async def update_bible(
         self,
-        ctx: Context,
+        ctx: commands.Context[Erasmus],
         command: str,
         service: str,
         service_version: str,
@@ -463,20 +474,24 @@ class Bible(BibleBase):
         else:
             await utils.send_embed(ctx, description=f'Updated `{command}`')
 
-    async def __version_lookup(self, ctx: Context, /, *, reference: VerseRange) -> None:
+    async def __version_lookup(
+        self, ctx: commands.Context[Erasmus], /, *, reference: VerseRange
+    ) -> None:
         bible = await BibleVersion.get_by_command(cast(str, ctx.invoked_with))
 
         async with ctx.typing():
             await self.__lookup(ctx, bible, reference)
 
-    async def __version_search(self, ctx: Context, /, *terms: str) -> None:
+    async def __version_search(
+        self, ctx: commands.Context[Erasmus], /, *terms: str
+    ) -> None:
         bible = await BibleVersion.get_by_command(cast(str, ctx.invoked_with)[1:])
 
         await self.__search(ctx, bible, *terms)
 
     async def __lookup(
         self,
-        ctx: Context,
+        ctx: commands.Context[Erasmus],
         bible: BibleVersion,
         reference: VerseRange,
         /,
@@ -494,7 +509,9 @@ class Bible(BibleBase):
                 ctx, description=f'I do not understand the request `${reference}`'
             )
 
-    async def __search(self, ctx: Context, bible: BibleVersion, /, *terms: str) -> None:
+    async def __search(
+        self, ctx: commands.Context[Erasmus], bible: BibleVersion, /, *terms: str
+    ) -> None:
         if not terms:
             await utils.send_embed_error(
                 ctx, description='Please include some terms to search for'
@@ -588,7 +605,9 @@ async def _version_autocomplete(
     return _bible_info.choices(current)
 
 
-class PreferencesGroup(app_commands.Group, name='prefs'):
+class PreferencesGroup(
+    app_commands.Group, name='prefs', description='Preferences commands'
+):
     @app_commands.command()
     @app_commands.describe(version='Bible version')
     @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
@@ -855,7 +874,7 @@ _shared_cooldown = app_commands.checks.cooldown(
 
 class BibleAppCommands(BibleBase):
     admin = admin_guild_only(BibleAdminGroup())
-    preferences = PreferencesGroup(description='Preferences commands')
+    preferences = PreferencesGroup()
 
     def __init__(self, bot: Erasmus, service_manager: ServiceManager, /) -> None:
         super().__init__(bot, service_manager)
@@ -1039,4 +1058,4 @@ async def setup(bot: Erasmus, /) -> None:
     service_manager = ServiceManager.from_config(bot.config, bot.session)
 
     await bot.add_cog(Bible(bot, service_manager))
-    await bot.add_cog(BibleAppCommands(bot, service_manager))
+    # await bot.add_cog(BibleAppCommands(bot, service_manager))

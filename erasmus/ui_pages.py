@@ -6,8 +6,9 @@ from typing import Any, Final, Generic, TypeVar
 from typing_extensions import Self
 
 import discord
+from discord.ext import commands
 
-from .context import Context
+from .erasmus import Erasmus
 from .page_source import BasePages, PageSource
 
 T = TypeVar('T')
@@ -277,14 +278,14 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
 
 
 class ContextUIPages(UIPages[T]):
-    ctx: Context
+    ctx: commands.Context[Erasmus]
 
     def __init__(
         self,
         source: PageSource[T],
         /,
         *,
-        ctx: Context,
+        ctx: commands.Context[Erasmus],
         check_embeds: bool = True,
         compact: bool = False,
         timeout: float | None = 180.0,

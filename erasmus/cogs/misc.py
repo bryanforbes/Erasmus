@@ -4,10 +4,8 @@ from importlib import metadata
 
 import discord
 from botus_receptus import Cog, Embed, utils
-from discord import app_commands
 from discord.ext import commands
 
-from ..context import Context
 from ..erasmus import Erasmus
 
 
@@ -93,14 +91,18 @@ def get_about_embed(bot: Erasmus) -> Embed:
 
 
 class Misc(Cog[Erasmus]):
-    @commands.command(brief='Get the invite link for Erasmus')
+    @commands.hybrid_command()
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
-    async def invite(self, ctx: Context, /) -> None:
+    async def invite(self, ctx: commands.Context[Erasmus], /) -> None:
+        '''Get a link to invite Erasmus to your server'''
+
         await utils.send(ctx, view=InviteView(self.bot.application_id))
 
-    @commands.command(brief='Get info about Erasmus')
-    @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
-    async def about(self, ctx: Context, /) -> None:
+    @commands.hybrid_command()
+    @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.user)
+    async def about(self, ctx: commands.Context[Erasmus], /) -> None:
+        '''Get info about Erasmus'''
+
         await utils.send(
             ctx,
             embeds=[get_about_embed(self.bot)],
@@ -108,27 +110,5 @@ class Misc(Cog[Erasmus]):
         )
 
 
-class MiscAppCommands(Cog[Erasmus]):
-    @app_commands.command()
-    @app_commands.checks.cooldown(
-        rate=2, per=30.0, key=lambda i: (i.guild_id, i.user.id)
-    )
-    async def invite(self, interaction: discord.Interaction, /) -> None:
-        '''Get a link to invite the bot to your server'''
-        await utils.send(interaction, view=InviteView(self.bot.application_id))
-
-    @app_commands.command()
-    @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda i: i.user.id)
-    async def about(self, interaction: discord.Interaction, /) -> None:
-        '''Get info about Erasmus'''
-
-        await utils.send(
-            interaction,
-            embeds=[get_about_embed(self.bot)],
-            view=AboutView(self.bot.application_id),
-        )
-
-
 async def setup(bot: Erasmus, /) -> None:
     await bot.add_cog(Misc(bot))
-    await bot.add_cog(MiscAppCommands(bot))

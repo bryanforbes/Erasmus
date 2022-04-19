@@ -4,19 +4,17 @@ from collections.abc import Iterator
 from itertools import chain
 from pathlib import Path
 from re import Match, Pattern
-from typing import TYPE_CHECKING, Final, Literal, TypedDict
+from typing import Any, Final, Literal, TypedDict
 from typing_extensions import Self
 
 import discord
 import orjson
 from attrs import define, field
 from botus_receptus import re
+from discord.ext import commands
 from more_itertools import unique_everseen
 
 from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
-
-if TYPE_CHECKING:
-    from .context import Context
 
 
 class BookDict(TypedDict):
@@ -270,7 +268,7 @@ class VerseRange(discord.app_commands.Transformer):
         return ranges
 
     @classmethod
-    async def convert(cls, ctx: Context, argument: str, /) -> VerseRange:
+    async def convert(cls, ctx: commands.Context[Any], argument: str, /) -> VerseRange:
         return cls.from_string(argument)
 
     @classmethod

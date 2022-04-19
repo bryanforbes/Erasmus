@@ -12,7 +12,6 @@ from discord.ext import commands
 from pendulum.period import Period
 
 from .config import Config
-from .context import Context
 from .db import db
 from .exceptions import ErasmusError
 from .help import HelpCommand
@@ -44,7 +43,6 @@ class Erasmus(
 ):
     config: Config
 
-    context_cls = Context
     db = db
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
@@ -95,7 +93,7 @@ class Erasmus(
         await self.process_commands(message)
 
     async def process_commands(self, message: discord.Message, /) -> None:
-        ctx = await self.get_context(message, cls=Context)
+        ctx = await self.get_context(message)
 
         if ctx.command is None:
             await cast('Bible', self.cogs['Bible']).lookup_from_message(ctx, message)
@@ -119,8 +117,6 @@ class Erasmus(
         exception: Exception,
         /,
     ) -> None:
-        assert isinstance(context, Context)
-
         if (
             isinstance(
                 exception,

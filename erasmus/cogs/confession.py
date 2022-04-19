@@ -17,7 +17,6 @@ from botus_receptus.formatting import (
 from discord import app_commands
 from discord.ext import commands
 
-from ..context import Context
 from ..db.confession import Article
 from ..db.confession import Confession as ConfessionRecord
 from ..db.confession import ConfessionTypeEnum, NumberingTypeEnum, Paragraph, Question
@@ -252,7 +251,9 @@ class ConfessionSearchSource(
 
 
 class Confession(Cog[Erasmus]):
-    async def cog_command_error(self, ctx: Context, error: Exception) -> None:  # type: ignore  # noqa: B950
+    async def cog_command_error(
+        self, ctx: commands.Context[Any], error: Exception
+    ) -> None:
         if (
             isinstance(
                 error,
@@ -287,7 +288,11 @@ class Confession(Cog[Erasmus]):
     @commands.command(brief='Query confessions and catechisms', help=_confess_help)
     @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
     async def confess(
-        self, ctx: Context, confession: str | None = None, /, *args: str
+        self,
+        ctx: commands.Context[Erasmus],
+        confession: str | None = None,
+        /,
+        *args: str,
     ) -> None:
         if confession is None:
             await self.list(ctx)
@@ -305,7 +310,7 @@ class Confession(Cog[Erasmus]):
 
         await self.show_item(ctx, row, match)
 
-    async def list(self, ctx: Context, /) -> None:
+    async def list(self, ctx: commands.Context[Erasmus], /) -> None:
         paginator = EmbedPaginator()
         paginator.add_line('I support the following confessions:', empty=True)
 
@@ -317,7 +322,7 @@ class Confession(Cog[Erasmus]):
 
     async def list_contents(
         self,
-        ctx: Context,
+        ctx: commands.Context[Erasmus],
         confession: ConfessionRecord,
         /,
     ) -> None:
@@ -331,7 +336,7 @@ class Confession(Cog[Erasmus]):
 
     async def list_sections(
         self,
-        ctx: Context,
+        ctx: commands.Context[Erasmus],
         confession: ConfessionRecord,
         /,
     ) -> None:
@@ -367,7 +372,7 @@ class Confession(Cog[Erasmus]):
 
     async def list_questions(
         self,
-        ctx: Context,
+        ctx: commands.Context[Erasmus],
         confession: ConfessionRecord,
         /,
     ) -> None:
@@ -379,7 +384,11 @@ class Confession(Cog[Erasmus]):
         )
 
     async def search(
-        self, ctx: Context, confession: ConfessionRecord, /, *terms: str
+        self,
+        ctx: commands.Context[Erasmus],
+        confession: ConfessionRecord,
+        /,
+        *terms: str,
     ) -> None:
         if confession.type == ConfessionTypeEnum.CHAPTERS:
             search_func: Callable[
@@ -400,7 +409,7 @@ class Confession(Cog[Erasmus]):
 
     async def show_item(
         self,
-        ctx: Context,
+        ctx: commands.Context[Erasmus],
         confession: ConfessionRecord,
         match: Match[str],
         /,
@@ -635,4 +644,4 @@ class ConfessionAppCommands(  # type: ignore
 
 async def setup(bot: Erasmus, /) -> None:
     await bot.add_cog(Confession(bot))
-    await bot.add_cog(ConfessionAppCommands(bot))
+    # await bot.add_cog(ConfessionAppCommands(bot))
