@@ -242,7 +242,12 @@ class Bible(BibleBase):
             await self.cog_command_error(ctx, exc)
             await self.bot.on_command_error(ctx, exc)
 
-    async def cog_command_error(self, ctx: commands.Context[Erasmus], error: Exception, /) -> None:  # type: ignore  # noqa: B950
+    async def cog_command_error(  # type: ignore
+        self,
+        ctx: commands.Context[Erasmus],
+        error: Exception,
+        /,
+    ) -> None:
         if (
             isinstance(
                 error,
