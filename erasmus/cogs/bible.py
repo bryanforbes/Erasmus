@@ -201,14 +201,6 @@ class Bible(BibleBase):
         /,
     ) -> None:
         try:
-            bucket = self._user_cooldown.get_bucket(ctx.message)
-            retry_after = bucket.update_rate_limit()
-
-            if retry_after:
-                raise commands.CommandOnCooldown(
-                    bucket, retry_after, commands.BucketType.user
-                )
-
             verse_ranges = VerseRange.get_all_from_string(
                 message.content,
                 only_bracketed=not cast(discord.ClientUser, self.bot.user).mentioned_in(
@@ -218,6 +210,14 @@ class Bible(BibleBase):
 
             if len(verse_ranges) == 0:
                 return
+
+            bucket = self._user_cooldown.get_bucket(ctx.message)
+            retry_after = bucket.update_rate_limit()
+
+            if retry_after:
+                raise commands.CommandOnCooldown(
+                    bucket, retry_after, commands.BucketType.user
+                )
 
             async with ctx.typing():
                 user_bible = await BibleVersion.get_for_user(ctx.author, ctx.guild)
