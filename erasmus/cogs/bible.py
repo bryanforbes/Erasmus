@@ -203,9 +203,7 @@ class Bible(BibleBase):
         try:
             verse_ranges = VerseRange.get_all_from_string(
                 message.content,
-                only_bracketed=not cast(discord.ClientUser, self.bot.user).mentioned_in(
-                    message
-                ),
+                only_bracketed=self.bot.user not in message.mentions,
             )
 
             if len(verse_ranges) == 0:
