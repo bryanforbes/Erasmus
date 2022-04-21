@@ -250,9 +250,12 @@ class ConfessionSearchSource(
         self.embed.description = '\n'.join(lines)
 
 
-class Confession(Cog[Erasmus]):
-    async def cog_command_error(
-        self, ctx: commands.Context[Any], error: Exception
+class ConfessionBase(Cog[Erasmus]):
+    async def __handle_error(
+        self,
+        ctx_or_intx: commands.Context[Erasmus] | discord.Interaction,
+        error: Exception,
+        /,
     ) -> None:
         if (
             isinstance(
@@ -261,6 +264,8 @@ class Confession(Cog[Erasmus]):
                     commands.CommandInvokeError,
                     commands.BadArgument,
                     commands.ConversionError,
+                    app_commands.CommandInvokeError,
+                    app_commands.TransformerError,
                 ),
             )
             and error.__cause__ is not None
@@ -282,9 +287,26 @@ class Confession(Cog[Erasmus]):
                 return
 
         await utils.send_embed_error(
-            ctx, description=escape(message, mass_mentions=True)
+            ctx_or_intx, description=escape(message, mass_mentions=True)
         )
 
+    async def cog_command_error(
+        self,
+        ctx: commands.Context[Any],
+        error: Exception,
+    ) -> None:
+        await self.__handle_error(ctx, error)
+
+    async def cog_app_command_error(
+        self,
+        interaction: discord.Interaction,
+        error: Exception,
+        /,
+    ) -> None:
+        await self.__handle_error(interaction, error)
+
+
+class Confession(ConfessionBase):
     @commands.command(brief='Query confessions and catechisms', help=_confess_help)
     @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
     async def confess(
@@ -454,7 +476,7 @@ def _create_section_info(section: str, title: str, /) -> _SectionInfo:
 
 
 class ConfessionAppCommands(  # type: ignore
-    Cog[Erasmus], app_commands.Group, name='confess', description='Confessions'
+    ConfessionBase, app_commands.Group, name='confess', description='Confessions'
 ):
     __confession_info: dict[str, _ConfessionInfo]
 
@@ -610,36 +632,6 @@ class ConfessionAppCommands(  # type: ignore
         for page in paginator:
             await utils.send_embed(interaction, description=page, title=title)
             title = None
-
-    async def cog_app_command_error(
-        self,
-        interaction: discord.Interaction,
-        error: Exception,
-        /,
-    ) -> None:
-        if (
-            isinstance(
-                error, (app_commands.CommandInvokeError, app_commands.TransformerError)
-            )
-            and error.__cause__ is not None
-        ):
-            error = cast(Exception, error.__cause__)
-
-        match error:
-            case InvalidConfessionError():
-                message = f'`{error.confession}` is not a valid confession.'
-            case NoSectionError():
-                message = (
-                    f'`{error.confession}` does not have '
-                    f'{"an" if error.section_type == "article" else "a"} '
-                    f'{error.section_type} `{error.section}`'
-                )
-            case NoSectionsError():
-                message = f'`{error.confession}` has no {error.section_type}'
-            case _:
-                return
-
-        await utils.send_embed_error(interaction, description=message)
 
 
 async def setup(bot: Erasmus, /) -> None:

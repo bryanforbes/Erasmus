@@ -177,6 +177,99 @@ class BibleBase(Cog[Erasmus]):
 
         super().__init__(bot)
 
+    async def __handle_error(
+        self,
+        ctx_or_intx: commands.Context[Erasmus] | discord.Interaction,
+        error: Exception,
+        /,
+    ) -> None:
+        if (
+            isinstance(
+                error,
+                (
+                    commands.CommandInvokeError,
+                    commands.BadArgument,
+                    commands.ConversionError,
+                    app_commands.CommandInvokeError,
+                    app_commands.TransformerError,
+                ),
+            )
+            and error.__cause__ is not None
+        ):
+            error = cast(Exception, error.__cause__)
+
+        match error:
+            case BookNotUnderstoodError():
+                message = f'I do not understand the book "{error.book}"'
+            case BookNotInVersionError():
+                message = f'{error.version} does not contain {error.book}'
+            case DoNotUnderstandError():
+                message = 'I do not understand that request'
+            case ReferenceNotUnderstoodError():
+                message = f'I do not understand the reference "{error.reference}"'
+            case BibleNotSupportedError():
+                if isinstance(ctx_or_intx, commands.Context):
+                    message = f'`{ctx_or_intx.prefix}{error.version}` is not supported'
+                else:
+                    message = f'The version `{error.version}` is not supported'
+            case NoUserVersionError():
+                if isinstance(ctx_or_intx, commands.Context):
+                    command = f'{ctx_or_intx.prefix}setversion'
+                else:
+                    command = '/version set'
+
+                message = 'You must first set your default version with ' f'`{command}`'
+            case InvalidVersionError():
+                if isinstance(ctx_or_intx, commands.Context):
+                    command = f'{ctx_or_intx.prefix}versions'
+                else:
+                    command = '/bibles'
+
+                message = (
+                    f'`{error.version}` is not a valid version. Check '
+                    f'`{command}` for valid versions'
+                )
+            case ServiceNotSupportedError():
+                if isinstance(ctx_or_intx, commands.Context):
+                    version_text = f'{ctx_or_intx.prefix}{ctx_or_intx.invoked_with}'
+                else:
+                    version_text = f'{error.bible.name}'
+
+                message = (
+                    f'The service configured for ' f'`{version_text}` is not supported'
+                )
+            case ServiceLookupTimeout():
+                message = (
+                    f'The request timed out looking up {error.verses} in '
+                    + error.bible.name
+                )
+            case ServiceSearchTimeout():
+                message = (
+                    f'The request timed out searching for '
+                    f'"{" ".join(error.terms)}" in {error.bible.name}'
+                )
+            case _:
+                return
+
+        await utils.send_embed_error(
+            ctx_or_intx, description=formatting.escape(message, mass_mentions=True)
+        )
+
+    async def cog_command_error(
+        self,
+        ctx: commands.Context[Any],
+        error: Exception,
+    ) -> None:
+        await self.__handle_error(ctx, error)
+
+    async def cog_app_command_error(
+        self,
+        interaction: discord.Interaction,
+        error: Exception,
+        /,
+    ) -> None:
+        await self.__handle_error(interaction, error)
+
 
 class Bible(BibleBase):
     async def cog_load(self) -> None:
@@ -239,68 +332,6 @@ class Bible(BibleBase):
         except Exception as exc:
             await self.cog_command_error(ctx, exc)
             await self.bot.on_command_error(ctx, exc)
-
-    async def cog_command_error(  # type: ignore
-        self,
-        ctx: commands.Context[Erasmus],
-        error: Exception,
-        /,
-    ) -> None:
-        if (
-            isinstance(
-                error,
-                (
-                    commands.CommandInvokeError,
-                    commands.BadArgument,
-                    commands.ConversionError,
-                ),
-            )
-            and error.__cause__ is not None
-        ):
-            error = cast(Exception, error.__cause__)
-
-        match error:
-            case BookNotUnderstoodError():
-                message = f'I do not understand the book "{error.book}"'
-            case BookNotInVersionError():
-                message = f'{error.version} does not contain {error.book}'
-            case DoNotUnderstandError():
-                message = 'I do not understand that request'
-            case ReferenceNotUnderstoodError():
-                message = f'I do not understand the reference "{error.reference}"'
-            case BibleNotSupportedError():
-                message = f'`{ctx.prefix}{error.version}` is not supported'
-            case NoUserVersionError():
-                message = (
-                    'You must first set your default version with '
-                    f'`{ctx.prefix}setversion`'
-                )
-            case InvalidVersionError():
-                message = (
-                    f'`{error.version}` is not a valid version. Check '
-                    f'`{ctx.prefix}versions` for valid versions'
-                )
-            case ServiceNotSupportedError():
-                message = (
-                    f'The service configured for '
-                    f'`{self.bot.default_prefix}{ctx.invoked_with}` is not supported'
-                )
-            case ServiceLookupTimeout():
-                message = (
-                    f'The request timed out looking up {error.verses} in '
-                    + error.bible.name
-                )
-            case ServiceSearchTimeout():
-                message = (
-                    f'The request timed out searching for '
-                    f'"{" ".join(error.terms)}" in {error.bible.name}'
-                )
-            case _:
-                return
-
-        await utils.send_embed_error(
-            ctx, description=formatting.escape(message, mass_mentions=True)
-        )
 
     @commands.command(
         aliases=[''],
@@ -696,7 +727,7 @@ class PreferencesGroup(
         await utils.send_embed(interaction, description=description, ephemeral=True)
 
 
-class BibleAdminGroup(app_commands.Group, name='admin'):
+class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     service_manager: ServiceManager
 
     async def _service_autocomplete(
@@ -711,9 +742,7 @@ class BibleAdminGroup(app_commands.Group, name='admin'):
     @app_commands.command()
     @app_commands.describe(version='The Bible version to get information for')
     @app_commands.autocomplete(version=_version_autocomplete)
-    async def bibleinfo(
-        self, interaction: discord.Interaction, /, version: str
-    ) -> None:
+    async def info(self, interaction: discord.Interaction, /, version: str) -> None:
         '''Get information for a Bible version'''
 
         existing = await BibleVersion.get_by_command(version)
@@ -748,7 +777,7 @@ class BibleAdminGroup(app_commands.Group, name='admin'):
         rtl='Whether text is right-to-left or not',
     )
     @app_commands.autocomplete(service=_service_autocomplete)
-    async def addbible(
+    async def add(
         self,
         interaction: discord.Interaction,
         /,
@@ -795,9 +824,7 @@ class BibleAdminGroup(app_commands.Group, name='admin'):
     @app_commands.command()
     @app_commands.describe(version='The version to delete')
     @app_commands.autocomplete(version=_version_autocomplete)
-    async def deletebible(
-        self, interaction: discord.Interaction, /, version: str
-    ) -> None:
+    async def delete(self, interaction: discord.Interaction, /, version: str) -> None:
         '''Delete a Bible'''
 
         existing = await BibleVersion.get_by_command(version)
@@ -817,7 +844,7 @@ class BibleAdminGroup(app_commands.Group, name='admin'):
     @app_commands.autocomplete(
         version=_version_autocomplete, service=_service_autocomplete
     )
-    async def updatebible(
+    async def update(
         self,
         interaction: discord.Interaction,
         /,
@@ -895,57 +922,6 @@ class BibleAppCommands(BibleBase):
 
     async def cog_unload(self) -> None:
         _bible_info.clear()
-
-    async def cog_app_command_error(
-        self,
-        interaction: discord.Interaction,
-        error: Exception,
-        /,
-    ) -> None:
-        if (
-            isinstance(
-                error, (app_commands.CommandInvokeError, app_commands.TransformerError)
-            )
-            and error.__cause__ is not None
-        ):
-            error = cast(Exception, error.__cause__)
-
-        match error:
-            case BookNotUnderstoodError():
-                message = f'I do not understand the book "{error.book}"'
-            case BookNotInVersionError():
-                message = f'{error.version} does not contain {error.book}'
-            case DoNotUnderstandError():
-                message = 'I do not understand that request'
-            case ReferenceNotUnderstoodError():
-                message = f'I do not understand the reference "{error.reference}"'
-            case BibleNotSupportedError():
-                message = f'The version `{error.version}` is not supported'
-            case NoUserVersionError():
-                message = 'You must first set your default version with `/version set`'
-            case InvalidVersionError():
-                message = (
-                    f'`{error.version}` is not a valid version. Check '
-                    '`/versions` for valid versions'
-                )
-            case ServiceNotSupportedError():
-                message = (
-                    f'The service configured for "{error.bible.name}" is not supported'
-                )
-            case ServiceLookupTimeout():
-                message = (
-                    f'The request timed out looking up {error.verses} in '
-                    + error.bible.name
-                )
-            case ServiceSearchTimeout():
-                message = (
-                    f'The request timed out searching for '
-                    f'"{" ".join(error.terms)}" in {error.bible.name}'
-                )
-            case _:
-                return
-
-        await utils.send_embed_error(interaction, description=message)
 
     @app_commands.command()
     @_shared_cooldown
