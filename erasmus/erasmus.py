@@ -22,7 +22,7 @@ if TYPE_CHECKING:
 
 _log: Final = logging.getLogger(__name__)
 
-_extensions: Final = ('bible', 'confession', 'creeds', 'misc')
+_extensions: Final = ('admin', 'bible', 'confession', 'creeds', 'misc')
 
 
 _description: Final = '''
