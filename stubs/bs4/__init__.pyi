@@ -2,25 +2,29 @@ from collections import Counter
 from collections.abc import Mapping
 from typing import Any, ClassVar, Protocol, TypeVar, type_check_only
 
-from .builder import ParserRejectedMarkup as ParserRejectedMarkup
-from .builder import TreeBuilder
-from .builder import builder_registry as builder_registry
+from .builder import (
+    ParserRejectedMarkup as ParserRejectedMarkup,
+    TreeBuilder,
+    builder_registry as builder_registry,
+)
 from .dammit import UnicodeDammit as UnicodeDammit
-from .element import DEFAULT_OUTPUT_ENCODING as DEFAULT_OUTPUT_ENCODING
-from .element import PYTHON_SPECIFIC_ENCODINGS as PYTHON_SPECIFIC_ENCODINGS
-from .element import CData as CData
-from .element import Comment as Comment
-from .element import Declaration as Declaration
-from .element import Doctype as Doctype
-from .element import NavigableString as NavigableString
-from .element import PageElement as PageElement
-from .element import ProcessingInstruction as ProcessingInstruction
-from .element import ResultSet as ResultSet
-from .element import Script as Script
-from .element import SoupStrainer as SoupStrainer
-from .element import Stylesheet as Stylesheet
-from .element import Tag as Tag
-from .element import TemplateString as TemplateString
+from .element import (
+    DEFAULT_OUTPUT_ENCODING as DEFAULT_OUTPUT_ENCODING,
+    PYTHON_SPECIFIC_ENCODINGS as PYTHON_SPECIFIC_ENCODINGS,
+    CData as CData,
+    Comment as Comment,
+    Declaration as Declaration,
+    Doctype as Doctype,
+    NavigableString as NavigableString,
+    PageElement as PageElement,
+    ProcessingInstruction as ProcessingInstruction,
+    ResultSet as ResultSet,
+    Script as Script,
+    SoupStrainer as SoupStrainer,
+    Stylesheet as Stylesheet,
+    Tag as Tag,
+    TemplateString as TemplateString,
+)
 
 _T_co = TypeVar('_T_co', covariant=True)
 

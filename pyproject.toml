@@ -16,7 +16,7 @@ attrs = "^21.4.0"
 beautifulsoup4 = "^4.11"
 cchardet = "^2.1"
 psycopg2 = "^2.9"
-"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", branch = "450436caade064e238c6d16ab3beaabbd3326068", extras = ["gino", "uvloop"]}
+"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", branch = "e2eb19d6dc0eb732a697922e4f35945c57e2f26d", extras = ["gino", "uvloop"]}
 more-itertools = {version = "~8.12.0"}
 orjson = "^3.6.7"
 
@@ -73,6 +73,7 @@ extra_standard_library = ["typing_extensions"]
 known_first_party = ["erasmus"]
 virtual_env = ".venv"
 profile = "black"
+combine_as_imports = true
 
 [tool.pyright]
 include = ["erasmus", "tests", "stubs"]

@@ -9,8 +9,7 @@ from discord import app_commands
 from discord.ext import commands
 
 from .. import checks
-from ..erasmus import Erasmus
-from ..erasmus import _extensions as _extension_names
+from ..erasmus import Erasmus, _extensions as _extension_names
 
 _available_extensions: Final = {f'erasmus.cogs.{name}' for name in _extension_names}
 

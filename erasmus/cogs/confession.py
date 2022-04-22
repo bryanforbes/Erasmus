@@ -17,9 +17,14 @@ from botus_receptus.formatting import (
 from discord import app_commands
 from discord.ext import commands
 
-from ..db.confession import Article
-from ..db.confession import Confession as ConfessionRecord
-from ..db.confession import ConfessionTypeEnum, NumberingTypeEnum, Paragraph, Question
+from ..db.confession import (
+    Article,
+    Confession as ConfessionRecord,
+    ConfessionTypeEnum,
+    NumberingTypeEnum,
+    Paragraph,
+    Question,
+)
 from ..erasmus import Erasmus
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from ..format import int_to_roman, roman_to_int
