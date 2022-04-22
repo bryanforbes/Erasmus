@@ -22,13 +22,14 @@ _V = TypeVar('_V', bound='Info[Any]')
 
 
 _truncation_warning: Final = '**The passage was too long and has been truncated:**\n\n'
-_max_length: Final = 4096 - (len(_truncation_warning) + 1)
+_description_max_length: Final = 4096
+_max_length: Final = _description_max_length - (len(_truncation_warning) + 1)
 
 
 def _get_passage_text(passage: Passage, /) -> str:
     text = passage.text
 
-    if len(text) > 6000:
+    if len(text) > _description_max_length:
         text = f'{_truncation_warning}{text[:_max_length]}\u2026'
 
     return text
