@@ -164,7 +164,7 @@ class UserPref:
         metadata={'sa': Column(Integer, ForeignKey('bible_versions.id'))}
     )
     bible_version: BibleVersion | None = field(
-        metadata={'sa': relationship('BibleVersion', lazy='selectin')}
+        metadata={'sa': relationship('BibleVersion', lazy='joined')}
     )
 
     @staticmethod
@@ -185,7 +185,7 @@ class GuildPref:
         metadata={'sa': Column(Integer, ForeignKey('bible_versions.id'))}
     )
     bible_version: BibleVersion | None = field(
-        metadata={'sa': relationship('BibleVersion', lazy='selectin')}
+        metadata={'sa': relationship('BibleVersion', lazy='joined')}
     )
 
     @staticmethod

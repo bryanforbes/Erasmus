@@ -161,10 +161,10 @@ class Confession:
     )
 
     _type: ConfessionType = field(
-        metadata={'sa': relationship(ConfessionType, lazy='selectin')}
+        metadata={'sa': relationship(ConfessionType, lazy='joined')}
     )
     _numbering: ConfessionNumberingType = field(
-        metadata={'sa': relationship(ConfessionNumberingType, lazy='selectin')}
+        metadata={'sa': relationship(ConfessionNumberingType, lazy='joined')}
     )
 
     async def get_chapters(self, session: AsyncSession, /) -> AsyncIterator[Chapter]:
