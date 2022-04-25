@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Iterator, Sequence
-from typing import Any, Callable, Final, cast
+from typing import Any, Final, cast
 from typing_extensions import Self
 
 import discord
@@ -11,9 +11,9 @@ from botus_receptus import Cog, checks, formatting, utils
 from botus_receptus.app_commands import admin_guild_only
 from discord import app_commands
 from discord.ext import commands
-from sqlalchemy.ext.asyncio.session import _AsyncSessionContextManager
 
 from ..data import Passage, SearchResults, VerseRange, get_book_data, get_books_for_mask
+from ..db import Session
 from ..db.bible import BibleVersion, GuildPref, UserPref
 from ..erasmus import Erasmus
 from ..exceptions import (
@@ -282,12 +282,12 @@ class Bible(BibleBase):
         # Share cooldown across commands
         self.lookup._buckets = self.search._buckets = self._user_cooldown
 
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             async for version in BibleVersion.get_all(session):
                 self.__add_bible_commands(version.command, version.name)
 
     async def cog_unload(self) -> None:
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             async for version in BibleVersion.get_all(session):
                 self.__remove_bible_commands(version.command)
 
@@ -315,7 +315,7 @@ class Bible(BibleBase):
                 )
 
             async with ctx.typing():
-                async with self.bot.begin_transaction() as session:
+                async with Session() as session:
                     user_bible = await BibleVersion.get_for_user(
                         session, ctx.author, ctx.guild
                     )
@@ -350,7 +350,7 @@ class Bible(BibleBase):
     async def lookup(
         self, ctx: commands.Context[Erasmus], /, *, reference: VerseRange
     ) -> None:
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             bible = await BibleVersion.get_for_user(session, ctx.author, ctx.guild)
 
         async with ctx.typing():
@@ -362,7 +362,7 @@ class Bible(BibleBase):
         help=_search_help,
     )
     async def search(self, ctx: commands.Context[Erasmus], /, *terms: str) -> None:
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             bible = await BibleVersion.get_for_user(session, ctx.author, ctx.guild)
 
         await self.__search(ctx, bible, *terms)
@@ -374,7 +374,7 @@ class Bible(BibleBase):
     async def versions(self, ctx: commands.Context[Erasmus], /) -> None:
         lines = ['I support the following Bible versions:', '']
 
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             lines += [
                 f'  `{ctx.prefix}{version.command}`: {version.name}'
                 async for version in BibleVersion.get_all(session, ordered=True)
@@ -395,7 +395,7 @@ class Bible(BibleBase):
         if version[0] == ctx.prefix:
             version = version[1:]
 
-        async with self.bot.begin_transaction() as session:
+        async with Session.begin() as session:
             existing = await BibleVersion.get_by_command(session, version)
             await existing.set_for_user(session, ctx.author)
 
@@ -404,8 +404,8 @@ class Bible(BibleBase):
     @commands.command(brief='Delete your preferred version', help=_unsetversion_help)
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
     async def unsetversion(self, ctx: commands.Context[Erasmus], /) -> None:
-        async with self.bot.begin_transaction() as session:
-            user_prefs = await UserPref.get(session, ctx.author.id)
+        async with Session.begin() as session:
+            user_prefs = await session.get(UserPref, ctx.author.id)
 
             if user_prefs is not None:
                 await session.delete(user_prefs)
@@ -431,7 +431,7 @@ class Bible(BibleBase):
         if version[0] == ctx.prefix:
             version = version[1:]
 
-        async with self.bot.begin_transaction() as session:
+        async with Session.begin() as session:
             existing = await BibleVersion.get_by_command(session, version)
             await existing.set_for_guild(session, ctx.guild)
 
@@ -446,8 +446,8 @@ class Bible(BibleBase):
     async def unsetguildversion(self, ctx: commands.Context[Erasmus], /) -> None:
         assert ctx.guild is not None
 
-        async with self.bot.begin_transaction() as session:
-            if (guild_prefs := await GuildPref.get(session, ctx.guild.id)) is not None:
+        async with Session.begin() as session:
+            if (guild_prefs := await session.get(GuildPref, ctx.guild.id)) is not None:
                 await session.delete(guild_prefs)
                 await utils.send_embed(ctx, description='Guild version deleted')
             else:
@@ -475,7 +475,7 @@ class Bible(BibleBase):
             return
 
         try:
-            async with self.bot.begin_transaction() as session:
+            async with Session.begin() as session:
                 session.add(
                     BibleVersion(
                         command=command,
@@ -502,7 +502,7 @@ class Bible(BibleBase):
         command: str,
         /,
     ) -> None:
-        async with self.bot.begin_transaction() as session:
+        async with Session.begin() as session:
             version = await BibleVersion.get_by_command(session, command)
             await session.delete(version)
 
@@ -522,7 +522,7 @@ class Bible(BibleBase):
         /,
     ) -> None:
         try:
-            async with self.bot.begin_transaction() as session:
+            async with Session.begin() as session:
                 version = await BibleVersion.get_by_command(session, command)
                 version.service = service
                 version.service_version = service_version
@@ -536,7 +536,7 @@ class Bible(BibleBase):
     async def __version_lookup(
         self, ctx: commands.Context[Erasmus], /, *, reference: VerseRange
     ) -> None:
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             bible = await BibleVersion.get_by_command(
                 session, cast(str, ctx.invoked_with)
             )
@@ -547,7 +547,7 @@ class Bible(BibleBase):
     async def __version_search(
         self, ctx: commands.Context[Erasmus], /, *terms: str
     ) -> None:
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             bible = await BibleVersion.get_by_command(
                 session, cast(str, ctx.invoked_with)[1:]
             )
@@ -673,8 +673,6 @@ async def _version_autocomplete(
 class PreferencesGroup(
     app_commands.Group, name='prefs', description='Preferences commands'
 ):
-    begin_transaction: Callable[[], _AsyncSessionContextManager]
-
     @app_commands.command()
     @app_commands.describe(version='Bible version')
     @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
@@ -688,7 +686,7 @@ class PreferencesGroup(
         '''Set your default Bible version'''
         version = version.lower()
 
-        async with self.begin_transaction() as session:
+        async with Session.begin() as session:
             existing = await BibleVersion.get_by_command(session, version)
             await existing.set_for_user(session, interaction.user)
 
@@ -702,8 +700,8 @@ class PreferencesGroup(
     @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
     async def unsetdefault(self, interaction: discord.Interaction, /) -> None:
         '''Unset your default Bible version'''
-        async with self.begin_transaction() as session:
-            user_prefs = await UserPref.get(session, interaction.user.id)
+        async with Session.begin() as session:
+            user_prefs = await session.get(UserPref, interaction.user.id)
 
             if user_prefs is not None:
                 await session.delete(user_prefs)
@@ -732,7 +730,7 @@ class PreferencesGroup(
 
         version = version.lower()
 
-        async with self.begin_transaction() as session:
+        async with Session.begin() as session:
             existing = await BibleVersion.get_by_command(session, version)
             await existing.set_for_guild(session, interaction.guild)
 
@@ -752,9 +750,9 @@ class PreferencesGroup(
 
         assert interaction.guild is not None
 
-        async with self.begin_transaction() as session:
+        async with Session.begin() as session:
             if (
-                guild_prefs := await GuildPref.get(session, interaction.guild.id)
+                guild_prefs := await session.get(GuildPref, interaction.guild.id)
             ) is not None:
                 await session.delete(guild_prefs)
                 description = 'Server version deleted'
@@ -766,7 +764,6 @@ class PreferencesGroup(
 
 class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     service_manager: ServiceManager
-    begin_transaction: Callable[[], _AsyncSessionContextManager]
 
     async def _service_autocomplete(
         self, interaction: discord.Interaction, current: str
@@ -783,7 +780,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     async def info(self, interaction: discord.Interaction, /, version: str) -> None:
         '''Get information for a Bible version'''
 
-        async with self.begin_transaction() as session:
+        async with Session() as session:
             existing = await BibleVersion.get_by_command(session, version)
 
         await utils.send_embed(
@@ -838,7 +835,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
             return
 
         try:
-            async with self.begin_transaction() as session:
+            async with Session.begin() as session:
                 bible = BibleVersion(
                     command=command,
                     name=name,
@@ -868,7 +865,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     async def delete(self, interaction: discord.Interaction, /, version: str) -> None:
         '''Delete a Bible'''
 
-        async with self.begin_transaction() as session:
+        async with Session.begin() as session:
             existing = await BibleVersion.get_by_command(session, version)
             await session.delete(existing)
 
@@ -908,7 +905,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
             return
 
         try:
-            async with self.begin_transaction() as session:
+            async with Session.begin() as session:
                 bible = await BibleVersion.get_by_command(session, version)
 
                 if name is not None:
@@ -954,12 +951,9 @@ class BibleAppCommands(BibleBase):
         super().__init__(bot, service_manager)
 
         self.admin.service_manager = service_manager
-        self.admin.begin_transaction = (
-            self.preferences.begin_transaction
-        ) = self.bot.begin_transaction
 
     async def cog_load(self) -> None:
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             _bible_info.set(
                 [
                     version
@@ -993,7 +987,7 @@ class BibleAppCommands(BibleBase):
         if version is not None:
             reference.version = version
 
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             if reference.version is not None:
                 bible = await BibleVersion.get_by_abbr(session, reference.version)
 
@@ -1026,7 +1020,7 @@ class BibleAppCommands(BibleBase):
 
         bible: BibleVersion | None = None
 
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             if version is not None:
                 bible = await BibleVersion.get_by_abbr(session, version)
 
@@ -1067,7 +1061,7 @@ class BibleAppCommands(BibleBase):
     ) -> None:
         '''Get information about a Bible version'''
 
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             existing = await BibleVersion.get_by_command(session, version)
 
         await utils.send_embed(

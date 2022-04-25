@@ -11,15 +11,12 @@ from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReaso
 from discord import app_commands
 from discord.ext import commands
 from pendulum.period import Period
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
-from sqlalchemy.ext.asyncio.engine import AsyncEngine
-from sqlalchemy.ext.asyncio.session import _AsyncSessionContextManager
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.ext.asyncio import create_async_engine
 
 from .config import Config
+from .db import Session
 from .exceptions import ErasmusError
 from .help import HelpCommand
-from .types import AsyncSessionMaker
 
 if TYPE_CHECKING:
     from .cogs.bible import Bible
@@ -45,12 +42,8 @@ You can look up all verses in a message one of two ways:
 discord.http._set_api_version(9)
 
 
-class Erasmus(
-    topgg.AutoShardedBot,
-):
+class Erasmus(topgg.AutoShardedBot):
     config: Config
-    engine: AsyncEngine
-    SASession: AsyncSessionMaker
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         kwargs['help_command'] = HelpCommand(
@@ -76,16 +69,10 @@ class Erasmus(
     def bible_cog(self) -> 'Bible':
         return self.cogs['Bible']  # type: ignore
 
-    def begin_transaction(self) -> _AsyncSessionContextManager:
-        return self.SASession.begin()  # type: ignore
-
     async def setup_hook(self) -> None:
         await super().setup_hook()
 
-        self.engine = create_async_engine(self.config.get('db_url', ''))
-        self.SASession = sessionmaker(
-            self.engine, expire_on_commit=False, class_=AsyncSession  # type: ignore
-        )
+        Session.configure(bind=create_async_engine(self.config.get('db_url', '')))
 
         for extension in _extensions:
             try:

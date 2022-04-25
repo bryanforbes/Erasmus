@@ -3,9 +3,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Any, Final
 
 from sqlalchemy import String, TypeDecorator
-from sqlalchemy.orm import registry
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import registry, sessionmaker
 
 mapper_registry: Final = registry()
+Session: Final[sessionmaker[AsyncSession]] = sessionmaker(  # type: ignore
+    expire_on_commit=False, class_=AsyncSession  # type: ignore
+)
 
 
 if TYPE_CHECKING:

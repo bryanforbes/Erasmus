@@ -48,7 +48,9 @@ class BibleVersion:
         await session.execute(
             insert(UserPref)
             .values(user_id=user.id, bible_id=self.id)
-            .on_conflict_do_update(index_elements=['user_id'], set_=('bible_id',))
+            .on_conflict_do_update(
+                index_elements=['user_id'], set_={'bible_id': self.id}
+            )
         )
 
     async def set_for_guild(
@@ -60,7 +62,9 @@ class BibleVersion:
         await session.execute(
             insert(UserPref)
             .values(guild_id=guild.id, bible_id=self.id)
-            .on_conflict_do_update(index_elements=['guild_id'], set_=('bible_id',))
+            .on_conflict_do_update(
+                index_elements=['guild_id'], set_={'bible_id': self.id}
+            )
         )
 
     @staticmethod
@@ -103,8 +107,8 @@ class BibleVersion:
 
     @staticmethod
     async def get_by_command(session: AsyncSession, command: str, /) -> BibleVersion:
-        bible: BibleVersion | None = await (
-            await session.stream_scalars(
+        bible: BibleVersion | None = (
+            await session.scalars(
                 select(BibleVersion).where(BibleVersion.command == command)
             )
         ).first()
@@ -116,8 +120,8 @@ class BibleVersion:
 
     @staticmethod
     async def get_by_abbr(session: AsyncSession, abbr: str, /) -> BibleVersion | None:
-        return await (
-            await session.stream_scalars(
+        return (
+            await session.scalars(
                 select(BibleVersion).where(
                     BibleVersion.command.ilike(abbr)  # type: ignore
                 )
@@ -131,21 +135,13 @@ class BibleVersion:
         guild: discord.Guild | None,
         /,
     ) -> BibleVersion:
-        user_pref: UserPref | None = await (
-            await session.stream_scalars(
-                select(UserPref).where(UserPref.user_id == user.id)
-            )
-        ).first()
+        user_pref = await session.get(UserPref, user.id)
 
         if user_pref is not None and user_pref.bible_version is not None:
             return user_pref.bible_version
 
         if guild is not None:
-            guild_pref: GuildPref | None = await (
-                await session.stream_scalars(
-                    select(GuildPref).where(GuildPref.guild_id == guild.id)
-                )
-            ).first()
+            guild_pref = await session.get(GuildPref, guild.id)
 
             if guild_pref is not None and guild_pref.bible_version is not None:
                 return guild_pref.bible_version
@@ -167,12 +163,6 @@ class UserPref:
         metadata={'sa': relationship('BibleVersion', lazy='joined')}
     )
 
-    @staticmethod
-    async def get(session: AsyncSession, id: int, /) -> UserPref | None:
-        return await (
-            await session.stream_scalars(select(UserPref).where(UserPref.user_id == id))
-        ).first()
-
 
 @mapper_registry.mapped
 @dataclass
@@ -187,11 +177,3 @@ class GuildPref:
     bible_version: BibleVersion | None = field(
         metadata={'sa': relationship('BibleVersion', lazy='joined')}
     )
-
-    @staticmethod
-    async def get(session: AsyncSession, id: int, /) -> GuildPref | None:
-        return await (
-            await session.stream_scalars(
-                select(GuildPref).where(GuildPref.guild_id == id)
-            )
-        ).first()

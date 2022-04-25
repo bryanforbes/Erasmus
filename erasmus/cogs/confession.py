@@ -18,6 +18,7 @@ from discord import app_commands
 from discord.ext import commands
 from sqlalchemy.ext.asyncio import AsyncSession
 
+from ..db import Session
 from ..db.confession import (
     Article,
     Confession as ConfessionRecord,
@@ -330,7 +331,7 @@ class Confession(ConfessionBase):
             await self.list(ctx)
             return
 
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             row = await ConfessionRecord.get_by_command(session, confession)
 
         if len(args) == 0:
@@ -347,7 +348,7 @@ class Confession(ConfessionBase):
         paginator = EmbedPaginator()
         paginator.add_line('I support the following confessions:', empty=True)
 
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             async for conf in ConfessionRecord.get_all(session):
                 paginator.add_line(f'  `{conf.command}`: {conf.name}')
 
@@ -390,7 +391,7 @@ class Confession(ConfessionBase):
 
         format_number = _number_formatters[confession.numbering]
 
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             async for record in getter(session):
                 paginator.add_line(
                     '**{number}**. {title}'.format(
@@ -412,7 +413,7 @@ class Confession(ConfessionBase):
         confession: ConfessionRecord,
         /,
     ) -> None:
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             count = await confession.get_question_count(session)
 
         question_str = _pluralizers[ConfessionTypeEnum.QA](count)
@@ -437,7 +438,7 @@ class Confession(ConfessionBase):
         else:  # ConfessionTypeEnum.QA
             search_func = confession.search_questions
 
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             results = [result async for result in search_func(session, terms)]
 
         source = ConfessionSearchSource(results, type=confession.type, per_page=20)
@@ -454,7 +455,7 @@ class Confession(ConfessionBase):
         paginator = EmbedPaginator()
         get_output = _output_getters[confession.type]
 
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             title, output = await get_output(session, confession, match)
 
         if output:
@@ -499,7 +500,7 @@ class ConfessionAppCommands(  # type: ignore
     async def cog_load(self) -> None:
         self.__confession_info = {}
 
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             async for confession in ConfessionRecord.get_all(session):
                 format_number = _number_formatters[confession.numbering]
                 match confession.type:
@@ -594,7 +595,7 @@ class ConfessionAppCommands(  # type: ignore
     ) -> None:
         '''Search for terms in a confession or catechism'''
 
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             confession = await ConfessionRecord.get_by_command(session, source)
 
             match confession.type:
@@ -635,7 +636,7 @@ class ConfessionAppCommands(  # type: ignore
     ) -> None:
         '''Cite a section from a confession or catechism'''
 
-        async with self.bot.begin_transaction() as session:
+        async with Session() as session:
             confession = await ConfessionRecord.get_by_command(session, source)
             match = _reference_res[confession.type].match(section)
 

@@ -202,7 +202,6 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         error: Exception,
         item: discord.ui.Item[Self],
     ) -> None:
-        print(error)
         if interaction.response.is_done():
             await interaction.followup.send(
                 'An unknown error occurred, sorry', ephemeral=True

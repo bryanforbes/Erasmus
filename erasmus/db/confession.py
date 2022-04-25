@@ -3,8 +3,10 @@ from __future__ import annotations
 from collections.abc import AsyncIterator, Sequence
 from dataclasses import dataclass, field
 from enum import Enum
+from typing import Any
 
 from sqlalchemy import (
+    Boolean,
     Column,
     Enum as _SAEnum,
     ForeignKey,
@@ -18,9 +20,22 @@ from sqlalchemy import (
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship
+from sqlalchemy.sql import ColumnElement
 
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from .base import mapper_registry
+
+
+def _search_columns(
+    title_column: Any,
+    text_column: Any,
+    terms: Sequence[str],
+    /,
+) -> ColumnElement[Boolean]:
+    return func.to_tsvector(
+        text("'english'"),
+        title_column + text("' '") + text_column,
+    ).match(' & '.join(terms), postgresql_regconfig='english')
 
 
 class ConfessionTypeEnum(Enum):
@@ -187,7 +202,6 @@ class Confession:
         session: AsyncSession,
         /,
     ) -> AsyncIterator[Paragraph]:
-
         result = await session.stream_scalars(
             select(Paragraph)
             .where(Paragraph.confess_id == self.id)
@@ -209,8 +223,8 @@ class Confession:
         paragraph: int,
         /,
     ) -> Paragraph:
-        result: Paragraph | None = await (
-            await session.stream_scalars(
+        result: Paragraph | None = (
+            await session.scalars(
                 select(Paragraph)
                 .where(Paragraph.confess_id == self.id)
                 .where(Paragraph.chapter_number == chapter)
@@ -232,14 +246,7 @@ class Confession:
         result = await session.stream_scalars(
             select(Paragraph)
             .where(Paragraph.confess_id == self.id)
-            .where(
-                func.to_tsvector(
-                    'english',
-                    Chapter.chapter_title
-                    + text("' '")  # type: ignore
-                    + Paragraph.text,
-                ).match(' & '.join(terms))
-            )
+            .where(_search_columns(Chapter.chapter_title, Paragraph.text, terms))
             .order_by(asc(Paragraph.chapter_number))
         )
 
@@ -260,14 +267,6 @@ class Confession:
         return await session.scalar(
             select([func.count(Question.id)]).where(Question.confess_id == self.id)
         )
-        # return cast(
-        #     int,
-        #     await db.scalar(  # type: ignore
-        #         db.select([db.func.count(Question.id)]).where(
-        #             Question.confess_id == self.id  # type: ignore
-        #         )
-        #     ),
-        # )
 
     async def get_question(
         self,
@@ -275,8 +274,8 @@ class Confession:
         question_number: int,
         /,
     ) -> Question:
-        question: Question | None = await (
-            await session.stream_scalars(
+        question: Question | None = (
+            await session.scalars(
                 select(Question)
                 .where(Question.confess_id == self.id)
                 .where(Question.question_number == question_number)
@@ -297,14 +296,7 @@ class Confession:
         result = await session.stream_scalars(
             select(Question)
             .where(Question.confess_id == self.id)
-            .where(
-                func.to_tsvector(
-                    'english',
-                    Question.question_text
-                    + text("' '")  # type: ignore
-                    + Question.answer_text,
-                ).match(' & '.join(terms))
-            )
+            .where(_search_columns(Question.question_text, Question.answer_text, terms))
             .order_by(asc(Question.question_number))
         )
 
@@ -332,8 +324,8 @@ class Confession:
         article_number: int,
         /,
     ) -> Article:
-        article: Article | None = await (
-            await session.stream_scalars(
+        article: Article | None = (
+            await session.scalars(
                 select(Article)
                 .where(Article.confess_id == self.id)
                 .where(Article.article_number == article_number)
@@ -354,12 +346,7 @@ class Confession:
         result = await session.stream_scalars(
             select(Article)
             .where(Article.confess_id == self.id)
-            .where(
-                func.to_tsvector(
-                    'english',
-                    Article.title + text("' '") + Article.text,  # type: ignore
-                ).match(' & '.join(terms))
-            )
+            .where(_search_columns(Article.title, Article.text, terms))
             .order_by(asc(Article.article_number))
         )
 
@@ -385,8 +372,8 @@ class Confession:
 
     @staticmethod
     async def get_by_command(session: AsyncSession, command: str, /) -> Confession:
-        c: Confession | None = await (
-            await session.stream_scalars(
+        c: Confession | None = (
+            await session.scalars(
                 select(Confession).where(Confession.command == command.lower())
             )
         ).first()
