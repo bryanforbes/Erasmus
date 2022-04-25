@@ -16,12 +16,13 @@ attrs = "^21.4.0"
 beautifulsoup4 = "^4.11"
 cchardet = "^2.1"
 psycopg2 = "^2.9"
-"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", branch = "e2eb19d6dc0eb732a697922e4f35945c57e2f26d", extras = ["gino", "uvloop"]}
+"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", branch = "e2eb19d6dc0eb732a697922e4f35945c57e2f26d", extras = ["uvloop"]}
 more-itertools = {version = "~8.12.0"}
 orjson = "^3.6.7"
+SQLAlchemy = {version = "~1.4", extras = ["asyncio", "postgresql_asyncpg"]}
+greenlet = "^1.1.2"
 
 [tool.poetry.dev-dependencies]
-gino-stubs = {rev = "07171af1658b0e4ecbfac29e832eddf4b7e4733e", git = "https://github.com/bryanforbes/gino-stubs.git"}
 black = "^22.3"
 coverage = {version = "^6.3", extras = ["toml"]}
 flake8 = "~4.0"
@@ -38,6 +39,7 @@ pytest-mock = "^3.7"
 pytest-recording = "^0.12.0"
 pytest-sugar = "^0.9.4"
 pytest-xdist = "^2.5"
+sqlalchemy2-stubs = "^0.0.2-alpha.22"
 
 [tool.poetry.scripts]
 erasmus = 'erasmus.run:main'

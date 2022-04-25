@@ -10,7 +10,7 @@ from yarl import URL
 
 from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import DoNotUnderstandError
-from ..protocols import Bible
+from ..types import Bible
 from .base_service import BaseService
 
 _total_re: Final = re.compile(

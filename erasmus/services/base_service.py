@@ -9,7 +9,7 @@ from attrs import define
 from botus_receptus import re
 
 from ..data import Passage, SearchResults, VerseRange
-from ..protocols import Bible
+from ..types import Bible
 
 _log: Final = logging.getLogger(__name__)
 

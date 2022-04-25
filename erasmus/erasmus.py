@@ -6,16 +6,20 @@ from typing import TYPE_CHECKING, Any, Final, cast
 import discord
 import discord.http
 import pendulum
-from botus_receptus import exceptions, formatting, gino, topgg, utils
+from botus_receptus import exceptions, formatting, topgg, utils
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
 from discord import app_commands
 from discord.ext import commands
 from pendulum.period import Period
+from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
+from sqlalchemy.ext.asyncio.engine import AsyncEngine
+from sqlalchemy.ext.asyncio.session import _AsyncSessionContextManager
+from sqlalchemy.orm import sessionmaker
 
 from .config import Config
-from .db import db
 from .exceptions import ErasmusError
 from .help import HelpCommand
+from .types import AsyncSessionMaker
 
 if TYPE_CHECKING:
     from .cogs.bible import Bible
@@ -42,12 +46,11 @@ discord.http._set_api_version(9)
 
 
 class Erasmus(
-    gino.AutoShardedBot,
     topgg.AutoShardedBot,
 ):
     config: Config
-
-    db = db
+    engine: AsyncEngine
+    SASession: AsyncSessionMaker
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         kwargs['help_command'] = HelpCommand(
@@ -73,8 +76,16 @@ class Erasmus(
     def bible_cog(self) -> 'Bible':
         return self.cogs['Bible']  # type: ignore
 
+    def begin_transaction(self) -> _AsyncSessionContextManager:
+        return self.SASession.begin()  # type: ignore
+
     async def setup_hook(self) -> None:
         await super().setup_hook()
+
+        self.engine = create_async_engine(self.config.get('db_url', ''))
+        self.SASession = sessionmaker(
+            self.engine, expire_on_commit=False, class_=AsyncSession  # type: ignore
+        )
 
         for extension in _extensions:
             try:

@@ -1,134 +1,197 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
-from typing import cast
+from dataclasses import dataclass, field
 
 import discord
-from botus_receptus.gino import Snowflake
+from sqlalchemy import (
+    BigInteger,
+    Boolean,
+    Column,
+    ForeignKey,
+    Integer,
+    String,
+    asc,
+    func,
+    or_,
+    select,
+)
+from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import relationship
 
 from ..exceptions import InvalidVersionError
-from ..protocols import Bible
-from .base import Base, db
+from .base import Snowflake, mapper_registry
 
 
-class BibleVersion(Base):
+@mapper_registry.mapped
+@dataclass
+class BibleVersion:
     __tablename__ = 'bible_versions'
+    __sa_dataclass_metadata_key__ = 'sa'
 
-    id = db.Column(db.Integer, primary_key=True)
-    command = db.Column(db.String, unique=True, nullable=False)
-    name = db.Column(db.String, nullable=False)
-    abbr = db.Column(db.String, nullable=False)
-    service = db.Column(db.String, nullable=False)
-    service_version = db.Column(db.String, nullable=False)
-    rtl = db.Column(db.Boolean)
-    books = db.Column(db.BigInteger, nullable=False)
+    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
+    command: str = field(metadata={'sa': Column(String, unique=True, nullable=False)})
+    name: str = field(metadata={'sa': Column(String, nullable=False)})
+    abbr: str = field(metadata={'sa': Column(String, nullable=False)})
+    service: str = field(metadata={'sa': Column(String, nullable=False)})
+    service_version: str = field(metadata={'sa': Column(String, nullable=False)})
+    rtl: bool = field(metadata={'sa': Column(Boolean)})
+    books: int = field(metadata={'sa': Column(BigInteger, nullable=False)})
 
-    def as_bible(self, /) -> Bible:
-        return cast(Bible, self)
-
-    async def set_for_user(self, user: discord.User | discord.Member, /) -> None:
-        await UserPref.create_or_update(
-            set_=('bible_id',), user_id=user.id, bible_id=self.id
+    async def set_for_user(
+        self,
+        session: AsyncSession,
+        user: discord.User | discord.Member,
+        /,
+    ) -> None:
+        await session.execute(
+            insert(UserPref)
+            .values(user_id=user.id, bible_id=self.id)
+            .on_conflict_do_update(index_elements=['user_id'], set_=('bible_id',))
         )
 
-    async def set_for_guild(self, guild: discord.Guild, /) -> None:
-        await GuildPref.create_or_update(
-            set_=('bible_id',), guild_id=guild.id, bible_id=self.id
+    async def set_for_guild(
+        self,
+        session: AsyncSession,
+        guild: discord.Guild,
+        /,
+    ) -> None:
+        await session.execute(
+            insert(UserPref)
+            .values(guild_id=guild.id, bible_id=self.id)
+            .on_conflict_do_update(index_elements=['guild_id'], set_=('bible_id',))
         )
 
     @staticmethod
     async def get_all(
+        session: AsyncSession,
+        /,
         *,
         ordered: bool = False,
         search_term: str | None = None,
         limit: int | None = None,
     ) -> AsyncIterator[BibleVersion]:
-        query = BibleVersion.query
+        stmt = select(BibleVersion)
 
         if ordered:
-            query = query.order_by(db.asc(BibleVersion.command))
+            stmt = stmt.order_by(asc(BibleVersion.command))
 
         if limit:
-            query = query.limit(limit)
+            stmt = stmt.limit(limit)
 
         if search_term is not None:
             search_term = search_term.lower()
-            query = query.where(
-                db.or_(
-                    db.func.lower(BibleVersion.command).startswith(
+            stmt = stmt.where(
+                or_(
+                    func.lower(BibleVersion.command).startswith(
                         search_term, autoescape=True
                     ),
-                    db.func.lower(BibleVersion.abbr).startswith(
+                    func.lower(BibleVersion.abbr).startswith(
                         search_term, autoescape=True
                     ),
-                    db.func.lower(BibleVersion.name).contains(
+                    func.lower(BibleVersion.name).contains(
                         search_term, autoescape=True
                     ),
                 )
             )
 
-        async with db.transaction():
-            async for version in query.gino.iterate():
-                yield version
+        result = await session.stream_scalars(stmt)
+
+        async for version in result:
+            yield version
 
     @staticmethod
-    async def get_by_command(command: str, /) -> BibleVersion:
-        bible = await BibleVersion.query.where(
-            BibleVersion.command == command  # type: ignore
-        ).gino.first()
+    async def get_by_command(session: AsyncSession, command: str, /) -> BibleVersion:
+        bible: BibleVersion | None = await (
+            await session.stream_scalars(
+                select(BibleVersion).where(BibleVersion.command == command)
+            )
+        ).first()
 
-        if not bible:
+        if bible is None:
             raise InvalidVersionError(command)
 
         return bible
 
     @staticmethod
-    async def get_by_abbr(abbr: str, /) -> BibleVersion | None:
-        return await BibleVersion.query.where(
-            BibleVersion.command.ilike(abbr)  # type: ignore
-        ).gino.first()
+    async def get_by_abbr(session: AsyncSession, abbr: str, /) -> BibleVersion | None:
+        return await (
+            await session.stream_scalars(
+                select(BibleVersion).where(
+                    BibleVersion.command.ilike(abbr)  # type: ignore
+                )
+            )
+        ).first()
 
     @staticmethod
     async def get_for_user(
+        session: AsyncSession,
         user: discord.User | discord.Member,
         guild: discord.Guild | None,
         /,
     ) -> BibleVersion:
-        user_pref = (
-            await UserPref.load(bible_version=BibleVersion)
-            .query.where(UserPref.user_id == user.id)  # type: ignore
-            .gino.first()
-        )
+        user_pref: UserPref | None = await (
+            await session.stream_scalars(
+                select(UserPref).where(UserPref.user_id == user.id)
+            )
+        ).first()
 
         if user_pref is not None and user_pref.bible_version is not None:
             return user_pref.bible_version
 
         if guild is not None:
-            guild_pref = (
-                await GuildPref.load(bible_version=BibleVersion)
-                .query.where(GuildPref.guild_id == guild.id)  # type: ignore
-                .gino.first()
-            )
+            guild_pref: GuildPref | None = await (
+                await session.stream_scalars(
+                    select(GuildPref).where(GuildPref.guild_id == guild.id)
+                )
+            ).first()
 
             if guild_pref is not None and guild_pref.bible_version is not None:
                 return guild_pref.bible_version
 
-        return await BibleVersion.get_by_command('esv')
+        return await BibleVersion.get_by_command(session, 'esv')
 
 
-class UserPref(Base):
+@mapper_registry.mapped
+@dataclass
+class UserPref:
     __tablename__ = 'user_prefs'
+    __sa_dataclass_metadata_key__ = 'sa'
 
-    bible_version: BibleVersion | None
+    user_id: int = field(metadata={'sa': Column(Snowflake, primary_key=True)})
+    bible_id: int | None = field(
+        metadata={'sa': Column(Integer, ForeignKey('bible_versions.id'))}
+    )
+    bible_version: BibleVersion | None = field(
+        metadata={'sa': relationship('BibleVersion', lazy='selectin')}
+    )
 
-    user_id = db.Column(Snowflake, primary_key=True)
-    bible_id = db.Column(db.Integer, db.ForeignKey('bible_versions.id'))
+    @staticmethod
+    async def get(session: AsyncSession, id: int, /) -> UserPref | None:
+        return await (
+            await session.stream_scalars(select(UserPref).where(UserPref.user_id == id))
+        ).first()
 
 
-class GuildPref(Base):
+@mapper_registry.mapped
+@dataclass
+class GuildPref:
     __tablename__ = 'guild_prefs'
+    __sa_dataclass_metadata_key__ = 'sa'
 
-    bible_version: BibleVersion | None
+    guild_id: int = field(metadata={'sa': Column(Snowflake, primary_key=True)})
+    bible_id: int | None = field(
+        metadata={'sa': Column(Integer, ForeignKey('bible_versions.id'))}
+    )
+    bible_version: BibleVersion | None = field(
+        metadata={'sa': relationship('BibleVersion', lazy='selectin')}
+    )
 
-    guild_id = db.Column(Snowflake, primary_key=True)
-    bible_id = db.Column(db.Integer, db.ForeignKey('bible_versions.id'))
+    @staticmethod
+    async def get(session: AsyncSession, id: int, /) -> GuildPref | None:
+        return await (
+            await session.stream_scalars(
+                select(GuildPref).where(GuildPref.guild_id == id)
+            )
+        ).first()

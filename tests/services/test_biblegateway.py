@@ -8,8 +8,8 @@ import aiohttp
 import pytest
 
 from erasmus.data import Passage, VerseRange
-from erasmus.protocols import Service
 from erasmus.services.biblegateway import BibleGateway
+from erasmus.types import Service
 
 from . import Galatians_3_10_11, Mark_5_1, ServiceTest
 

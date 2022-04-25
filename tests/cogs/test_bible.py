@@ -1,8 +1,10 @@
 from __future__ import annotations
 
 from typing import Any
+from unittest.mock import Mock
 
 import pytest
+from pytest_mock import MockerFixture
 
 from erasmus.cogs.bible import Bible, BibleAppCommands
 from erasmus.erasmus import Erasmus
@@ -18,11 +20,17 @@ class MockServiceManager(object):
     ...
 
 
-class TestBible(object):
-    @pytest.fixture
-    def mock_bot(self) -> MockBot:
-        return MockBot()
+@pytest.fixture
+def mock_bot(mocker: MockerFixture) -> Mock:
+    bot = mocker.Mock()
+    bot.config = mocker.Mock()
+    bot.session = mocker.Mock()
+    bot.begin_transaction = mocker.Mock()
 
+    return bot
+
+
+class TestBible(object):
     @pytest.fixture
     def mock_service_manager(self) -> MockServiceManager:
         return MockServiceManager()
@@ -35,10 +43,6 @@ class TestBible(object):
 
 
 class TestBibleAppCommands(object):
-    @pytest.fixture
-    def mock_bot(self) -> MockBot:
-        return MockBot()
-
     @pytest.fixture
     def mock_service_manager(self) -> MockServiceManager:
         return MockServiceManager()

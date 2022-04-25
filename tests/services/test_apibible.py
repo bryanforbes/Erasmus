@@ -10,8 +10,8 @@ import pytest
 import toml
 
 from erasmus.data import Passage, VerseRange
-from erasmus.protocols import Service
 from erasmus.services.apibible import ApiBible
+from erasmus.types import Service
 
 from . import ServiceTest
 

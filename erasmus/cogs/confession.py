@@ -16,6 +16,7 @@ from botus_receptus.formatting import (
 )
 from discord import app_commands
 from discord.ext import commands
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from ..db.confession import (
     Article,
@@ -87,6 +88,7 @@ _number_formatters: Final[dict[NumberingTypeEnum, Callable[[int], str]]] = {
 
 
 async def _get_chapters_output(
+    session: AsyncSession,
     confession: ConfessionRecord,
     match: Match[str],
     /,
@@ -100,7 +102,7 @@ async def _get_chapters_output(
         chapter_num = int(match['chapter'])
         paragraph_num = int(match['paragraph'])
 
-    paragraph = await confession.get_paragraph(chapter_num, paragraph_num)
+    paragraph = await confession.get_paragraph(session, chapter_num, paragraph_num)
 
     paragraph_number = format_number(paragraph.paragraph_number)
     chapter_number = format_number(paragraph.chapter.chapter_number)
@@ -111,6 +113,7 @@ async def _get_chapters_output(
 
 
 async def _get_articles_output(
+    session: AsyncSession,
     confession: ConfessionRecord,
     match: Match[str],
     /,
@@ -122,7 +125,7 @@ async def _get_articles_output(
     else:
         article_number = int(match['article'])
 
-    article = await confession.get_article(article_number)
+    article = await confession.get_article(session, article_number)
 
     title = underline(bold(f'{format_number(article_number)}. {article.title}'))
     output = article.text
@@ -131,6 +134,7 @@ async def _get_articles_output(
 
 
 async def _get_qa_output(
+    session: AsyncSession,
     confession: ConfessionRecord,
     match: Match[str],
     /,
@@ -143,7 +147,7 @@ async def _get_qa_output(
     else:
         question_number = int(match['number'])
 
-    question = await confession.get_question(question_number)
+    question = await confession.get_question(session, question_number)
 
     question_number_str = format_number(question_number)
 
@@ -162,6 +166,7 @@ async def _get_qa_output(
 
 _OUTPUT_GETTER: TypeAlias = Callable[
     [
+        AsyncSession,
         ConfessionRecord,
         Match[str],
     ],
@@ -325,7 +330,8 @@ class Confession(ConfessionBase):
             await self.list(ctx)
             return
 
-        row = await ConfessionRecord.get_by_command(confession)
+        async with self.bot.begin_transaction() as session:
+            row = await ConfessionRecord.get_by_command(session, confession)
 
         if len(args) == 0:
             await self.list_contents(ctx, row)
@@ -341,8 +347,9 @@ class Confession(ConfessionBase):
         paginator = EmbedPaginator()
         paginator.add_line('I support the following confessions:', empty=True)
 
-        async for conf in ConfessionRecord.get_all():
-            paginator.add_line(f'  `{conf.command}`: {conf.name}')
+        async with self.bot.begin_transaction() as session:
+            async for conf in ConfessionRecord.get_all(session):
+                paginator.add_line(f'  `{conf.command}`: {conf.name}')
 
         for page in paginator:
             await utils.send_embed(ctx, description=page)
@@ -368,7 +375,7 @@ class Confession(ConfessionBase):
         /,
     ) -> None:
         paginator = EmbedPaginator()
-        getter: Callable[[], AsyncIterator[Any]] | None = None
+        getter: Callable[[AsyncSession], AsyncIterator[Any]] | None = None
         number_key: str | None = None
         title_key: str | None = None
 
@@ -382,13 +389,15 @@ class Confession(ConfessionBase):
             title_key = 'title'
 
         format_number = _number_formatters[confession.numbering]
-        async for record in getter():
-            paginator.add_line(
-                '**{number}**. {title}'.format(
-                    number=format_number(getattr(record, number_key)),
-                    title=getattr(record, title_key),
+
+        async with self.bot.begin_transaction() as session:
+            async for record in getter(session):
+                paginator.add_line(
+                    '**{number}**. {title}'.format(
+                        number=format_number(getattr(record, number_key)),
+                        title=getattr(record, title_key),
+                    )
                 )
-            )
 
         for index, page in enumerate(paginator):
             await utils.send_embed(
@@ -403,7 +412,9 @@ class Confession(ConfessionBase):
         confession: ConfessionRecord,
         /,
     ) -> None:
-        count = await confession.get_question_count()
+        async with self.bot.begin_transaction() as session:
+            count = await confession.get_question_count(session)
+
         question_str = _pluralizers[ConfessionTypeEnum.QA](count)
 
         await utils.send_embed(
@@ -419,18 +430,17 @@ class Confession(ConfessionBase):
     ) -> None:
         if confession.type == ConfessionTypeEnum.CHAPTERS:
             search_func: Callable[
-                [Sequence[str]], AsyncIterator[ConfessionSearchResult]
+                [AsyncSession, Sequence[str]], AsyncIterator[ConfessionSearchResult]
             ] = confession.search_paragraphs
         elif confession.type == ConfessionTypeEnum.ARTICLES:
             search_func = confession.search_articles
         else:  # ConfessionTypeEnum.QA
             search_func = confession.search_questions
 
-        source = ConfessionSearchSource(
-            [result async for result in search_func(terms)],
-            type=confession.type,
-            per_page=20,
-        )
+        async with self.bot.begin_transaction() as session:
+            results = [result async for result in search_func(session, terms)]
+
+        source = ConfessionSearchSource(results, type=confession.type, per_page=20)
         pages = ContextUIPages(source, ctx=ctx)
         await pages.start()
 
@@ -444,7 +454,8 @@ class Confession(ConfessionBase):
         paginator = EmbedPaginator()
         get_output = _output_getters[confession.type]
 
-        title, output = await get_output(confession, match)
+        async with self.bot.begin_transaction() as session:
+            title, output = await get_output(session, confession, match)
 
         if output:
             paginator.add_line(output)
@@ -488,42 +499,43 @@ class ConfessionAppCommands(  # type: ignore
     async def cog_load(self) -> None:
         self.__confession_info = {}
 
-        async for confession in ConfessionRecord.get_all():
-            format_number = _number_formatters[confession.numbering]
-            match confession.type:
-                case ConfessionTypeEnum.CHAPTERS:
-                    section_info = [
-                        _create_section_info(
-                            f'{format_number(paragraph.chapter_number)}.'
-                            f'{format_number(paragraph.paragraph_number)}',
-                            paragraph.chapter.chapter_title,
-                        )
-                        async for paragraph in confession.get_paragraphs()
-                    ]
-                case ConfessionTypeEnum.ARTICLES:
-                    section_info = [
-                        _create_section_info(
-                            format_number(article.article_number), article.title
-                        )
-                        async for article in confession.get_articles()
-                    ]
-                case ConfessionTypeEnum.QA:
-                    section_info = [
-                        _create_section_info(
-                            format_number(question.question_number),
-                            question.question_text,
-                        )
-                        async for question in confession.get_questions()
-                    ]
+        async with self.bot.begin_transaction() as session:
+            async for confession in ConfessionRecord.get_all(session):
+                format_number = _number_formatters[confession.numbering]
+                match confession.type:
+                    case ConfessionTypeEnum.CHAPTERS:
+                        section_info = [
+                            _create_section_info(
+                                f'{format_number(paragraph.chapter_number)}.'
+                                f'{format_number(paragraph.paragraph_number)}',
+                                paragraph.chapter.chapter_title,
+                            )
+                            async for paragraph in confession.get_paragraphs(session)
+                        ]
+                    case ConfessionTypeEnum.ARTICLES:
+                        section_info = [
+                            _create_section_info(
+                                format_number(article.article_number), article.title
+                            )
+                            async for article in confession.get_articles(session)
+                        ]
+                    case ConfessionTypeEnum.QA:
+                        section_info = [
+                            _create_section_info(
+                                format_number(question.question_number),
+                                question.question_text,
+                            )
+                            async for question in confession.get_questions(session)
+                        ]
 
-            self.__confession_info[confession.command] = _ConfessionInfo(
-                command=confession.command,
-                command_lower=confession.command.lower(),
-                name=confession.name,
-                name_lower=confession.name.lower(),
-                type=confession.type,
-                section_info=section_info,
-            )
+                self.__confession_info[confession.command] = _ConfessionInfo(
+                    command=confession.command,
+                    command_lower=confession.command.lower(),
+                    name=confession.name,
+                    name_lower=confession.name.lower(),
+                    type=confession.type,
+                    section_info=section_info,
+                )
 
     async def __source_autocomplete(
         self,
@@ -582,20 +594,26 @@ class ConfessionAppCommands(  # type: ignore
     ) -> None:
         '''Search for terms in a confession or catechism'''
 
-        confession = await ConfessionRecord.get_by_command(source)
+        async with self.bot.begin_transaction() as session:
+            confession = await ConfessionRecord.get_by_command(session, source)
 
-        match confession.type:
-            case ConfessionTypeEnum.CHAPTERS:
-                search_func: Callable[
-                    [Sequence[str]], AsyncIterator[ConfessionSearchResult]
-                ] = confession.search_paragraphs
-            case ConfessionTypeEnum.ARTICLES:
-                search_func = confession.search_articles
-            case ConfessionTypeEnum.QA:
-                search_func = confession.search_questions
+            match confession.type:
+                case ConfessionTypeEnum.CHAPTERS:
+                    search_func: Callable[
+                        [AsyncSession, Sequence[str]],
+                        AsyncIterator[ConfessionSearchResult],
+                    ] = confession.search_paragraphs
+                case ConfessionTypeEnum.ARTICLES:
+                    search_func = confession.search_articles
+                case ConfessionTypeEnum.QA:
+                    search_func = confession.search_questions
+
+            results = [
+                result async for result in search_func(session, terms.split(' '))
+            ]
 
         search_source = ConfessionSearchSource(
-            [result async for result in search_func(terms.split(' '))],
+            results,
             type=confession.type,
             per_page=20,
         )
@@ -617,19 +635,20 @@ class ConfessionAppCommands(  # type: ignore
     ) -> None:
         '''Cite a section from a confession or catechism'''
 
-        confession = await ConfessionRecord.get_by_command(source)
-        match = _reference_res[confession.type].match(section)
+        async with self.bot.begin_transaction() as session:
+            confession = await ConfessionRecord.get_by_command(session, source)
+            match = _reference_res[confession.type].match(section)
 
-        if match is None:
-            await utils.send_embed_error(
-                interaction, description='Section is not formatted correctly'
-            )
-            return
+            if match is None:
+                await utils.send_embed_error(
+                    interaction, description='Section is not formatted correctly'
+                )
+                return
 
-        paginator = EmbedPaginator()
+            paginator = EmbedPaginator()
 
-        get_output = _output_getters[confession.type]
-        title, output = await get_output(confession, match)
+            get_output = _output_getters[confession.type]
+            title, output = await get_output(session, confession, match)
 
         if output:
             paginator.add_line(output)

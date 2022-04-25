@@ -1,11 +1,26 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator, Sequence
+from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, cast
+
+from sqlalchemy import (
+    Column,
+    Enum as _SAEnum,
+    ForeignKey,
+    Integer,
+    String,
+    Text,
+    asc,
+    func,
+    select,
+    text,
+)
+from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import relationship
 
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
-from .base import Base, db
+from .base import mapper_registry
 
 
 class ConfessionTypeEnum(Enum):
@@ -17,11 +32,18 @@ class ConfessionTypeEnum(Enum):
         return '<%s.%s>' % (self.__class__.__name__, self.name)
 
 
-class ConfessionType(Base):
+@mapper_registry.mapped
+@dataclass
+class ConfessionType:
     __tablename__ = 'confession_types'
+    __sa_dataclass_metadata_key__ = 'sa'
 
-    id = db.Column(db.Integer, primary_key=True)
-    value = db.Column(db.Enum(ConfessionTypeEnum), unique=True, nullable=False)
+    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
+    value: ConfessionTypeEnum = field(
+        metadata={
+            'sa': Column(_SAEnum(ConfessionTypeEnum), unique=True, nullable=False)
+        }
+    )
 
 
 class NumberingTypeEnum(Enum):
@@ -32,274 +54,344 @@ class NumberingTypeEnum(Enum):
         return '<%s.%s>' % (self.__class__.__name__, self.name)
 
 
-class ConfessionNumberingType(Base):
+@mapper_registry.mapped
+@dataclass
+class ConfessionNumberingType:
     __tablename__ = 'confession_numbering_types'
+    __sa_dataclass_metadata_key__ = 'sa'
 
-    id = db.Column(db.Integer, primary_key=True)
-    numbering = db.Column(db.Enum(NumberingTypeEnum), unique=True, nullable=False)
+    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
+    numbering: NumberingTypeEnum = field(
+        metadata={'sa': Column(_SAEnum(NumberingTypeEnum), unique=True, nullable=False)}
+    )
 
 
-class Chapter(Base):
+@mapper_registry.mapped
+@dataclass
+class Chapter:
     __tablename__ = 'confession_chapters'
+    __sa_dataclass_metadata_key__ = 'sa'
 
-    id = db.Column(db.Integer, primary_key=True)
-    confess_id = db.Column(db.Integer, db.ForeignKey('confessions.id'), nullable=False)
-    chapter_number = db.Column(db.Integer, nullable=False)
-    chapter_title = db.Column(db.String, nullable=False)
+    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
+    confess_id: int = field(
+        metadata={'sa': Column(Integer, ForeignKey('confessions.id'), nullable=False)}
+    )
+    chapter_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
+    chapter_title: str = field(metadata={'sa': Column(String, nullable=False)})
 
 
-class Paragraph(Base):
-    chapter: Chapter
-
+@mapper_registry.mapped
+@dataclass
+class Paragraph:
     __tablename__ = 'confession_paragraphs'
+    __sa_dataclass_metadata_key__ = 'sa'
 
-    id = db.Column(db.Integer, primary_key=True)
-    confess_id = db.Column(db.Integer, db.ForeignKey('confessions.id'), nullable=False)
-    chapter_number = db.Column(db.Integer, nullable=False)
-    paragraph_number = db.Column(db.Integer, nullable=False)
-    text = db.Column(db.Text, nullable=False)
+    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
+    confess_id: int = field(
+        metadata={'sa': Column(Integer, ForeignKey('confessions.id'), nullable=False)}
+    )
+    chapter_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
+    paragraph_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
+    text: str = field(metadata={'sa': Column(Text, nullable=False)})
+
+    chapter: Chapter = field(
+        metadata={
+            'sa': relationship(
+                'Chapter',
+                lazy='joined',
+                primaryjoin='and_('
+                'Paragraph.chapter_number == foreign(Chapter.chapter_number),'
+                'Paragraph.confess_id == foreign(Chapter.confess_id))',
+                uselist=False,
+            )
+        }
+    )
 
 
-class Question(Base):
+@mapper_registry.mapped
+@dataclass
+class Question:
     __tablename__ = 'confession_questions'
+    __sa_dataclass_metadata_key__ = 'sa'
 
-    id = db.Column(db.Integer, primary_key=True)
-    confess_id = db.Column(db.Integer, db.ForeignKey('confessions.id'), nullable=False)
-    question_number = db.Column(db.Integer, nullable=False)
-    question_text = db.Column(db.Text, nullable=False)
-    answer_text = db.Column(db.Text, nullable=False)
+    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
+    confess_id: int = field(
+        metadata={'sa': Column(Integer, ForeignKey('confessions.id'), nullable=False)}
+    )
+    question_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
+    question_text: str = field(metadata={'sa': Column(Text, nullable=False)})
+    answer_text: str = field(metadata={'sa': Column(Text, nullable=False)})
 
 
-class Article(Base):
+@mapper_registry.mapped
+@dataclass
+class Article:
     __tablename__ = 'confession_articles'
+    __sa_dataclass_metadata_key__ = 'sa'
 
-    id = db.Column(db.Integer, primary_key=True)
-    confess_id = db.Column(db.Integer, db.ForeignKey('confessions.id'), nullable=False)
-    article_number = db.Column(db.Integer, nullable=False)
-    title = db.Column(db.Text, nullable=False)
-    text = db.Column(db.Text, nullable=False)
+    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
+    confess_id: int = field(
+        metadata={'sa': Column(Integer, ForeignKey('confessions.id'), nullable=False)}
+    )
+    article_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
+    title: str = field(metadata={'sa': Column(Text, nullable=False)})
+    text: str = field(metadata={'sa': Column(Text, nullable=False)})
 
 
-class Confession(Base):
+@mapper_registry.mapped
+@dataclass
+class Confession:
     __tablename__ = 'confessions'
+    __sa_dataclass_metadata_key__ = 'sa'
 
-    _type: ConfessionTypeEnum
-    _numbering: NumberingTypeEnum
-
-    id = db.Column(db.Integer, primary_key=True)
-    command = db.Column(db.String, unique=True, nullable=False)
-    name = db.Column(db.String, nullable=False)
-    type_id = db.Column(
-        db.Integer, db.ForeignKey('confession_types.id'), nullable=False
+    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
+    command: str = field(metadata={'sa': Column(String, unique=True, nullable=False)})
+    name: str = field(metadata={'sa': Column(String, nullable=False)})
+    type_id: int = field(
+        metadata={
+            'sa': Column(Integer, ForeignKey('confession_types.id'), nullable=False)
+        }
     )
-    numbering_id = db.Column(
-        db.Integer, db.ForeignKey('confession_numbering_types.id'), nullable=False
+    numbering_id: int = field(
+        metadata={
+            'sa': Column(
+                Integer, ForeignKey('confession_numbering_types.id'), nullable=False
+            )
+        }
     )
 
-    async def get_chapters(self, /) -> AsyncIterator[Chapter]:
+    _type: ConfessionType = field(
+        metadata={'sa': relationship(ConfessionType, lazy='selectin')}
+    )
+    _numbering: ConfessionNumberingType = field(
+        metadata={'sa': relationship(ConfessionNumberingType, lazy='selectin')}
+    )
+
+    async def get_chapters(self, session: AsyncSession, /) -> AsyncIterator[Chapter]:
+        result = await session.stream_scalars(
+            select(Chapter)
+            .where(Chapter.confess_id == self.id)
+            .order_by(asc(Chapter.chapter_number))
+        )
+
         count = 0
-        async with db.transaction():
-            async for chapter in Chapter.query.where(
-                Chapter.confess_id == self.id  # type: ignore
-            ).order_by(db.asc(Chapter.chapter_number)).gino.iterate():
-                count += 1
-                yield chapter
+        async for chapter in result:
+            count += 1
+            yield chapter
 
         if count == 0:
             raise NoSectionsError(self.name, 'chapters')
 
-    async def get_paragraphs(self, /) -> AsyncIterator[Paragraph]:
-        loader = Paragraph.load(
-            chapter=Chapter.on(
-                db.and_(
-                    Paragraph.chapter_number == Chapter.chapter_number,  # type: ignore
-                    Paragraph.confess_id == Chapter.confess_id,  # type: ignore
-                )
-            )
+    async def get_paragraphs(
+        self,
+        session: AsyncSession,
+        /,
+    ) -> AsyncIterator[Paragraph]:
+
+        result = await session.stream_scalars(
+            select(Paragraph)
+            .where(Paragraph.confess_id == self.id)
+            .order_by(asc(Paragraph.chapter_number), asc(Paragraph.paragraph_number))
         )
 
         count = 0
-        async with db.transaction():
-            async for paragraph in (
-                loader.query.where(Paragraph.confess_id == self.id)  # type: ignore
-                .order_by(
-                    db.asc(Paragraph.chapter_number),
-                    db.asc(Paragraph.paragraph_number),
-                )
-                .gino.iterate()
-            ):
-                count += 1
-                yield paragraph
+        async for paragraph in result:
+            count += 1
+            yield paragraph
 
         if count == 0:
             raise NoSectionsError(self.name, 'paragraphs')
 
-    async def get_paragraph(self, chapter: int, paragraph: int, /) -> Paragraph:
-        loader = Paragraph.load(
-            chapter=Chapter.on(
-                db.and_(
-                    Paragraph.chapter_number == Chapter.chapter_number,  # type: ignore
-                    Paragraph.confess_id == Chapter.confess_id,  # type: ignore
-                )
+    async def get_paragraph(
+        self,
+        session: AsyncSession,
+        chapter: int,
+        paragraph: int,
+        /,
+    ) -> Paragraph:
+        result: Paragraph | None = await (
+            await session.stream_scalars(
+                select(Paragraph)
+                .where(Paragraph.confess_id == self.id)
+                .where(Paragraph.chapter_number == chapter)
+                .where(Paragraph.paragraph_number == paragraph)
             )
-        )
+        ).first()
 
-        result = (
-            await loader.query.where(Paragraph.confess_id == self.id)  # type: ignore
-            .where(Paragraph.chapter_number == chapter)  # type: ignore
-            .where(Paragraph.paragraph_number == paragraph)  # type: ignore
-            .gino.first()
-        )
-
-        if not result:
+        if result is None:
             raise NoSectionError(self.name, f'{chapter}.{paragraph}', 'paragraph')
 
         return result
 
     async def search_paragraphs(
         self,
+        session: AsyncSession,
         terms: Sequence[str],
         /,
     ) -> AsyncIterator[Paragraph]:
-        loader = Paragraph.load(
-            chapter=Chapter.on(
-                db.and_(
-                    Paragraph.chapter_number == Chapter.chapter_number,  # type: ignore
-                    Paragraph.confess_id == Chapter.confess_id,  # type: ignore
-                )
-            )
-        )
-        async with db.transaction():
-            async for paragraph in loader.query.where(
-                Paragraph.confess_id == self.id  # type: ignore
-            ).where(
-                db.func.to_tsvector(
-                    'english', Chapter.chapter_title + db.text("' '") + Paragraph.text
+        result = await session.stream_scalars(
+            select(Paragraph)
+            .where(Paragraph.confess_id == self.id)
+            .where(
+                func.to_tsvector(
+                    'english',
+                    Chapter.chapter_title
+                    + text("' '")  # type: ignore
+                    + Paragraph.text,
                 ).match(' & '.join(terms))
-            ).order_by(
-                db.asc(Paragraph.chapter_number)
-            ).gino.iterate():
-                yield paragraph
-
-    async def get_questions(self, /) -> AsyncIterator[Question]:
-        async with db.transaction():
-            async for question in Question.query.where(
-                Question.confess_id == self.id  # type: ignore
-            ).order_by(db.asc(Question.question_number)).gino.iterate():
-                yield question
-
-    async def get_question_count(self, /) -> int:
-        return cast(
-            int,
-            await db.scalar(  # type: ignore
-                db.select([db.func.count(Question.id)]).where(
-                    Question.confess_id == self.id  # type: ignore
-                )
-            ),
+            )
+            .order_by(asc(Paragraph.chapter_number))
         )
 
-    async def get_question(self, question_number: int, /) -> Question:
-        question = (
-            await Question.query.where(Question.confess_id == self.id)  # type: ignore
-            .where(Question.question_number == question_number)  # type: ignore
-            .gino.first()
+        async for paragraph in result:
+            yield paragraph
+
+    async def get_questions(self, session: AsyncSession, /) -> AsyncIterator[Question]:
+        result = await session.stream_scalars(
+            select(Question)
+            .where(Question.confess_id == self.id)
+            .order_by(asc(Question.question_number))
         )
 
-        if not question:
+        async for question in result:
+            yield question
+
+    async def get_question_count(self, session: AsyncSession, /) -> int:
+        return await session.scalar(
+            select([func.count(Question.id)]).where(Question.confess_id == self.id)
+        )
+        # return cast(
+        #     int,
+        #     await db.scalar(  # type: ignore
+        #         db.select([db.func.count(Question.id)]).where(
+        #             Question.confess_id == self.id  # type: ignore
+        #         )
+        #     ),
+        # )
+
+    async def get_question(
+        self,
+        session: AsyncSession,
+        question_number: int,
+        /,
+    ) -> Question:
+        question: Question | None = await (
+            await session.stream_scalars(
+                select(Question)
+                .where(Question.confess_id == self.id)
+                .where(Question.question_number == question_number)
+            )
+        ).first()
+
+        if question is None:
             raise NoSectionError(self.name, f'{question_number}', 'question')
 
         return question
 
     async def search_questions(
         self,
+        session: AsyncSession,
         terms: Sequence[str],
         /,
     ) -> AsyncIterator[Question]:
-        async with db.transaction():
-            async for question in Question.query.where(
-                Question.confess_id == self.id  # type: ignore
-            ).where(
-                db.func.to_tsvector(
+        result = await session.stream_scalars(
+            select(Question)
+            .where(Question.confess_id == self.id)
+            .where(
+                func.to_tsvector(
                     'english',
-                    Question.question_text + db.text("' '") + Question.answer_text,
+                    Question.question_text
+                    + text("' '")  # type: ignore
+                    + Question.answer_text,
                 ).match(' & '.join(terms))
-            ).order_by(
-                db.asc(Question.question_number)
-            ).gino.iterate():
-                yield question
+            )
+            .order_by(asc(Question.question_number))
+        )
 
-    async def get_articles(self, /) -> AsyncIterator[Article]:
+        async for question in result:
+            yield question
+
+    async def get_articles(self, session: AsyncSession, /) -> AsyncIterator[Article]:
+        result = await session.stream_scalars(
+            select(Article)
+            .where(Article.confess_id == self.id)
+            .order_by(asc(Article.article_number))
+        )
+
         count = 0
-        async with db.transaction():
-            async for article in Article.query.where(
-                Article.confess_id == self.id  # type: ignore
-            ).order_by(db.asc(Article.article_number)).gino.iterate():
-                count += 1
-                yield article
+        async for article in result:
+            count += 1
+            yield article
 
         if count == 0:
             raise NoSectionsError(self.name, 'articles')
 
-    async def get_article(self, article_number: int, /) -> Article:
-        article = (
-            await Article.query.where(Article.confess_id == self.id)  # type: ignore
-            .where(Article.article_number == article_number)  # type: ignore
-            .gino.first()
-        )
+    async def get_article(
+        self,
+        session: AsyncSession,
+        article_number: int,
+        /,
+    ) -> Article:
+        article: Article | None = await (
+            await session.stream_scalars(
+                select(Article)
+                .where(Article.confess_id == self.id)
+                .where(Article.article_number == article_number)
+            )
+        ).first()
 
-        if not article:
+        if article is None:
             raise NoSectionError(self.name, f'{article_number}', 'article')
 
         return article
 
-    async def search_articles(self, terms: Sequence[str], /) -> AsyncIterator[Article]:
-        async with db.transaction():
-            async for article in Article.query.where(
-                Article.confess_id == self.id  # type: ignore
-            ).where(
-                db.func.to_tsvector(
-                    'english', Article.title + db.text("' '") + Article.text
+    async def search_articles(
+        self,
+        session: AsyncSession,
+        terms: Sequence[str],
+        /,
+    ) -> AsyncIterator[Article]:
+        result = await session.stream_scalars(
+            select(Article)
+            .where(Article.confess_id == self.id)
+            .where(
+                func.to_tsvector(
+                    'english',
+                    Article.title + text("' '") + Article.text,  # type: ignore
                 ).match(' & '.join(terms))
-            ).order_by(
-                db.asc(Article.article_number)
-            ).gino.iterate():
-                yield article
+            )
+            .order_by(asc(Article.article_number))
+        )
+
+        async for article in result:
+            yield article
 
     @property
     def type(self, /) -> ConfessionTypeEnum:
-        return self._type
-
-    @type.setter
-    def type(self, value: ConfessionType, /) -> None:
-        self._type = cast(Any, value.value)
+        return self._type.value
 
     @property
     def numbering(self, /) -> NumberingTypeEnum:
-        return self._numbering
-
-    @numbering.setter
-    def numbering(self, value: ConfessionNumberingType, /) -> None:
-        self._numbering = cast(Any, value.numbering)
+        return self._numbering.numbering
 
     @staticmethod
-    async def get_all() -> AsyncIterator[Confession]:
-        async with db.transaction():
-            async for confession in Confession.load(
-                type=ConfessionType, numbering=ConfessionNumberingType
-            ).query.order_by(db.asc(Confession.command)).gino.iterate():
-                yield confession
-
-    @staticmethod
-    async def get_by_command(command: str, /) -> Confession:
-        c = (
-            await Confession.load(
-                type=ConfessionType, numbering=ConfessionNumberingType
-            )
-            .query.where(Confession.command == command.lower())  # type: ignore
-            .gino.first()
+    async def get_all(session: AsyncSession, /) -> AsyncIterator[Confession]:
+        result = await session.stream_scalars(
+            select(Confession).order_by(asc(Confession.command))
         )
 
-        if not c:
+        async for confession in result:
+            yield confession
+
+    @staticmethod
+    async def get_by_command(session: AsyncSession, command: str, /) -> Confession:
+        c: Confession | None = await (
+            await session.stream_scalars(
+                select(Confession).where(Confession.command == command.lower())
+            )
+        ).first()
+
+        if c is None:
             raise InvalidConfessionError(command)
 
         return c

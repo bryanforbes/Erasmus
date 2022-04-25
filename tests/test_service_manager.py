@@ -9,8 +9,8 @@ import pytest_mock
 
 from erasmus.data import Passage, SearchResults, VerseRange
 from erasmus.exceptions import ServiceLookupTimeout, ServiceSearchTimeout
-from erasmus.protocols import Bible, Service
 from erasmus.service_manager import ServiceManager
+from erasmus.types import Bible, Service
 
 
 class MockService(object):
