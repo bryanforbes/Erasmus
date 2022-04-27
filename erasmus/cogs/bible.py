@@ -5,7 +5,7 @@ from typing import Any, Final, cast
 from typing_extensions import Self
 
 import discord
-from asyncpg.exceptions import UniqueViolationError  # type: ignore
+from asyncpg.exceptions import UniqueViolationError
 from attrs import define
 from botus_receptus import Cog, checks, formatting, utils
 from botus_receptus.app_commands import admin_guild_only

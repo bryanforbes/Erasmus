@@ -4,6 +4,7 @@ from collections.abc import AsyncIterator
 from dataclasses import dataclass, field
 
 import discord
+from botus_receptus.sqlalchemy import Snowflake
 from sqlalchemy import (
     BigInteger,
     Boolean,
@@ -21,7 +22,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship
 
 from ..exceptions import InvalidVersionError
-from .base import Snowflake, mapper_registry
+from .base import mapper_registry
 
 
 @mapper_registry.mapped

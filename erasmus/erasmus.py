@@ -6,12 +6,11 @@ from typing import TYPE_CHECKING, Any, Final, cast
 import discord
 import discord.http
 import pendulum
-from botus_receptus import exceptions, formatting, topgg, utils
+from botus_receptus import exceptions, formatting, sqlalchemy as sa, topgg, utils
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
 from discord import app_commands
 from discord.ext import commands
 from pendulum.period import Period
-from sqlalchemy.ext.asyncio import create_async_engine
 
 from .config import Config
 from .db import Session
@@ -42,7 +41,7 @@ You can look up all verses in a message one of two ways:
 discord.http._set_api_version(9)
 
 
-class Erasmus(topgg.AutoShardedBot):
+class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     config: Config
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
@@ -61,7 +60,7 @@ class Erasmus(topgg.AutoShardedBot):
             roles=False, everyone=False, users=True
         )
 
-        super().__init__(config, *args, **kwargs)
+        super().__init__(config, *args, sessionmaker=Session, **kwargs)
 
         self.tree.error(self.on_app_command_error)
 
@@ -71,8 +70,6 @@ class Erasmus(topgg.AutoShardedBot):
 
     async def setup_hook(self) -> None:
         await super().setup_hook()
-
-        Session.configure(bind=create_async_engine(self.config.get('db_url', '')))
 
         for extension in _extensions:
             try:

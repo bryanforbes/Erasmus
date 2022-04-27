@@ -101,6 +101,26 @@ docs = ["Sphinx (>=4.1.2,<4.2.0)", "sphinxcontrib-asyncio (>=0.3.0,<0.4.0)", "sp
 test = ["pycodestyle (>=2.7.0,<2.8.0)", "flake8 (>=3.9.2,<3.10.0)", "uvloop (>=0.15.3)"]
 
 [[package]]
+name = "asyncpg-stubs"
+version = "0.25.0"
+description = "asyncpg stubs"
+category = "dev"
+optional = false
+python-versions = "^3.7"
+develop = false
+
+[package.dependencies]
+asyncpg = "^0.25.0"
+mypy = ">=0.940"
+typing-extensions = "^4.2.0"
+
+[package.source]
+type = "git"
+url = "https://github.com/bryanforbes/asyncpg-stubs.git"
+reference = "253be10ba1bba6ebd5ba3f941994573f2ea8ce40"
+resolved_reference = "253be10ba1bba6ebd5ba3f941994573f2ea8ce40"
+
+[[package]]
 name = "atomicwrites"
 version = "1.4.0"
 description = "Atomic file writes."
@@ -160,7 +180,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "botus-receptus"
-version = "2.0.0dev30"
+version = "2.0.0dev33"
 description = ""
 category = "main"
 optional = false
@@ -170,25 +190,28 @@ develop = false
 [package.dependencies]
 aioitertools = "^0.10.0"
 async-timeout = "~4.0.0"
+asyncpg = {version = ">=0.25.0", optional = true}
 attrs = ">=21.4.0"
 click = ">=8.0"
 "discord.py" = {git = "https://github.com/Rapptz/discord.py", branch = "master"}
+greenlet = {version = "^1.1.2", optional = true}
 pendulum = "~2.1.2"
+sqlalchemy = {version = "~1.4", optional = true}
 tomli = "^2.0.1"
 typing_extensions = "~4.2.0"
 uvloop = {version = "~0.16.0", optional = true}
 
 [package.extras]
-db = ["asyncpg (>=0.22.0)"]
-dev = ["asyncpg (>=0.22.0)", "gino (>=1.0.1,<2.0.0)", "uvloop (>=0.16.0,<0.17.0)"]
-gino = ["gino (>=1.0.1,<2.0.0)"]
+db = ["asyncpg (>=0.25.0)"]
+dev = ["asyncpg (>=0.25.0)", "sqlalchemy (>=1.4,<1.5)", "greenlet (>=1.1.2,<2.0.0)", "uvloop (>=0.16.0,<0.17.0)"]
+sqlalchemy = ["sqlalchemy (>=1.4,<1.5)", "asyncpg (>=0.25.0)", "greenlet (>=1.1.2,<2.0.0)"]
 uvloop = ["uvloop (>=0.16.0,<0.17.0)"]
 
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "e2eb19d6dc0eb732a697922e4f35945c57e2f26d"
-resolved_reference = "e2eb19d6dc0eb732a697922e4f35945c57e2f26d"
+reference = "feature/sqlalchemy-2.0"
+resolved_reference = "0d8a6b73b8ff4636369d936b2ef7da9bad1f1b71"
 
 [[package]]
 name = "cchardet"
@@ -274,7 +297,7 @@ toml = ["tomli"]
 
 [[package]]
 name = "discord.py"
-version = "2.0.0a4171+g5c2431d5"
+version = "2.0.0a4173+ge198a0e7"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -294,7 +317,7 @@ voice = ["PyNaCl (>=1.3.0,<1.6)"]
 type = "git"
 url = "https://github.com/Rapptz/discord.py"
 reference = "master"
-resolved_reference = "5c2431d5435d8a921a83cc05de29968f22a777ef"
+resolved_reference = "e198a0e7e6df58bdfcba1cdbf31345ed67c5f10e"
 
 [[package]]
 name = "distlib"
@@ -856,7 +879,6 @@ optional = false
 python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*,>=2.7"
 
 [package.dependencies]
-asyncpg = {version = "*", optional = true, markers = "python_version >= \"3\" and extra == \"postgresql_asyncpg\""}
 greenlet = {version = "!=0.4.17", markers = "python_version >= \"3\" and (platform_machine == \"aarch64\" or platform_machine == \"ppc64le\" or platform_machine == \"x86_64\" or platform_machine == \"amd64\" or platform_machine == \"AMD64\" or platform_machine == \"win32\" or platform_machine == \"WIN32\")"}
 
 [package.extras]
@@ -991,7 +1013,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "34e22c8fde065203fced52c9d76f91f070be617962f9ae02ae5919e8f379dbe2"
+content-hash = "4b1728beb76164dff3eca7add87f99b97557bf21f169665bc3551aa52ae6ff4b"
 
 [metadata.files]
 aiodns = [
@@ -1124,6 +1146,7 @@ asyncpg = [
     {file = "asyncpg-0.25.0-cp39-cp39-win_amd64.whl", hash = "sha256:649e2966d98cc48d0646d9a4e29abecd8b59d38d55c256d5c857f6b27b7407ac"},
     {file = "asyncpg-0.25.0.tar.gz", hash = "sha256:63f8e6a69733b285497c2855464a34de657f2cccd25aeaeeb5071872e9382540"},
 ]
+asyncpg-stubs = []
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
     {file = "atomicwrites-1.4.0.tar.gz", hash = "sha256:ae70396ad1a434f9c7046fd2dd196fc04b12f9e91ffb859164193be8b6168a7a"},
