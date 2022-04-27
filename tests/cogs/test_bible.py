@@ -25,7 +25,6 @@ def mock_bot(mocker: MockerFixture) -> Mock:
     bot = mocker.Mock()
     bot.config = mocker.Mock()
     bot.session = mocker.Mock()
-    bot.begin_transaction = mocker.Mock()
 
     return bot
 
