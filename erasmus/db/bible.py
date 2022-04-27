@@ -61,7 +61,7 @@ class BibleVersion:
         /,
     ) -> None:
         await session.execute(
-            insert(UserPref)
+            insert(GuildPref)
             .values(guild_id=guild.id, bible_id=self.id)
             .on_conflict_do_update(
                 index_elements=['guild_id'], set_={'bible_id': self.id}
