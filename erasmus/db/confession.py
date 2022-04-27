@@ -110,6 +110,7 @@ class Paragraph:
     text: str = field(metadata={'sa': Column(Text, nullable=False)})
 
     chapter: Chapter = field(
+        init=False,
         metadata={
             'sa': relationship(
                 'Chapter',
@@ -119,7 +120,7 @@ class Paragraph:
                 'Paragraph.confess_id == foreign(Chapter.confess_id))',
                 uselist=False,
             )
-        }
+        },
     )
 
 
@@ -245,6 +246,7 @@ class Confession:
     ) -> AsyncIterator[Paragraph]:
         result = await session.stream_scalars(
             select(Paragraph)
+            .join(Chapter, Paragraph.chapter)
             .where(Paragraph.confess_id == self.id)
             .where(_search_columns(Chapter.chapter_title, Paragraph.text, terms))
             .order_by(asc(Paragraph.chapter_number))
