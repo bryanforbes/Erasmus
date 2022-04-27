@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from .base import Session, mapper_registry
+from .base import Session
 from .bible import BibleVersion, GuildPref, UserPref
 from .confession import (
     Article,
@@ -15,7 +15,6 @@ from .confession import (
 )
 
 __all__ = (
-    'mapper_registry',
     'Session',
     'BibleVersion',
     'GuildPref',
