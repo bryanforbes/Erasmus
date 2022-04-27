@@ -22,10 +22,10 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship
 
 from ..exceptions import InvalidVersionError
-from .base import mapper_registry
+from .base import mapped
 
 
-@mapper_registry.mapped
+@mapped
 @dataclass
 class BibleVersion:
     __tablename__ = 'bible_versions'
@@ -150,31 +150,31 @@ class BibleVersion:
         return await BibleVersion.get_by_command(session, 'esv')
 
 
-@mapper_registry.mapped
 @dataclass
-class UserPref:
-    __tablename__ = 'user_prefs'
+class _BibleVersionMixin:
     __sa_dataclass_metadata_key__ = 'sa'
+
+    bible_id: int | None = field(
+        metadata={'sa': lambda: Column(Integer, ForeignKey('bible_versions.id'))}
+    )
+    bible_version: BibleVersion | None = field(
+        metadata={
+            'sa': lambda: relationship(BibleVersion, lazy='joined')  # type: ignore
+        }
+    )
+
+
+@mapped
+@dataclass
+class UserPref(_BibleVersionMixin):
+    __tablename__ = 'user_prefs'
 
     user_id: int = field(metadata={'sa': Column(Snowflake, primary_key=True)})
-    bible_id: int | None = field(
-        metadata={'sa': Column(Integer, ForeignKey('bible_versions.id'))}
-    )
-    bible_version: BibleVersion | None = field(
-        metadata={'sa': relationship('BibleVersion', lazy='joined')}
-    )
 
 
-@mapper_registry.mapped
+@mapped
 @dataclass
-class GuildPref:
+class GuildPref(_BibleVersionMixin):
     __tablename__ = 'guild_prefs'
-    __sa_dataclass_metadata_key__ = 'sa'
 
     guild_id: int = field(metadata={'sa': Column(Snowflake, primary_key=True)})
-    bible_id: int | None = field(
-        metadata={'sa': Column(Integer, ForeignKey('bible_versions.id'))}
-    )
-    bible_version: BibleVersion | None = field(
-        metadata={'sa': relationship('BibleVersion', lazy='joined')}
-    )

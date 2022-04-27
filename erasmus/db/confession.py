@@ -23,7 +23,7 @@ from sqlalchemy.orm import relationship
 from sqlalchemy.sql import ColumnElement
 
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
-from .base import mapper_registry
+from .base import mapped
 
 
 def _search_columns(
@@ -47,7 +47,7 @@ class ConfessionTypeEnum(Enum):
         return '<%s.%s>' % (self.__class__.__name__, self.name)
 
 
-@mapper_registry.mapped
+@mapped
 @dataclass
 class ConfessionType:
     __tablename__ = 'confession_types'
@@ -69,7 +69,7 @@ class NumberingTypeEnum(Enum):
         return '<%s.%s>' % (self.__class__.__name__, self.name)
 
 
-@mapper_registry.mapped
+@mapped
 @dataclass
 class ConfessionNumberingType:
     __tablename__ = 'confession_numbering_types'
@@ -81,30 +81,33 @@ class ConfessionNumberingType:
     )
 
 
-@mapper_registry.mapped
 @dataclass
-class Chapter:
-    __tablename__ = 'confession_chapters'
+class _ConfessionChildMixin:
     __sa_dataclass_metadata_key__ = 'sa'
 
-    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
     confess_id: int = field(
-        metadata={'sa': Column(Integer, ForeignKey('confessions.id'), nullable=False)}
+        metadata={
+            'sa': lambda: Column(Integer, ForeignKey('confessions.id'), nullable=False)
+        }
     )
+
+
+@mapped
+@dataclass
+class Chapter(_ConfessionChildMixin):
+    __tablename__ = 'confession_chapters'
+
+    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
     chapter_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
     chapter_title: str = field(metadata={'sa': Column(String, nullable=False)})
 
 
-@mapper_registry.mapped
+@mapped
 @dataclass
-class Paragraph:
+class Paragraph(_ConfessionChildMixin):
     __tablename__ = 'confession_paragraphs'
-    __sa_dataclass_metadata_key__ = 'sa'
 
     id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
-    confess_id: int = field(
-        metadata={'sa': Column(Integer, ForeignKey('confessions.id'), nullable=False)}
-    )
     chapter_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
     paragraph_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
     text: str = field(metadata={'sa': Column(Text, nullable=False)})
@@ -124,37 +127,29 @@ class Paragraph:
     )
 
 
-@mapper_registry.mapped
+@mapped
 @dataclass
-class Question:
+class Question(_ConfessionChildMixin):
     __tablename__ = 'confession_questions'
-    __sa_dataclass_metadata_key__ = 'sa'
 
     id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
-    confess_id: int = field(
-        metadata={'sa': Column(Integer, ForeignKey('confessions.id'), nullable=False)}
-    )
     question_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
     question_text: str = field(metadata={'sa': Column(Text, nullable=False)})
     answer_text: str = field(metadata={'sa': Column(Text, nullable=False)})
 
 
-@mapper_registry.mapped
+@mapped
 @dataclass
-class Article:
+class Article(_ConfessionChildMixin):
     __tablename__ = 'confession_articles'
-    __sa_dataclass_metadata_key__ = 'sa'
 
     id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
-    confess_id: int = field(
-        metadata={'sa': Column(Integer, ForeignKey('confessions.id'), nullable=False)}
-    )
     article_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
     title: str = field(metadata={'sa': Column(Text, nullable=False)})
     text: str = field(metadata={'sa': Column(Text, nullable=False)})
 
 
-@mapper_registry.mapped
+@mapped
 @dataclass
 class Confession:
     __tablename__ = 'confessions'
