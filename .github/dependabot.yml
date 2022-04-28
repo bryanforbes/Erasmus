@@ -6,7 +6,7 @@ updates:
       interval: "daily"
     ignore:
       - dependency-name: "sqlalchemy"
-        versions: ">=1.4.0"
+        versions: ">=1.5.0"
     open-pull-requests-limit: 10
     assignees:
       - bryanforbes
