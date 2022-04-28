@@ -17,7 +17,7 @@ beautifulsoup4 = "^4.11"
 cchardet = "^2.1"
 "botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "5a81391ae8b92c4702d5c042deddc83584895696", extras = ["uvloop", "sqlalchemy"]}
 more-itertools = "~8.12.0"
-orjson = "^3.6.7"
+orjson = "^3.6.8"
 
 [tool.poetry.dev-dependencies]
 asyncpg-stubs = {git = "https://github.com/bryanforbes/asyncpg-stubs.git", rev = "253be10ba1bba6ebd5ba3f941994573f2ea8ce40"}
