@@ -16,7 +16,7 @@ from .exceptions import (
     ServiceNotSupportedError,
     ServiceSearchTimeout,
 )
-from .protocols import Bible, Service
+from .types import Bible, Service
 
 _log: Final = logging.getLogger(__name__)
 

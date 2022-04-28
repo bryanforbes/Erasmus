@@ -13,7 +13,7 @@ from yarl import URL
 from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import BookNotInVersionError, DoNotUnderstandError
 from ..json import get
-from ..protocols import Bible
+from ..types import Bible
 from .base_service import BaseService
 
 _img_re: Final = re.compile('src="', re.named_group('src')('[^"]+'), '"')

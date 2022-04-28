@@ -11,7 +11,7 @@ from yarl import URL
 
 from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import DoNotUnderstandError
-from ..protocols import Bible
+from ..types import Bible
 from .base_service import BaseService
 
 _number_re: Final = re.compile(re.capture(re.one_or_more(re.DIGITS), re.DOT))

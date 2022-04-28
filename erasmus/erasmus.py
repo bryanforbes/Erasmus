@@ -6,14 +6,14 @@ from typing import TYPE_CHECKING, Any, Final, cast
 import discord
 import discord.http
 import pendulum
-from botus_receptus import exceptions, formatting, gino, topgg, utils
+from botus_receptus import exceptions, formatting, sqlalchemy as sa, topgg, utils
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
 from discord import app_commands
 from discord.ext import commands
 from pendulum.period import Period
 
 from .config import Config
-from .db import db
+from .db import Session
 from .exceptions import ErasmusError
 from .help import HelpCommand
 
@@ -41,13 +41,8 @@ You can look up all verses in a message one of two ways:
 discord.http._set_api_version(9)
 
 
-class Erasmus(
-    gino.AutoShardedBot,
-    topgg.AutoShardedBot,
-):
+class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     config: Config
-
-    db = db
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         kwargs['help_command'] = HelpCommand(
@@ -65,7 +60,7 @@ class Erasmus(
             roles=False, everyone=False, users=True
         )
 
-        super().__init__(config, *args, **kwargs)
+        super().__init__(config, *args, sessionmaker=Session, **kwargs)
 
         self.tree.error(self.on_app_command_error)
 

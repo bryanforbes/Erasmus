@@ -1,16 +1,11 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Final
+from typing import Final
 
-from botus_receptus.gino import Gino, ModelMixin
+from botus_receptus.sqlalchemy import async_sessionmaker
+from sqlalchemy.orm import registry
 
-db: Final = Gino()
+_mapper_registry: Final = registry()
 
-if TYPE_CHECKING:
-    from gino.crud import CRUDModel
-
-    class Base(CRUDModel, ModelMixin):
-        pass
-
-else:
-    Base = db.Model
+mapped: Final = _mapper_registry.mapped
+Session: Final = async_sessionmaker(expire_on_commit=False)

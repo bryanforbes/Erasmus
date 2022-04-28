@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from .base import Base, db  # noqa
-from .bible import BibleVersion, UserPref  # noqa
-from .confession import (  # noqa
+from .base import Session
+from .bible import BibleVersion, GuildPref, UserPref
+from .confession import (
     Article,
     Chapter,
     Confession,
@@ -15,9 +15,9 @@ from .confession import (  # noqa
 )
 
 __all__ = (
-    'db',
-    'Base',
+    'Session',
     'BibleVersion',
+    'GuildPref',
     'UserPref',
     'ConfessionTypeEnum',
     'ConfessionType',

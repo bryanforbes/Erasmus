@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
     from .data import VerseRange
-    from .protocols import Bible
+    from .types import Bible
 
 
 class ErasmusError(Exception):

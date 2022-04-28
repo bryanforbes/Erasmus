@@ -7,7 +7,7 @@ import pytest
 
 from erasmus.data import SearchResults, VerseRange
 from erasmus.exceptions import DoNotUnderstandError
-from erasmus.protocols import Bible, Service
+from erasmus.types import Bible, Service
 
 Galatians_3_10_11 = (
     '**10.** For as many as are of the works of the Law are under a '
