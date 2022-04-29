@@ -116,7 +116,6 @@ class TestServiceManager(object):
         assert '__all__' not in manager
         assert len(manager) == 2
 
-    @pytest.mark.asyncio
     async def test_get_passage(
         self,
         config: Any,
@@ -141,7 +140,6 @@ class TestServiceManager(object):
             bible2, VerseRange.from_string('Genesis 1:2')
         )
 
-    @pytest.mark.asyncio
     async def test_get_passage_timeout(
         self,
         bible1: Bible,
@@ -162,7 +160,6 @@ class TestServiceManager(object):
         assert exc_info.value.bible == bible1
         assert exc_info.value.verses == VerseRange.from_string('Genesis 1:2')
 
-    @pytest.mark.asyncio
     async def test_search(
         self,
         config: Any,
@@ -182,7 +179,6 @@ class TestServiceManager(object):
             bible1, ['one', 'two', 'three'], limit=10, offset=20
         )
 
-    @pytest.mark.asyncio
     async def test_search_timeout(
         self,
         bible1: Bible,

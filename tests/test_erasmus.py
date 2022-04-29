@@ -104,7 +104,6 @@ class MockContext(object):
 #         assert bot.add_command.call_args_list[5] == mocker.call(bot.versions)
 #
 #
-# @pytest.mark.asyncio
 # async def test_on_message(self, mocker, mock_send_to_author):
 #     bot = Erasmus('foo/bar/baz.json', command_prefix='~')
 #
@@ -117,7 +116,6 @@ class MockContext(object):
 #     assert bot.invoke.call_args_list == [mocker.call(message)]
 #
 #
-# @pytest.mark.asyncio
 # async def test_versions(self, mock_send_to_author):
 #     bot = Erasmus('foo/bar/baz.json', command_prefix='~')
 #
@@ -138,14 +136,12 @@ class MockContext(object):
 #     mock_send.assert_called_once_with(expected)
 #
 #
-# @pytest.mark.asyncio
 # @pytest.mark.usefixtures('mock_say')
 # async def test__version_lookup(self):
 #     bot = Erasmus('foo/bar/baz.json', command_prefix='~')
 #     ctx = MockContext(MockCommand('esv'))
 #
 #
-# @pytest.mark.asyncio
 # async def test__version_search(self, mocker):
 #     bot = Erasmus('foo/bar/baz.json', command_prefix='~')
 #     ctx = MockContext(MockCommand('sesv'))

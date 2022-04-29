@@ -66,7 +66,6 @@ def mock_send_embed(mocker: pytest_mock.MockerFixture) -> AsyncMock:
         ),
     ],
 )
-@pytest.mark.asyncio
 async def test_send_passage(
     mocker: pytest_mock.MockerFixture,
     mock_send_embed: AsyncMock,

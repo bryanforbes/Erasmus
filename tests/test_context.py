@@ -52,7 +52,6 @@ class TestContext(object):
     def string_view(self) -> StringView:
         return StringView('')
 
-    @pytest.mark.asyncio
     async def test_send_embed(
         self,
         mocker: pytest_mock.MockFixture,

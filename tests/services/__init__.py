@@ -53,7 +53,6 @@ class ServiceTest(object):
         )
 
     @pytest.mark.vcr
-    @pytest.mark.asyncio
     async def test_search(
         self,
         search_data: dict[str, Any],
@@ -64,7 +63,6 @@ class ServiceTest(object):
         assert response == SearchResults(search_data['verses'], search_data['total'])
 
     @pytest.mark.vcr
-    @pytest.mark.asyncio
     async def test_get_passage(
         self,
         passage_data: dict[str, Any],
@@ -75,7 +73,6 @@ class ServiceTest(object):
         assert response == passage_data['passage']
 
     @pytest.mark.vcr
-    @pytest.mark.asyncio
     async def test_get_passage_no_passages(
         self,
         service: Service,

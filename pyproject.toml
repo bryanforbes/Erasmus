@@ -91,10 +91,7 @@ reportImportCycles = "none"
 minversion = "6.0"
 addopts = "--cov=erasmus --cov-branch --cov-report=term -nauto --dist=loadscope"
 testpaths = ["tests"]
-filterwarnings = [
-  "ignore",
-  "always:::erasmus[.*]"
-]
+asyncio_mode = "auto"
 
 [build-system]
 requires = ["poetry_core>=1.0.0"]
