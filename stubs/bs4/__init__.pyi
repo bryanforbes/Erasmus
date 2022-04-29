@@ -1,6 +1,7 @@
+from _typeshed import SupportsRead
 from collections import Counter
 from collections.abc import Mapping
-from typing import Any, ClassVar, Protocol, TypeVar, type_check_only
+from typing import Any, ClassVar
 
 from .builder import (
     ParserRejectedMarkup as ParserRejectedMarkup,
@@ -26,12 +27,6 @@ from .element import (
     TemplateString as TemplateString,
 )
 
-_T_co = TypeVar('_T_co', covariant=True)
-
-@type_check_only
-class _FileLike(Protocol[_T_co]):
-    def read(self) -> _T_co: ...
-
 class GuessedAtParserWarning(UserWarning): ...
 class MarkupResemblesLocatorWarning(UserWarning): ...
 
@@ -54,7 +49,7 @@ class BeautifulSoup(Tag):
     string_container_stack: list[Any]
     def __init__(
         self,
-        markup: str | bytes | _FileLike[str] | _FileLike[bytes] = ...,
+        markup: str | bytes | SupportsRead[str] | SupportsRead[bytes] = ...,
         features: str | list[str] | None = ...,
         builder: TreeBuilder | type[TreeBuilder] | None = ...,
         parse_only: SoupStrainer | None = ...,
@@ -95,7 +90,7 @@ class BeautifulSoup(Tag):
     ) -> Tag | None: ...
     def handle_endtag(self, name: str, nsprefix: str | None = ...) -> None: ...
     def handle_data(self, data: Any) -> None: ...
-    def decode(
+    def decode(  # type: ignore
         self,
         pretty_print: bool = ...,
         eventual_encoding: str | None = ...,
@@ -105,7 +100,7 @@ class BeautifulSoup(Tag):
 class BeautifulStoneSoup(BeautifulSoup):
     def __init__(
         self,
-        markup: str | bytes | _FileLike[str] | _FileLike[bytes] = ...,
+        markup: str | bytes | SupportsRead[str] | SupportsRead[bytes] = ...,
         features: str | list[str] | None = ...,
         builder: TreeBuilder | None = ...,
         parse_only: SoupStrainer | None = ...,

@@ -3,10 +3,9 @@ from typing import Any, ClassVar, Literal, Protocol, type_check_only
 from .dammit import EntitySubstitution as EntitySubstitution
 from .element import Tag
 
-# TODO: remove this comment when a new version of black comes out
 @type_check_only
 class _EntitySubstitutionCallback(Protocol):
-    def __call__(self, __value: str) -> str: ...
+    def __call__(self, value: str, /) -> str: ...
 
 class Formatter(EntitySubstitution):
     XML_FORMATTERS: ClassVar[dict[str, Formatter]]

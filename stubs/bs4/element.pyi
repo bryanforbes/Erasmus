@@ -34,7 +34,7 @@ _Never = NewType('_Never', object)
 
 @type_check_only
 class _StrainerCallable(Protocol[_T_contra]):
-    def __call__(self, __markup: _T_contra) -> bool: ...
+    def __call__(self, markup: _T_contra, /) -> bool: ...
 
 _FilterBaseType: TypeAlias = str | _StrainerCallable[_T] | Pattern[Any] | _U
 _FilterIterableType: TypeAlias = Iterable[None | _T | Iterable[Any]]
@@ -84,15 +84,9 @@ class _FindOneMethod(Protocol):
     def __call__(
         self,
         *,
-        attrs: _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None,
-        text: _TagStringFilterType | None = ...,
-        string: _TagStringFilterType | None = ...,
-        **kwargs: _TagAttrFilterType | None,
-    ) -> Tag | None: ...
-    @overload
-    def __call__(  # type: ignore
-        self,
-        *,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
         text: _TagStringFilterType | None = ...,
         string: _TagStringFilterType | None = ...,
         **kwargs: _TagAttrFilterType | None,
@@ -147,16 +141,9 @@ class _FindAllMethod(Protocol):
     def __call__(
         self,
         *,
-        attrs: _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None,
-        text: _TagStringFilterType | None = ...,
-        limit: int | None = ...,
-        string: _TagStringFilterType | None = ...,
-        **kwargs: _TagAttrFilterType | None,
-    ) -> ResultSet[Tag]: ...
-    @overload
-    def __call__(  # type: ignore
-        self,
-        *,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
         text: _TagStringFilterType | None = ...,
         limit: int | None = ...,
         string: _TagStringFilterType | None = ...,
@@ -215,10 +202,10 @@ class PageElement:
     @overload
     def formatter_for_name(self, formatter: str) -> Formatter: ...
     def replace_with(self, replace_with: str | PageElement) -> Self | None: ...
-    replaceWith = replace_with  # noqa: Y026
+    replaceWith = replace_with
     def unwrap(self) -> Self: ...
-    replace_with_children = unwrap  # noqa: Y026
-    replaceWithChildren = unwrap  # noqa: Y026
+    replace_with_children = unwrap
+    replaceWithChildren = unwrap
     def wrap(self, wrap_inside: _PE) -> _PE: ...
     def extract(self, _self_index: int | None = ...) -> Self: ...
     def insert(self, position: int, new_child: PageElement) -> None: ...
@@ -253,7 +240,7 @@ class PageElement:
         | None = ...,
         **kwargs: _TagAttrFilterType,
     ) -> Tag | None: ...
-    findParent = find_parent  # noqa: Y026
+    findParent = find_parent
     def find_parents(
         self,
         name: SoupStrainer | _TagFilterType | None = ...,
@@ -263,8 +250,8 @@ class PageElement:
         limit: int | None = ...,
         **kwargs: _TagAttrFilterType,
     ) -> ResultSet[Tag]: ...
-    findParents = find_parents  # noqa: Y026
-    fetchParents = find_parents  # noqa: Y026
+    findParents = find_parents
+    fetchParents = find_parents
     @property
     def next(self) -> PageElement | None: ...
     @property
@@ -369,7 +356,7 @@ class Tag(PageElement):
     ) -> None: ...
     @property
     def is_empty_element(self) -> bool: ...
-    isSelfClosing = is_empty_element  # noqa: Y026
+    isSelfClosing = is_empty_element
     @property
     def strings(self) -> Iterator[NavigableString | CData]: ...
     @property
@@ -380,7 +367,7 @@ class Tag(PageElement):
         strip: bool = ...,
         types: Container[type[PageElement]] = ...,
     ) -> str: ...
-    getText = get_text  # noqa: Y026
+    getText = get_text
     @property
     def text(self) -> str: ...
     def decompose(self) -> None: ...
@@ -480,16 +467,9 @@ class Tag(PageElement):
     def find(
         self,
         *,
-        attrs: _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None,
-        recursive: bool = ...,
-        text: _TagStringFilterType | None = ...,
-        string: _TagStringFilterType | None = ...,
-        **kwargs: _TagAttrFilterType | None,
-    ) -> Tag | None: ...
-    @overload
-    def find(  # type: ignore
-        self,
-        *,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
         recursive: bool = ...,
         text: _TagStringFilterType | None = ...,
         string: _TagStringFilterType | None = ...,
@@ -508,7 +488,7 @@ class Tag(PageElement):
         string: _TagStringFilterType | None = ...,
         **kwargs: _TagAttrFilterType | None,
     ) -> Tag | NavigableString | None: ...
-    findChild = find  # noqa: Y026
+    findChild = find
     @overload
     def find_all(
         self,
@@ -545,17 +525,9 @@ class Tag(PageElement):
     def find_all(
         self,
         *,
-        attrs: _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None,
-        recursive: bool = ...,
-        text: _TagStringFilterType | None = ...,
-        limit: int | None = ...,
-        string: _TagStringFilterType | None = ...,
-        **kwargs: _TagAttrFilterType | None,
-    ) -> ResultSet[Tag]: ...
-    @overload
-    def find_all(  # type: ignore
-        self,
-        *,
+        attrs: _TagAttrFilterType
+        | Mapping[str, _TagAttrFilterType | None]
+        | None = ...,
         recursive: bool = ...,
         text: _TagStringFilterType | None = ...,
         limit: int | None = ...,
@@ -576,9 +548,9 @@ class Tag(PageElement):
         string: _TagStringFilterType | None = ...,
         **kwargs: _TagAttrFilterType | None,
     ) -> ResultSet[NavigableString] | ResultSet[Tag]: ...
-    findAll = find_all  # noqa: Y026
-    findChildren = find_all  # noqa: Y026
-    __call__ = find_all  # noqa: Y026
+    findAll = find_all
+    findChildren = find_all
+    __call__ = find_all
     @property
     def children(self) -> Iterator[PageElement]: ...
     @property
@@ -618,7 +590,7 @@ class SoupStrainer:
         markup_name: str | Tag | None = ...,
         markup_attrs: dict[str, list[str] | tuple[str, ...]] = ...,
     ) -> PageElement | None: ...
-    searchTag = search_tag  # noqa: Y026
+    searchTag = search_tag
     def search(
         self,
         markup: str | Tag | Iterable[str | Tag],

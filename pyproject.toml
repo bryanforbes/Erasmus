@@ -69,7 +69,7 @@ exclude_lines = [
 ]
 
 [tool.isort]
-extra_standard_library = ["typing_extensions"]
+extra_standard_library = ["typing_extensions", "_typeshed"]
 known_first_party = ["erasmus"]
 virtual_env = ".venv"
 profile = "black"
