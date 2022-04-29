@@ -670,6 +670,62 @@ async def _version_autocomplete(
     return _bible_info.choices(current)
 
 
+class ServerPreferencesGroup(
+    app_commands.Group,
+    name='serverprefs',
+    description='Server preferences commands',
+    default_permissions=discord.Permissions(administrator=True),
+    guild_only=True,
+):
+    @app_commands.command()
+    @app_commands.describe(version='Bible version')
+    @app_commands.checks.cooldown(
+        rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
+    )
+    @app_commands.autocomplete(version=_version_autocomplete)
+    async def setdefault(
+        self,
+        interaction: discord.Interaction,
+        /,
+        version: str,
+    ) -> None:
+        '''Set the default version for this server'''
+
+        assert interaction.guild is not None
+
+        version = version.lower()
+
+        async with Session.begin() as session:
+            existing = await BibleVersion.get_by_command(session, version)
+            await existing.set_for_guild(session, interaction.guild)
+
+        await utils.send_embed(
+            interaction,
+            description=f'Server version set to `{version}`',
+            ephemeral=True,
+        )
+
+    @app_commands.command()
+    @app_commands.checks.cooldown(
+        rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
+    )
+    async def unsetdefault(self, interaction: discord.Interaction, /) -> None:
+        '''Unset the default version for this server'''
+
+        assert interaction.guild is not None
+
+        async with Session.begin() as session:
+            if (
+                guild_prefs := await session.get(GuildPref, interaction.guild.id)
+            ) is not None:
+                await session.delete(guild_prefs)
+                description = 'Server version deleted'
+            else:
+                description = 'Server version already deleted'
+
+        await utils.send_embed(interaction, description=description, ephemeral=True)
+
+
 class PreferencesGroup(
     app_commands.Group, name='prefs', description='Preferences commands'
 ):
@@ -708,56 +764,6 @@ class PreferencesGroup(
                 description = 'Default version unset'
             else:
                 description = 'Default version already unset'
-
-        await utils.send_embed(interaction, description=description, ephemeral=True)
-
-    @app_commands.command()
-    @app_commands.describe(version='Bible version')
-    @app_commands.checks.cooldown(
-        rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
-    )
-    @app_commands.autocomplete(version=_version_autocomplete)
-    @app_commands.checks.has_permissions(administrator=True)
-    async def setserverdefault(
-        self,
-        interaction: discord.Interaction,
-        /,
-        version: str,
-    ) -> None:
-        '''Set the default version for this server (admin-only)'''
-
-        assert interaction.guild is not None
-
-        version = version.lower()
-
-        async with Session.begin() as session:
-            existing = await BibleVersion.get_by_command(session, version)
-            await existing.set_for_guild(session, interaction.guild)
-
-        await utils.send_embed(
-            interaction,
-            description=f'Server version set to `{version}`',
-            ephemeral=True,
-        )
-
-    @app_commands.command()
-    @app_commands.checks.cooldown(
-        rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
-    )
-    @app_commands.checks.has_permissions(administrator=True)
-    async def unsetserverdefault(self, interaction: discord.Interaction, /) -> None:
-        '''Unset the default version for this server (admin-only)'''
-
-        assert interaction.guild is not None
-
-        async with Session.begin() as session:
-            if (
-                guild_prefs := await session.get(GuildPref, interaction.guild.id)
-            ) is not None:
-                await session.delete(guild_prefs)
-                description = 'Server version deleted'
-            else:
-                description = 'Server version already deleted'
 
         await utils.send_embed(interaction, description=description, ephemeral=True)
 
@@ -946,6 +952,7 @@ _shared_cooldown = app_commands.checks.cooldown(
 class BibleAppCommands(BibleBase):
     admin = admin_guild_only(BibleAdminGroup())
     preferences = PreferencesGroup()
+    server_preferences = ServerPreferencesGroup()
 
     def __init__(self, bot: Erasmus, service_manager: ServiceManager, /) -> None:
         super().__init__(bot, service_manager)
