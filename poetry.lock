@@ -102,23 +102,15 @@ test = ["pycodestyle (>=2.7.0,<2.8.0)", "flake8 (>=3.9.2,<3.10.0)", "uvloop (>=0
 
 [[package]]
 name = "asyncpg-stubs"
-version = "0.25.0"
+version = "0.25.1"
 description = "asyncpg stubs"
 category = "dev"
 optional = false
-python-versions = "^3.7"
-develop = false
+python-versions = ">=3.7,<4.0"
 
 [package.dependencies]
-asyncpg = "^0.25.0"
-mypy = ">=0.940"
-typing-extensions = "^4.2.0"
-
-[package.source]
-type = "git"
-url = "https://github.com/bryanforbes/asyncpg-stubs.git"
-reference = "253be10ba1bba6ebd5ba3f941994573f2ea8ce40"
-resolved_reference = "253be10ba1bba6ebd5ba3f941994573f2ea8ce40"
+asyncpg = ">=0.25.0,<0.26.0"
+typing-extensions = ">=4.2.0,<5.0.0"
 
 [[package]]
 name = "atomicwrites"
@@ -297,7 +289,7 @@ toml = ["tomli"]
 
 [[package]]
 name = "discord.py"
-version = "2.0.0a4184+g10af1ea2"
+version = "2.0.0a4190+g06df0d79"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -317,7 +309,7 @@ voice = ["PyNaCl (>=1.3.0,<1.6)"]
 type = "git"
 url = "https://github.com/Rapptz/discord.py"
 reference = "master"
-resolved_reference = "10af1ea25523a898d03eb45a0a2bb4cdbcc41bdd"
+resolved_reference = "06df0d7931385a5b8efc1dc6bea79cc389b22808"
 
 [[package]]
 name = "distlib"
@@ -1013,7 +1005,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "0f21c77576a75af8288dcdf018cae52c0f0e06d32dfc405a9e9de12f24cafaae"
+content-hash = "1014fdf3ad12ccd81e5b1a833f9b5b0a6ce4652927f7b80bb4e5e2e1e9220021"
 
 [metadata.files]
 aiodns = [
@@ -1146,7 +1138,10 @@ asyncpg = [
     {file = "asyncpg-0.25.0-cp39-cp39-win_amd64.whl", hash = "sha256:649e2966d98cc48d0646d9a4e29abecd8b59d38d55c256d5c857f6b27b7407ac"},
     {file = "asyncpg-0.25.0.tar.gz", hash = "sha256:63f8e6a69733b285497c2855464a34de657f2cccd25aeaeeb5071872e9382540"},
 ]
-asyncpg-stubs = []
+asyncpg-stubs = [
+    {file = "asyncpg-stubs-0.25.1.tar.gz", hash = "sha256:ee4758e287751a37a455ac0132d52fdb9f06d3a35137b3590e7797e899a5f361"},
+    {file = "asyncpg_stubs-0.25.1-py3-none-any.whl", hash = "sha256:30066ca0e15c38334b1961a389248033d4491f4a5360f03abd49defa9d8445e5"},
+]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
     {file = "atomicwrites-1.4.0.tar.gz", hash = "sha256:ae70396ad1a434f9c7046fd2dd196fc04b12f9e91ffb859164193be8b6168a7a"},
