@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from typing import Final, TypedDict
 
-from botus_receptus import Cog, formatting, utils
-from discord import app_commands
+from botus_receptus import formatting, utils
+from botus_receptus.cog import GroupCog
 from discord.ext import commands
 
 from ..erasmus import Erasmus
@@ -217,8 +217,8 @@ _shared_cooldown: Final = commands.CooldownMapping.from_cooldown(
 )
 
 
-class Creeds(  # type: ignore
-    Cog[Erasmus], app_commands.Group, name='creed', description='Historic creeds'
+class Creeds(
+    GroupCog[Erasmus], group_name='creed', group_description='Historic creeds'
 ):
     @commands.command(brief='List the supported creeds')
     async def creeds(self, ctx: commands.Context[Erasmus], /) -> None:

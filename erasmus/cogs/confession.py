@@ -6,6 +6,7 @@ from typing import Any, Final, NamedTuple, TypeAlias, cast
 
 import discord
 from botus_receptus import Cog, re, utils
+from botus_receptus.cog import GroupCog
 from botus_receptus.formatting import (
     EmbedPaginator,
     bold,
@@ -492,8 +493,11 @@ def _create_section_info(section: str, title: str, /) -> _SectionInfo:
     )
 
 
-class ConfessionAppCommands(  # type: ignore
-    ConfessionBase, app_commands.Group, name='confess', description='Confessions'
+class ConfessionAppCommands(
+    ConfessionBase,
+    GroupCog[Erasmus],
+    group_name='confess',
+    group_description='Confessions',
 ):
     __confession_info: dict[str, _ConfessionInfo]
 

@@ -172,7 +172,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "botus-receptus"
-version = "2.0.0dev35"
+version = "2.0.0dev36"
 description = ""
 category = "main"
 optional = false
@@ -202,8 +202,8 @@ uvloop = ["uvloop (>=0.16.0,<0.17.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "5a81391ae8b92c4702d5c042deddc83584895696"
-resolved_reference = "5a81391ae8b92c4702d5c042deddc83584895696"
+reference = "e92aed5184898c2d46fd7e48f3551b6c42df9daf"
+resolved_reference = "e92aed5184898c2d46fd7e48f3551b6c42df9daf"
 
 [[package]]
 name = "cchardet"
@@ -289,7 +289,7 @@ toml = ["tomli"]
 
 [[package]]
 name = "discord.py"
-version = "2.0.0a4190+g06df0d79"
+version = "2.0.0a4211+g0551214b"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -309,7 +309,7 @@ voice = ["PyNaCl (>=1.3.0,<1.6)"]
 type = "git"
 url = "https://github.com/Rapptz/discord.py"
 reference = "master"
-resolved_reference = "06df0d7931385a5b8efc1dc6bea79cc389b22808"
+resolved_reference = "0551214be1957a307d0bd3a9ef5056f0fd9e58bc"
 
 [[package]]
 name = "distlib"
@@ -1005,7 +1005,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "1014fdf3ad12ccd81e5b1a833f9b5b0a6ce4652927f7b80bb4e5e2e1e9220021"
+content-hash = "872c12cc6b3531fc1cb20691c364714ed3fda3b998795c185548e9d98c5ab7b0"
 
 [metadata.files]
 aiodns = [
