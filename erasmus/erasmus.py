@@ -247,19 +247,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
                 if interaction.command is None:
                     qualified_name = 'NO INTERACTION'
                 else:
-                    command = interaction.command
-                    if isinstance(command, app_commands.Command):
-                        qualified_name = f'{command.name}'
-                        parent = command.parent
-                        if parent is not None:
-                            qualified_name = f'{parent.name} {qualified_name}'
-                            parent_parent = parent.parent
-                            if parent_parent is not None:
-                                qualified_name = (
-                                    f'{parent_parent.name} {qualified_name}'
-                                )
-                    else:
-                        qualified_name = command.name
+                    qualified_name = interaction.command.qualified_name
 
                 _log.exception(
                     'Exception occurred in interaction "%s"',

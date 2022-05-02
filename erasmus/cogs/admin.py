@@ -14,7 +14,7 @@ from ..erasmus import Erasmus, _extensions as _extension_names
 _available_extensions: Final = {f'erasmus.cogs.{name}' for name in _extension_names}
 
 
-@admin_guild_only
+@admin_guild_only()
 class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin commands'):
     async def __unloaded_modules_autocomplete(
         self, interaction: discord.Interaction, current: str

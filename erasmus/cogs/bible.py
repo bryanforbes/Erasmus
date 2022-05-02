@@ -670,12 +670,12 @@ async def _version_autocomplete(
     return _bible_info.choices(current)
 
 
+@app_commands.default_permissions(administrator=True)
+@app_commands.guild_only()
 class ServerPreferencesGroup(
     app_commands.Group,
     name='serverprefs',
     description='Server preferences commands',
-    default_permissions=discord.Permissions(administrator=True),
-    guild_only=True,
 ):
     @app_commands.command()
     @app_commands.describe(version='Bible version')
@@ -768,6 +768,7 @@ class PreferencesGroup(
         await utils.send_embed(interaction, description=description, ephemeral=True)
 
 
+@admin_guild_only()
 class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     service_manager: ServiceManager
 
@@ -950,7 +951,7 @@ _shared_cooldown = app_commands.checks.cooldown(
 
 
 class BibleAppCommands(BibleBase):
-    admin = admin_guild_only(BibleAdminGroup())
+    admin = BibleAdminGroup()
     preferences = PreferencesGroup()
     server_preferences = ServerPreferencesGroup()
 
