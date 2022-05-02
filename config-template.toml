@@ -1,0 +1,16 @@
+[bot]
+bot_name = "erasmus"
+command_prefix = "$"
+application_id = application_id_goes_here
+discord_api_key = "api key goes here"
+db_url = "postgresql+asyncpg://erasmus:<password goes here>@localhost/erasmus"
+dbl_token = "bot token goes here"
+
+# admin_guild = admin_guild_id_goes_here
+# test_guilds = [test_guild_1_goes_here, test_guild_2_goes_here]
+
+[logging]
+log_file = "erasmus.log"
+
+[services:ApiBible]
+api_key = "api key goes here"
