@@ -176,20 +176,22 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
                     case CannotPaginateReason.read_message_history:
                         message = 'I need the "Read Message History" permission'
             case _:
-                if context.command is None:
-                    qualified_name = 'NO COMMAND'
-                else:
-                    qualified_name = context.command.qualified_name
-
-                if context.message is None:
-                    content = 'NO MESSAGE'
-                else:
-                    content = context.message.content
+                qualified_name = (
+                    'NO COMMAND'
+                    if context.command is None
+                    else context.command.qualified_name
+                )
+                content = (
+                    'NO MESSAGE' if context.message is None else context.message.content
+                )
+                invoked_by = f'{context.author.display_name} ({context.author.id})'
 
                 _log.exception(
-                    'Exception occurred in command "%s"\nInvoked by: %s',
-                    qualified_name,
-                    content,
+                    'Exception occurred processing a message:\n'
+                    f'\tCommand: {qualified_name}\n'
+                    f'\tInvoked by: {invoked_by}\n'
+                    f'\tJump URL: {context.message.jump_url}\n'
+                    f'\tInvoked with: {content}',
                     exc_info=exception,
                     stack_info=True,
                 )
@@ -244,14 +246,23 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
                     case CannotPaginateReason.read_message_history:
                         message = 'I need the "Read Message History" permission'
             case _:
-                if interaction.command is None:
-                    qualified_name = 'NO INTERACTION'
-                else:
-                    qualified_name = interaction.command.qualified_name
+                qualified_name = (
+                    'NO INTERACTION'
+                    if interaction.command is None
+                    else interaction.command.qualified_name
+                )
+                jump_url = (
+                    'NONE'
+                    if interaction.message is None
+                    else interaction.message.jump_url
+                )
+                invoked_by = f'{interaction.user.display_name} ({interaction.user.id})'
 
                 _log.exception(
-                    'Exception occurred in interaction "%s"',
-                    qualified_name,
+                    'Exception occurred in interaction:\n'
+                    f'\tInteraction: {qualified_name}\n'
+                    f'\tInvoked by: {invoked_by}\n'
+                    f'\tJump URL: {jump_url}',
                     exc_info=error,
                     stack_info=True,
                 )
