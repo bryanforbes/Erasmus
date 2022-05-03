@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import logging
+import sys
 from typing import TYPE_CHECKING, Any, Final, cast
 
 import discord
@@ -104,7 +105,6 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         await self.invoke(ctx)
 
     async def on_ready(self, /) -> None:
-        await super().on_ready()
         await self.change_presence(
             activity=discord.Game(name=f'| {self.default_prefix}help')
         )
@@ -112,6 +112,20 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         user = self.user
         assert user is not None
         _log.info('Erasmus ready. Logged in as %s %s', user.name, user.id)
+
+        await super().on_ready()
+
+    async def on_error(self, event_method: str, /, *args: Any, **kwargs: Any) -> None:
+        _, exception, _ = sys.exc_info()
+
+        if exception is None:
+            return
+
+        _log.exception(
+            f'Exception occurred handling an event:\n\tEvent: {event_method}',
+            exc_info=exception,
+            stack_info=True,
+        )
 
     async def on_command_error(
         self,
