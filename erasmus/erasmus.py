@@ -198,7 +198,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
                 content = (
                     'NO MESSAGE' if context.message is None else context.message.content
                 )
-                invoked_by = f'{context.author.display_name} ({context.author.id})'
+                invoked_by = f'{context.author} ({context.author.id})'
 
                 _log.exception(
                     'Exception occurred processing a message:\n'
@@ -210,9 +210,10 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
                     stack_info=True,
                 )
 
-        await utils.send_embed_error(
-            context, description=formatting.escape(message, mass_mentions=True)
-        )
+        if not isinstance(exception, discord.errors.Forbidden):
+            await utils.send_embed_error(
+                context, description=formatting.escape(message, mass_mentions=True)
+            )
 
     async def on_app_command_error(
         self,
@@ -270,7 +271,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
                     if interaction.message is None
                     else interaction.message.jump_url
                 )
-                invoked_by = f'{interaction.user.display_name} ({interaction.user.id})'
+                invoked_by = f'{interaction.user} ({interaction.user.id})'
 
                 _log.exception(
                     'Exception occurred in interaction:\n'
@@ -281,7 +282,8 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
                     stack_info=True,
                 )
 
-        await utils.send_embed_error(interaction, description=message)
+        if not isinstance(error, discord.errors.Forbidden):
+            await utils.send_embed_error(interaction, description=message)
 
 
 __all__: Final = ('Erasmus',)
