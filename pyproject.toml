@@ -10,14 +10,12 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.10"
-aiodns = "^3.0"
 alembic = "^1.7"
 attrs = "^21.4.0"
 beautifulsoup4 = "^4.11"
-cchardet = "^2.1"
 "botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "278c5e3dc919b955f5948190ddae58e35012e537", extras = ["uvloop", "sqlalchemy"]}
+"discord.py" = { git = "https://github.com/Rapptz/discord.py", branch = "master", extras = ["speed"] }
 more-itertools = "~8.12.0"
-orjson = "^3.6.8"
 
 [tool.poetry.dev-dependencies]
 asyncpg-stubs = "~0.25.1"
