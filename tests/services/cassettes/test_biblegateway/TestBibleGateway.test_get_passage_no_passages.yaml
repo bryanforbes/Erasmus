@@ -12,23 +12,23 @@ interactions:
         \ name='viewport'>\n<title>John 50:1-4 NASB1995 -  - Bible Gateway</title>\n\
         <link rel=\"canonical\" href=\"https://www.biblegateway.com/passage/?search=John+50:1-4&amp;version=NASB1995&amp;interface=print\"\
         \ />\n<meta name=\"robots\" content=\"noindex, nofollow\" />\n<meta property=\"\
-        og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?4147067e\"\
-        />\n<meta property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?4147067e\"\
+        og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?503742ef\"\
+        />\n<meta property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?503742ef\"\
         />\n<meta property=\"og:image:type\" content=\"image/png\"/>\n<meta property=\"\
         og:image:width\" content=\"200\"/>\n<meta property=\"og:image:height\" content=\"\
-        200\"/>\n<link rel=\"favorite icon\" href=\"/favicon.ico?4147067e\" type=\"\
+        200\"/>\n<link rel=\"favorite icon\" href=\"/favicon.ico?503742ef\" type=\"\
         image/x-icon\" />\n<link rel=\"search\" type=\"application/opensearchdescription+xml\"\
-        \ title=\"Bible Gateway\" href=\"/resources/opensearch/bgsearch.xml?4147067e\"\
+        \ title=\"Bible Gateway\" href=\"/resources/opensearch/bgsearch.xml?503742ef\"\
         >\n\n<link rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"/assets/images/ios/touch-icon-ipad.png\"\
         >\n<link rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"/assets/images/ios/touch-icon-iphone-retina.png\"\
         >\n<link rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"/assets/images/ios/touch-icon-ipad-retina.png\"\
         >\n<script type=\"text/javascript\">\n(function() {\n  var apis = [window.fetch,\
         \ Object.assign, Array.prototype.includes, NodeList.prototype.forEach, Array.from];\n\
         \  apis.every(function(api) {return api}) || document.write('<script src=\"\
-        /assets/js/lib/polyfills.min.js?4147067e\"><\\/script>');\n  window.assetsVersion\
-        \ = \"4147067e\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?4147067e\"\
+        /assets/js/lib/polyfills.min.js?503742ef\"><\\/script>');\n  window.assetsVersion\
+        \ = \"503742ef\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?503742ef\"\
         \ type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\"\
-        :\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"assets_version\":\"4147067e\"\
+        :\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"assets_version\":\"503742ef\"\
         ,\"locale\":\"en\",\"cdn_host\":\"\",\"version0\":{\"version_id\":\"NASB1995\"\
         },\"il_versions\":[],\"il_option\":false,\"books\":{\"NASB1995\":[{\"display\"\
         :\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"\
@@ -1896,11 +1896,11 @@ interactions:
         BG.Consents.onConsent(4).then(function() {\nvar scriptTag = document.createElement(\"\
         script\");\nscriptTag.src = \"https://0cf17917-395b-4f25-91cc-db3bdd6044b0.edge.permutive.app/0cf17917-395b-4f25-91cc-db3bdd6044b0-web.js\"\
         ;\nscriptTag.setAttribute(\"async\", \"async\");\ndocument.head.appendChild(scriptTag);\n\
-        });\n</script>\n\n<link href=\"/assets/css/passage.min.css?4147067e\" media=\"\
-        screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/passage.min.css?4147067e\"\
-        \ media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?4147067e\"\
+        });\n</script>\n\n<link href=\"/assets/css/passage.min.css?503742ef\" media=\"\
+        screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/passage.min.css?503742ef\"\
+        \ media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?503742ef\"\
         \ media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"\
-        /assets/css/printer.min.css?4147067e\" media=\"print\" rel=\"stylesheet\"\
+        /assets/css/printer.min.css?503742ef\" media=\"print\" rel=\"stylesheet\"\
         \ type=\"text/css\" />\n</head>\n\n<body class=\" s-footnotes s-versenums\
         \ s-headings  page-passage no-eu us\">\n    <svg xmlns=\"http://www.w3.org/2000/svg\"\
         \ style=\"display: none;\"><symbol id=\"icon-read\" xmlns=\"http://www.w3.org/2000/svg\"\
@@ -2138,9 +2138,9 @@ interactions:
         \                <div class=\"wrapper\">\n                  <div class=\"\
         sys-announce-content\">\n                    <div class='sys-announce-body'>\n\
         \                        <div class='sys-announce-body-inner'>\n         \
-        \                     <a href=\"https://www.biblegateway.com/plus?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_softwareafterprice0217\"\
-        >The best value in digital Bible study. $3.99 a month for 50+ reference books.\
-        \ No software to install. Try it FREE.</a>                        </div>\n\
+        \                     <a href=\"https://www.biblegateway.com/plus?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_value1028\"\
+        >The best value in digital Bible study. No software to install. $3.99 a month\
+        \ for 50+ reference books. Try it FREE.</a>                        </div>\n\
         \                    </div>\n                    <div class='close'><svg xmlns=\"\
         http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5 11.5\" width=\"11.5\" height=\"\
         11.5\"><title>close</title><use xlink:href=\"#icon-close\"></use></svg>\n\
@@ -3938,7 +3938,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Tue, 19 Apr 2022 20:05:51 GMT
+      - Wed, 04 May 2022 14:40:16 GMT
       Strict-Transport-Security:
       - max-age=2592000
       Transfer-Encoding:
@@ -3946,11 +3946,11 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 ee64f720b6aef558800111a8aab58b7c.cloudfront.net (CloudFront)
+      - 1.1 8d7cd19e9f4bb67762dc6484e25c2830.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - HUUwjJUSz3CnXGGBWFahJLriNdsWn0Idc6DsUXA3xTYzM2T61Nmd9w==
+      - uUDi7wdS_evsklNB02qhXTffgDJtzhn-he8rFf0_wzW_HUcBJMr4yA==
       X-Amz-Cf-Pop:
-      - ORD53-C2
+      - ORD52-C1
       X-Cache:
       - Miss from cloudfront
     status:

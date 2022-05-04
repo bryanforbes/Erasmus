@@ -96,13 +96,13 @@ interactions:
         nif(typeof(_BAPI.t)==='undefined'){\\ndocument.write('\\\\x3Cscript src=\\\
         \"'+document.location.protocol+'//cdn.scripture.api.bible/fums/fumsv2.min.js\\\
         \"\\\\x3E\\\\x3C/script\\\\x3E');}\\ndocument.write(\\\"\\\\x3Cscript\\\\\
-        x3E_BAPI.t('210ca2de-fa28-49f0-90c2-b7c5f4e9a5d9');\\\\x3C/script\\\\x3E\\\
-        \");\\n</script><noscript><img src=\\\"https://d3a2okcloueqyx.cloudfront.net/nf1?t='210ca2de-fa28-49f0-90c2-b7c5f4e9a5d9'\\\
+        x3E_BAPI.t('eea4f449-a6a9-4630-82ea-9693593dab99');\\\\x3C/script\\\\x3E\\\
+        \");\\n</script><noscript><img src=\\\"https://d3a2okcloueqyx.cloudfront.net/nf1?t='eea4f449-a6a9-4630-82ea-9693593dab99'\\\
         \" height=\\\"1\\\" width=\\\"1\\\" border=\\\"0\\\" alt=\\\"\\\" style=\\\
-        \"height: 0; width: 0;\\\" /></noscript>\",\"fumsId\":\"210ca2de-fa28-49f0-90c2-b7c5f4e9a5d9\"\
+        \"height: 0; width: 0;\\\" /></noscript>\",\"fumsId\":\"eea4f449-a6a9-4630-82ea-9693593dab99\"\
         ,\"fumsJsInclude\":\"cdn.scripture.api.bible/fums/fumsv2.min.js\",\"fumsJs\"\
-        :\"var _BAPI=_BAPI||{};if(typeof(_BAPI.t)!='undefined'){ _BAPI.t('210ca2de-fa28-49f0-90c2-b7c5f4e9a5d9');\
-        \ }\",\"fumsNoScript\":\"<img src=\\\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=210ca2de-fa28-49f0-90c2-b7c5f4e9a5d9\\\
+        :\"var _BAPI=_BAPI||{};if(typeof(_BAPI.t)!='undefined'){ _BAPI.t('eea4f449-a6a9-4630-82ea-9693593dab99');\
+        \ }\",\"fumsNoScript\":\"<img src=\\\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=eea4f449-a6a9-4630-82ea-9693593dab99\\\
         \" height=\\\"1\\\" width=\\\"1\\\" border=\\\"0\\\" alt=\\\"\\\" style=\\\
         \"height: 0; width: 0;\\\" />\"}}"
     headers:
@@ -117,7 +117,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 19 Apr 2022 20:05:50 GMT
+      - Wed, 04 May 2022 14:40:14 GMT
       Server:
       - nginx/1.16.1
       Transfer-Encoding:
@@ -136,7 +136,7 @@ interactions:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=210ca2de-fa28-49f0-90c2-b7c5f4e9a5d9
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=eea4f449-a6a9-4630-82ea-9693593dab99
   response:
     body:
       string: !!binary |
@@ -145,7 +145,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '77734'
+      - '14909'
       Connection:
       - keep-alive
       Content-Length:
@@ -153,7 +153,7 @@ interactions:
       Content-Type:
       - image/gif
       Date:
-      - Mon, 18 Apr 2022 22:30:17 GMT
+      - Wed, 04 May 2022 10:31:46 GMT
       Etag:
       - '"28d6814f309ea289f847c69cf91194c6"'
       Last-Modified:
@@ -161,15 +161,15 @@ interactions:
       Server:
       - AmazonS3
       Via:
-      - 1.1 29cac7767e3846e444e0942fa7013c16.cloudfront.net (CloudFront)
+      - 1.1 6d5eb10703fb0c500533591581396cb8.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - UfBk4F6L2wm6QG5kFYpqHYdviHH6PGLueNM-UDJedtoYMx_cstVZJg==
+      - Vb0_TN32MDSDoKF4r_Eo8ncaI1-ZrMw2O0JgRu0iVwyuLiCtni__vQ==
       X-Amz-Cf-Pop:
-      - ORD53-C2
+      - ORD52-C2
       X-Cache:
       - Hit from cloudfront
     status:
       code: 200
       message: OK
-    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=210ca2de-fa28-49f0-90c2-b7c5f4e9a5d9
+    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=eea4f449-a6a9-4630-82ea-9693593dab99
 version: 1

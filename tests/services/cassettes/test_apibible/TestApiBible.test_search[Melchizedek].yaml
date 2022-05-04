@@ -33,12 +33,12 @@ interactions:
         an oath by him that said unto him, The Lord sware and will not repent, Thou
         art  a priest for ever after the order of Melchisedec:)"}]},"meta":{"fums":"<script>\nvar
         _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''c5f50286-b420-4628-a7f0-c1e83abf7bf4'');\\x3C/script\\x3E\");\n</script><noscript><img
-        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''c5f50286-b420-4628-a7f0-c1e83abf7bf4''\"
+        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''28a3451b-d72d-41ab-9ff0-24f1f0de5baf'');\\x3C/script\\x3E\");\n</script><noscript><img
+        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''28a3451b-d72d-41ab-9ff0-24f1f0de5baf''\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        /></noscript>","fumsId":"c5f50286-b420-4628-a7f0-c1e83abf7bf4","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''c5f50286-b420-4628-a7f0-c1e83abf7bf4'');
-        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=c5f50286-b420-4628-a7f0-c1e83abf7bf4\"
+        /></noscript>","fumsId":"28a3451b-d72d-41ab-9ff0-24f1f0de5baf","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''28a3451b-d72d-41ab-9ff0-24f1f0de5baf'');
+        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=28a3451b-d72d-41ab-9ff0-24f1f0de5baf\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
         />"}}'
     headers:
@@ -53,7 +53,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Tue, 19 Apr 2022 20:05:49 GMT
+      - Wed, 04 May 2022 14:40:13 GMT
       Server:
       - nginx/1.16.1
       Transfer-Encoding:
@@ -72,7 +72,7 @@ interactions:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=c5f50286-b420-4628-a7f0-c1e83abf7bf4
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=28a3451b-d72d-41ab-9ff0-24f1f0de5baf
   response:
     body:
       string: !!binary |
@@ -81,7 +81,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '77734'
+      - '14908'
       Connection:
       - keep-alive
       Content-Length:
@@ -89,7 +89,7 @@ interactions:
       Content-Type:
       - image/gif
       Date:
-      - Mon, 18 Apr 2022 22:30:17 GMT
+      - Wed, 04 May 2022 10:31:46 GMT
       Etag:
       - '"28d6814f309ea289f847c69cf91194c6"'
       Last-Modified:
@@ -97,15 +97,15 @@ interactions:
       Server:
       - AmazonS3
       Via:
-      - 1.1 6f42e9f609a70feab6011df8d55ce5c2.cloudfront.net (CloudFront)
+      - 1.1 249aa6f890bf73000af910ed0724d954.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - SoSazlLLdQ_aXU8_CseZpqmxaYA6uHA7iFGI4_v_L-WCMQOZNrWvAg==
+      - yLew76-NCHpQaYMoFnfum8DD7b9y3nVHc1-sMN0NQr8FKpV0DEMFiA==
       X-Amz-Cf-Pop:
-      - ORD53-C2
+      - ORD52-C2
       X-Cache:
       - Hit from cloudfront
     status:
       code: 200
       message: OK
-    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=c5f50286-b420-4628-a7f0-c1e83abf7bf4
+    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=28a3451b-d72d-41ab-9ff0-24f1f0de5baf
 version: 1

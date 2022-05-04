@@ -13,8 +13,8 @@ interactions:
         \ of the works of the - Bible Gateway</title>\n<link rel=\"canonical\" href=\"\
         https://www.biblegateway.com/passage/?search=Galatians%203%3A10-11&amp;version=NASB1995\"\
         \ />\n<link rel=\"amphtml\" href=\"https://www.biblegateway.com/passage/?search=Galatians%203%3A10-11&amp;version=NASB1995&amp;interface=amp\"\
-        >\n<meta property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?4147067e\"\
-        />\n<meta property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?4147067e\"\
+        >\n<meta property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?503742ef\"\
+        />\n<meta property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?503742ef\"\
         />\n<meta property=\"og:image:type\" content=\"image/png\"/>\n<meta property=\"\
         og:image:width\" content=\"200\"/>\n<meta property=\"og:image:height\" content=\"\
         200\"/>\n<meta property=\"og:title\" content=\"Bible Gateway passage: Galatians\
@@ -38,19 +38,19 @@ interactions:
         \ />\n<meta property=\"al:ios:url\" content=\"biblegateway://bible/Gal.3.10/NASB1995\"\
         \ />\n<meta property=\"al:ios:app_store_id\" content=\"506512797\" />\n<meta\
         \ property=\"al:ios:app_name\" content=\"Bible Gateway\" />\n<link rel=\"\
-        favorite icon\" href=\"/favicon.ico?4147067e\" type=\"image/x-icon\" />\n\
+        favorite icon\" href=\"/favicon.ico?503742ef\" type=\"image/x-icon\" />\n\
         <link rel=\"search\" type=\"application/opensearchdescription+xml\" title=\"\
-        Bible Gateway\" href=\"/resources/opensearch/bgsearch.xml?4147067e\">\n\n\
+        Bible Gateway\" href=\"/resources/opensearch/bgsearch.xml?503742ef\">\n\n\
         <link rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"/assets/images/ios/touch-icon-ipad.png\"\
         >\n<link rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"/assets/images/ios/touch-icon-iphone-retina.png\"\
         >\n<link rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"/assets/images/ios/touch-icon-ipad-retina.png\"\
         >\n<script type=\"text/javascript\">\n(function() {\n  var apis = [window.fetch,\
         \ Object.assign, Array.prototype.includes, NodeList.prototype.forEach, Array.from];\n\
         \  apis.every(function(api) {return api}) || document.write('<script src=\"\
-        /assets/js/lib/polyfills.min.js?4147067e\"><\\/script>');\n  window.assetsVersion\
-        \ = \"4147067e\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?4147067e\"\
+        /assets/js/lib/polyfills.min.js?503742ef\"><\\/script>');\n  window.assetsVersion\
+        \ = \"503742ef\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?503742ef\"\
         \ type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\"\
-        :\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"assets_version\":\"4147067e\"\
+        :\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"assets_version\":\"503742ef\"\
         ,\"locale\":\"en\",\"cdn_host\":\"\",\"version0\":{\"version_id\":\"NASB1995\"\
         },\"il_versions\":[],\"il_option\":false,\"books\":{\"NASB1995\":[{\"display\"\
         :\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"\
@@ -212,11 +212,11 @@ interactions:
         BG.Consents.onConsent(4).then(function() {\nvar scriptTag = document.createElement(\"\
         script\");\nscriptTag.src = \"https://0cf17917-395b-4f25-91cc-db3bdd6044b0.edge.permutive.app/0cf17917-395b-4f25-91cc-db3bdd6044b0-web.js\"\
         ;\nscriptTag.setAttribute(\"async\", \"async\");\ndocument.head.appendChild(scriptTag);\n\
-        });\n</script>\n\n<link href=\"/assets/css/passage.min.css?4147067e\" media=\"\
-        screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/passage.min.css?4147067e\"\
-        \ media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?4147067e\"\
+        });\n</script>\n\n<link href=\"/assets/css/passage.min.css?503742ef\" media=\"\
+        screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/passage.min.css?503742ef\"\
+        \ media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?503742ef\"\
         \ media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"\
-        /assets/css/printer.min.css?4147067e\" media=\"print\" rel=\"stylesheet\"\
+        /assets/css/printer.min.css?503742ef\" media=\"print\" rel=\"stylesheet\"\
         \ type=\"text/css\" />\n</head>\n\n<body class=\" s-footnotes s-versenums\
         \ s-headings hide-resources page-passage no-eu us\">\n    <svg xmlns=\"http://www.w3.org/2000/svg\"\
         \ style=\"display: none;\"><symbol id=\"icon-read\" xmlns=\"http://www.w3.org/2000/svg\"\
@@ -496,10 +496,10 @@ interactions:
         \                <div class=\"wrapper\">\n                  <div class=\"\
         sys-announce-content\">\n                    <div class='sys-announce-body'>\n\
         \                        <div class='sys-announce-body-inner'>\n         \
-        \                     <a href=\"https://www.biblegateway.com/join/new-creation/?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_creation0331\"\
-        >Learn how you're a new creation in Christ with this free PDF Bible study.\
-        \ Try Bible Gateway Plus today.</a>                        </div>\n      \
-        \              </div>\n                    <div class='close'><svg xmlns=\"\
+        \                     <a href=\"https://www.biblegateway.com/plus?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_softwareafterprice0217\"\
+        >The best value in digital Bible study. $3.99 a month for 50+ reference books.\
+        \ No software to install. Try it FREE.</a>                        </div>\n\
+        \                    </div>\n                    <div class='close'><svg xmlns=\"\
         http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5 11.5\" width=\"11.5\" height=\"\
         11.5\"><title>close</title><use xlink:href=\"#icon-close\"></use></svg>\n\
         </div>\n                  </div>\n                </div>\n               \
@@ -838,13 +838,13 @@ interactions:
         \ Tipan: Filipino Standard Version (FSV)</option>\n<option value=\"ABTAG1978\"\
         \ >Ang Biblia (1978) (ABTAG1978)</option>\n<option value=\"ABTAG2001\" >Ang\
         \ Biblia, 2001 (ABTAG2001)</option>\n<option value=\"ADB1905\" >Ang Dating\
-        \ Biblia (1905) (ADB1905)</option>\n<option value=\"ASND\" >Ang Salita ng\
-        \ Dios (Tagalog Contemporary Bible) (ASND)</option>\n<option value=\"SND\"\
-        \ >Ang Salita ng Diyos (SND)</option>\n<option value=\"MBBTAG\" >Magandang\
-        \ Balita Biblia (MBBTAG)</option>\n<option value=\"MBBTAG-DC\" >Magandang\
-        \ Balita Biblia (with Deuterocanon) (MBBTAG-DC)</option>\n<option class=\"\
-        spacer\" value=\"MBBTAG-DC\">&nbsp;</option>\n<option class=\"lang\" value=\"\
-        NA-TWI\">---Twi (TWI)---</option>\n<option value=\"NA-TWI\" >Nkwa Asem (NA-TWI)</option>\n\
+        \ Biblia (1905) (ADB1905)</option>\n<option value=\"SND\" >Ang Salita ng Diyos\
+        \ (SND)</option>\n<option value=\"ASND\" >Ang Salita ng Dios (Tagalog Contemporary\
+        \ Bible) (ASND)</option>\n<option value=\"MBBTAG\" >Magandang Balita Biblia\
+        \ (MBBTAG)</option>\n<option value=\"MBBTAG-DC\" >Magandang Balita Biblia\
+        \ (with Deuterocanon) (MBBTAG-DC)</option>\n<option class=\"spacer\" value=\"\
+        MBBTAG-DC\">&nbsp;</option>\n<option class=\"lang\" value=\"NA-TWI\">---Twi\
+        \ (TWI)---</option>\n<option value=\"NA-TWI\" >Nkwa Asem (NA-TWI)</option>\n\
         <option class=\"spacer\" value=\"NA-TWI\">&nbsp;</option>\n<option class=\"\
         lang\" value=\"UKR\">---\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\u043A\
         \u0430 (UK)---</option>\n<option value=\"UKR\" >Ukrainian Bible (UKR)</option>\n\
@@ -1280,56 +1280,56 @@ interactions:
         \ >Ang Bagong Tipan: Filipino Standard Version (FSV)</option>\n<option value=\"\
         ABTAG1978\" >Ang Biblia (1978) (ABTAG1978)</option>\n<option value=\"ABTAG2001\"\
         \ >Ang Biblia, 2001 (ABTAG2001)</option>\n<option value=\"ADB1905\" >Ang Dating\
-        \ Biblia (1905) (ADB1905)</option>\n<option value=\"SND\" >Ang Salita ng Diyos\
-        \ (SND)</option>\n<option value=\"ASND\" >Ang Salita ng Dios (Tagalog Contemporary\
-        \ Bible) (ASND)</option>\n<option value=\"MBBTAG\" >Magandang Balita Biblia\
-        \ (MBBTAG)</option>\n<option value=\"MBBTAG-DC\" >Magandang Balita Biblia\
-        \ (with Deuterocanon) (MBBTAG-DC)</option>\n<option class=\"spacer\" value=\"\
-        MBBTAG-DC\">&nbsp;</option>\n<option class=\"lang\" value=\"NA-TWI\">&mdash;Twi\
-        \ (TWI)&mdash;</option>\n<option value=\"NA-TWI\" >Nkwa Asem (NA-TWI)</option>\n\
-        <option class=\"spacer\" value=\"NA-TWI\">&nbsp;</option>\n<option class=\"\
-        lang\" value=\"UKR\">&mdash;\u0423\u043A\u0440\u0430\u0457\u043D\u0441\u044C\
-        \u043A\u0430 (UK)&mdash;</option>\n<option value=\"UKR\" >Ukrainian Bible\
-        \ (UKR)</option>\n<option value=\"ERV-UK\" >Ukrainian New Testament: Easy-to-Read\
-        \ Version (ERV-UK)</option>\n<option class=\"spacer\" value=\"ERV-UK\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"ERV-UR\">&mdash;\u0627\u0631\u062F\u0648 (UR)&mdash;</option>\n\
-        <option value=\"ERV-UR\" >Urdu Bible: Easy-to-Read Version (ERV-UR)</option>\n\
-        <option class=\"spacer\" value=\"ERV-UR\">&nbsp;</option>\n<option class=\"\
-        lang\" value=\"USP\">&mdash;Uspanteco (USP)&mdash;</option>\n<option value=\"\
-        USP\" >Uspanteco (USP)</option>\n<option class=\"spacer\" value=\"USP\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"BD2011\">&mdash;Ti\xEAng Vi\xEAt (VI)&mdash;</option>\n\
-        <option value=\"BD2011\" >B\u1EA3n D\u1ECBch 2011 (BD2011)</option>\n<option\
-        \ value=\"NVB\" >New Vietnamese Bible (NVB)</option>\n<option value=\"BPT\"\
-        \ >Vietnamese Bible: Easy-to-Read Version (BPT)</option>\n<option class=\"\
-        spacer\" value=\"BPT\">&nbsp;</option>\n<option class=\"lang\" value=\"BYO\"\
-        >&mdash;Yor\xF9b\xE1 (YO)&mdash;</option>\n<option value=\"BYO\" >B\xEDb\xE9\
-        l\xEC M\xEDm\u1ECD\u0301 Yor\xF9b\xE1 \xD2de \xD2n (BYO)</option>\n<option\
-        \ class=\"spacer\" value=\"BYO\">&nbsp;</option>\n<option class=\"lang\" value=\"\
-        CCB\">&mdash;\u6C49\u8BED (ZH)&mdash;</option>\n<option value=\"CCB\" >Chinese\
-        \ Contemporary Bible (Simplified) (CCB)</option>\n<option value=\"CCBT\" >Chinese\
-        \ Contemporary Bible (Traditional) (CCBT)</option>\n<option value=\"ERV-ZH\"\
-        \ >Chinese New Testament: Easy-to-Read Version (ERV-ZH)</option>\n<option\
-        \ value=\"CNVS\" >Chinese New Version (Simplified) (CNVS)</option>\n<option\
-        \ value=\"CNVT\" >Chinese New Version (Traditional) (CNVT)</option>\n<option\
-        \ value=\"CSBS\" >Chinese Standard Bible (Simplified) (CSBS)</option>\n<option\
-        \ value=\"CSBT\" >Chinese Standard Bible (Traditional) (CSBT)</option>\n<option\
-        \ value=\"CUVS\" >Chinese Union Version (Simplified) (CUVS)</option>\n<option\
-        \ value=\"CUV\" >Chinese Union Version (Traditional) (CUV)</option>\n<option\
-        \ value=\"CUVMPS\" >Chinese Union Version Modern Punctuation (Simplified)\
-        \ (CUVMPS)</option>\n<option value=\"CUVMPT\" >Chinese Union Version Modern\
-        \ Punctuation (Traditional) (CUVMPT)</option>\n<option value=\"RCU17SS\" >Revised\
-        \ Chinese Union Version (Simplified Script) Shen Edition (RCU17SS)</option>\n\
-        <option value=\"RCU17TS\" >Revised Chinese Union Version (Traditional Script)\
-        \ Shen Edition (RCU17TS)</option>\n</select><select class=\"dropdown-small\"\
-        ><option class=\"lang\" value=\"AMU\">&mdash;AMU&mdash;</option>\n<option\
-        \ value=\"AMU\" >AMU</option>\n<option class=\"spacer\" value=\"AMU\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"ERV-AR\">&mdash;AR&mdash;</option>\n<option\
-        \ value=\"ERV-AR\" >ERV-AR</option>\n<option value=\"NAV\" >NAV</option>\n\
-        <option class=\"spacer\" value=\"NAV\">&nbsp;</option>\n<option class=\"lang\"\
-        \ value=\"ERV-AWA\">&mdash;AWA&mdash;</option>\n<option value=\"ERV-AWA\"\
-        \ >ERV-AWA</option>\n<option class=\"spacer\" value=\"ERV-AWA\">&nbsp;</option>\n\
-        <option class=\"lang\" value=\"BG1940\">&mdash;BG&mdash;</option>\n<option\
-        \ value=\"BG1940\" >BG1940</option>\n<option value=\"BULG\" >BULG</option>\n\
+        \ Biblia (1905) (ADB1905)</option>\n<option value=\"ASND\" >Ang Salita ng\
+        \ Dios (Tagalog Contemporary Bible) (ASND)</option>\n<option value=\"SND\"\
+        \ >Ang Salita ng Diyos (SND)</option>\n<option value=\"MBBTAG\" >Magandang\
+        \ Balita Biblia (MBBTAG)</option>\n<option value=\"MBBTAG-DC\" >Magandang\
+        \ Balita Biblia (with Deuterocanon) (MBBTAG-DC)</option>\n<option class=\"\
+        spacer\" value=\"MBBTAG-DC\">&nbsp;</option>\n<option class=\"lang\" value=\"\
+        NA-TWI\">&mdash;Twi (TWI)&mdash;</option>\n<option value=\"NA-TWI\" >Nkwa\
+        \ Asem (NA-TWI)</option>\n<option class=\"spacer\" value=\"NA-TWI\">&nbsp;</option>\n\
+        <option class=\"lang\" value=\"UKR\">&mdash;\u0423\u043A\u0440\u0430\u0457\
+        \u043D\u0441\u044C\u043A\u0430 (UK)&mdash;</option>\n<option value=\"UKR\"\
+        \ >Ukrainian Bible (UKR)</option>\n<option value=\"ERV-UK\" >Ukrainian New\
+        \ Testament: Easy-to-Read Version (ERV-UK)</option>\n<option class=\"spacer\"\
+        \ value=\"ERV-UK\">&nbsp;</option>\n<option class=\"lang\" value=\"ERV-UR\"\
+        >&mdash;\u0627\u0631\u062F\u0648 (UR)&mdash;</option>\n<option value=\"ERV-UR\"\
+        \ >Urdu Bible: Easy-to-Read Version (ERV-UR)</option>\n<option class=\"spacer\"\
+        \ value=\"ERV-UR\">&nbsp;</option>\n<option class=\"lang\" value=\"USP\">&mdash;Uspanteco\
+        \ (USP)&mdash;</option>\n<option value=\"USP\" >Uspanteco (USP)</option>\n\
+        <option class=\"spacer\" value=\"USP\">&nbsp;</option>\n<option class=\"lang\"\
+        \ value=\"BD2011\">&mdash;Ti\xEAng Vi\xEAt (VI)&mdash;</option>\n<option value=\"\
+        BD2011\" >B\u1EA3n D\u1ECBch 2011 (BD2011)</option>\n<option value=\"NVB\"\
+        \ >New Vietnamese Bible (NVB)</option>\n<option value=\"BPT\" >Vietnamese\
+        \ Bible: Easy-to-Read Version (BPT)</option>\n<option class=\"spacer\" value=\"\
+        BPT\">&nbsp;</option>\n<option class=\"lang\" value=\"BYO\">&mdash;Yor\xF9\
+        b\xE1 (YO)&mdash;</option>\n<option value=\"BYO\" >B\xEDb\xE9l\xEC M\xEDm\u1ECD\
+        \u0301 Yor\xF9b\xE1 \xD2de \xD2n (BYO)</option>\n<option class=\"spacer\"\
+        \ value=\"BYO\">&nbsp;</option>\n<option class=\"lang\" value=\"CCB\">&mdash;\u6C49\
+        \u8BED (ZH)&mdash;</option>\n<option value=\"CCB\" >Chinese Contemporary Bible\
+        \ (Simplified) (CCB)</option>\n<option value=\"CCBT\" >Chinese Contemporary\
+        \ Bible (Traditional) (CCBT)</option>\n<option value=\"ERV-ZH\" >Chinese New\
+        \ Testament: Easy-to-Read Version (ERV-ZH)</option>\n<option value=\"CNVS\"\
+        \ >Chinese New Version (Simplified) (CNVS)</option>\n<option value=\"CNVT\"\
+        \ >Chinese New Version (Traditional) (CNVT)</option>\n<option value=\"CSBS\"\
+        \ >Chinese Standard Bible (Simplified) (CSBS)</option>\n<option value=\"CSBT\"\
+        \ >Chinese Standard Bible (Traditional) (CSBT)</option>\n<option value=\"\
+        CUVS\" >Chinese Union Version (Simplified) (CUVS)</option>\n<option value=\"\
+        CUV\" >Chinese Union Version (Traditional) (CUV)</option>\n<option value=\"\
+        CUVMPS\" >Chinese Union Version Modern Punctuation (Simplified) (CUVMPS)</option>\n\
+        <option value=\"CUVMPT\" >Chinese Union Version Modern Punctuation (Traditional)\
+        \ (CUVMPT)</option>\n<option value=\"RCU17SS\" >Revised Chinese Union Version\
+        \ (Simplified Script) Shen Edition (RCU17SS)</option>\n<option value=\"RCU17TS\"\
+        \ >Revised Chinese Union Version (Traditional Script) Shen Edition (RCU17TS)</option>\n\
+        </select><select class=\"dropdown-small\"><option class=\"lang\" value=\"\
+        AMU\">&mdash;AMU&mdash;</option>\n<option value=\"AMU\" >AMU</option>\n<option\
+        \ class=\"spacer\" value=\"AMU\">&nbsp;</option>\n<option class=\"lang\" value=\"\
+        ERV-AR\">&mdash;AR&mdash;</option>\n<option value=\"ERV-AR\" >ERV-AR</option>\n\
+        <option value=\"NAV\" >NAV</option>\n<option class=\"spacer\" value=\"NAV\"\
+        >&nbsp;</option>\n<option class=\"lang\" value=\"ERV-AWA\">&mdash;AWA&mdash;</option>\n\
+        <option value=\"ERV-AWA\" >ERV-AWA</option>\n<option class=\"spacer\" value=\"\
+        ERV-AWA\">&nbsp;</option>\n<option class=\"lang\" value=\"BG1940\">&mdash;BG&mdash;</option>\n\
+        <option value=\"BG1940\" >BG1940</option>\n<option value=\"BULG\" >BULG</option>\n\
         <option value=\"ERV-BG\" >ERV-BG</option>\n<option value=\"CBT\" >CBT</option>\n\
         <option value=\"BOB\" >BOB</option>\n<option value=\"BPB\" >BPB</option>\n\
         <option class=\"spacer\" value=\"BPB\">&nbsp;</option>\n<option class=\"lang\"\
@@ -1518,7 +1518,7 @@ interactions:
         <option class=\"lang\" value=\"FSV\">&mdash;TL&mdash;</option>\n<option value=\"\
         FSV\" >FSV</option>\n<option value=\"ABTAG1978\" >ABTAG1978</option>\n<option\
         \ value=\"ABTAG2001\" >ABTAG2001</option>\n<option value=\"ADB1905\" >ADB1905</option>\n\
-        <option value=\"SND\" >SND</option>\n<option value=\"ASND\" >ASND</option>\n\
+        <option value=\"ASND\" >ASND</option>\n<option value=\"SND\" >SND</option>\n\
         <option value=\"MBBTAG\" >MBBTAG</option>\n<option value=\"MBBTAG-DC\" >MBBTAG-DC</option>\n\
         <option class=\"spacer\" value=\"MBBTAG-DC\">&nbsp;</option>\n<option class=\"\
         lang\" value=\"NA-TWI\">&mdash;TWI&mdash;</option>\n<option value=\"NA-TWI\"\
@@ -1735,7 +1735,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Tue, 19 Apr 2022 20:05:50 GMT
+      - Wed, 04 May 2022 14:40:15 GMT
       Strict-Transport-Security:
       - max-age=2592000
       Transfer-Encoding:
@@ -1743,11 +1743,11 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 998513763c3be86047eec7354b6833f2.cloudfront.net (CloudFront)
+      - 1.1 a8aca068f78ec0ca81246c04c3ff6292.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - fiY2L0Y3Ou-k3jCzv-bhaHXgRScYGct1m403Oj5h-aXYB-9mN1AlKA==
+      - GG5Kww3Qk0U45v2NPx1dNrV4a9QaUKTkP__RhpzuWAvzy48BqX_6fg==
       X-Amz-Cf-Pop:
-      - ORD53-C2
+      - ORD52-C1
       X-Cache:
       - Miss from cloudfront
     status:
