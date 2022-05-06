@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from collections.abc import Iterable, Iterator
-from typing import TYPE_CHECKING, Any, Final, Generic, Protocol, TypeVar, overload
-from typing_extensions import Self
+from collections import OrderedDict
+from collections.abc import Iterable
+from typing import TYPE_CHECKING, Final, Generic, Protocol, TypeVar, overload
 
 import discord
 from attrs import define, field
@@ -16,9 +16,7 @@ if TYPE_CHECKING:
     from .erasmus import Erasmus
 
 
-_R_contra = TypeVar('_R_contra', contravariant=True)
-_T = TypeVar('_T')
-_V = TypeVar('_V', bound='Info[Any]')
+_OptionT = TypeVar('_OptionT', bound='Option')
 
 
 _truncation_warning: Final = '**The passage was too long and has been truncated:**\n\n'
@@ -65,94 +63,59 @@ async def send_passage(
     )
 
 
-class Record(Protocol):
+class Option(Protocol):
     @property
-    def command(self) -> str:
-        ...
-
-
-class Info(Protocol[_R_contra]):
-    @property
-    def command(self) -> str:
+    def key(self) -> str:
         ...
 
     @property
-    def display_name(self) -> str:
-        ...
-
-    def update(self, record: _R_contra, /) -> None:
+    def name(self) -> str:
         ...
 
     def matches(self, text: str, /) -> bool:
         ...
 
-    @classmethod
-    def create(cls, record: _R_contra, /) -> Self:
+    def choice(self) -> app_commands.Choice[str]:
         ...
 
 
 @define
-class InfoContainer(Generic[_V]):
-    info_cls: type[_V]
-    _keys: list[str] = field(init=False)
-    _map: dict[str, _V] = field(init=False)
+class AutoCompleter(Generic[_OptionT]):
+    _storage: OrderedDict[str, _OptionT] = field(init=False)
 
     def __attrs_post_init__(self) -> None:
-        self._keys = []
-        self._map = {}
+        self._storage = OrderedDict()
 
-    def set(self, records: Iterable[Record], /) -> None:
-        new_keys: list[str] = []
-        new_map: dict[str, _V] = {}
+    def add(self, option: _OptionT, /) -> None:
+        self._storage[option.key] = option
 
-        for record in records:
-            info = self.info_cls.create(record)
-            new_keys.append(info.command)
-            new_map[info.command] = info
-
-        self._keys = sorted(new_keys)
-        self._map = new_map
+    def update(self, options: Iterable[_OptionT], /) -> None:
+        for option in options:
+            self.add(option)
 
     def clear(self) -> None:
-        self._keys.clear()
-        self._map.clear()
+        self._storage.clear()
 
-    def add(self, record: Record, /) -> None:
-        info = self.info_cls.create(record)
-        self._keys.append(info.command)
-        self._map[info.command] = info
+    def discard(self, key: str, /) -> None:
+        if key in self._storage:
+            del self._storage[key]
 
-    def delete(self, /, *, command: str) -> None:
-        self._keys.remove(command)
-        del self._map[command]
+    def remove(self, key: str, /) -> None:
+        if key not in self._storage:
+            raise KeyError(key)
 
-    def update(self, record: Record, /) -> None:
-        info = self._map.get(record.command)
-        if info is not None:
-            info.update(record)
-        else:
-            self.add(record)
-
-    @overload
-    def get(self, command: str, /) -> _V | None:
-        ...
-
-    @overload
-    def get(self, command: str, /, default: _T) -> _V | _T:
-        ...
-
-    def get(self, command: str, /, default: _T | None = None) -> _V | _T | None:
-        return self._map.get(command, default)
-
-    def __iter__(self) -> Iterator[_V]:
-        for key in self._keys:
-            yield self._map[key]
+        self.discard(key)
 
     def choices(self, current: str, /) -> list[app_commands.Choice[str]]:
         current = current.strip()
 
         return [
-            app_commands.Choice(name=info.display_name, value=info.command)
-            for info in self
-            if not current or info.matches(current)
+            option.choice()
+            for option in self._storage.values()
+            if not current or option.matches(current)
         ][:25]
+
+    async def complete(
+        self, interaction: discord.Interaction, current: str
+    ) -> list[app_commands.Choice[str]]:
+        return self.choices(current)

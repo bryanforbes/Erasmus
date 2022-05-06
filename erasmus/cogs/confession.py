@@ -3,8 +3,10 @@ from __future__ import annotations
 from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
 from re import Match
 from typing import Any, Final, NamedTuple, TypeAlias, cast
+from typing_extensions import Self
 
 import discord
+from attrs import define, field
 from botus_receptus import Cog, re, utils
 from botus_receptus.cog import GroupCog
 from botus_receptus.formatting import (
@@ -18,6 +20,8 @@ from botus_receptus.formatting import (
 from discord import app_commands
 from discord.ext import commands
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from erasmus.utils import AutoCompleter
 
 from ..db import Session
 from ..db.confession import (
@@ -474,15 +478,6 @@ class _SectionInfo(NamedTuple):
     text_ellipsized: str
 
 
-class _ConfessionInfo(NamedTuple):
-    command: str
-    command_lower: str
-    name: str
-    name_lower: str
-    type: ConfessionTypeEnum
-    section_info: list[_SectionInfo]
-
-
 def _create_section_info(section: str, title: str, /) -> _SectionInfo:
     text = f'{section}. {title}'
     return _SectionInfo(
@@ -493,16 +488,89 @@ def _create_section_info(section: str, title: str, /) -> _SectionInfo:
     )
 
 
+@define
+class _ConfessionOption:
+    command: str
+    command_lower: str
+    name: str
+    name_lower: str
+    type: ConfessionTypeEnum
+    section_info: list[_SectionInfo]
+
+    @property
+    def key(self) -> str:
+        return self.command
+
+    def matches(self, text: str, /) -> bool:
+        return text in self.name_lower or text in self.command_lower
+
+    def choice(self) -> app_commands.Choice[str]:
+        return app_commands.Choice(name=self.name, value=self.command)
+
+    @classmethod
+    def create(
+        cls,
+        confession: ConfessionRecord,
+        section_info: list[_SectionInfo],
+        /,
+    ) -> Self:
+        return cls(
+            name=confession.name,
+            name_lower=confession.name.lower(),
+            command=confession.command,
+            command_lower=confession.command.lower(),
+            type=confession.type,
+            section_info=section_info,
+        )
+
+
+@define
+class ConfessionAutoCompleter(AutoCompleter[_ConfessionOption]):
+    create_option: Callable[[ConfessionRecord], _ConfessionOption] = field(
+        default=_ConfessionOption.create
+    )
+
+    def section_choices(
+        self,
+        interaction: discord.Interaction,
+        current: str,
+        /,
+    ) -> list[app_commands.Choice[str]]:
+        current = current.lower().strip()
+
+        if (
+            interaction.data is None
+            or (options := interaction.data.get('options')) is None
+            or len(options) != 1
+            or (group_options := options[0].get('options')) is None
+            or len(group_options) == 0
+            or group_options[0].get('name') != 'source'
+            or (source := group_options[0].get('value')) is None  # type: ignore
+            or (item := self._storage.get(source)) is None  # type: ignore
+        ):
+            return []
+
+        return [
+            app_commands.Choice(
+                name=section_info.text_ellipsized, value=section_info.section
+            )
+            for section_info in item.section_info
+            if not current
+            or current in section_info.text_lower
+            or current in section_info.section
+        ][:25]
+
+
 class ConfessionAppCommands(
     ConfessionBase,
     GroupCog[Erasmus],
     group_name='confess',
     group_description='Confessions',
 ):
-    __confession_info: dict[str, _ConfessionInfo]
+    __confession_lookup: ConfessionAutoCompleter
 
     async def cog_load(self) -> None:
-        self.__confession_info = {}
+        self.__confession_lookup = ConfessionAutoCompleter()
 
         async with Session() as session:
             async for confession in ConfessionRecord.get_all(session):
@@ -533,13 +601,8 @@ class ConfessionAppCommands(
                             async for question in confession.get_questions(session)
                         ]
 
-                self.__confession_info[confession.command] = _ConfessionInfo(
-                    command=confession.command,
-                    command_lower=confession.command.lower(),
-                    name=confession.name,
-                    name_lower=confession.name.lower(),
-                    type=confession.type,
-                    section_info=section_info,
+                self.__confession_lookup.add(
+                    _ConfessionOption.create(confession, section_info)
                 )
 
     async def __source_autocomplete(
@@ -547,44 +610,14 @@ class ConfessionAppCommands(
         interaction: discord.Interaction,
         current: str,
     ) -> list[app_commands.Choice[str]]:
-        current = current.lower().strip()
-
-        return [
-            app_commands.Choice(name=data.name, value=data.command)
-            for data in self.__confession_info.values()
-            if not current
-            or current in data.name_lower
-            or current in data.command_lower
-        ][:25]
+        return self.__confession_lookup.choices(current.lower())
 
     async def __section_autocomplete(
         self,
         interaction: discord.Interaction,
         current: str,
     ) -> list[app_commands.Choice[str]]:
-        current = current.lower().strip()
-
-        if (
-            interaction.data is None
-            or (options := interaction.data.get('options')) is None
-            or len(options) != 1
-            or (options := options[0].get('options')) is None
-            or len(options) == 0
-            or options[0].get('name') != 'source'
-            or (source := options[0].get('value')) is None  # type: ignore
-            or (info := self.__confession_info.get(source)) is None  # type: ignore
-        ):
-            return []
-
-        return [
-            app_commands.Choice(
-                name=section_info.text_ellipsized, value=section_info.section
-            )
-            for section_info in info.section_info
-            if not current
-            or current in section_info.text_lower
-            or current in section_info.section
-        ][:25]
+        return self.__confession_lookup.section_choices(interaction, current)
 
     @app_commands.command()
     @app_commands.checks.cooldown(

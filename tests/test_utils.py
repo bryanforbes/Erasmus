@@ -1,11 +1,13 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 from unittest.mock import AsyncMock
 
 import discord
 import pytest
 import pytest_mock
+from attr import define
+from discord import app_commands
 
 from erasmus import utils
 from erasmus.data import Passage, VerseRange
@@ -84,3 +86,133 @@ async def test_send_passage(
         footer={'text': footer},
         ephemeral=ephemeral,
     )
+
+
+@define
+class MockOption:
+    key: str
+    name: str
+
+    def matches(self, text: str, /) -> bool:
+        return text in self.name or text in self.key
+
+    def choice(self) -> app_commands.Choice[str]:
+        return app_commands.Choice(name=self.name, value=self.key)
+
+
+class TestAutoCompleter:
+    def test_init(self) -> None:
+        completer: utils.AutoCompleter[MockOption] = utils.AutoCompleter()
+        assert completer is not None
+
+    def test_add(self) -> None:
+        completer: utils.AutoCompleter[MockOption] = utils.AutoCompleter()
+
+        option1 = MockOption(key='1', name='Test 1')
+        option2 = MockOption(key='2', name='Test 2')
+
+        completer.add(option1)
+        completer.add(option2)
+
+        assert completer.choices('') == [
+            app_commands.Choice(name='Test 1', value='1'),
+            app_commands.Choice(name='Test 2', value='2'),
+        ]
+
+    def test_update(self) -> None:
+        completer: utils.AutoCompleter[MockOption] = utils.AutoCompleter()
+
+        option1 = MockOption(key='1', name='Test 1')
+        option2 = MockOption(key='2', name='Test 2')
+
+        completer.update([option1, option2])
+
+        assert completer.choices('') == [
+            app_commands.Choice(name='Test 1', value='1'),
+            app_commands.Choice(name='Test 2', value='2'),
+        ]
+
+    def test_clear(self) -> None:
+        completer: utils.AutoCompleter[MockOption] = utils.AutoCompleter()
+
+        option1 = MockOption(key='1', name='Test 1')
+        option2 = MockOption(key='2', name='Test 2')
+
+        completer.update([option1, option2])
+
+        completer.clear()
+
+        assert completer.choices('') == []
+
+    def test_discard(self) -> None:
+        completer: utils.AutoCompleter[MockOption] = utils.AutoCompleter()
+
+        option1 = MockOption(key='1', name='Test 1')
+        option2 = MockOption(key='2', name='Test 2')
+
+        completer.update([option1, option2])
+
+        completer.discard('1')
+        completer.discard('3')
+
+        assert completer.choices('') == [
+            app_commands.Choice(name='Test 2', value='2'),
+        ]
+
+    def test_remove(self) -> None:
+        completer: utils.AutoCompleter[MockOption] = utils.AutoCompleter()
+
+        option1 = MockOption(key='1', name='Test 1')
+        option2 = MockOption(key='2', name='Test 2')
+
+        completer.update([option1, option2])
+
+        completer.remove('1')
+
+        with pytest.raises(KeyError):
+            completer.remove('3')
+
+        assert completer.choices('') == [
+            app_commands.Choice(name='Test 2', value='2'),
+        ]
+
+    def test_choices(self) -> None:
+        completer: utils.AutoCompleter[MockOption] = utils.AutoCompleter()
+
+        option1 = MockOption(key='1', name='Testing 1')
+        option2 = MockOption(key='2', name='Tester 2')
+
+        completer.add(option1)
+        completer.add(option2)
+
+        assert completer.choices('') == [
+            app_commands.Choice(name='Testing 1', value='1'),
+            app_commands.Choice(name='Tester 2', value='2'),
+        ]
+
+        assert completer.choices(' Testing ') == [
+            app_commands.Choice(name='Testing 1', value='1'),
+        ]
+
+        completer.update(
+            map(
+                lambda x: MockOption(name=f'Testing {x}', key=str(x)),
+                range(50),
+            )
+        )
+
+        choices = completer.choices(' Testing ')
+        assert len(choices) == 25
+
+    async def test_complete(self) -> None:
+        completer: utils.AutoCompleter[MockOption] = utils.AutoCompleter()
+
+        option1 = MockOption(key='1', name='Testing 1')
+        option2 = MockOption(key='2', name='Tester 2')
+
+        completer.add(option1)
+        completer.add(option2)
+
+        assert (await completer.complete(cast(Any, object()), ' Testing ')) == [
+            app_commands.Choice(name='Testing 1', value='1'),
+        ]

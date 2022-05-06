@@ -33,7 +33,7 @@ from ..page_source import AsyncCallback, AsyncPageSource, FieldPageSource
 from ..service_manager import ServiceManager
 from ..types import Bible as _Bible
 from ..ui_pages import ContextUIPages, InteractionUIPages
-from ..utils import InfoContainer, send_passage
+from ..utils import AutoCompleter, send_passage
 
 
 def _book_mask_from_books(books: str, /) -> int:
@@ -623,7 +623,7 @@ class Bible(BibleBase):
 
 
 @define
-class _BibleInfo:
+class _BibleOption:
     name: str
     name_lower: str
     command: str
@@ -632,8 +632,8 @@ class _BibleInfo:
     abbreviation_lower: str
 
     @property
-    def display_name(self) -> str:
-        return self.name
+    def key(self) -> str:
+        return self.command
 
     def update(self, version: BibleVersion, /) -> None:
         self.name = version.name
@@ -648,6 +648,9 @@ class _BibleInfo:
             or text in self.abbreviation_lower
         )
 
+    def choice(self) -> app_commands.Choice[str]:
+        return app_commands.Choice(name=self.name, value=self.command)
+
     @classmethod
     def create(cls, version: BibleVersion, /) -> Self:
         return cls(
@@ -660,14 +663,15 @@ class _BibleInfo:
         )
 
 
-_bible_info = InfoContainer(info_cls=_BibleInfo)
+_bible_lookup: AutoCompleter[_BibleOption] = AutoCompleter()
 
 
-async def _version_autocomplete(
-    interaction: discord.Interaction,
+async def _version_complete(
+    intx: discord.Interaction,
     current: str,
+    /,
 ) -> list[app_commands.Choice[str]]:
-    return _bible_info.choices(current)
+    return _bible_lookup.choices(current)
 
 
 @app_commands.default_permissions(administrator=True)
@@ -682,7 +686,7 @@ class ServerPreferencesGroup(
     @app_commands.checks.cooldown(
         rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
     )
-    @app_commands.autocomplete(version=_version_autocomplete)
+    @app_commands.autocomplete(version=_version_complete)
     async def setdefault(
         self,
         interaction: discord.Interaction,
@@ -732,7 +736,7 @@ class PreferencesGroup(
     @app_commands.command()
     @app_commands.describe(version='Bible version')
     @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
-    @app_commands.autocomplete(version=_version_autocomplete)
+    @app_commands.autocomplete(version=_version_complete)
     async def setdefault(
         self,
         interaction: discord.Interaction,
@@ -783,7 +787,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
 
     @app_commands.command()
     @app_commands.describe(version='The Bible version to get information for')
-    @app_commands.autocomplete(version=_version_autocomplete)
+    @app_commands.autocomplete(version=_version_complete)
     async def info(self, interaction: discord.Interaction, /, version: str) -> None:
         '''Get information for a Bible version'''
 
@@ -853,7 +857,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
                     books=_book_mask_from_books(books),
                 )
                 session.add(bible)
-            _bible_info.add(bible)
+            _bible_lookup.add(_BibleOption.create(bible))
         except UniqueViolationError:
             await utils.send_embed_error(
                 interaction,
@@ -868,7 +872,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
 
     @app_commands.command()
     @app_commands.describe(version='The version to delete')
-    @app_commands.autocomplete(version=_version_autocomplete)
+    @app_commands.autocomplete(version=_version_complete)
     async def delete(self, interaction: discord.Interaction, /, version: str) -> None:
         '''Delete a Bible'''
 
@@ -887,9 +891,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         service='Service to use for lookup and search',
         service_version="The service's code for this version",
     )
-    @app_commands.autocomplete(
-        version=_version_autocomplete, service=_service_autocomplete
-    )
+    @app_commands.autocomplete(version=_version_complete, service=_service_autocomplete)
     async def update(
         self,
         interaction: discord.Interaction,
@@ -933,7 +935,8 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
                 if books is not None:
                     bible.books = _book_mask_from_books(books)
 
-            _bible_info.update(bible)
+            _bible_lookup.discard(bible.command)
+            _bible_lookup.add(_BibleOption.create(bible))
 
         except ErasmusError:
             raise
@@ -962,15 +965,16 @@ class BibleAppCommands(BibleBase):
 
     async def cog_load(self) -> None:
         async with Session() as session:
-            _bible_info.set(
+            _bible_lookup.clear()
+            _bible_lookup.update(
                 [
-                    version
+                    _BibleOption.create(version)
                     async for version in BibleVersion.get_all(session, ordered=True)
                 ]
             )
 
     async def cog_unload(self) -> None:
-        _bible_info.clear()
+        _bible_lookup.clear()
 
     @app_commands.command()
     @_shared_cooldown
@@ -979,7 +983,7 @@ class BibleAppCommands(BibleBase):
         version='The version in which to look up the verse',
         only_me='Whether to display the verse to yourself or everyone',
     )
-    @app_commands.autocomplete(version=_version_autocomplete)
+    @app_commands.autocomplete(version=_version_complete)
     async def verse(
         self,
         interaction: discord.Interaction,
@@ -1016,7 +1020,7 @@ class BibleAppCommands(BibleBase):
     @app_commands.describe(
         terms='Terms to search for', version='The Bible version to search within'
     )
-    @app_commands.autocomplete(version=_version_autocomplete)
+    @app_commands.autocomplete(version=_version_complete)
     async def search(
         self,
         interaction: discord.Interaction,
@@ -1055,7 +1059,11 @@ class BibleAppCommands(BibleBase):
 
         lines = ['I support the following Bible versions:', '']
 
-        lines += [f'  `{version.command}`: {version.name}' for version in _bible_info]
+        async with Session() as session:
+            lines += [
+                f'  `{version.command}`: {version.name}'
+                async for version in BibleVersion.get_all(session, ordered=True)
+            ]
 
         output = '\n'.join(lines)
         await utils.send_embed(interaction, description=output)
@@ -1063,7 +1071,7 @@ class BibleAppCommands(BibleBase):
     @app_commands.command()
     @_shared_cooldown
     @app_commands.describe(version='The Bible version to get information for')
-    @app_commands.autocomplete(version=_version_autocomplete)
+    @app_commands.autocomplete(version=_version_complete)
     async def bibleinfo(
         self, interaction: discord.Interaction, /, version: str
     ) -> None:
