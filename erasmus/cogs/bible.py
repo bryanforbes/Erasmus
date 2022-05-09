@@ -179,11 +179,10 @@ class BibleBase(Cog[Erasmus]):
 
         super().__init__(bot)
 
-    async def __handle_error(
+    async def cog_command_error(
         self,
-        ctx_or_intx: commands.Context[Erasmus] | discord.Interaction,
+        ctx: commands.Context[Any] | discord.Interaction,
         error: Exception,
-        /,
     ) -> None:
         if (
             isinstance(
@@ -210,20 +209,20 @@ class BibleBase(Cog[Erasmus]):
             case ReferenceNotUnderstoodError():
                 message = f'I do not understand the reference "{error.reference}"'
             case BibleNotSupportedError():
-                if isinstance(ctx_or_intx, commands.Context):
-                    message = f'`{ctx_or_intx.prefix}{error.version}` is not supported'
+                if isinstance(ctx, commands.Context):
+                    message = f'`{ctx.prefix}{error.version}` is not supported'
                 else:
                     message = f'The version `{error.version}` is not supported'
             case NoUserVersionError():
-                if isinstance(ctx_or_intx, commands.Context):
-                    command = f'{ctx_or_intx.prefix}setversion'
+                if isinstance(ctx, commands.Context):
+                    command = f'{ctx.prefix}setversion'
                 else:
                     command = '/version set'
 
                 message = 'You must first set your default version with ' f'`{command}`'
             case InvalidVersionError():
-                if isinstance(ctx_or_intx, commands.Context):
-                    command = f'{ctx_or_intx.prefix}versions'
+                if isinstance(ctx, commands.Context):
+                    command = f'{ctx.prefix}versions'
                 else:
                     command = '/bibles'
 
@@ -232,8 +231,8 @@ class BibleBase(Cog[Erasmus]):
                     f'`{command}` for valid versions'
                 )
             case ServiceNotSupportedError():
-                if isinstance(ctx_or_intx, commands.Context):
-                    version_text = f'{ctx_or_intx.prefix}{ctx_or_intx.invoked_with}'
+                if isinstance(ctx, commands.Context):
+                    version_text = f'{ctx.prefix}{ctx.invoked_with}'
                 else:
                     version_text = f'{error.bible.name}'
 
@@ -254,23 +253,10 @@ class BibleBase(Cog[Erasmus]):
                 return
 
         await utils.send_embed_error(
-            ctx_or_intx, description=formatting.escape(message, mass_mentions=True)
+            ctx, description=formatting.escape(message, mass_mentions=True)
         )
 
-    async def cog_command_error(
-        self,
-        ctx: commands.Context[Any],
-        error: Exception,
-    ) -> None:
-        await self.__handle_error(ctx, error)
-
-    async def cog_app_command_error(
-        self,
-        interaction: discord.Interaction,
-        error: Exception,
-        /,
-    ) -> None:
-        await self.__handle_error(interaction, error)
+    cog_app_command_error = cog_command_error
 
 
 class Bible(BibleBase):

@@ -267,11 +267,10 @@ class ConfessionSearchSource(
 
 
 class ConfessionBase(Cog[Erasmus]):
-    async def __handle_error(
+    async def cog_command_error(
         self,
-        ctx_or_intx: commands.Context[Erasmus] | discord.Interaction,
+        ctx: commands.Context[Any] | discord.Interaction,
         error: Exception,
-        /,
     ) -> None:
         if (
             isinstance(
@@ -303,23 +302,10 @@ class ConfessionBase(Cog[Erasmus]):
                 return
 
         await utils.send_embed_error(
-            ctx_or_intx, description=escape(message, mass_mentions=True)
+            ctx, description=escape(message, mass_mentions=True)
         )
 
-    async def cog_command_error(
-        self,
-        ctx: commands.Context[Any],
-        error: Exception,
-    ) -> None:
-        await self.__handle_error(ctx, error)
-
-    async def cog_app_command_error(
-        self,
-        interaction: discord.Interaction,
-        error: Exception,
-        /,
-    ) -> None:
-        await self.__handle_error(interaction, error)
+    cog_app_command_error = cog_command_error
 
 
 class Confession(ConfessionBase):
