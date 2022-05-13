@@ -652,14 +652,6 @@ class _BibleOption:
 _bible_lookup: AutoCompleter[_BibleOption] = AutoCompleter()
 
 
-async def _version_complete(
-    intx: discord.Interaction,
-    current: str,
-    /,
-) -> list[app_commands.Choice[str]]:
-    return _bible_lookup.choices(current)
-
-
 @app_commands.default_permissions(administrator=True)
 @app_commands.guild_only()
 class ServerPreferencesGroup(
@@ -672,7 +664,7 @@ class ServerPreferencesGroup(
     @app_commands.checks.cooldown(
         rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
     )
-    @app_commands.autocomplete(version=_version_complete)
+    @app_commands.autocomplete(version=_bible_lookup.complete)
     async def setdefault(
         self,
         interaction: discord.Interaction,
@@ -722,7 +714,7 @@ class PreferencesGroup(
     @app_commands.command()
     @app_commands.describe(version='Bible version')
     @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
-    @app_commands.autocomplete(version=_version_complete)
+    @app_commands.autocomplete(version=_bible_lookup.complete)
     async def setdefault(
         self,
         interaction: discord.Interaction,
@@ -773,7 +765,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
 
     @app_commands.command()
     @app_commands.describe(version='The Bible version to get information for')
-    @app_commands.autocomplete(version=_version_complete)
+    @app_commands.autocomplete(version=_bible_lookup.complete)
     async def info(self, interaction: discord.Interaction, /, version: str) -> None:
         '''Get information for a Bible version'''
 
@@ -858,7 +850,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
 
     @app_commands.command()
     @app_commands.describe(version='The version to delete')
-    @app_commands.autocomplete(version=_version_complete)
+    @app_commands.autocomplete(version=_bible_lookup.complete)
     async def delete(self, interaction: discord.Interaction, /, version: str) -> None:
         '''Delete a Bible'''
 
@@ -877,7 +869,9 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         service='Service to use for lookup and search',
         service_version="The service's code for this version",
     )
-    @app_commands.autocomplete(version=_version_complete, service=_service_autocomplete)
+    @app_commands.autocomplete(
+        version=_bible_lookup.complete, service=_service_autocomplete
+    )
     async def update(
         self,
         interaction: discord.Interaction,
@@ -969,7 +963,7 @@ class BibleAppCommands(BibleBase):
         version='The version in which to look up the verse',
         only_me='Whether to display the verse to yourself or everyone',
     )
-    @app_commands.autocomplete(version=_version_complete)
+    @app_commands.autocomplete(version=_bible_lookup.complete)
     async def verse(
         self,
         interaction: discord.Interaction,
@@ -1006,7 +1000,7 @@ class BibleAppCommands(BibleBase):
     @app_commands.describe(
         terms='Terms to search for', version='The Bible version to search within'
     )
-    @app_commands.autocomplete(version=_version_complete)
+    @app_commands.autocomplete(version=_bible_lookup.complete)
     async def search(
         self,
         interaction: discord.Interaction,
@@ -1057,7 +1051,7 @@ class BibleAppCommands(BibleBase):
     @app_commands.command()
     @_shared_cooldown
     @app_commands.describe(version='The Bible version to get information for')
-    @app_commands.autocomplete(version=_version_complete)
+    @app_commands.autocomplete(version=_bible_lookup.complete)
     async def bibleinfo(
         self, interaction: discord.Interaction, /, version: str
     ) -> None:

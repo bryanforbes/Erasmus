@@ -13,7 +13,7 @@ python = "^3.10"
 alembic = "^1.7"
 attrs = "^21.4.0"
 beautifulsoup4 = "^4.11"
-"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "b8dcc1c0eed4bbfe6d6465b180963bcca452bcd9", extras = ["uvloop", "sqlalchemy"]}
+"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "bc6f248c8689cb297ed8b99e11e781842ee7efce", extras = ["uvloop", "sqlalchemy"]}
 "discord.py" = { git = "https://github.com/Rapptz/discord.py", branch = "master", extras = ["speed"] }
 more-itertools = "~8.13.0"
 

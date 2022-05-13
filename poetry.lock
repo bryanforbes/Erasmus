@@ -172,7 +172,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "botus-receptus"
-version = "2.0.0dev39"
+version = "2.0.0dev40"
 description = ""
 category = "main"
 optional = false
@@ -187,7 +187,6 @@ attrs = ">=21.4.0"
 click = ">=8.0"
 "discord.py" = {git = "https://github.com/Rapptz/discord.py", branch = "master"}
 greenlet = {version = "^1.1.2", optional = true}
-more-itertools = "^8.13.0"
 pendulum = "~2.1.2"
 sqlalchemy = {version = "~1.4", optional = true}
 tomli = "^2.0.1"
@@ -203,8 +202,8 @@ uvloop = ["uvloop (>=0.16.0,<0.17.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "b8dcc1c0eed4bbfe6d6465b180963bcca452bcd9"
-resolved_reference = "b8dcc1c0eed4bbfe6d6465b180963bcca452bcd9"
+reference = "bc6f248c8689cb297ed8b99e11e781842ee7efce"
+resolved_reference = "bc6f248c8689cb297ed8b99e11e781842ee7efce"
 
 [[package]]
 name = "brotli"
@@ -1018,7 +1017,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "489082688fd2ffaec92e96e12d4dc0c696efecec71f1aa5696c024b4fb188d96"
+content-hash = "1470757add04ae94195d62b5dd52fc92121911d1049d9c8a600921d0e6ea1898"
 
 [metadata.files]
 aiodns = [
