@@ -1,6 +1,12 @@
 from __future__ import annotations
 
-from typing import Final
+import datetime  # noqa: F401
+import io
+import textwrap
+import traceback
+from contextlib import redirect_stdout
+from typing import Any, Final
+from typing_extensions import Self
 
 import discord
 from botus_receptus import GroupCog, utils
@@ -14,8 +20,108 @@ from ..erasmus import Erasmus, _extensions as _extension_names
 _available_extensions: Final = {f'erasmus.cogs.{name}' for name in _extension_names}
 
 
+class _EvalError(Exception):
+    ...
+
+
+class _RunError(Exception):
+    value: str
+    formatted: str
+
+    def __init__(self, value: str, formatted: str) -> None:
+        super().__init__()
+        self.value = value
+        self.formatted = formatted
+
+
+class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
+    _admin: Admin
+
+    code: discord.ui.TextInput[Self] = discord.ui.TextInput(
+        label='Code', placeholder='Code here…', style=discord.TextStyle.paragraph
+    )
+
+    def __init__(self, admin: Admin, *, timeout: float | None = None) -> None:
+        super().__init__(timeout=timeout)
+
+        self._admin = admin
+
+    def _cleanup_code(self, content: str) -> str:
+        """Automatically removes code blocks from the code."""
+        # remove ```py\n```
+        if content.startswith('```') and content.endswith('```'):
+            return '\n'.join(content.split('\n')[1:-1])
+
+        # remove `foo`
+        return content.strip('` \n')
+
+    async def on_submit(self, interaction: discord.Interaction) -> None:
+        assert self.code.value is not None
+
+        env: dict[str, Any] = {
+            'bot': interaction.client,
+            'interaction': interaction,
+            'user': interaction.user,
+            'channel': interaction.channel,
+            'guild': interaction.guild,
+            'message': interaction.message,
+            '_': self._admin._last_result,
+        }
+
+        env.update(globals())
+
+        body = self._cleanup_code(self.code.value)
+        stdout = io.StringIO()
+
+        to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
+
+        try:
+            exec(to_compile, env)
+        except Exception as e:
+            raise _EvalError from e
+
+        func = env['func']
+
+        try:
+            with redirect_stdout(stdout):
+                ret = await func()
+        except Exception as e:
+            raise _RunError(stdout.getvalue(), traceback.format_exc()) from e
+        else:
+            value = stdout.getvalue()
+
+            if ret is None:
+                if value:
+                    await utils.send(interaction, content=f'```py\n{value}\n```')
+            else:
+                self._admin._last_result = ret
+                await utils.send(interaction, content=f'```py\n{value}{ret}\n```')
+
+    async def on_error(
+        self, interaction: discord.Interaction, error: Exception
+    ) -> None:
+        if error.__cause__ is not None and isinstance(error, _EvalError):
+            await utils.send(
+                interaction,
+                content=f'```py\n{error.__cause__.__class__.__name__}: {error}\n```',
+            )
+        elif isinstance(error, _RunError):
+            await utils.send(
+                interaction, content=f'```py\n{error.value}{error.formatted}\n```'
+            )
+        else:
+            await utils.send(
+                interaction, content=f'```py\n{error.__class__.__name__}: {error}\n```'
+            )
+
+
 @admin_guild_only()
 class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin commands'):
+    _last_result: Any
+
+    async def cog_load(self) -> None:
+        self._last_result = None
+
     async def __unloaded_modules_autocomplete(
         self, interaction: discord.Interaction, current: str
     ) -> list[app_commands.Choice[str]]:
@@ -126,6 +232,13 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
                 description='Commands synced',
                 color=discord.Color.green(),
             )
+
+    @app_commands.command(name='eval')
+    @checks.is_owner()
+    async def _eval(self, interaction: discord.Interaction, /) -> None:
+        '''Evaluates code'''
+
+        await interaction.response.send_modal(_EvalModal(self))
 
 
 async def setup(bot: Erasmus, /) -> None:
