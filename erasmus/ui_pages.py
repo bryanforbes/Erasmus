@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from abc import abstractmethod
 from collections.abc import Sequence
-from typing import Any, Final, Generic, TypeVar
+from typing import Any, Final, Generic, TypeVar, cast
 from typing_extensions import Self
 
 import discord
+from botus_receptus import utils
 from discord.ext import commands
 
 from .erasmus import Erasmus
@@ -52,12 +52,14 @@ class PagesModal(discord.ui.Modal, title='Skip to page…'):
 
 
 class UIPages(discord.ui.View, BasePages[T], Generic[T]):
+    ctx: commands.Context[Erasmus] | discord.Interaction
     check_embeds: bool
     compact: bool
     message: discord.Message | None
 
     def __init__(
         self,
+        ctx: commands.Context[Erasmus] | discord.Interaction,
         source: PageSource[T],
         /,
         *,
@@ -65,25 +67,42 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         compact: bool = False,
         timeout: float | None = 180.0,
     ) -> None:
-        BasePages[T].__init__(self, source)
-        discord.ui.View.__init__(self, timeout=timeout)
+        super().__init__(timeout=timeout)
+        BasePages.__init__(self, source)  # type: ignore
 
-        self.source = source
+        self.ctx = ctx
         self.check_embeds = check_embeds
         self.message = None
-        self.current_page = 0
         self.compact = compact
         self.clear_items()
 
-    @abstractmethod
+    @discord.utils.cached_property
+    def allowed_user_ids(self) -> set[int]:
+        if isinstance(self.ctx, commands.Context):
+            client: Any = self.ctx.bot
+            author_id = self.ctx.author.id
+        else:
+            client = self.ctx.client
+            author_id = self.ctx.user.id
+
+        return {
+            author_id,
+            client.owner_id,
+            cast(discord.ClientUser, client.user).id,
+        }
+
     async def is_same_user(self, interaction: discord.Interaction, /) -> bool:
-        ...
+        return interaction.user.id in self.allowed_user_ids
 
-    @abstractmethod
     def has_embed_permission(self) -> bool:
-        ...
+        if isinstance(self.ctx, commands.Context):
+            return (
+                isinstance(self.ctx.me, discord.Member)
+                and self.ctx.channel.permissions_for(self.ctx.me).embed_links
+            )
 
-    @abstractmethod
+        return True
+
     async def send_initial_message(
         self,
         content: str = _MISSING,
@@ -94,15 +113,25 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         embeds: Sequence[discord.Embed] = _MISSING,
         file: discord.File = _MISSING,
         files: Sequence[discord.File] = _MISSING,
-        stickers: Sequence[discord.GuildSticker | discord.StickerItem] | None = None,
-        delete_after: float | None = None,
-        nonce: str | int | None = None,
+        delete_after: float = _MISSING,
+        nonce: int = _MISSING,
         allowed_mentions: discord.AllowedMentions = _MISSING,
-        mention_author: bool | None = None,
         view: discord.ui.View = _MISSING,
-        suppress_embeds: bool = False,
     ) -> discord.Message:
-        ...
+        return await utils.send(  # type: ignore
+            self.ctx,
+            content=content,
+            tts=tts,
+            ephemeral=ephemeral,
+            embed=embed,
+            embeds=embeds,
+            file=file,
+            files=files,
+            view=view,
+            allowed_mentions=allowed_mentions,
+            nonce=nonce,
+            delete_after=delete_after,
+        )
 
     def fill_items(self, /) -> None:
         if not self.compact:
@@ -274,147 +303,3 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
             await self.message.edit(view=None)
 
         self.stop()
-
-
-class ContextUIPages(UIPages[T]):
-    ctx: commands.Context[Erasmus]
-
-    def __init__(
-        self,
-        source: PageSource[T],
-        /,
-        *,
-        ctx: commands.Context[Erasmus],
-        check_embeds: bool = True,
-        compact: bool = False,
-        timeout: float | None = 180.0,
-    ) -> None:
-        super().__init__(
-            source, check_embeds=check_embeds, compact=compact, timeout=timeout
-        )
-        self.ctx = ctx
-
-    async def is_same_user(self, interaction: discord.Interaction, /) -> bool:
-        return interaction.user.id in (
-            self.ctx.bot.owner_id,
-            self.ctx.author.id,
-        )
-
-    def has_embed_permission(self) -> bool:
-        return (
-            not isinstance(self.ctx.channel, discord.PartialMessageable)
-            and isinstance(self.ctx.me, discord.Member)
-            and self.ctx.channel.permissions_for(self.ctx.me).embed_links
-        )
-
-    async def send_initial_message(
-        self,
-        content: str = _MISSING,
-        *,
-        tts: bool = False,
-        ephemeral: bool = _MISSING,
-        embed: discord.Embed = _MISSING,
-        embeds: Sequence[discord.Embed] = _MISSING,
-        file: discord.File = _MISSING,
-        files: Sequence[discord.File] = _MISSING,
-        stickers: Sequence[discord.GuildSticker | discord.StickerItem] | None = None,
-        delete_after: float | None = None,
-        nonce: str | int | None = None,
-        allowed_mentions: discord.AllowedMentions = _MISSING,
-        mention_author: bool | None = None,
-        view: discord.ui.View = _MISSING,
-        suppress_embeds: bool = False,
-    ) -> discord.Message:
-        return await self.ctx.send(
-            content,
-            tts=tts,
-            embed=embed,
-            embeds=embeds,
-            file=file,
-            files=files,
-            stickers=stickers,
-            delete_after=delete_after,
-            nonce=nonce,
-            allowed_mentions=allowed_mentions,
-            reference=self.ctx.message,
-            mention_author=mention_author,
-            view=view,
-            suppress_embeds=suppress_embeds,
-        )
-
-
-class InteractionUIPages(UIPages[T]):
-    interaction: discord.Interaction
-
-    def __init__(
-        self,
-        source: PageSource[T],
-        /,
-        *,
-        interaction: discord.Interaction,
-        check_embeds: bool = True,
-        compact: bool = False,
-        timeout: float | None = 180.0,
-    ) -> None:
-        super().__init__(
-            source, check_embeds=check_embeds, compact=compact, timeout=timeout
-        )
-        self.interaction = interaction
-
-    async def is_same_user(self, interaction: discord.Interaction, /) -> bool:
-        return interaction.user.id in (
-            self.interaction.client.user
-            if self.interaction.client.user is not None
-            else None,
-            self.interaction.user.id,
-        )
-
-    def has_embed_permission(self) -> bool:
-        return True
-
-    async def send_initial_message(
-        self,
-        content: str = _MISSING,
-        *,
-        tts: bool = False,
-        ephemeral: bool = _MISSING,
-        embed: discord.Embed = _MISSING,
-        embeds: Sequence[discord.Embed] = _MISSING,
-        file: discord.File = _MISSING,
-        files: Sequence[discord.File] = _MISSING,
-        stickers: Sequence[discord.GuildSticker | discord.StickerItem] | None = None,
-        delete_after: float | None = None,
-        nonce: str | int | None = None,
-        allowed_mentions: discord.AllowedMentions = _MISSING,
-        mention_author: bool | None = None,
-        view: discord.ui.View = _MISSING,
-        suppress_embeds: bool = False,
-    ) -> discord.Message:
-        if self.interaction.response.is_done():
-            await self.interaction.followup.send(
-                content,
-                tts=tts,
-                embed=embed,
-                embeds=embeds,
-                file=file,
-                files=files,
-                view=view,
-                ephemeral=ephemeral,
-                allowed_mentions=allowed_mentions,
-                suppress_embeds=suppress_embeds,
-            )
-        else:
-            await self.interaction.response.send_message(
-                content,
-                tts=tts,
-                embed=embed,
-                embeds=embeds,
-                file=file,
-                files=files,
-                view=view,
-                ephemeral=ephemeral,
-                allowed_mentions=allowed_mentions,
-                suppress_embeds=suppress_embeds,
-            )
-
-        return await self.interaction.original_message()

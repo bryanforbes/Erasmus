@@ -172,7 +172,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "botus-receptus"
-version = "2.0.0dev40"
+version = "2.0.0dev41"
 description = ""
 category = "main"
 optional = false
@@ -202,8 +202,8 @@ uvloop = ["uvloop (>=0.16.0,<0.17.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "bc6f248c8689cb297ed8b99e11e781842ee7efce"
-resolved_reference = "bc6f248c8689cb297ed8b99e11e781842ee7efce"
+reference = "e1127c76951442e217373b4a4ce324c0da820617"
+resolved_reference = "e1127c76951442e217373b4a4ce324c0da820617"
 
 [[package]]
 name = "brotli"
@@ -297,7 +297,7 @@ toml = ["tomli"]
 
 [[package]]
 name = "discord.py"
-version = "2.0.0a4267+g781b297a"
+version = "2.0.0a4283+g37076a04"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -321,7 +321,7 @@ voice = ["PyNaCl (>=1.3.0,<1.6)"]
 type = "git"
 url = "https://github.com/Rapptz/discord.py"
 reference = "master"
-resolved_reference = "781b297ac940eae1082c5fe2a62383aaf7f99e89"
+resolved_reference = "37076a04de36031d0c39664cafe0a321aa9595a3"
 
 [[package]]
 name = "distlib"
@@ -1017,7 +1017,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "1470757add04ae94195d62b5dd52fc92121911d1049d9c8a600921d0e6ea1898"
+content-hash = "f368fc12d620ea46ea24ca80b2f24d994d5fb8079ef618c9202a1932ae3025fd"
 
 [metadata.files]
 aiodns = [

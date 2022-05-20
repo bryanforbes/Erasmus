@@ -36,7 +36,7 @@ from ..erasmus import Erasmus
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from ..format import int_to_roman, roman_to_int
 from ..page_source import EmbedPageSource, ListPageSource
-from ..ui_pages import ContextUIPages, InteractionUIPages
+from ..ui_pages import UIPages
 
 _roman_re: Final = re.group(
     re.between(0, 4, 'M'),
@@ -433,7 +433,7 @@ class Confession(ConfessionBase):
             results = [result async for result in search_func(session, terms)]
 
         source = ConfessionSearchSource(results, type=confession.type, per_page=20)
-        pages = ContextUIPages(source, ctx=ctx)
+        pages = UIPages(ctx, source)
         await pages.start()
 
     async def show_item(
@@ -641,7 +641,7 @@ class ConfessionAppCommands(
             type=confession.type,
             per_page=20,
         )
-        pages = InteractionUIPages(search_source, interaction=interaction)
+        pages = UIPages(interaction, search_source)
         await pages.start()
 
     @app_commands.command()

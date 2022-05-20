@@ -32,7 +32,7 @@ from ..exceptions import (
 from ..page_source import AsyncCallback, AsyncPageSource, FieldPageSource
 from ..service_manager import ServiceManager
 from ..types import Bible as _Bible
-from ..ui_pages import ContextUIPages, InteractionUIPages
+from ..ui_pages import UIPages
 from ..utils import AutoCompleter, send_passage
 
 
@@ -83,7 +83,9 @@ class SearchPageSource(FieldPageSource[Sequence[Passage]], AsyncPageSource[Passa
         /,
     ) -> Iterable[tuple[str, str]]:
         for entry in entries:
-            yield str(entry.range), entry.text
+            yield str(entry.range), (
+                entry.text if len(entry.text) < 1024 else f'{entry.text[:1023]}\u2026'
+            )
 
     async def set_page_text(self, page: Sequence[Passage] | None, /) -> None:
         self.embed.title = f'Search results from {self.bible.name}'
@@ -293,6 +295,8 @@ class Bible(BibleBase):
                 return
 
             bucket = self._user_cooldown.get_bucket(ctx.message)
+            assert bucket is not None
+
             retry_after = bucket.update_rate_limit()
 
             if retry_after:
@@ -575,7 +579,7 @@ class Bible(BibleBase):
             )
 
         source = SearchPageSource(search, per_page=5, bible=bible)
-        view = ContextUIPages(source, ctx=ctx)
+        view = UIPages(ctx, source)
         await view.start()
 
     def __add_bible_commands(self, command: str, name: str, /) -> None:
@@ -1027,7 +1031,7 @@ class BibleAppCommands(BibleBase):
             )
 
         source = SearchPageSource(search, per_page=5, bible=bible)
-        view = InteractionUIPages(source, interaction=interaction)
+        view = UIPages(interaction, source)
         await view.start()
 
     @app_commands.command()
