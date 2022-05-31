@@ -102,7 +102,7 @@ test = ["pycodestyle (>=2.7.0,<2.8.0)", "flake8 (>=3.9.2,<3.10.0)", "uvloop (>=0
 
 [[package]]
 name = "asyncpg-stubs"
-version = "0.25.2"
+version = "0.25.4"
 description = "asyncpg stubs"
 category = "dev"
 optional = false
@@ -1017,7 +1017,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "61cf104755927308e75278e8eaabe41cc936a390a1af0e73a53aff8441d227ac"
+content-hash = "ed5485b6b9602c5d52ea97a8be93aa5b7db7041807b761c50d880f1dc0419542"
 
 [metadata.files]
 aiodns = [
@@ -1151,8 +1151,8 @@ asyncpg = [
     {file = "asyncpg-0.25.0.tar.gz", hash = "sha256:63f8e6a69733b285497c2855464a34de657f2cccd25aeaeeb5071872e9382540"},
 ]
 asyncpg-stubs = [
-    {file = "asyncpg-stubs-0.25.2.tar.gz", hash = "sha256:8b61485973a13b894683138f5d8a6c08fcfbe2a6c30980ad8c72510d4a885ba7"},
-    {file = "asyncpg_stubs-0.25.2-py3-none-any.whl", hash = "sha256:ab5f1a9a045402f18d142470af40f7f2c49c2dffe615cbec20303ac71328d02d"},
+    {file = "asyncpg-stubs-0.25.4.tar.gz", hash = "sha256:e8c70171e1e4f1665399a2e942bcb514b9f7209fe71577ca5bb0f11bc63dd016"},
+    {file = "asyncpg_stubs-0.25.4-py3-none-any.whl", hash = "sha256:5637683544900114812cbeb2198c91ac19e170bf8a6d81f8e15fa927743a7f70"},
 ]
 atomicwrites = [
     {file = "atomicwrites-1.4.0-py2.py3-none-any.whl", hash = "sha256:6d1784dea7c0c8d4a5172b6c620f40b6e4cbfdf96d783691f2e1302a7b88e197"},
