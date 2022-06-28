@@ -98,7 +98,9 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         if isinstance(self.ctx, commands.Context):
             return (
                 isinstance(self.ctx.me, discord.Member)
-                and self.ctx.channel.permissions_for(self.ctx.me).embed_links
+                and self.ctx.channel.permissions_for(
+                    self.ctx.me  # type: ignore
+                ).embed_links
             )
 
         return True
