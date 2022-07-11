@@ -34,7 +34,7 @@ pytest-clarity = "^1.0.1"
 pytest-cov = "^3.0"
 pytest-mock = "^3.8"
 pytest-recording = "^0.12.1"
-pytest-sugar = "^0.9.4"
+pytest-sugar = "^0.9.5"
 pytest-xdist = "^2.5"
 
 [tool.poetry.scripts]
