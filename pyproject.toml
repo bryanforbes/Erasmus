@@ -18,7 +18,7 @@ beautifulsoup4 = "^4.11"
 more-itertools = "~8.13.0"
 
 [tool.poetry.dev-dependencies]
-asyncpg-stubs = "~0.25.4"
+asyncpg-stubs = "~0.26.0"
 sqlalchemy2-stubs = "^0.0.2a24"
 black = "^22.6"
 coverage = {version = "^6.4", extras = ["toml"]}
