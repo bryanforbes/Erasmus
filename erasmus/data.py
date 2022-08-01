@@ -172,7 +172,7 @@ class Verse(object):
 
 
 @define
-class VerseRange(discord.app_commands.Transformer):
+class VerseRange:
     book: str
     start: Verse
     end: Verse | None = None
@@ -205,21 +205,21 @@ class VerseRange(discord.app_commands.Transformer):
         return f'{self.book} {self.verses}'
 
     @classmethod
-    def from_string(cls, verse: str, /) -> VerseRange:
+    def from_string(cls, verse: str, /) -> Self:
         if (match := _search_reference_re.match(verse)) is None:
             raise ReferenceNotUnderstoodError(verse)
 
         return cls.from_match(match)
 
     @classmethod
-    def from_string_with_version(cls, verse: str, /) -> VerseRange:
+    def from_string_with_version(cls, verse: str, /) -> Self:
         if (match := _search_reference_with_version_re.match(verse)) is None:
             raise ReferenceNotUnderstoodError(verse)
 
         return cls.from_match(match)
 
     @classmethod
-    def from_match(cls, match: Match[str], /) -> VerseRange:
+    def from_match(cls, match: Match[str], /) -> Self:
         groups = match.groupdict()
 
         chapter_start_int = int(groups['chapter_start'])
@@ -247,7 +247,7 @@ class VerseRange(discord.app_commands.Transformer):
     @classmethod
     def get_all_from_string(
         cls, string: str, /, *, only_bracketed: bool = False
-    ) -> list[VerseRange | Exception]:
+    ) -> list[Self | Exception]:
         ranges: list[VerseRange | Exception] = []
         lookup_pattern: Pattern[str]
 
@@ -268,12 +268,15 @@ class VerseRange(discord.app_commands.Transformer):
         return ranges
 
     @classmethod
-    async def convert(cls, ctx: commands.Context[Any], argument: str, /) -> VerseRange:
+    async def convert(cls, ctx: commands.Context[Any], argument: str, /) -> Self:
         return cls.from_string(argument)
 
-    @classmethod
-    async def transform(cls, interaction: discord.Interaction, value: str) -> Self:
-        return cls.from_string_with_version(value)
+
+class VerseRangeTransformer(discord.app_commands.Transformer):
+    async def transform(
+        self, interaction: discord.Interaction, value: str
+    ) -> VerseRange:
+        return VerseRange.from_string_with_version(value)
 
 
 @define

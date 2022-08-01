@@ -12,7 +12,14 @@ from botus_receptus.app_commands import admin_guild_only, test_guilds_only
 from discord import app_commands
 from discord.ext import commands
 
-from ..data import Passage, SearchResults, VerseRange, get_book_data, get_books_for_mask
+from ..data import (
+    Passage,
+    SearchResults,
+    VerseRange,
+    VerseRangeTransformer,
+    get_book_data,
+    get_books_for_mask,
+)
 from ..db import Session
 from ..db.bible import BibleVersion, GuildPref, UserPref
 from ..erasmus import Erasmus
@@ -288,7 +295,7 @@ class Bible(BibleBase):
         try:
             verse_ranges = VerseRange.get_all_from_string(
                 message.content,
-                only_bracketed=self.bot.user not in message.mentions,
+                only_bracketed=self.bot.user not in message.mentions,  # type: ignore
             )
 
             if len(verse_ranges) == 0:
@@ -976,7 +983,7 @@ class BibleAppCommands(BibleBase):
         self,
         interaction: discord.Interaction,
         /,
-        reference: VerseRange,
+        reference: app_commands.Transform[VerseRange, VerseRangeTransformer],
         version: str | None = None,
         only_me: bool = False,
     ) -> None:
