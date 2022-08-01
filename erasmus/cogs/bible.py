@@ -8,7 +8,7 @@ import discord
 from asyncpg.exceptions import UniqueViolationError
 from attrs import define
 from botus_receptus import Cog, checks, formatting, utils
-from botus_receptus.app_commands import admin_guild_only, test_guilds_only
+from botus_receptus.app_commands import admin_guild_only
 from discord import app_commands
 from discord.ext import commands
 
@@ -665,7 +665,6 @@ _bible_lookup: AutoCompleter[_BibleOption] = AutoCompleter()
 
 @app_commands.default_permissions(administrator=True)
 @app_commands.guild_only()
-@test_guilds_only()
 class ServerPreferencesGroup(
     app_commands.Group,
     name='serverprefs',
@@ -720,7 +719,6 @@ class ServerPreferencesGroup(
         await utils.send_embed(interaction, description=description, ephemeral=True)
 
 
-@test_guilds_only()
 class PreferencesGroup(
     app_commands.Group, name='prefs', description='Preferences commands'
 ):
@@ -978,7 +976,6 @@ class BibleAppCommands(BibleBase):
         only_me='Whether to display the verse to yourself or everyone',
     )
     @app_commands.autocomplete(version=_bible_lookup.complete)
-    @test_guilds_only()
     async def verse(
         self,
         interaction: discord.Interaction,
@@ -1016,7 +1013,6 @@ class BibleAppCommands(BibleBase):
         terms='Terms to search for', version='The Bible version to search within'
     )
     @app_commands.autocomplete(version=_bible_lookup.complete)
-    @test_guilds_only()
     async def search(
         self,
         interaction: discord.Interaction,
@@ -1050,7 +1046,6 @@ class BibleAppCommands(BibleBase):
     @app_commands.checks.cooldown(
         rate=2, per=30.0, key=lambda i: (i.guild_id, i.user.id)
     )
-    @test_guilds_only()
     async def bibles(self, interaction: discord.Interaction, /) -> None:
         '''List which Bible versions are available for lookup and search'''
 
@@ -1069,7 +1064,6 @@ class BibleAppCommands(BibleBase):
     @_shared_cooldown
     @app_commands.describe(version='The Bible version to get information for')
     @app_commands.autocomplete(version=_bible_lookup.complete)
-    @test_guilds_only()
     async def bibleinfo(
         self, interaction: discord.Interaction, /, version: str
     ) -> None:

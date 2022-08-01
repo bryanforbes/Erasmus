@@ -8,6 +8,7 @@ from typing_extensions import Self
 import discord
 from attrs import define, field
 from botus_receptus import Cog, re, utils
+from botus_receptus.app_commands import test_guilds_only
 from botus_receptus.cog import GroupCog
 from botus_receptus.formatting import (
     EmbedPaginator,
@@ -613,6 +614,7 @@ class ConfessionAppCommands(
         source='The confession or catechism to search in', terms='Terms to search for'
     )
     @app_commands.autocomplete(source=__source_autocomplete)
+    @test_guilds_only()
     async def search(
         self, interaction: discord.Interaction, /, source: str, terms: str
     ) -> None:
@@ -654,6 +656,7 @@ class ConfessionAppCommands(
     @app_commands.autocomplete(
         source=__source_autocomplete, section=__section_autocomplete
     )
+    @test_guilds_only()
     async def cite(
         self, interaction: discord.Interaction, /, source: str, section: str
     ) -> None:
@@ -684,4 +687,4 @@ class ConfessionAppCommands(
 
 async def setup(bot: Erasmus, /) -> None:
     await bot.add_cog(Confession(bot))
-    # await bot.add_cog(ConfessionAppCommands(bot))
+    await bot.add_cog(ConfessionAppCommands(bot))
