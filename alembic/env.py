@@ -13,7 +13,7 @@ from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 from alembic import context
 from alembic.operations.ops import MigrationScript
 from alembic.runtime.migration import MigrationContext
-from erasmus.db import mapper_registry
+from erasmus.db.base import _mapper_registry
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
@@ -28,7 +28,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = mapper_registry.metadata
+target_metadata = _mapper_registry.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:

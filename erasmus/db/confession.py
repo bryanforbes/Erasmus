@@ -1,29 +1,31 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator, Sequence
-from dataclasses import dataclass, field
+from dataclasses import Field, dataclass, field
 from enum import Enum
-from typing import Any
+from typing import Any, cast
 
 from sqlalchemy import (
     Boolean,
     Column,
+    Computed,
     Enum as _SAEnum,
     ForeignKey,
+    Index,
     Integer,
     String,
     Text,
     asc,
     func,
     select,
-    text,
+    text as _sa_text,
 )
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import ColumnElement
 
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
-from .base import mapped
+from .base import TSVector, mapped
 
 
 def _search_columns(
@@ -33,8 +35,8 @@ def _search_columns(
     /,
 ) -> ColumnElement[Boolean]:
     return func.to_tsvector(
-        text("'english'"),
-        title_column + text("' '") + text_column,
+        _sa_text("'english'"),
+        title_column + _sa_text("' '") + text_column,
     ).match(' & '.join(terms), postgresql_regconfig='english')
 
 
@@ -126,6 +128,14 @@ class Paragraph(_ConfessionChildMixin):
         },
     )
 
+    __table_args__ = (
+        Index(
+            'confession_paragraphs_text_idx',
+            func.to_tsvector(_sa_text("'english'"), _sa_text("'text'")),
+            postgresql_using='gin',
+        ),
+    )
+
 
 @mapped
 @dataclass
@@ -136,6 +146,29 @@ class Question(_ConfessionChildMixin):
     question_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
     question_text: str = field(metadata={'sa': Column(Text, nullable=False)})
     answer_text: str = field(metadata={'sa': Column(Text, nullable=False)})
+    search_vector: str = field(
+        metadata={
+            'sa': Column(
+                TSVector,
+                Computed(
+                    func.to_tsvector(
+                        _sa_text("'english'"),
+                        cast(Field[str], question_text).metadata['sa']
+                        + _sa_text("' '")
+                        + cast(Field[str], answer_text).metadata['sa'],
+                    )
+                ),
+            )
+        }
+    )
+
+    __table_args__ = (
+        Index(
+            'confession_questions_search_idx',
+            'search_vector',
+            postgresql_using='gin',
+        ),
+    )
 
 
 @mapped
@@ -147,6 +180,29 @@ class Article(_ConfessionChildMixin):
     article_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
     title: str = field(metadata={'sa': Column(Text, nullable=False)})
     text: str = field(metadata={'sa': Column(Text, nullable=False)})
+    search_vector: str = field(
+        metadata={
+            'sa': Column(
+                TSVector,
+                Computed(
+                    func.to_tsvector(
+                        _sa_text("'english'"),
+                        cast(Field[str], title).metadata['sa']
+                        + _sa_text("' '")
+                        + cast(Field[str], text).metadata['sa'],
+                    )
+                ),
+            )
+        }
+    )
+
+    __table_args__ = (
+        Index(
+            'confession_articles_search_idx',
+            'search_vector',
+            postgresql_using='gin',
+        ),
+    )
 
 
 @mapped
@@ -293,7 +349,9 @@ class Confession:
         result = await session.stream_scalars(
             select(Question)
             .where(Question.confess_id == self.id)
-            .where(_search_columns(Question.question_text, Question.answer_text, terms))
+            .where(
+                cast(Column[TSVector], Question.search_vector).match(' & '.join(terms))
+            )
             .order_by(asc(Question.question_number))
         )
 
@@ -343,7 +401,9 @@ class Confession:
         result = await session.stream_scalars(
             select(Article)
             .where(Article.confess_id == self.id)
-            .where(_search_columns(Article.title, Article.text, terms))
+            .where(
+                cast(Column[TSVector], Article.search_vector).match(' & '.join(terms))
+            )
             .order_by(asc(Article.article_number))
         )
 
