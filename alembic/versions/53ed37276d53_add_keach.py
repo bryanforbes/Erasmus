@@ -5,14 +5,15 @@ Revises: cbef96b83a96
 Create Date: 2017-10-21 12:50:07.872595
 
 """
-from alembic import op  # type: ignore
-import sqlalchemy as sa  # type: ignore
-from sqlalchemy.sql import table, column  # type: ignore
-from typing import Tuple, List, Dict, Any  # noqa
-from mypy_extensions import TypedDict
-from pathlib import Path
 from json import load
+from pathlib import Path
+from typing import Any, Dict, List, Tuple  # noqa
+from typing_extensions import TypedDict
 
+import sqlalchemy as sa  # type: ignore
+from sqlalchemy.sql import column, table  # type: ignore
+
+from alembic import op  # type: ignore
 
 # revision identifiers, used by Alembic.
 revision = '53ed37276d53'
@@ -34,32 +35,50 @@ def _get_qa_records(id: str, data: QAJSON) -> List[Dict[str, Any]]:
 
     for index in range(len(data['questions'])):
         question, answer = data['questions'][index]
-        qas.append({'confess_id': id, 'question_number': index + 1,
-                    'question_text': question, 'answer_text': answer})
+        qas.append(
+            {
+                'confess_id': id,
+                'question_number': index + 1,
+                'question_text': question,
+                'answer_text': answer,
+            }
+        )
 
     return qas
 
 
-confessions = table('confessions',
-                    column('id', sa.Integer),
-                    column('command', sa.String),
-                    column('name', sa.String),
-                    column('type_id', sa.Integer, sa.ForeignKey('confession_types.id')),
-                    column('numbering_id', sa.Integer, sa.ForeignKey('confession_numbering_types.id')))
+confessions = table(
+    'confessions',
+    column('id', sa.Integer),
+    column('command', sa.String),
+    column('name', sa.String),
+    column('type_id', sa.Integer, sa.ForeignKey('confession_types.id')),
+    column('numbering_id', sa.Integer, sa.ForeignKey('confession_numbering_types.id')),
+)
 
-questions = table('confession_questions',
-                  column('id', sa.Integer),
-                  column('confess_id', sa.Integer, sa.ForeignKey('confessions.id')),
-                  column('question_number', sa.Integer),
-                  column('question_text', sa.Text),
-                  column('answer_text', sa.Text))
+questions = table(
+    'confession_questions',
+    column('id', sa.Integer),
+    column('confess_id', sa.Integer, sa.ForeignKey('confessions.id')),
+    column('question_number', sa.Integer),
+    column('question_text', sa.Text),
+    column('answer_text', sa.Text),
+)
 
 
 def upgrade():
-    op.bulk_insert(confessions, [
-        {'id': 8, 'command': 'keach', 'type_id': 3, 'numbering_id': 1,
-         'name': 'Keach\'s Catechism'}
-    ])
+    op.bulk_insert(
+        confessions,
+        [
+            {
+                'id': 8,
+                'command': 'keach',
+                'type_id': 3,
+                'numbering_id': 1,
+                'name': 'Keach\'s Catechism',
+            }
+        ],
+    )
     op.bulk_insert(questions, _get_qa_records(8, keach_data))
 
 

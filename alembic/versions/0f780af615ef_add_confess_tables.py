@@ -5,14 +5,15 @@ Revises: ac322afa9c4d
 Create Date: 2017-10-14 14:23:35.966456
 
 """
-from alembic import op  # type: ignore
-import sqlalchemy as sa  # type: ignore
-from typing import Tuple, List, Dict, Any  # noqa
-from mypy_extensions import TypedDict
-from pathlib import Path
-from json import load
 from collections import OrderedDict
+from json import load
+from pathlib import Path
+from typing import Any, Dict, List, Tuple  # noqa
+from typing_extensions import TypedDict
 
+import sqlalchemy as sa  # type: ignore
+
+from alembic import op  # type: ignore
 
 # revision identifiers, used by Alembic.
 revision = '0f780af615ef'
@@ -36,18 +37,29 @@ class QAJSON(TypedDict):
     questions: List[List[str]]
 
 
-def _get_paragraph_records(id: str, data: ConfessionJSON) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+def _get_paragraph_records(
+    id: str, data: ConfessionJSON
+) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
     chapters = []  # type: List[Dict[str, Any]]
     paragraphs = []  # type: List[Dict[str, Any]]
 
     for chapter_str, chapter in data['chapters'].items():
         chapter_number = int(chapter_str)
 
-        chapters.append({'confess_id': id, 'chapter_number': chapter_number,
-                         'chapter_title': chapter['title']})
+        chapters.append(
+            {
+                'confess_id': id,
+                'chapter_number': chapter_number,
+                'chapter_title': chapter['title'],
+            }
+        )
         paragraphs += [
-            {'confess_id': id, 'chapter_number': chapter_number,
-             'paragraph_number': int(paragraph_str), 'text': text}
+            {
+                'confess_id': id,
+                'chapter_number': chapter_number,
+                'paragraph_number': int(paragraph_str),
+                'text': text,
+            }
             for paragraph_str, text in chapter['paragraphs'].items()
         ]
 
@@ -59,73 +71,125 @@ def _get_qa_records(id: str, data: QAJSON) -> List[Dict[str, Any]]:
 
     for index in range(len(data['questions'])):
         question, answer = data['questions'][index]
-        qas.append({'confess_id': id, 'question_number': index + 1,
-                    'question_text': question, 'answer_text': answer})
+        qas.append(
+            {
+                'confess_id': id,
+                'question_number': index + 1,
+                'question_text': question,
+                'answer_text': answer,
+            }
+        )
 
     return qas
 
 
 def upgrade():
-    types = op.create_table('confess_types',
-                            sa.Column('id', sa.Integer, primary_key=True),
-                            sa.Column('value', sa.String(20), unique=True, nullable=False))
+    types = op.create_table(
+        'confess_types',
+        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('value', sa.String(20), unique=True, nullable=False),
+    )
 
-    confesses = op.create_table('confesses',
-                                sa.Column('id', sa.Integer, primary_key=True),
-                                sa.Column('command', sa.String, unique=True, nullable=False),
-                                sa.Column('name', sa.String, nullable=False),
-                                sa.Column('type_id', sa.Integer,
-                                          sa.ForeignKey('confess_types.id'), nullable=False))
+    confesses = op.create_table(
+        'confesses',
+        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column('command', sa.String, unique=True, nullable=False),
+        sa.Column('name', sa.String, nullable=False),
+        sa.Column(
+            'type_id', sa.Integer, sa.ForeignKey('confess_types.id'), nullable=False
+        ),
+    )
 
-    chapters = op.create_table('confess_chapters',
-                               sa.Column('id', sa.Integer, primary_key=True),
-                               sa.Column('confess_id', sa.Integer,
-                                         sa.ForeignKey('confesses.id'), nullable=False),
-                               sa.Column('chapter_number', sa.Integer, nullable=False),
-                               sa.Column('chapter_title', sa.String, nullable=False))
+    chapters = op.create_table(
+        'confess_chapters',
+        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column(
+            'confess_id', sa.Integer, sa.ForeignKey('confesses.id'), nullable=False
+        ),
+        sa.Column('chapter_number', sa.Integer, nullable=False),
+        sa.Column('chapter_title', sa.String, nullable=False),
+    )
 
-    paragraphs = op.create_table('confess_paragraphs',
-                                 sa.Column('id', sa.Integer, primary_key=True),
-                                 sa.Column('confess_id', sa.Integer,
-                                           sa.ForeignKey('confesses.id'), nullable=False),
-                                 sa.Column('chapter_number', sa.Integer),
-                                 sa.Column('paragraph_number', sa.Integer, nullable=False),
-                                 sa.Column('text', sa.Text, nullable=False))
+    paragraphs = op.create_table(
+        'confess_paragraphs',
+        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column(
+            'confess_id', sa.Integer, sa.ForeignKey('confesses.id'), nullable=False
+        ),
+        sa.Column('chapter_number', sa.Integer),
+        sa.Column('paragraph_number', sa.Integer, nullable=False),
+        sa.Column('text', sa.Text, nullable=False),
+    )
 
-    op.create_index('confess_paragraphs_text_idx', 'confess_paragraphs',
-                    [sa.text("to_tsvector('english', text)")],
-                    postgresql_using='gin')
+    op.create_index(
+        'confess_paragraphs_text_idx',
+        'confess_paragraphs',
+        [sa.text("to_tsvector('english', text)")],
+        postgresql_using='gin',
+    )
 
-    qas = op.create_table('confess_qas',
-                          sa.Column('id', sa.Integer, primary_key=True),
-                          sa.Column('confess_id', sa.Integer,
-                                    sa.ForeignKey('confesses.id'), nullable=False),
-                          sa.Column('question_number', sa.Integer, nullable=False),
-                          sa.Column('question_text', sa.Text, nullable=False),
-                          sa.Column('answer_text', sa.Text, nullable=False))
+    qas = op.create_table(
+        'confess_qas',
+        sa.Column('id', sa.Integer, primary_key=True),
+        sa.Column(
+            'confess_id', sa.Integer, sa.ForeignKey('confesses.id'), nullable=False
+        ),
+        sa.Column('question_number', sa.Integer, nullable=False),
+        sa.Column('question_text', sa.Text, nullable=False),
+        sa.Column('answer_text', sa.Text, nullable=False),
+    )
 
-    op.create_index('confess_qas_text_idx', 'confess_qas',
-                    [sa.text("to_tsvector('english', question_text || ' ' || answer_text)")],
-                    postgresql_using='gin')
+    op.create_index(
+        'confess_qas_text_idx',
+        'confess_qas',
+        [sa.text("to_tsvector('english', question_text || ' ' || answer_text)")],
+        postgresql_using='gin',
+    )
 
-    op.bulk_insert(types, [
-        {'id': 1, 'value': 'ARTICLES'},
-        {'id': 2, 'value': 'CHAPTERS'},
-        {'id': 3, 'value': 'QA'}
-    ])
+    op.bulk_insert(
+        types,
+        [
+            {'id': 1, 'value': 'ARTICLES'},
+            {'id': 2, 'value': 'CHAPTERS'},
+            {'id': 3, 'value': 'QA'},
+        ],
+    )
 
-    op.bulk_insert(confesses, [
-        {'id': 1, 'command': '1689', 'type_id': 2,
-         'name': 'The 1689 London Baptist Confession of Faith'},
-        {'id': 2, 'command': 'wcf', 'type_id': 2,
-         'name': 'The Westminster Confession of Faith'},
-        {'id': 3, 'command': 'wsc', 'type_id': 3,
-         'name': 'The Wesminster Shorter Catechism'},
-        {'id': 4, 'command': 'wlc', 'type_id': 3,
-         'name': 'The Wesminster Longer Catechism'},
-        {'id': 5, 'command': 'hc', 'type_id': 3,
-         'name': 'The Heidelberg Catechism'},
-    ])
+    op.bulk_insert(
+        confesses,
+        [
+            {
+                'id': 1,
+                'command': '1689',
+                'type_id': 2,
+                'name': 'The 1689 London Baptist Confession of Faith',
+            },
+            {
+                'id': 2,
+                'command': 'wcf',
+                'type_id': 2,
+                'name': 'The Westminster Confession of Faith',
+            },
+            {
+                'id': 3,
+                'command': 'wsc',
+                'type_id': 3,
+                'name': 'The Wesminster Shorter Catechism',
+            },
+            {
+                'id': 4,
+                'command': 'wlc',
+                'type_id': 3,
+                'name': 'The Wesminster Longer Catechism',
+            },
+            {
+                'id': 5,
+                'command': 'hc',
+                'type_id': 3,
+                'name': 'The Heidelberg Catechism',
+            },
+        ],
+    )
 
     with (Path(__file__).resolve().parent / '69e765223549_1689.json').open() as f:
         lbcf_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
