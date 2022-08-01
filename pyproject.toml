@@ -13,12 +13,12 @@ python = "^3.10"
 alembic = "^1.8"
 attrs = "^22.1.0"
 beautifulsoup4 = "^4.11"
-"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "ddcbbcb1708d88807d89f3ecc709e3875d0e9159", extras = ["uvloop", "sqlalchemy"]}
+"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "0974aed45b8b577735776776a5612b5b9b7d0771", extras = ["uvloop", "sqlalchemy"]}
 "discord.py" = { git = "https://github.com/Rapptz/discord.py", branch = "master", extras = ["speed"] }
 more-itertools = "~8.13.0"
 
 [tool.poetry.dev-dependencies]
-asyncpg-stubs = "~0.25.4"
+asyncpg-stubs = "~0.26.2"
 sqlalchemy2-stubs = "^0.0.2a24"
 black = "^22.6"
 coverage = {version = "^6.4", extras = ["toml"]}

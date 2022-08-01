@@ -265,7 +265,7 @@ class BibleBase(Cog[Erasmus]):
             ctx, description=formatting.escape(message, mass_mentions=True)
         )
 
-    cog_app_command_error = cog_command_error
+    cog_app_command_error = cog_command_error  # type: ignore
 
 
 class Bible(BibleBase):

@@ -305,7 +305,7 @@ class ConfessionBase(Cog[Erasmus]):
             ctx, description=escape(message, mass_mentions=True)
         )
 
-    cog_app_command_error = cog_command_error
+    cog_app_command_error = cog_command_error  # type: ignore
 
 
 class Confession(ConfessionBase):
