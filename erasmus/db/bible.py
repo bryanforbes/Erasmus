@@ -19,7 +19,7 @@ from sqlalchemy import (
 )
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, relationship
 
 from ..exceptions import InvalidVersionError
 from .base import mapped
@@ -31,14 +31,20 @@ class BibleVersion:
     __tablename__ = 'bible_versions'
     __sa_dataclass_metadata_key__ = 'sa'
 
-    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
-    command: str = field(metadata={'sa': Column(String, unique=True, nullable=False)})
-    name: str = field(metadata={'sa': Column(String, nullable=False)})
-    abbr: str = field(metadata={'sa': Column(String, nullable=False)})
-    service: str = field(metadata={'sa': Column(String, nullable=False)})
-    service_version: str = field(metadata={'sa': Column(String, nullable=False)})
-    rtl: bool = field(metadata={'sa': Column(Boolean)})
-    books: int = field(metadata={'sa': Column(BigInteger, nullable=False)})
+    id: Mapped[int] = field(
+        init=False, metadata={'sa': Column(Integer, primary_key=True)}
+    )
+    command: Mapped[str] = field(
+        metadata={'sa': Column(String, unique=True, nullable=False)}
+    )
+    name: Mapped[str] = field(metadata={'sa': Column(String, nullable=False)})
+    abbr: Mapped[str] = field(metadata={'sa': Column(String, nullable=False)})
+    service: Mapped[str] = field(metadata={'sa': Column(String, nullable=False)})
+    service_version: Mapped[str] = field(
+        metadata={'sa': Column(String, nullable=False)}
+    )
+    rtl: Mapped[bool] = field(metadata={'sa': Column(Boolean)})
+    books: Mapped[int] = field(metadata={'sa': Column(BigInteger, nullable=False)})
 
     async def set_for_user(
         self,
@@ -123,9 +129,7 @@ class BibleVersion:
     async def get_by_abbr(session: AsyncSession, abbr: str, /) -> BibleVersion | None:
         return (
             await session.scalars(
-                select(BibleVersion).where(
-                    BibleVersion.command.ilike(abbr)  # type: ignore
-                )
+                select(BibleVersion).where(BibleVersion.command.ilike(abbr))
             )
         ).first()
 
@@ -154,10 +158,10 @@ class BibleVersion:
 class _BibleVersionMixin:
     __sa_dataclass_metadata_key__ = 'sa'
 
-    bible_id: int | None = field(
+    bible_id: Mapped[int | None] = field(
         metadata={'sa': lambda: Column(Integer, ForeignKey('bible_versions.id'))}
     )
-    bible_version: BibleVersion | None = field(
+    bible_version: Mapped[BibleVersion | None] = field(
         metadata={
             'sa': lambda: relationship(BibleVersion, lazy='joined')  # type: ignore
         }
@@ -169,7 +173,7 @@ class _BibleVersionMixin:
 class UserPref(_BibleVersionMixin):
     __tablename__ = 'user_prefs'
 
-    user_id: int = field(metadata={'sa': Column(Snowflake, primary_key=True)})
+    user_id: Mapped[int] = field(metadata={'sa': Column(Snowflake, primary_key=True)})
 
 
 @mapped
@@ -177,4 +181,4 @@ class UserPref(_BibleVersionMixin):
 class GuildPref(_BibleVersionMixin):
     __tablename__ = 'guild_prefs'
 
-    guild_id: int = field(metadata={'sa': Column(Snowflake, primary_key=True)})
+    guild_id: Mapped[int] = field(metadata={'sa': Column(Snowflake, primary_key=True)})

@@ -1,9 +1,8 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator, Sequence
-from dataclasses import Field, dataclass, field
+from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, cast
 
 from sqlalchemy import (
     Boolean,
@@ -21,7 +20,7 @@ from sqlalchemy import (
     text as _sa_text,
 )
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, relationship
 from sqlalchemy.sql import ColumnElement
 
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
@@ -29,8 +28,8 @@ from .base import TSVector, mapped
 
 
 def _search_columns(
-    title_column: Any,
-    text_column: Any,
+    title_column: Mapped[str],
+    text_column: Mapped[str],
     terms: Sequence[str],
     /,
 ) -> ColumnElement[Boolean]:
@@ -55,8 +54,10 @@ class ConfessionType:
     __tablename__ = 'confession_types'
     __sa_dataclass_metadata_key__ = 'sa'
 
-    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
-    value: ConfessionTypeEnum = field(
+    id: Mapped[int] = field(
+        init=False, metadata={'sa': Column(Integer, primary_key=True)}
+    )
+    value: Mapped[ConfessionTypeEnum] = field(
         metadata={
             'sa': Column(_SAEnum(ConfessionTypeEnum), unique=True, nullable=False)
         }
@@ -77,8 +78,10 @@ class ConfessionNumberingType:
     __tablename__ = 'confession_numbering_types'
     __sa_dataclass_metadata_key__ = 'sa'
 
-    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
-    numbering: NumberingTypeEnum = field(
+    id: Mapped[int] = field(
+        init=False, metadata={'sa': Column(Integer, primary_key=True)}
+    )
+    numbering: Mapped[NumberingTypeEnum] = field(
         metadata={'sa': Column(_SAEnum(NumberingTypeEnum), unique=True, nullable=False)}
     )
 
@@ -87,7 +90,7 @@ class ConfessionNumberingType:
 class _ConfessionChildMixin:
     __sa_dataclass_metadata_key__ = 'sa'
 
-    confess_id: int = field(
+    confess_id: Mapped[int] = field(
         metadata={
             'sa': lambda: Column(Integer, ForeignKey('confessions.id'), nullable=False)
         }
@@ -99,9 +102,13 @@ class _ConfessionChildMixin:
 class Chapter(_ConfessionChildMixin):
     __tablename__ = 'confession_chapters'
 
-    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
-    chapter_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
-    chapter_title: str = field(metadata={'sa': Column(String, nullable=False)})
+    id: Mapped[int] = field(
+        init=False, metadata={'sa': Column(Integer, primary_key=True)}
+    )
+    chapter_number: Mapped[int] = field(
+        metadata={'sa': Column(Integer, nullable=False)}
+    )
+    chapter_title: Mapped[str] = field(metadata={'sa': Column(String, nullable=False)})
 
 
 @mapped
@@ -109,12 +116,18 @@ class Chapter(_ConfessionChildMixin):
 class Paragraph(_ConfessionChildMixin):
     __tablename__ = 'confession_paragraphs'
 
-    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
-    chapter_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
-    paragraph_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
-    text: str = field(metadata={'sa': Column(Text, nullable=False)})
+    id: Mapped[int] = field(
+        init=False, metadata={'sa': Column(Integer, primary_key=True)}
+    )
+    chapter_number: Mapped[int] = field(
+        metadata={'sa': Column(Integer, nullable=False)}
+    )
+    paragraph_number: Mapped[int] = field(
+        metadata={'sa': Column(Integer, nullable=False)}
+    )
+    text: Mapped[str] = field(metadata={'sa': Column(Text, nullable=False)})
 
-    chapter: Chapter = field(
+    chapter: Mapped[Chapter] = field(
         init=False,
         metadata={
             'sa': relationship(
@@ -142,20 +155,22 @@ class Paragraph(_ConfessionChildMixin):
 class Question(_ConfessionChildMixin):
     __tablename__ = 'confession_questions'
 
-    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
-    question_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
-    question_text: str = field(metadata={'sa': Column(Text, nullable=False)})
-    answer_text: str = field(metadata={'sa': Column(Text, nullable=False)})
-    search_vector: str = field(
+    id: Mapped[int] = field(
+        init=False, metadata={'sa': Column(Integer, primary_key=True)}
+    )
+    question_number: Mapped[int] = field(
+        metadata={'sa': Column(Integer, nullable=False)}
+    )
+    question_text: Mapped[str] = field(metadata={'sa': Column(Text, nullable=False)})
+    answer_text: Mapped[str] = field(metadata={'sa': Column(Text, nullable=False)})
+    search_vector: Mapped[str] = field(
         metadata={
             'sa': Column(
                 TSVector,
                 Computed(
                     func.to_tsvector(
                         _sa_text("'english'"),
-                        cast(Field[str], question_text).metadata['sa']
-                        + _sa_text("' '")
-                        + cast(Field[str], answer_text).metadata['sa'],
+                        _sa_text("question_text || ' ' || answer_text"),
                     )
                 ),
             )
@@ -176,20 +191,21 @@ class Question(_ConfessionChildMixin):
 class Article(_ConfessionChildMixin):
     __tablename__ = 'confession_articles'
 
-    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
-    article_number: int = field(metadata={'sa': Column(Integer, nullable=False)})
-    title: str = field(metadata={'sa': Column(Text, nullable=False)})
-    text: str = field(metadata={'sa': Column(Text, nullable=False)})
-    search_vector: str = field(
+    id: Mapped[int] = field(
+        init=False, metadata={'sa': Column(Integer, primary_key=True)}
+    )
+    article_number: Mapped[int] = field(
+        metadata={'sa': Column(Integer, nullable=False)}
+    )
+    title: Mapped[str] = field(metadata={'sa': Column(Text, nullable=False)})
+    text: Mapped[str] = field(metadata={'sa': Column(Text, nullable=False)})
+    search_vector: Mapped[str] = field(
         metadata={
             'sa': Column(
                 TSVector,
                 Computed(
                     func.to_tsvector(
-                        _sa_text("'english'"),
-                        cast(Field[str], title).metadata['sa']
-                        + _sa_text("' '")
-                        + cast(Field[str], text).metadata['sa'],
+                        _sa_text("'english'"), _sa_text("title || ' ' || text")
                     )
                 ),
             )
@@ -211,15 +227,19 @@ class Confession:
     __tablename__ = 'confessions'
     __sa_dataclass_metadata_key__ = 'sa'
 
-    id: int = field(init=False, metadata={'sa': Column(Integer, primary_key=True)})
-    command: str = field(metadata={'sa': Column(String, unique=True, nullable=False)})
-    name: str = field(metadata={'sa': Column(String, nullable=False)})
-    type_id: int = field(
+    id: Mapped[int] = field(
+        init=False, metadata={'sa': Column(Integer, primary_key=True)}
+    )
+    command: Mapped[str] = field(
+        metadata={'sa': Column(String, unique=True, nullable=False)}
+    )
+    name: Mapped[str] = field(metadata={'sa': Column(String, nullable=False)})
+    type_id: Mapped[int] = field(
         metadata={
             'sa': Column(Integer, ForeignKey('confession_types.id'), nullable=False)
         }
     )
-    numbering_id: int = field(
+    numbering_id: Mapped[int] = field(
         metadata={
             'sa': Column(
                 Integer, ForeignKey('confession_numbering_types.id'), nullable=False
@@ -227,10 +247,10 @@ class Confession:
         }
     )
 
-    _type: ConfessionType = field(
+    _type: Mapped[ConfessionType] = field(
         metadata={'sa': relationship(ConfessionType, lazy='joined')}
     )
-    _numbering: ConfessionNumberingType = field(
+    _numbering: Mapped[ConfessionNumberingType] = field(
         metadata={'sa': relationship(ConfessionNumberingType, lazy='joined')}
     )
 
@@ -349,9 +369,7 @@ class Confession:
         result = await session.stream_scalars(
             select(Question)
             .where(Question.confess_id == self.id)
-            .where(
-                cast(Column[TSVector], Question.search_vector).match(' & '.join(terms))
-            )
+            .where(Question.search_vector.match(' & '.join(terms)))
             .order_by(asc(Question.question_number))
         )
 
@@ -401,9 +419,7 @@ class Confession:
         result = await session.stream_scalars(
             select(Article)
             .where(Article.confess_id == self.id)
-            .where(
-                cast(Column[TSVector], Article.search_vector).match(' & '.join(terms))
-            )
+            .where(Article.search_vector.match(' & '.join(terms)))
             .order_by(asc(Article.article_number))
         )
 

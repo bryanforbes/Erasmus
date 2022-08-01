@@ -475,13 +475,13 @@ class Bible(BibleBase):
             async with Session.begin() as session:
                 session.add(
                     BibleVersion(
-                        command=command,
-                        name=name,
-                        abbr=abbr,
-                        service=service,
-                        service_version=service_version,
-                        rtl=rtl,
-                        books=_book_mask_from_books(books),
+                        command=command,  # type: ignore
+                        name=name,  # type: ignore
+                        abbr=abbr,  # type: ignore
+                        service=service,  # type: ignore
+                        service_version=service_version,  # type: ignore
+                        rtl=rtl,  # type: ignore
+                        books=_book_mask_from_books(books),  # type: ignore
                     )
                 )
         except UniqueViolationError:
@@ -562,9 +562,7 @@ class Bible(BibleBase):
             raise BookNotInVersionError(reference.book, bible.name)
 
         if reference is not None:
-            passage = await self.service_manager.get_passage(
-                cast(Any, bible), reference
-            )
+            passage = await self.service_manager.get_passage(bible, reference)
             await send_passage(ctx, passage)
         else:
             await utils.send_embed_error(
@@ -837,13 +835,13 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         try:
             async with Session.begin() as session:
                 bible = BibleVersion(
-                    command=command,
-                    name=name,
-                    abbr=abbreviation,
-                    service=service,
-                    service_version=service_version,
-                    rtl=rtl,
-                    books=_book_mask_from_books(books),
+                    command=command,  # type: ignore
+                    name=name,  # type: ignore
+                    abbr=abbreviation,  # type: ignore
+                    service=service,  # type: ignore
+                    service_version=service_version,  # type: ignore
+                    rtl=rtl,  # type: ignore
+                    books=_book_mask_from_books(books),  # type: ignore
                 )
                 session.add(bible)
             _bible_lookup.add(_BibleOption.create(bible))
@@ -1004,7 +1002,7 @@ class BibleAppCommands(BibleBase):
             raise BookNotInVersionError(reference.book, bible.name)
 
         await interaction.response.defer(thinking=True, ephemeral=only_me)
-        passage = await self.service_manager.get_passage(cast(Any, bible), reference)
+        passage = await self.service_manager.get_passage(bible, reference)
         await send_passage(interaction, passage, ephemeral=only_me)
 
     @app_commands.command()
