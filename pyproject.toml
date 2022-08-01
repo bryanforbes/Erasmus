@@ -11,7 +11,7 @@ packages = [
 [tool.poetry.dependencies]
 python = "^3.10"
 alembic = "^1.8"
-attrs = "^21.4.0"
+attrs = "^22.1.0"
 beautifulsoup4 = "^4.11"
 "botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "ddcbbcb1708d88807d89f3ecc709e3875d0e9159", extras = ["uvloop", "sqlalchemy"]}
 "discord.py" = { git = "https://github.com/Rapptz/discord.py", branch = "master", extras = ["speed"] }
