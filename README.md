@@ -12,7 +12,28 @@ A Bible bot for Discord
 
 [Invite Erasmus to your server](https://discordapp.com/oauth2/authorize?client_id=349394562336292876&scope=bot&permissions=388160)
 
-## Commands
+## Application Commands
+
+* `/verse` - Look up a verse in your preferred or selected version
+* `/search` - Search for terms in your preferred or selected version
+* `/bibles` - List the Bible versions supported
+* `/bibleinfo` - Display information about the specified Bible version
+* `/prefs setdefault` - Set your preferred version
+* `/prefs unsetdefault` - Unset your preferred version
+* `/serverprefs setdefault` - Set the server's preferred version (Administrator only)
+* `/serverprefs unsetdefault` - Unset the server's preferred version (Administrator only)
+* `/creed apostles` - Display The Apostles' Creed
+* `/creed athanasian` - Display The Athanasian Creed
+* `/creed chalcedon` - Display The Chalcedonian Definition
+* `/creed nicene` - Display The Nicene Creed
+* `/creed nicene325` - Display The Nicene Creed (325 AD)
+* `/creed nicene381` - Display The Nicene Creed (381 AD)
+* `/confess cite` - Cite the specified section from the selected confession or catechism
+* `/confess search` - Search for terms in the selected confession or catechism
+* `/invite` - Get a link to invite Erasmus to your server
+* `/about` - Information about Erasmus
+
+## Text-based Commands
 
 * `$`, `$lookup` - Look up a verse in your preferred version
 * `$s`, `$search` - Search for terms in your perferred version
