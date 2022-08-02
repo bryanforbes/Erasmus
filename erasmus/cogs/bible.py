@@ -262,7 +262,8 @@ class BibleBase(Cog[Erasmus]):
                 return
 
         await utils.send_embed_error(
-            ctx, description=formatting.escape(message, mass_mentions=True)
+            ctx,
+            description=formatting.escape(message, mass_mentions=True),
         )
 
     cog_app_command_error = cog_command_error  # type: ignore
@@ -310,6 +311,8 @@ class Bible(BibleBase):
                 raise commands.CommandOnCooldown(
                     bucket, retry_after, commands.BucketType.user
                 )
+
+            await self.bot._application_command_notice(ctx)
 
             async with ctx.typing():
                 async with Session() as session:

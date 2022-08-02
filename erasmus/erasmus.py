@@ -2,16 +2,22 @@ from __future__ import annotations
 
 import logging
 import sys
+from collections.abc import Iterable
 from typing import TYPE_CHECKING, Any, Final, cast
+from typing_extensions import Self
 
 import discord
 import discord.http
 import pendulum
+from asyncpg.exceptions import UniqueViolationError
 from botus_receptus import exceptions, formatting, sqlalchemy as sa, topgg, utils
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
 from discord import app_commands
 from discord.ext import commands
 from pendulum.period import Period
+from sqlalchemy import select
+
+from erasmus.db.misc import Notification
 
 from .config import Config
 from .db import Session
@@ -44,6 +50,7 @@ discord.http._set_api_version(9)
 
 class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     config: Config
+    slash_command_notifications: set[int]
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         kwargs['help_command'] = HelpCommand(
@@ -57,13 +64,77 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         )
         kwargs['description'] = _description
         kwargs['intents'] = discord.Intents(guilds=True, reactions=True, messages=True)
-        kwargs['allowed_mentions'] = discord.AllowedMentions(
-            roles=False, everyone=False, users=True
-        )
+        kwargs['allowed_mentions'] = discord.AllowedMentions.none()
+
+        self.slash_command_notifications = set()
 
         super().__init__(config, *args, sessionmaker=Session, **kwargs)
 
         self.tree.error(self.on_app_command_error)
+        self.before_invoke(self.__before_invoke)
+
+    async def _application_command_notice(
+        self,
+        ctx: commands.Context[Self] | discord.Interaction,
+        /,
+        *,
+        skip_check: bool = False,
+    ) -> None:
+        if not skip_check and (
+            ctx.guild is None or ctx.guild.id in self.slash_command_notifications
+        ):
+            return
+
+        await utils.send_embed(
+            ctx,
+            title='Notice of future changes',
+            description=(
+                f'{formatting.underline(formatting.bold("Users"))}\n'
+                'Beginning <t:1661972400:D>, Erasmus will no longer respond to '
+                'text-based commands (`$confess` and others) or bracket citations '
+                '(`[John 1:1]`). Discord will begin restricting access to message '
+                'content at that time and Erasmus was not granted access. All '
+                'text-based commands have been converted into application commands '
+                'and Erasmus will only respond to bracket citations if it is '
+                'mentioned as part of the message text.\n\n'
+                'To see a list of commands available, type `/` in the text input '
+                'for a server Erasmus is in and select its icon in the popup.\n\n'
+                f'{formatting.underline(formatting.bold("Server Owners"))}\n'
+                'In order to allow your users to use the new application commands, '
+                'you should reauthorize Erasmus in your server by doing one of the '
+                'following:\n\n'
+                '- Tap on Erasmus in the list of users on the right, hten tap on the '
+                '"Add to Server" button\n'
+                '- [Click this link](https://discord.com/api/oauth2/authorize?'
+                'client_id=349394562336292876&permissions=274878000192&'
+                'scope=applications.commands%20bot)\n\n'
+                '**NOTE:** You **do not** have to remove Erasmus from your server '
+                'before taking this action.'
+            ),
+            color=discord.Color.yellow(),
+        )
+
+        if (
+            ctx.guild is not None
+            and ctx.guild.id not in self.slash_command_notifications
+        ):
+            self.slash_command_notifications.add(ctx.guild.id)
+
+            try:
+                async with Session.begin() as session:
+                    session.add(
+                        Notification(
+                            id=ctx.guild.id, application_commands=True  # type: ignore
+                        )
+                    )
+            except UniqueViolationError:
+                pass
+
+    async def __before_invoke(self, ctx: commands.Context[Self], /) -> None:
+        try:
+            await self._application_command_notice(ctx)
+        except Exception as exc:
+            await self.on_command_error(ctx, exc)
 
     @property
     def bible_cog(self) -> 'Bible':
@@ -71,6 +142,14 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
 
     async def setup_hook(self) -> None:
         await super().setup_hook()
+
+        async with Session.begin() as session:
+            self.slash_command_notifications = {
+                notification.id
+                for notification in cast(
+                    Iterable[Notification], await session.scalars(select(Notification))
+                )
+            }
 
         for extension in _extensions:
             try:

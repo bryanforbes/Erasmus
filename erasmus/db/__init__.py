@@ -13,6 +13,7 @@ from .confession import (
     Paragraph,
     Question,
 )
+from .misc import Notification
 
 __all__ = (
     'Session',
@@ -28,4 +29,5 @@ __all__ = (
     'Question',
     'Article',
     'Confession',
+    'Notification',
 )

@@ -4,6 +4,7 @@ from importlib import metadata
 
 import discord
 from botus_receptus import Cog, Embed, utils
+from discord import app_commands
 from discord.ext import commands
 
 from ..erasmus import Erasmus
@@ -94,6 +95,13 @@ class Misc(Cog[Erasmus]):
             embeds=[get_about_embed(self.bot)],
             view=AboutView(self.bot.application_id),
         )
+
+    @app_commands.command()
+    @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
+    async def notice(self, interaction: discord.Interaction, /) -> None:
+        '''Display text-command deprecation notice'''
+
+        await self.bot._application_command_notice(interaction, skip_check=True)
 
 
 async def setup(bot: Erasmus, /) -> None:
