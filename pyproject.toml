@@ -22,7 +22,7 @@ asyncpg-stubs = "~0.26.2"
 sqlalchemy2-stubs = "^0.0.2a24"
 black = "^22.6"
 coverage = {version = "^6.4", extras = ["toml"]}
-flake8 = "~4.0"
+flake8 = "~5.0"
 flake8-bugbear = ">=21.3.1"
 flake8-pyi = "^22.8"
 isort = "^5.10"
