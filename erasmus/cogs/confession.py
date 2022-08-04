@@ -510,19 +510,24 @@ class _ConfessionOption:
         )
 
 
-@define
+@define(eq=False)
 class ConfessionAutoCompleter(AutoCompleter[_ConfessionOption]):
     create_option: Callable[[ConfessionRecord], _ConfessionOption] = field(
         default=_ConfessionOption.create
     )
 
-    def section_choices(
-        self,
-        interaction: discord.Interaction,
-        current: str,
-        /,
+
+@define(eq=False)
+class SectionAutoCompleter(app_commands.Transformer):
+    confession_lookup: ConfessionAutoCompleter
+
+    async def transform(self, interaction: discord.Interaction, value: str) -> str:
+        return value
+
+    async def autocomplete(  # type: ignore
+        self, interaction: discord.Interaction, value: str
     ) -> list[app_commands.Choice[str]]:
-        current = current.lower().strip()
+        value = value.lower().strip()
 
         if (
             interaction.data is None
@@ -532,7 +537,7 @@ class ConfessionAutoCompleter(AutoCompleter[_ConfessionOption]):
             or len(group_options) == 0
             or group_options[0].get('name') != 'source'
             or (source := group_options[0].get('value')) is None  # type: ignore
-            or (item := self._storage.get(source)) is None  # type: ignore
+            or (item := self.confession_lookup.get(source)) is None  # type: ignore
         ):
             return []
 
@@ -541,10 +546,14 @@ class ConfessionAutoCompleter(AutoCompleter[_ConfessionOption]):
                 name=section_info.text_ellipsized, value=section_info.section
             )
             for section_info in item.section_info
-            if not current
-            or current in section_info.text_lower
-            or current in section_info.section
+            if not value
+            or value in section_info.text_lower
+            or value in section_info.section
         ][:25]
+
+
+_confession_lookup = ConfessionAutoCompleter()
+_section_lookup = SectionAutoCompleter(_confession_lookup)
 
 
 class ConfessionAppCommands(
@@ -553,11 +562,7 @@ class ConfessionAppCommands(
     group_name='confess',
     group_description='Confessions',
 ):
-    __confession_lookup: ConfessionAutoCompleter
-
     async def cog_load(self) -> None:
-        self.__confession_lookup = ConfessionAutoCompleter()
-
         async with Session() as session:
             async for confession in ConfessionRecord.get_all(session):
                 format_number = _number_formatters[confession.numbering]
@@ -587,23 +592,12 @@ class ConfessionAppCommands(
                             async for question in confession.get_questions(session)
                         ]
 
-                self.__confession_lookup.add(
+                _confession_lookup.add(
                     _ConfessionOption.create(confession, section_info)
                 )
 
-    async def __source_autocomplete(
-        self,
-        interaction: discord.Interaction,
-        current: str,
-    ) -> list[app_commands.Choice[str]]:
-        return self.__confession_lookup.choices(current.lower())
-
-    async def __section_autocomplete(
-        self,
-        interaction: discord.Interaction,
-        current: str,
-    ) -> list[app_commands.Choice[str]]:
-        return self.__confession_lookup.section_choices(interaction, current)
+    async def cog_unload(self) -> None:
+        _confession_lookup.clear()
 
     @app_commands.command()
     @app_commands.checks.cooldown(
@@ -612,9 +606,12 @@ class ConfessionAppCommands(
     @app_commands.describe(
         source='The confession or catechism to search in', terms='Terms to search for'
     )
-    @app_commands.autocomplete(source=__source_autocomplete)
     async def search(
-        self, interaction: discord.Interaction, /, source: str, terms: str
+        self,
+        interaction: discord.Interaction,
+        /,
+        source: app_commands.Transform[str, _confession_lookup],
+        terms: str,
     ) -> None:
         '''Search for terms in a confession or catechism'''
 
@@ -651,11 +648,12 @@ class ConfessionAppCommands(
     @app_commands.describe(
         source='The confession or catechism to cite', section='The section to cite'
     )
-    @app_commands.autocomplete(
-        source=__source_autocomplete, section=__section_autocomplete
-    )
     async def cite(
-        self, interaction: discord.Interaction, /, source: str, section: str
+        self,
+        interaction: discord.Interaction,
+        /,
+        source: app_commands.Transform[str, _confession_lookup],
+        section: app_commands.Transform[str, _section_lookup],
     ) -> None:
         '''Cite a section from a confession or catechism'''
 

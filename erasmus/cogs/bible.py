@@ -661,7 +661,24 @@ class _BibleOption:
         )
 
 
+class ServiceAutoCompleter(app_commands.Transformer):
+    service_manager: ServiceManager
+
+    async def transform(self, interaction: discord.Interaction, value: str) -> str:
+        return value
+
+    async def autocomplete(  # type: ignore
+        self, interaction: discord.Interaction, value: str
+    ) -> list[app_commands.Choice[str]]:
+        return [
+            app_commands.Choice(name=service_name, value=service_name)
+            for service_name in self.service_manager.service_map.keys()
+            if value.lower() in service_name.lower()
+        ][:25]
+
+
 _bible_lookup: AutoCompleter[_BibleOption] = AutoCompleter()
+_service_lookup = ServiceAutoCompleter()
 
 
 @app_commands.default_permissions(administrator=True)
@@ -676,12 +693,11 @@ class ServerPreferencesGroup(
     @app_commands.checks.cooldown(
         rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
     )
-    @app_commands.autocomplete(version=_bible_lookup.complete)
     async def setdefault(
         self,
         interaction: discord.Interaction,
         /,
-        version: str,
+        version: app_commands.Transform[str, _bible_lookup],
     ) -> None:
         '''Set the default version for this server'''
 
@@ -726,12 +742,11 @@ class PreferencesGroup(
     @app_commands.command()
     @app_commands.describe(version='Bible version')
     @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
-    @app_commands.autocomplete(version=_bible_lookup.complete)
     async def setdefault(
         self,
         interaction: discord.Interaction,
         /,
-        version: str,
+        version: app_commands.Transform[str, _bible_lookup],
     ) -> None:
         '''Set your default Bible version'''
         version = version.lower()
@@ -766,19 +781,14 @@ class PreferencesGroup(
 class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     service_manager: ServiceManager
 
-    async def _service_autocomplete(
-        self, interaction: discord.Interaction, current: str
-    ) -> list[app_commands.Choice[str]]:
-        return [
-            app_commands.Choice(name=service_name, value=service_name)
-            for service_name in self.service_manager.service_map.keys()
-            if current.lower() in service_name.lower()
-        ][:25]
-
     @app_commands.command()
     @app_commands.describe(version='The Bible version to get information for')
-    @app_commands.autocomplete(version=_bible_lookup.complete)
-    async def info(self, interaction: discord.Interaction, /, version: str) -> None:
+    async def info(
+        self,
+        interaction: discord.Interaction,
+        /,
+        version: app_commands.Transform[str, _bible_lookup],
+    ) -> None:
         '''Get information for a Bible version'''
 
         async with Session() as session:
@@ -813,7 +823,6 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         books='Books included in this version',
         rtl='Whether text is right-to-left or not',
     )
-    @app_commands.autocomplete(service=_service_autocomplete)
     async def add(
         self,
         interaction: discord.Interaction,
@@ -821,7 +830,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         command: str,
         name: str,
         abbreviation: str,
-        service: str,
+        service: app_commands.Transform[str, _service_lookup],
         service_version: str,
         books: str = 'OT,NT',
         rtl: bool = False,
@@ -862,8 +871,12 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
 
     @app_commands.command()
     @app_commands.describe(version='The version to delete')
-    @app_commands.autocomplete(version=_bible_lookup.complete)
-    async def delete(self, interaction: discord.Interaction, /, version: str) -> None:
+    async def delete(
+        self,
+        interaction: discord.Interaction,
+        /,
+        version: app_commands.Transform[str, _bible_lookup],
+    ) -> None:
         '''Delete a Bible'''
 
         async with Session.begin() as session:
@@ -882,17 +895,14 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         service='Service to use for lookup and search',
         service_version="The service's code for this version",
     )
-    @app_commands.autocomplete(
-        version=_bible_lookup.complete, service=_service_autocomplete
-    )
     async def update(
         self,
         interaction: discord.Interaction,
         /,
-        version: str,
+        version: app_commands.Transform[str, _bible_lookup],
         name: str | None = None,
         abbreviation: str | None = None,
-        service: str | None = None,
+        service: app_commands.Transform[str | None, _service_lookup] = None,
         service_version: str | None = None,
         rtl: bool | None = None,
         books: str | None = None,
@@ -976,13 +986,12 @@ class BibleAppCommands(BibleBase):
         version='The version in which to look up the verse',
         only_me='Whether to display the verse to yourself or everyone',
     )
-    @app_commands.autocomplete(version=_bible_lookup.complete)
     async def verse(
         self,
         interaction: discord.Interaction,
         /,
         reference: app_commands.Transform[VerseRange, VerseRangeTransformer],
-        version: str | None = None,
+        version: app_commands.Transform[str | None, _bible_lookup] = None,
         only_me: bool = False,
     ) -> None:
         '''Look up a verse'''
@@ -1013,13 +1022,12 @@ class BibleAppCommands(BibleBase):
     @app_commands.describe(
         terms='Terms to search for', version='The Bible version to search within'
     )
-    @app_commands.autocomplete(version=_bible_lookup.complete)
     async def search(
         self,
         interaction: discord.Interaction,
         /,
         terms: str,
-        version: str | None = None,
+        version: app_commands.Transform[str | None, _bible_lookup] = None,
     ) -> None:
         '''Search in the Bible'''
 
@@ -1064,9 +1072,11 @@ class BibleAppCommands(BibleBase):
     @app_commands.command()
     @_shared_cooldown
     @app_commands.describe(version='The Bible version to get information for')
-    @app_commands.autocomplete(version=_bible_lookup.complete)
     async def bibleinfo(
-        self, interaction: discord.Interaction, /, version: str
+        self,
+        interaction: discord.Interaction,
+        /,
+        version: app_commands.Transform[str, _bible_lookup],
     ) -> None:
         '''Get information about a Bible version'''
 
@@ -1094,6 +1104,7 @@ class BibleAppCommands(BibleBase):
 
 async def setup(bot: Erasmus, /) -> None:
     service_manager = ServiceManager.from_config(bot.config, bot.session)
+    _service_lookup.service_manager = service_manager
 
     await bot.add_cog(Bible(bot, service_manager))
     await bot.add_cog(BibleAppCommands(bot, service_manager))

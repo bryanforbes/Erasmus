@@ -79,8 +79,8 @@ class Option(Protocol):
         ...
 
 
-@define
-class AutoCompleter(Generic[_OptionT]):
+@define(eq=False)
+class AutoCompleter(app_commands.Transformer, Generic[_OptionT]):
     _storage: OrderedDict[str, _OptionT] = field(init=False)
 
     def __attrs_post_init__(self) -> None:
@@ -106,8 +106,11 @@ class AutoCompleter(Generic[_OptionT]):
 
         self.discard(key)
 
-    def choices(self, current: str, /) -> list[app_commands.Choice[str]]:
-        current = current.strip()
+    def get(self, key: str, /) -> _OptionT | None:
+        return self._storage.get(key)
+
+    def generate_choices(self, current: str, /) -> list[app_commands.Choice[str]]:
+        current = current.lower().strip()
 
         return [
             option.choice()
@@ -115,7 +118,16 @@ class AutoCompleter(Generic[_OptionT]):
             if not current or option.matches(current)
         ][:25]
 
-    async def complete(
-        self, interaction: discord.Interaction, current: str
+    async def transform(self, interaction: discord.Interaction, value: str) -> str:
+        return value
+
+    async def autocomplete(  # type: ignore
+        self, interaction: discord.Interaction, value: str
     ) -> list[app_commands.Choice[str]]:
-        return self.choices(current)
+        value = value.lower().strip()
+
+        return [
+            option.choice()
+            for option in self._storage.values()
+            if not value or option.matches(value)
+        ][:25]

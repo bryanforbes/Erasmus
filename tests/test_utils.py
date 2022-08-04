@@ -94,7 +94,7 @@ class MockOption:
     name: str
 
     def matches(self, text: str, /) -> bool:
-        return text in self.name or text in self.key
+        return text in self.name.lower() or text in self.key.lower()
 
     def choice(self) -> app_commands.Choice[str]:
         return app_commands.Choice(name=self.name, value=self.key)
@@ -114,7 +114,7 @@ class TestAutoCompleter:
         completer.add(option1)
         completer.add(option2)
 
-        assert completer.choices('') == [
+        assert completer.generate_choices('') == [
             app_commands.Choice(name='Test 1', value='1'),
             app_commands.Choice(name='Test 2', value='2'),
         ]
@@ -127,7 +127,7 @@ class TestAutoCompleter:
 
         completer.update([option1, option2])
 
-        assert completer.choices('') == [
+        assert completer.generate_choices('') == [
             app_commands.Choice(name='Test 1', value='1'),
             app_commands.Choice(name='Test 2', value='2'),
         ]
@@ -142,7 +142,7 @@ class TestAutoCompleter:
 
         completer.clear()
 
-        assert completer.choices('') == []
+        assert completer.generate_choices('') == []
 
     def test_discard(self) -> None:
         completer: utils.AutoCompleter[MockOption] = utils.AutoCompleter()
@@ -155,7 +155,7 @@ class TestAutoCompleter:
         completer.discard('1')
         completer.discard('3')
 
-        assert completer.choices('') == [
+        assert completer.generate_choices('') == [
             app_commands.Choice(name='Test 2', value='2'),
         ]
 
@@ -172,11 +172,11 @@ class TestAutoCompleter:
         with pytest.raises(KeyError):
             completer.remove('3')
 
-        assert completer.choices('') == [
+        assert completer.generate_choices('') == [
             app_commands.Choice(name='Test 2', value='2'),
         ]
 
-    def test_choices(self) -> None:
+    def test_generate_choices(self) -> None:
         completer: utils.AutoCompleter[MockOption] = utils.AutoCompleter()
 
         option1 = MockOption(key='1', name='Testing 1')
@@ -185,12 +185,12 @@ class TestAutoCompleter:
         completer.add(option1)
         completer.add(option2)
 
-        assert completer.choices('') == [
+        assert completer.generate_choices('') == [
             app_commands.Choice(name='Testing 1', value='1'),
             app_commands.Choice(name='Tester 2', value='2'),
         ]
 
-        assert completer.choices(' Testing ') == [
+        assert completer.generate_choices(' Testing ') == [
             app_commands.Choice(name='Testing 1', value='1'),
         ]
 
@@ -201,10 +201,10 @@ class TestAutoCompleter:
             )
         )
 
-        choices = completer.choices(' Testing ')
+        choices = completer.generate_choices(' Testing ')
         assert len(choices) == 25
 
-    async def test_complete(self) -> None:
+    async def test_autocomplete(self) -> None:
         completer: utils.AutoCompleter[MockOption] = utils.AutoCompleter()
 
         option1 = MockOption(key='1', name='Testing 1')
@@ -213,6 +213,6 @@ class TestAutoCompleter:
         completer.add(option1)
         completer.add(option2)
 
-        assert (await completer.complete(cast(Any, object()), ' Testing ')) == [
+        assert (await completer.autocomplete(cast(Any, object()), ' Testing ')) == [
             app_commands.Choice(name='Testing 1', value='1'),
         ]
