@@ -21,8 +21,6 @@ from discord import app_commands
 from discord.ext import commands
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from erasmus.utils import AutoCompleter
-
 from ..db import Session
 from ..db.confession import (
     Article,
@@ -35,8 +33,10 @@ from ..db.confession import (
 from ..erasmus import Erasmus
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from ..format import int_to_roman, roman_to_int
+from ..l10n import Localizer, MessageLocalizer
 from ..page_source import EmbedPageSource, ListPageSource
 from ..ui_pages import UIPages
+from ..utils import AutoCompleter
 
 _roman_re: Final = re.group(
     re.between(0, 4, 'M'),
@@ -226,6 +226,7 @@ class ConfessionSearchSource(
     ListPageSource[ConfessionSearchResult],
 ):
     entry_text_string: str
+    localizer: MessageLocalizer | None
 
     def __init__(
         self,
@@ -234,8 +235,11 @@ class ConfessionSearchSource(
         *,
         per_page: int,
         type: ConfessionTypeEnum,
+        localizer: MessageLocalizer | None = None,
     ) -> None:
         super().__init__(entries, per_page=per_page)
+
+        self.localizer = localizer
 
         if type == ConfessionTypeEnum.CHAPTERS:
             self.entry_text_string = (
@@ -255,7 +259,10 @@ class ConfessionSearchSource(
         /,
     ) -> None:
         if entries is None:
-            self.embed.description = 'I found 0 results'
+            if self.localizer is None:
+                self.embed.description = 'I found 0 results'
+            else:
+                self.embed.description = self.localizer.format_attribute('no-results')
             return
 
         lines: list[str] = []
@@ -267,6 +274,13 @@ class ConfessionSearchSource(
 
 
 class ConfessionBase(Cog[Erasmus]):
+    localizer: Localizer
+
+    def __init__(self, bot: Erasmus, localizer: Localizer, /) -> None:
+        self.localizer = localizer
+
+        super().__init__(bot)
+
     async def cog_command_error(
         self,
         ctx: commands.Context[Any] | discord.Interaction,
@@ -289,20 +303,34 @@ class ConfessionBase(Cog[Erasmus]):
 
         match error:
             case InvalidConfessionError():
-                message = f'`{error.confession}` is not a valid confession.'
+                message_id = 'invalid-confession'
+                data = {'confession': error.confession}
             case NoSectionError():
-                message = (
-                    f'`{error.confession}` does not have '
-                    f'{"an" if error.section_type == "article" else "a"} '
-                    f'{error.section_type} `{error.section}`'
-                )
+                message_id = 'no-section'
+                data = {
+                    'confession': error.confession,
+                    'section_type': error.section_type,
+                    'section': error.section,
+                }
             case NoSectionsError():
-                message = f'`{error.confession}` has no {error.section_type}'
+                message_id = 'no-sections'
+                data = {
+                    'confession': error.confession,
+                    'section_type': error.section_type,
+                }
             case _:
                 return
 
         await utils.send_embed_error(
-            ctx, description=escape(message, mass_mentions=True)
+            ctx,
+            description=escape(
+                self.localizer.format_message(
+                    message_id,
+                    data,
+                    locale=ctx.locale if isinstance(ctx, discord.Interaction) else None,
+                ),
+                mass_mentions=True,
+            ),
         )
 
     cog_app_command_error = cog_command_error  # type: ignore
@@ -432,8 +460,11 @@ class Confession(ConfessionBase):
         async with Session() as session:
             results = [result async for result in search_func(session, terms)]
 
-        source = ConfessionSearchSource(results, type=confession.type, per_page=20)
-        pages = UIPages(ctx, source)
+        localizer = self.localizer.for_message('search-pagination')
+        source = ConfessionSearchSource(
+            results, type=confession.type, per_page=20, localizer=localizer
+        )
+        pages = UIPages(ctx, source, localizer=localizer)
         await pages.start()
 
     async def show_item(
@@ -603,9 +634,7 @@ class ConfessionAppCommands(
     @app_commands.checks.cooldown(
         rate=2, per=30.0, key=lambda i: (i.guild_id, i.user.id)
     )
-    @app_commands.describe(
-        source='The confession or catechism to search in', terms='Terms to search for'
-    )
+    @app_commands.describe(source='source', terms='terms')
     async def search(
         self,
         interaction: discord.Interaction,
@@ -633,12 +662,14 @@ class ConfessionAppCommands(
                 result async for result in search_func(session, terms.split(' '))
             ]
 
+        localizer = self.localizer.for_message('search-pagination', interaction.locale)
         search_source = ConfessionSearchSource(
             results,
             type=confession.type,
             per_page=20,
+            localizer=localizer,
         )
-        pages = UIPages(interaction, search_source)
+        pages = UIPages(interaction, search_source, localizer=localizer)
         await pages.start()
 
     @app_commands.command()
@@ -663,7 +694,10 @@ class ConfessionAppCommands(
 
             if match is None:
                 await utils.send_embed_error(
-                    interaction, description='Section is not formatted correctly'
+                    interaction,
+                    description=self.localizer.format_message(
+                        'section-not-formatted', locale=interaction.locale
+                    ),
                 )
                 return
 
@@ -681,5 +715,7 @@ class ConfessionAppCommands(
 
 
 async def setup(bot: Erasmus, /) -> None:
-    await bot.add_cog(Confession(bot))
-    await bot.add_cog(ConfessionAppCommands(bot))
+    localizer = Localizer('confession.flt', discord.Locale.american_english)
+
+    await bot.add_cog(Confession(bot, localizer))
+    await bot.add_cog(ConfessionAppCommands(bot, localizer))

@@ -29,7 +29,8 @@ from ..exceptions import (
     ServiceNotSupportedError,
     ServiceSearchTimeout,
 )
-from ..page_source import AsyncCallback, AsyncPageSource, FieldPageSource
+from ..l10n import Localizer, MessageLocalizer
+from ..page_source import AsyncCallback, AsyncPageSource, FieldPageSource, Pages
 from ..service_manager import ServiceManager
 from ..types import Bible as _Bible
 from ..ui_pages import UIPages
@@ -69,13 +70,21 @@ def _book_names_from_book_mask(book_mask: int, /) -> Iterator[str]:
 
 class SearchPageSource(FieldPageSource[Sequence[Passage]], AsyncPageSource[Passage]):
     bible: _Bible
+    localizer: MessageLocalizer
 
     def __init__(
-        self, callback: AsyncCallback[Passage], /, *, per_page: int, bible: _Bible
+        self,
+        callback: AsyncCallback[Passage],
+        /,
+        *,
+        per_page: int,
+        bible: _Bible,
+        localizer: MessageLocalizer,
     ) -> None:
         super().__init__(callback, per_page=per_page)
 
         self.bible = bible
+        self.localizer = localizer
 
     def get_field_values(
         self,
@@ -87,8 +96,26 @@ class SearchPageSource(FieldPageSource[Sequence[Passage]], AsyncPageSource[Passa
                 entry.text if len(entry.text) < 1024 else f'{entry.text[:1023]}\u2026'
             )
 
+    def format_footer_text(
+        self, pages: Pages[Sequence[Passage]], max_pages: int
+    ) -> str:
+        return self.localizer.format_attribute(
+            'footer',
+            {
+                'current_page': pages.current_page + 1,
+                'max_pages': max_pages,
+                'total': self.get_total(),
+            },
+        )
+
     async def set_page_text(self, page: Sequence[Passage] | None, /) -> None:
-        self.embed.title = f'Search results from {self.bible.name}'
+        self.embed.title = self.localizer.format_message(
+            {'bible_name': self.bible.name}
+        )
+
+        if page is None:
+            self.embed.description = self.localizer.format_attribute('no-results')
+            return
 
         await super().set_page_text(page)
 
@@ -175,9 +202,17 @@ Example:
 
 class BibleBase(Cog[Erasmus]):
     service_manager: ServiceManager
+    localizer: Localizer
 
-    def __init__(self, bot: Erasmus, service_manager: ServiceManager, /) -> None:
+    def __init__(
+        self,
+        bot: Erasmus,
+        service_manager: ServiceManager,
+        localizer: Localizer,
+        /,
+    ) -> None:
         self.service_manager = service_manager
+        self.localizer = localizer
 
         super().__init__(bot)
 
@@ -201,62 +236,69 @@ class BibleBase(Cog[Erasmus]):
         ):
             error = cast(Exception, error.__cause__)
 
+        data: dict[str, Any] | None = None
+
         match error:
             case BookNotUnderstoodError():
-                message = f'I do not understand the book "{error.book}"'
+                message_id = 'book-not-understood'
+                data = {'book': error.book}
             case BookNotInVersionError():
-                message = f'{error.version} does not contain {error.book}'
+                message_id = 'book-not-in-version'
+                data = {'book': error.book, 'version': error.version}
             case DoNotUnderstandError():
-                message = 'I do not understand that request'
+                message_id = 'do-not-understand'
             case ReferenceNotUnderstoodError():
-                message = f'I do not understand the reference "{error.reference}"'
+                message_id = 'reference-not-understood'
+                data = {'reference': error.reference}
             case BibleNotSupportedError():
                 if isinstance(ctx, commands.Context):
-                    message = f'`{ctx.prefix}{error.version}` is not supported'
+                    data = {'version': f'{ctx.prefix}{error.version}'}
                 else:
-                    message = f'The version `{error.version}` is not supported'
+                    data = {'version': error.version}
+                message_id = 'bible-not-supported'
             case NoUserVersionError():
                 if isinstance(ctx, commands.Context):
                     command = f'{ctx.prefix}setversion'
                 else:
                     command = '/version set'
 
-                message = 'You must first set your default version with ' f'`{command}`'
+                message_id = 'no-user-version'
+                data = {'command': command}
             case InvalidVersionError():
                 if isinstance(ctx, commands.Context):
                     command = f'{ctx.prefix}versions'
                 else:
                     command = '/bibles'
 
-                message = (
-                    f'`{error.version}` is not a valid version. Check '
-                    f'`{command}` for valid versions'
-                )
+                message_id = 'invalid-version'
+                data = {'version': error.version, 'command': command}
             case ServiceNotSupportedError():
                 if isinstance(ctx, commands.Context):
                     version_text = f'{ctx.prefix}{ctx.invoked_with}'
                 else:
                     version_text = f'{error.bible.name}'
 
-                message = (
-                    f'The service configured for ' f'`{version_text}` is not supported'
-                )
+                message_id = 'service-not-supported'
+                data = {'name': version_text}
             case ServiceLookupTimeout():
-                message = (
-                    f'The request timed out looking up {error.verses} in '
-                    + error.bible.name
-                )
+                message_id = 'service-lookup-timeout'
+                data = {'name': error.bible.name, 'verses': str(error.verses)}
             case ServiceSearchTimeout():
-                message = (
-                    f'The request timed out searching for '
-                    f'"{" ".join(error.terms)}" in {error.bible.name}'
-                )
+                message_id = 'service-search-timeout'
+                data = {'name': error.bible.name, 'terms': ' '.join(error.terms)}
             case _:
                 return
 
         await utils.send_embed_error(
             ctx,
-            description=formatting.escape(message, mass_mentions=True),
+            description=formatting.escape(
+                self.localizer.format_message(
+                    message_id,
+                    data,
+                    locale=ctx.locale if isinstance(ctx, discord.Interaction) else None,
+                ),
+                mass_mentions=True,
+            ),
         )
 
     cog_app_command_error = cog_command_error  # type: ignore
@@ -579,8 +621,9 @@ class Bible(BibleBase):
                 bible, list(terms), limit=per_page, offset=page_number
             )
 
-        source = SearchPageSource(search, per_page=5, bible=bible)
-        view = UIPages(ctx, source)
+        localizer = self.localizer.for_message('search-pagination')
+        source = SearchPageSource(search, per_page=5, bible=bible, localizer=localizer)
+        view = UIPages(ctx, source, localizer=localizer)
         await view.start()
 
     def __add_bible_commands(self, command: str, name: str, /) -> None:
@@ -681,6 +724,8 @@ class ServerPreferencesGroup(
     name='serverprefs',
     description='Server preferences commands',
 ):
+    localizer: Localizer
+
     @app_commands.command()
     @app_commands.describe(version='Bible version')
     @app_commands.checks.cooldown(
@@ -704,7 +749,9 @@ class ServerPreferencesGroup(
 
         await utils.send_embed(
             interaction,
-            description=f'Server version set to `{version}`',
+            description=self.localizer.format_message(
+                'server-version-set', {'version': version}, interaction.locale
+            ),
             ephemeral=True,
         )
 
@@ -722,16 +769,24 @@ class ServerPreferencesGroup(
                 guild_prefs := await session.get(GuildPref, interaction.guild.id)
             ) is not None:
                 await session.delete(guild_prefs)
-                description = 'Server version deleted'
+                message_id = 'server-version-deleted'
             else:
-                description = 'Server version already deleted'
+                message_id = 'server-version-already-deleted'
 
-        await utils.send_embed(interaction, description=description, ephemeral=True)
+        await utils.send_embed(
+            interaction,
+            description=self.localizer.format_message(
+                message_id, locale=interaction.locale
+            ),
+            ephemeral=True,
+        )
 
 
 class PreferencesGroup(
     app_commands.Group, name='prefs', description='Preferences commands'
 ):
+    localizer: Localizer
+
     @app_commands.command()
     @app_commands.describe(version='Bible version')
     @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
@@ -750,7 +805,9 @@ class PreferencesGroup(
 
         await utils.send_embed(
             interaction,
-            description=f'Version set to `{version}`',
+            description=self.localizer.format_message(
+                'version-set', {'version': version}, interaction.locale
+            ),
             ephemeral=True,
         )
 
@@ -763,11 +820,17 @@ class PreferencesGroup(
 
             if user_prefs is not None:
                 await session.delete(user_prefs)
-                description = 'Default version unset'
+                message_id = 'version-unset'
             else:
-                description = 'Default version already unset'
+                message_id = 'version-already-unset'
 
-        await utils.send_embed(interaction, description=description, ephemeral=True)
+        await utils.send_embed(
+            interaction,
+            description=self.localizer.format_message(
+                message_id, locale=interaction.locale
+            ),
+            ephemeral=True,
+        )
 
 
 @admin_guild_only()
@@ -954,10 +1017,18 @@ class BibleAppCommands(BibleBase):
     preferences = PreferencesGroup()
     server_preferences = ServerPreferencesGroup()
 
-    def __init__(self, bot: Erasmus, service_manager: ServiceManager, /) -> None:
-        super().__init__(bot, service_manager)
+    def __init__(
+        self,
+        bot: Erasmus,
+        service_manager: ServiceManager,
+        localizer: Localizer,
+        /,
+    ) -> None:
+        super().__init__(bot, service_manager, localizer)
 
         self.admin.service_manager = service_manager
+        self.preferences.localizer = self.localizer
+        self.server_preferences.localizer = self.localizer
 
     async def cog_load(self) -> None:
         async with Session() as session:
@@ -1040,8 +1111,9 @@ class BibleAppCommands(BibleBase):
                 bible, terms.split(' '), limit=per_page, offset=page_number
             )
 
-        source = SearchPageSource(search, per_page=5, bible=bible)
-        view = UIPages(interaction, source)
+        localizer = self.localizer.for_message('search-pagination', interaction.locale)
+        source = SearchPageSource(search, per_page=5, bible=bible, localizer=localizer)
+        view = UIPages(interaction, source, localizer=localizer)
         await view.start()
 
     @app_commands.command()
@@ -1051,7 +1123,12 @@ class BibleAppCommands(BibleBase):
     async def bibles(self, interaction: discord.Interaction, /) -> None:
         '''List which Bible versions are available for lookup and search'''
 
-        lines = ['I support the following Bible versions:', '']
+        lines = [
+            self.localizer.format_message(
+                'bible-versions-prefix', locale=interaction.locale
+            ),
+            '',
+        ]
 
         async with Session() as session:
             lines += [
@@ -1081,11 +1158,15 @@ class BibleAppCommands(BibleBase):
             title=existing.name,
             fields=[
                 {
-                    'name': 'Abbreviation',
+                    'name': self.localizer.format_message(
+                        'abbreviation-heading', locale=interaction.locale
+                    ),
                     'value': existing.command,
                 },
                 {
-                    'name': 'Books',
+                    'name': self.localizer.format_message(
+                        'books-heading', locale=interaction.locale
+                    ),
                     'value': '\n'.join(
                         [name for name in _book_names_from_book_mask(existing.books)]
                     ),
@@ -1099,5 +1180,7 @@ async def setup(bot: Erasmus, /) -> None:
     service_manager = ServiceManager.from_config(bot.config, bot.session)
     _service_lookup.service_manager = service_manager
 
-    await bot.add_cog(Bible(bot, service_manager))
-    await bot.add_cog(BibleAppCommands(bot, service_manager))
+    localizer = Localizer('bible.flt', discord.Locale.american_english)
+
+    await bot.add_cog(Bible(bot, service_manager, localizer))
+    await bot.add_cog(BibleAppCommands(bot, service_manager, localizer))

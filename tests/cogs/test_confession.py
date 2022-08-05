@@ -4,9 +4,14 @@ import pytest
 
 from erasmus.cogs.confession import Confession
 from erasmus.erasmus import Erasmus
+from erasmus.l10n import Localizer
 
 
 class MockBot(object):
+    ...
+
+
+class MockLocalizer(object):
     ...
 
 
@@ -15,6 +20,10 @@ class TestConfession(object):
     def mock_bot(self) -> MockBot:
         return MockBot()
 
-    def test_instantiate(self, mock_bot: Erasmus) -> None:
-        cog = Confession(mock_bot)
+    @pytest.fixture
+    def mock_localizer(self) -> MockLocalizer:
+        return MockLocalizer()
+
+    def test_instantiate(self, mock_bot: Erasmus, mock_localizer: Localizer) -> None:
+        cog = Confession(mock_bot, mock_localizer)
         assert cog is not None

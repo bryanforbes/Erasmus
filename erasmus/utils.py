@@ -15,7 +15,6 @@ from .data import Passage
 if TYPE_CHECKING:
     from .erasmus import Erasmus
 
-
 _OptionT = TypeVar('_OptionT', bound='Option')
 
 

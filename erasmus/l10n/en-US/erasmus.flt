@@ -1,0 +1,21 @@
+-retry-period = You can retry again in { $period }.
+
+# General error messages
+
+generic-error = An error occurred
+no-private-message = This command is not available in private messages
+only-private-message = This command is only available in private messages
+missing-required-argument = The required argument `{ $name }` is missing
+cooldown-error = { -retry-period(period: $period) }
+user-on-cooldown =
+    You have used this command too many times. { -retry-period(period: $period) }
+command-on-cooldown =
+    `{ $command }` has been used too many times in this channel. { -retry-period(period: $period) }
+missing-permissions = You do not have the correct permissions to run this command
+cannot-paginate =
+    I need the "{ $permission ->
+        [embed-links] Embed Links
+        [send-messages] Send Messages
+        [add-reactions] Add Reactions
+       *[read-message-history] Read Message History
+    }" permission

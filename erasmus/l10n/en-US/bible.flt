@@ -1,0 +1,92 @@
+-bible-version = Bible version
+
+# Commands
+
+serverprefs = serverprefs
+    .description = Server preferences commands
+
+serverprefs__setdefault = setdefault
+    .description = Set the default version for this server
+serverprefs__setdefault--PARAMS--version = version
+    .description = { -bible-version }
+
+serverprefs--unsetdefault = unsetdefault
+    .description = Unset the default version for this server
+
+prefs = prefs
+    .description = Preferences commands
+
+prefs__setdefault = setdefault
+    .description = Set your default { -bible-version }
+prefs__setdefault--PARAMS--version = version
+    .description = { -bible-version }
+
+prefs__unsetdefault = unsetdefault
+    .description = Unset your default { -bible-version }
+
+verse = verse
+    .description = Look up a verse
+verse--PARAMS--reference = reference
+    .description = A verse reference
+verse--PARAMS--version = version
+    .description = The version in which to look up the verse
+verse--PARAMS--only_me = only_me
+    .description = Whether to display the verse to yourself or everyone
+
+search = search
+    .description = Search in the Bible
+search--PARAMS--terms = terms
+    .description = Terms to search for
+search--PARAMS--version = version
+    .description = The { -bible-version } to search within
+
+bibles = bibles
+    .description = List which { -bible-version }s are available for lookup and search
+
+bibleinfo = bibleinfo
+    .description = Get information about a { -bible-version }
+bibleinfo--PARAMS--version = version
+    .description = The { -bible-version } to get information for
+
+# Messages
+
+server-version-set = Server version set to `{ $version }`
+server-version-deleted = Server version deleted
+server-version-already-deleted = Server version already deleted
+
+version-set = Version set to `{ $version }`
+version-unset = Default version unset
+version-already-unset = Default version already unset
+
+bible-versions-prefix = I support the following Bible versions:
+abbreviation-heading = Abbreviation
+books-heading = Books
+
+# Search pagination
+
+search-pagination = Search results from { $bible_name }
+    .no-results = I found 0 results
+    .footer = Page { $current_page }/{ $max_pages } ({ $total } entries)
+    .stop-button = Stop
+    .unknown-error = An unknown error occurred. Sorry!
+    .embed-links-error = I do not have embed links permission in this channel
+    .cannot-be-controlled-error = This pagination menu cannot be controlled by you. Sorry!
+    .modal-title = Skip to page…
+    .modal-input-label = Page
+    .modal-input-placeholder = Page number here…
+    .modal-generic-error = An error occurred
+    .modal-not-a-number-error = You must enter a number
+
+# Errors
+
+book-not-understood = I do not understand the book "{ $book }"
+book-not-in-version = { $version } does not contain { $book }
+do-not-understand = I do not understand that request
+reference-not-understood = I do not understand the reference "{ $reference }"
+bible-not-supported = `{ $version }` is not supported
+bible-not-supported-context = `{ $prefix }{ $version }` is not supported
+no-user-version = You must first set your default version with `{ $command }`
+invalid-version = `{ $version }` is not a valid version. Check `{ $command }` for valid versions
+service-not-supported = The service configured for `{ $name }` is not supported
+service-lookup-timeout = The request timed out looking up { $verses } in { $name }
+service-search-timeout = The request timed out searching for { $terms } in { $name }

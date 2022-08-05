@@ -1,0 +1,10 @@
+# Commands
+
+invite = invite
+    .description = Get a link to invite Erasmus to your server
+
+about = about
+    .description = Get info about Erasmus
+
+notice = notice
+    .description = Display text-command deprecation notice

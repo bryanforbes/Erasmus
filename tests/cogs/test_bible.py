@@ -8,6 +8,7 @@ from pytest_mock import MockerFixture
 
 from erasmus.cogs.bible import Bible, BibleAppCommands
 from erasmus.erasmus import Erasmus
+from erasmus.l10n import Localizer
 from erasmus.service_manager import ServiceManager
 
 
@@ -20,6 +21,10 @@ class MockServiceManager(object):
     ...
 
 
+class MockLocalizer(object):
+    ...
+
+
 @pytest.fixture
 def mock_bot(mocker: MockerFixture) -> Mock:
     bot = mocker.Mock()
@@ -29,25 +34,33 @@ def mock_bot(mocker: MockerFixture) -> Mock:
     return bot
 
 
-class TestBible(object):
-    @pytest.fixture
-    def mock_service_manager(self) -> MockServiceManager:
-        return MockServiceManager()
+@pytest.fixture
+def mock_service_manager() -> MockServiceManager:
+    return MockServiceManager()
 
+
+@pytest.fixture
+def mock_localizer() -> MockLocalizer:
+    return MockLocalizer()
+
+
+class TestBible(object):
     def test_instantiate(
-        self, mock_bot: Erasmus, mock_service_manager: ServiceManager
+        self,
+        mock_bot: Erasmus,
+        mock_service_manager: ServiceManager,
+        mock_localizer: Localizer,
     ) -> None:
-        cog = Bible(mock_bot, mock_service_manager)
+        cog = Bible(mock_bot, mock_service_manager, mock_localizer)
         assert cog is not None
 
 
 class TestBibleAppCommands(object):
-    @pytest.fixture
-    def mock_service_manager(self) -> MockServiceManager:
-        return MockServiceManager()
-
     def test_instantiate(
-        self, mock_bot: Erasmus, mock_service_manager: ServiceManager
+        self,
+        mock_bot: Erasmus,
+        mock_service_manager: ServiceManager,
+        mock_localizer: Localizer,
     ) -> None:
-        cog = BibleAppCommands(mock_bot, mock_service_manager)
+        cog = BibleAppCommands(mock_bot, mock_service_manager, mock_localizer)
         assert cog is not None
