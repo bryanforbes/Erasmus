@@ -271,12 +271,9 @@ class VerseRange:
     async def convert(cls, ctx: commands.Context[Any], argument: str, /) -> Self:
         return cls.from_string(argument)
 
-
-class VerseRangeTransformer(discord.app_commands.Transformer):
-    async def transform(
-        self, interaction: discord.Interaction, value: str
-    ) -> VerseRange:
-        return VerseRange.from_string_with_version(value)
+    @classmethod
+    async def transform(cls, interaction: discord.Interaction, value: str) -> Self:
+        return cls.from_string_with_version(value)
 
 
 @define

@@ -12,14 +12,7 @@ from botus_receptus.app_commands import admin_guild_only
 from discord import app_commands
 from discord.ext import commands
 
-from ..data import (
-    Passage,
-    SearchResults,
-    VerseRange,
-    VerseRangeTransformer,
-    get_book_data,
-    get_books_for_mask,
-)
+from ..data import Passage, SearchResults, VerseRange, get_book_data, get_books_for_mask
 from ..db import Session
 from ..db.bible import BibleVersion, GuildPref, UserPref
 from ..erasmus import Erasmus
@@ -990,7 +983,7 @@ class BibleAppCommands(BibleBase):
         self,
         interaction: discord.Interaction,
         /,
-        reference: app_commands.Transform[VerseRange, VerseRangeTransformer],
+        reference: VerseRange,
         version: app_commands.Transform[str | None, _bible_lookup] = None,
         only_me: bool = False,
     ) -> None:
