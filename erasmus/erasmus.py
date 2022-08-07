@@ -244,14 +244,12 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
                 else:
                     message_id = 'cooldown-error'
 
-                retry_period: Period = (
-                    pendulum.now()
-                    .add(seconds=int(exception.retry_after))
-                    .diff()  # type: ignore
+                retry_period = (
+                    pendulum.now().add(seconds=int(exception.retry_after)).diff()
                 )
                 data = {
                     'command': f'{context.prefix}{context.invoked_with}',
-                    'period': retry_period.in_words(),  # type: ignore
+                    'period': retry_period.in_words(),
                 }
             case commands.MissingPermissions():
                 message_id = 'missing-permissions'
@@ -328,13 +326,11 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
                 message_id = 'no-private-message'
             case app_commands.CommandOnCooldown():
                 retry_period: Period = (
-                    pendulum.now()
-                    .add(seconds=int(error.retry_after))
-                    .diff()  # type: ignore
+                    pendulum.now().add(seconds=int(error.retry_after)).diff()
                 )
 
                 message_id = 'user-on-cooldown'
-                data = {'period': retry_period.in_words()}  # type: ignore
+                data = {'period': retry_period.in_words()}
             case app_commands.MissingPermissions():
                 message_id = 'missing-permissions'
             case CannotPaginate():

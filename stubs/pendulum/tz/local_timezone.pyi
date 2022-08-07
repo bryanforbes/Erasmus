@@ -1,0 +1,9 @@
+from collections.abc import Iterator
+from contextlib import contextmanager
+
+from .timezone import Timezone
+
+def get_local_timezone() -> Timezone: ...
+def set_local_timezone(mock: str | Timezone | None = ...) -> None: ...
+@contextmanager
+def test_local_timezone(mock: str | Timezone | None) -> Iterator[None]: ...
