@@ -16,6 +16,7 @@ beautifulsoup4 = "^4.11"
 "botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "30cbed547b2788779505f426d88661c541feaae0", extras = ["uvloop", "sqlalchemy"]}
 "discord.py" = { git = "https://github.com/Rapptz/discord.py", branch = "master", extras = ["speed"] }
 more-itertools = "~8.13.0"
+"fluent.runtime" = "^0.3.1"
 
 [tool.poetry.dev-dependencies]
 asyncpg-stubs = "~0.26.2"

@@ -135,6 +135,17 @@ tests = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)"
 tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>=4.3.0)", "mypy (>=0.900,!=0.940)", "pytest-mypy-plugins", "cloudpickle"]
 
 [[package]]
+name = "babel"
+version = "2.10.3"
+description = "Internationalization utilities"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+pytz = ">=2015.7"
+
+[[package]]
 name = "beautifulsoup4"
 version = "4.11.1"
 description = "Screen-scraping library"
@@ -297,7 +308,7 @@ toml = ["tomli"]
 
 [[package]]
 name = "discord.py"
-version = "2.0.0a4468+g6381b5a8"
+version = "2.0.0a4469+g44abc469"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -321,7 +332,7 @@ voice = ["PyNaCl (>=1.3.0,<1.6)"]
 type = "git"
 url = "https://github.com/Rapptz/discord.py"
 reference = "master"
-resolved_reference = "6381b5a8f45854f7b2aaafac1bd4ae7c1f67f494"
+resolved_reference = "44abc469f19cb03c35f10d8f41a10ca954e922f4"
 
 [[package]]
 name = "distlib"
@@ -392,6 +403,29 @@ python-versions = ">=3.7"
 [package.dependencies]
 flake8 = ">=3.2.1,<6.0.0"
 pyflakes = ">=2.1.1"
+
+[[package]]
+name = "fluent.runtime"
+version = "0.3.1"
+description = "Localization library for expressive translations."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+attrs = "*"
+babel = "*"
+"fluent.syntax" = ">=0.17,<0.19"
+pytz = "*"
+six = "*"
+
+[[package]]
+name = "fluent.syntax"
+version = "0.18.1"
+description = "Localization library for expressive translations."
+category = "main"
+optional = false
+python-versions = "*"
 
 [[package]]
 name = "frozenlist"
@@ -827,6 +861,14 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,>=2.7"
 six = ">=1.5"
 
 [[package]]
+name = "pytz"
+version = "2022.1"
+description = "World timezone definitions, modern and historical"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "pytzdata"
 version = "2020.1"
 description = "The Olson timezone database for Python."
@@ -1017,7 +1059,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "caa89b218847e4eedb22ebc6e0495e251da562223ba29687261303cb5753986f"
+content-hash = "235ad38d1e6375330e290355270958704659f18d91faf45d8720e0279365743e"
 
 [metadata.files]
 aiodns = [
@@ -1161,6 +1203,10 @@ atomicwrites = [
 attrs = [
     {file = "attrs-22.1.0-py2.py3-none-any.whl", hash = "sha256:86efa402f67bf2df34f51a335487cf46b1ec130d02b8d39fd248abfd30da551c"},
     {file = "attrs-22.1.0.tar.gz", hash = "sha256:29adc2665447e5191d0e7c568fde78b21f9672d344281d0c6e1ab085429b22b6"},
+]
+babel = [
+    {file = "Babel-2.10.3-py3-none-any.whl", hash = "sha256:ff56f4892c1c4bf0d814575ea23471c230d544203c7748e8c68f0089478d48eb"},
+    {file = "Babel-2.10.3.tar.gz", hash = "sha256:7614553711ee97490f732126dc077f8d0ae084ebc6a96e23db1482afabdb2c51"},
 ]
 beautifulsoup4 = [
     {file = "beautifulsoup4-4.11.1-py3-none-any.whl", hash = "sha256:58d5c3d29f5a36ffeb94f02f0d786cd53014cf9b3b3951d42e0080d8a9498d30"},
@@ -1413,6 +1459,14 @@ flake8-bugbear = [
 flake8-pyi = [
     {file = "flake8-pyi-22.8.1.tar.gz", hash = "sha256:6364a6c3e0ad5b7882391b28ebbf19f70e59d84466cb716b2185fabc55ed9855"},
     {file = "flake8_pyi-22.8.1-py37-none-any.whl", hash = "sha256:064c4c19814e15abfb24b602c7f342c91774e562658e32dcd2e587c42d81d0e7"},
+]
+"fluent.runtime" = [
+    {file = "fluent.runtime-0.3.1-py2.py3-none-any.whl", hash = "sha256:1da9bf779e6b8cbfb5a71dd59cd7e193f8dc8da318bda7163bc41e9ae15f8574"},
+    {file = "fluent.runtime-0.3.1.tar.gz", hash = "sha256:f3a879b9d0a2129b3f8e8755f0291c445f272f3d0d26a408c7b76f608acf3409"},
+]
+"fluent.syntax" = [
+    {file = "fluent.syntax-0.18.1-py2.py3-none-any.whl", hash = "sha256:0e63679fa4f1b3042565220a5127b4bab842424f07d6a13c12299e3b3835486a"},
+    {file = "fluent.syntax-0.18.1.tar.gz", hash = "sha256:3a55f5e605d1b029a65cc8b6492c86ec4608e15447e73db1495de11fd46c104f"},
 ]
 frozenlist = [
     {file = "frozenlist-1.3.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:d2257aaba9660f78c7b1d8fea963b68f3feffb1a9d5d05a18401ca9eb3e8d0a3"},
@@ -1884,6 +1938,10 @@ pytest-xdist = [
 python-dateutil = [
     {file = "python-dateutil-2.8.1.tar.gz", hash = "sha256:73ebfe9dbf22e832286dafa60473e4cd239f8592f699aa5adaf10050e6e1823c"},
     {file = "python_dateutil-2.8.1-py2.py3-none-any.whl", hash = "sha256:75bb3f31ea686f1197762692a9ee6a7550b59fc6ca3a1f4b5d7e32fb98e2da2a"},
+]
+pytz = [
+    {file = "pytz-2022.1-py2.py3-none-any.whl", hash = "sha256:e68985985296d9a66a881eb3193b0906246245294a881e7c8afe623866ac6a5c"},
+    {file = "pytz-2022.1.tar.gz", hash = "sha256:1e760e2fe6a8163bc0b3d9a19c4f84342afa0a2affebfaa84b01b978a02ecaa7"},
 ]
 pytzdata = [
     {file = "pytzdata-2020.1-py2.py3-none-any.whl", hash = "sha256:e1e14750bcf95016381e4d472bad004eef710f2d6417240904070b3d6654485f"},
