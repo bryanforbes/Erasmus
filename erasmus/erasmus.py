@@ -21,7 +21,8 @@ from .config import Config
 from .db import Notification, Session
 from .exceptions import ErasmusError
 from .help import HelpCommand
-from .l10n import Localizer
+from .l10n import APP_LOCALIZER, AppLocalizer, Localizer
+from .translator import Translator
 
 if TYPE_CHECKING:
     from .cogs.bible import Bible
@@ -50,6 +51,7 @@ discord.http._set_api_version(9)
 class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     config: Config
     slash_command_notifications: set[int]
+    app_localizer: AppLocalizer
     localizer: Localizer
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
@@ -67,7 +69,8 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         kwargs['allowed_mentions'] = discord.AllowedMentions.none()
 
         self.slash_command_notifications = set()
-        self.localizer = Localizer('erasmus.flt', discord.Locale.american_english)
+        self.app_localizer = APP_LOCALIZER
+        self.localizer = self.app_localizer.for_resource('erasmus')
 
         super().__init__(config, *args, sessionmaker=Session, **kwargs)
 
@@ -158,6 +161,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             except Exception:
                 _log.exception('Failed to load extension %s.', extension)
 
+        await self.tree.set_translator(Translator(self.app_localizer))
         await self.sync_app_commands()
 
         _log.info(

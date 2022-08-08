@@ -29,12 +29,20 @@ from ..exceptions import (
     ServiceNotSupportedError,
     ServiceSearchTimeout,
 )
-from ..l10n import Localizer, MessageLocalizer
+from ..l10n import Localizer, MessageLocalizer, attribute_str, message_str
 from ..page_source import AsyncCallback, AsyncPageSource, FieldPageSource, Pages
 from ..service_manager import ServiceManager
 from ..types import Bible as _Bible
 from ..ui_pages import UIPages
 from ..utils import AutoCompleter, send_passage
+
+
+def _(message_id: str, /, **kwargs: Any) -> app_commands.locale_str:
+    return message_str(message_id, resource='bible', **kwargs)
+
+
+def _d(message_id: str, /, **kwargs: Any) -> app_commands.locale_str:
+    return attribute_str(message_id, 'description', resource='bible', **kwargs)
 
 
 def _book_mask_from_books(books: str, /) -> int:
@@ -1043,12 +1051,17 @@ class BibleAppCommands(BibleBase):
     async def cog_unload(self) -> None:
         _bible_lookup.clear()
 
-    @app_commands.command()
+    @app_commands.command(name=_('verse'), description=_d('verse'))
     @_shared_cooldown
+    @app_commands.rename(
+        reference=_('verse--PARAMS--reference'),
+        version=_('verse--PARAMS--version'),
+        only_me=_('verse--PARAMS--only_me'),
+    )
     @app_commands.describe(
-        reference='A verse reference',
-        version='The version in which to look up the verse',
-        only_me='Whether to display the verse to yourself or everyone',
+        reference=_d('verse--PARAMS--reference'),
+        version=_d('verse--PARAMS--version'),
+        only_me=_d('verse--PARAMS--only_me'),
     )
     async def verse(
         self,
@@ -1180,7 +1193,7 @@ async def setup(bot: Erasmus, /) -> None:
     service_manager = ServiceManager.from_config(bot.config, bot.session)
     _service_lookup.service_manager = service_manager
 
-    localizer = Localizer('bible.flt', discord.Locale.american_english)
+    localizer = bot.app_localizer.for_resource('bible')
 
     await bot.add_cog(Bible(bot, service_manager, localizer))
     await bot.add_cog(BibleAppCommands(bot, service_manager, localizer))

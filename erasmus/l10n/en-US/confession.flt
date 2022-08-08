@@ -13,7 +13,7 @@ confess__cite--PARAMS--section = section
 confess__search = search
     .description = Search for terms in a confession or catechism
 confess__search--PARAMS--source = source
-    .description = The confession or catechism to search in
+    .description = The confession or catechism to search within
 confess__search--PARAMS--terms = terms
     .description = Terms to search for
 

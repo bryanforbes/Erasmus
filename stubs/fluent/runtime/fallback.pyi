@@ -21,8 +21,8 @@ class FluentLocalization:
         resource_ids: Iterable[str],
         resource_loader: AbstractResourceLoader,
         use_isolating: bool = ...,
-        bundle_class: type[FluentBundle] = ...,
-        functions: SupportsKeysAndGetItem[str, _FluentFunction] = ...,
+        bundle_class: type[FluentBundle] | None = ...,
+        functions: SupportsKeysAndGetItem[str, _FluentFunction] | None = ...,
     ) -> None: ...
     def format_value(
         self, msg_id: str, args: SupportsItems[str, Any] | None = ...

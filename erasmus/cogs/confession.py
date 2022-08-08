@@ -33,10 +33,19 @@ from ..db.confession import (
 from ..erasmus import Erasmus
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from ..format import int_to_roman, roman_to_int
-from ..l10n import Localizer, MessageLocalizer
+from ..l10n import Localizer, MessageLocalizer, attribute_str, message_str
 from ..page_source import EmbedPageSource, ListPageSource
 from ..ui_pages import UIPages
 from ..utils import AutoCompleter
+
+
+def _(message_id: str, /, **kwargs: Any) -> app_commands.locale_str:
+    return message_str(message_id, resource='confession', **kwargs)
+
+
+def _d(message_id: str, /, **kwargs: Any) -> app_commands.locale_str:
+    return attribute_str(message_id, 'description', resource='confession', **kwargs)
+
 
 _roman_re: Final = re.group(
     re.between(0, 4, 'M'),
@@ -590,8 +599,8 @@ _section_lookup = SectionAutoCompleter(_confession_lookup)
 class ConfessionAppCommands(
     ConfessionBase,
     GroupCog[Erasmus],
-    group_name='confess',
-    group_description='Confessions',
+    group_name=_('confess'),
+    group_description=_d('confess'),
 ):
     async def cog_load(self) -> None:
         async with Session() as session:
@@ -630,11 +639,21 @@ class ConfessionAppCommands(
     async def cog_unload(self) -> None:
         _confession_lookup.clear()
 
-    @app_commands.command()
+    @app_commands.command(
+        name=_('confess__search'),
+        description=_d('confess__search'),
+    )
     @app_commands.checks.cooldown(
         rate=2, per=30.0, key=lambda i: (i.guild_id, i.user.id)
     )
-    @app_commands.describe(source='source', terms='terms')
+    @app_commands.rename(
+        source=_('confess__search--PARAMS--source'),
+        terms=_('confess__search--PARAMS--terms'),
+    )
+    @app_commands.describe(
+        source=_d('confess__search--PARAMS--source'),
+        terms=_d('confess__search--PARAMS--terms'),
+    )
     async def search(
         self,
         interaction: discord.Interaction,
@@ -672,12 +691,20 @@ class ConfessionAppCommands(
         pages = UIPages(interaction, search_source, localizer=localizer)
         await pages.start()
 
-    @app_commands.command()
+    @app_commands.command(
+        name=_('confess__cite'),
+        description=_d('confess__cite'),
+    )
     @app_commands.checks.cooldown(
         rate=8, per=60.0, key=lambda i: (i.guild_id, i.user.id)
     )
+    @app_commands.rename(
+        source=_('confess__cite--PARAMS--source'),
+        section=_('confess__cite--PARAMS--section'),
+    )
     @app_commands.describe(
-        source='The confession or catechism to cite', section='The section to cite'
+        source=_d('confess__cite--PARAMS--source'),
+        section=_d('confess__cite--PARAMS--section'),
     )
     async def cite(
         self,
@@ -715,7 +742,7 @@ class ConfessionAppCommands(
 
 
 async def setup(bot: Erasmus, /) -> None:
-    localizer = Localizer('confession.flt', discord.Locale.american_english)
+    localizer = bot.app_localizer.for_resource('confession')
 
     await bot.add_cog(Confession(bot, localizer))
     await bot.add_cog(ConfessionAppCommands(bot, localizer))
