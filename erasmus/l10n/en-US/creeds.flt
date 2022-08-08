@@ -1,0 +1,22 @@
+# Commands
+
+creed = creed
+    .description = Historic creeds
+
+creed__apostles = apostles
+    .description = The Apostles' Creed
+
+creed__athanasian = athanasian
+    .description = The Athanasian Creed
+
+creed__chalcedon = chalcedon
+    .description = The Chalcedonian Definition
+
+creed__nicene = nicene
+    .description = The Nicene Creed
+
+creed__nicene325 = nicene325
+    .description = The Nicene Creed (325 AD)
+
+creed__nicene381 = nicene381
+    .description = The Nicene Creed (381 AD)

@@ -1,12 +1,22 @@
 from __future__ import annotations
 
-from typing import Final, TypedDict
+from typing import Any, Final, TypedDict
 
 from botus_receptus import formatting, utils
 from botus_receptus.cog import GroupCog
+from discord import app_commands
 from discord.ext import commands
 
 from ..erasmus import Erasmus
+from ..l10n import attribute_str, message_str
+
+
+def _(message_id: str, /, **kwargs: Any) -> app_commands.locale_str:
+    return message_str(message_id, resource='creeds', **kwargs)
+
+
+def _d(message_id: str, /, **kwargs: Any) -> app_commands.locale_str:
+    return attribute_str(message_id, 'description', resource='creeds', **kwargs)
 
 
 class CreedDict(TypedDict):
@@ -217,9 +227,7 @@ _shared_cooldown: Final = commands.CooldownMapping.from_cooldown(
 )
 
 
-class Creeds(
-    GroupCog[Erasmus], group_name='creed', group_description='Historic creeds'
-):
+class Creeds(GroupCog[Erasmus], group_name=_('creed'), group_description=_d('creed')):
     @commands.command(brief='List the supported creeds')
     async def creeds(self, ctx: commands.Context[Erasmus], /) -> None:
         prefix = ctx.prefix
@@ -236,37 +244,67 @@ class Creeds(
             title='Historic Creeds',
         )
 
-    @commands.hybrid_command(hidden=True, cooldown=_shared_cooldown)
+    @commands.hybrid_command(
+        name=_('creed__apostles'),
+        description=_d('creed__apostles'),
+        hidden=True,
+        cooldown=_shared_cooldown,
+    )
     async def apostles(self, ctx: commands.Context[Erasmus], /) -> None:
         '''The Apostles' Creed'''
 
         await utils.send_embed(ctx, **_apostles_creed)
 
-    @commands.hybrid_command(hidden=True, cooldown=_shared_cooldown)
+    @commands.hybrid_command(
+        name=_('creed__athanasian'),
+        description=_d('creed__athanasian'),
+        hidden=True,
+        cooldown=_shared_cooldown,
+    )
     async def athanasian(self, ctx: commands.Context[Erasmus], /) -> None:
         '''The Athanasian Creed'''
 
         await utils.send_embed(ctx, **_athanasian_creed)
 
-    @commands.hybrid_command(hidden=True, cooldown=_shared_cooldown)
+    @commands.hybrid_command(
+        name=_('creed__chalcedon'),
+        description=_d('creed__chalcedon'),
+        hidden=True,
+        cooldown=_shared_cooldown,
+    )
     async def chalcedon(self, ctx: commands.Context[Erasmus], /) -> None:
         '''The Chalcedonian Definition'''
 
         await utils.send_embed(ctx, **_chalcedon)
 
-    @commands.hybrid_command(hidden=True, cooldown=_shared_cooldown)
+    @commands.hybrid_command(
+        name=_('creed__nicene'),
+        description=_d('creed__nicene'),
+        hidden=True,
+        cooldown=_shared_cooldown,
+    )
     async def nicene(self, ctx: commands.Context[Erasmus], /) -> None:
         '''The Nicene Creed'''
 
         await utils.send_embed(ctx, **_nicene_381_filioque)
 
-    @commands.hybrid_command(hidden=True, cooldown=_shared_cooldown)
+    @commands.hybrid_command(
+        name=_('creed__nicene325'),
+        description=_d('creed__nicene325'),
+        hidden=True,
+        cooldown=_shared_cooldown,
+    )
     async def nicene325(self, ctx: commands.Context[Erasmus], /) -> None:
         '''The Nicene Creed (325 AD)'''
 
         await utils.send_embed(ctx, **_nicene_325)
 
-    @commands.hybrid_command(hidden=True, cooldown=_shared_cooldown)
+    @commands.hybrid_command(
+        name=_('creed__nicene381'),
+        description=_d('creed__nicene381'),
+        hidden=True,
+        cooldown=_shared_cooldown,
+    )
     async def nicene381(self, ctx: commands.Context[Erasmus], /) -> None:
         '''The Nicene Creed (381 AD)'''
 

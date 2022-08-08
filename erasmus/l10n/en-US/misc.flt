@@ -8,3 +8,10 @@ about = about
 
 notice = notice
     .description = Display text-command deprecation notice
+
+about = About Erasmus
+    .guilds = Guilds
+    .channels = Channels
+    .footer = Made with discord.py v{ $version }
+    .invite = Invite Erasmus
+    .support-server = Official Support Server
