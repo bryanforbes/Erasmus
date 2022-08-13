@@ -1,10 +1,9 @@
 from __future__ import annotations
 
-from collections import defaultdict
 from collections.abc import Iterable, Sequence
 from datetime import timedelta
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Final
+from typing import TYPE_CHECKING, Any
 from typing_extensions import Self
 
 import discord
@@ -109,6 +108,32 @@ class Localization(FluentLocalization):
             functions={'PERIOD': fluent_period},
         )
 
+    def format(
+        self,
+        message_id: str,
+        args: SupportsItems[str, Any] | None = None,
+        /,
+    ) -> str:
+        message_id, _, attribute_id = message_id.partition('.')
+
+        if not attribute_id:
+            return self.format_value(message_id, args)
+
+        for bundle in self._bundles():
+            if not bundle.has_message(message_id):
+                continue
+
+            message = bundle.get_message(message_id)
+
+            if attribute_id not in message.attributes:
+                continue
+
+            value, _ = bundle.format_pattern(message.attributes[attribute_id], args)
+
+            return value
+
+        return f'{message_id}.{attribute_id}'
+
     def format_attribute(
         self,
         message_id: str,
@@ -133,95 +158,41 @@ class Localization(FluentLocalization):
 
 
 @define
-class AppLocalizer:
+class Localizer:
     fallback_locale: discord.Locale
     _loader: FluentResourceLoader = field(init=False)
-    _resource_map: defaultdict[str, dict[discord.Locale, Localization]] = field(
-        init=False
-    )
+    _l10n_map: dict[discord.Locale, Localization] = field(init=False)
 
     def __attrs_post_init__(self) -> None:
         self._loader = FluentResourceLoader(
             str(Path(__file__).resolve().parent / '{locale}')
         )
-        self._resource_map = defaultdict(dict)
+        self._l10n_map = {}
 
     def _get_l10n(
         self,
-        resource: str,
         locale: discord.Locale | None,
         /,
     ) -> Localization:
         locale = self.fallback_locale if locale is None else locale
-        l10n_map = self._resource_map[resource]
 
-        if locale in l10n_map:
-            return l10n_map[locale]
+        if locale in self._l10n_map:
+            return self._l10n_map[locale]
 
-        locales: list[str] = [str(locale)]
-
-        if locale != self.fallback_locale:
-            locales.append(str(self.fallback_locale))
-
-        l10n = Localization(locales, [f'{resource}.flt'], self._loader)
-        l10n_map[locale] = l10n
+        l10n = Localization([str(locale)], ['erasmus.flt'], self._loader)
+        self._l10n_map[locale] = l10n
 
         return l10n
 
-    def format_message(
-        self,
-        resource: str,
-        message_id: str | app_commands.locale_str,
-        /,
-        data: SupportsItems[str, Any] | None = None,
-        locale: discord.Locale | None = None,
-    ) -> str:
-        return self._get_l10n(resource, locale).format_value(str(message_id), data)
-
-    def format_attribute(
-        self,
-        resource: str,
-        message_id: str | app_commands.locale_str,
-        attribute_id: str,
-        /,
-        data: SupportsItems[str, Any] | None = None,
-        locale: discord.Locale | None = None,
-    ) -> str:
-        return self._get_l10n(resource, locale).format_attribute(
-            str(message_id), attribute_id, data
-        )
-
-    def for_resource(self, resource: str, /) -> Localizer:
-        return Localizer(self, resource)
-
-
-@define
-class Localizer:
-    app_localizer: AppLocalizer
-    resource: str
-
-    def format_message(
+    def format(
         self,
         message_id: str | app_commands.locale_str,
         /,
+        *,
         data: SupportsItems[str, Any] | None = None,
         locale: discord.Locale | None = None,
     ) -> str:
-        return self.app_localizer.format_message(
-            self.resource, message_id, data=data, locale=locale
-        )
-
-    def format_attribute(
-        self,
-        message_id: str | app_commands.locale_str,
-        attribute_id: str,
-        /,
-        data: SupportsItems[str, Any] | None = None,
-        locale: discord.Locale | None = None,
-    ) -> str:
-        return self.app_localizer.format_attribute(
-            self.resource, message_id, attribute_id, data=data, locale=locale
-        )
+        return self._get_l10n(locale).format(str(message_id), data)
 
     def for_locale(self, locale: discord.Locale, /) -> LocaleLocalizer:
         return LocaleLocalizer(self, locale)
@@ -233,9 +204,7 @@ class Localizer:
         locale: discord.Locale | None = None,
     ) -> MessageLocalizer:
         return MessageLocalizer(
-            self.for_locale(
-                self.app_localizer.fallback_locale if locale is None else locale
-            ),
+            self.for_locale(self.fallback_locale if locale is None else locale),
             message_id,
         )
 
@@ -245,24 +214,14 @@ class LocaleLocalizer:
     localizer: Localizer
     locale: discord.Locale
 
-    def format_message(
+    def format(
         self,
         message_id: str | app_commands.locale_str,
         /,
+        *,
         data: SupportsItems[str, Any] | None = None,
     ) -> str:
-        return self.localizer.format_message(str(message_id), data, self.locale)
-
-    def format_attribute(
-        self,
-        message_id: str | app_commands.locale_str,
-        attribute_id: str,
-        /,
-        data: SupportsItems[str, Any] | None = None,
-    ) -> str:
-        return self.localizer.format_attribute(
-            str(message_id), attribute_id, data, self.locale
-        )
+        return self.localizer.format(str(message_id), data=data, locale=self.locale)
 
 
 @define
@@ -270,39 +229,16 @@ class MessageLocalizer:
     localizer: LocaleLocalizer
     message_id: str
 
-    def format_message(self, data: SupportsItems[str, Any] | None = None, /) -> str:
-        return self.localizer.format_message(self.message_id, data)
-
-    def format_attribute(
+    def format(
         self,
-        attribute_id: str,
-        data: SupportsItems[str, Any] | None = None,
+        attribute_id: str | None = None,
         /,
+        *,
+        data: SupportsItems[str, Any] | None = None,
     ) -> str:
-        return self.localizer.format_attribute(self.message_id, attribute_id, data)
+        message_id = self.message_id
 
+        if attribute_id is not None:
+            message_id = f'{message_id}.{attribute_id}'
 
-APP_LOCALIZER: Final = AppLocalizer(discord.Locale.american_english)
-
-
-def message_str(
-    message_id: str, /, resource: str, **kwargs: Any
-) -> app_commands.locale_str:
-    return app_commands.locale_str(
-        APP_LOCALIZER.format_message(resource, message_id),
-        resource=resource,
-        message_id=message_id,
-        **kwargs,
-    )
-
-
-def attribute_str(
-    message_id: str, attribute_id: str, /, resource: str, **kwargs: Any
-) -> app_commands.locale_str:
-    return app_commands.locale_str(
-        APP_LOCALIZER.format_attribute(resource, message_id, attribute_id),
-        resource=resource,
-        message_id=message_id,
-        attribute_id=attribute_id,
-        **kwargs,
-    )
+        return self.localizer.format(message_id, data=data)

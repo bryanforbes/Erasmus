@@ -29,20 +29,12 @@ from ..exceptions import (
     ServiceNotSupportedError,
     ServiceSearchTimeout,
 )
-from ..l10n import Localizer, MessageLocalizer, attribute_str, message_str
+from ..l10n import Localizer, MessageLocalizer
 from ..page_source import AsyncCallback, AsyncPageSource, FieldPageSource, Pages
 from ..service_manager import ServiceManager
 from ..types import Bible as _Bible
 from ..ui_pages import UIPages
 from ..utils import AutoCompleter, send_passage
-
-
-def _(message_id: str, /, **kwargs: Any) -> app_commands.locale_str:
-    return message_str(message_id, resource='bible', **kwargs)
-
-
-def _d(message_id: str, /, **kwargs: Any) -> app_commands.locale_str:
-    return attribute_str(message_id, 'description', resource='bible', **kwargs)
 
 
 def _book_mask_from_books(books: str, /) -> int:
@@ -107,9 +99,9 @@ class SearchPageSource(FieldPageSource[Sequence[Passage]], AsyncPageSource[Passa
     def format_footer_text(
         self, pages: Pages[Sequence[Passage]], max_pages: int
     ) -> str:
-        return self.localizer.format_attribute(
+        return self.localizer.format(
             'footer',
-            {
+            data={
                 'current_page': pages.current_page + 1,
                 'max_pages': max_pages,
                 'total': self.get_total(),
@@ -117,12 +109,10 @@ class SearchPageSource(FieldPageSource[Sequence[Passage]], AsyncPageSource[Passa
         )
 
     async def set_page_text(self, page: Sequence[Passage] | None, /) -> None:
-        self.embed.title = self.localizer.format_message(
-            {'bible_name': self.bible.name}
-        )
+        self.embed.title = self.localizer.format(data={'bible_name': self.bible.name})
 
         if page is None:
-            self.embed.description = self.localizer.format_attribute('no-results')
+            self.embed.description = self.localizer.format('no-results')
             return
 
         await super().set_page_text(page)
@@ -216,11 +206,10 @@ class BibleBase(Cog[Erasmus]):
         self,
         bot: Erasmus,
         service_manager: ServiceManager,
-        localizer: Localizer,
         /,
     ) -> None:
         self.service_manager = service_manager
-        self.localizer = localizer
+        self.localizer = bot.localizer
 
         super().__init__(bot)
 
@@ -300,9 +289,9 @@ class BibleBase(Cog[Erasmus]):
         await utils.send_embed_error(
             ctx,
             description=formatting.escape(
-                self.localizer.format_message(
+                self.localizer.format(
                     message_id,
-                    data,
+                    data=data,
                     locale=ctx.locale if isinstance(ctx, discord.Interaction) else None,
                 ),
                 mass_mentions=True,
@@ -757,8 +746,10 @@ class ServerPreferencesGroup(
 
         await utils.send_embed(
             interaction,
-            description=self.localizer.format_message(
-                'server-version-set', {'version': version}, interaction.locale
+            description=self.localizer.format(
+                'server-version-set',
+                data={'version': version},
+                locale=interaction.locale,
             ),
             ephemeral=True,
         )
@@ -783,9 +774,7 @@ class ServerPreferencesGroup(
 
         await utils.send_embed(
             interaction,
-            description=self.localizer.format_message(
-                message_id, locale=interaction.locale
-            ),
+            description=self.localizer.format(message_id, locale=interaction.locale),
             ephemeral=True,
         )
 
@@ -813,8 +802,8 @@ class PreferencesGroup(
 
         await utils.send_embed(
             interaction,
-            description=self.localizer.format_message(
-                'version-set', {'version': version}, interaction.locale
+            description=self.localizer.format(
+                'version-set', data={'version': version}, locale=interaction.locale
             ),
             ephemeral=True,
         )
@@ -834,9 +823,7 @@ class PreferencesGroup(
 
         await utils.send_embed(
             interaction,
-            description=self.localizer.format_message(
-                message_id, locale=interaction.locale
-            ),
+            description=self.localizer.format(message_id, locale=interaction.locale),
             ephemeral=True,
         )
 
@@ -1029,10 +1016,9 @@ class BibleAppCommands(BibleBase):
         self,
         bot: Erasmus,
         service_manager: ServiceManager,
-        localizer: Localizer,
         /,
     ) -> None:
-        super().__init__(bot, service_manager, localizer)
+        super().__init__(bot, service_manager)
 
         self.admin.service_manager = service_manager
         self.preferences.localizer = self.localizer
@@ -1051,17 +1037,12 @@ class BibleAppCommands(BibleBase):
     async def cog_unload(self) -> None:
         _bible_lookup.clear()
 
-    @app_commands.command(name=_('verse'), description=_d('verse'))
+    @app_commands.command()
     @_shared_cooldown
-    @app_commands.rename(
-        reference=_('verse--PARAMS--reference'),
-        version=_('verse--PARAMS--version'),
-        only_me=_('verse--PARAMS--only_me'),
-    )
     @app_commands.describe(
-        reference=_d('verse--PARAMS--reference'),
-        version=_d('verse--PARAMS--version'),
-        only_me=_d('verse--PARAMS--only_me'),
+        reference='A verse reference',
+        version='The version in which to look up the verse',
+        only_me='Whether to display the verse to yourself or everyone',
     )
     async def verse(
         self,
@@ -1137,9 +1118,7 @@ class BibleAppCommands(BibleBase):
         '''List which Bible versions are available for lookup and search'''
 
         lines = [
-            self.localizer.format_message(
-                'bible-versions-prefix', locale=interaction.locale
-            ),
+            self.localizer.format('bible-versions-prefix', locale=interaction.locale),
             '',
         ]
 
@@ -1171,13 +1150,13 @@ class BibleAppCommands(BibleBase):
             title=existing.name,
             fields=[
                 {
-                    'name': self.localizer.format_message(
+                    'name': self.localizer.format(
                         'abbreviation-heading', locale=interaction.locale
                     ),
                     'value': existing.command,
                 },
                 {
-                    'name': self.localizer.format_message(
+                    'name': self.localizer.format(
                         'books-heading', locale=interaction.locale
                     ),
                     'value': '\n'.join(
@@ -1193,7 +1172,5 @@ async def setup(bot: Erasmus, /) -> None:
     service_manager = ServiceManager.from_config(bot.config, bot.session)
     _service_lookup.service_manager = service_manager
 
-    localizer = bot.app_localizer.for_resource('bible')
-
-    await bot.add_cog(Bible(bot, service_manager, localizer))
-    await bot.add_cog(BibleAppCommands(bot, service_manager, localizer))
+    await bot.add_cog(Bible(bot, service_manager))
+    await bot.add_cog(BibleAppCommands(bot, service_manager))

@@ -7,7 +7,7 @@ from erasmus.erasmus import Erasmus
 
 
 class MockBot(object):
-    ...
+    localizer = object()
 
 
 class TestMisc(object):

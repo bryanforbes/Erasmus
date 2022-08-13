@@ -31,11 +31,9 @@ class PagesModal(discord.ui.Modal, title='Skip to page…'):
 
         self.pages = pages
 
-        self.title = self.pages.localizer.format_attribute('modal-title')
-        self.page_number.label = self.pages.localizer.format_attribute(
-            'modal-input-label'
-        )
-        self.page_number.placeholder = self.pages.localizer.format_attribute(
+        self.title = self.pages.localizer.format('modal-title')
+        self.page_number.label = self.pages.localizer.format('modal-input-label')
+        self.page_number.placeholder = self.pages.localizer.format(
             'modal-input-placeholder'
         )
 
@@ -47,9 +45,7 @@ class PagesModal(discord.ui.Modal, title='Skip to page…'):
         assert self.page_number.value is not None
 
         if not self.page_number.value.isdigit():
-            raise ValueError(
-                self.pages.localizer.format_attribute('modal-not-a-number-error')
-            )
+            raise ValueError(self.pages.localizer.format('modal-not-a-number-error'))
 
         await self.pages.show_checked_page(interaction, int(self.page_number.value) - 1)
 
@@ -60,7 +56,7 @@ class PagesModal(discord.ui.Modal, title='Skip to page…'):
         if isinstance(error, ValueError):
             message = error.args[0]
         else:
-            message = self.pages.localizer.format_attribute('modal-generic-error')
+            message = self.pages.localizer.format('modal-generic-error')
 
         await interaction.response.send_message(
             embed=discord.Embed(description=message, color=discord.Color.red()),
@@ -158,7 +154,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
             # self.numbered_page.row = 1
             self.stop_pages.row = 1
 
-        self.stop_pages.label = self.localizer.format_attribute('stop-button')
+        self.stop_pages.label = self.localizer.format('stop-button')
 
         if self.source.needs_pagination:
             max_pages = self.source.get_max_pages()
@@ -238,7 +234,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
             return True
 
         await interaction.response.send_message(
-            self.localizer.format_attribute('cannot-be-controlled-error'),
+            self.localizer.format('cannot-be-controlled-error'),
             ephemeral=True,
         )
 
@@ -256,15 +252,13 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
     ) -> None:
         await utils.send(
             interaction,
-            content=self.localizer.format_attribute('unknown-error'),
+            content=self.localizer.format('unknown-error'),
             ephemeral=True,
         )
 
     async def start(self) -> None:
         if self.check_embeds and not self.has_embed_permission():
-            await self.send_initial_message(
-                self.localizer.format_attribute('embed-links-error')
-            )
+            await self.send_initial_message(self.localizer.format('embed-links-error'))
             return
 
         await self.source._prepare_once()

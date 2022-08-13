@@ -1,16 +1,18 @@
 from __future__ import annotations
 
+from typing import Any
+
 import discord
 from discord import app_commands
 
-from .l10n import AppLocalizer
+from .l10n import Localizer
 
 
 class Translator(app_commands.Translator):
-    app_localizer: AppLocalizer
+    localizer: Localizer
 
-    def __init__(self, app_localizer: AppLocalizer, /) -> None:
-        self.app_localizer = app_localizer
+    def __init__(self, localizer: Localizer, /) -> None:
+        self.localizer = localizer
 
     async def translate(
         self,
@@ -18,25 +20,48 @@ class Translator(app_commands.Translator):
         locale: discord.Locale,
         context: app_commands.TranslationContext,
     ) -> str | None:
-        resource: str = string.extras['resource']
-        message_id: str = string.extras['message_id']
+        message_id: str = ''
+        translation: str | None = None
+        command: Any | None = None
 
-        match context:
-            case (
-                app_commands.TranslationContext.command_name
-                | app_commands.TranslationContext.parameter_name
-            ):
-                return self.app_localizer.format_message(
-                    resource, message_id, locale=locale
-                )
-            case (
-                app_commands.TranslationContext.command_description
-                | app_commands.TranslationContext.parameter_description
-            ):
-                return self.app_localizer.format_attribute(
-                    resource, message_id, 'description', locale=locale
-                )
-            case _:
-                pass
+        if (
+            context.location == app_commands.TranslationContextLocation.command_name
+            or context.location
+            == app_commands.TranslationContextLocation.command_description
+            or context.location == app_commands.TranslationContextLocation.group_name
+            or context.location
+            == app_commands.TranslationContextLocation.group_description
+        ):
+            command = context.data
+            message_id = command.name
+        elif (
+            context.location is app_commands.TranslationContextLocation.parameter_name
+            or context.location
+            is app_commands.TranslationContextLocation.parameter_description
+        ):
+            message_id = f'{context.data.command.name}--PARAMS--{context.data.name}'
+            command = context.data.command
 
-        return str(string)
+        if (
+            context.location
+            is app_commands.TranslationContextLocation.command_description
+            or context.location
+            is app_commands.TranslationContextLocation.group_description
+            or context.location
+            is app_commands.TranslationContextLocation.parameter_description
+        ):
+            message_id = f'{message_id}.description'
+
+        if isinstance(command, app_commands.Command):
+            if command.parent:
+                message_id = f'{command.parent.name}__{message_id}'
+
+                if command.parent.parent:
+                    message_id = f'{command.parent.parent.name}__{message_id}'
+
+            translation = self.localizer.format(message_id, locale=locale)
+
+            if translation == message_id:
+                translation = None
+
+        return translation
