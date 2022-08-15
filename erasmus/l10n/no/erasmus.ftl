@@ -1,20 +1,20 @@
 # General error messages
 
-generic-error = An error occurred
-no-private-message = This command is not available in private messages
-only-private-message = This command is only available in private messages
-missing-required-argument = The required argument `{ $name }` is missing
-cooldown-error = You can retry again in { PERIOD($period) }.
-user-on-cooldown = You have used this command too many times. You can retry again in { PERIOD($period) }.
-command-on-cooldown = `{ $command }` has been used too many times in this channel. You can retry again in { PERIOD($period) }.
-missing-permissions = You do not have the correct permissions to run this command
+generic-error = En feil oppstod
+no-private-message = Denne kommandoen er ikke tilgjengelig i private meldinger
+only-private-message = Denne kommandoen er kun tilgjengelig i private meldinger
+missing-required-argument = Det nødvendige argumentet `{ $name }` mangler
+cooldown-error = Du kan prøve igjen om { PERIOD($period) }.
+user-on-cooldown = Du har brukt denne kommandoen for mange ganger. Du kan prøve igjen om { PERIOD($period) }.
+command-on-cooldown = `{ $command }` har blitt brukt for mange ganger i denne kanalen. Du kan prøve igjen om { PERIOD($period) }.
+missing-permissions = Du har ikke de riktige tillatelsene for å kjøre denne kommandoen
 cannot-paginate =
-    I need the "{ $permission ->
-        [embed-links] Embed Links
-        [send-messages] Send Messages
-        [add-reactions] Add Reactions
-       *[read-message-history] Read Message History
-    }" permission
+    Jeg trenger tillatelsen "{ $permission ->
+            [embed-links] Bygg inn lenker
+            [send-messages] Send meldinger
+            [add-reactions] Legg til reaksjoner
+           *[read-message-history] Les meldingshistorikk
+        }"
 
 # Bible Cog
 
@@ -30,7 +30,7 @@ serverprefs = serverprefs
     .description = Server preferences commands
 serverprefs__setdefault = setdefault
     .description = Set the default { -bible-version } for this server
-    .PARAM--version--name = version
+    .PARAM--version--name = versjon
     .PARAM--version--description = { -bible-version }
     .response = Server version set to `{ $version }`
 serverprefs__unsetdefault = unsetdefault
