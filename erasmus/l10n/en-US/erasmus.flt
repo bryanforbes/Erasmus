@@ -27,22 +27,28 @@ serverprefs = serverprefs
 
 serverprefs__setdefault = setdefault
     .description = Set the default version for this server
+    .response = Server version set to `{ $version }`
 serverprefs__setdefault--PARAMS--version = version
     .description = Bible version
 
-serverprefs--unsetdefault = unsetdefault
+serverprefs__unsetdefault = unsetdefault
     .description = Unset the default version for this server
+    .deleted = Server version deleted
+    .already-deleted = Server version already deleted
 
 prefs = prefs
     .description = Preferences commands
 
 prefs__setdefault = setdefault
     .description = Set your default Bible version
+    .response = Version set to `{ $version }`
 prefs__setdefault--PARAMS--version = version
     .description = Bible version
 
 prefs__unsetdefault = unsetdefault
     .description = Unset your default Bible version
+    .deleted = Default version unset
+    .already-deleted = Default version already unset
 
 verse = verse
     .description = Look up a verse
@@ -55,36 +61,7 @@ verse--PARAMS--only_me = only_me
 
 search = search
     .description = Search in the Bible
-search--PARAMS--terms = terms
-    .description = Terms to search for
-search--PARAMS--version = version
-    .description = The Bible version to search within
-
-bibles = bibles
-    .description = List which Bible versions are available for lookup and search
-
-bibleinfo = bibleinfo
-    .description = Get information about a Bible version
-bibleinfo--PARAMS--version = version
-    .description = The Bible version to get information for
-
-## Messages
-
-server-version-set = Server version set to `{ $version }`
-server-version-deleted = Server version deleted
-server-version-already-deleted = Server version already deleted
-
-version-set = Version set to `{ $version }`
-version-unset = Default version unset
-version-already-unset = Default version already unset
-
-bible-versions-prefix = I support the following Bible versions:
-abbreviation-heading = Abbreviation
-books-heading = Books
-
-## Search pagination
-
-search-pagination = Search results from { $bible_name }
+    .title = Search results from { $bible_name }
     .no-results = I found 0 results
     .footer = Page { $current_page }/{ $max_pages } ({ $total } entries)
     .stop-button = Stop
@@ -96,6 +73,21 @@ search-pagination = Search results from { $bible_name }
     .modal-input-placeholder = Page number here…
     .modal-generic-error = An error occurred
     .modal-not-a-number-error = You must enter a number
+search--PARAMS--terms = terms
+    .description = Terms to search for
+search--PARAMS--version = version
+    .description = The Bible version to search within
+
+bibles = bibles
+    .description = List which Bible versions are available for lookup and search
+    .prefix = I support the following Bible versions:
+
+bibleinfo = bibleinfo
+    .description = Get information about a Bible version
+    .abbreviation = Abbreviation
+    .books = Books
+bibleinfo--PARAMS--version = version
+    .description = The Bible version to get information for
 
 ## Errors
 
@@ -127,14 +119,7 @@ confess__cite--PARAMS--section = section
 
 confess__search = search
     .description = Search for terms in a confession or catechism
-confess__search--PARAMS--source = source
-    .description = The confession or catechism to search within
-confess__search--PARAMS--terms = terms
-    .description = Terms to search for
-
-## Search pagination
-
-confess-search-pagination = Search results from { $confession_name }
+    .title = Search results from { $confession_name }
     .no-results = I found 0 results
     .footer = Page { $current_page }/{ $max_pages } ({ $total } entries)
     .stop-button = Stop
@@ -146,6 +131,10 @@ confess-search-pagination = Search results from { $confession_name }
     .modal-input-placeholder = Page number here…
     .modal-generic-error = An error occurred
     .modal-not-a-number-error = You must enter a number
+confess__search--PARAMS--source = source
+    .description = The confession or catechism to search within
+confess__search--PARAMS--terms = terms
+    .description = Terms to search for
 
 ## Errors
 
@@ -194,13 +183,12 @@ invite = invite
 
 about = about
     .description = Get info about Erasmus
-
-notice = notice
-    .description = Display text-command deprecation notice
-
-about = About Erasmus
+    .title = About Erasmus
     .guilds = Guilds
     .channels = Channels
     .footer = Made with discord.py v{ $version }
     .invite = Invite Erasmus
     .support-server = Official Support Server
+
+notice = notice
+    .description = Display text-command deprecation notice

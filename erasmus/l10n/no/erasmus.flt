@@ -10,3 +10,6 @@ prefs__setdefault = setdefault
 
 verse = snook
     .description = Snorka borka
+
+
+notice = blork

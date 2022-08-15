@@ -457,7 +457,7 @@ class Confession(ConfessionBase):
         async with Session() as session:
             results = [result async for result in search_func(session, terms)]
 
-        localizer = self.localizer.for_message('confess-search-pagination')
+        localizer = self.localizer.for_message('confess__search')
         source = ConfessionSearchSource(
             results, type=confession.type, per_page=20, localizer=localizer
         )
@@ -661,9 +661,7 @@ class ConfessionAppCommands(
                 result async for result in search_func(session, terms.split(' '))
             ]
 
-        localizer = self.localizer.for_message(
-            'confess-search-pagination', interaction.locale
-        )
+        localizer = self.localizer.for_message('confess__search', interaction.locale)
         search_source = ConfessionSearchSource(
             results,
             type=confession.type,

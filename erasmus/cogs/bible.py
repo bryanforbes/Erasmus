@@ -109,7 +109,9 @@ class SearchPageSource(FieldPageSource[Sequence[Passage]], AsyncPageSource[Passa
         )
 
     async def set_page_text(self, page: Sequence[Passage] | None, /) -> None:
-        self.embed.title = self.localizer.format(data={'bible_name': self.bible.name})
+        self.embed.title = self.localizer.format(
+            'title', data={'bible_name': self.bible.name}
+        )
 
         if page is None:
             self.embed.description = self.localizer.format('no-results')
@@ -618,7 +620,7 @@ class Bible(BibleBase):
                 bible, list(terms), limit=per_page, offset=page_number
             )
 
-        localizer = self.localizer.for_message('search-pagination')
+        localizer = self.localizer.for_message('search')
         source = SearchPageSource(search, per_page=5, bible=bible, localizer=localizer)
         view = UIPages(ctx, source, localizer=localizer)
         await view.start()
@@ -747,7 +749,7 @@ class ServerPreferencesGroup(
         await utils.send_embed(
             interaction,
             description=self.localizer.format(
-                'server-version-set',
+                'serverprefs__setdefault.response',
                 data={'version': version},
                 locale=interaction.locale,
             ),
@@ -768,13 +770,15 @@ class ServerPreferencesGroup(
                 guild_prefs := await session.get(GuildPref, interaction.guild.id)
             ) is not None:
                 await session.delete(guild_prefs)
-                message_id = 'server-version-deleted'
+                attribute_id = 'deleted'
             else:
-                message_id = 'server-version-already-deleted'
+                attribute_id = 'already-deleted'
 
         await utils.send_embed(
             interaction,
-            description=self.localizer.format(message_id, locale=interaction.locale),
+            description=self.localizer.format(
+                f'serverprefs__unsetdefault.{attribute_id}', locale=interaction.locale
+            ),
             ephemeral=True,
         )
 
@@ -803,7 +807,9 @@ class PreferencesGroup(
         await utils.send_embed(
             interaction,
             description=self.localizer.format(
-                'version-set', data={'version': version}, locale=interaction.locale
+                'prefs__setdefault.response',
+                data={'version': version},
+                locale=interaction.locale,
             ),
             ephemeral=True,
         )
@@ -817,13 +823,15 @@ class PreferencesGroup(
 
             if user_prefs is not None:
                 await session.delete(user_prefs)
-                message_id = 'version-unset'
+                attribute_id = 'deleted'
             else:
-                message_id = 'version-already-unset'
+                attribute_id = 'already-deleted'
 
         await utils.send_embed(
             interaction,
-            description=self.localizer.format(message_id, locale=interaction.locale),
+            description=self.localizer.format(
+                f'prefs__unsetdefault.{attribute_id}', locale=interaction.locale
+            ),
             ephemeral=True,
         )
 
@@ -1105,7 +1113,7 @@ class BibleAppCommands(BibleBase):
                 bible, terms.split(' '), limit=per_page, offset=page_number
             )
 
-        localizer = self.localizer.for_message('search-pagination', interaction.locale)
+        localizer = self.localizer.for_message('search', interaction.locale)
         source = SearchPageSource(search, per_page=5, bible=bible, localizer=localizer)
         view = UIPages(interaction, source, localizer=localizer)
         await view.start()
@@ -1118,7 +1126,7 @@ class BibleAppCommands(BibleBase):
         '''List which Bible versions are available for lookup and search'''
 
         lines = [
-            self.localizer.format('bible-versions-prefix', locale=interaction.locale),
+            self.localizer.format('bibles.prefix', locale=interaction.locale),
             '',
         ]
 
@@ -1151,13 +1159,13 @@ class BibleAppCommands(BibleBase):
             fields=[
                 {
                     'name': self.localizer.format(
-                        'abbreviation-heading', locale=interaction.locale
+                        'bibleinfo.abbreviation', locale=interaction.locale
                     ),
                     'value': existing.command,
                 },
                 {
                     'name': self.localizer.format(
-                        'books-heading', locale=interaction.locale
+                        'bibleinfo.books', locale=interaction.locale
                     ),
                     'value': '\n'.join(
                         [name for name in _book_names_from_book_mask(existing.books)]

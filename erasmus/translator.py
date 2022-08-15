@@ -18,7 +18,7 @@ class Translator(app_commands.Translator):
         self,
         string: app_commands.locale_str,
         locale: discord.Locale,
-        context: app_commands.TranslationContext,
+        context: app_commands.TranslationContextTypes,
     ) -> str | None:
         message_id: str = ''
         translation: str | None = None
@@ -59,9 +59,8 @@ class Translator(app_commands.Translator):
                 if command.parent.parent:
                     message_id = f'{command.parent.parent.name}__{message_id}'
 
-            translation = self.localizer.format(message_id, locale=locale)
-
-            if translation == message_id:
-                translation = None
+            translation = self.localizer.format(
+                message_id, locale=locale, use_fallbacks=False
+            )
 
         return translation

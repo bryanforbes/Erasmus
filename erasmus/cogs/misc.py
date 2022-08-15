@@ -81,7 +81,7 @@ def get_about_embed(bot: Erasmus, localizer: MessageLocalizer) -> Embed:
     dpy_version = metadata.distribution('discord.py').version
 
     return Embed(
-        title=localizer.format(),
+        title=localizer.format('title'),
         fields=[
             {'name': localizer.format('guilds'), 'value': str(guild_count)},
             {

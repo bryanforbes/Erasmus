@@ -1,7 +1,7 @@
 from __future__ import absolute_import, unicode_literals
 
 from _typeshed import SupportsItems, SupportsKeysAndGetItem
-from collections.abc import Iterable
+from collections.abc import Sequence
 from typing import Any
 
 from ..syntax.ast import Resource
@@ -17,9 +17,11 @@ from .resolver import Message, Pattern, TextElement
 def FluentResource(source: Any) -> Resource: ...
 
 class FluentBundle:
+    locales: Sequence[str]
+    use_isolating: bool
     def __init__(
         self,
-        locales: Iterable[str],
+        locales: Sequence[str],
         functions: SupportsKeysAndGetItem[str, _FluentFunction] = ...,
         use_isolating: bool = ...,
     ) -> None: ...

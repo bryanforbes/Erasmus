@@ -14,7 +14,6 @@ from botus_receptus import exceptions, formatting, sqlalchemy as sa, topgg, util
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
 from discord import app_commands
 from discord.ext import commands
-from pendulum.period import Period
 from sqlalchemy import select
 
 from .config import Config
@@ -251,7 +250,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
                 )
                 data = {
                     'command': f'{context.prefix}{context.invoked_with}',
-                    'period': retry_period.in_words(),
+                    'period': retry_period,
                 }
             case commands.MissingPermissions():
                 message_id = 'missing-permissions'
@@ -298,7 +297,8 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             await utils.send_embed_error(
                 context,
                 description=formatting.escape(
-                    self.localizer.format(message_id, data=data), mass_mentions=True
+                    self.localizer.format(message_id, data=data),
+                    mass_mentions=True,
                 ),
             )
 
@@ -327,24 +327,22 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             case commands.NoPrivateMessage():
                 message_id = 'no-private-message'
             case app_commands.CommandOnCooldown():
-                retry_period: Period = (
-                    pendulum.now().add(seconds=int(error.retry_after)).diff()
-                )
+                retry_period = pendulum.now().add(seconds=int(error.retry_after)).diff()
 
                 message_id = 'user-on-cooldown'
-                data = {'period': retry_period.in_words()}
+                data = {'period': retry_period}
             case app_commands.MissingPermissions():
                 message_id = 'missing-permissions'
             case CannotPaginate():
                 match error.reason:
                     case CannotPaginateReason.embed_links:
-                        permission = 'Embed Links'
+                        permission = 'embed-links'
                     case CannotPaginateReason.send_messages:
-                        permission = 'Send Messages'
+                        permission = 'send-messages'
                     case CannotPaginateReason.add_reactions:
-                        permission = 'Add Reactions'
+                        permission = 'add-reactions'
                     case CannotPaginateReason.read_message_history:
-                        permission = 'Read Message History'
+                        permission = 'read-message-history'
 
                 message_id = 'cannot-paginate'
                 data = {'permission': permission}
