@@ -1,0 +1,3 @@
+files:
+  - source: /erasmus/l10n/en-US/*.flt
+    translation: /erasmus/l10n/%locale%/%original_file_name%
