@@ -172,7 +172,7 @@ class Localizer:
         if locale != self.default_locale:
             locales.append(str(self.default_locale))
 
-        return Localization(locales, ['erasmus.flt'], self._loader)
+        return Localization(locales, ['erasmus.ftl'], self._loader)
 
     def _get_l10n(
         self,
