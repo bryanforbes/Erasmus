@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from enum import Enum
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
@@ -96,11 +97,12 @@ class InvalidConfessionError(ErasmusError):
 class NoSectionError(ErasmusError):
     confession: str
     section: str
+    section_type: str
 
-    def __init__(self, confession: str, section: str, section_type: str, /) -> None:
+    def __init__(self, confession: str, section: str, section_type: Enum, /) -> None:
         self.confession = confession
         self.section = section
-        self.section_type = section_type
+        self.section_type = section_type.value
 
 
 class NoSectionsError(ErasmusError):

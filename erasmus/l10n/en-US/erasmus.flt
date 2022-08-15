@@ -22,14 +22,20 @@ cannot-paginate =
 
 ## Commands
 
+-bible-version =
+    { $number ->
+       *[singular] Bible version
+        [plural] Bible versions
+    }
+
 serverprefs = serverprefs
     .description = Server preferences commands
 
 serverprefs__setdefault = setdefault
-    .description = Set the default version for this server
+    .description = Set the default { -bible-version } for this server
+    .PARAM--version--name = version
+    .PARAM--version--description = { -bible-version }
     .response = Server version set to `{ $version }`
-serverprefs__setdefault--PARAMS--version = version
-    .description = Bible version
 
 serverprefs__unsetdefault = unsetdefault
     .description = Unset the default version for this server
@@ -40,27 +46,31 @@ prefs = prefs
     .description = Preferences commands
 
 prefs__setdefault = setdefault
-    .description = Set your default Bible version
+    .description = Set your default { -bible-version }
+    .PARAM--version--name = version
+    .PARAM--version--description = { -bible-version }
     .response = Version set to `{ $version }`
-prefs__setdefault--PARAMS--version = version
-    .description = Bible version
 
 prefs__unsetdefault = unsetdefault
-    .description = Unset your default Bible version
+    .description = Unset your default { -bible-version }
     .deleted = Default version unset
     .already-deleted = Default version already unset
 
 verse = verse
     .description = Look up a verse
-verse--PARAMS--reference = reference
-    .description = A verse reference
-verse--PARAMS--version = version
-    .description = The version in which to look up the verse
-verse--PARAMS--only_me = only_me
-    .description = Whether to display the verse to yourself or everyone
+    .PARAM--reference--name = reference
+    .PARAM--reference--description = A verse reference
+    .PARAM--version--name = version
+    .PARAM--version--description = The version in which to look up the verse
+    .PARAM--only_me--name = only_me
+    .PARAM--only_me--description = Whether to display the verse to yourself or everyone
 
 search = search
     .description = Search in the Bible
+    .PARAM--terms--name = terms
+    .PARAM--terms--description = Terms to search for
+    .PARAM--version--name = version
+    .PARAM--version--description = The { -bible-version } to search within
     .title = Search results from { $bible_name }
     .no-results = I found 0 results
     .footer = Page { $current_page }/{ $max_pages } ({ $total } entries)
@@ -73,21 +83,17 @@ search = search
     .modal-input-placeholder = Page number here…
     .modal-generic-error = An error occurred
     .modal-not-a-number-error = You must enter a number
-search--PARAMS--terms = terms
-    .description = Terms to search for
-search--PARAMS--version = version
-    .description = The Bible version to search within
 
 bibles = bibles
-    .description = List which Bible versions are available for lookup and search
-    .prefix = I support the following Bible versions:
+    .description = List which { -bible-version(number: "plural") } are available for lookup and search
+    .prefix = I support the following { -bible-version(number: "plural") }:
 
 bibleinfo = bibleinfo
-    .description = Get information about a Bible version
+    .description = Get information about a { -bible-version }
+    .PARAM--version--name = version
+    .PARAM--version--description = The { -bible-version } to get information for
     .abbreviation = Abbreviation
     .books = Books
-bibleinfo--PARAMS--version = version
-    .description = The Bible version to get information for
 
 ## Errors
 
@@ -112,13 +118,17 @@ confess = confess
 
 confess__cite = cite
     .description = Cite a section from a confession or catechism
-confess__cite--PARAMS--source = source
-    .description = The confession or catechism to cite
-confess__cite--PARAMS--section = section
-    .description = The section to cite
+    .PARAM--source--name = source
+    .PARAM--source--description = The confession or catechism to cite
+    .PARAM--section--name = section
+    .PARAM--section--description = The section to cite
 
 confess__search = search
     .description = Search for terms in a confession or catechism
+    .PARAM--source--name = source
+    .PARAM--source--description = The confession or catechism to search within
+    .PARAM--terms--name = terms
+    .PARAM--terms--description = Terms to search for
     .title = Search results from { $confession_name }
     .no-results = I found 0 results
     .footer = Page { $current_page }/{ $max_pages } ({ $total } entries)
@@ -131,23 +141,22 @@ confess__search = search
     .modal-input-placeholder = Page number here…
     .modal-generic-error = An error occurred
     .modal-not-a-number-error = You must enter a number
-confess__search--PARAMS--source = source
-    .description = The confession or catechism to search within
-confess__search--PARAMS--terms = terms
-    .description = Terms to search for
 
 ## Errors
 
-section-not-formatted = Section is not formatted correctly
-invalid-confession =
-    `{ $confession }` is not a valid confession.
+invalid-confession = `{ $confession }` is not a valid confession
 no-section =
     `{ $confession }` does not have { $section_type ->
-        [article] an
-        *[other] a
-    } { $section_type } `{ $section }`
+       *[CHAPTERS] a paragraph
+        [QA] a question
+        [ARTICLES] an article
+    } `{ $section }`
 no-sections =
-    `{ $confession }` has no { $section_type }
+    `{ $confession }` has no { $section_type ->
+       *[chapters] chapters
+        [paragraphs] paragraphs
+        [articles] articles
+    }
 
 # Creeds Cog
 

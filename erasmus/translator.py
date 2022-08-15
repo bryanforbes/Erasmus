@@ -35,11 +35,19 @@ class Translator(app_commands.Translator):
             command = context.data
             message_id = command.name
         elif (
-            context.location is app_commands.TranslationContextLocation.parameter_name
+            context.location == app_commands.TranslationContextLocation.parameter_name
             or context.location
-            is app_commands.TranslationContextLocation.parameter_description
+            == app_commands.TranslationContextLocation.parameter_description
         ):
-            message_id = f'{context.data.command.name}--PARAMS--{context.data.name}'
+            suffix = (
+                'name'
+                if context.location
+                == app_commands.TranslationContextLocation.parameter_name
+                else 'description'
+            )
+            message_id = (
+                f'{context.data.command.name}.PARAM--{context.data.name}--{suffix}'
+            )
             command = context.data.command
 
         if (
@@ -47,12 +55,10 @@ class Translator(app_commands.Translator):
             is app_commands.TranslationContextLocation.command_description
             or context.location
             is app_commands.TranslationContextLocation.group_description
-            or context.location
-            is app_commands.TranslationContextLocation.parameter_description
         ):
             message_id = f'{message_id}.description'
 
-        if isinstance(command, app_commands.Command):
+        if isinstance(command, (app_commands.Command, app_commands.Group)):
             if command.parent:
                 message_id = f'{command.parent.name}__{message_id}'
 

@@ -57,7 +57,6 @@ class FluentPeriod(FluentType, Period):
 
 
 def fluent_period(delta: object, **kwargs: Any) -> Any:
-    breakpoint()
     if isinstance(delta, FluentPeriod) and not kwargs:
         return delta
 

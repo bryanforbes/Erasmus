@@ -294,7 +294,11 @@ class BibleBase(Cog[Erasmus]):
                 self.localizer.format(
                     message_id,
                     data=data,
-                    locale=ctx.locale if isinstance(ctx, discord.Interaction) else None,
+                    locale=ctx.locale
+                    if isinstance(ctx, discord.Interaction)
+                    else (
+                        ctx.interaction.locale if ctx.interaction is not None else None
+                    ),
                 ),
                 mass_mentions=True,
             ),

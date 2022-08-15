@@ -1,12 +1,15 @@
 # General error messages
 
 generic-error = Horka borka
+user-on-cooldown =
+    Horka snorka porka borka. Borka norka lorka dorka { PERIOD($period) }.
 
 
 ## Bible Cog
 
 prefs__setdefault = setdefault
     .description = Horka borka
+    .PARAM--version--name = plorp
 
 verse = snook
     .description = Snorka borka

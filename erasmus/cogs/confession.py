@@ -324,7 +324,11 @@ class ConfessionBase(Cog[Erasmus]):
                 self.localizer.format(
                     message_id,
                     data=data,
-                    locale=ctx.locale if isinstance(ctx, discord.Interaction) else None,
+                    locale=ctx.locale
+                    if isinstance(ctx, discord.Interaction)
+                    else (
+                        ctx.interaction.locale if ctx.interaction is not None else None
+                    ),
                 ),
                 mass_mentions=True,
             ),
@@ -692,13 +696,7 @@ class ConfessionAppCommands(
             match = _reference_res[confession.type].match(section)
 
             if match is None:
-                await utils.send_embed_error(
-                    interaction,
-                    description=self.localizer.format(
-                        'section-not-formatted', locale=interaction.locale
-                    ),
-                )
-                return
+                raise NoSectionError(confession.name, section, confession.type)
 
             paginator = EmbedPaginator()
 

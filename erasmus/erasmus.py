@@ -297,7 +297,13 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             await utils.send_embed_error(
                 context,
                 description=formatting.escape(
-                    self.localizer.format(message_id, data=data),
+                    self.localizer.format(
+                        message_id,
+                        data=data,
+                        locale=context.interaction.locale
+                        if context.interaction is not None
+                        else None,
+                    ),
                     mass_mentions=True,
                 ),
             )
