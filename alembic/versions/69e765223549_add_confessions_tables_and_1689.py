@@ -46,7 +46,7 @@ def upgrade():
     conn = op.get_bind()
 
     result = conn.execute(confessions.insert(),
-                          dict(command='1689', name='The 1689 London Baptist Confession of Faith'))
+                          dict(command='1689', name='The Second London Baptist Confession of Faith'))
 
     confession_id = result.inserted_primary_key[0]
 

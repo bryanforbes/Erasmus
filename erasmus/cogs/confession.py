@@ -112,10 +112,11 @@ async def _get_chapters_output(
 
     paragraph_number = format_number(paragraph.paragraph_number)
     chapter_number = format_number(paragraph.chapter.chapter_number)
-    title = underline(bold(f'{chapter_number}. {paragraph.chapter.chapter_title}'))
-    output = f'**{paragraph_number}.** {paragraph.text}'
 
-    return title, output
+    return (
+        f'{chapter_number}.{paragraph_number} {paragraph.chapter.chapter_title}',
+        paragraph.text,
+    )
 
 
 async def _get_articles_output(
@@ -133,10 +134,7 @@ async def _get_articles_output(
 
     article = await confession.get_article(session, article_number)
 
-    title = underline(bold(f'{format_number(article_number)}. {article.title}'))
-    output = article.text
-
-    return title, output
+    return f'{format_number(article_number)}. {article.title}', article.text
 
 
 async def _get_qa_output(
@@ -157,17 +155,17 @@ async def _get_qa_output(
 
     question_number_str = format_number(question_number)
 
-    title: str | None = None
+    section_title: str | None = None
 
     if q_or_a is None:
-        title = underline(bold(f'{question_number_str}. {question.question_text}'))
-        output = f'{question.answer_text}'
+        section_title = bold(f'{question_number_str}. {question.question_text}')
+        output = question.answer_text
     elif q_or_a.lower() == 'q':
         output = f'**Q{question_number_str}**. {question.question_text}'
     else:
         output = f'**A{question_number_str}**: {question.answer_text}'
 
-    return title, output
+    return section_title, output
 
 
 _OUTPUT_GETTER: TypeAlias = Callable[
@@ -336,6 +334,31 @@ class ConfessionBase(Cog[Erasmus]):
 
     cog_app_command_error = cog_command_error  # type: ignore
 
+    async def _show_citation(
+        self,
+        ctx: commands.Context[Any] | discord.Interaction,
+        confession: ConfessionRecord,
+        match: Match[str],
+        /,
+    ) -> None:
+        paginator = EmbedPaginator()
+        get_output = _output_getters[confession.type]
+
+        async with Session() as session:
+            section_title, output = await get_output(session, confession, match)
+
+        title: str | None = underline(bold(confession.name))
+
+        if section_title:
+            paginator.add_line(bold(section_title))
+
+        if output:
+            paginator.add_line(output)
+
+        for page in paginator:
+            await utils.send_embed(ctx, description=page, title=title)
+            title = None
+
 
 class Confession(ConfessionBase):
     @commands.command(brief='Query confessions and catechisms', help=_confess_help)
@@ -362,7 +385,7 @@ class Confession(ConfessionBase):
             await self.search(ctx, row, *args)
             return
 
-        await self.show_item(ctx, row, match)
+        await self._show_citation(ctx, row, match)
 
     async def list(self, ctx: commands.Context[Erasmus], /) -> None:
         paginator = EmbedPaginator()
@@ -467,26 +490,6 @@ class Confession(ConfessionBase):
         )
         pages = UIPages(ctx, source, localizer=localizer)
         await pages.start()
-
-    async def show_item(
-        self,
-        ctx: commands.Context[Erasmus],
-        confession: ConfessionRecord,
-        match: Match[str],
-        /,
-    ) -> None:
-        paginator = EmbedPaginator()
-        get_output = _output_getters[confession.type]
-
-        async with Session() as session:
-            title, output = await get_output(session, confession, match)
-
-        if output:
-            paginator.add_line(output)
-
-        for page in paginator:
-            await utils.send_embed(ctx, description=page, title=title)
-            title = None
 
 
 class _SectionInfo(NamedTuple):
@@ -693,22 +696,11 @@ class ConfessionAppCommands(
 
         async with Session() as session:
             confession = await ConfessionRecord.get_by_command(session, source)
-            match = _reference_res[confession.type].match(section)
 
-            if match is None:
-                raise NoSectionError(confession.name, section, confession.type)
+        if (match := _reference_res[confession.type].match(section)) is None:
+            raise NoSectionError(confession.name, section, confession.type)
 
-            paginator = EmbedPaginator()
-
-            get_output = _output_getters[confession.type]
-            title, output = await get_output(session, confession, match)
-
-        if output:
-            paginator.add_line(output)
-
-        for page in paginator:
-            await utils.send_embed(interaction, description=page, title=title)
-            title = None
+        await self._show_citation(interaction, confession, match)
 
 
 async def setup(bot: Erasmus, /) -> None:
