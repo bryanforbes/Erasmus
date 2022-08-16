@@ -8,7 +8,7 @@ cooldown-error = You can retry again in { PERIOD($period) }.
 user-on-cooldown =
     You have used this command too many times. You can retry again in { PERIOD($period) }.
 command-on-cooldown =
-    `{ $command }` has been used too many times in this channel. You can retry again in { PERIOD($period) }.
+    This command has been used too many times in this channel. You can retry again in { PERIOD($period) }.
 missing-permissions = You do not have the correct permissions to run this command
 cannot-paginate =
     I need the "{ $permission ->
@@ -29,7 +29,7 @@ cannot-paginate =
     }
 
 serverprefs = serverprefs
-    .description = Server preferences commands
+    .description = Server preferences
 
 serverprefs__setdefault = setdefault
     .description = Set the default { -bible-version } for this server
@@ -43,7 +43,7 @@ serverprefs__unsetdefault = unsetdefault
     .already-deleted = Server version already deleted
 
 prefs = prefs
-    .description = Preferences commands
+    .description = Preferences
 
 prefs__setdefault = setdefault
     .description = Set your default { -bible-version }

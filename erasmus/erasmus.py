@@ -248,10 +248,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
                 retry_period = (
                     pendulum.now().add(seconds=int(exception.retry_after)).diff()
                 )
-                data = {
-                    'command': f'{context.prefix}{context.invoked_with}',
-                    'period': retry_period,
-                }
+                data = {'period': retry_period}
             case commands.MissingPermissions():
                 message_id = 'missing-permissions'
             case exceptions.OnlyDirectMessage():

@@ -723,9 +723,7 @@ _service_lookup = ServiceAutoCompleter()
 @app_commands.default_permissions(administrator=True)
 @app_commands.guild_only()
 class ServerPreferencesGroup(
-    app_commands.Group,
-    name='serverprefs',
-    description='Server preferences commands',
+    app_commands.Group, name='serverprefs', description='Server preferences'
 ):
     localizer: Localizer
 
@@ -787,9 +785,7 @@ class ServerPreferencesGroup(
         )
 
 
-class PreferencesGroup(
-    app_commands.Group, name='prefs', description='Preferences commands'
-):
+class PreferencesGroup(app_commands.Group, name='prefs', description='Preferences'):
     localizer: Localizer
 
     @app_commands.command()
