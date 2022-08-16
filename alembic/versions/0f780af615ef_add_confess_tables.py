@@ -162,7 +162,7 @@ def upgrade():
                 'id': 1,
                 'command': '1689',
                 'type_id': 2,
-                'name': 'The 1689 London Baptist Confession of Faith',
+                'name': 'The Second London Baptist Confession of Faith',
             },
             {
                 'id': 2,
