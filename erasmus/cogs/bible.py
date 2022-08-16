@@ -256,21 +256,10 @@ class BibleBase(Cog[Erasmus]):
                     data = {'version': error.version}
                 message_id = 'bible-not-supported'
             case NoUserVersionError():
-                if isinstance(ctx, commands.Context):
-                    command = f'{ctx.prefix}setversion'
-                else:
-                    command = '/version set'
-
                 message_id = 'no-user-version'
-                data = {'command': command}
             case InvalidVersionError():
-                if isinstance(ctx, commands.Context):
-                    command = f'{ctx.prefix}versions'
-                else:
-                    command = '/bibles'
-
                 message_id = 'invalid-version'
-                data = {'version': error.version, 'command': command}
+                data = {'version': error.version}
             case ServiceNotSupportedError():
                 if isinstance(ctx, commands.Context):
                     version_text = f'{ctx.prefix}{ctx.invoked_with}'
