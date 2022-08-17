@@ -1,13 +1,15 @@
 from __future__ import annotations
 
 from importlib import metadata
+from typing import TYPE_CHECKING
 
 import discord
 from botus_receptus import Cog, Embed, utils
 from discord import app_commands
 from discord.ext import commands
 
-from ..erasmus import Erasmus
+if TYPE_CHECKING:
+    from ..erasmus import Erasmus
 
 
 class InviteView(discord.ui.View):
@@ -77,7 +79,7 @@ def get_about_embed(bot: Erasmus) -> Embed:
     )
 
 
-class Misc(Cog[Erasmus]):
+class Misc(Cog['Erasmus']):
     @commands.hybrid_command()
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
     async def invite(self, ctx: commands.Context[Erasmus], /) -> None:

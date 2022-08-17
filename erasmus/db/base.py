@@ -6,7 +6,6 @@ from botus_receptus.sqlalchemy import async_sessionmaker
 from sqlalchemy import TypeDecorator
 from sqlalchemy.dialects.postgresql import TSVECTOR
 from sqlalchemy.orm import registry
-from sqlalchemy.types import TypeEngine
 
 _mapper_registry: Final = registry()
 
@@ -15,6 +14,7 @@ Session: Final = async_sessionmaker(expire_on_commit=False)
 
 if TYPE_CHECKING:
     from sqlalchemy.sql.elements import ColumnElement
+    from sqlalchemy.types import TypeEngine
 
     _TSVectorBase = TypeDecorator[str]
     _ComparatorBase = TypeEngine.Comparator['TSVector']

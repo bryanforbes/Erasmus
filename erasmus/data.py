@@ -4,7 +4,6 @@ from itertools import chain
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Final, Literal, TypedDict
 
-import discord
 import orjson
 from attrs import define, field
 from botus_receptus import re
@@ -17,6 +16,7 @@ if TYPE_CHECKING:
     from re import Match, Pattern
     from typing_extensions import Self
 
+    import discord
     from discord.ext import commands
 
 

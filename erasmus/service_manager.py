@@ -4,7 +4,6 @@ import asyncio
 import logging
 from typing import TYPE_CHECKING, Final
 
-import aiohttp
 import async_timeout
 from attrs import define, field
 
@@ -16,6 +15,8 @@ from .exceptions import (
 )
 
 if TYPE_CHECKING:
+    import aiohttp
+
     from .config import Config
     from .data import Passage, SearchResults, VerseRange
     from .types import Bible, Service
