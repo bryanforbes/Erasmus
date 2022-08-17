@@ -27,7 +27,7 @@ _number_re: Final = re.compile(
 
 
 @define
-class BaseService(object):
+class BaseService:
     session: aiohttp.ClientSession
     config: dict[str, Any] | None
 

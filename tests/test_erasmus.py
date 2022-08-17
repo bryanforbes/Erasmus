@@ -7,7 +7,7 @@ from erasmus.erasmus import Erasmus  # noqa
 from erasmus.exceptions import BibleNotSupportedError  # noqa
 
 
-class MockUser(object):
+class MockUser:
     __slots__ = 'bot', 'id', 'mention'
 
     def __init__(
@@ -22,7 +22,7 @@ class MockUser(object):
         self.mention = mention
 
 
-class MockMessage(object):
+class MockMessage:
     __slots__ = 'author', 'content', '_state'
 
     def __init__(
@@ -33,21 +33,21 @@ class MockMessage(object):
         self._state = None
 
 
-class MockCommand(object):
+class MockCommand:
     __slots__ = ('name',)
 
     def __init__(self, name: str) -> None:
         self.name = name
 
 
-class MockContext(object):
+class MockContext:
     __slots__ = ('command',)
 
     def __init__(self, command: MockCommand) -> None:
         self.command = command
 
 
-# class TestErasmus(object):
+# class TestErasmus:
 #     @pytest.fixture(autouse=True)
 #     def mock_discord_py(self, mocker):
 #         mocker.patch('discord.ext.commands.Bot.add_command')

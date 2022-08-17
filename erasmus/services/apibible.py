@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+import contextlib
 from typing import TYPE_CHECKING, Any, Final, TypedDict
 
 import aiohttp
@@ -103,13 +104,10 @@ class ApiBible(BaseService):
 
         # Make a request for the image to report to the Fair Use Management System
         meta: str | None = get(json, 'meta.fumsNoScript')
-        if meta:
-            if (match := _img_re.search(meta)) is not None:
-                try:
-                    async with self.session.get(match.group('src')) as fums_response:
-                        await fums_response.read()
-                except asyncio.TimeoutError:
-                    pass
+        if meta and (match := _img_re.search(meta)) is not None:
+            with contextlib.suppress(asyncio.TimeoutError):
+                async with self.session.get(match.group('src')) as fums_response:
+                    await fums_response.read()
 
         return json['data']
 

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 from typing import TYPE_CHECKING, Any, Final, Generic, TypeVar, cast
 
 import discord
@@ -204,15 +205,10 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         /,
     ) -> None:
         max_pages = self.source.get_max_pages()
-        try:
-            if max_pages is None:
+        with contextlib.suppress(IndexError):
+            if max_pages is None or max_pages > page_number >= 0:
                 # If it doesn't give maximum pages, it cannot be checked
                 await self.show_page(interaction, page_number)
-            elif max_pages > page_number >= 0:
-                await self.show_page(interaction, page_number)
-        except IndexError:
-            # An error happened that can be handled, so ignore it.
-            pass
 
     async def interaction_check(self, interaction: discord.Interaction) -> bool:
         if await self.is_same_user(interaction):

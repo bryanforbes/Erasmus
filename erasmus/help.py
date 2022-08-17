@@ -91,8 +91,7 @@ class HelpCommand(commands.DefaultHelpCommand):
     async def command_callback(
         self, ctx: commands.Context[Any], /, *, command: str | None = None
     ) -> Any:
-        if command:
-            if command[0] == ctx.prefix:
-                command = command[1:]
+        if command and command[0] == ctx.prefix:
+            command = command[1:]
 
         return await super().command_callback(ctx, command=command)

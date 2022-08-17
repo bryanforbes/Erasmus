@@ -18,7 +18,7 @@ def vcr_config() -> dict[str, list[str]]:
 
 
 @define
-class MockBible(object):
+class MockBible:
     command: str
     name: str
     abbr: str

@@ -166,7 +166,7 @@ def get_books_for_mask(book_mask: int, /) -> Iterator[BookDict]:
 
 
 @define
-class Verse(object):
+class Verse:
     chapter: int
     verse: int
 
@@ -241,9 +241,7 @@ class VerseRange:
 
             end = Verse(chapter_end_int, end_int)
 
-        version: str | None = None
-        if 'version' in groups:
-            version = groups['version']
+        version: str | None = groups.get('version')
 
         return cls(groups['book'], start, end, version)
 
@@ -280,7 +278,7 @@ class VerseRange:
 
 
 @define
-class Passage(object):
+class Passage:
     text: str
     range: VerseRange
     version: str | None = None
@@ -297,7 +295,7 @@ class Passage(object):
 
 
 @define
-class SearchResults(object):
+class SearchResults:
     verses: list[Passage]
     total: int
 

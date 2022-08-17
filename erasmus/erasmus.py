@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import contextlib
 import logging
 import sys
 from collections.abc import Iterable
@@ -122,15 +123,13 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         ):
             self.slash_command_notifications.add(ctx.guild.id)
 
-            try:
+            with contextlib.suppress(UniqueViolationError):
                 async with Session.begin() as session:
                     session.add(
                         Notification(
                             id=ctx.guild.id, application_commands=True  # type: ignore
                         )
                     )
-            except UniqueViolationError:
-                pass
 
     async def __before_invoke(self, ctx: commands.Context[Self], /) -> None:
         try:

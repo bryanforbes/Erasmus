@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from erasmus.types import Bible, Service
 
 
-class MockService(object):
+class MockService:
     __slots__ = 'get_passage', 'search'
 
     def __init__(self, mocker: pytest_mock.MockerFixture) -> None:
@@ -23,7 +23,7 @@ class MockService(object):
         self.search = mocker.AsyncMock()
 
 
-class MockBible(object):
+class MockBible:
     __slots__ = 'command', 'name', 'abbr', 'service', 'service_version', 'rtl', 'books'
 
     def __init__(
@@ -45,7 +45,7 @@ class MockBible(object):
         self.books = 1
 
 
-class TestServiceManager(object):
+class TestServiceManager:
     @pytest.fixture(autouse=True)
     def services(self, mocker: pytest_mock.MockerFixture) -> dict[str, Any]:
         services = {

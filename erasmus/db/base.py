@@ -29,9 +29,11 @@ class TSVector(_TSVectorBase):
 
     class Comparator(_ComparatorBase):  # type: ignore
         def match(self, other: Any, **kwargs: Any) -> Any:
-            if 'postgresql_regconfig' not in kwargs:
-                if 'regconfig' in self.type.options:
-                    kwargs['postgresql_regconfig'] = self.type.options['regconfig']
+            if (
+                'postgresql_regconfig' not in kwargs
+                and 'regconfig' in self.type.options
+            ):
+                kwargs['postgresql_regconfig'] = self.type.options['regconfig']
             return TSVECTOR.Comparator.match(self, other, **kwargs)  # type: ignore
 
         def __or__(self, other: Any) -> ColumnElement[TSVector]:

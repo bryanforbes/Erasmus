@@ -15,12 +15,12 @@ if TYPE_CHECKING:
     from erasmus.service_manager import ServiceManager
 
 
-class MockBot(object):
+class MockBot:
     config: Any = {}
     session: Any = {}
 
 
-class MockServiceManager(object):
+class MockServiceManager:
     ...
 
 
@@ -33,7 +33,7 @@ def mock_bot(mocker: MockerFixture) -> Mock:
     return bot
 
 
-class TestBible(object):
+class TestBible:
     @pytest.fixture
     def mock_service_manager(self) -> MockServiceManager:
         return MockServiceManager()
@@ -45,7 +45,7 @@ class TestBible(object):
         assert cog is not None
 
 
-class TestBibleAppCommands(object):
+class TestBibleAppCommands:
     @pytest.fixture
     def mock_service_manager(self) -> MockServiceManager:
         return MockServiceManager()
