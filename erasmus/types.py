@@ -2,13 +2,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Protocol, TypeAlias
 
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import sessionmaker
 
 if TYPE_CHECKING:
+    from sqlalchemy.ext.asyncio import AsyncSession
+
     from .data import Passage, SearchResults, VerseRange
 
-    AsyncSessionMaker: TypeAlias = sessionmaker[AsyncSession]  # type: ignore
+    AsyncSessionMaker: TypeAlias = sessionmaker['AsyncSession']  # type: ignore
 else:
     AsyncSessionMaker: TypeAlias = sessionmaker
 

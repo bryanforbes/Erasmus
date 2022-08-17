@@ -4,7 +4,6 @@ import asyncio
 import contextlib
 from typing import TYPE_CHECKING, Any, Final, TypedDict
 
-import aiohttp
 import orjson
 from attrs import define, field
 from botus_receptus import re
@@ -17,6 +16,8 @@ from ..json import get
 from .base_service import BaseService
 
 if TYPE_CHECKING:
+    import aiohttp
+
     from ..types import Bible
 
 _img_re: Final = re.compile('src="', re.named_group('src')('[^"]+'), '"')

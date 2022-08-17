@@ -3,7 +3,6 @@ from __future__ import annotations
 import contextlib
 import logging
 import sys
-from collections.abc import Iterable
 from typing import TYPE_CHECKING, Any, Final, cast
 
 import discord
@@ -23,6 +22,7 @@ from .l10n import Localizer
 from .translator import Translator
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
     from typing_extensions import Self
 
     from .cogs.bible import Bible

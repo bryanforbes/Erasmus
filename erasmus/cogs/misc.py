@@ -8,9 +8,8 @@ from botus_receptus import Cog, Embed, utils
 from discord import app_commands
 from discord.ext import commands
 
-from ..erasmus import Erasmus
-
 if TYPE_CHECKING:
+    from ..erasmus import Erasmus
     from ..l10n import Localizer, MessageLocalizer
 
 
@@ -100,7 +99,7 @@ def get_about_embed(bot: Erasmus, localizer: MessageLocalizer) -> Embed:
     )
 
 
-class Misc(Cog[Erasmus]):
+class Misc(Cog['Erasmus']):
     localizer: Localizer
 
     def __init__(self, bot: Erasmus, /) -> None:

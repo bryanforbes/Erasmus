@@ -12,7 +12,7 @@ T_co = TypeVar('T_co', covariant=True)
 P = ParamSpec('P')
 
 
-MaybeAwaitable: TypeAlias = Callable[P, T | Awaitable[T]]
+MaybeAwaitable: TypeAlias = 'Callable[P, T | Awaitable[T]]'
 
 
 async def _maybe_await(f: MaybeAwaitable[P, T], *args: P.args, **kwargs: P.kwargs) -> T:

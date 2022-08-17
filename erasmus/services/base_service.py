@@ -4,11 +4,12 @@ import logging
 from abc import abstractmethod
 from typing import TYPE_CHECKING, Any, Final
 
-import aiohttp
 from attrs import define
 from botus_receptus import re
 
 if TYPE_CHECKING:
+    import aiohttp
+
     from ..data import Passage, SearchResults, VerseRange
     from ..types import Bible
 

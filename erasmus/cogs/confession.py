@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
-from re import Match
 from typing import TYPE_CHECKING, Any, Final, NamedTuple, TypeAlias, cast
 
 import discord
@@ -18,18 +16,16 @@ from botus_receptus.formatting import (
 )
 from discord import app_commands
 from discord.ext import commands
-from sqlalchemy.ext.asyncio import AsyncSession
 
-from ..db import Session
-from ..db.confession import (
+from ..db import (
     Article,
     Confession as ConfessionRecord,
     ConfessionTypeEnum,
     NumberingTypeEnum,
     Paragraph,
     Question,
+    Session,
 )
-from ..erasmus import Erasmus
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from ..format import int_to_roman, roman_to_int
 from ..page_source import EmbedPageSource, ListPageSource
@@ -37,8 +33,13 @@ from ..ui_pages import UIPages
 from ..utils import AutoCompleter
 
 if TYPE_CHECKING:
+    from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
+    from re import Match
     from typing_extensions import Self
 
+    from sqlalchemy.ext.asyncio import AsyncSession
+
+    from ..erasmus import Erasmus
     from ..l10n import Localizer, MessageLocalizer
 
 _roman_re: Final = re.group(
@@ -171,14 +172,14 @@ async def _get_qa_output(
     return section_title, output
 
 
-_OUTPUT_GETTER: TypeAlias = Callable[
+_OUTPUT_GETTER: TypeAlias = '''Callable[
     [
         AsyncSession,
         ConfessionRecord,
         Match[str],
     ],
     Awaitable[tuple[str | None, str]],
-]
+]'''
 
 _output_getters: Final[dict[ConfessionTypeEnum, _OUTPUT_GETTER]] = {
     ConfessionTypeEnum.CHAPTERS: _get_chapters_output,
@@ -219,11 +220,11 @@ Examples:
 '''
 
 
-ConfessionSearchResult: TypeAlias = Paragraph | Article | Question
+ConfessionSearchResult: TypeAlias = 'Paragraph | Article | Question'
 
 
 class ConfessionSearchSource(
-    EmbedPageSource[Sequence[ConfessionSearchResult]],
+    EmbedPageSource['Sequence[ConfessionSearchResult]'],
     ListPageSource[ConfessionSearchResult],
 ):
     entry_text_string: str
@@ -271,7 +272,7 @@ class ConfessionSearchSource(
         self.embed.description = '\n'.join(lines)
 
 
-class ConfessionBase(Cog[Erasmus]):
+class ConfessionBase(Cog['Erasmus']):
     localizer: Localizer
 
     def __init__(self, bot: Erasmus, /) -> None:
@@ -596,7 +597,7 @@ _section_lookup = SectionAutoCompleter(_confession_lookup)
 
 class ConfessionAppCommands(
     ConfessionBase,
-    GroupCog[Erasmus],
+    GroupCog['Erasmus'],
     group_name='confess',
     group_description='Confessions',
 ):

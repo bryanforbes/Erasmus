@@ -12,9 +12,7 @@ from discord import app_commands
 from discord.ext import commands
 
 from ..data import Passage, SearchResults, VerseRange, get_book_data, get_books_for_mask
-from ..db import Session
-from ..db.bible import BibleVersion, GuildPref, UserPref
-from ..erasmus import Erasmus
+from ..db import BibleVersion, GuildPref, Session, UserPref
 from ..exceptions import (
     BibleNotSupportedError,
     BookNotInVersionError,
@@ -36,6 +34,7 @@ from ..utils import AutoCompleter, send_passage
 if TYPE_CHECKING:
     from typing_extensions import Self
 
+    from ..erasmus import Erasmus
     from ..l10n import Localizer, MessageLocalizer
     from ..types import Bible as _Bible
 
@@ -203,7 +202,7 @@ Example:
     {prefix}{command} faith hope'''
 
 
-class BibleBase(Cog[Erasmus]):
+class BibleBase(Cog['Erasmus']):
     service_manager: ServiceManager
     localizer: Localizer
 
