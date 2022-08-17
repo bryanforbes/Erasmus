@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import Iterable, Iterator, Sequence
-from typing import Any, Final, cast
-from typing_extensions import Self
+from typing import TYPE_CHECKING, Any, Final, cast
 
 import discord
 from asyncpg.exceptions import UniqueViolationError
@@ -29,12 +28,16 @@ from ..exceptions import (
     ServiceNotSupportedError,
     ServiceSearchTimeout,
 )
-from ..l10n import Localizer, MessageLocalizer
 from ..page_source import AsyncCallback, AsyncPageSource, FieldPageSource, Pages
 from ..service_manager import ServiceManager
-from ..types import Bible as _Bible
 from ..ui_pages import UIPages
 from ..utils import AutoCompleter, send_passage
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
+
+    from ..l10n import Localizer, MessageLocalizer
+    from ..types import Bible as _Bible
 
 
 def _book_mask_from_books(books: str, /) -> int:
@@ -233,7 +236,7 @@ class BibleBase(Cog[Erasmus]):
             )
             and error.__cause__ is not None
         ):
-            error = cast(Exception, error.__cause__)
+            error = cast('Exception', error.__cause__)
 
         data: dict[str, Any] | None = None
 
@@ -565,7 +568,7 @@ class Bible(BibleBase):
     ) -> None:
         async with Session() as session:
             bible = await BibleVersion.get_by_command(
-                session, cast(str, ctx.invoked_with)
+                session, cast('str', ctx.invoked_with)
             )
 
         async with ctx.typing():
@@ -576,7 +579,7 @@ class Bible(BibleBase):
     ) -> None:
         async with Session() as session:
             bible = await BibleVersion.get_by_command(
-                session, cast(str, ctx.invoked_with)[1:]
+                session, cast('str', ctx.invoked_with)[1:]
             )
 
         await self.__search(ctx, bible, *terms)

@@ -1,21 +1,22 @@
 from __future__ import annotations
 
-from collections.abc import Iterable, Sequence
 from datetime import timedelta
 from typing import TYPE_CHECKING, Any, ClassVar, Literal, get_args
-from typing_extensions import Self
 
 from attrs import define, field, validators
 from babel.dates import format_timedelta
 from fluent.runtime import FluentBundle
-from fluent.runtime.errors import FluentFormatError
 from fluent.runtime.fallback import AbstractResourceLoader, FluentLocalization
-from fluent.runtime.resolver import Pattern, TextElement
 from fluent.runtime.types import FluentType, merge_options
 from pendulum.period import Period
 
 if TYPE_CHECKING:
     from _typeshed import SupportsItems
+    from collections.abc import Iterable, Sequence
+    from typing_extensions import Self
+
+    from fluent.runtime.errors import FluentFormatError
+    from fluent.runtime.resolver import Pattern, TextElement
 
 
 FormatType = Literal['narrow', 'short', 'long']

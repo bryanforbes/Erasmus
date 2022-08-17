@@ -1,22 +1,22 @@
 from __future__ import annotations
 
 from collections import OrderedDict
-from collections.abc import Iterable
 from typing import TYPE_CHECKING, Final, Generic, Protocol, TypeVar, overload
 
 import discord
 from attrs import define, field
 from botus_receptus import utils
 from discord import app_commands
-from discord.ext import commands
-
-from .data import Passage
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable
+
+    from discord.ext import commands
+
+    from .data import Passage
     from .erasmus import Erasmus
 
 _OptionT = TypeVar('_OptionT', bound='Option')
-
 
 _truncation_warning: Final = '**The passage was too long and has been truncated:**\n\n'
 _description_max_length: Final = 4096

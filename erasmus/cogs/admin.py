@@ -5,8 +5,7 @@ import io
 import textwrap
 import traceback
 from contextlib import redirect_stdout
-from typing import Any, Final
-from typing_extensions import Self
+from typing import TYPE_CHECKING, Any, Final
 
 import discord
 from botus_receptus import GroupCog, utils
@@ -16,6 +15,9 @@ from discord.ext import commands
 
 from .. import checks
 from ..erasmus import Erasmus, _extensions as _extension_names
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
 
 _available_extensions: Final = {f'erasmus.cogs.{name}' for name in _extension_names}
 

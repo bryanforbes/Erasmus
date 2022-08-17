@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from collections.abc import AsyncIterator, Sequence
 from dataclasses import dataclass, field
 from enum import Enum
+from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     Boolean,
@@ -19,12 +19,16 @@ from sqlalchemy import (
     select,
     text as _sa_text,
 )
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, relationship
-from sqlalchemy.sql import ColumnElement
 
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from .base import TSVector, mapped
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator, Sequence
+
+    from sqlalchemy.ext.asyncio import AsyncSession
+    from sqlalchemy.sql import ColumnElement
 
 
 def _search_columns(

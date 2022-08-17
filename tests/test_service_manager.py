@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import aiohttp
 import pytest
@@ -10,7 +10,9 @@ import pytest_mock
 from erasmus.data import Passage, SearchResults, VerseRange
 from erasmus.exceptions import ServiceLookupTimeout, ServiceSearchTimeout
 from erasmus.service_manager import ServiceManager
-from erasmus.types import Bible, Service
+
+if TYPE_CHECKING:
+    from erasmus.types import Bible, Service
 
 
 class MockService(object):
@@ -52,7 +54,9 @@ class TestServiceManager(object):
             'ServiceTwo': mocker.Mock(return_value=mocker.sentinel.SERVICE_TWO),
         }
 
-        mocker.patch.dict(cast(Any, 'erasmus.services.__dict__'), services, clear=True)
+        mocker.patch.dict(
+            cast('Any', 'erasmus.services.__dict__'), services, clear=True
+        )
 
         return services
 

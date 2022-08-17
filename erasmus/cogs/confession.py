@@ -2,8 +2,7 @@ from __future__ import annotations
 
 from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
 from re import Match
-from typing import Any, Final, NamedTuple, TypeAlias, cast
-from typing_extensions import Self
+from typing import TYPE_CHECKING, Any, Final, NamedTuple, TypeAlias, cast
 
 import discord
 from attrs import define, field
@@ -33,10 +32,14 @@ from ..db.confession import (
 from ..erasmus import Erasmus
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from ..format import int_to_roman, roman_to_int
-from ..l10n import Localizer, MessageLocalizer
 from ..page_source import EmbedPageSource, ListPageSource
 from ..ui_pages import UIPages
 from ..utils import AutoCompleter
+
+if TYPE_CHECKING:
+    from typing_extensions import Self
+
+    from ..l10n import Localizer, MessageLocalizer
 
 _roman_re: Final = re.group(
     re.between(0, 4, 'M'),
@@ -294,7 +297,7 @@ class ConfessionBase(Cog[Erasmus]):
             )
             and error.__cause__ is not None
         ):
-            error = cast(Exception, error.__cause__)
+            error = cast('Exception', error.__cause__)
 
         match error:
             case InvalidConfessionError():

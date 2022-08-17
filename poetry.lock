@@ -183,7 +183,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "botus-receptus"
-version = "2.0.0dev50"
+version = "2.0.0dev51"
 description = ""
 category = "main"
 optional = false
@@ -213,8 +213,8 @@ uvloop = ["uvloop (>=0.16.0,<0.17.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "fb94ae191146e26925b36a5524b84d1af3034eb1"
-resolved_reference = "fb94ae191146e26925b36a5524b84d1af3034eb1"
+reference = "3a6ec66842b3e2d1cd4cd664461825e6f41f8c97"
+resolved_reference = "3a6ec66842b3e2d1cd4cd664461825e6f41f8c97"
 
 [[package]]
 name = "brotli"
@@ -263,6 +263,14 @@ python-versions = ">=3.6.0"
 unicode_backport = ["unicodedata2"]
 
 [[package]]
+name = "classify-imports"
+version = "4.2.0"
+description = "Utilities for refactoring imports in python-like syntax."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[[package]]
 name = "click"
 version = "8.1.3"
 description = "Composable command line interface toolkit"
@@ -308,7 +316,7 @@ toml = ["tomli"]
 
 [[package]]
 name = "discord.py"
-version = "2.0.0a4518+g1a11c9ee"
+version = "2.0.0a4533+g1c7747fe"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
@@ -323,16 +331,16 @@ cchardet = {version = "*", optional = true, markers = "extra == \"speed\""}
 orjson = {version = ">=3.5.4", optional = true, markers = "extra == \"speed\""}
 
 [package.extras]
-docs = ["sphinx (==4.4.0)", "sphinxcontrib-trio (==1.1.2)", "sphinxcontrib-websupport", "typing-extensions"]
+docs = ["sphinx (==4.4.0)", "sphinxcontrib-trio (==1.1.2)", "sphinxcontrib-websupport", "typing-extensions (>=4.3,<5)"]
 speed = ["orjson (>=3.5.4)", "aiodns (>=1.1)", "brotli", "cchardet"]
-test = ["coverage", "pytest", "pytest-asyncio", "pytest-cov", "pytest-mock"]
+test = ["coverage", "pytest", "pytest-asyncio", "pytest-cov", "pytest-mock", "typing-extensions (>=4.3,<5)"]
 voice = ["PyNaCl (>=1.3.0,<1.6)"]
 
 [package.source]
 type = "git"
 url = "https://github.com/Rapptz/discord.py"
 reference = "master"
-resolved_reference = "1a11c9eeee7a1ba0a427be4ba7d255007a32c3e2"
+resolved_reference = "1c7747fe9d7fed9818019608fbcfb73a3ea50b72"
 
 [[package]]
 name = "distlib"
@@ -403,6 +411,18 @@ python-versions = ">=3.7"
 [package.dependencies]
 flake8 = ">=3.2.1,<6.0.0"
 pyflakes = ">=2.1.1"
+
+[[package]]
+name = "flake8-type-checking"
+version = "2.1.2"
+description = "A flake8 plugin for managing type-checking imports & forward references"
+category = "dev"
+optional = false
+python-versions = ">=3.8,<4.0"
+
+[package.dependencies]
+classify-imports = "*"
+flake8 = "*"
 
 [[package]]
 name = "fluent.runtime"
@@ -1060,7 +1080,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "22bc9fef474152da196b31c00edc84d51b162b4b355bc0111fb318a96278d173"
+content-hash = "32363838e206e41afd737c252111a7a994e0ec6438c15f64b34544cad5a2c4e9"
 
 [metadata.files]
 aiodns = [
@@ -1405,6 +1425,10 @@ cfgv = [
     {file = "cfgv-3.2.0.tar.gz", hash = "sha256:cf22deb93d4bcf92f345a5c3cd39d3d41d6340adc60c78bbbd6588c384fda6a1"},
 ]
 charset-normalizer = []
+classify-imports = [
+    {file = "classify_imports-4.2.0-py2.py3-none-any.whl", hash = "sha256:dbbc264b70a470ed8c6c95976a11dfb8b7f63df44ed1af87328bbed2663f5161"},
+    {file = "classify_imports-4.2.0.tar.gz", hash = "sha256:7abfb7ea92149b29d046bd34573d247ba6e68cc28100c801eba4af17964fc40e"},
+]
 click = [
     {file = "click-8.1.3-py3-none-any.whl", hash = "sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48"},
     {file = "click-8.1.3.tar.gz", hash = "sha256:7682dc8afb30297001674575ea00d1814d808d6a36af415a82bd481d37ba7b8e"},
@@ -1493,6 +1517,10 @@ flake8-bugbear = [
 flake8-pyi = [
     {file = "flake8-pyi-22.8.1.tar.gz", hash = "sha256:6364a6c3e0ad5b7882391b28ebbf19f70e59d84466cb716b2185fabc55ed9855"},
     {file = "flake8_pyi-22.8.1-py37-none-any.whl", hash = "sha256:064c4c19814e15abfb24b602c7f342c91774e562658e32dcd2e587c42d81d0e7"},
+]
+flake8-type-checking = [
+    {file = "flake8-type-checking-2.1.2.tar.gz", hash = "sha256:42bbe98dbb014f413473bfd38a75ece334cad1b5c0a66e96efa03bd69fdfd816"},
+    {file = "flake8_type_checking-2.1.2-py3-none-any.whl", hash = "sha256:aeb55170ec7b77c123c130b95cb7ad32e9c0f1cf882203b24db94a85f24ebb93"},
 ]
 "fluent.runtime" = [
     {file = "fluent.runtime-0.3.1-py2.py3-none-any.whl", hash = "sha256:1da9bf779e6b8cbfb5a71dd59cd7e193f8dc8da318bda7163bc41e9ae15f8574"},

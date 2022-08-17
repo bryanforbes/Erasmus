@@ -3,15 +3,16 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal, overload
 
-import discord
 from attrs import define, field
-from discord import app_commands
 from fluent.runtime import FluentResourceLoader
 
 from .fluent import Localization
 
 if TYPE_CHECKING:
     from _typeshed import SupportsItems
+
+    import discord
+    from discord import app_commands
 
 
 @define

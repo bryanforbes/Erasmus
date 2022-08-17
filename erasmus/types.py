@@ -5,9 +5,9 @@ from typing import TYPE_CHECKING, Protocol, TypeAlias
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import sessionmaker
 
-from .data import Passage, SearchResults, VerseRange
-
 if TYPE_CHECKING:
+    from .data import Passage, SearchResults, VerseRange
+
     AsyncSessionMaker: TypeAlias = sessionmaker[AsyncSession]  # type: ignore
 else:
     AsyncSessionMaker: TypeAlias = sessionmaker

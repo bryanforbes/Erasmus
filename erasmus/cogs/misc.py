@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from importlib import metadata
+from typing import TYPE_CHECKING
 
 import discord
 from botus_receptus import Cog, Embed, utils
@@ -8,7 +9,9 @@ from discord import app_commands
 from discord.ext import commands
 
 from ..erasmus import Erasmus
-from ..l10n import Localizer, MessageLocalizer
+
+if TYPE_CHECKING:
+    from ..l10n import Localizer, MessageLocalizer
 
 
 class InviteView(discord.ui.View):

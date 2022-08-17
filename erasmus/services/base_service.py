@@ -2,14 +2,15 @@ from __future__ import annotations
 
 import logging
 from abc import abstractmethod
-from typing import Any, Final
+from typing import TYPE_CHECKING, Any, Final
 
 import aiohttp
 from attrs import define
 from botus_receptus import re
 
-from ..data import Passage, SearchResults, VerseRange
-from ..types import Bible
+if TYPE_CHECKING:
+    from ..data import Passage, SearchResults, VerseRange
+    from ..types import Bible
 
 _log: Final = logging.getLogger(__name__)
 

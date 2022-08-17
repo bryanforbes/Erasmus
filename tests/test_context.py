@@ -60,9 +60,9 @@ class TestContext(object):
     ) -> None:
         ctx = Context(
             prefix='~',
-            message=cast(discord.Message, MockMessage()),
+            message=cast('discord.Message', MockMessage()),
             view=string_view,
-            bot=cast(Erasmus, object()),
+            bot=cast('Erasmus', object()),
         )
 
         await ctx.send_embed('baz')

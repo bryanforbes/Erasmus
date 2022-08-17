@@ -1,13 +1,16 @@
 from __future__ import annotations
 
-from collections.abc import Callable
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import pytest
 
 from erasmus.data import SearchResults, VerseRange
 from erasmus.exceptions import DoNotUnderstandError
-from erasmus.types import Bible, Service
+
+if TYPE_CHECKING:
+    from collections.abc import Callable
+
+    from erasmus.types import Bible, Service
 
 Galatians_3_10_11 = (
     '**10.** For as many as are of the works of the Law are under a '
@@ -32,7 +35,7 @@ class ServiceTest(object):
         default_abbr: str,
         MockBible: type[Any],
     ) -> Any:
-        name = cast(Callable[..., Any], cast(Any, request).function).__name__
+        name = cast('Callable[..., Any]', cast('Any', request).function).__name__
 
         data: dict[str, Any]
 

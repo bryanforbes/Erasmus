@@ -1,12 +1,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
 from botus_receptus.sqlalchemy import Snowflake
 from sqlalchemy import Boolean, Column
-from sqlalchemy.orm import Mapped
 
 from .base import mapped
+
+if TYPE_CHECKING:
+    from sqlalchemy.orm import Mapped
 
 
 @mapped

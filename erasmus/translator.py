@@ -1,11 +1,13 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
-import discord
 from discord import app_commands
 
-from .l10n import Localizer
+if TYPE_CHECKING:
+    import discord
+
+    from .l10n import Localizer
 
 
 class Translator(app_commands.Translator):

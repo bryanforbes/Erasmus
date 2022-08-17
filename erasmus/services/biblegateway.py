@@ -1,7 +1,7 @@
 # Service for querying biblegateway.com
 from __future__ import annotations
 
-from typing import Final
+from typing import TYPE_CHECKING, Final
 
 from attrs import define, field
 from botus_receptus import re
@@ -10,8 +10,10 @@ from yarl import URL
 
 from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import DoNotUnderstandError
-from ..types import Bible
 from .base_service import BaseService
+
+if TYPE_CHECKING:
+    from ..types import Bible
 
 _total_re: Final = re.compile(
     re.START, re.named_group('total')(re.one_or_more(re.DIGITS))
