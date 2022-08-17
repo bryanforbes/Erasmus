@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import _pytest
 import _pytest.fixtures
@@ -9,9 +9,11 @@ import pytest
 
 from erasmus.data import Passage, VerseRange
 from erasmus.services.biblegateway import BibleGateway
-from erasmus.types import Service
 
 from . import Galatians_3_10_11, Mark_5_1, ServiceTest
+
+if TYPE_CHECKING:
+    from erasmus.types import Service
 
 Psalm_53_1_ESV = (
     '**To the choirmaster: according to Mahalath. A Maskil of David.** **1.** The fool '
@@ -259,7 +261,7 @@ class TestBibleGateway(ServiceTest):
         ids=['Melchizedek', 'faith', 'antidisestablishmentarianism'],
     )
     def search_data(self, request: _pytest.fixtures.SubRequest) -> dict[str, Any]:
-        return cast(dict[str, Any], request.param)
+        return cast('dict[str, Any]', request.param)
 
     @pytest.fixture(
         params=[
@@ -287,7 +289,7 @@ class TestBibleGateway(ServiceTest):
         ids=['Gal 3:10-11 NASB1995', 'Mark 5:1 NASB1995', 'Psalm 53:1 ESV'],
     )
     def passage_data(self, request: _pytest.fixtures.SubRequest) -> dict[str, Any]:
-        return cast(dict[str, Any], request.param)
+        return cast('dict[str, Any]', request.param)
 
     @pytest.fixture
     def default_version(self) -> str:

@@ -1,20 +1,23 @@
 from __future__ import annotations
 
-from collections.abc import Iterator
 from itertools import chain
 from pathlib import Path
-from re import Match, Pattern
-from typing import Any, Final, Literal, TypedDict
-from typing_extensions import Self
+from typing import TYPE_CHECKING, Any, Final, Literal, TypedDict
 
 import discord
 import orjson
 from attrs import define, field
 from botus_receptus import re
-from discord.ext import commands
 from more_itertools import unique_everseen
 
 from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
+
+if TYPE_CHECKING:
+    from collections.abc import Iterator
+    from re import Match, Pattern
+    from typing_extensions import Self
+
+    from discord.ext import commands
 
 
 class BookDict(TypedDict):

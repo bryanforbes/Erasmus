@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Final
+from typing import TYPE_CHECKING, Final
 
 from attrs import define, field
 from botus_receptus import re
@@ -11,8 +11,10 @@ from yarl import URL
 
 from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import DoNotUnderstandError
-from ..types import Bible
 from .base_service import BaseService
+
+if TYPE_CHECKING:
+    from ..types import Bible
 
 _number_re: Final = re.compile(re.capture(re.one_or_more(re.DIGITS), re.DOT))
 _book_map: Final[dict[str, str]] = {

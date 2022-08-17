@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from typing import Any, cast
-from unittest.mock import AsyncMock
+from typing import TYPE_CHECKING, Any, cast
 
 import discord
 import pytest
@@ -11,6 +10,9 @@ from discord import app_commands
 
 from erasmus import utils
 from erasmus.data import Passage, VerseRange
+
+if TYPE_CHECKING:
+    from unittest.mock import AsyncMock
 
 
 @pytest.fixture
@@ -213,6 +215,6 @@ class TestAutoCompleter:
         completer.add(option1)
         completer.add(option2)
 
-        assert (await completer.autocomplete(cast(Any, object()), ' Testing ')) == [
+        assert (await completer.autocomplete(cast('Any', object()), ' Testing ')) == [
             app_commands.Choice(name='Testing 1', value='1'),
         ]

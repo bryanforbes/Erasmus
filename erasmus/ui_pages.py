@@ -1,15 +1,18 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
-from typing import Any, Final, Generic, TypeVar, cast
-from typing_extensions import Self
+from typing import TYPE_CHECKING, Any, Final, Generic, TypeVar, cast
 
 import discord
 from botus_receptus import utils
 from discord.ext import commands
 
-from .erasmus import Erasmus
 from .page_source import BasePages, PageSource
+
+if TYPE_CHECKING:
+    from collections.abc import Sequence
+    from typing_extensions import Self
+
+    from .erasmus import Erasmus
 
 T = TypeVar('T')
 
@@ -18,9 +21,9 @@ _MISSING: Final = discord.utils.MISSING
 
 
 class PagesModal(discord.ui.Modal, title='Skip to page…'):
-    pages: 'UIPages[Any]'
+    pages: UIPages[Any]
 
-    def __init__(self, pages: 'UIPages[Any]', *, timeout: float | None = None) -> None:
+    def __init__(self, pages: UIPages[Any], *, timeout: float | None = None) -> None:
         super().__init__(timeout=timeout)
 
         self.pages = pages
@@ -88,7 +91,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         return {
             author_id,
             client.owner_id,
-            cast(discord.ClientUser, client.user).id,
+            cast('discord.ClientUser', client.user).id,
         }
 
     async def is_same_user(self, interaction: discord.Interaction, /) -> bool:

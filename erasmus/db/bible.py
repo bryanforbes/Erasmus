@@ -1,9 +1,8 @@
 from __future__ import annotations
 
-from collections.abc import AsyncIterator
 from dataclasses import dataclass, field
+from typing import TYPE_CHECKING
 
-import discord
 from botus_receptus.sqlalchemy import Snowflake
 from sqlalchemy import (
     BigInteger,
@@ -18,11 +17,16 @@ from sqlalchemy import (
     select,
 )
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import Mapped, relationship
 
 from ..exceptions import InvalidVersionError
 from .base import mapped
+
+if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
+
+    import discord
+    from sqlalchemy.ext.asyncio import AsyncSession
 
 
 @mapped

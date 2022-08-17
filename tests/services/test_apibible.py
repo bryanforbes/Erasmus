@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import _pytest
 import _pytest.fixtures
@@ -11,9 +11,11 @@ import toml
 
 from erasmus.data import Passage, VerseRange
 from erasmus.services.apibible import ApiBible
-from erasmus.types import Service
 
 from . import ServiceTest
+
+if TYPE_CHECKING:
+    from erasmus.types import Service
 
 
 class TestApiBible(ServiceTest):
@@ -250,7 +252,7 @@ class TestApiBible(ServiceTest):
         ids=['Melchizedek', 'faith', 'antidisestablishmentarianism'],
     )
     def search_data(self, request: _pytest.fixtures.SubRequest) -> dict[str, Any]:
-        return cast(dict[str, Any], request.param)
+        return cast('dict[str, Any]', request.param)
 
     @pytest.fixture(
         params=[
@@ -279,7 +281,7 @@ class TestApiBible(ServiceTest):
         ids=['Gal 3:10-11 KJV', 'Mark 5:1 KJV'],
     )
     def passage_data(self, request: _pytest.fixtures.SubRequest) -> dict[str, Any]:
-        return cast(dict[str, Any], request.param)
+        return cast('dict[str, Any]', request.param)
 
     @pytest.fixture(scope="class")
     def config(self) -> dict[str, str]:
@@ -287,7 +289,7 @@ class TestApiBible(ServiceTest):
             config = toml.load(
                 str(Path(__file__).resolve().parent.parent.parent / 'config.toml')
             )
-            return cast(dict[str, str], config['bot']['services']['ApiBible'])
+            return cast('dict[str, str]', config['bot']['services']['ApiBible'])
         except FileNotFoundError:
             return {'api_key': ''}
 

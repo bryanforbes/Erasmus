@@ -1,9 +1,13 @@
 from __future__ import annotations
 
+from typing import TYPE_CHECKING
+
 import pytest
 
 from erasmus.cogs.misc import Misc
-from erasmus.erasmus import Erasmus
+
+if TYPE_CHECKING:
+    from erasmus.erasmus import Erasmus
 
 
 class MockBot(object):

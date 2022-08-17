@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import Any, Final, TypedDict
+from typing import TYPE_CHECKING, Any, Final, TypedDict
 
 import aiohttp
 import orjson
@@ -13,8 +13,10 @@ from yarl import URL
 from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import BookNotInVersionError, DoNotUnderstandError
 from ..json import get
-from ..types import Bible
 from .base_service import BaseService
+
+if TYPE_CHECKING:
+    from ..types import Bible
 
 _img_re: Final = re.compile('src="', re.named_group('src')('[^"]+'), '"')
 

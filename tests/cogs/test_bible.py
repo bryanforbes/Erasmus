@@ -1,14 +1,18 @@
 from __future__ import annotations
 
-from typing import Any
-from unittest.mock import Mock
+from typing import TYPE_CHECKING, Any
 
 import pytest
-from pytest_mock import MockerFixture
 
 from erasmus.cogs.bible import Bible, BibleAppCommands
-from erasmus.erasmus import Erasmus
-from erasmus.service_manager import ServiceManager
+
+if TYPE_CHECKING:
+    from unittest.mock import Mock
+
+    from pytest_mock import MockerFixture
+
+    from erasmus.erasmus import Erasmus
+    from erasmus.service_manager import ServiceManager
 
 
 class MockBot(object):

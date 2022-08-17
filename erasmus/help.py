@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from collections.abc import Mapping
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
 from discord.ext import commands
 from more_itertools import unique_everseen
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
 
 
 class HelpCommand(commands.DefaultHelpCommand):

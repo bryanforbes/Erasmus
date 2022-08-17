@@ -4,7 +4,6 @@ import logging
 import sys
 from collections.abc import Iterable
 from typing import TYPE_CHECKING, Any, Final, cast
-from typing_extensions import Self
 
 import discord
 import discord.http
@@ -14,18 +13,21 @@ from botus_receptus import exceptions, formatting, sqlalchemy as sa, topgg, util
 from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReason
 from discord import app_commands
 from discord.ext import commands
-from pendulum.period import Period
 from sqlalchemy import select
 
 from erasmus.db.misc import Notification
 
-from .config import Config
 from .db import Session
 from .exceptions import ErasmusError
 from .help import HelpCommand
 
 if TYPE_CHECKING:
+    from typing_extensions import Self
+
+    from pendulum.period import Period
+
     from .cogs.bible import Bible
+    from .config import Config
 
 _log: Final = logging.getLogger(__name__)
 
@@ -137,7 +139,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             await self.on_command_error(ctx, exc)
 
     @property
-    def bible_cog(self) -> 'Bible':
+    def bible_cog(self) -> Bible:
         return self.cogs['Bible']  # type: ignore
 
     async def setup_hook(self) -> None:
@@ -147,7 +149,8 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             self.slash_command_notifications = {
                 notification.id
                 for notification in cast(
-                    Iterable[Notification], await session.scalars(select(Notification))
+                    'Iterable[Notification]',
+                    await session.scalars(select(Notification)),
                 )
             }
 
@@ -223,7 +226,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             )
             and exception.__cause__ is not None
         ):
-            exception = cast(commands.CommandError, exception.__cause__)
+            exception = cast('commands.CommandError', exception.__cause__)
 
         if isinstance(exception, ErasmusError):
             # All of these are handled in their respective cogs
@@ -306,7 +309,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             )
             and error.__cause__ is not None
         ):
-            error = cast(Exception, error.__cause__)
+            error = cast('Exception', error.__cause__)
 
         if isinstance(error, ErasmusError):
             # All of these are handled in their respective cogs
