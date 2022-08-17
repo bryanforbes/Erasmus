@@ -134,7 +134,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     async def __before_invoke(self, ctx: commands.Context[Self], /) -> None:
         try:
             await self._application_command_notice(ctx)
-        except Exception as exc:
+        except Exception as exc:  # noqa: PIE786
             await self.on_command_error(ctx, exc)
 
     @property
@@ -156,7 +156,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         for extension in _extensions:
             try:
                 await self.load_extension(f'erasmus.cogs.{extension}')
-            except Exception:
+            except commands.ExtensionError:
                 _log.exception('Failed to load extension %s.', extension)
 
         await self.sync_app_commands()

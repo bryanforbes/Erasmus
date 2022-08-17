@@ -261,7 +261,7 @@ class VerseRange:
             while match:
                 try:
                     ranges.append(cls.from_match(match))
-                except Exception as exc:
+                except Exception as exc:  # noqa: PIE786
                     ranges.append(exc)
 
                 match = lookup_pattern.search(string, match.end())

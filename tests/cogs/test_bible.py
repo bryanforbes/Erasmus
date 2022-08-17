@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import pytest
 
@@ -13,11 +13,6 @@ if TYPE_CHECKING:
 
     from erasmus.erasmus import Erasmus
     from erasmus.service_manager import ServiceManager
-
-
-class MockBot:
-    config: Any = {}
-    session: Any = {}
 
 
 class MockServiceManager:

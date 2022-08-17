@@ -12,10 +12,8 @@ if TYPE_CHECKING:
 class HelpCommand(commands.DefaultHelpCommand):
     def _get_command_title(self, command: commands.Command[Any, ..., Any], /) -> str:
         return ', '.join(
-            map(
-                lambda s: f'{self.context.clean_prefix}{s}',
-                [command.name] + list(command.aliases),
-            )
+            f'{self.context.clean_prefix}{s}'
+            for s in ([command.name] + list(command.aliases))
         )
 
     async def send_bot_help(

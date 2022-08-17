@@ -398,6 +398,48 @@ flake8 = ">=3.0.0"
 dev = ["coverage", "hypothesis", "hypothesmith (>=0.2)", "pre-commit"]
 
 [[package]]
+name = "flake8-comprehensions"
+version = "3.10.0"
+description = "A flake8 plugin to help you write better list/set/dict comprehensions."
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+flake8 = ">=3.0,<3.2.0 || >3.2.0"
+
+[[package]]
+name = "flake8-implicit-str-concat"
+version = "0.3.0"
+description = "Flake8 plugin to encourage correct string literal concatenation."
+category = "dev"
+optional = false
+python-versions = "~=3.7"
+
+[package.dependencies]
+attrs = ">=19.3"
+more-itertools = ">=8.0.2,<9"
+
+[[package]]
+name = "flake8-pie"
+version = "0.16.0"
+description = "A flake8 extension that implements misc. lints"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+
+[package.dependencies]
+typing_extensions = "*"
+
+[[package]]
+name = "flake8-plugin-utils"
+version = "1.3.2"
+description = "The package provides base classes and utils for flake8 plugin writing"
+category = "dev"
+optional = false
+python-versions = ">=3.6,<4.0"
+
+[[package]]
 name = "flake8-pyi"
 version = "22.8.1"
 description = "A plugin for flake8 to enable linting .pyi files."
@@ -408,6 +450,17 @@ python-versions = ">=3.7"
 [package.dependencies]
 flake8 = ">=3.2.1,<6.0.0"
 pyflakes = ">=2.1.1"
+
+[[package]]
+name = "flake8-pytest-style"
+version = "1.6.0"
+description = "A flake8 plugin checking common style issues or inconsistencies with pytest-based tests."
+category = "dev"
+optional = false
+python-versions = ">=3.6.2,<4.0.0"
+
+[package.dependencies]
+flake8-plugin-utils = ">=1.3.2,<2.0.0"
 
 [[package]]
 name = "flake8-simplify"
@@ -1058,7 +1111,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "a8dfc567dadb71d8fec09702be1387ab31f0add20071be34bc4984d83576caaf"
+content-hash = "b103a50d250d4a2f34135b2a71e797d0671291ae015292699220bf35a3cc6271"
 
 [metadata.files]
 aiodns = [
@@ -1492,9 +1545,29 @@ flake8-bugbear = [
     {file = "flake8-bugbear-22.7.1.tar.gz", hash = "sha256:e450976a07e4f9d6c043d4f72b17ec1baf717fe37f7997009c8ae58064f88305"},
     {file = "flake8_bugbear-22.7.1-py3-none-any.whl", hash = "sha256:db5d7a831ef4412a224b26c708967ff816818cabae415e76b8c58df156c4b8e5"},
 ]
+flake8-comprehensions = [
+    {file = "flake8-comprehensions-3.10.0.tar.gz", hash = "sha256:181158f7e7aa26a63a0a38e6017cef28c6adee71278ce56ce11f6ec9c4905058"},
+    {file = "flake8_comprehensions-3.10.0-py3-none-any.whl", hash = "sha256:dad454fd3d525039121e98fa1dd90c46bc138708196a4ebbc949ad3c859adedb"},
+]
+flake8-implicit-str-concat = [
+    {file = "flake8_implicit_str_concat-0.3.0-py2.py3-none-any.whl", hash = "sha256:a89ebc50567790fb7b83e032ed4014ae0db70e35d89e269c3323967135023600"},
+    {file = "flake8_implicit_str_concat-0.3.0.tar.gz", hash = "sha256:c0e6ae227e46238e4c87844091f8072892caeccd3bb266576a7d449eadbf53a0"},
+]
+flake8-pie = [
+    {file = "flake8-pie-0.16.0.tar.gz", hash = "sha256:b8dcb7b92706fa33d05d92a4b3e49b7a9fd3f0041849166275b646ba50e515ba"},
+    {file = "flake8_pie-0.16.0-py3-none-any.whl", hash = "sha256:24cd7849b0eee22e2328b9e9d2a1dea40013b0a3106864bbadd06a4b05dbb71f"},
+]
+flake8-plugin-utils = [
+    {file = "flake8-plugin-utils-1.3.2.tar.gz", hash = "sha256:20fa2a8ca2decac50116edb42e6af0a1253ef639ad79941249b840531889c65a"},
+    {file = "flake8_plugin_utils-1.3.2-py3-none-any.whl", hash = "sha256:1fe43e3e9acf3a7c0f6b88f5338cad37044d2f156c43cb6b080b5f9da8a76f06"},
+]
 flake8-pyi = [
     {file = "flake8-pyi-22.8.1.tar.gz", hash = "sha256:6364a6c3e0ad5b7882391b28ebbf19f70e59d84466cb716b2185fabc55ed9855"},
     {file = "flake8_pyi-22.8.1-py37-none-any.whl", hash = "sha256:064c4c19814e15abfb24b602c7f342c91774e562658e32dcd2e587c42d81d0e7"},
+]
+flake8-pytest-style = [
+    {file = "flake8-pytest-style-1.6.0.tar.gz", hash = "sha256:c1175713e9e11b78cd1a035ed0bca0d1e41d09c4af329a952750b61d4194ddac"},
+    {file = "flake8_pytest_style-1.6.0-py3-none-any.whl", hash = "sha256:5fedb371a950e9fe0e0e6bfc854be7d99151271208f34cd2cc517681ece27780"},
 ]
 flake8-simplify = [
     {file = "flake8_simplify-0.19.3-py3-none-any.whl", hash = "sha256:1057320e9312d75849541fee822900d27bcad05b2405edc84713affee635629e"},

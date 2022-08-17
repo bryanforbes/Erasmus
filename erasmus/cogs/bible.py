@@ -224,7 +224,7 @@ class BibleBase(Cog[Erasmus]):
                 else:
                     command = '/version set'
 
-                message = 'You must first set your default version with ' f'`{command}`'
+                message = f'You must first set your default version with `{command}`'
             case InvalidVersionError():
                 if isinstance(ctx, commands.Context):
                     command = f'{ctx.prefix}versions'
@@ -242,7 +242,7 @@ class BibleBase(Cog[Erasmus]):
                     version_text = f'{error.bible.name}'
 
                 message = (
-                    f'The service configured for ' f'`{version_text}` is not supported'
+                    f'The service configured for `{version_text}` is not supported'
                 )
             case ServiceLookupTimeout():
                 message = (
@@ -334,7 +334,7 @@ class Bible(BibleBase):
                             bible = user_bible
 
                         await self.__lookup(ctx, bible, verse_range)
-        except Exception as exc:
+        except Exception as exc:  # noqa: PIE786
             await self.cog_command_error(ctx, exc)
             await self.bot.on_command_error(ctx, exc)
 
@@ -524,7 +524,7 @@ class Bible(BibleBase):
                 version.service_version = service_version
         except ErasmusError:
             raise
-        except Exception:
+        except Exception:  # noqa: PIE786
             await utils.send_embed_error(ctx, description=f'Error updating `{command}`')
         else:
             await utils.send_embed(ctx, description=f'Updated `{command}`')
@@ -800,7 +800,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
                 {
                     'name': 'Books',
                     'value': '\n'.join(
-                        [name for name in _book_names_from_book_mask(existing.books)]
+                        list(_book_names_from_book_mask(existing.books))
                     ),
                     'inline': False,
                 },
@@ -939,7 +939,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
 
         except ErasmusError:
             raise
-        except Exception:
+        except Exception:  # noqa: PIE786
             await utils.send_embed_error(
                 interaction, description=f'Error updating `{version}`'
             )
@@ -1090,7 +1090,7 @@ class BibleAppCommands(BibleBase):
                 {
                     'name': 'Books',
                     'value': '\n'.join(
-                        [name for name in _book_names_from_book_mask(existing.books)]
+                        list(_book_names_from_book_mask(existing.books))
                     ),
                     'inline': False,
                 },
