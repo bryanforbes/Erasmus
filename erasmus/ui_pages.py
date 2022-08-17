@@ -14,6 +14,7 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
     from .erasmus import Erasmus
+    from .types import Coroutine
 
 T = TypeVar('T')
 
@@ -107,7 +108,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
 
         return True
 
-    async def send_initial_message(
+    def send_initial_message(
         self,
         content: str = _MISSING,
         *,
@@ -121,8 +122,8 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         nonce: int = _MISSING,
         allowed_mentions: discord.AllowedMentions = _MISSING,
         view: discord.ui.View = _MISSING,
-    ) -> discord.Message:
-        return await utils.send(  # type: ignore
+    ) -> Coroutine[discord.Message]:
+        return utils.send(  # type: ignore
             self.ctx,
             content=content,
             tts=tts,

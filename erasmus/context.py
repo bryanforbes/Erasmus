@@ -7,10 +7,9 @@ from botus_receptus import EmbedContext
 
 if TYPE_CHECKING:
     from .erasmus import Erasmus  # noqa: F401
+    from .types import Coroutine
 
 
 class Context(EmbedContext['Erasmus']):
-    async def send_error(self, text: str, /) -> discord.Message:
-        return await self.send_embed(
-            text, color=discord.Color.red(), reference=self.message
-        )
+    def send_error(self, text: str, /) -> Coroutine[discord.Message]:
+        return self.send_embed(text, color=discord.Color.red(), reference=self.message)

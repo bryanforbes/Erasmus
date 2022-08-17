@@ -8,9 +8,11 @@ if TYPE_CHECKING:
     import discord
     from discord.ext import commands
 
+    from .types import Coroutine
+
 
 def is_owner():
-    async def predicate(interaction: discord.Interaction, /) -> bool:
-        return await cast('commands.Bot', interaction.client).is_owner(interaction.user)
+    def predicate(interaction: discord.Interaction, /) -> Coroutine[bool]:
+        return cast('commands.Bot', interaction.client).is_owner(interaction.user)
 
     return app_commands.check(predicate)

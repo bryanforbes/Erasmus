@@ -1,10 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol, TypeAlias
+from typing import TYPE_CHECKING, Any, Protocol, TypeAlias, TypeVar
 
 from sqlalchemy.orm import sessionmaker
 
 if TYPE_CHECKING:
+    from collections.abc import Coroutine as _Coroutine
+
     from sqlalchemy.ext.asyncio import AsyncSession
 
     from .data import Passage, SearchResults, VerseRange
@@ -12,6 +14,10 @@ if TYPE_CHECKING:
     AsyncSessionMaker: TypeAlias = sessionmaker['AsyncSession']  # type: ignore
 else:
     AsyncSessionMaker: TypeAlias = sessionmaker
+
+
+_T_co = TypeVar('_T_co', covariant=True)
+Coroutine: TypeAlias = '_Coroutine[Any, Any, _T_co]'
 
 
 class Bible(Protocol):
