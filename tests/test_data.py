@@ -8,7 +8,7 @@ from erasmus.data import Passage, SearchResults, Verse, VerseRange
 from erasmus.exceptions import ReferenceNotUnderstoodError
 
 
-class TestVerse(object):
+class TestVerse:
     def test_init(self) -> None:
         verse = Verse(1, 1)
 
@@ -33,7 +33,7 @@ class TestVerse(object):
         assert verse != expected
 
 
-class TestVerseRange(object):
+class TestVerseRange:
     def test_init(self) -> None:
         verse_start = Verse(1, 1)
         verse_end = Verse(1, 4)
@@ -275,7 +275,7 @@ class TestVerseRange(object):
             VerseRange.from_string(passage_str)
 
 
-class TestPassage(object):
+class TestPassage:
     def test_init(self) -> None:
         text = 'foo bar baz'
         range = VerseRange('Exodus', Verse(1, 1))
@@ -336,7 +336,7 @@ class TestPassage(object):
         assert passage != expected
 
 
-class TestSearchResults(object):
+class TestSearchResults:
     def test_init(self) -> None:
         verses = [Passage('asdf', VerseRange('Exodus', Verse(1, 1)))]
         results = SearchResults(verses, 20)

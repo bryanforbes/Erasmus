@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import datetime  # noqa: F401
 import io
 import textwrap
 import traceback
@@ -224,7 +223,7 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
         try:
             await interaction.response.defer()
             await self.bot.sync_app_commands()
-        except Exception as e:
+        except Exception as e:  # noqa: PIE786
             await utils.send_embed_error(
                 interaction, description=f'{e.__class__.__name__}: {e}'
             )

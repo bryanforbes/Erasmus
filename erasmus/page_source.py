@@ -182,7 +182,7 @@ class AsyncPageSource(PageSourceBase[Sequence[T]]):
         items = await _iterable_to_list(initial_page)
 
         if len(items) == self._total:
-            for page in range(0, self._max_pages):
+            for page in range(self._max_pages):
                 page_start = page * self.per_page
                 self._cache[page] = items[page_start : page_start * self.per_page]
         else:

@@ -10,11 +10,11 @@ if TYPE_CHECKING:
     from erasmus.erasmus import Erasmus
 
 
-class MockBot(object):
+class MockBot:
     localizer = object()
 
 
-class TestConfession(object):
+class TestConfession:
     @pytest.fixture
     def mock_bot(self) -> MockBot:
         return MockBot()

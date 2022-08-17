@@ -15,7 +15,7 @@ if TYPE_CHECKING:
     from erasmus.service_manager import ServiceManager
 
 
-class MockServiceManager(object):
+class MockServiceManager:
     ...
 
 
@@ -33,7 +33,7 @@ def mock_service_manager() -> MockServiceManager:
     return MockServiceManager()
 
 
-class TestBible(object):
+class TestBible:
     def test_instantiate(
         self,
         mock_bot: Erasmus,
@@ -43,7 +43,7 @@ class TestBible(object):
         assert cog is not None
 
 
-class TestBibleAppCommands(object):
+class TestBibleAppCommands:
     def test_instantiate(
         self,
         mock_bot: Erasmus,

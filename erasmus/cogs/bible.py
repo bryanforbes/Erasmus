@@ -368,7 +368,7 @@ class Bible(BibleBase):
                             bible = user_bible
 
                         await self.__lookup(ctx, bible, verse_range)
-        except Exception as exc:
+        except Exception as exc:  # noqa: PIE786
             await self.cog_command_error(ctx, exc)
             await self.bot.on_command_error(ctx, exc)
 
@@ -558,7 +558,7 @@ class Bible(BibleBase):
                 version.service_version = service_version
         except ErasmusError:
             raise
-        except Exception:
+        except Exception:  # noqa: PIE786
             await utils.send_embed_error(ctx, description=f'Error updating `{command}`')
         else:
             await utils.send_embed(ctx, description=f'Updated `{command}`')
@@ -855,7 +855,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
                 {
                     'name': 'Books',
                     'value': '\n'.join(
-                        [name for name in _book_names_from_book_mask(existing.books)]
+                        list(_book_names_from_book_mask(existing.books))
                     ),
                     'inline': False,
                 },
@@ -994,7 +994,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
 
         except ErasmusError:
             raise
-        except Exception:
+        except Exception:  # noqa: PIE786
             await utils.send_embed_error(
                 interaction, description=f'Error updating `{version}`'
             )
@@ -1160,7 +1160,7 @@ class BibleAppCommands(BibleBase):
                         'bibleinfo.books', locale=interaction.locale
                     ),
                     'value': '\n'.join(
-                        [name for name in _book_names_from_book_mask(existing.books)]
+                        list(_book_names_from_book_mask(existing.books))
                     ),
                     'inline': False,
                 },

@@ -26,7 +26,7 @@ Mark_5_1 = (
 )
 
 
-class ServiceTest(object):
+class ServiceTest:
     @pytest.fixture
     def bible(
         self,

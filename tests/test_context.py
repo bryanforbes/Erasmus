@@ -13,7 +13,7 @@ from erasmus.context import Context
 from erasmus.erasmus import Erasmus
 
 
-class MockUser(object):
+class MockUser:
     __slots__ = ('bot', 'id', 'mention')
 
     def __init__(
@@ -28,7 +28,7 @@ class MockUser(object):
         self.mention = mention
 
 
-class MockMessage(object):
+class MockMessage:
     __slots__ = ('author', 'content', 'channel', '_state')
     channel: discord.abc.GuildChannel | None
 
@@ -41,7 +41,7 @@ class MockMessage(object):
         self._state = None
 
 
-class TestContext(object):
+class TestContext:
     @pytest.fixture
     def mock_context_send(
         self, mocker: pytest_mock.MockFixture

@@ -24,7 +24,7 @@ _log: Final = logging.getLogger(__name__)
 
 
 @define
-class ServiceManager(object):
+class ServiceManager:
     service_map: dict[str, Service] = field(factory=dict)
     timeout: float = 10
 

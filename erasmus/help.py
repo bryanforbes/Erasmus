@@ -12,10 +12,8 @@ if TYPE_CHECKING:
 class HelpCommand(commands.DefaultHelpCommand):
     def _get_command_title(self, command: commands.Command[Any, ..., Any], /) -> str:
         return ', '.join(
-            map(
-                lambda s: f'{self.context.clean_prefix}{s}',
-                [command.name] + list(command.aliases),
-            )
+            f'{self.context.clean_prefix}{s}'
+            for s in ([command.name] + list(command.aliases))
         )
 
     async def send_bot_help(
@@ -91,8 +89,7 @@ class HelpCommand(commands.DefaultHelpCommand):
     async def command_callback(
         self, ctx: commands.Context[Any], /, *, command: str | None = None
     ) -> Any:
-        if command:
-            if command[0] == ctx.prefix:
-                command = command[1:]
+        if command and command[0] == ctx.prefix:
+            command = command[1:]
 
         return await super().command_callback(ctx, command=command)

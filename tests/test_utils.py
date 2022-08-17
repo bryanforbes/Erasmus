@@ -196,12 +196,7 @@ class TestAutoCompleter:
             app_commands.Choice(name='Testing 1', value='1'),
         ]
 
-        completer.update(
-            map(
-                lambda x: MockOption(name=f'Testing {x}', key=str(x)),
-                range(50),
-            )
-        )
+        completer.update(MockOption(name=f'Testing {x}', key=str(x)) for x in range(50))
 
         choices = completer.generate_choices(' Testing ')
         assert len(choices) == 25
