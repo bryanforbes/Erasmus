@@ -28,25 +28,26 @@ def mock_bot(mocker: MockerFixture) -> Mock:
     return bot
 
 
-class TestBible:
-    @pytest.fixture
-    def mock_service_manager(self) -> MockServiceManager:
-        return MockServiceManager()
+@pytest.fixture
+def mock_service_manager() -> MockServiceManager:
+    return MockServiceManager()
 
+
+class TestBible:
     def test_instantiate(
-        self, mock_bot: Erasmus, mock_service_manager: ServiceManager
+        self,
+        mock_bot: Erasmus,
+        mock_service_manager: ServiceManager,
     ) -> None:
         cog = Bible(mock_bot, mock_service_manager)
         assert cog is not None
 
 
 class TestBibleAppCommands:
-    @pytest.fixture
-    def mock_service_manager(self) -> MockServiceManager:
-        return MockServiceManager()
-
     def test_instantiate(
-        self, mock_bot: Erasmus, mock_service_manager: ServiceManager
+        self,
+        mock_bot: Erasmus,
+        mock_service_manager: ServiceManager,
     ) -> None:
         cog = BibleAppCommands(mock_bot, mock_service_manager)
         assert cog is not None

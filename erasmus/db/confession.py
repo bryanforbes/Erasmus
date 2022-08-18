@@ -310,7 +310,7 @@ class Confession:
         ).first()
 
         if result is None:
-            raise NoSectionError(self.name, f'{chapter}.{paragraph}', 'paragraph')
+            raise NoSectionError(self.name, f'{chapter}.{paragraph}', self.type)
 
         return result
 
@@ -361,7 +361,7 @@ class Confession:
         ).first()
 
         if question is None:
-            raise NoSectionError(self.name, f'{question_number}', 'question')
+            raise NoSectionError(self.name, f'{question_number}', self.type)
 
         return question
 
@@ -411,7 +411,7 @@ class Confession:
         ).first()
 
         if article is None:
-            raise NoSectionError(self.name, f'{article_number}', 'article')
+            raise NoSectionError(self.name, f'{article_number}', self.type)
 
         return article
 

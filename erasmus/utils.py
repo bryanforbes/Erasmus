@@ -17,7 +17,6 @@ if TYPE_CHECKING:
     from .data import Passage
     from .erasmus import Erasmus
 
-
 _OptionT = TypeVar('_OptionT', bound='Option')
 
 _truncation_warning: Final = '**The passage was too long and has been truncated:**\n\n'

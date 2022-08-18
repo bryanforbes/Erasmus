@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class MockBot:
-    ...
+    localizer = object()
 
 
 class TestMisc:

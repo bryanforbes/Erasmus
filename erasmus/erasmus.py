@@ -18,12 +18,12 @@ from sqlalchemy import select
 from .db import Notification, Session
 from .exceptions import ErasmusError
 from .help import HelpCommand
+from .l10n import Localizer
+from .translator import Translator
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
     from typing_extensions import Self
-
-    from pendulum.period import Period
 
     from .cogs.bible import Bible
     from .config import Config
@@ -52,6 +52,7 @@ discord.http._set_api_version(9)
 class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     config: Config
     slash_command_notifications: set[int]
+    localizer: Localizer
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         kwargs['help_command'] = HelpCommand(
@@ -68,6 +69,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         kwargs['allowed_mentions'] = discord.AllowedMentions.none()
 
         self.slash_command_notifications = set()
+        self.localizer = Localizer(discord.Locale.american_english)
 
         super().__init__(config, *args, sessionmaker=Session, **kwargs)
 
@@ -157,6 +159,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             except commands.ExtensionError:
                 _log.exception('Failed to load extension %s.', extension)
 
+        await self.tree.set_translator(Translator(self.localizer))
         await self.sync_app_commands()
 
         _log.info(
@@ -229,45 +232,44 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             # All of these are handled in their respective cogs
             return
 
-        message = 'An error occurred'
+        message_id = 'generic-error'
+        data: dict[str, Any] | None = None
 
         match exception:
             case commands.NoPrivateMessage():
-                message = 'This command is not available in private messages'
+                message_id = 'no-private-message'
             case commands.CommandOnCooldown():
-                message = ''
                 if exception.type == commands.BucketType.user:
-                    message = 'You have used this command too many times.'
+                    message_id = 'user-on-cooldown'
                 elif exception.type == commands.BucketType.channel:
-                    message = (
-                        f'`{context.prefix}{context.invoked_with}` has been used too '
-                        'many times in this channel.'
-                    )
-                retry_period: Period = (
-                    pendulum.now()
-                    .add(seconds=int(exception.retry_after))
-                    .diff()  # type: ignore
+                    message_id = 'command-on-cooldown'
+                else:
+                    message_id = 'cooldown-error'
+
+                retry_period = (
+                    pendulum.now().add(seconds=int(exception.retry_after)).diff()
                 )
-                message = (
-                    f'{message} You can retry again in '
-                    f'{retry_period.in_words()}.'  # type: ignore
-                )
+                data = {'period': retry_period}
             case commands.MissingPermissions():
-                message = 'You do not have the correct permissions to run this command'
+                message_id = 'missing-permissions'
             case exceptions.OnlyDirectMessage():
-                message = 'This command is only available in private messages'
+                message_id = 'only-private-messages'
             case commands.MissingRequiredArgument():
-                message = f'The required argument `{exception.param.name}` is missing'
+                message_id = 'missing-required-argument'
+                data = {'name': exception.param.name}
             case CannotPaginate():
                 match exception.reason:
                     case CannotPaginateReason.embed_links:
-                        message = 'I need the "Embed Links" permission'
+                        permission = 'embed-links'
                     case CannotPaginateReason.send_messages:
-                        message = 'I need the "Send Messages" permission'
+                        permission = 'send-messages'
                     case CannotPaginateReason.add_reactions:
-                        message = 'I need the "Add Reactions" permission'
+                        permission = 'add-reactions'
                     case CannotPaginateReason.read_message_history:
-                        message = 'I need the "Read Message History" permission'
+                        permission = 'read-message-history'
+
+                message_id = 'cannot-paginate'
+                data = {'permission': permission}
             case _:
                 qualified_name = (
                     'NO COMMAND'
@@ -291,7 +293,17 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
 
         if not isinstance(exception, discord.errors.Forbidden):
             await utils.send_embed_error(
-                context, description=formatting.escape(message, mass_mentions=True)
+                context,
+                description=formatting.escape(
+                    self.localizer.format(
+                        message_id,
+                        data=data,
+                        locale=context.interaction.locale
+                        if context.interaction is not None
+                        else None,
+                    ),
+                    mass_mentions=True,
+                ),
             )
 
     async def on_app_command_error(
@@ -312,33 +324,32 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             # All of these are handled in their respective cogs
             return
 
-        message = 'An error occurred'
+        message_id = 'generic-error'
+        data: dict[str, Any] | None = None
 
         match error:
             case commands.NoPrivateMessage():
-                message = 'This command is not available in private messages'
+                message_id = 'no-private-message'
             case app_commands.CommandOnCooldown():
-                retry_period: Period = (
-                    pendulum.now()
-                    .add(seconds=int(error.retry_after))
-                    .diff()  # type: ignore
-                )
-                message = (
-                    'You have used this command too many times. You can retry again in '
-                    f'{retry_period.in_words()}.'  # type: ignore
-                )
+                retry_period = pendulum.now().add(seconds=int(error.retry_after)).diff()
+
+                message_id = 'user-on-cooldown'
+                data = {'period': retry_period}
             case app_commands.MissingPermissions():
-                message = 'You do not have permission to run this command'
+                message_id = 'missing-permissions'
             case CannotPaginate():
                 match error.reason:
                     case CannotPaginateReason.embed_links:
-                        message = 'I need the "Embed Links" permission'
+                        permission = 'embed-links'
                     case CannotPaginateReason.send_messages:
-                        message = 'I need the "Send Messages" permission'
+                        permission = 'send-messages'
                     case CannotPaginateReason.add_reactions:
-                        message = 'I need the "Add Reactions" permission'
+                        permission = 'add-reactions'
                     case CannotPaginateReason.read_message_history:
-                        message = 'I need the "Read Message History" permission'
+                        permission = 'read-message-history'
+
+                message_id = 'cannot-paginate'
+                data = {'permission': permission}
             case _:
                 qualified_name = (
                     'NO INTERACTION'
@@ -362,7 +373,12 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
                 )
 
         if not isinstance(error, discord.errors.Forbidden):
-            await utils.send_embed_error(interaction, description=message)
+            await utils.send_embed_error(
+                interaction,
+                description=self.localizer.format(
+                    message_id, data=data, locale=interaction.locale
+                ),
+            )
 
 
 __all__: Final = ('Erasmus',)

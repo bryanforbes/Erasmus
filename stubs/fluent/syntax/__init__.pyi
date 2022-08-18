@@ -1,0 +1,6 @@
+from .ast import Resource
+from .parser import FluentParser as FluentParser
+from .serializer import FluentSerializer as FluentSerializer
+
+def parse(source: str, *, with_spans: bool = ...) -> Resource: ...
+def serialize(resource: Resource, *, with_junk: bool = ...) -> str: ...

@@ -235,13 +235,13 @@ class EmbedPageSource(PageSourceBase[T]):
         if page is not None:
             maximum = self.get_max_pages()
             if maximum is not None and maximum > 1:
-                text = (
-                    f'Page {pages.current_page + 1}/{maximum} '
-                    f'({self.get_total()} entries)'
-                )
+                text = self.format_footer_text(pages, maximum)
                 self.embed.set_footer(text=text)
 
         return self.embed
+
+    def format_footer_text(self, pages: Pages[T], max_pages: int) -> str:
+        return f'Page {pages.current_page + 1}/{max_pages} ({self.get_total()} entries)'
 
     @abstractmethod
     async def set_page_text(self, page: T | None, /) -> None:

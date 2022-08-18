@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Final, NamedTuple, TypeAlias, cast
 
+import discord
 from attrs import define, field
 from botus_receptus import Cog, re, utils
 from botus_receptus.cog import GroupCog
@@ -36,10 +37,10 @@ if TYPE_CHECKING:
     from re import Match
     from typing_extensions import Self
 
-    import discord
     from sqlalchemy.ext.asyncio import AsyncSession
 
     from ..erasmus import Erasmus
+    from ..l10n import Localizer, MessageLocalizer
 
 _roman_re: Final = re.group(
     re.between(0, 4, 'M'),
@@ -227,6 +228,7 @@ class ConfessionSearchSource(
     ListPageSource[ConfessionSearchResult],
 ):
     entry_text_string: str
+    localizer: MessageLocalizer
 
     def __init__(
         self,
@@ -235,8 +237,11 @@ class ConfessionSearchSource(
         *,
         per_page: int,
         type: ConfessionTypeEnum,
+        localizer: MessageLocalizer,
     ) -> None:
         super().__init__(entries, per_page=per_page)
+
+        self.localizer = localizer
 
         if type == ConfessionTypeEnum.CHAPTERS:
             self.entry_text_string = (
@@ -256,7 +261,7 @@ class ConfessionSearchSource(
         /,
     ) -> None:
         if entries is None:
-            self.embed.description = 'I found 0 results'
+            self.embed.description = self.localizer.format('no-results')
             return
 
         lines: list[str] = []
@@ -268,6 +273,13 @@ class ConfessionSearchSource(
 
 
 class ConfessionBase(Cog['Erasmus']):
+    localizer: Localizer
+
+    def __init__(self, bot: Erasmus, /) -> None:
+        self.localizer = bot.localizer
+
+        super().__init__(bot)
+
     async def cog_command_error(
         self,
         ctx: commands.Context[Any] | discord.Interaction,
@@ -290,20 +302,38 @@ class ConfessionBase(Cog['Erasmus']):
 
         match error:
             case InvalidConfessionError():
-                message = f'`{error.confession}` is not a valid confession.'
+                message_id = 'invalid-confession'
+                data = {'confession': error.confession}
             case NoSectionError():
-                message = (
-                    f'`{error.confession}` does not have '
-                    f'{"an" if error.section_type == "article" else "a"} '
-                    f'{error.section_type} `{error.section}`'
-                )
+                message_id = 'no-section'
+                data = {
+                    'confession': error.confession,
+                    'section_type': error.section_type,
+                    'section': error.section,
+                }
             case NoSectionsError():
-                message = f'`{error.confession}` has no {error.section_type}'
+                message_id = 'no-sections'
+                data = {
+                    'confession': error.confession,
+                    'section_type': error.section_type,
+                }
             case _:
                 return
 
         await utils.send_embed_error(
-            ctx, description=escape(message, mass_mentions=True)
+            ctx,
+            description=escape(
+                self.localizer.format(
+                    message_id,
+                    data=data,
+                    locale=ctx.locale
+                    if isinstance(ctx, discord.Interaction)
+                    else (
+                        ctx.interaction.locale if ctx.interaction is not None else None
+                    ),
+                ),
+                mass_mentions=True,
+            ),
         )
 
     cog_app_command_error = cog_command_error  # type: ignore
@@ -458,8 +488,11 @@ class Confession(ConfessionBase):
         async with Session() as session:
             results = [result async for result in search_func(session, terms)]
 
-        source = ConfessionSearchSource(results, type=confession.type, per_page=20)
-        pages = UIPages(ctx, source)
+        localizer = self.localizer.for_message('confess__search')
+        source = ConfessionSearchSource(
+            results, type=confession.type, per_page=20, localizer=localizer
+        )
+        pages = UIPages(ctx, source, localizer=localizer)
         await pages.start()
 
 
@@ -639,12 +672,14 @@ class ConfessionAppCommands(
                 result async for result in search_func(session, terms.split(' '))
             ]
 
+        localizer = self.localizer.for_message('confess__search', interaction.locale)
         search_source = ConfessionSearchSource(
             results,
             type=confession.type,
             per_page=20,
+            localizer=localizer,
         )
-        pages = UIPages(interaction, search_source)
+        pages = UIPages(interaction, search_source, localizer=localizer)
         await pages.start()
 
     @app_commands.command()
@@ -667,10 +702,7 @@ class ConfessionAppCommands(
             confession = await ConfessionRecord.get_by_command(session, source)
 
         if (match := _reference_res[confession.type].match(section)) is None:
-            await utils.send_embed_error(
-                interaction, description='Section is not formatted correctly'
-            )
-            return
+            raise NoSectionError(confession.name, section, confession.type)
 
         await self._show_citation(interaction, confession, match)
 

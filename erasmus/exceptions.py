@@ -3,6 +3,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 if TYPE_CHECKING:
+    from enum import Enum
+
     from .data import VerseRange
     from .types import Bible
 
@@ -96,11 +98,12 @@ class InvalidConfessionError(ErasmusError):
 class NoSectionError(ErasmusError):
     confession: str
     section: str
+    section_type: str
 
-    def __init__(self, confession: str, section: str, section_type: str, /) -> None:
+    def __init__(self, confession: str, section: str, section_type: Enum, /) -> None:
         self.confession = confession
         self.section = section
-        self.section_type = section_type
+        self.section_type = section_type.value
 
 
 class NoSectionsError(ErasmusError):

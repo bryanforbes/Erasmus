@@ -10,10 +10,18 @@ from discord.ext import commands
 
 if TYPE_CHECKING:
     from ..erasmus import Erasmus
+    from ..l10n import Localizer, MessageLocalizer
 
 
 class InviteView(discord.ui.View):
-    def __init__(self, application_id: int, /, *, timeout: float | None = 180) -> None:
+    def __init__(
+        self,
+        application_id: int,
+        localizer: MessageLocalizer,
+        /,
+        *,
+        timeout: float | None = 180,
+    ) -> None:
         super().__init__(timeout=timeout)
 
         perms = discord.Permissions(
@@ -28,19 +36,27 @@ class InviteView(discord.ui.View):
 
         self.add_item(
             discord.ui.Button(
-                label='Invite Erasmus',
+                label=localizer.format('invite'),
                 url=discord.utils.oauth_url(application_id, permissions=perms),
             )
         )
 
 
 class AboutView(InviteView):
-    def __init__(self, application_id: int, /, *, timeout: float | None = 180) -> None:
-        super().__init__(application_id, timeout=timeout)
+    def __init__(
+        self,
+        application_id: int,
+        localizer: MessageLocalizer,
+        /,
+        *,
+        timeout: float | None = 180,
+    ) -> None:
+        super().__init__(application_id, localizer, timeout=timeout)
 
         self.add_item(
             discord.ui.Button(
-                label='Official Support Server', url='https://discord.gg/ncZtNu5zgs'
+                label=localizer.format('support-server'),
+                url='https://discord.gg/ncZtNu5zgs',
             )
         )
 
@@ -51,7 +67,7 @@ class AboutView(InviteView):
         )
 
 
-def get_about_embed(bot: Erasmus) -> Embed:
+def get_about_embed(bot: Erasmus, localizer: MessageLocalizer) -> Embed:
     channel_count = 0
     guild_count = 0
 
@@ -67,12 +83,16 @@ def get_about_embed(bot: Erasmus) -> Embed:
     dpy_version = metadata.distribution('discord.py').version
 
     return Embed(
+        title=localizer.format('title'),
         fields=[
-            {'name': 'Guilds', 'value': str(guild_count)},
-            {'name': 'Channels', 'value': str(channel_count)},
+            {'name': localizer.format('guilds'), 'value': str(guild_count)},
+            {
+                'name': localizer.format('channels'),
+                'value': str(channel_count),
+            },
         ],
         footer={
-            'text': f'Made with discord.py v{dpy_version}',
+            'text': localizer.format('footer', data={'version': dpy_version}),
             'icon_url': 'http://i.imgur.com/5BFecvA.png',
         },
         timestamp=discord.utils.utcnow(),
@@ -80,22 +100,39 @@ def get_about_embed(bot: Erasmus) -> Embed:
 
 
 class Misc(Cog['Erasmus']):
+    localizer: Localizer
+
+    def __init__(self, bot: Erasmus, /) -> None:
+        super().__init__(bot)
+
+        self.localizer = bot.localizer
+
     @commands.hybrid_command()
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
     async def invite(self, ctx: commands.Context[Erasmus], /) -> None:
         '''Get a link to invite Erasmus to your server'''
 
-        await utils.send(ctx, view=InviteView(self.bot.application_id))
+        localizer = self.localizer.for_message(
+            'about',
+            locale=ctx.interaction.locale if ctx.interaction is not None else None,
+        )
+
+        await utils.send(ctx, view=InviteView(self.bot.application_id, localizer))
 
     @commands.hybrid_command()
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.user)
     async def about(self, ctx: commands.Context[Erasmus], /) -> None:
         '''Get info about Erasmus'''
 
+        localizer = self.localizer.for_message(
+            'about',
+            locale=ctx.interaction.locale if ctx.interaction is not None else None,
+        )
+
         await utils.send(
             ctx,
-            embeds=[get_about_embed(self.bot)],
-            view=AboutView(self.bot.application_id),
+            embeds=[get_about_embed(self.bot, localizer)],
+            view=AboutView(self.bot.application_id, localizer),
         )
 
     @app_commands.command()
