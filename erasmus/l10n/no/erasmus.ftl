@@ -3,10 +3,10 @@
 generic-error = Noe gikk galt
 no-private-message = Denne handlingen er ikke tilgjengelig i private meldinger
 only-private-message = Denne handlingen er bare tilgjengelig i private meldinger
-missing-required-argument = Du mangler  `{ $name }`
+missing-required-argument = Du mangler `{ $name }`
 cooldown-error = Du kan prøve igjen om { PERIOD($period) }.
 user-on-cooldown =
-    Du har brukt denne kommandoen for mange ganger. Du kan prøve igjen om { PERIOD($period) }.
+    Du har utført denne handlingen for mange ganger. Du kan prøve igjen om { PERIOD($period) }.
 command-on-cooldown =
     `{ $command }` har blitt brukt for mange ganger i denne kanalen. Du kan prøve igjen om { PERIOD($period) }.
 missing-permissions = Du har ikke tilgang til denne handlingen
@@ -45,31 +45,31 @@ serverprefs__unsetdefault = unsetdefault
 prefs = prefs
     .description = Preferences commands
 
-prefs__setdefault = settstandard
-    .description = Still inn din standard bibelversjon
-    .PARAM--version--name = versjon
-    .PARAM--version--description = Bibelversjon
-    .response = Versjon satt til `{ $version }`
+prefs__setdefault = setdefault
+    .description = Set your default { -bible-version }
+    .PARAM--version--name = version
+    .PARAM--version--description = { -bible-version }
+    .response = Default version set to `{ $version }`
 
 prefs__unsetdefault = unsetdefault
     .description = Unset your default { -bible-version }
     .deleted = Default version unset
     .already-deleted = Default version already unset
 
-verse = vers
-    .description = Slå opp et vers
+verse = verse
+    .description = Søk etter et vers
     .PARAM--reference--name = referanse
-    .PARAM--reference--description = En versreferanse
+    .PARAM--reference--description = Vers referanse
     .PARAM--version--name = versjon
-    .PARAM--version--description = Versjonen der du skal slå opp verset
+    .PARAM--version--description = Hvilke versjon som har verset
     .PARAM--only_me--name = bare_meg
-    .PARAM--only_me--description = Om du skal vise verset til deg selv eller alle
+    .PARAM--only_me--description = Velg om du vil vise verset til bare deg selv, eller alle
 
 search = search
-    .description = Search in the Bible
-    .PARAM--terms--name = terms
-    .PARAM--terms--description = Terms to search for
-    .PARAM--version--name = version
+    .description = Søk i Bibelen
+    .PARAM--terms--name = uttrykk
+    .PARAM--terms--description = Utrykk du vil søke etter
+    .PARAM--version--name = versjon
     .PARAM--version--description = The { -bible-version } to search within
     .title = Search results from { $bible_name }
     .no-results = I found 0 results
@@ -103,8 +103,8 @@ do-not-understand = I do not understand that request
 reference-not-understood = I do not understand the reference "{ $reference }"
 bible-not-supported = `{ $version }` is not supported
 bible-not-supported-context = `{ $prefix }{ $version }` is not supported
-no-user-version = You must first set your default version with `/version set`
-invalid-version = `{ $version }` is not a valid version. Check `/bibles` for valid versions
+no-user-version = You must first set your default version with `{ $command }`
+invalid-version = `{ $version }` is not a valid version. Check `{ $command }` for valid versions
 service-not-supported = The service configured for `{ $name }` is not supported
 service-lookup-timeout = The request timed out looking up { $verses } in { $name }
 service-search-timeout = The request timed out searching for { $terms } in { $name }
@@ -162,26 +162,26 @@ no-sections =
 
 ## Commands
 
-creed = trosbekjennelse
-    .description = Historiske trosbekjennelser
+creed = creed
+    .description = Historic creeds
 
-creed__apostles = apostolske
-    .description = Den apostolske trosbekjennelse
+creed__apostles = apostles
+    .description = The Apostles' Creed
 
-creed__athanasian = athanasiske
-    .description = Den athanasiske trosbekjennelsen
+creed__athanasian = athanasian
+    .description = The Athanasian Creed
 
-creed__chalcedon = kalsedon
-    .description = Den kalsedonske definisjonen
+creed__chalcedon = chalcedon
+    .description = The Chalcedonian Definition
 
-creed__nicene = nikanske
-    .description = Den nikanske trosbekjennelsen
+creed__nicene = nicene
+    .description = The Nicene Creed
 
-creed__nicene325 = nikanske325
-    .description = Den nikanske trosbekjennelse (325 e.Kr.)
+creed__nicene325 = nicene325
+    .description = The Nicene Creed (325 AD)
 
-creed__nicene381 = nikanske381
-    .description = Den nikanske trosbekjennelse (381 e.Kr.)
+creed__nicene381 = nicene381
+    .description = The Nicene Creed (381 AD)
 
 # Misc Cog
 
@@ -199,5 +199,5 @@ about = about
     .invite = Invite Erasmus
     .support-server = Official Support Server
 
-notice = varsel
-    .description = Vis varsel om avvikling av tekstkommandoer
+notice = notice
+    .description = Display text-command deprecation notice

@@ -49,7 +49,7 @@ prefs__setdefault = setdefault
     .description = Set your default { -bible-version }
     .PARAM--version--name = version
     .PARAM--version--description = { -bible-version }
-    .response = Version set to `{ $version }`
+    .response = Default version set to `{ $version }`
 
 prefs__unsetdefault = unsetdefault
     .description = Unset your default { -bible-version }
