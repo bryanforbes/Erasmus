@@ -6,8 +6,9 @@ import discord
 from botus_receptus import EmbedContext
 
 if TYPE_CHECKING:
+    from botus_receptus.types import Coroutine
+
     from .erasmus import Erasmus  # noqa: F401
-    from .types import Coroutine
 
 
 class Context(EmbedContext['Erasmus']):

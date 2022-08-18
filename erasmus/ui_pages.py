@@ -13,8 +13,9 @@ if TYPE_CHECKING:
     from collections.abc import Sequence
     from typing_extensions import Self
 
+    from botus_receptus.types import Coroutine
+
     from .erasmus import Erasmus
-    from .types import Coroutine
 
 T = TypeVar('T')
 

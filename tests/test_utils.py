@@ -20,6 +20,7 @@ def mock_send_embed(mocker: pytest_mock.MockerFixture) -> AsyncMock:
     return mocker.patch(
         'botus_receptus.utils.send_embed',
         return_value=mocker.sentinel.send_embed_return,
+        new_callable=mocker.AsyncMock,
     )
 
 

@@ -34,8 +34,10 @@ if TYPE_CHECKING:
     from collections.abc import Iterable, Iterator, Sequence
     from typing_extensions import Self
 
+    from botus_receptus.types import Coroutine
+
     from ..erasmus import Erasmus
-    from ..types import Bible as _Bible, Coroutine
+    from ..types import Bible as _Bible
 
 
 def _book_mask_from_books(books: str, /) -> int:

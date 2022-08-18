@@ -15,9 +15,7 @@ from discord import app_commands
 from discord.ext import commands
 from sqlalchemy import select
 
-from erasmus.db.misc import Notification
-
-from .db import Session
+from .db import Notification, Session
 from .exceptions import ErasmusError
 from .help import HelpCommand
 

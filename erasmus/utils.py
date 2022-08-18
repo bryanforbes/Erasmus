@@ -11,11 +11,11 @@ from discord import app_commands
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
+    from botus_receptus.types import Coroutine
     from discord.ext import commands
 
     from .data import Passage
     from .erasmus import Erasmus
-    from .types import Coroutine
 
 
 _OptionT = TypeVar('_OptionT', bound='Option')

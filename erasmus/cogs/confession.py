@@ -219,7 +219,7 @@ Examples:
 '''
 
 
-ConfessionSearchResult: TypeAlias = 'Paragraph | Article | Question'
+ConfessionSearchResult: TypeAlias = Paragraph | Article | Question
 
 
 class ConfessionSearchSource(

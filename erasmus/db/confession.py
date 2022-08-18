@@ -27,10 +27,9 @@ from .base import TSVector, mapped
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Sequence
 
+    from botus_receptus.types import Coroutine
     from sqlalchemy.ext.asyncio import AsyncSession
     from sqlalchemy.sql import ColumnElement
-
-    from ..types import Coroutine
 
 
 def _search_columns(
