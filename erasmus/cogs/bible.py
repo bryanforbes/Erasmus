@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-from collections.abc import Iterable, Iterator, Sequence
 from typing import TYPE_CHECKING, Any, Final, cast
 
 import discord
@@ -32,7 +31,10 @@ from ..ui_pages import UIPages
 from ..utils import AutoCompleter, send_passage
 
 if TYPE_CHECKING:
+    from collections.abc import Iterable, Iterator, Sequence
     from typing_extensions import Self
+
+    from botus_receptus.types import Coroutine
 
     from ..erasmus import Erasmus
     from ..l10n import Localizer, MessageLocalizer
@@ -70,7 +72,7 @@ def _book_names_from_book_mask(book_mask: int, /) -> Iterator[str]:
                 yield book['name']
 
 
-class SearchPageSource(FieldPageSource[Sequence[Passage]], AsyncPageSource[Passage]):
+class SearchPageSource(FieldPageSource['Sequence[Passage]'], AsyncPageSource[Passage]):
     bible: _Bible
     localizer: MessageLocalizer
 
@@ -610,8 +612,8 @@ class Bible(BibleBase):
             )
             return
 
-        async def search(*, per_page: int, page_number: int) -> SearchResults:
-            return await self.service_manager.search(
+        def search(*, per_page: int, page_number: int) -> Coroutine[SearchResults]:
+            return self.service_manager.search(
                 bible, list(terms), limit=per_page, offset=page_number
             )
 
@@ -1099,8 +1101,8 @@ class BibleAppCommands(BibleBase):
                     session, interaction.user, interaction.guild
                 )
 
-        async def search(*, per_page: int, page_number: int) -> SearchResults:
-            return await self.service_manager.search(
+        def search(*, per_page: int, page_number: int) -> Coroutine[SearchResults]:
+            return self.service_manager.search(
                 bible, terms.split(' '), limit=per_page, offset=page_number
             )
 

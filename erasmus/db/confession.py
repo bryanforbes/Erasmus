@@ -27,6 +27,7 @@ from .base import TSVector, mapped
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Sequence
 
+    from botus_receptus.types import Coroutine
     from sqlalchemy.ext.asyncio import AsyncSession
     from sqlalchemy.sql import ColumnElement
 
@@ -340,8 +341,8 @@ class Confession:
         async for question in result:
             yield question
 
-    async def get_question_count(self, session: AsyncSession, /) -> int:
-        return await session.scalar(
+    def get_question_count(self, session: AsyncSession, /) -> Coroutine[int]:
+        return session.scalar(
             select([func.count(Question.id)]).where(Question.confess_id == self.id)
         )
 

@@ -11,6 +11,7 @@ from discord import app_commands
 if TYPE_CHECKING:
     from collections.abc import Iterable
 
+    from botus_receptus.types import Coroutine
     from discord.ext import commands
 
     from .data import Passage
@@ -48,13 +49,13 @@ async def send_passage(
     ...
 
 
-async def send_passage(
+def send_passage(
     ctx_or_intx: commands.Context[Erasmus] | discord.Interaction,
     passage: Passage,
     /,
     ephemeral: bool = discord.utils.MISSING,
-) -> discord.Message:
-    return await utils.send_embed(
+) -> Coroutine[discord.Message]:
+    return utils.send_embed(
         ctx_or_intx,
         description=_get_passage_text(passage),
         footer={'text': passage.citation},
