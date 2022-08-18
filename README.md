@@ -56,7 +56,7 @@ While Erasmus uses message content to determine when it should execute a command
 
 ## Setup
 
-Ensure that [Poetry](https://poetry.eustace.io/) is installed
+Ensure that [Poetry](https://https://python-poetry.org//) is [installed](https://python-poetry.org/docs/#installation)
 
 ### Running
 
