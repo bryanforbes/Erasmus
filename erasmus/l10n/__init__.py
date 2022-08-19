@@ -15,6 +15,22 @@ if TYPE_CHECKING:
     from discord import app_commands
 
 
+# These need to be mapped because pontoon uses the full code rather than the two-letter
+# code that Discord uses
+_fluent_locale_map = {
+    'no': 'nb-NO',
+    'hi': 'hi-IN',
+}
+
+
+def _get_fluent_locale(locale: discord.Locale) -> str:
+    result = str(locale)
+    if result in _fluent_locale_map:
+        return _fluent_locale_map[result]
+    else:
+        return str(locale)
+
+
 @define
 class Localizer:
     default_locale: discord.Locale
@@ -28,10 +44,10 @@ class Localizer:
         self._l10n_map = {}
 
     def _create_l10n(self, locale: discord.Locale) -> Localization:
-        locales = [str(locale)]
+        locales = [_get_fluent_locale(locale)]
 
         if locale != self.default_locale:
-            locales.append(str(self.default_locale))
+            locales.append(_get_fluent_locale(self.default_locale))
 
         return Localization(locales, ['erasmus.ftl'], self._loader)
 
