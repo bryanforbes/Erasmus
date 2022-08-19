@@ -27,6 +27,18 @@ cannot-paginate =
     }
 serverprefs = { "" }
     .description = Server instillinger
+serverprefs__unsetdefault = fjernstandard
+    .description = Fjern standard versjonen for denne serveren
+    .deleted = Versjonen som blir brukt på serveren har blitt slettet
+    .already-deleted = Versjonen som blir brukt på serveren har allerede blitt slettet
+verse = vers
+    .description = Søk etter et vers
+    .PARAM--reference--name = referanse
+    .PARAM--reference--description = Vers referanse
+    .PARAM--version--name = versjon
+    .PARAM--version--description = Hvilke versjon som har verset
+    .PARAM--only_me--name = bare_meg
+    .PARAM--only_me--description = Velg om du vil vise verset til bare deg selv, eller alle
 
 ## Errors
 
@@ -51,3 +63,5 @@ serverprefs = { "" }
 
 ## Commands
 
+notice = varsel
+    .description = Vis text-kommando
