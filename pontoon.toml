@@ -1,6 +1,6 @@
 basepath = "."
+locales = ["nb-NO"]
 
 [[paths]]
-  reference = "erasmus/l10n/en-US/erasmus.ftl"
-  l10n = "erasmus/l10n/{locale}/erasmus.ftl"
-  locales = ["nb-NO"]
+  reference = "erasmus/l10n/en-US/*.ftl"
+  l10n = "erasmus/l10n/{locale}/*.ftl"
