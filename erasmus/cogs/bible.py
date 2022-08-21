@@ -696,11 +696,19 @@ class _BibleOption:
 class ServiceAutoCompleter(app_commands.Transformer):
     service_manager: ServiceManager
 
-    async def transform(self, interaction: discord.Interaction, value: str) -> str:
+    async def transform(  # pyright: ignore [reportIncompatibleMethodOverride]
+        self,
+        itx: discord.Interaction,
+        value: str,
+        /,
+    ) -> str:
         return value
 
-    async def autocomplete(  # type: ignore
-        self, interaction: discord.Interaction, value: str
+    async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
+        self,
+        itx: discord.Interaction,
+        value: str,
+        /,
     ) -> list[app_commands.Choice[str]]:
         return [
             app_commands.Choice(name=service_name, value=service_name)
@@ -727,26 +735,26 @@ class ServerPreferencesGroup(
     )
     async def setdefault(
         self,
-        interaction: discord.Interaction,
+        itx: discord.Interaction,
         /,
         version: app_commands.Transform[str, _bible_lookup],
     ) -> None:
         '''Set the default version for this server'''
 
-        assert interaction.guild is not None
+        assert itx.guild is not None
 
         version = version.lower()
 
         async with Session.begin() as session:
             existing = await BibleVersion.get_by_command(session, version)
-            await existing.set_for_guild(session, interaction.guild)
+            await existing.set_for_guild(session, itx.guild)
 
         await utils.send_embed(
-            interaction,
+            itx,
             description=self.localizer.format(
                 'serverprefs__setdefault.response',
                 data={'version': version},
-                locale=interaction.locale,
+                locale=itx.locale,
             ),
             ephemeral=True,
         )
@@ -755,24 +763,22 @@ class ServerPreferencesGroup(
     @app_commands.checks.cooldown(
         rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
     )
-    async def unsetdefault(self, interaction: discord.Interaction, /) -> None:
+    async def unsetdefault(self, itx: discord.Interaction, /) -> None:
         '''Unset the default version for this server'''
 
-        assert interaction.guild is not None
+        assert itx.guild is not None
 
         async with Session.begin() as session:
-            if (
-                guild_prefs := await session.get(GuildPref, interaction.guild.id)
-            ) is not None:
+            if (guild_prefs := await session.get(GuildPref, itx.guild.id)) is not None:
                 await session.delete(guild_prefs)
                 attribute_id = 'deleted'
             else:
                 attribute_id = 'already-deleted'
 
         await utils.send_embed(
-            interaction,
+            itx,
             description=self.localizer.format(
-                f'serverprefs__unsetdefault.{attribute_id}', locale=interaction.locale
+                f'serverprefs__unsetdefault.{attribute_id}', locale=itx.locale
             ),
             ephemeral=True,
         )
@@ -786,7 +792,7 @@ class PreferencesGroup(app_commands.Group, name='prefs', description='Preference
     @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
     async def setdefault(
         self,
-        interaction: discord.Interaction,
+        itx: discord.Interaction,
         /,
         version: app_commands.Transform[str, _bible_lookup],
     ) -> None:
@@ -795,24 +801,24 @@ class PreferencesGroup(app_commands.Group, name='prefs', description='Preference
 
         async with Session.begin() as session:
             existing = await BibleVersion.get_by_command(session, version)
-            await existing.set_for_user(session, interaction.user)
+            await existing.set_for_user(session, itx.user)
 
         await utils.send_embed(
-            interaction,
+            itx,
             description=self.localizer.format(
                 'prefs__setdefault.response',
                 data={'version': version},
-                locale=interaction.locale,
+                locale=itx.locale,
             ),
             ephemeral=True,
         )
 
     @app_commands.command()
     @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
-    async def unsetdefault(self, interaction: discord.Interaction, /) -> None:
+    async def unsetdefault(self, itx: discord.Interaction, /) -> None:
         '''Unset your default Bible version'''
         async with Session.begin() as session:
-            user_prefs = await session.get(UserPref, interaction.user.id)
+            user_prefs = await session.get(UserPref, itx.user.id)
 
             if user_prefs is not None:
                 await session.delete(user_prefs)
@@ -821,9 +827,9 @@ class PreferencesGroup(app_commands.Group, name='prefs', description='Preference
                 attribute_id = 'already-deleted'
 
         await utils.send_embed(
-            interaction,
+            itx,
             description=self.localizer.format(
-                f'prefs__unsetdefault.{attribute_id}', locale=interaction.locale
+                f'prefs__unsetdefault.{attribute_id}', locale=itx.locale
             ),
             ephemeral=True,
         )
@@ -837,7 +843,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     @app_commands.describe(version='The Bible version to get information for')
     async def info(
         self,
-        interaction: discord.Interaction,
+        itx: discord.Interaction,
         /,
         version: app_commands.Transform[str, _bible_lookup],
     ) -> None:
@@ -847,7 +853,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
             existing = await BibleVersion.get_by_command(session, version)
 
         await utils.send_embed(
-            interaction,
+            itx,
             title=existing.name,
             fields=[
                 {'name': 'Command', 'value': existing.command},
@@ -877,7 +883,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     )
     async def add(
         self,
-        interaction: discord.Interaction,
+        itx: discord.Interaction,
         /,
         command: str,
         name: str,
@@ -891,7 +897,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
 
         if service not in self.service_manager:
             await utils.send_embed_error(
-                interaction,
+                itx,
                 description=f'`{service}` is not a valid service',
             )
             return
@@ -911,12 +917,12 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
             _bible_lookup.add(_BibleOption.create(bible))
         except UniqueViolationError:
             await utils.send_embed_error(
-                interaction,
+                itx,
                 description=f'`{command}` already exists',
             )
         else:
             await utils.send_embed(
-                interaction,
+                itx,
                 description=f'Added `{command}` as "{name}"',
                 color=discord.Colour.green(),
             )
@@ -925,7 +931,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     @app_commands.describe(version='The version to delete')
     async def delete(
         self,
-        interaction: discord.Interaction,
+        itx: discord.Interaction,
         /,
         version: app_commands.Transform[str, _bible_lookup],
     ) -> None:
@@ -937,7 +943,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
             await session.delete(existing)
 
         await utils.send_embed(
-            interaction,
+            itx,
             description=f'Removed `{existing.command}`',
         )
 
@@ -949,7 +955,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     )
     async def update(
         self,
-        interaction: discord.Interaction,
+        itx: discord.Interaction,
         /,
         version: app_commands.Transform[str, _bible_lookup],
         name: str | None = None,
@@ -963,7 +969,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
 
         if service is not None and service not in self.service_manager:
             await utils.send_embed_error(
-                interaction,
+                itx,
                 description=f'`{service}` is not a valid service',
             ),
             return
@@ -996,11 +1002,9 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         except ErasmusError:
             raise
         except Exception:  # noqa: PIE786
-            await utils.send_embed_error(
-                interaction, description=f'Error updating `{version}`'
-            )
+            await utils.send_embed_error(itx, description=f'Error updating `{version}`')
         else:
-            await utils.send_embed(interaction, description=f'Updated `{version}`')
+            await utils.send_embed(itx, description=f'Updated `{version}`')
 
 
 _shared_cooldown = app_commands.checks.cooldown(
@@ -1047,7 +1051,7 @@ class BibleAppCommands(BibleBase):
     )
     async def verse(
         self,
-        interaction: discord.Interaction,
+        itx: discord.Interaction,
         /,
         reference: VerseRange,
         version: app_commands.Transform[str | None, _bible_lookup] = None,
@@ -1065,16 +1069,14 @@ class BibleAppCommands(BibleBase):
                 bible = await BibleVersion.get_by_abbr(session, reference.version)
 
             if bible is None:
-                bible = await BibleVersion.get_for_user(
-                    session, interaction.user, interaction.guild
-                )
+                bible = await BibleVersion.get_for_user(session, itx.user, itx.guild)
 
         if reference.book_mask == 'DC' or not (bible.books & reference.book_mask):
             raise BookNotInVersionError(reference.book, bible.name)
 
-        await interaction.response.defer(thinking=True, ephemeral=only_me)
+        await itx.response.defer(thinking=True, ephemeral=only_me)
         passage = await self.service_manager.get_passage(bible, reference)
-        await send_passage(interaction, passage, ephemeral=only_me)
+        await send_passage(itx, passage, ephemeral=only_me)
 
     @app_commands.command()
     @_shared_cooldown
@@ -1083,7 +1085,7 @@ class BibleAppCommands(BibleBase):
     )
     async def search(
         self,
-        interaction: discord.Interaction,
+        itx: discord.Interaction,
         /,
         terms: str,
         version: app_commands.Transform[str | None, _bible_lookup] = None,
@@ -1097,29 +1099,27 @@ class BibleAppCommands(BibleBase):
                 bible = await BibleVersion.get_by_abbr(session, version)
 
             if bible is None:
-                bible = await BibleVersion.get_for_user(
-                    session, interaction.user, interaction.guild
-                )
+                bible = await BibleVersion.get_for_user(session, itx.user, itx.guild)
 
         def search(*, per_page: int, page_number: int) -> Coroutine[SearchResults]:
             return self.service_manager.search(
                 bible, terms.split(' '), limit=per_page, offset=page_number
             )
 
-        localizer = self.localizer.for_message('search', interaction.locale)
+        localizer = self.localizer.for_message('search', itx.locale)
         source = SearchPageSource(search, per_page=5, bible=bible, localizer=localizer)
-        view = UIPages(interaction, source, localizer=localizer)
+        view = UIPages(itx, source, localizer=localizer)
         await view.start()
 
     @app_commands.command()
     @app_commands.checks.cooldown(
         rate=2, per=30.0, key=lambda i: (i.guild_id, i.user.id)
     )
-    async def bibles(self, interaction: discord.Interaction, /) -> None:
+    async def bibles(self, itx: discord.Interaction, /) -> None:
         '''List which Bible versions are available for lookup and search'''
 
         lines = [
-            self.localizer.format('bibles.prefix', locale=interaction.locale),
+            self.localizer.format('bibles.prefix', locale=itx.locale),
             '',
         ]
 
@@ -1130,14 +1130,14 @@ class BibleAppCommands(BibleBase):
             ]
 
         output = '\n'.join(lines)
-        await utils.send_embed(interaction, description=output)
+        await utils.send_embed(itx, description=output)
 
     @app_commands.command()
     @_shared_cooldown
     @app_commands.describe(version='The Bible version to get information for')
     async def bibleinfo(
         self,
-        interaction: discord.Interaction,
+        itx: discord.Interaction,
         /,
         version: app_commands.Transform[str, _bible_lookup],
     ) -> None:
@@ -1147,19 +1147,17 @@ class BibleAppCommands(BibleBase):
             existing = await BibleVersion.get_by_command(session, version)
 
         await utils.send_embed(
-            interaction,
+            itx,
             title=existing.name,
             fields=[
                 {
                     'name': self.localizer.format(
-                        'bibleinfo.abbreviation', locale=interaction.locale
+                        'bibleinfo.abbreviation', locale=itx.locale
                     ),
                     'value': existing.command,
                 },
                 {
-                    'name': self.localizer.format(
-                        'bibleinfo.books', locale=interaction.locale
-                    ),
+                    'name': self.localizer.format('bibleinfo.books', locale=itx.locale),
                     'value': '\n'.join(
                         list(_book_names_from_book_mask(existing.books))
                     ),

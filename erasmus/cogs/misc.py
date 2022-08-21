@@ -137,10 +137,10 @@ class Misc(Cog['Erasmus']):
 
     @app_commands.command()
     @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
-    async def notice(self, interaction: discord.Interaction, /) -> None:
+    async def notice(self, itx: discord.Interaction, /) -> None:
         '''Display text-command deprecation notice'''
 
-        await self.bot._application_command_notice(interaction, skip_check=True)
+        await self.bot._application_command_notice(itx, skip_check=True)
 
 
 async def setup(bot: Erasmus, /) -> None:

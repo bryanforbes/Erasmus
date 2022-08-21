@@ -308,7 +308,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
 
     async def on_app_command_error(
         self,
-        interaction: discord.Interaction,
+        itx: discord.Interaction,
         error: Exception,
         /,
     ) -> None:
@@ -353,15 +353,11 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             case _:
                 qualified_name = (
                     'NO INTERACTION'
-                    if interaction.command is None
-                    else interaction.command.qualified_name
+                    if itx.command is None
+                    else itx.command.qualified_name
                 )
-                jump_url = (
-                    'NONE'
-                    if interaction.message is None
-                    else interaction.message.jump_url
-                )
-                invoked_by = f'{interaction.user} ({interaction.user.id})'
+                jump_url = 'NONE' if itx.message is None else itx.message.jump_url
+                invoked_by = f'{itx.user} ({itx.user.id})'
 
                 _log.exception(
                     'Exception occurred in interaction:\n'
@@ -374,9 +370,9 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
 
         if not isinstance(error, discord.errors.Forbidden):
             await utils.send_embed_error(
-                interaction,
+                itx,
                 description=self.localizer.format(
-                    message_id, data=data, locale=interaction.locale
+                    message_id, data=data, locale=itx.locale
                 ),
             )
 

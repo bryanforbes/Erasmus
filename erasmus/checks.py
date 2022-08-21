@@ -15,7 +15,7 @@ _T = TypeVar('_T')
 
 
 def is_owner() -> Callable[[_T], _T]:
-    def predicate(interaction: discord.Interaction, /) -> Coroutine[bool]:
-        return cast('commands.Bot', interaction.client).is_owner(interaction.user)
+    def predicate(itx: discord.Interaction, /) -> Coroutine[bool]:
+        return cast('commands.Bot', itx.client).is_owner(itx.user)
 
     return app_commands.check(predicate)

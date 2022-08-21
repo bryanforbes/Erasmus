@@ -56,16 +56,20 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
         # remove `foo`
         return content.strip('` \n')
 
-    async def on_submit(self, interaction: discord.Interaction) -> None:
+    async def on_submit(  # pyright: ignore [reportIncompatibleMethodOverride]
+        self,
+        itx: discord.Interaction,
+        /,
+    ) -> None:
         assert self.code.value is not None
 
         env: dict[str, Any] = {
-            'bot': interaction.client,
-            'interaction': interaction,
-            'user': interaction.user,
-            'channel': interaction.channel,
-            'guild': interaction.guild,
-            'message': interaction.message,
+            'bot': itx.client,
+            'interaction': itx,
+            'user': itx.user,
+            'channel': itx.channel,
+            'guild': itx.guild,
+            'message': itx.message,
             '_': self._admin._last_result,
         }
 
@@ -93,26 +97,27 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
 
             if ret is None:
                 if value:
-                    await utils.send(interaction, content=f'```py\n{value}\n```')
+                    await utils.send(itx, content=f'```py\n{value}\n```')
             else:
                 self._admin._last_result = ret
-                await utils.send(interaction, content=f'```py\n{value}{ret}\n```')
+                await utils.send(itx, content=f'```py\n{value}{ret}\n```')
 
-    async def on_error(
-        self, interaction: discord.Interaction, error: Exception
+    async def on_error(  # pyright: ignore [reportIncompatibleMethodOverride]
+        self,
+        itx: discord.Interaction,
+        error: Exception,
+        /,
     ) -> None:
         if error.__cause__ is not None and isinstance(error, _EvalError):
             await utils.send(
-                interaction,
+                itx,
                 content=f'```py\n{error.__cause__.__class__.__name__}: {error}\n```',
             )
         elif isinstance(error, _RunError):
-            await utils.send(
-                interaction, content=f'```py\n{error.value}{error.formatted}\n```'
-            )
+            await utils.send(itx, content=f'```py\n{error.value}{error.formatted}\n```')
         else:
             await utils.send(
-                interaction, content=f'```py\n{error.__class__.__name__}: {error}\n```'
+                itx, content=f'```py\n{error.__class__.__name__}: {error}\n```'
             )
 
 
@@ -124,7 +129,10 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
         self._last_result = None
 
     async def __unloaded_modules_autocomplete(
-        self, interaction: discord.Interaction, current: str
+        self,
+        itx: discord.Interaction,
+        current: str,
+        /,
     ) -> list[app_commands.Choice[str]]:
         loaded_extensions = set(self.bot.extensions.keys())
         return [
@@ -138,24 +146,27 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
     @checks.is_owner()
     @app_commands.describe(module='The module to load')
     @app_commands.autocomplete(module=__unloaded_modules_autocomplete)
-    async def load(self, interaction: discord.Interaction, /, module: str) -> None:
+    async def load(self, itx: discord.Interaction, /, module: str) -> None:
         '''Loads an extension module'''
 
         try:
             await self.bot.load_extension(module)
         except commands.ExtensionError as e:
             await utils.send_embed_error(
-                interaction, description=f'{e.__class__.__name__}: {e}'
+                itx, description=f'{e.__class__.__name__}: {e}'
             )
         else:
             await utils.send_embed(
-                interaction,
+                itx,
                 description=f'`{module}` loaded',
                 color=discord.Color.green(),
             )
 
     async def __loaded_modules_autocomplete(
-        self, interaction: discord.Interaction, current: str
+        self,
+        itx: discord.Interaction,
+        current: str,
+        /,
     ) -> list[app_commands.Choice[str]]:
         return [
             app_commands.Choice(name=extension_name, value=extension_name)
@@ -168,24 +179,27 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
     @checks.is_owner()
     @app_commands.describe(module='The module to reload')
     @app_commands.autocomplete(module=__loaded_modules_autocomplete)
-    async def reload(self, interaction: discord.Interaction, /, module: str) -> None:
+    async def reload(self, itx: discord.Interaction, /, module: str) -> None:
         '''Reloads an extension module'''
 
         try:
             await self.bot.reload_extension(module)
         except commands.ExtensionError as e:
             await utils.send_embed_error(
-                interaction, description=f'{e.__class__.__name__}: {e}'
+                itx, description=f'{e.__class__.__name__}: {e}'
             )
         else:
             await utils.send_embed(
-                interaction,
+                itx,
                 description=f'`{module}` reloaded',
                 color=discord.Color.green(),
             )
 
     async def __loaded_modules_without_admin_autocomplete(
-        self, interaction: discord.Interaction, current: str
+        self,
+        itx: discord.Interaction,
+        current: str,
+        /,
     ) -> list[app_commands.Choice[str]]:
         return [
             app_commands.Choice(name=extension_name, value=extension_name)
@@ -199,47 +213,47 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
     @checks.is_owner()
     @app_commands.describe(module='The module to unload')
     @app_commands.autocomplete(module=__loaded_modules_without_admin_autocomplete)
-    async def unload(self, interaction: discord.Interaction, /, module: str) -> None:
+    async def unload(self, itx: discord.Interaction, /, module: str) -> None:
         '''Unloads an extension module'''
 
         try:
             await self.bot.unload_extension(module)
         except commands.ExtensionError as e:
             await utils.send_embed_error(
-                interaction, description=f'{e.__class__.__name__}: {e}'
+                itx, description=f'{e.__class__.__name__}: {e}'
             )
         else:
             await utils.send_embed(
-                interaction,
+                itx,
                 description=f'`{module}` unloaded',
                 color=discord.Color.green(),
             )
 
     @app_commands.command()
     @checks.is_owner()
-    async def sync(self, interaction: discord.Interaction, /) -> None:
+    async def sync(self, itx: discord.Interaction, /) -> None:
         '''Syncs command tree to Discord'''
 
         try:
-            await interaction.response.defer()
+            await itx.response.defer()
             await self.bot.sync_app_commands()
         except Exception as e:  # noqa: PIE786
             await utils.send_embed_error(
-                interaction, description=f'{e.__class__.__name__}: {e}'
+                itx, description=f'{e.__class__.__name__}: {e}'
             )
         else:
             await utils.send_embed(
-                interaction,
+                itx,
                 description='Commands synced',
                 color=discord.Color.green(),
             )
 
     @app_commands.command(name='eval')
     @checks.is_owner()
-    async def _eval(self, interaction: discord.Interaction, /) -> None:
+    async def _eval(self, itx: discord.Interaction, /) -> None:
         '''Evaluates code'''
 
-        await interaction.response.send_modal(_EvalModal(self))
+        await itx.response.send_modal(_EvalModal(self))
 
 
 async def setup(bot: Erasmus, /) -> None:

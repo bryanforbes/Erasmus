@@ -560,17 +560,25 @@ class ConfessionAutoCompleter(AutoCompleter[_ConfessionOption]):
 class SectionAutoCompleter(app_commands.Transformer):
     confession_lookup: ConfessionAutoCompleter
 
-    async def transform(self, interaction: discord.Interaction, value: str) -> str:
+    async def transform(  # pyright: ignore [reportIncompatibleMethodOverride]
+        self,
+        itx: discord.Interaction,
+        value: str,
+        /,
+    ) -> str:
         return value
 
-    async def autocomplete(  # type: ignore
-        self, interaction: discord.Interaction, value: str
+    async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
+        self,
+        itx: discord.Interaction,
+        value: str,
+        /,
     ) -> list[app_commands.Choice[str]]:
         value = value.lower().strip()
 
         if (
-            interaction.data is None
-            or (options := interaction.data.get('options')) is None
+            itx.data is None
+            or (options := itx.data.get('options')) is None
             or len(options) != 1
             or (group_options := options[0].get('options')) is None
             or len(group_options) == 0
@@ -647,7 +655,7 @@ class ConfessionAppCommands(
     )
     async def search(
         self,
-        interaction: discord.Interaction,
+        itx: discord.Interaction,
         /,
         source: app_commands.Transform[str, _confession_lookup],
         terms: str,
@@ -672,14 +680,14 @@ class ConfessionAppCommands(
                 result async for result in search_func(session, terms.split(' '))
             ]
 
-        localizer = self.localizer.for_message('confess__search', interaction.locale)
+        localizer = self.localizer.for_message('confess__search', itx.locale)
         search_source = ConfessionSearchSource(
             results,
             type=confession.type,
             per_page=20,
             localizer=localizer,
         )
-        pages = UIPages(interaction, search_source, localizer=localizer)
+        pages = UIPages(itx, search_source, localizer=localizer)
         await pages.start()
 
     @app_commands.command()
@@ -691,7 +699,7 @@ class ConfessionAppCommands(
     )
     async def cite(
         self,
-        interaction: discord.Interaction,
+        itx: discord.Interaction,
         /,
         source: app_commands.Transform[str, _confession_lookup],
         section: app_commands.Transform[str, _section_lookup],
@@ -704,7 +712,7 @@ class ConfessionAppCommands(
         if (match := _reference_res[confession.type].match(section)) is None:
             raise NoSectionError(confession.name, section, confession.type)
 
-        await self._show_citation(interaction, confession, match)
+        await self._show_citation(itx, confession, match)
 
 
 async def setup(bot: Erasmus, /) -> None:

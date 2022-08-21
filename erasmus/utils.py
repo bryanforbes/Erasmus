@@ -44,19 +44,19 @@ async def send_passage(
 
 @overload
 async def send_passage(
-    interaction: discord.Interaction, passage: Passage, /, *, ephemeral: bool = False
+    itx: discord.Interaction, passage: Passage, /, *, ephemeral: bool = False
 ) -> discord.Message:
     ...
 
 
 def send_passage(
-    ctx_or_intx: commands.Context[Erasmus] | discord.Interaction,
+    ctx_or_itx: commands.Context[Erasmus] | discord.Interaction,
     passage: Passage,
     /,
     ephemeral: bool = discord.utils.MISSING,
 ) -> Coroutine[discord.Message]:
     return utils.send_embed(
-        ctx_or_intx,
+        ctx_or_itx,
         description=_get_passage_text(passage),
         footer={'text': passage.citation},
         ephemeral=ephemeral,
@@ -118,11 +118,19 @@ class AutoCompleter(app_commands.Transformer, Generic[_OptionT]):
             if not current or option.matches(current)
         ][:25]
 
-    async def transform(self, interaction: discord.Interaction, value: str) -> str:
+    async def transform(  # pyright: ignore [reportIncompatibleMethodOverride]
+        self,
+        itx: discord.Interaction,
+        value: str,
+        /,
+    ) -> str:
         return value
 
     async def autocomplete(  # type: ignore
-        self, interaction: discord.Interaction, value: str
+        self,
+        itx: discord.Interaction,
+        value: str,
+        /,
     ) -> list[app_commands.Choice[str]]:
         value = value.lower().strip()
 

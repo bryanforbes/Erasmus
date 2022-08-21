@@ -273,7 +273,7 @@ class VerseRange:
         return cls.from_string(argument)
 
     @classmethod
-    async def transform(cls, interaction: discord.Interaction, value: str) -> Self:
+    async def transform(cls, itx: discord.Interaction, value: str, /) -> Self:
         return cls.from_string_with_version(value)
 
 
