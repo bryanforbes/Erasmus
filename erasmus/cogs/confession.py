@@ -609,7 +609,8 @@ class ConfessionAppCommands(
     group_name='confess',
     group_description='Confessions',
 ):
-    async def cog_load(self) -> None:
+    async def refresh(self) -> None:
+        _confession_lookup.clear()
         async with Session() as session:
             async for confession in ConfessionRecord.get_all(session):
                 format_number = _number_formatters[confession.numbering]
@@ -642,6 +643,9 @@ class ConfessionAppCommands(
                 _confession_lookup.add(
                     _ConfessionOption.create(confession, section_info)
                 )
+
+    async def cog_load(self) -> None:
+        await self.refresh()
 
     async def cog_unload(self) -> None:
         _confession_lookup.clear()

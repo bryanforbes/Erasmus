@@ -1029,7 +1029,7 @@ class BibleAppCommands(BibleBase):
         self.preferences.localizer = self.localizer
         self.server_preferences.localizer = self.localizer
 
-    async def cog_load(self) -> None:
+    async def refresh(self) -> None:
         async with Session() as session:
             _bible_lookup.clear()
             _bible_lookup.update(
@@ -1038,6 +1038,9 @@ class BibleAppCommands(BibleBase):
                     async for version in BibleVersion.get_all(session, ordered=True)
                 ]
             )
+
+    async def cog_load(self) -> None:
+        await self.refresh()
 
     async def cog_unload(self) -> None:
         _bible_lookup.clear()

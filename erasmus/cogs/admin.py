@@ -3,19 +3,19 @@ from __future__ import annotations
 import io
 import textwrap
 import traceback
-from contextlib import redirect_stdout
-from typing import TYPE_CHECKING, Any, Final
+from contextlib import asynccontextmanager, redirect_stdout
+from typing import TYPE_CHECKING, Any, Final, Protocol, runtime_checkable
 
 import discord
 from botus_receptus import GroupCog, utils
 from botus_receptus.app_commands import admin_guild_only
 from discord import app_commands
-from discord.ext import commands
 
 from .. import checks
 from ..erasmus import Erasmus, _extensions as _extension_names
 
 if TYPE_CHECKING:
+    from collections.abc import AsyncIterator
     from typing_extensions import Self
 
 _available_extensions: Final = {f'erasmus.cogs.{name}' for name in _extension_names}
@@ -121,6 +121,31 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
             )
 
 
+@runtime_checkable
+class _Refreshable(Protocol):
+    async def refresh(self) -> None:
+        ...
+
+
+@asynccontextmanager
+async def operation_guard(
+    itx: discord.Interaction,
+    success_message: str,
+    /,
+) -> AsyncIterator[None]:
+    try:
+        await itx.response.defer()
+        yield
+    except Exception as e:  # noqa: PIE786
+        await utils.send_embed_error(itx, description=f'{e.__class__.__name__}: {e}')
+    else:
+        await utils.send_embed(
+            itx,
+            description=success_message,
+            color=discord.Color.green(),
+        )
+
+
 @admin_guild_only()
 class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin commands'):
     _last_result: Any
@@ -149,18 +174,8 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
     async def load(self, itx: discord.Interaction, /, module: str) -> None:
         '''Loads an extension module'''
 
-        try:
+        async with operation_guard(itx, f'`{module}` loaded'):
             await self.bot.load_extension(module)
-        except commands.ExtensionError as e:
-            await utils.send_embed_error(
-                itx, description=f'{e.__class__.__name__}: {e}'
-            )
-        else:
-            await utils.send_embed(
-                itx,
-                description=f'`{module}` loaded',
-                color=discord.Color.green(),
-            )
 
     async def __loaded_modules_autocomplete(
         self,
@@ -182,18 +197,8 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
     async def reload(self, itx: discord.Interaction, /, module: str) -> None:
         '''Reloads an extension module'''
 
-        try:
+        async with operation_guard(itx, f'`{module}` reloaded'):
             await self.bot.reload_extension(module)
-        except commands.ExtensionError as e:
-            await utils.send_embed_error(
-                itx, description=f'{e.__class__.__name__}: {e}'
-            )
-        else:
-            await utils.send_embed(
-                itx,
-                description=f'`{module}` reloaded',
-                color=discord.Color.green(),
-            )
 
     async def __loaded_modules_without_admin_autocomplete(
         self,
@@ -216,37 +221,16 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
     async def unload(self, itx: discord.Interaction, /, module: str) -> None:
         '''Unloads an extension module'''
 
-        try:
+        async with operation_guard(itx, f'`{module}` unloaded'):
             await self.bot.unload_extension(module)
-        except commands.ExtensionError as e:
-            await utils.send_embed_error(
-                itx, description=f'{e.__class__.__name__}: {e}'
-            )
-        else:
-            await utils.send_embed(
-                itx,
-                description=f'`{module}` unloaded',
-                color=discord.Color.green(),
-            )
 
     @app_commands.command()
     @checks.is_owner()
     async def sync(self, itx: discord.Interaction, /) -> None:
         '''Syncs command tree to Discord'''
 
-        try:
-            await itx.response.defer()
+        async with operation_guard(itx, 'Commands synced'):
             await self.bot.sync_app_commands()
-        except Exception as e:  # noqa: PIE786
-            await utils.send_embed_error(
-                itx, description=f'{e.__class__.__name__}: {e}'
-            )
-        else:
-            await utils.send_embed(
-                itx,
-                description='Commands synced',
-                color=discord.Color.green(),
-            )
 
     @app_commands.command(name='eval')
     @checks.is_owner()
@@ -254,6 +238,16 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
         '''Evaluates code'''
 
         await itx.response.send_modal(_EvalModal(self))
+
+    @app_commands.command(name='refresh-data')
+    @checks.is_owner()
+    async def refresh_data(self, itx: discord.Interaction, /) -> None:
+        '''Refresh cached data from the database'''
+
+        async with operation_guard(itx, 'Data refreshed'):
+            for cog in self.bot.cogs.values():
+                if isinstance(cog, _Refreshable):
+                    await cog.refresh()
 
 
 async def setup(bot: Erasmus, /) -> None:
