@@ -28,6 +28,11 @@ cannot-paginate =
     }
 serverprefs = serverpreferanse
     .description = Server instillinger
+serverprefs__setdefault = setstandard
+    .description = Set standard { -bible-version } for denne serveren.
+    .PARAM--version--name = versjon
+    .PARAM--version--description = { -bible-version }
+    .response = Server versjon er `{ $version }`
 serverprefs__unsetdefault = fjernstandard
     .description = Fjern standard versjonen for denne serveren
     .deleted = Versjonen som blir brukt på serveren har blitt slettet
