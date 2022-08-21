@@ -21,7 +21,7 @@ class TestLocalization:
         'locales,expected_fallback_locale',
         [
             (['en-US'], None),
-            (['no', 'en-US'], 'en-US'),
+            (['nb-NO', 'en-US'], 'en-US'),
         ],
     )
     def test_fallback_locale(
@@ -37,7 +37,12 @@ class TestLocalization:
         'locales,args,kwargs,expected',
         [
             (['en-US'], ('message',), {}, 'This is a message'),
-            (['en-US'], ('message.attribute',), {}, 'This is an attribute'),
+            (
+                ['en-US'],
+                ('message.attribute',),
+                {},
+                'This is an attribute',
+            ),
             (
                 ['en-US'],
                 ('message', {'something': 'Something'}),
@@ -50,7 +55,12 @@ class TestLocalization:
                 {},
                 'This is an attribute',
             ),
-            (['en-US'], ('missing-message',), {}, 'missing-message'),
+            (
+                ['en-US'],
+                ('missing-message',),
+                {},
+                'missing-message',
+            ),
             (
                 ['en-US'],
                 ('message.missing-attribute',),
@@ -81,57 +91,78 @@ class TestLocalization:
                 {},
                 'This is another attribute with \u2068a variable\u2069',
             ),
-            (['no', 'en-US'], ('message',), {}, 'This is a message in Norwegian'),
             (
-                ['no', 'en-US'],
+                ['hi-IN', 'en-US'],
+                ('message',),
+                {},
+                'This is a message in Hindi',
+            ),
+            (
+                ['nb-NO', 'en-US'],
+                ('message',),
+                {},
+                'This is a message in Norwegian',
+            ),
+            (
+                ['nb-NO', 'en-US'],
                 ('message.attribute',),
                 {},
                 'This is an attribute in Norwegian',
             ),
             (
-                ['no', 'en-US'],
+                ['nb-NO', 'en-US'],
                 ('message', {'something': 'Something'}),
                 {},
                 'This is a message in Norwegian',
             ),
             (
-                ['no', 'en-US'],
+                ['nb-NO', 'en-US'],
                 ('message.attribute', {'something': 'Something'}),
                 {},
                 'This is an attribute in Norwegian',
             ),
-            (['no', 'en-US'], ('missing-message',), {}, 'missing-message'),
             (
-                ['no', 'en-US'],
+                ['nb-NO', 'en-US'],
+                ('missing-message',),
+                {},
+                'missing-message',
+            ),
+            (
+                ['nb-NO', 'en-US'],
                 ('message.missing-attribute',),
                 {},
                 'message.missing-attribute',
             ),
             (
-                ['no', 'en-US'],
+                ['nb-NO', 'en-US'],
                 ('another-message',),
                 {},
                 'This is another message with \u2068something\u2069',
             ),
             (
-                ['no', 'en-US'],
+                ['nb-NO', 'en-US'],
                 ('another-message', {'something': 'a variable'}),
                 {},
                 'This is another message with \u2068a variable\u2069',
             ),
             (
-                ['no', 'en-US'],
+                ['nb-NO', 'en-US'],
                 ('message.another-attribute',),
                 {},
                 'This is another attribute with \u2068something\u2069',
             ),
             (
-                ['no', 'en-US'],
+                ['nb-NO', 'en-US'],
                 ('message.another-attribute', {'something': 'a variable'}),
                 {},
                 'This is another attribute with \u2068a variable\u2069',
             ),
-            (['en-US'], ('missing-message',), {'use_fallbacks': False}, None),
+            (
+                ['en-US'],
+                ('missing-message',),
+                {'use_fallbacks': False},
+                None,
+            ),
             (
                 ['en-US'],
                 ('message.missing-attribute',),
@@ -139,19 +170,19 @@ class TestLocalization:
                 None,
             ),
             (
-                ['no', 'en-US'],
+                ['nb-NO', 'en-US'],
                 ('missing-message',),
                 {'use_fallbacks': False},
                 None,
             ),
             (
-                ['no', 'en-US'],
+                ['nb-NO', 'en-US'],
                 ('message.missing-attribute',),
                 {'use_fallbacks': False},
                 None,
             ),
             (
-                ['no', 'en-US'],
+                ['nb-NO', 'en-US'],
                 ('another-message',),
                 {'use_fallbacks': False},
                 None,
@@ -185,14 +216,20 @@ class TestLocalization:
                 'There are \u20681 minute 29 seconds\u2069 left',
             ),
             (
-                ['no', 'en-US'],
+                ['hi-IN', 'en-US'],
+                'period-message',
+                9010,
+                'There are \u20682 घंटे 30 मिनट 9 सेकंड\u2069 left in Hindi',
+            ),
+            (
+                ['nb-NO', 'en-US'],
                 'period-message',
                 9010,
                 'There are \u20682 timer 30 minutter 9 sekunder\u2069 left '
                 'in Norwegian',
             ),
             (
-                ['no', 'en-US'],
+                ['nb-NO', 'en-US'],
                 'period-message',
                 90,
                 'There are \u20681 minutt 29 sekunder\u2069 left in Norwegian',
@@ -210,7 +247,7 @@ class TestLocalization:
                 'There are \u20681 min 29 sec\u2069 left',
             ),
             (
-                ['no', 'en-US'],
+                ['nb-NO', 'en-US'],
                 'period-message-format-short',
                 90,
                 'There are \u20681 min 29 sek\u2069 left in Norwegian',
@@ -222,7 +259,7 @@ class TestLocalization:
                 'There are \u20681m 29s\u2069 left',
             ),
             (
-                ['no', 'en-US'],
+                ['nb-NO', 'en-US'],
                 'period-message-format-narrow',
                 90,
                 'There are \u20681m 29s\u2069 left in Norwegian',

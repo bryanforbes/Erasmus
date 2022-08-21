@@ -49,17 +49,28 @@ class TestLocalizer:
         return mock
 
     @pytest.fixture
+    def hi_localization(self, mocker: pytest_mock.MockerFixture) -> LocalizationMock:
+        mock = mocker.Mock()
+        mock.configure_mock(
+            **{'format.return_value': mocker.sentinel.hi_localization_format_return}
+        )
+        return mock
+
+    @pytest.fixture
     def localization_class(
         self,
         mocker: pytest_mock.MockerFixture,
         en_localization: LocalizationMock,
         no_localization: LocalizationMock,
+        hi_localization: LocalizationMock,
     ) -> Mock:
         def side_effect(
             locales: Sequence[str], *args: Any, **kwargs: Any
         ) -> LocalizationMock | None:
-            if locales[0] == 'no':
+            if locales[0] == 'nb-NO':
                 return no_localization
+            elif locales[0] == 'hi-IN':
+                return hi_localization
             elif locales[0] == 'en-US':
                 return en_localization
             return None
@@ -105,6 +116,7 @@ class TestLocalizer:
         localization_class: Mock,
         en_localization: LocalizationMock,
         no_localization: LocalizationMock,
+        hi_localization: LocalizationMock,
         fluent_resource_loader: Mock,
     ) -> None:
         localizer = Localizer(discord.Locale.american_english)
@@ -117,14 +129,32 @@ class TestLocalizer:
             == mocker.sentinel.en_localization_format_return
         )
         assert (
-            localizer.format('no-private-message', data={}, use_fallbacks=False)
-            == mocker.sentinel.en_localization_format_return
+            localizer.format(
+                'no-private-message',
+                data={},
+                use_fallbacks=False,
+                locale=discord.Locale.hindi,
+            )
+            == mocker.sentinel.hi_localization_format_return
         )
 
         localization_class.assert_has_calls(
             [  # type: ignore
-                mocker.call(['no', 'en-US'], ['erasmus.ftl'], fluent_resource_loader),
-                mocker.call(['en-US'], ['erasmus.ftl'], fluent_resource_loader),
+                mocker.call(
+                    ['nb-NO', 'en-US'],
+                    ['erasmus.ftl'],
+                    fluent_resource_loader,
+                ),
+                mocker.call(
+                    ['en-US'],
+                    ['erasmus.ftl'],
+                    fluent_resource_loader,
+                ),
+                mocker.call(
+                    ['hi-IN', 'en-US'],
+                    ['erasmus.ftl'],
+                    fluent_resource_loader,
+                ),
             ]
         )
         no_localization.format.assert_has_calls(
@@ -135,6 +165,10 @@ class TestLocalizer:
         en_localization.format.assert_has_calls(
             [  # type: ignore
                 mocker.call('generic-error', None, use_fallbacks=True),
+            ]
+        )
+        hi_localization.format.assert_has_calls(
+            [  # type: ignore
                 mocker.call('no-private-message', {}, use_fallbacks=False),
             ]
         )
