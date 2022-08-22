@@ -533,12 +533,39 @@ class _ConfessionOption:
         return app_commands.Choice(name=self.name, value=self.command)
 
     @classmethod
-    def create(
+    async def create(
         cls,
         confession: ConfessionRecord,
-        section_info: list[_SectionInfo],
+        session: AsyncSession,
         /,
     ) -> Self:
+        format_number = _number_formatters[confession.numbering]
+        match confession.type:
+            case ConfessionTypeEnum.CHAPTERS:
+                section_info = [
+                    _create_section_info(
+                        f'{format_number(paragraph.chapter_number)}.'
+                        f'{format_number(paragraph.paragraph_number)}',
+                        paragraph.chapter.chapter_title,
+                    )
+                    async for paragraph in confession.get_paragraphs(session)
+                ]
+            case ConfessionTypeEnum.ARTICLES:
+                section_info = [
+                    _create_section_info(
+                        format_number(article.article_number), article.title
+                    )
+                    async for article in confession.get_articles(session)
+                ]
+            case ConfessionTypeEnum.QA:
+                section_info = [
+                    _create_section_info(
+                        format_number(question.question_number),
+                        question.question_text,
+                    )
+                    async for question in confession.get_questions(session)
+                ]
+
         return cls(
             name=confession.name,
             name_lower=confession.name.lower(),
@@ -609,43 +636,20 @@ class ConfessionAppCommands(
     group_name='confess',
     group_description='Confessions',
 ):
-    async def refresh(self) -> None:
+    async def refresh(self, session: AsyncSession, /) -> None:
         _confession_lookup.clear()
-        async with Session() as session:
-            async for confession in ConfessionRecord.get_all(session):
-                format_number = _number_formatters[confession.numbering]
-                match confession.type:
-                    case ConfessionTypeEnum.CHAPTERS:
-                        section_info = [
-                            _create_section_info(
-                                f'{format_number(paragraph.chapter_number)}.'
-                                f'{format_number(paragraph.paragraph_number)}',
-                                paragraph.chapter.chapter_title,
-                            )
-                            async for paragraph in confession.get_paragraphs(session)
-                        ]
-                    case ConfessionTypeEnum.ARTICLES:
-                        section_info = [
-                            _create_section_info(
-                                format_number(article.article_number), article.title
-                            )
-                            async for article in confession.get_articles(session)
-                        ]
-                    case ConfessionTypeEnum.QA:
-                        section_info = [
-                            _create_section_info(
-                                format_number(question.question_number),
-                                question.question_text,
-                            )
-                            async for question in confession.get_questions(session)
-                        ]
-
-                _confession_lookup.add(
-                    _ConfessionOption.create(confession, section_info)
+        _confession_lookup.update(
+            [
+                await _ConfessionOption.create(confession, session)
+                async for confession in ConfessionRecord.get_all(
+                    session, order_by_name=True
                 )
+            ]
+        )
 
     async def cog_load(self) -> None:
-        await self.refresh()
+        async with Session() as session:
+            await self.refresh(session)
 
     async def cog_unload(self) -> None:
         _confession_lookup.clear()

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import suppress
 from pathlib import Path
 from typing import TYPE_CHECKING, Any
 from unittest.mock import Mock
@@ -12,7 +13,7 @@ from discord import app_commands
 from erasmus.l10n import LocaleLocalizer, Localizer, MessageLocalizer
 
 if TYPE_CHECKING:
-    from collections.abc import Sequence
+    from collections.abc import Callable, Sequence
 
 
 class LocalizationMock(Mock):
@@ -49,6 +50,14 @@ class TestLocalizer:
         return mock
 
     @pytest.fixture
+    def no_localization_2(self, mocker: pytest_mock.MockerFixture) -> LocalizationMock:
+        mock = mocker.Mock()
+        mock.configure_mock(
+            **{'format.return_value': mocker.sentinel.no_localization_2_format_return}
+        )
+        return mock
+
+    @pytest.fixture
     def hi_localization(self, mocker: pytest_mock.MockerFixture) -> LocalizationMock:
         mock = mocker.Mock()
         mock.configure_mock(
@@ -76,6 +85,26 @@ class TestLocalizer:
             return None
 
         return mocker.patch('erasmus.l10n.Localization', side_effect=side_effect)
+
+    @pytest.fixture
+    def localization_class_side_effect(
+        self,
+        en_localization: LocalizationMock,
+        no_localization_2: LocalizationMock,
+        hi_localization: LocalizationMock,
+    ) -> Callable[..., Any]:
+        def side_effect(
+            locales: Sequence[str], *args: Any, **kwargs: Any
+        ) -> LocalizationMock | None:
+            if locales[0] == 'nb-NO':
+                return no_localization_2
+            elif locales[0] == 'hi-IN':
+                return hi_localization
+            elif locales[0] == 'en-US':
+                return en_localization
+            return None
+
+        return side_effect
 
     @pytest.fixture
     def localizer_format(self, mocker: pytest_mock.MockerFixture) -> Mock:
@@ -171,6 +200,47 @@ class TestLocalizer:
             [  # type: ignore
                 mocker.call('no-private-message', {}, use_fallbacks=False),
             ]
+        )
+
+    def test_begin_reload(
+        self,
+        mocker: pytest_mock.MockerFixture,
+        localization_class: Mock,
+        localization_class_side_effect: Callable[..., Any],
+    ) -> None:
+        localizer = Localizer(discord.Locale.american_english)
+        localizer.format('generic-error', locale=discord.Locale.norwegian)
+
+        localization_class.side_effect = localization_class_side_effect
+        with localizer.begin_reload():
+            pass
+
+        assert (
+            localizer.format('generic-error', locale=discord.Locale.norwegian)
+            == mocker.sentinel.no_localization_2_format_return
+        )
+
+    def test_begin_reload_raises(
+        self,
+        mocker: pytest_mock.MockerFixture,
+        localization_class: Mock,
+        localization_class_side_effect: Callable[..., Any],
+    ) -> None:
+        localizer = Localizer(discord.Locale.american_english)
+        localizer.format('generic-error', locale=discord.Locale.norwegian)
+
+        localization_class.side_effect = localization_class_side_effect
+        with suppress(Exception), localizer.begin_reload():
+            localizer.format('generic-error', locale=discord.Locale.norwegian)
+            assert (
+                localizer.format('generic-error', locale=discord.Locale.norwegian)
+                == mocker.sentinel.no_localization_2_format_return
+            )
+            raise TypeError
+
+        assert (
+            localizer.format('generic-error', locale=discord.Locale.norwegian)
+            == mocker.sentinel.no_localization_format_return
         )
 
     def test_for_locale(

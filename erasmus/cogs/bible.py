@@ -31,10 +31,11 @@ from ..ui_pages import UIPages
 from ..utils import AutoCompleter, send_passage
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable, Iterator, Sequence
+    from collections.abc import Awaitable, Callable, Iterable, Iterator, Sequence
     from typing_extensions import Self
 
     from botus_receptus.types import Coroutine
+    from sqlalchemy.ext.asyncio import AsyncSession
 
     from ..erasmus import Erasmus
     from ..l10n import Localizer, MessageLocalizer
@@ -728,6 +729,9 @@ class ServerPreferencesGroup(
 ):
     localizer: Localizer
 
+    def initialize_from_cog(self, cog: BibleAppCommands, /) -> None:
+        self.localizer = cog.localizer
+
     @app_commands.command()
     @app_commands.describe(version='Bible version')
     @app_commands.checks.cooldown(
@@ -787,6 +791,9 @@ class ServerPreferencesGroup(
 class PreferencesGroup(app_commands.Group, name='prefs', description='Preferences'):
     localizer: Localizer
 
+    def initialize_from_cog(self, cog: BibleAppCommands, /) -> None:
+        self.localizer = cog.localizer
+
     @app_commands.command()
     @app_commands.describe(version='Bible version')
     @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
@@ -838,6 +845,11 @@ class PreferencesGroup(app_commands.Group, name='prefs', description='Preference
 @admin_guild_only()
 class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     service_manager: ServiceManager
+    refresh_data: Callable[[AsyncSession], Awaitable[None]]
+
+    def initialize_from_cog(self, cog: BibleAppCommands, /) -> None:
+        self.service_manager = cog.service_manager
+        self.refresh_data = cog.refresh
 
     @app_commands.command()
     @app_commands.describe(version='The Bible version to get information for')
@@ -914,7 +926,9 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
                     books=_book_mask_from_books(books),  # type: ignore
                 )
                 session.add(bible)
-            _bible_lookup.add(_BibleOption.create(bible))
+
+                await session.commit()
+                await self.refresh_data(session)
         except UniqueViolationError:
             await utils.send_embed_error(
                 itx,
@@ -996,9 +1010,8 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
                 if books is not None:
                     bible.books = _book_mask_from_books(books)
 
-            _bible_lookup.discard(bible.command)
-            _bible_lookup.add(_BibleOption.create(bible))
-
+                await session.commit()
+                await self.refresh_data(session)
         except ErasmusError:
             raise
         except Exception:  # noqa: PIE786
@@ -1025,22 +1038,22 @@ class BibleAppCommands(BibleBase):
     ) -> None:
         super().__init__(bot, service_manager)
 
-        self.admin.service_manager = service_manager
-        self.preferences.localizer = self.localizer
-        self.server_preferences.localizer = self.localizer
+        self.admin.initialize_from_cog(self)
+        self.preferences.initialize_from_cog(self)
+        self.server_preferences.initialize_from_cog(self)
 
-    async def refresh(self) -> None:
-        async with Session() as session:
-            _bible_lookup.clear()
-            _bible_lookup.update(
-                [
-                    _BibleOption.create(version)
-                    async for version in BibleVersion.get_all(session, ordered=True)
-                ]
-            )
+    async def refresh(self, session: AsyncSession, /) -> None:
+        _bible_lookup.clear()
+        _bible_lookup.update(
+            [
+                _BibleOption.create(version)
+                async for version in BibleVersion.get_all(session, ordered=True)
+            ]
+        )
 
     async def cog_load(self) -> None:
-        await self.refresh()
+        async with Session() as session:
+            await self.refresh(session)
 
     async def cog_unload(self) -> None:
         _bible_lookup.clear()

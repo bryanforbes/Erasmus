@@ -4,7 +4,7 @@ import io
 import textwrap
 import traceback
 from contextlib import asynccontextmanager, redirect_stdout
-from typing import TYPE_CHECKING, Any, Final, Protocol, runtime_checkable
+from typing import TYPE_CHECKING, Any, Final
 
 import discord
 from botus_receptus import GroupCog, utils
@@ -12,7 +12,9 @@ from botus_receptus.app_commands import admin_guild_only
 from discord import app_commands
 
 from .. import checks
+from ..db import Session
 from ..erasmus import Erasmus, _extensions as _extension_names
+from ..types import Refreshable
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
@@ -119,12 +121,6 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
             await utils.send(
                 itx, content=f'```py\n{error.__class__.__name__}: {error}\n```'
             )
-
-
-@runtime_checkable
-class _Refreshable(Protocol):
-    async def refresh(self) -> None:
-        ...
 
 
 @asynccontextmanager
@@ -245,9 +241,19 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
         '''Refresh cached data from the database'''
 
         async with operation_guard(itx, 'Data refreshed'):
-            for cog in self.bot.cogs.values():
-                if isinstance(cog, _Refreshable):
-                    await cog.refresh()
+            async with Session() as session:
+                for cog in self.bot.cogs.values():
+                    if isinstance(cog, Refreshable):
+                        await cog.refresh(session)
+
+    @app_commands.command(name='reload-translations')
+    @checks.is_owner()
+    async def reload_translations(self, itx: discord.Interaction, /) -> None:
+        '''Reload translations and sync'''
+
+        async with operation_guard(itx, 'Translations reloaded'):
+            with self.bot.localizer.begin_reload():
+                await self.bot.sync_app_commands()
 
 
 async def setup(bot: Erasmus, /) -> None:

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol, TypeAlias
+from typing import TYPE_CHECKING, Protocol, TypeAlias, runtime_checkable
 
 from sqlalchemy.orm import sessionmaker
 
@@ -57,4 +57,10 @@ class Service(Protocol):
         limit: int = ...,
         offset: int = ...,
     ) -> SearchResults:
+        ...
+
+
+@runtime_checkable
+class Refreshable(Protocol):
+    async def refresh(self, session: AsyncSession, /) -> None:
         ...

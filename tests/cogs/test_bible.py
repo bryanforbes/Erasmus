@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING
 import pytest
 
 from erasmus.cogs.bible import Bible, BibleAppCommands
+from erasmus.types import Refreshable
 
 if TYPE_CHECKING:
     from unittest.mock import Mock
@@ -21,11 +22,7 @@ class MockServiceManager:
 
 @pytest.fixture
 def mock_bot(mocker: MockerFixture) -> Mock:
-    bot = mocker.Mock()
-    bot.config = mocker.Mock()
-    bot.session = mocker.Mock()
-
-    return bot
+    return mocker.Mock()
 
 
 @pytest.fixture
@@ -41,6 +38,7 @@ class TestBible:
     ) -> None:
         cog = Bible(mock_bot, mock_service_manager)
         assert cog is not None
+        assert not isinstance(cog, Refreshable)
 
 
 class TestBibleAppCommands:
@@ -51,3 +49,4 @@ class TestBibleAppCommands:
     ) -> None:
         cog = BibleAppCommands(mock_bot, mock_service_manager)
         assert cog is not None
+        assert isinstance(cog, Refreshable)

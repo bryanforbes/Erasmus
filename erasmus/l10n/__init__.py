@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from contextlib import contextmanager
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, Literal, overload
 
@@ -10,6 +11,7 @@ from .fluent import Localization
 
 if TYPE_CHECKING:
     from _typeshed import SupportsItems
+    from collections.abc import Iterator
 
     import discord
     from discord import app_commands
@@ -101,6 +103,16 @@ class Localizer:
         return self._get_l10n(locale).format(
             str(message_id), data, use_fallbacks=use_fallbacks
         )
+
+    @contextmanager
+    def begin_reload(self) -> Iterator[None]:
+        old_map = self._l10n_map
+        try:
+            self._l10n_map = {}
+            yield
+        except Exception:
+            self._l10n_map = old_map
+            raise
 
     def for_locale(self, locale: discord.Locale, /) -> LocaleLocalizer:
         return LocaleLocalizer(self, locale)

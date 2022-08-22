@@ -259,6 +259,23 @@ class Confession:
         metadata={'sa': relationship(ConfessionNumberingType, lazy='joined')}
     )
 
+    sortable_name: Mapped[str] = field(
+        init=False,
+        metadata={
+            'sa': Column(
+                String,
+                Computed(
+                    func.regexp_replace(
+                        _sa_text('name'),
+                        _sa_text(r"'^(the|an?)\s+(.*)$'"),
+                        _sa_text(r"'\2, \1'"),
+                        _sa_text("'i'"),
+                    )
+                ),
+            )
+        },
+    )
+
     async def get_chapters(self, session: AsyncSession, /) -> AsyncIterator[Chapter]:
         result = await session.stream_scalars(
             select(Chapter)
@@ -440,9 +457,13 @@ class Confession:
         return self._numbering.numbering
 
     @staticmethod
-    async def get_all(session: AsyncSession, /) -> AsyncIterator[Confession]:
+    async def get_all(
+        session: AsyncSession, /, order_by_name: bool = False
+    ) -> AsyncIterator[Confession]:
         result = await session.stream_scalars(
-            select(Confession).order_by(asc(Confession.command))
+            select(Confession).order_by(
+                asc(Confession.sortable_name if order_by_name else Confession.command)
+            )
         )
 
         async for confession in result:
