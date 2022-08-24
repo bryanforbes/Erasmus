@@ -85,10 +85,7 @@ class PageSource(Protocol[T]):
 
     @abstractmethod
     async def format_page(
-        self,
-        pages: Pages[T],
-        page: T | None,
-        /,
+        self, pages: Pages[T], page: T | None, /
     ) -> str | discord.Embed | dict[str, Any]:
         raise NotImplementedError
 
@@ -222,10 +219,7 @@ class EmbedPageSource(PageSourceBase[T]):
         self.embed = discord.Embed()
 
     async def format_page(
-        self,
-        pages: Pages[T],
-        page: T | None,
-        /,
+        self, pages: Pages[T], page: T | None, /
     ) -> str | discord.Embed | dict[str, Any]:
         self.embed.clear_fields()
         self.embed.description = None

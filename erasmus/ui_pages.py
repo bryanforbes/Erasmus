@@ -43,9 +43,7 @@ class PagesModal(discord.ui.Modal, title='Skip to page…'):
     )
 
     async def on_submit(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self,
-        itx: discord.Interaction,
-        /,
+        self, itx: discord.Interaction, /
     ) -> None:
         assert self.page_number.value is not None
 
@@ -55,10 +53,7 @@ class PagesModal(discord.ui.Modal, title='Skip to page…'):
         await self.pages.show_checked_page(itx, int(self.page_number.value) - 1)
 
     async def on_error(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self,
-        itx: discord.Interaction,
-        error: Exception,
-        /,
+        self, itx: discord.Interaction, error: Exception, /
     ) -> None:
 
         if isinstance(error, ValueError):
@@ -216,10 +211,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
                 self.go_to_previous_page.disabled = True
 
     async def show_checked_page(
-        self,
-        itx: discord.Interaction,
-        page_number: int,
-        /,
+        self, itx: discord.Interaction, page_number: int, /
     ) -> None:
         max_pages = self.source.get_max_pages()
         with contextlib.suppress(IndexError):
@@ -228,9 +220,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
                 await self.show_page(itx, page_number)
 
     async def interaction_check(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self,
-        itx: discord.Interaction,
-        /,
+        self, itx: discord.Interaction, /
     ) -> bool:
         if await self.is_same_user(itx):
             return True
@@ -247,11 +237,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
             await self.message.edit(view=None)
 
     async def on_error(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self,
-        itx: discord.Interaction,
-        error: Exception,
-        item: discord.ui.Item[Self],
-        /,
+        self, itx: discord.Interaction, error: Exception, item: discord.ui.Item[Self], /
     ) -> None:
         await utils.send(
             itx,
@@ -282,46 +268,31 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
 
     @discord.ui.button(label='≪', style=discord.ButtonStyle.grey)
     async def go_to_first_page(
-        self,
-        itx: discord.Interaction,
-        button: discord.ui.Button[Self],
-        /,
+        self, itx: discord.Interaction, button: discord.ui.Button[Self], /
     ) -> None:
         await self.show_page(itx, 0)
 
     @discord.ui.button(label='<', style=discord.ButtonStyle.blurple)
     async def go_to_previous_page(
-        self,
-        itx: discord.Interaction,
-        button: discord.ui.Button[Self],
-        /,
+        self, itx: discord.Interaction, button: discord.ui.Button[Self], /
     ) -> None:
         await self.show_checked_page(itx, self.current_page - 1)
 
     @discord.ui.button(label='Current', style=discord.ButtonStyle.blurple)
     async def skip_to_page(
-        self,
-        itx: discord.Interaction,
-        button: discord.ui.Button[Self],
-        /,
+        self, itx: discord.Interaction, button: discord.ui.Button[Self], /
     ) -> None:
         await itx.response.send_modal(PagesModal(self))
 
     @discord.ui.button(label='>', style=discord.ButtonStyle.blurple)
     async def go_to_next_page(
-        self,
-        itx: discord.Interaction,
-        button: discord.ui.Button[Self],
-        /,
+        self, itx: discord.Interaction, button: discord.ui.Button[Self], /
     ) -> None:
         await self.show_checked_page(itx, self.current_page + 1)
 
     @discord.ui.button(label='≫', style=discord.ButtonStyle.grey)
     async def go_to_last_page(
-        self,
-        itx: discord.Interaction,
-        button: discord.ui.Button[Self],
-        /,
+        self, itx: discord.Interaction, button: discord.ui.Button[Self], /
     ) -> None:
         max_pages = self.source.get_max_pages()
         assert max_pages is not None
@@ -329,10 +300,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
 
     @discord.ui.button(label='Stop', style=discord.ButtonStyle.red)
     async def stop_pages(
-        self,
-        itx: discord.Interaction,
-        button: discord.ui.Button[Self],
-        /,
+        self, itx: discord.Interaction, button: discord.ui.Button[Self], /
     ) -> None:
         if self.message:
             await self.message.edit(view=None)

@@ -59,9 +59,7 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
         return content.strip('` \n')
 
     async def on_submit(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self,
-        itx: discord.Interaction,
-        /,
+        self, itx: discord.Interaction, /
     ) -> None:
         assert self.code.value is not None
 
@@ -105,10 +103,7 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
                 await utils.send(itx, content=f'```py\n{value}{ret}\n```')
 
     async def on_error(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self,
-        itx: discord.Interaction,
-        error: Exception,
-        /,
+        self, itx: discord.Interaction, error: Exception, /
     ) -> None:
         if error.__cause__ is not None and isinstance(error, _EvalError):
             await utils.send(
@@ -125,9 +120,7 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
 
 @asynccontextmanager
 async def operation_guard(
-    itx: discord.Interaction,
-    success_message: str,
-    /,
+    itx: discord.Interaction, success_message: str, /
 ) -> AsyncIterator[None]:
     try:
         await itx.response.defer()
@@ -150,10 +143,7 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
         self._last_result = None
 
     async def __unloaded_modules_autocomplete(
-        self,
-        itx: discord.Interaction,
-        current: str,
-        /,
+        self, itx: discord.Interaction, current: str, /
     ) -> list[app_commands.Choice[str]]:
         loaded_extensions = set(self.bot.extensions.keys())
         return [
@@ -174,10 +164,7 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
             await self.bot.load_extension(module)
 
     async def __loaded_modules_autocomplete(
-        self,
-        itx: discord.Interaction,
-        current: str,
-        /,
+        self, itx: discord.Interaction, current: str, /
     ) -> list[app_commands.Choice[str]]:
         return [
             app_commands.Choice(name=extension_name, value=extension_name)
@@ -197,10 +184,7 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
             await self.bot.reload_extension(module)
 
     async def __loaded_modules_without_admin_autocomplete(
-        self,
-        itx: discord.Interaction,
-        current: str,
-        /,
+        self, itx: discord.Interaction, current: str, /
     ) -> list[app_commands.Choice[str]]:
         return [
             app_commands.Choice(name=extension_name, value=extension_name)

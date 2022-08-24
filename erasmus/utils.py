@@ -35,9 +35,7 @@ def _get_passage_text(passage: Passage, /) -> str:
 
 @overload
 async def send_passage(
-    ctx: commands.Context[Erasmus],
-    passage: Passage,
-    /,
+    ctx: commands.Context[Erasmus], passage: Passage, /
 ) -> discord.Message:
     ...
 
@@ -119,18 +117,12 @@ class AutoCompleter(app_commands.Transformer, Generic[_OptionT]):
         ][:25]
 
     async def transform(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self,
-        itx: discord.Interaction,
-        value: str,
-        /,
+        self, itx: discord.Interaction, value: str, /
     ) -> str:
         return value
 
     async def autocomplete(  # type: ignore
-        self,
-        itx: discord.Interaction,
-        value: str,
-        /,
+        self, itx: discord.Interaction, value: str, /
     ) -> list[app_commands.Choice[str]]:
         value = value.lower().strip()
 

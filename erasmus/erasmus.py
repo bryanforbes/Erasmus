@@ -210,10 +210,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         )
 
     async def on_command_error(
-        self,
-        context: commands.Context[Any],
-        exception: Exception,
-        /,
+        self, context: commands.Context[Any], exception: Exception, /
     ) -> None:
         if (
             isinstance(
@@ -307,10 +304,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             )
 
     async def on_app_command_error(
-        self,
-        itx: discord.Interaction,
-        error: Exception,
-        /,
+        self, itx: discord.Interaction, error: Exception, /
     ) -> None:
         if (
             isinstance(

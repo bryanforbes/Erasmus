@@ -98,10 +98,7 @@ _number_formatters: Final[dict[NumberingTypeEnum, Callable[[int], str]]] = {
 
 
 async def _get_chapters_output(
-    session: AsyncSession,
-    confession: ConfessionRecord,
-    match: Match[str],
-    /,
+    session: AsyncSession, confession: ConfessionRecord, match: Match[str], /
 ) -> tuple[str | None, str]:
     format_number = _number_formatters[confession.numbering]
 
@@ -124,10 +121,7 @@ async def _get_chapters_output(
 
 
 async def _get_articles_output(
-    session: AsyncSession,
-    confession: ConfessionRecord,
-    match: Match[str],
-    /,
+    session: AsyncSession, confession: ConfessionRecord, match: Match[str], /
 ) -> tuple[str | None, str]:
     format_number = _number_formatters[confession.numbering]
 
@@ -142,10 +136,7 @@ async def _get_articles_output(
 
 
 async def _get_qa_output(
-    session: AsyncSession,
-    confession: ConfessionRecord,
-    match: Match[str],
-    /,
+    session: AsyncSession, confession: ConfessionRecord, match: Match[str], /
 ) -> tuple[str | None, str]:
     format_number = _number_formatters[confession.numbering]
 
@@ -256,9 +247,7 @@ class ConfessionSearchSource(
             )
 
     async def set_page_text(
-        self,
-        entries: Sequence[ConfessionSearchResult] | None,
-        /,
+        self, entries: Sequence[ConfessionSearchResult] | None, /
     ) -> None:
         if entries is None:
             self.embed.description = self.localizer.format('no-results')
@@ -403,10 +392,7 @@ class Confession(ConfessionBase):
             await utils.send_embed(ctx, description=page)
 
     async def list_contents(
-        self,
-        ctx: commands.Context[Erasmus],
-        confession: ConfessionRecord,
-        /,
+        self, ctx: commands.Context[Erasmus], confession: ConfessionRecord, /
     ) -> None:
         if (
             confession.type == ConfessionTypeEnum.CHAPTERS
@@ -417,10 +403,7 @@ class Confession(ConfessionBase):
             await self.list_questions(ctx, confession)
 
     async def list_sections(
-        self,
-        ctx: commands.Context[Erasmus],
-        confession: ConfessionRecord,
-        /,
+        self, ctx: commands.Context[Erasmus], confession: ConfessionRecord, /
     ) -> None:
         paginator = EmbedPaginator()
         getter: Callable[[AsyncSession], AsyncIterator[Any]] | None = None
@@ -455,10 +438,7 @@ class Confession(ConfessionBase):
             )
 
     async def list_questions(
-        self,
-        ctx: commands.Context[Erasmus],
-        confession: ConfessionRecord,
-        /,
+        self, ctx: commands.Context[Erasmus], confession: ConfessionRecord, /
     ) -> None:
         async with Session() as session:
             count = await confession.get_question_count(session)
@@ -534,10 +514,7 @@ class _ConfessionOption:
 
     @classmethod
     async def create(
-        cls,
-        confession: ConfessionRecord,
-        session: AsyncSession,
-        /,
+        cls, confession: ConfessionRecord, session: AsyncSession, /
     ) -> Self:
         format_number = _number_formatters[confession.numbering]
         match confession.type:
@@ -588,18 +565,12 @@ class SectionAutoCompleter(app_commands.Transformer):
     confession_lookup: ConfessionAutoCompleter
 
     async def transform(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self,
-        itx: discord.Interaction,
-        value: str,
-        /,
+        self, itx: discord.Interaction, value: str, /
     ) -> str:
         return value
 
     async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self,
-        itx: discord.Interaction,
-        value: str,
-        /,
+        self, itx: discord.Interaction, value: str, /
     ) -> list[app_commands.Choice[str]]:
         value = value.lower().strip()
 

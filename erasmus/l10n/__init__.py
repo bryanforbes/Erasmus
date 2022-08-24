@@ -53,11 +53,7 @@ class Localizer:
 
         return Localization(locales, ['erasmus.ftl'], self._loader)
 
-    def _get_l10n(
-        self,
-        locale: discord.Locale | None,
-        /,
-    ) -> Localization:
+    def _get_l10n(self, locale: discord.Locale | None, /) -> Localization:
         locale = self.default_locale if locale is None else locale
 
         if locale in self._l10n_map:

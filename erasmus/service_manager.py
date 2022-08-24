@@ -64,10 +64,7 @@ class ServiceManager:
 
     @classmethod
     def from_config(
-        cls,
-        config: Config,
-        session: aiohttp.ClientSession,
-        /,
+        cls, config: Config, session: aiohttp.ClientSession, /
     ) -> ServiceManager:
         service_map: dict[str, Service] = {}
         service_configs = config.get('services', {})

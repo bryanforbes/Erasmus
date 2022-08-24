@@ -51,10 +51,7 @@ class BibleVersion:
     books: Mapped[int] = field(metadata={'sa': Column(BigInteger, nullable=False)})
 
     async def set_for_user(
-        self,
-        session: AsyncSession,
-        user: discord.User | discord.Member,
-        /,
+        self, session: AsyncSession, user: discord.User | discord.Member, /
     ) -> None:
         await session.execute(
             insert(UserPref)
@@ -65,10 +62,7 @@ class BibleVersion:
         )
 
     async def set_for_guild(
-        self,
-        session: AsyncSession,
-        guild: discord.Guild,
-        /,
+        self, session: AsyncSession, guild: discord.Guild, /
     ) -> None:
         await session.execute(
             insert(GuildPref)

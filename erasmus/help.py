@@ -57,9 +57,7 @@ class HelpCommand(commands.DefaultHelpCommand):
         await self.send_pages()
 
     def add_command_formatting(
-        self,
-        command: commands.Command[Any, ..., Any],
-        /,
+        self, command: commands.Command[Any, ..., Any], /
     ) -> None:
         if command.brief:
             self.paginator.add_line(command.brief, empty=True)

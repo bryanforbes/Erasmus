@@ -68,11 +68,7 @@ class ApiBible(BaseService):
         return passage_id
 
     def __transform_verse(
-        self,
-        bible: Bible,
-        verses: VerseRange,
-        content: str,
-        /,
+        self, bible: Bible, verses: VerseRange, content: str, /
     ) -> Passage:
         soup = BeautifulSoup(content, 'html.parser')
 
@@ -94,9 +90,7 @@ class ApiBible(BaseService):
         return Passage(text=text, range=verses, version=bible.abbr)
 
     async def __process_response(
-        self,
-        response: aiohttp.ClientResponse,
-        /,
+        self, response: aiohttp.ClientResponse, /
     ) -> dict[str, Any]:
         if response.status != 200:
             raise DoNotUnderstandError()

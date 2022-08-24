@@ -92,9 +92,7 @@ class SearchPageSource(FieldPageSource['Sequence[Passage]'], AsyncPageSource[Pas
         self.localizer = localizer
 
     def get_field_values(
-        self,
-        entries: Sequence[Passage],
-        /,
+        self, entries: Sequence[Passage], /
     ) -> Iterable[tuple[str, str]]:
         for entry in entries:
             yield str(entry.range), (
@@ -209,12 +207,7 @@ class BibleBase(Cog['Erasmus']):
     service_manager: ServiceManager
     localizer: Localizer
 
-    def __init__(
-        self,
-        bot: Erasmus,
-        service_manager: ServiceManager,
-        /,
-    ) -> None:
+    def __init__(self, bot: Erasmus, service_manager: ServiceManager, /) -> None:
         self.service_manager = service_manager
         self.localizer = bot.localizer
 
@@ -320,10 +313,7 @@ class Bible(BibleBase):
                 self.__remove_bible_commands(version.command)
 
     async def lookup_from_message(
-        self,
-        ctx: commands.Context[Erasmus],
-        message: discord.Message,
-        /,
+        self, ctx: commands.Context[Erasmus], message: discord.Message, /
     ) -> None:
         try:
             verse_ranges = VerseRange.get_all_from_string(
@@ -452,10 +442,7 @@ class Bible(BibleBase):
     @commands.guild_only()
     @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
     async def setguildversion(
-        self,
-        ctx: commands.Context[Erasmus],
-        version: str,
-        /,
+        self, ctx: commands.Context[Erasmus], version: str, /
     ) -> None:
         assert ctx.guild is not None
 
@@ -529,10 +516,7 @@ class Bible(BibleBase):
     @checks.dm_only()
     @commands.is_owner()
     async def delete_bible(
-        self,
-        ctx: commands.Context[Erasmus],
-        command: str,
-        /,
+        self, ctx: commands.Context[Erasmus], command: str, /
     ) -> None:
         async with Session.begin() as session:
             version = await BibleVersion.get_by_command(session, command)
@@ -698,18 +682,12 @@ class ServiceAutoCompleter(app_commands.Transformer):
     service_manager: ServiceManager
 
     async def transform(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self,
-        itx: discord.Interaction,
-        value: str,
-        /,
+        self, itx: discord.Interaction, value: str, /
     ) -> str:
         return value
 
     async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self,
-        itx: discord.Interaction,
-        value: str,
-        /,
+        self, itx: discord.Interaction, value: str, /
     ) -> list[app_commands.Choice[str]]:
         return [
             app_commands.Choice(name=service_name, value=service_name)
@@ -1030,12 +1008,7 @@ class BibleAppCommands(BibleBase):
     preferences = PreferencesGroup()
     server_preferences = ServerPreferencesGroup()
 
-    def __init__(
-        self,
-        bot: Erasmus,
-        service_manager: ServiceManager,
-        /,
-    ) -> None:
+    def __init__(self, bot: Erasmus, service_manager: ServiceManager, /) -> None:
         super().__init__(bot, service_manager)
 
         self.admin.initialize_from_cog(self)

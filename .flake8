@@ -4,7 +4,7 @@ extend-select = B,C,T4,B9,Y0,TC1,SIM9
 extend-exclude =
     .venv*,
     alembic
-ignore = E203, E266, E501, W503, PT004,
+extend-ignore = E203, E266, E501, PT004,
     PIE791, # Duplicate of B015
     PIE792, # Duplicate of SIM120
     PIE797  # Duplicate of SIM210

@@ -33,10 +33,7 @@ if TYPE_CHECKING:
 
 
 def _search_columns(
-    title_column: Mapped[str],
-    text_column: Mapped[str],
-    terms: Sequence[str],
-    /,
+    title_column: Mapped[str], text_column: Mapped[str], terms: Sequence[str], /
 ) -> ColumnElement[Boolean]:
     return func.to_tsvector(
         _sa_text("'english'"),
@@ -292,9 +289,7 @@ class Confession:
             raise NoSectionsError(self.name, 'chapters')
 
     async def get_paragraphs(
-        self,
-        session: AsyncSession,
-        /,
+        self, session: AsyncSession, /
     ) -> AsyncIterator[Paragraph]:
         result = await session.stream_scalars(
             select(Paragraph)
@@ -311,11 +306,7 @@ class Confession:
             raise NoSectionsError(self.name, 'paragraphs')
 
     async def get_paragraph(
-        self,
-        session: AsyncSession,
-        chapter: int,
-        paragraph: int,
-        /,
+        self, session: AsyncSession, chapter: int, paragraph: int, /
     ) -> Paragraph:
         result: Paragraph | None = (
             await session.scalars(
@@ -332,10 +323,7 @@ class Confession:
         return result
 
     async def search_paragraphs(
-        self,
-        session: AsyncSession,
-        terms: Sequence[str],
-        /,
+        self, session: AsyncSession, terms: Sequence[str], /
     ) -> AsyncIterator[Paragraph]:
         result = await session.stream_scalars(
             select(Paragraph)
@@ -364,10 +352,7 @@ class Confession:
         )
 
     async def get_question(
-        self,
-        session: AsyncSession,
-        question_number: int,
-        /,
+        self, session: AsyncSession, question_number: int, /
     ) -> Question:
         question: Question | None = (
             await session.scalars(
@@ -383,10 +368,7 @@ class Confession:
         return question
 
     async def search_questions(
-        self,
-        session: AsyncSession,
-        terms: Sequence[str],
-        /,
+        self, session: AsyncSession, terms: Sequence[str], /
     ) -> AsyncIterator[Question]:
         result = await session.stream_scalars(
             select(Question)
@@ -414,10 +396,7 @@ class Confession:
             raise NoSectionsError(self.name, 'articles')
 
     async def get_article(
-        self,
-        session: AsyncSession,
-        article_number: int,
-        /,
+        self, session: AsyncSession, article_number: int, /
     ) -> Article:
         article: Article | None = (
             await session.scalars(
@@ -433,10 +412,7 @@ class Confession:
         return article
 
     async def search_articles(
-        self,
-        session: AsyncSession,
-        terms: Sequence[str],
-        /,
+        self, session: AsyncSession, terms: Sequence[str], /
     ) -> AsyncIterator[Article]:
         result = await session.stream_scalars(
             select(Article)
