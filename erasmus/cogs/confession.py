@@ -20,8 +20,8 @@ from discord.ext import commands
 from ..db import (
     Article,
     Confession as ConfessionRecord,
-    ConfessionTypeEnum,
-    NumberingTypeEnum,
+    ConfessionType,
+    NumberingType,
     Paragraph,
     Question,
     Session,
@@ -50,7 +50,7 @@ _roman_re: Final = re.group(
 )
 
 _reference_res: Final = {
-    ConfessionTypeEnum.CHAPTERS: re.compile(
+    ConfessionType.CHAPTERS: re.compile(
         re.START,
         re.either(
             re.group(
@@ -66,7 +66,7 @@ _reference_res: Final = {
         ),
         re.END,
     ),
-    ConfessionTypeEnum.QA: re.compile(
+    ConfessionType.QA: re.compile(
         re.START,
         re.optional(re.named_group('qa')('[qaQA]')),
         re.either(
@@ -75,7 +75,7 @@ _reference_res: Final = {
         ),
         re.END,
     ),
-    ConfessionTypeEnum.ARTICLES: re.compile(
+    ConfessionType.ARTICLES: re.compile(
         re.START,
         re.either(
             re.named_group('article')(re.one_or_more(re.DIGITS)),
@@ -86,14 +86,14 @@ _reference_res: Final = {
 }
 
 _pluralizers: Final = {
-    ConfessionTypeEnum.CHAPTERS: pluralizer('paragraph'),
-    ConfessionTypeEnum.ARTICLES: pluralizer('article'),
-    ConfessionTypeEnum.QA: pluralizer('question'),
+    ConfessionType.CHAPTERS: pluralizer('paragraph'),
+    ConfessionType.ARTICLES: pluralizer('article'),
+    ConfessionType.QA: pluralizer('question'),
 }
 
-_number_formatters: Final[dict[NumberingTypeEnum, Callable[[int], str]]] = {
-    NumberingTypeEnum.ARABIC: lambda n: str(n),
-    NumberingTypeEnum.ROMAN: int_to_roman,
+_number_formatters: Final[dict[NumberingType, Callable[[int], str]]] = {
+    NumberingType.ARABIC: lambda n: str(n),
+    NumberingType.ROMAN: int_to_roman,
 }
 
 
@@ -172,10 +172,10 @@ _OUTPUT_GETTER: TypeAlias = '''Callable[
     Awaitable[tuple[str | None, str]],
 ]'''
 
-_output_getters: Final[dict[ConfessionTypeEnum, _OUTPUT_GETTER]] = {
-    ConfessionTypeEnum.CHAPTERS: _get_chapters_output,
-    ConfessionTypeEnum.ARTICLES: _get_articles_output,
-    ConfessionTypeEnum.QA: _get_qa_output,
+_output_getters: Final[dict[ConfessionType, _OUTPUT_GETTER]] = {
+    ConfessionType.CHAPTERS: _get_chapters_output,
+    ConfessionType.ARTICLES: _get_articles_output,
+    ConfessionType.QA: _get_qa_output,
 }
 
 
@@ -227,21 +227,21 @@ class ConfessionSearchSource(
         /,
         *,
         per_page: int,
-        type: ConfessionTypeEnum,
+        type: ConfessionType,
         localizer: MessageLocalizer,
     ) -> None:
         super().__init__(entries, per_page=per_page)
 
         self.localizer = localizer
 
-        if type == ConfessionTypeEnum.CHAPTERS:
+        if type == ConfessionType.CHAPTERS:
             self.entry_text_string = (
                 '**{entry.chapter_number}.{entry.paragraph_number}**. '
                 '{entry.chapter.chapter_title}'
             )
-        elif type == ConfessionTypeEnum.ARTICLES:
+        elif type == ConfessionType.ARTICLES:
             self.entry_text_string = '**{entry.article_number}**. {entry.title}'
-        elif type == ConfessionTypeEnum.QA:
+        elif type == ConfessionType.QA:
             self.entry_text_string = (
                 '**{entry.question_number}**. {entry.question_text}'
             )
@@ -395,11 +395,11 @@ class Confession(ConfessionBase):
         self, ctx: commands.Context[Erasmus], confession: ConfessionRecord, /
     ) -> None:
         if (
-            confession.type == ConfessionTypeEnum.CHAPTERS
-            or confession.type == ConfessionTypeEnum.ARTICLES
+            confession.type == ConfessionType.CHAPTERS
+            or confession.type == ConfessionType.ARTICLES
         ):
             await self.list_sections(ctx, confession)
-        elif confession.type == ConfessionTypeEnum.QA:
+        elif confession.type == ConfessionType.QA:
             await self.list_questions(ctx, confession)
 
     async def list_sections(
@@ -410,11 +410,11 @@ class Confession(ConfessionBase):
         number_key: str | None = None
         title_key: str | None = None
 
-        if confession.type == ConfessionTypeEnum.CHAPTERS:
+        if confession.type == ConfessionType.CHAPTERS:
             getter = confession.get_chapters
             number_key = 'chapter_number'
             title_key = 'chapter_title'
-        else:  # ConfessionTypeEnum.ARTICLES
+        else:  # ConfessionType.ARTICLES
             getter = confession.get_articles
             number_key = 'article_number'
             title_key = 'title'
@@ -443,7 +443,7 @@ class Confession(ConfessionBase):
         async with Session() as session:
             count = await confession.get_question_count(session)
 
-        question_str = _pluralizers[ConfessionTypeEnum.QA](count)
+        question_str = _pluralizers[ConfessionType.QA](count)
 
         await utils.send_embed(
             ctx, description=f'`{confession.name}` has {question_str}'
@@ -456,13 +456,13 @@ class Confession(ConfessionBase):
         /,
         *terms: str,
     ) -> None:
-        if confession.type == ConfessionTypeEnum.CHAPTERS:
+        if confession.type == ConfessionType.CHAPTERS:
             search_func: Callable[
                 [AsyncSession, Sequence[str]], AsyncIterator[ConfessionSearchResult]
             ] = confession.search_paragraphs
-        elif confession.type == ConfessionTypeEnum.ARTICLES:
+        elif confession.type == ConfessionType.ARTICLES:
             search_func = confession.search_articles
-        else:  # ConfessionTypeEnum.QA
+        else:  # ConfessionType.QA
             search_func = confession.search_questions
 
         async with Session() as session:
@@ -499,7 +499,7 @@ class _ConfessionOption:
     command_lower: str
     name: str
     name_lower: str
-    type: ConfessionTypeEnum
+    type: ConfessionType
     section_info: list[_SectionInfo]
 
     @property
@@ -518,7 +518,7 @@ class _ConfessionOption:
     ) -> Self:
         format_number = _number_formatters[confession.numbering]
         match confession.type:
-            case ConfessionTypeEnum.CHAPTERS:
+            case ConfessionType.CHAPTERS:
                 section_info = [
                     _create_section_info(
                         f'{format_number(paragraph.chapter_number)}.'
@@ -527,14 +527,14 @@ class _ConfessionOption:
                     )
                     async for paragraph in confession.get_paragraphs(session)
                 ]
-            case ConfessionTypeEnum.ARTICLES:
+            case ConfessionType.ARTICLES:
                 section_info = [
                     _create_section_info(
                         format_number(article.article_number), article.title
                     )
                     async for article in confession.get_articles(session)
                 ]
-            case ConfessionTypeEnum.QA:
+            case ConfessionType.QA:
                 section_info = [
                     _create_section_info(
                         format_number(question.question_number),
@@ -645,14 +645,14 @@ class ConfessionAppCommands(
             confession = await ConfessionRecord.get_by_command(session, source)
 
             match confession.type:
-                case ConfessionTypeEnum.CHAPTERS:
+                case ConfessionType.CHAPTERS:
                     search_func: Callable[
                         [AsyncSession, Sequence[str]],
                         AsyncIterator[ConfessionSearchResult],
                     ] = confession.search_paragraphs
-                case ConfessionTypeEnum.ARTICLES:
+                case ConfessionType.ARTICLES:
                     search_func = confession.search_articles
-                case ConfessionTypeEnum.QA:
+                case ConfessionType.QA:
                     search_func = confession.search_questions
 
             results = [

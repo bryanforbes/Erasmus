@@ -8,7 +8,6 @@ from sqlalchemy import (
     Boolean,
     Column,
     Computed,
-    Enum as _SAEnum,
     ForeignKey,
     Index,
     Integer,
@@ -19,6 +18,7 @@ from sqlalchemy import (
     select,
     text as _sa_text,
 )
+from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.orm import Mapped, relationship
 
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
@@ -41,7 +41,7 @@ def _search_columns(
     ).match(' & '.join(terms), postgresql_regconfig='english')
 
 
-class ConfessionTypeEnum(Enum):
+class ConfessionType(Enum):
     ARTICLES = 'ARTICLES'
     CHAPTERS = 'CHAPTERS'
     QA = 'QA'
@@ -50,42 +50,12 @@ class ConfessionTypeEnum(Enum):
         return '<%s.%s>' % (self.__class__.__name__, self.name)
 
 
-@mapped
-@dataclass
-class ConfessionType:
-    __tablename__ = 'confession_types'
-    __sa_dataclass_metadata_key__ = 'sa'
-
-    id: Mapped[int] = field(
-        init=False, metadata={'sa': Column(Integer, primary_key=True)}
-    )
-    value: Mapped[ConfessionTypeEnum] = field(
-        metadata={
-            'sa': Column(_SAEnum(ConfessionTypeEnum), unique=True, nullable=False)
-        }
-    )
-
-
-class NumberingTypeEnum(Enum):
+class NumberingType(Enum):
     ARABIC = 'ARABIC'
     ROMAN = 'ROMAN'
 
     def __repr__(self, /) -> str:
         return '<%s.%s>' % (self.__class__.__name__, self.name)
-
-
-@mapped
-@dataclass
-class ConfessionNumberingType:
-    __tablename__ = 'confession_numbering_types'
-    __sa_dataclass_metadata_key__ = 'sa'
-
-    id: Mapped[int] = field(
-        init=False, metadata={'sa': Column(Integer, primary_key=True)}
-    )
-    numbering: Mapped[NumberingTypeEnum] = field(
-        metadata={'sa': Column(_SAEnum(NumberingTypeEnum), unique=True, nullable=False)}
-    )
 
 
 @dataclass
@@ -236,26 +206,18 @@ class Confession:
         metadata={'sa': Column(String, unique=True, nullable=False)}
     )
     name: Mapped[str] = field(metadata={'sa': Column(String, nullable=False)})
-    type_id: Mapped[int] = field(
+    type: Mapped[ConfessionType] = field(
         metadata={
-            'sa': Column(Integer, ForeignKey('confession_types.id'), nullable=False)
+            'sa': Column(ENUM(ConfessionType, name='confession_type'), nullable=False)
         }
     )
-    numbering_id: Mapped[int] = field(
+    numbering: Mapped[NumberingType] = field(
         metadata={
             'sa': Column(
-                Integer, ForeignKey('confession_numbering_types.id'), nullable=False
+                ENUM(NumberingType, name='confession_numbering_type'), nullable=False
             )
         }
     )
-
-    _type: Mapped[ConfessionType] = field(
-        metadata={'sa': relationship(ConfessionType, lazy='joined')}
-    )
-    _numbering: Mapped[ConfessionNumberingType] = field(
-        metadata={'sa': relationship(ConfessionNumberingType, lazy='joined')}
-    )
-
     sortable_name: Mapped[str] = field(
         init=False,
         metadata={
@@ -423,14 +385,6 @@ class Confession:
 
         async for article in result:
             yield article
-
-    @property
-    def type(self, /) -> ConfessionTypeEnum:
-        return self._type.value
-
-    @property
-    def numbering(self, /) -> NumberingTypeEnum:
-        return self._numbering.numbering
 
     @staticmethod
     async def get_all(
