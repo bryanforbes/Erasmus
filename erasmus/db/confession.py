@@ -4,7 +4,6 @@ from enum import Enum
 from typing import TYPE_CHECKING
 
 from sqlalchemy import (
-    Boolean,
     Computed,
     ForeignKey,
     Index,
@@ -35,16 +34,6 @@ if TYPE_CHECKING:
 
     from botus_receptus.types import Coroutine
     from sqlalchemy.ext.asyncio import AsyncSession
-    from sqlalchemy.sql import ColumnElement
-
-
-def _search_columns(
-    title_column: Mapped[str], text_column: Mapped[str], terms: Sequence[str], /
-) -> ColumnElement[Boolean]:
-    return func.to_tsvector(
-        _sa_text("'english'"),
-        title_column + _sa_text("' '") + text_column,
-    ).match(' & '.join(terms), postgresql_regconfig='english')
 
 
 class ConfessionType(Enum):
@@ -240,7 +229,12 @@ class Confession(Base):
             select(Paragraph)
             .join(Chapter, Paragraph.chapter)
             .where(Paragraph.confess_id == self.id)
-            .where(_search_columns(Chapter.chapter_title, Paragraph.text, terms))
+            .where(
+                func.to_tsvector(
+                    _sa_text("'english'"),
+                    Chapter.chapter_title + _sa_text("' '") + Paragraph.text,
+                ).match(' & '.join(terms), postgresql_regconfig='english')
+            )
             .order_by(asc(Paragraph.chapter_number))
         )
 
