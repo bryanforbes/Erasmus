@@ -13,11 +13,6 @@ from sqlalchemy.orm import (
     relationship as _sa_relationship,
 )
 
-_mapper_registry: Final = registry()
-
-mapped: Final = _mapper_registry.mapped
-Session: Final = async_sessionmaker(expire_on_commit=False)
-
 if TYPE_CHECKING:
     from collections.abc import Callable
 
@@ -30,6 +25,12 @@ if TYPE_CHECKING:
 else:
     _TSVectorBase = TypeDecorator
     _ComparatorBase = TSVECTOR.Comparator
+
+
+_mapper_registry: Final = registry()
+
+mapped: Final = _mapper_registry.mapped
+Session: Final = async_sessionmaker(expire_on_commit=False)
 
 
 class TSVector(_TSVectorBase):
