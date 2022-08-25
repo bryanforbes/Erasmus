@@ -3,6 +3,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import TYPE_CHECKING
 
+from more_itertools import peekable
 from sqlalchemy import (
     Computed,
     ForeignKey,
@@ -174,35 +175,37 @@ class Confession(Base):
     )
 
     async def get_chapters(self, session: AsyncSession, /) -> AsyncIterator[Chapter]:
-        result = await session.stream_scalars(
-            select(Chapter)
-            .where(Chapter.confess_id == self.id)
-            .order_by(asc(Chapter.chapter_number))
+        result = peekable(
+            await session.scalars(
+                select(Chapter)
+                .where(Chapter.confess_id == self.id)
+                .order_by(asc(Chapter.chapter_number))
+            )
         )
 
-        count = 0
-        async for chapter in result:
-            count += 1
-            yield chapter
-
-        if count == 0:
+        if result.peek(None) is not None:
+            for chapter in result:
+                yield chapter
+        else:
             raise NoSectionsError(self.name, 'chapters')
 
     async def get_paragraphs(
         self, session: AsyncSession, /
     ) -> AsyncIterator[Paragraph]:
-        result = await session.stream_scalars(
-            select(Paragraph)
-            .where(Paragraph.confess_id == self.id)
-            .order_by(asc(Paragraph.chapter_number), asc(Paragraph.paragraph_number))
+        result = peekable(
+            await session.scalars(
+                select(Paragraph)
+                .where(Paragraph.confess_id == self.id)
+                .order_by(
+                    asc(Paragraph.chapter_number), asc(Paragraph.paragraph_number)
+                )
+            )
         )
 
-        count = 0
-        async for paragraph in result:
-            count += 1
-            yield paragraph
-
-        if count == 0:
+        if result.peek(None) is not None:
+            for paragraph in result:
+                yield paragraph
+        else:
             raise NoSectionsError(self.name, 'paragraphs')
 
     async def get_paragraph(
@@ -225,7 +228,7 @@ class Confession(Base):
     async def search_paragraphs(
         self, session: AsyncSession, terms: Sequence[str], /
     ) -> AsyncIterator[Paragraph]:
-        result = await session.stream_scalars(
+        result = await session.scalars(
             select(Paragraph)
             .join(Chapter, Paragraph.chapter)
             .where(Paragraph.confess_id == self.id)
@@ -238,17 +241,17 @@ class Confession(Base):
             .order_by(asc(Paragraph.chapter_number))
         )
 
-        async for paragraph in result:
+        for paragraph in result:
             yield paragraph
 
     async def get_questions(self, session: AsyncSession, /) -> AsyncIterator[Question]:
-        result = await session.stream_scalars(
+        result = await session.scalars(
             select(Question)
             .where(Question.confess_id == self.id)
             .order_by(asc(Question.question_number))
         )
 
-        async for question in result:
+        for question in result:
             yield question
 
     def get_question_count(self, session: AsyncSession, /) -> Coroutine[int]:
@@ -275,29 +278,29 @@ class Confession(Base):
     async def search_questions(
         self, session: AsyncSession, terms: Sequence[str], /
     ) -> AsyncIterator[Question]:
-        result = await session.stream_scalars(
+        result = await session.scalars(
             select(Question)
             .where(Question.confess_id == self.id)
             .where(Question.search_vector.match(' & '.join(terms)))
             .order_by(asc(Question.question_number))
         )
 
-        async for question in result:
+        for question in result:
             yield question
 
     async def get_articles(self, session: AsyncSession, /) -> AsyncIterator[Article]:
-        result = await session.stream_scalars(
-            select(Article)
-            .where(Article.confess_id == self.id)
-            .order_by(asc(Article.article_number))
+        result = peekable(
+            await session.scalars(
+                select(Article)
+                .where(Article.confess_id == self.id)
+                .order_by(asc(Article.article_number))
+            )
         )
 
-        count = 0
-        async for article in result:
-            count += 1
-            yield article
-
-        if count == 0:
+        if result.peek(None) is not None:
+            for article in result:
+                yield article
+        else:
             raise NoSectionsError(self.name, 'articles')
 
     async def get_article(
@@ -319,27 +322,27 @@ class Confession(Base):
     async def search_articles(
         self, session: AsyncSession, terms: Sequence[str], /
     ) -> AsyncIterator[Article]:
-        result = await session.stream_scalars(
+        result = await session.scalars(
             select(Article)
             .where(Article.confess_id == self.id)
             .where(Article.search_vector.match(' & '.join(terms)))
             .order_by(asc(Article.article_number))
         )
 
-        async for article in result:
+        for article in result:
             yield article
 
     @staticmethod
     async def get_all(
         session: AsyncSession, /, order_by_name: bool = False
     ) -> AsyncIterator[Confession]:
-        result = await session.stream_scalars(
+        result = await session.scalars(
             select(Confession).order_by(
                 asc(Confession.sortable_name if order_by_name else Confession.command)
             )
         )
 
-        async for confession in result:
+        for confession in result:
             yield confession
 
     @staticmethod

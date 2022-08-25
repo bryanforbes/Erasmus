@@ -94,9 +94,9 @@ class BibleVersion(Base):
                 )
             )
 
-        result = await session.stream_scalars(stmt)
+        result = await session.scalars(stmt)
 
-        async for version in result:
+        for version in result:
             yield version
 
     @staticmethod
