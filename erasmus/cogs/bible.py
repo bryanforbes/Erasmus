@@ -497,13 +497,13 @@ class Bible(BibleBase):
             async with Session.begin() as session:
                 session.add(
                     BibleVersion(
-                        command=command,  # type: ignore
-                        name=name,  # type: ignore
-                        abbr=abbr,  # type: ignore
-                        service=service,  # type: ignore
-                        service_version=service_version,  # type: ignore
-                        rtl=rtl,  # type: ignore
-                        books=_book_mask_from_books(books),  # type: ignore
+                        command=command,
+                        name=name,
+                        abbr=abbr,
+                        service=service,
+                        service_version=service_version,
+                        rtl=rtl,
+                        books=_book_mask_from_books(books),
                     )
                 )
         except UniqueViolationError:
@@ -895,13 +895,13 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         try:
             async with Session.begin() as session:
                 bible = BibleVersion(
-                    command=command,  # type: ignore
-                    name=name,  # type: ignore
-                    abbr=abbreviation,  # type: ignore
-                    service=service,  # type: ignore
-                    service_version=service_version,  # type: ignore
-                    rtl=rtl,  # type: ignore
-                    books=_book_mask_from_books(books),  # type: ignore
+                    command=command,
+                    name=name,
+                    abbr=abbreviation,
+                    service=service,
+                    service_version=service_version,
+                    rtl=rtl,
+                    books=_book_mask_from_books(books),
                 )
                 session.add(bible)
 

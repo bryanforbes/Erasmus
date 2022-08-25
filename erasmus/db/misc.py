@@ -1,24 +1,14 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
-from typing import TYPE_CHECKING
-
 from botus_receptus.sqlalchemy import Snowflake
-from sqlalchemy import Boolean, Column
+from sqlalchemy import Boolean
 
-from .base import mapped
-
-if TYPE_CHECKING:
-    from sqlalchemy.orm import Mapped
+from .base import Base, Column, Mapped, model
 
 
-@mapped
-@dataclass
-class Notification:
+@model
+class Notification(Base):
     __tablename__ = 'notifications'
-    __sa_dataclass_metadata_key__ = 'sa'
 
-    id: Mapped[int] = field(metadata={'sa': Column(Snowflake, primary_key=True)})
-    application_commands: Mapped[bool] = field(
-        metadata={'sa': Column(Boolean, nullable=False)}
-    )
+    id: Mapped[int] = Column(Snowflake, primary_key=True, init=True)
+    application_commands: Mapped[bool] = Column(Boolean, nullable=False)

@@ -1,13 +1,11 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from typing import TYPE_CHECKING
 
 from botus_receptus.sqlalchemy import Snowflake
 from sqlalchemy import (
     BigInteger,
     Boolean,
-    Column,
     ForeignKey,
     Integer,
     String,
@@ -17,10 +15,9 @@ from sqlalchemy import (
     select,
 )
 from sqlalchemy.dialects.postgresql import insert
-from sqlalchemy.orm import Mapped, relationship
 
 from ..exceptions import InvalidVersionError
-from .base import mapped
+from .base import Base, Column, Mapped, mixin_column, model, model_mixin, relationship
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
@@ -29,26 +26,18 @@ if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
 
-@mapped
-@dataclass
-class BibleVersion:
+@model
+class BibleVersion(Base):
     __tablename__ = 'bible_versions'
-    __sa_dataclass_metadata_key__ = 'sa'
 
-    id: Mapped[int] = field(
-        init=False, metadata={'sa': Column(Integer, primary_key=True)}
-    )
-    command: Mapped[str] = field(
-        metadata={'sa': Column(String, unique=True, nullable=False)}
-    )
-    name: Mapped[str] = field(metadata={'sa': Column(String, nullable=False)})
-    abbr: Mapped[str] = field(metadata={'sa': Column(String, nullable=False)})
-    service: Mapped[str] = field(metadata={'sa': Column(String, nullable=False)})
-    service_version: Mapped[str] = field(
-        metadata={'sa': Column(String, nullable=False)}
-    )
-    rtl: Mapped[bool] = field(metadata={'sa': Column(Boolean)})
-    books: Mapped[int] = field(metadata={'sa': Column(BigInteger, nullable=False)})
+    id: Mapped[int] = Column(Integer, primary_key=True)
+    command: Mapped[str] = Column(String, unique=True, nullable=False)
+    name: Mapped[str] = Column(String, nullable=False)
+    abbr: Mapped[str] = Column(String, nullable=False)
+    service: Mapped[str] = Column(String, nullable=False)
+    service_version: Mapped[str] = Column(String, nullable=False)
+    rtl: Mapped[bool | None] = Column(Boolean)
+    books: Mapped[int] = Column(BigInteger, nullable=False)
 
     async def set_for_user(
         self, session: AsyncSession, user: discord.User | discord.Member, /
@@ -152,31 +141,25 @@ class BibleVersion:
         return await BibleVersion.get_by_command(session, 'esv')
 
 
-@dataclass
-class _BibleVersionMixin:
-    __sa_dataclass_metadata_key__ = 'sa'
-
-    bible_id: Mapped[int | None] = field(
-        metadata={'sa': lambda: Column(Integer, ForeignKey('bible_versions.id'))}
+@model_mixin
+class _BibleVersionMixin(Base):
+    bible_id: Mapped[int | None] = mixin_column(
+        lambda: Column(Integer, ForeignKey('bible_versions.id'))
     )
-    bible_version: Mapped[BibleVersion | None] = field(
-        metadata={
-            'sa': lambda: relationship(BibleVersion, lazy='joined')  # type: ignore
-        }
+    bible_version: Mapped[BibleVersion | None] = mixin_column(
+        lambda: relationship(BibleVersion, lazy='joined', uselist=False)
     )
 
 
-@mapped
-@dataclass
+@model
 class UserPref(_BibleVersionMixin):
     __tablename__ = 'user_prefs'
 
-    user_id: Mapped[int] = field(metadata={'sa': Column(Snowflake, primary_key=True)})
+    user_id: Mapped[int] = Column(Snowflake, primary_key=True, init=True)
 
 
-@mapped
-@dataclass
+@model
 class GuildPref(_BibleVersionMixin):
     __tablename__ = 'guild_prefs'
 
-    guild_id: Mapped[int] = field(metadata={'sa': Column(Snowflake, primary_key=True)})
+    guild_id: Mapped[int] = Column(Snowflake, primary_key=True, init=True)

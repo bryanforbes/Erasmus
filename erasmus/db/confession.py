@@ -1,12 +1,10 @@
 from __future__ import annotations
 
-from dataclasses import dataclass, field
 from enum import Enum
 from typing import TYPE_CHECKING
 
 from sqlalchemy import (
     Boolean,
-    Column,
     Computed,
     ForeignKey,
     Index,
@@ -19,10 +17,18 @@ from sqlalchemy import (
     text as _sa_text,
 )
 from sqlalchemy.dialects.postgresql import ENUM
-from sqlalchemy.orm import Mapped, relationship
 
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
-from .base import TSVector, mapped
+from .base import (
+    Base,
+    Column,
+    Mapped,
+    TSVector,
+    mixin_column,
+    model,
+    model_mixin,
+    relationship,
+)
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Sequence
@@ -58,59 +64,39 @@ class NumberingType(Enum):
         return '<%s.%s>' % (self.__class__.__name__, self.name)
 
 
-@dataclass
-class _ConfessionChildMixin:
-    __sa_dataclass_metadata_key__ = 'sa'
-
-    confess_id: Mapped[int] = field(
-        metadata={
-            'sa': lambda: Column(Integer, ForeignKey('confessions.id'), nullable=False)
-        }
+@model_mixin
+class _ConfessionChildMixin(Base):
+    confess_id: Mapped[int] = mixin_column(
+        lambda: Column(Integer, ForeignKey('confessions.id'), nullable=False)
     )
 
 
-@mapped
-@dataclass
+@model
 class Chapter(_ConfessionChildMixin):
     __tablename__ = 'confession_chapters'
 
-    id: Mapped[int] = field(
-        init=False, metadata={'sa': Column(Integer, primary_key=True)}
-    )
-    chapter_number: Mapped[int] = field(
-        metadata={'sa': Column(Integer, nullable=False)}
-    )
-    chapter_title: Mapped[str] = field(metadata={'sa': Column(String, nullable=False)})
+    id: Mapped[int] = Column(Integer, primary_key=True)
+    chapter_number: Mapped[int] = Column(Integer, nullable=False)
+    chapter_title: Mapped[str] = Column(String, nullable=False)
 
 
-@mapped
-@dataclass
+@model
 class Paragraph(_ConfessionChildMixin):
     __tablename__ = 'confession_paragraphs'
 
-    id: Mapped[int] = field(
-        init=False, metadata={'sa': Column(Integer, primary_key=True)}
-    )
-    chapter_number: Mapped[int] = field(
-        metadata={'sa': Column(Integer, nullable=False)}
-    )
-    paragraph_number: Mapped[int] = field(
-        metadata={'sa': Column(Integer, nullable=False)}
-    )
-    text: Mapped[str] = field(metadata={'sa': Column(Text, nullable=False)})
+    id: Mapped[int] = Column(Integer, primary_key=True)
+    chapter_number: Mapped[int] = Column(Integer, nullable=False)
+    paragraph_number: Mapped[int] = Column(Integer, nullable=False)
+    text: Mapped[str] = Column(Text, nullable=False)
 
-    chapter: Mapped[Chapter] = field(
-        init=False,
-        metadata={
-            'sa': relationship(
-                'Chapter',
-                lazy='joined',
-                primaryjoin='and_('
-                'Paragraph.chapter_number == foreign(Chapter.chapter_number),'
-                'Paragraph.confess_id == foreign(Chapter.confess_id))',
-                uselist=False,
-            )
-        },
+    chapter: Mapped[Chapter] = relationship(
+        Chapter,
+        lazy='joined',
+        primaryjoin='and_('
+        'Paragraph.chapter_number == foreign(Chapter.chapter_number),'
+        'Paragraph.confess_id == foreign(Chapter.confess_id))',
+        uselist=False,
+        nullable=False,
     )
 
     __table_args__ = (
@@ -122,31 +108,23 @@ class Paragraph(_ConfessionChildMixin):
     )
 
 
-@mapped
-@dataclass
+@model
 class Question(_ConfessionChildMixin):
     __tablename__ = 'confession_questions'
 
-    id: Mapped[int] = field(
-        init=False, metadata={'sa': Column(Integer, primary_key=True)}
-    )
-    question_number: Mapped[int] = field(
-        metadata={'sa': Column(Integer, nullable=False)}
-    )
-    question_text: Mapped[str] = field(metadata={'sa': Column(Text, nullable=False)})
-    answer_text: Mapped[str] = field(metadata={'sa': Column(Text, nullable=False)})
-    search_vector: Mapped[str] = field(
-        metadata={
-            'sa': Column(
-                TSVector,
-                Computed(
-                    func.to_tsvector(
-                        _sa_text("'english'"),
-                        _sa_text("question_text || ' ' || answer_text"),
-                    )
-                ),
+    id: Mapped[int] = Column(Integer, primary_key=True)
+    question_number: Mapped[int] = Column(Integer, nullable=False)
+    question_text: Mapped[str] = Column(Text, nullable=False)
+    answer_text: Mapped[str] = Column(Text, nullable=False)
+    search_vector: Mapped[str | None] = Column(
+        TSVector,
+        Computed(
+            func.to_tsvector(
+                _sa_text("'english'"),
+                _sa_text("question_text || ' ' || answer_text"),
             )
-        }
+        ),
+        init=False,
     )
 
     __table_args__ = (
@@ -158,30 +136,20 @@ class Question(_ConfessionChildMixin):
     )
 
 
-@mapped
-@dataclass
+@model
 class Article(_ConfessionChildMixin):
     __tablename__ = 'confession_articles'
 
-    id: Mapped[int] = field(
-        init=False, metadata={'sa': Column(Integer, primary_key=True)}
-    )
-    article_number: Mapped[int] = field(
-        metadata={'sa': Column(Integer, nullable=False)}
-    )
-    title: Mapped[str] = field(metadata={'sa': Column(Text, nullable=False)})
-    text: Mapped[str] = field(metadata={'sa': Column(Text, nullable=False)})
-    search_vector: Mapped[str] = field(
-        metadata={
-            'sa': Column(
-                TSVector,
-                Computed(
-                    func.to_tsvector(
-                        _sa_text("'english'"), _sa_text("title || ' ' || text")
-                    )
-                ),
-            )
-        }
+    id: Mapped[int] = Column(Integer, primary_key=True)
+    article_number: Mapped[int] = Column(Integer, nullable=False)
+    title: Mapped[str] = Column(Text, nullable=False)
+    text: Mapped[str] = Column(Text, nullable=False)
+    search_vector: Mapped[str | None] = Column(
+        TSVector,
+        Computed(
+            func.to_tsvector(_sa_text("'english'"), _sa_text("title || ' ' || text"))
+        ),
+        init=False,
     )
 
     __table_args__ = (
@@ -193,46 +161,30 @@ class Article(_ConfessionChildMixin):
     )
 
 
-@mapped
-@dataclass
-class Confession:
+@model
+class Confession(Base):
     __tablename__ = 'confessions'
-    __sa_dataclass_metadata_key__ = 'sa'
 
-    id: Mapped[int] = field(
-        init=False, metadata={'sa': Column(Integer, primary_key=True)}
+    id: Mapped[int] = Column(Integer, primary_key=True)
+    command: Mapped[str] = Column(String, unique=True, nullable=False)
+    name: Mapped[str] = Column(String, nullable=False)
+    type: Mapped[ConfessionType] = Column(
+        ENUM(ConfessionType, name='confession_type'), nullable=False
     )
-    command: Mapped[str] = field(
-        metadata={'sa': Column(String, unique=True, nullable=False)}
+    numbering: Mapped[NumberingType] = Column(
+        ENUM(NumberingType, name='confession_numbering_type'), nullable=False
     )
-    name: Mapped[str] = field(metadata={'sa': Column(String, nullable=False)})
-    type: Mapped[ConfessionType] = field(
-        metadata={
-            'sa': Column(ENUM(ConfessionType, name='confession_type'), nullable=False)
-        }
-    )
-    numbering: Mapped[NumberingType] = field(
-        metadata={
-            'sa': Column(
-                ENUM(NumberingType, name='confession_numbering_type'), nullable=False
+    sortable_name: Mapped[str | None] = Column(
+        String,
+        Computed(
+            func.regexp_replace(
+                _sa_text('name'),
+                _sa_text(r"'^(the|an?)\s+(.*)$'"),
+                _sa_text(r"'\2, \1'"),
+                _sa_text("'i'"),
             )
-        }
-    )
-    sortable_name: Mapped[str] = field(
+        ),
         init=False,
-        metadata={
-            'sa': Column(
-                String,
-                Computed(
-                    func.regexp_replace(
-                        _sa_text('name'),
-                        _sa_text(r"'^(the|an?)\s+(.*)$'"),
-                        _sa_text(r"'\2, \1'"),
-                        _sa_text("'i'"),
-                    )
-                ),
-            )
-        },
     )
 
     async def get_chapters(self, session: AsyncSession, /) -> AsyncIterator[Chapter]:

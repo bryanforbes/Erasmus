@@ -126,9 +126,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             with contextlib.suppress(UniqueViolationError):
                 async with Session.begin() as session:
                     session.add(
-                        Notification(
-                            id=ctx.guild.id, application_commands=True  # type: ignore
-                        )
+                        Notification(id=ctx.guild.id, application_commands=True)
                     )
 
     async def __before_invoke(self, ctx: commands.Context[Self], /) -> None:
