@@ -83,6 +83,13 @@ class Chapter(_ConfessionChildMixin):
 @model
 class Paragraph(_ConfessionChildMixin):
     __tablename__ = 'confession_paragraphs'
+    __table_args__ = (
+        Index(
+            'confession_paragraphs_text_idx',
+            func.to_tsvector(_sa_text("'english'"), _sa_text("'text'")),
+            postgresql_using='gin',
+        ),
+    )
 
     id: Mapped[int] = Column(Integer, primary_key=True)
     chapter_number: Mapped[int] = Column(Integer, nullable=False)
@@ -99,18 +106,17 @@ class Paragraph(_ConfessionChildMixin):
         nullable=False,
     )
 
-    __table_args__ = (
-        Index(
-            'confession_paragraphs_text_idx',
-            func.to_tsvector(_sa_text("'english'"), _sa_text("'text'")),
-            postgresql_using='gin',
-        ),
-    )
-
 
 @model
 class Question(_ConfessionChildMixin):
     __tablename__ = 'confession_questions'
+    __table_args__ = (
+        Index(
+            'confession_questions_search_idx',
+            'search_vector',
+            postgresql_using='gin',
+        ),
+    )
 
     id: Mapped[int] = Column(Integer, primary_key=True)
     question_number: Mapped[int] = Column(Integer, nullable=False)
@@ -127,18 +133,17 @@ class Question(_ConfessionChildMixin):
         init=False,
     )
 
-    __table_args__ = (
-        Index(
-            'confession_questions_search_idx',
-            'search_vector',
-            postgresql_using='gin',
-        ),
-    )
-
 
 @model
 class Article(_ConfessionChildMixin):
     __tablename__ = 'confession_articles'
+    __table_args__ = (
+        Index(
+            'confession_articles_search_idx',
+            'search_vector',
+            postgresql_using='gin',
+        ),
+    )
 
     id: Mapped[int] = Column(Integer, primary_key=True)
     article_number: Mapped[int] = Column(Integer, nullable=False)
@@ -150,14 +155,6 @@ class Article(_ConfessionChildMixin):
             func.to_tsvector(_sa_text("'english'"), _sa_text("title || ' ' || text"))
         ),
         init=False,
-    )
-
-    __table_args__ = (
-        Index(
-            'confession_articles_search_idx',
-            'search_vector',
-            postgresql_using='gin',
-        ),
     )
 
 
