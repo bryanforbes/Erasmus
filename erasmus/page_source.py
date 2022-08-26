@@ -3,9 +3,20 @@ from __future__ import annotations
 import inspect
 from abc import abstractmethod
 from collections.abc import AsyncIterable, Awaitable, Callable, Iterable, Sequence
-from typing import Any, ParamSpec, Protocol, TypeAlias, TypeVar, runtime_checkable
+from typing import (
+    TYPE_CHECKING,
+    ParamSpec,
+    Protocol,
+    TypeAlias,
+    TypedDict,
+    TypeVar,
+    runtime_checkable,
+)
 
 import discord
+
+if TYPE_CHECKING:
+    from typing_extensions import NotRequired
 
 T = TypeVar('T')
 T_co = TypeVar('T_co', covariant=True)
@@ -23,6 +34,11 @@ async def _maybe_await(f: MaybeAwaitable[P, T], *args: P.args, **kwargs: P.kwarg
         return value  # type: ignore
 
 
+class Kwargs(TypedDict):
+    content: NotRequired[str]
+    embeds: NotRequired[Sequence[discord.Embed]]
+
+
 class Pages(Protocol[T]):
     source: PageSource[T]
     current_page: int
@@ -36,16 +52,14 @@ class BasePages(Pages[T]):
         self.source = source
         self.current_page = 0
 
-    async def _get_kwargs_from_page(self, page: T | None, /) -> dict[str, Any]:
-        value = await _maybe_await(self.source.format_page, self, page)
-        if isinstance(value, dict):
-            return value
+    async def _get_kwargs_from_page(self, page: T | None, /) -> Kwargs:
+        value = await self.source.format_page(self, page)
+        if isinstance(value, discord.Embed):
+            return {'embeds': [value]}
         elif isinstance(value, str):
-            return {'content': value, 'embed': None}
-        elif isinstance(value, discord.Embed):
-            return {'embed': value, 'content': None}
+            return {'content': value}
         else:
-            return {}
+            return value
 
 
 class PageSource(Protocol[T]):
@@ -86,7 +100,7 @@ class PageSource(Protocol[T]):
     @abstractmethod
     async def format_page(
         self, pages: Pages[T], page: T | None, /
-    ) -> str | discord.Embed | dict[str, Any]:
+    ) -> str | discord.Embed | Kwargs:
         raise NotImplementedError
 
 
@@ -220,7 +234,7 @@ class EmbedPageSource(PageSourceBase[T]):
 
     async def format_page(
         self, pages: Pages[T], page: T | None, /
-    ) -> str | discord.Embed | dict[str, Any]:
+    ) -> str | discord.Embed | Kwargs:
         self.embed.clear_fields()
         self.embed.description = None
 
