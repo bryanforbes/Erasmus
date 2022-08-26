@@ -12,7 +12,6 @@ from sqlalchemy import (
     String,
     Text,
     and_,
-    asc,
     func,
     select,
     text as _sa_text,
@@ -181,8 +180,8 @@ class Confession(Base):
         result = peekable(
             await session.scalars(
                 select(Chapter)
-                .where(Chapter.confess_id == self.id)
-                .order_by(asc(Chapter.chapter_number))
+                .filter(Chapter.confess_id == self.id)
+                .order_by(Chapter.chapter_number.asc())
             )
         )
 
@@ -198,9 +197,9 @@ class Confession(Base):
         result = peekable(
             await session.scalars(
                 select(Paragraph)
-                .where(Paragraph.confess_id == self.id)
+                .filter(Paragraph.confess_id == self.id)
                 .order_by(
-                    asc(Paragraph.chapter_number), asc(Paragraph.paragraph_number)
+                    Paragraph.chapter_number.asc(), Paragraph.paragraph_number.asc()
                 )
             )
         )
@@ -216,10 +215,11 @@ class Confession(Base):
     ) -> Paragraph:
         result: Paragraph | None = (
             await session.scalars(
-                select(Paragraph)
-                .where(Paragraph.confess_id == self.id)
-                .where(Paragraph.chapter_number == chapter)
-                .where(Paragraph.paragraph_number == paragraph)
+                select(Paragraph).filter(
+                    Paragraph.confess_id == self.id,
+                    Paragraph.chapter_number == chapter,
+                    Paragraph.paragraph_number == paragraph,
+                )
             )
         ).first()
 
@@ -234,14 +234,14 @@ class Confession(Base):
         result = await session.scalars(
             select(Paragraph)
             .join(Chapter, Paragraph.chapter)
-            .where(Paragraph.confess_id == self.id)
-            .where(
+            .filter(
+                Paragraph.confess_id == self.id,
                 func.to_tsvector(
                     _sa_text("'english'"),
                     Chapter.chapter_title + _sa_text("' '") + Paragraph.text,
-                ).match(' & '.join(terms), postgresql_regconfig='english')
+                ).match(' & '.join(terms), postgresql_regconfig='english'),
             )
-            .order_by(asc(Paragraph.chapter_number))
+            .order_by(Paragraph.chapter_number.asc())
         )
 
         for paragraph in result:
@@ -250,8 +250,8 @@ class Confession(Base):
     async def get_questions(self, session: AsyncSession, /) -> AsyncIterator[Question]:
         result = await session.scalars(
             select(Question)
-            .where(Question.confess_id == self.id)
-            .order_by(asc(Question.question_number))
+            .filter(Question.confess_id == self.id)
+            .order_by(Question.question_number.asc())
         )
 
         for question in result:
@@ -259,7 +259,7 @@ class Confession(Base):
 
     def get_question_count(self, session: AsyncSession, /) -> Coroutine[int]:
         return session.scalar(
-            select([func.count(Question.id)]).where(Question.confess_id == self.id)
+            select([func.count(Question.id)]).filter(Question.confess_id == self.id)
         )
 
     async def get_question(
@@ -267,9 +267,10 @@ class Confession(Base):
     ) -> Question:
         question: Question | None = (
             await session.scalars(
-                select(Question)
-                .where(Question.confess_id == self.id)
-                .where(Question.question_number == question_number)
+                select(Question).filter(
+                    Question.confess_id == self.id,
+                    Question.question_number == question_number,
+                )
             )
         ).first()
 
@@ -283,9 +284,11 @@ class Confession(Base):
     ) -> AsyncIterator[Question]:
         result = await session.scalars(
             select(Question)
-            .where(Question.confess_id == self.id)
-            .where(Question.search_vector.match(' & '.join(terms)))
-            .order_by(asc(Question.question_number))
+            .filter(
+                Question.confess_id == self.id,
+                Question.search_vector.match(' & '.join(terms)),
+            )
+            .order_by(Question.question_number.asc())
         )
 
         for question in result:
@@ -295,8 +298,8 @@ class Confession(Base):
         result = peekable(
             await session.scalars(
                 select(Article)
-                .where(Article.confess_id == self.id)
-                .order_by(asc(Article.article_number))
+                .filter(Article.confess_id == self.id)
+                .order_by(Article.article_number.asc())
             )
         )
 
@@ -311,9 +314,10 @@ class Confession(Base):
     ) -> Article:
         article: Article | None = (
             await session.scalars(
-                select(Article)
-                .where(Article.confess_id == self.id)
-                .where(Article.article_number == article_number)
+                select(Article).filter(
+                    Article.confess_id == self.id,
+                    Article.article_number == article_number,
+                )
             )
         ).first()
 
@@ -327,9 +331,11 @@ class Confession(Base):
     ) -> AsyncIterator[Article]:
         result = await session.scalars(
             select(Article)
-            .where(Article.confess_id == self.id)
-            .where(Article.search_vector.match(' & '.join(terms)))
-            .order_by(asc(Article.article_number))
+            .filter(
+                Article.confess_id == self.id,
+                Article.search_vector.match(' & '.join(terms)),
+            )
+            .order_by(Article.article_number.asc())
         )
 
         for article in result:
@@ -341,7 +347,9 @@ class Confession(Base):
     ) -> AsyncIterator[Confession]:
         result = await session.scalars(
             select(Confession).order_by(
-                asc(Confession.sortable_name if order_by_name else Confession.command)
+                Confession.sortable_name.asc()
+                if order_by_name
+                else Confession.command.asc()
             )
         )
 
@@ -352,7 +360,7 @@ class Confession(Base):
     async def get_by_command(session: AsyncSession, command: str, /) -> Confession:
         c: Confession | None = (
             await session.scalars(
-                select(Confession).where(Confession.command == command.lower())
+                select(Confession).filter(Confession.command == command.lower())
             )
         ).first()
 

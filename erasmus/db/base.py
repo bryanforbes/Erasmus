@@ -219,7 +219,9 @@ def relationship(
 
 _CEA = TypeVar('_CEA', bound='ColumnElement[Any] | Callable[[], ColumnElement[Any]]')
 
-foreign: Final = cast('Callable[[_CEA], _CEA]', _sa_foreign)
+
+def foreign(expr: _CEA, /) -> _CEA:
+    return _sa_foreign(expr)  # pyright: ignore
 
 
 @dataclass_transform(field_specifiers=(_dataclass_field, mixin_column, relationship))

@@ -3,17 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from botus_receptus.sqlalchemy import Snowflake
-from sqlalchemy import (
-    BigInteger,
-    Boolean,
-    ForeignKey,
-    Integer,
-    String,
-    asc,
-    func,
-    or_,
-    select,
-)
+from sqlalchemy import BigInteger, Boolean, ForeignKey, Integer, String, func, select
 from sqlalchemy.dialects.postgresql import insert
 
 from ..exceptions import InvalidVersionError
@@ -81,25 +71,19 @@ class BibleVersion(Base):
         stmt = select(BibleVersion)
 
         if ordered:
-            stmt = stmt.order_by(asc(BibleVersion.command))
+            stmt = stmt.order_by(BibleVersion.command.asc())
 
         if limit:
             stmt = stmt.limit(limit)
 
         if search_term is not None:
             search_term = search_term.lower()
-            stmt = stmt.where(
-                or_(
-                    func.lower(BibleVersion.command).startswith(
-                        search_term, autoescape=True
-                    ),
-                    func.lower(BibleVersion.abbr).startswith(
-                        search_term, autoescape=True
-                    ),
-                    func.lower(BibleVersion.name).contains(
-                        search_term, autoescape=True
-                    ),
+            stmt = stmt.filter(
+                func.lower(BibleVersion.command).startswith(
+                    search_term, autoescape=True
                 )
+                | func.lower(BibleVersion.abbr).startswith(search_term, autoescape=True)
+                | func.lower(BibleVersion.name).contains(search_term, autoescape=True)
             )
 
         result = await session.scalars(stmt)
@@ -111,7 +95,7 @@ class BibleVersion(Base):
     async def get_by_command(session: AsyncSession, command: str, /) -> BibleVersion:
         bible: BibleVersion | None = (
             await session.scalars(
-                select(BibleVersion).where(BibleVersion.command == command)
+                select(BibleVersion).filter(BibleVersion.command == command)
             )
         ).first()
 
@@ -124,7 +108,7 @@ class BibleVersion(Base):
     async def get_by_abbr(session: AsyncSession, abbr: str, /) -> BibleVersion | None:
         return (
             await session.scalars(
-                select(BibleVersion).where(BibleVersion.command.ilike(abbr))
+                select(BibleVersion).filter(BibleVersion.command.ilike(abbr))
             )
         ).first()
 
