@@ -11,6 +11,7 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
+    and_,
     asc,
     func,
     select,
@@ -21,9 +22,10 @@ from sqlalchemy.dialects.postgresql import ENUM
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
 from .base import (
     Base,
-    Column,
     Mapped,
     TSVector,
+    foreign,
+    mapped_column,
     mixin_column,
     model,
     model_mixin,
@@ -57,7 +59,7 @@ class NumberingType(Enum):
 @model_mixin
 class _ConfessionChildMixin(Base):
     confess_id: Mapped[int] = mixin_column(
-        lambda: Column(Integer, ForeignKey('confessions.id'), nullable=False)
+        lambda: mapped_column(Integer, ForeignKey('confessions.id'), nullable=False)
     )
 
 
@@ -65,9 +67,9 @@ class _ConfessionChildMixin(Base):
 class Chapter(_ConfessionChildMixin):
     __tablename__ = 'confession_chapters'
 
-    id: Mapped[int] = Column(Integer, primary_key=True)
-    chapter_number: Mapped[int] = Column(Integer, nullable=False)
-    chapter_title: Mapped[str] = Column(String, nullable=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    chapter_number: Mapped[int] = mapped_column(Integer, nullable=False)
+    chapter_title: Mapped[str] = mapped_column(String, nullable=False)
 
 
 @model
@@ -81,17 +83,18 @@ class Paragraph(_ConfessionChildMixin):
         ),
     )
 
-    id: Mapped[int] = Column(Integer, primary_key=True)
-    chapter_number: Mapped[int] = Column(Integer, nullable=False)
-    paragraph_number: Mapped[int] = Column(Integer, nullable=False)
-    text: Mapped[str] = Column(Text, nullable=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    chapter_number: Mapped[int] = mapped_column(Integer, nullable=False)
+    paragraph_number: Mapped[int] = mapped_column(Integer, nullable=False)
+    text: Mapped[str] = mapped_column(Text, nullable=False)
 
     chapter: Mapped[Chapter] = relationship(
         Chapter,
         lazy='joined',
-        primaryjoin='and_('
-        'Paragraph.chapter_number == foreign(Chapter.chapter_number),'
-        'Paragraph.confess_id == foreign(Chapter.confess_id))',
+        primaryjoin=lambda: and_(
+            Paragraph.chapter_number == foreign(Chapter.chapter_number),
+            Paragraph.confess_id == foreign(Chapter.confess_id),
+        ),
         uselist=False,
         nullable=False,
     )
@@ -108,11 +111,11 @@ class Question(_ConfessionChildMixin):
         ),
     )
 
-    id: Mapped[int] = Column(Integer, primary_key=True)
-    question_number: Mapped[int] = Column(Integer, nullable=False)
-    question_text: Mapped[str] = Column(Text, nullable=False)
-    answer_text: Mapped[str] = Column(Text, nullable=False)
-    search_vector: Mapped[str | None] = Column(
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    question_number: Mapped[int] = mapped_column(Integer, nullable=False)
+    question_text: Mapped[str] = mapped_column(Text, nullable=False)
+    answer_text: Mapped[str] = mapped_column(Text, nullable=False)
+    search_vector: Mapped[str] = mapped_column(
         TSVector,
         Computed(
             func.to_tsvector(
@@ -135,11 +138,11 @@ class Article(_ConfessionChildMixin):
         ),
     )
 
-    id: Mapped[int] = Column(Integer, primary_key=True)
-    article_number: Mapped[int] = Column(Integer, nullable=False)
-    title: Mapped[str] = Column(Text, nullable=False)
-    text: Mapped[str] = Column(Text, nullable=False)
-    search_vector: Mapped[str | None] = Column(
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    article_number: Mapped[int] = mapped_column(Integer, nullable=False)
+    title: Mapped[str] = mapped_column(Text, nullable=False)
+    text: Mapped[str] = mapped_column(Text, nullable=False)
+    search_vector: Mapped[str] = mapped_column(
         TSVector,
         Computed(
             func.to_tsvector(_sa_text("'english'"), _sa_text("title || ' ' || text"))
@@ -152,16 +155,16 @@ class Article(_ConfessionChildMixin):
 class Confession(Base):
     __tablename__ = 'confessions'
 
-    id: Mapped[int] = Column(Integer, primary_key=True)
-    command: Mapped[str] = Column(String, unique=True, nullable=False)
-    name: Mapped[str] = Column(String, nullable=False)
-    type: Mapped[ConfessionType] = Column(
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    command: Mapped[str] = mapped_column(String, unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    type: Mapped[ConfessionType] = mapped_column(
         ENUM(ConfessionType, name='confession_type'), nullable=False
     )
-    numbering: Mapped[NumberingType] = Column(
+    numbering: Mapped[NumberingType] = mapped_column(
         ENUM(NumberingType, name='confession_numbering_type'), nullable=False
     )
-    sortable_name: Mapped[str | None] = Column(
+    sortable_name: Mapped[str] = mapped_column(
         String,
         Computed(
             func.regexp_replace(

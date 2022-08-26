@@ -17,7 +17,15 @@ from sqlalchemy import (
 from sqlalchemy.dialects.postgresql import insert
 
 from ..exceptions import InvalidVersionError
-from .base import Base, Column, Mapped, mixin_column, model, model_mixin, relationship
+from .base import (
+    Base,
+    Mapped,
+    mapped_column,
+    mixin_column,
+    model,
+    model_mixin,
+    relationship,
+)
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
@@ -30,14 +38,14 @@ if TYPE_CHECKING:
 class BibleVersion(Base):
     __tablename__ = 'bible_versions'
 
-    id: Mapped[int] = Column(Integer, primary_key=True)
-    command: Mapped[str] = Column(String, unique=True, nullable=False)
-    name: Mapped[str] = Column(String, nullable=False)
-    abbr: Mapped[str] = Column(String, nullable=False)
-    service: Mapped[str] = Column(String, nullable=False)
-    service_version: Mapped[str] = Column(String, nullable=False)
-    rtl: Mapped[bool | None] = Column(Boolean)
-    books: Mapped[int] = Column(BigInteger, nullable=False)
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    command: Mapped[str] = mapped_column(String, unique=True, nullable=False)
+    name: Mapped[str] = mapped_column(String, nullable=False)
+    abbr: Mapped[str] = mapped_column(String, nullable=False)
+    service: Mapped[str] = mapped_column(String, nullable=False)
+    service_version: Mapped[str] = mapped_column(String, nullable=False)
+    rtl: Mapped[bool | None] = mapped_column(Boolean)
+    books: Mapped[int] = mapped_column(BigInteger, nullable=False)
 
     async def set_for_user(
         self, session: AsyncSession, user: discord.User | discord.Member, /
@@ -144,10 +152,10 @@ class BibleVersion(Base):
 @model_mixin
 class _BibleVersionMixin(Base):
     bible_id: Mapped[int | None] = mixin_column(
-        lambda: Column(Integer, ForeignKey('bible_versions.id'))
+        lambda: mapped_column(Integer, ForeignKey('bible_versions.id'))
     )
-    bible_version: Mapped[BibleVersion | None] = mixin_column(
-        lambda: relationship(BibleVersion, lazy='joined', uselist=False)
+    bible_version: Mapped[BibleVersion | None] = relationship(
+        BibleVersion, lazy='joined', uselist=False
     )
 
 
@@ -155,11 +163,11 @@ class _BibleVersionMixin(Base):
 class UserPref(_BibleVersionMixin):
     __tablename__ = 'user_prefs'
 
-    user_id: Mapped[int] = Column(Snowflake, primary_key=True, init=True)
+    user_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
 
 
 @model
 class GuildPref(_BibleVersionMixin):
     __tablename__ = 'guild_prefs'
 
-    guild_id: Mapped[int] = Column(Snowflake, primary_key=True, init=True)
+    guild_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)

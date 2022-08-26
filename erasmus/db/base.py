@@ -1,11 +1,20 @@
 from __future__ import annotations
 
 from dataclasses import MISSING, Field, dataclass, field as _dataclass_field
-from typing import TYPE_CHECKING, Any, Final, Literal, TypeVar, cast, overload
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Final,
+    Literal,
+    TypeAlias,
+    TypeVar,
+    cast,
+    overload,
+)
 from typing_extensions import dataclass_transform
 
 from botus_receptus.sqlalchemy import async_sessionmaker
-from sqlalchemy import Column as _SAColumn, TypeDecorator
+from sqlalchemy import Column, TypeDecorator
 from sqlalchemy.dialects.postgresql import TSVECTOR
 from sqlalchemy.orm import (
     Mapped as _SAMapped,
@@ -13,9 +22,12 @@ from sqlalchemy.orm import (
     relationship as _sa_relationship,
 )
 
+from sqlalchemy.orm import foreign as _sa_foreign  # pyright: ignore  # isort: skip
+
 if TYPE_CHECKING:
     from collections.abc import Callable
 
+    from sqlalchemy.sql import ClauseElement
     from sqlalchemy.sql.base import SchemaEventTarget
     from sqlalchemy.sql.elements import ColumnElement
     from sqlalchemy.types import TypeEngine
@@ -74,73 +86,84 @@ _T = TypeVar('_T')
 
 
 class Mapped(_SAMapped[_T]):
-    def __set__(self, instance: object, value: _T) -> Any:
-        raise NotImplementedError()
+    if TYPE_CHECKING:
+
+        @overload
+        def __get__(self, instance: None, owner: Any) -> Mapped[_T]:
+            ...
+
+        @overload
+        def __get__(self, instance: object, owner: Any) -> _T:
+            ...
+
+        def __get__(self, instance: Any, owner: Any) -> Any:
+            ...
+
+        def __set__(self, instance: Any, value: _T | ClauseElement) -> None:
+            ...
+
+        def __delete__(self, instance: Any) -> None:
+            ...
+
+        @classmethod
+        def _empty_constructor(cls, arg1: Any) -> Mapped[_T]:
+            ...
+
+
+_TypeEngineArgument: TypeAlias = 'TypeEngine[_T] | type[TypeEngine[_T]]'
 
 
 @overload
-def Column(
-    column_type: TypeEngine[_T] | type[TypeEngine[_T]],
+def mapped_column(
+    column_type: _TypeEngineArgument[Any],
     /,
     *args: SchemaEventTarget,
     primary_key: Literal[True],
     init: Literal[False] = False,
-) -> Mapped[_T]:
+) -> Mapped[Any]:
     ...
 
 
 @overload
-def Column(
-    column_type: TypeEngine[_T] | type[TypeEngine[_T]],
+def mapped_column(
+    column_type: _TypeEngineArgument[Any],
     /,
     *args: SchemaEventTarget,
     primary_key: Literal[True],
     init: Literal[True],
-) -> Mapped[_T]:
+) -> Mapped[Any]:
     ...
 
 
 @overload
-def Column(
-    column_type: TypeEngine[_T] | type[TypeEngine[_T]],
-    /,
-    *args: SchemaEventTarget,
-    nullable: Literal[False],
-    unique: bool | None = ...,
-    init: bool = True,
-) -> Mapped[_T]:
-    ...
-
-
-@overload
-def Column(
-    column_type: TypeEngine[_T] | type[TypeEngine[_T]],
+def mapped_column(
+    column_type: _TypeEngineArgument[Any],
     /,
     *args: SchemaEventTarget,
     primary_key: Literal[False] = ...,
-    nullable: Literal[True] = ...,
+    nullable: bool = ...,
     unique: bool | None = ...,
     init: bool = True,
-) -> Mapped[_T | None]:
+) -> Mapped[Any]:
     ...
 
 
-def Column(*args: Any, init: Any = MISSING, **kwargs: Any) -> Any:
+def mapped_column(*args: Any, init: Any = MISSING, **kwargs: Any) -> Any:
     if init is MISSING:
         primary_key = kwargs.get('primary_key', False)
         init = not primary_key
 
-    metadata = {'sa': _SAColumn(*args, **kwargs)}
+    metadata = {'sa': Column(*args, **kwargs)}
 
     return _dataclass_field(init=init, metadata=metadata)
 
 
 def mixin_column(
-    initializer: Callable[[], Mapped[_T]], /, *, init: bool = True
-) -> Mapped[_T]:
+    initializer: Callable[[], Mapped[Any]], /, *, init: bool = True
+) -> Any:
     return _dataclass_field(
         init=init,
-        metadata={'sa': lambda: cast('Field[_T]', initializer()).metadata['sa']},
+        metadata={'sa': lambda: cast('Field[Any]', initializer()).metadata['sa']},
     )
 
 
@@ -163,7 +186,7 @@ def relationship(
     /,
     *,
     lazy: str = ...,
-    primaryjoin: str = ...,
+    primaryjoin: Any = ...,
     uselist: Literal[False],
     nullable: Literal[True] = ...,
     init: Literal[False] = False,
@@ -177,7 +200,7 @@ def relationship(
     /,
     *,
     lazy: str = ...,
-    primaryjoin: str = ...,
+    primaryjoin: Any = ...,
     uselist: Literal[False],
     nullable: Literal[False],
     init: Literal[False] = False,
@@ -194,11 +217,16 @@ def relationship(
     )
 
 
+_CEA = TypeVar('_CEA', bound='ColumnElement[Any] | Callable[[], ColumnElement[Any]]')
+
+foreign: Final = cast('Callable[[_CEA], _CEA]', _sa_foreign)
+
+
 @dataclass_transform(field_specifiers=(_dataclass_field, mixin_column, relationship))
 def model_mixin(cls: type[_BaseT], /) -> type[_BaseT]:
     return dataclass(cls)
 
 
-@dataclass_transform(field_specifiers=(_dataclass_field, Column, relationship))
+@dataclass_transform(field_specifiers=(_dataclass_field, mapped_column, relationship))
 def model(cls: type[_BaseT], /) -> type[_BaseT]:
     return mapped(dataclass(cls))
