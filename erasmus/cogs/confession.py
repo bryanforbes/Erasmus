@@ -16,14 +16,13 @@ from botus_receptus.formatting import (
 )
 from discord import app_commands
 from discord.ext import commands
+from more_itertools import peekable, unique_everseen
 
 from ..db import (
-    Article,
     Confession as ConfessionRecord,
     ConfessionType,
     NumberingType,
-    Paragraph,
-    Question,
+    Section,
     Session,
 )
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
@@ -33,7 +32,7 @@ from ..ui_pages import UIPages
 from ..utils import AutoCompleter
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Awaitable, Callable, Sequence
+    from collections.abc import Awaitable, Callable, Sequence
     from re import Match
     from typing_extensions import Self
 
@@ -91,7 +90,7 @@ _pluralizers: Final = {
     ConfessionType.QA: pluralizer('question'),
 }
 
-_number_formatters: Final[dict[NumberingType, Callable[[int], str]]] = {
+_number_formatters: Final[dict[NumberingType, Callable[[int | None], str]]] = {
     NumberingType.ARABIC: lambda n: str(n),
     NumberingType.ROMAN: int_to_roman,
 }
@@ -109,14 +108,14 @@ async def _get_chapters_output(
         chapter_num = int(match['chapter'])
         paragraph_num = int(match['paragraph'])
 
-    paragraph = await confession.get_paragraph(session, chapter_num, paragraph_num)
+    section = await confession.get_section(session, chapter_num, paragraph_num)
 
-    paragraph_number = format_number(paragraph.paragraph_number)
-    chapter_number = format_number(paragraph.chapter.chapter_number)
+    paragraph_number = format_number(paragraph_num)
+    chapter_number = format_number(chapter_num)
 
     return (
-        f'{chapter_number}.{paragraph_number} {paragraph.chapter.chapter_title}',
-        paragraph.text,
+        f'{chapter_number}.{paragraph_number} {section.title}',
+        section.text,
     )
 
 
@@ -130,9 +129,9 @@ async def _get_articles_output(
     else:
         article_number = int(match['article'])
 
-    article = await confession.get_article(session, article_number)
+    section = await confession.get_section(session, article_number)
 
-    return f'{format_number(article_number)}. {article.title}', article.text
+    return f'{format_number(article_number)}. {section.title}', section.text
 
 
 async def _get_qa_output(
@@ -146,19 +145,19 @@ async def _get_qa_output(
     else:
         question_number = int(match['number'])
 
-    question = await confession.get_question(session, question_number)
+    section = await confession.get_section(session, question_number)
 
     question_number_str = format_number(question_number)
 
     section_title: str | None = None
 
     if q_or_a is None:
-        section_title = bold(f'{question_number_str}. {question.question_text}')
-        output = question.answer_text
+        section_title = bold(f'{question_number_str}. {section.title}')
+        output = section.text
     elif q_or_a.lower() == 'q':
-        output = f'**Q{question_number_str}**. {question.question_text}'
+        output = f'**Q{question_number_str}**. {section.title}'
     else:
-        output = f'**A{question_number_str}**: {question.answer_text}'
+        output = f'**A{question_number_str}**: {section.text}'
 
     return section_title, output
 
@@ -211,19 +210,15 @@ Examples:
 '''
 
 
-ConfessionSearchResult: TypeAlias = Paragraph | Article | Question
-
-
 class ConfessionSearchSource(
-    EmbedPageSource['Sequence[ConfessionSearchResult]'],
-    ListPageSource[ConfessionSearchResult],
+    EmbedPageSource['Sequence[Section]'], ListPageSource[Section]
 ):
     entry_text_string: str
     localizer: MessageLocalizer
 
     def __init__(
         self,
-        entries: list[ConfessionSearchResult],
+        entries: list[Section],
         /,
         *,
         per_page: int,
@@ -236,19 +231,12 @@ class ConfessionSearchSource(
 
         if type == ConfessionType.CHAPTERS:
             self.entry_text_string = (
-                '**{entry.chapter_number}.{entry.paragraph_number}**. '
-                '{entry.chapter.chapter_title}'
+                '**{entry.number}.{entry.subsection_number}**. {entry.title}'
             )
-        elif type == ConfessionType.ARTICLES:
-            self.entry_text_string = '**{entry.article_number}**. {entry.title}'
-        elif type == ConfessionType.QA:
-            self.entry_text_string = (
-                '**{entry.question_number}**. {entry.question_text}'
-            )
+        else:
+            self.entry_text_string = '**{entry.number}**. {entry.title}'
 
-    async def set_page_text(
-        self, entries: Sequence[ConfessionSearchResult] | None, /
-    ) -> None:
+    async def set_page_text(self, entries: Sequence[Section] | None, /) -> None:
         if entries is None:
             self.embed.description = self.localizer.format('no-results')
             return
@@ -367,10 +355,14 @@ class Confession(ConfessionBase):
             await self.list(ctx)
             return
 
-        async with Session() as session:
-            row = await ConfessionRecord.get_by_command(session, confession)
+        list_contents = len(args) == 0
 
-        if len(args) == 0:
+        async with Session() as session:
+            row = await ConfessionRecord.get_by_command(
+                session, confession, load_sections=list_contents
+            )
+
+        if list_contents:
             await self.list_contents(ctx, row)
             return
 
@@ -405,30 +397,26 @@ class Confession(ConfessionBase):
     async def list_sections(
         self, ctx: commands.Context[Erasmus], confession: ConfessionRecord, /
     ) -> None:
-        paginator = EmbedPaginator()
-        getter: Callable[[AsyncSession], AsyncIterator[Any]] | None = None
-        number_key: str | None = None
-        title_key: str | None = None
-
         if confession.type == ConfessionType.CHAPTERS:
-            getter = confession.get_chapters
-            number_key = 'chapter_number'
-            title_key = 'chapter_title'
+            sections = unique_everseen(confession.sections, key=lambda c: c.number)
         else:  # ConfessionType.ARTICLES
-            getter = confession.get_articles
-            number_key = 'article_number'
-            title_key = 'title'
+            sections = confession.sections
 
+        sections = peekable(sections)
+
+        if sections.peek(None) is None:
+            raise NoSectionsError(
+                confession.name,
+                'chapters'
+                if confession.type == ConfessionType.CHAPTERS
+                else 'articles',
+            )
+
+        paginator = EmbedPaginator()
         format_number = _number_formatters[confession.numbering]
 
-        async with Session() as session:
-            async for record in getter(session):
-                paginator.add_line(
-                    '**{number}**. {title}'.format(
-                        number=format_number(getattr(record, number_key)),
-                        title=getattr(record, title_key),
-                    )
-                )
+        for section in sections:
+            paginator.add_line(f'**{format_number(section.number)}**. {section.title}')
 
         for index, page in enumerate(paginator):
             await utils.send_embed(
@@ -440,9 +428,7 @@ class Confession(ConfessionBase):
     async def list_questions(
         self, ctx: commands.Context[Erasmus], confession: ConfessionRecord, /
     ) -> None:
-        async with Session() as session:
-            count = await confession.get_question_count(session)
-
+        count = len(confession.sections)
         question_str = _pluralizers[ConfessionType.QA](count)
 
         await utils.send_embed(
@@ -456,17 +442,8 @@ class Confession(ConfessionBase):
         /,
         *terms: str,
     ) -> None:
-        if confession.type == ConfessionType.CHAPTERS:
-            search_func: Callable[
-                [AsyncSession, Sequence[str]], AsyncIterator[ConfessionSearchResult]
-            ] = confession.search_paragraphs
-        elif confession.type == ConfessionType.ARTICLES:
-            search_func = confession.search_articles
-        else:  # ConfessionType.QA
-            search_func = confession.search_questions
-
         async with Session() as session:
-            results = [result async for result in search_func(session, terms)]
+            results = [result async for result in confession.search(session, terms)]
 
         localizer = self.localizer.for_message('confess__search')
         source = ConfessionSearchSource(
@@ -513,34 +490,24 @@ class _ConfessionOption:
         return app_commands.Choice(name=self.name, value=self.command)
 
     @classmethod
-    async def create(
-        cls, confession: ConfessionRecord, session: AsyncSession, /
-    ) -> Self:
+    async def create(cls, confession: ConfessionRecord, /) -> Self:
         format_number = _number_formatters[confession.numbering]
         match confession.type:
             case ConfessionType.CHAPTERS:
                 section_info = [
                     _create_section_info(
-                        f'{format_number(paragraph.chapter_number)}.'
-                        f'{format_number(paragraph.paragraph_number)}',
-                        paragraph.chapter.chapter_title,
+                        f'{format_number(section.number)}.'
+                        f'{format_number(section.subsection_number)}',
+                        section.title or confession.name,
                     )
-                    async for paragraph in confession.get_paragraphs(session)
+                    for section in confession.sections
                 ]
-            case ConfessionType.ARTICLES:
+            case ConfessionType.ARTICLES | ConfessionType.QA:
                 section_info = [
                     _create_section_info(
-                        format_number(article.article_number), article.title
+                        format_number(section.number), section.title or confession.name
                     )
-                    async for article in confession.get_articles(session)
-                ]
-            case ConfessionType.QA:
-                section_info = [
-                    _create_section_info(
-                        format_number(question.question_number),
-                        question.question_text,
-                    )
-                    async for question in confession.get_questions(session)
+                    for section in confession.sections
                 ]
 
         return cls(
@@ -611,9 +578,9 @@ class ConfessionAppCommands(
         _confession_lookup.clear()
         _confession_lookup.update(
             [
-                await _ConfessionOption.create(confession, session)
+                await _ConfessionOption.create(confession)
                 async for confession in ConfessionRecord.get_all(
-                    session, order_by_name=True
+                    session, order_by_name=True, load_sections=True
                 )
             ]
         )
@@ -644,19 +611,8 @@ class ConfessionAppCommands(
         async with Session() as session:
             confession = await ConfessionRecord.get_by_command(session, source)
 
-            match confession.type:
-                case ConfessionType.CHAPTERS:
-                    search_func: Callable[
-                        [AsyncSession, Sequence[str]],
-                        AsyncIterator[ConfessionSearchResult],
-                    ] = confession.search_paragraphs
-                case ConfessionType.ARTICLES:
-                    search_func = confession.search_articles
-                case ConfessionType.QA:
-                    search_func = confession.search_questions
-
             results = [
-                result async for result in search_func(session, terms.split(' '))
+                result async for result in confession.search(session, terms.split(' '))
             ]
 
         localizer = self.localizer.for_message('confess__search', itx.locale)

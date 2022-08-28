@@ -3,7 +3,6 @@ from __future__ import annotations
 from enum import Enum
 from typing import TYPE_CHECKING
 
-from more_itertools import peekable
 from sqlalchemy import (
     Computed,
     ForeignKey,
@@ -17,12 +16,14 @@ from sqlalchemy import (
     text as _sa_text,
 )
 from sqlalchemy.dialects.postgresql import ENUM
+from sqlalchemy.orm import selectinload
 
-from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
+from ..exceptions import InvalidConfessionError, NoSectionError
 from .base import (
     Base,
     Mapped,
     TSVector,
+    deref_column,
     foreign,
     mapped_column,
     mixin_column,
@@ -34,7 +35,6 @@ from .base import (
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Sequence
 
-    from botus_receptus.types import Coroutine
     from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -59,6 +59,42 @@ class NumberingType(Enum):
 class _ConfessionChildMixin(Base):
     confess_id: Mapped[int] = mixin_column(
         lambda: mapped_column(Integer, ForeignKey('confessions.id'), nullable=False)
+    )
+
+
+@model
+class Section(Base):
+    __tablename__ = 'confession_sections'
+    __table_args__ = (
+        Index(
+            'confession_sections_search_idx',
+            'search_vector',
+            postgresql_using='gin',
+        ),
+    )
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True)
+    confession_id: Mapped[int] = mapped_column(
+        Integer, ForeignKey('confessions.id'), nullable=False
+    )
+    number: Mapped[int] = mapped_column(Integer, nullable=False)
+    subsection_number: Mapped[int | None] = mapped_column(Integer)
+    title: Mapped[str | None] = mapped_column(Text)
+    text: Mapped[str] = mapped_column(Text, nullable=False)
+    search_vector: Mapped[str] = mapped_column(
+        TSVector,
+        Computed(
+            func.to_tsvector(
+                _sa_text("'english'"),
+                func.trim(
+                    func.coalesce(deref_column(title), _sa_text("''"))
+                    + _sa_text("' '")
+                    + deref_column(text),
+                    _sa_text("' '"),
+                ),
+            ),
+        ),
+        init=False,
     )
 
 
@@ -119,7 +155,9 @@ class Question(_ConfessionChildMixin):
         Computed(
             func.to_tsvector(
                 _sa_text("'english'"),
-                _sa_text("question_text || ' ' || answer_text"),
+                deref_column(question_text)
+                + _sa_text("' '")
+                + deref_column(answer_text),
             )
         ),
         init=False,
@@ -144,7 +182,10 @@ class Article(_ConfessionChildMixin):
     search_vector: Mapped[str] = mapped_column(
         TSVector,
         Computed(
-            func.to_tsvector(_sa_text("'english'"), _sa_text("title || ' ' || text"))
+            func.to_tsvector(
+                _sa_text("'english'"),
+                deref_column(title) + _sa_text("' '") + deref_column(text),
+            )
         ),
         init=False,
     )
@@ -167,7 +208,7 @@ class Confession(Base):
         String,
         Computed(
             func.regexp_replace(
-                _sa_text('name'),
+                deref_column(name),
                 _sa_text(r"'^(the|an?)\s+(.*)$'"),
                 _sa_text(r"'\2, \1'"),
                 _sa_text("'i'"),
@@ -175,194 +216,85 @@ class Confession(Base):
         ),
         init=False,
     )
+    sections: Mapped[list[Section]] = relationship(
+        Section,
+        order_by=lambda: [Section.number.asc(), Section.subsection_number.asc()],
+        lazy='raise',
+    )
 
-    async def get_chapters(self, session: AsyncSession, /) -> AsyncIterator[Chapter]:
-        result = peekable(
-            await session.scalars(
-                select(Chapter)
-                .filter(Chapter.confess_id == self.id)
-                .order_by(Chapter.chapter_number.asc())
+    async def search(
+        self, session: AsyncSession, terms: Sequence[str], /
+    ) -> AsyncIterator[Section]:
+        result = await session.scalars(
+            select(Section)
+            .filter(
+                Section.confession_id == self.id,
+                Section.search_vector.match(' & '.join(terms)),
             )
+            .order_by(Section.number.asc(), Section.subsection_number.asc())
         )
 
-        if result.peek(None) is not None:
-            for chapter in result:
-                yield chapter
-        else:
-            raise NoSectionsError(self.name, 'chapters')
+        for section in result:
+            yield section
 
-    async def get_paragraphs(
-        self, session: AsyncSession, /
-    ) -> AsyncIterator[Paragraph]:
-        result = peekable(
-            await session.scalars(
-                select(Paragraph)
-                .filter(Paragraph.confess_id == self.id)
-                .order_by(
-                    Paragraph.chapter_number.asc(), Paragraph.paragraph_number.asc()
-                )
-            )
+    async def get_section(
+        self,
+        session: AsyncSession,
+        number: int,
+        subsection_number: int | None = None,
+        /,
+    ) -> Section:
+        stmt = select(Section).filter(
+            Section.confession_id == self.id,
+            Section.number == number,
         )
 
-        if result.peek(None) is not None:
-            for paragraph in result:
-                yield paragraph
-        else:
-            raise NoSectionsError(self.name, 'paragraphs')
+        if subsection_number is not None:
+            stmt = stmt.filter(Section.subsection_number == subsection_number)
 
-    async def get_paragraph(
-        self, session: AsyncSession, chapter: int, paragraph: int, /
-    ) -> Paragraph:
-        result: Paragraph | None = (
-            await session.scalars(
-                select(Paragraph).filter(
-                    Paragraph.confess_id == self.id,
-                    Paragraph.chapter_number == chapter,
-                    Paragraph.paragraph_number == paragraph,
-                )
-            )
-        ).first()
+        result: Section | None = (await session.scalars(stmt)).first()
 
         if result is None:
-            raise NoSectionError(self.name, f'{chapter}.{paragraph}', self.type)
+            formatted_number = f'{number}'
+
+            if subsection_number is not None:
+                formatted_number = f'{formatted_number}.{subsection_number}'
+
+            raise NoSectionError(self.name, formatted_number, self.type)
 
         return result
 
-    async def search_paragraphs(
-        self, session: AsyncSession, terms: Sequence[str], /
-    ) -> AsyncIterator[Paragraph]:
-        result = await session.scalars(
-            select(Paragraph)
-            .join(Chapter, Paragraph.chapter)
-            .filter(
-                Paragraph.confess_id == self.id,
-                func.to_tsvector(
-                    _sa_text("'english'"),
-                    Chapter.chapter_title + _sa_text("' '") + Paragraph.text,
-                ).match(' & '.join(terms), postgresql_regconfig='english'),
-            )
-            .order_by(Paragraph.chapter_number.asc())
-        )
-
-        for paragraph in result:
-            yield paragraph
-
-    async def get_questions(self, session: AsyncSession, /) -> AsyncIterator[Question]:
-        result = await session.scalars(
-            select(Question)
-            .filter(Question.confess_id == self.id)
-            .order_by(Question.question_number.asc())
-        )
-
-        for question in result:
-            yield question
-
-    def get_question_count(self, session: AsyncSession, /) -> Coroutine[int]:
-        return session.scalar(
-            select([func.count(Question.id)]).filter(Question.confess_id == self.id)
-        )
-
-    async def get_question(
-        self, session: AsyncSession, question_number: int, /
-    ) -> Question:
-        question: Question | None = (
-            await session.scalars(
-                select(Question).filter(
-                    Question.confess_id == self.id,
-                    Question.question_number == question_number,
-                )
-            )
-        ).first()
-
-        if question is None:
-            raise NoSectionError(self.name, f'{question_number}', self.type)
-
-        return question
-
-    async def search_questions(
-        self, session: AsyncSession, terms: Sequence[str], /
-    ) -> AsyncIterator[Question]:
-        result = await session.scalars(
-            select(Question)
-            .filter(
-                Question.confess_id == self.id,
-                Question.search_vector.match(' & '.join(terms)),
-            )
-            .order_by(Question.question_number.asc())
-        )
-
-        for question in result:
-            yield question
-
-    async def get_articles(self, session: AsyncSession, /) -> AsyncIterator[Article]:
-        result = peekable(
-            await session.scalars(
-                select(Article)
-                .filter(Article.confess_id == self.id)
-                .order_by(Article.article_number.asc())
-            )
-        )
-
-        if result.peek(None) is not None:
-            for article in result:
-                yield article
-        else:
-            raise NoSectionsError(self.name, 'articles')
-
-    async def get_article(
-        self, session: AsyncSession, article_number: int, /
-    ) -> Article:
-        article: Article | None = (
-            await session.scalars(
-                select(Article).filter(
-                    Article.confess_id == self.id,
-                    Article.article_number == article_number,
-                )
-            )
-        ).first()
-
-        if article is None:
-            raise NoSectionError(self.name, f'{article_number}', self.type)
-
-        return article
-
-    async def search_articles(
-        self, session: AsyncSession, terms: Sequence[str], /
-    ) -> AsyncIterator[Article]:
-        result = await session.scalars(
-            select(Article)
-            .filter(
-                Article.confess_id == self.id,
-                Article.search_vector.match(' & '.join(terms)),
-            )
-            .order_by(Article.article_number.asc())
-        )
-
-        for article in result:
-            yield article
-
     @staticmethod
     async def get_all(
-        session: AsyncSession, /, order_by_name: bool = False
+        session: AsyncSession,
+        /,
+        order_by_name: bool = False,
+        load_sections: bool = False,
     ) -> AsyncIterator[Confession]:
-        result = await session.scalars(
-            select(Confession).order_by(
-                Confession.sortable_name.asc()
-                if order_by_name
-                else Confession.command.asc()
-            )
+        stmt = select(Confession).order_by(
+            Confession.sortable_name.asc()
+            if order_by_name
+            else Confession.command.asc()
         )
+
+        if load_sections:
+            stmt = stmt.options(selectinload(Confession.sections))
+
+        result = await session.scalars(stmt)
 
         for confession in result:
             yield confession
 
     @staticmethod
-    async def get_by_command(session: AsyncSession, command: str, /) -> Confession:
-        c: Confession | None = (
-            await session.scalars(
-                select(Confession).filter(Confession.command == command.lower())
-            )
-        ).first()
+    async def get_by_command(
+        session: AsyncSession, command: str, /, load_sections: bool = False
+    ) -> Confession:
+        stmt = select(Confession).filter(Confession.command == command.lower())
+
+        if load_sections:
+            stmt = stmt.options(selectinload(Confession.sections))
+
+        c: Confession | None = (await session.scalars(stmt)).first()
 
         if c is None:
             raise InvalidConfessionError(command)

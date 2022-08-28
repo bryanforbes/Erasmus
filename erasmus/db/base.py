@@ -172,10 +172,11 @@ def relationship(
     entity: type[_T],
     /,
     *,
+    init: Literal[False] = False,
     lazy: str = ...,
     primaryjoin: str = ...,
     uselist: Literal[True] = ...,
-    init: Literal[False] = False,
+    order_by: Any = ...,
 ) -> Mapped[list[_T]]:
     ...
 
@@ -185,11 +186,12 @@ def relationship(
     entity: type[_T],
     /,
     *,
+    init: Literal[False] = False,
     lazy: str = ...,
     primaryjoin: Any = ...,
     uselist: Literal[False],
     nullable: Literal[True] = ...,
-    init: Literal[False] = False,
+    order_by: Any = ...,
 ) -> Mapped[_T | None]:
     ...
 
@@ -199,17 +201,18 @@ def relationship(
     entity: type[_T],
     /,
     *,
+    init: Literal[False] = False,
     lazy: str = ...,
     primaryjoin: Any = ...,
     uselist: Literal[False],
     nullable: Literal[False],
-    init: Literal[False] = False,
+    order_by: Any = ...,
 ) -> Mapped[_T]:
     ...
 
 
 def relationship(
-    *args: Any, nullable: Any = None, init: Any = None, **kwargs: Any
+    *args: Any, init: Any = None, nullable: bool = ..., **kwargs: Any
 ) -> Any:
     return _dataclass_field(
         init=False,
@@ -222,6 +225,12 @@ _CEA = TypeVar('_CEA', bound='ColumnElement[Any] | Callable[[], ColumnElement[An
 
 def foreign(expr: _CEA, /) -> _CEA:
     return _sa_foreign(expr)  # pyright: ignore
+
+
+def deref_column(obj: Mapped[_T]) -> Mapped[_T]:
+    if isinstance(obj, Field):
+        return cast('Field[_T]', obj).metadata['sa']
+    return obj
 
 
 @dataclass_transform(field_specifiers=(_dataclass_field, mixin_column, relationship))

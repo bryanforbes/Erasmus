@@ -10,7 +10,10 @@ _roman_pairs: Final = tuple(
 )
 
 
-def int_to_roman(number: int, /) -> str:
+def int_to_roman(number: int | None, /) -> str:
+    if number is None:
+        number = 0
+
     numerals: list[str] = []
 
     for letter, value in _roman_pairs:
