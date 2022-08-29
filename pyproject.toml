@@ -20,7 +20,7 @@ more-itertools = "~8.14.0"
 
 [tool.poetry.dev-dependencies]
 asyncpg-stubs = "~0.26.2"
-sqlalchemy2-stubs = "^0.0.2a25"
+sqlalchemy2-stubs = "^0.0.2a26"
 black = "^22.6"
 coverage = {version = "^6.4", extras = ["toml"]}
 flake8 = "~5.0"
