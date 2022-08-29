@@ -9,6 +9,7 @@ from botus_receptus import Cog, checks, formatting, utils
 from botus_receptus.app_commands import admin_guild_only
 from discord import app_commands
 from discord.ext import commands
+from sqlalchemy.exc import IntegrityError
 
 from ..data import Passage, SearchResults, VerseRange, get_book_data, get_books_for_mask
 from ..db import BibleVersion, GuildPref, Session, UserPref
@@ -506,7 +507,7 @@ class Bible(BibleBase):
                         books=_book_mask_from_books(books),
                     )
                 )
-        except UniqueViolationError:
+        except (UniqueViolationError, IntegrityError):
             await utils.send_embed_error(ctx, description=f'`{command}` already exists')
         else:
             self.__add_bible_commands(command, name)
@@ -907,7 +908,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
 
                 await session.commit()
                 await self.refresh_data(session)
-        except UniqueViolationError:
+        except (UniqueViolationError, IntegrityError):
             await utils.send_embed_error(
                 itx,
                 description=f'`{command}` already exists',
