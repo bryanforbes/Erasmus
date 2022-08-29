@@ -116,9 +116,7 @@ class AutoCompleter(app_commands.Transformer, Generic[_OptionT]):
             if not current or option.matches(current)
         ][:25]
 
-    async def transform(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self, itx: discord.Interaction, value: str, /
-    ) -> str:
+    async def transform(self, itx: discord.Interaction, value: str, /) -> str:
         return value
 
     async def autocomplete(  # type: ignore

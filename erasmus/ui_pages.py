@@ -42,9 +42,7 @@ class PagesModal(discord.ui.Modal, title='Skip to page…'):
         label='Page', placeholder='Page number here…'
     )
 
-    async def on_submit(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self, itx: discord.Interaction, /
-    ) -> None:
+    async def on_submit(self, itx: discord.Interaction, /) -> None:
         assert self.page_number.value is not None
 
         if not self.page_number.value.isdigit():
@@ -52,9 +50,7 @@ class PagesModal(discord.ui.Modal, title='Skip to page…'):
 
         await self.pages.show_checked_page(itx, int(self.page_number.value) - 1)
 
-    async def on_error(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self, itx: discord.Interaction, error: Exception, /
-    ) -> None:
+    async def on_error(self, itx: discord.Interaction, error: Exception, /) -> None:
 
         if isinstance(error, ValueError):
             message = error.args[0]
@@ -215,9 +211,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
                 # If it doesn't give maximum pages, it cannot be checked
                 await self.show_page(itx, page_number)
 
-    async def interaction_check(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self, itx: discord.Interaction, /
-    ) -> bool:
+    async def interaction_check(self, itx: discord.Interaction, /) -> bool:
         if await self.is_same_user(itx):
             return True
 
@@ -232,7 +226,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         if self.message:
             await self.message.edit(view=None)
 
-    async def on_error(  # pyright: ignore [reportIncompatibleMethodOverride]
+    async def on_error(
         self, itx: discord.Interaction, error: Exception, item: discord.ui.Item[Self], /
     ) -> None:
         await utils.send(

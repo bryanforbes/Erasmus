@@ -682,9 +682,7 @@ class _BibleOption:
 class ServiceAutoCompleter(app_commands.Transformer):
     service_manager: ServiceManager
 
-    async def transform(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self, itx: discord.Interaction, value: str, /
-    ) -> str:
+    async def transform(self, itx: discord.Interaction, value: str, /) -> str:
         return value
 
     async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]

@@ -58,9 +58,7 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
         # remove `foo`
         return content.strip('` \n')
 
-    async def on_submit(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self, itx: discord.Interaction, /
-    ) -> None:
+    async def on_submit(self, itx: discord.Interaction, /) -> None:
         assert self.code.value is not None
 
         env: dict[str, Any] = {
@@ -102,9 +100,7 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
                 self._admin._last_result = ret
                 await utils.send(itx, content=f'```py\n{value}{ret}\n```')
 
-    async def on_error(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self, itx: discord.Interaction, error: Exception, /
-    ) -> None:
+    async def on_error(self, itx: discord.Interaction, error: Exception, /) -> None:
         if error.__cause__ is not None and isinstance(error, _EvalError):
             await utils.send(
                 itx,

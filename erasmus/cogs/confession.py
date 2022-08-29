@@ -531,9 +531,7 @@ class ConfessionAutoCompleter(AutoCompleter[_ConfessionOption]):
 class SectionAutoCompleter(app_commands.Transformer):
     confession_lookup: ConfessionAutoCompleter
 
-    async def transform(  # pyright: ignore [reportIncompatibleMethodOverride]
-        self, itx: discord.Interaction, value: str, /
-    ) -> str:
+    async def transform(self, itx: discord.Interaction, value: str, /) -> str:
         return value
 
     async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
