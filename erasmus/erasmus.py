@@ -113,34 +113,38 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             color=discord.Color.yellow(),
         )
 
-    async def _application_command_notice_check(
-        self, ctx: commands.Context[Self] | discord.Interaction, /
-    ) -> None:
-        if ctx.guild is None:
-            return
-
         author_id = _get_author_id(ctx)
-        need_guild_notification = ctx.guild.id not in self.slash_command_notifications
-        need_author_notification = author_id not in self.slash_command_notifications
 
-        if not need_guild_notification and not need_author_notification:
-            return
-
-        await self._send_application_command_notice(ctx)
-
-        if need_author_notification:
+        if author_id not in self.slash_command_notifications:
             self.slash_command_notifications.add(author_id)
             with contextlib.suppress(UniqueViolationError, IntegrityError):
                 async with Session.begin() as session:
                     session.add(Notification(id=author_id, application_commands=True))
 
-        if need_guild_notification:
+        if (
+            ctx.guild is not None
+            and ctx.guild.id not in self.slash_command_notifications
+        ):
             self.slash_command_notifications.add(ctx.guild.id)
             with contextlib.suppress(UniqueViolationError, IntegrityError):
                 async with Session.begin() as session:
                     session.add(
                         Notification(id=ctx.guild.id, application_commands=True)
                     )
+
+    async def _application_command_notice_check(
+        self, ctx: commands.Context[Self], /
+    ) -> None:
+        if ctx.guild is None or ctx.interaction:
+            return
+
+        if (
+            ctx.guild.id in self.slash_command_notifications
+            and ctx.author.id in self.slash_command_notifications
+        ):
+            return
+
+        await self._send_application_command_notice(ctx)
 
     async def __before_invoke(self, ctx: commands.Context[Self], /) -> None:
         try:
