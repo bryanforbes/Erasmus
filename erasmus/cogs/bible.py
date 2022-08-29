@@ -334,7 +334,7 @@ class Bible(BibleBase):
                     bucket, retry_after, commands.BucketType.user
                 )
 
-            await self.bot._application_command_notice(ctx)
+            await self.bot._application_command_notice_check(ctx)
 
             async with ctx.typing():
                 async with Session() as session:

@@ -14,6 +14,7 @@ from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReaso
 from discord import app_commands
 from discord.ext import commands
 from sqlalchemy import select
+from sqlalchemy.exc import IntegrityError
 
 from .db import Notification, Session
 from .exceptions import ErasmusError
@@ -49,6 +50,10 @@ You can look up all verses in a message one of two ways:
 discord.http._set_api_version(9)
 
 
+def _get_author_id(ctx: commands.Context[Erasmus] | discord.Interaction) -> int:
+    return (ctx.user if isinstance(ctx, discord.Interaction) else ctx.author).id
+
+
 class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     config: Config
     slash_command_notifications: set[int]
@@ -76,18 +81,9 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         self.tree.error(self.on_app_command_error)
         self.before_invoke(self.__before_invoke)
 
-    async def _application_command_notice(
-        self,
-        ctx: commands.Context[Self] | discord.Interaction,
-        /,
-        *,
-        skip_check: bool = False,
+    async def _send_application_command_notice(
+        self, ctx: commands.Context[Self] | discord.Interaction, /
     ) -> None:
-        if not skip_check and (
-            ctx.guild is None or ctx.guild.id in self.slash_command_notifications
-        ):
-            return
-
         await utils.send_embed(
             ctx,
             title='Notice of future changes',
@@ -117,13 +113,30 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             color=discord.Color.yellow(),
         )
 
-        if (
-            ctx.guild is not None
-            and ctx.guild.id not in self.slash_command_notifications
-        ):
-            self.slash_command_notifications.add(ctx.guild.id)
+    async def _application_command_notice_check(
+        self, ctx: commands.Context[Self] | discord.Interaction, /
+    ) -> None:
+        if ctx.guild is None:
+            return
 
-            with contextlib.suppress(UniqueViolationError):
+        author_id = _get_author_id(ctx)
+        need_guild_notification = ctx.guild.id not in self.slash_command_notifications
+        need_author_notification = author_id not in self.slash_command_notifications
+
+        if not need_guild_notification and not need_author_notification:
+            return
+
+        await self._send_application_command_notice(ctx)
+
+        if need_author_notification:
+            self.slash_command_notifications.add(author_id)
+            with contextlib.suppress(UniqueViolationError, IntegrityError):
+                async with Session.begin() as session:
+                    session.add(Notification(id=author_id, application_commands=True))
+
+        if need_guild_notification:
+            self.slash_command_notifications.add(ctx.guild.id)
+            with contextlib.suppress(UniqueViolationError, IntegrityError):
                 async with Session.begin() as session:
                     session.add(
                         Notification(id=ctx.guild.id, application_commands=True)
@@ -131,7 +144,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
 
     async def __before_invoke(self, ctx: commands.Context[Self], /) -> None:
         try:
-            await self._application_command_notice(ctx)
+            await self._application_command_notice_check(ctx)
         except Exception as exc:  # noqa: PIE786
             await self.on_command_error(ctx, exc)
 
@@ -142,7 +155,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     async def setup_hook(self) -> None:
         await super().setup_hook()
 
-        async with Session.begin() as session:
+        async with Session() as session:
             self.slash_command_notifications = {
                 notification.id
                 for notification in cast(

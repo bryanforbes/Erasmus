@@ -140,7 +140,7 @@ class Misc(Cog['Erasmus']):
     async def notice(self, itx: discord.Interaction, /) -> None:
         '''Display text-command deprecation notice'''
 
-        await self.bot._application_command_notice(itx, skip_check=True)
+        await self.bot._send_application_command_notice(itx)
 
 
 async def setup(bot: Erasmus, /) -> None:
