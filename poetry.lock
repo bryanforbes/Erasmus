@@ -183,7 +183,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "botus-receptus"
-version = "2.0.0.dev60"
+version = "2.0.0.dev61"
 description = ""
 category = "main"
 optional = false
@@ -213,8 +213,8 @@ uvloop = ["uvloop (>=0.16.0,<0.17.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "7a0a0198492fcb30002eb80c51e6d0b0d8c7bbe1"
-resolved_reference = "7a0a0198492fcb30002eb80c51e6d0b0d8c7bbe1"
+reference = "20d3651ee3c314dc8df9ade216603d5d272fb522"
+resolved_reference = "20d3651ee3c314dc8df9ade216603d5d272fb522"
 
 [[package]]
 name = "brotli"
@@ -1128,7 +1128,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "e367b44f62e33119954fe09024e141fb8f9f78fe7168af1cda3d4cde0963cdd9"
+content-hash = "8f1036d6c53d057b964706720e1610259e03c5880d6c741d6ef220949ceac4e4"
 
 [metadata.files]
 aiodns = [

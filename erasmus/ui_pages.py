@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING, Any, Final, Generic, TypeVar, cast
 
 import discord
 from botus_receptus import utils
-from discord.ext import commands
 
 from .page_source import BasePages, PageSource
 
@@ -64,7 +63,7 @@ class PagesModal(discord.ui.Modal, title='Skip to page…'):
 
 
 class UIPages(discord.ui.View, BasePages[T], Generic[T]):
-    ctx: commands.Context[Erasmus] | discord.Interaction
+    itx: discord.Interaction
     check_embeds: bool
     compact: bool
     message: discord.Message | None
@@ -72,7 +71,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
 
     def __init__(
         self,
-        ctx: commands.Context[Erasmus] | discord.Interaction,
+        itx: discord.Interaction,
         source: PageSource[T],
         /,
         *,
@@ -84,7 +83,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         super().__init__(timeout=timeout)
         BasePages.__init__(self, source)  # type: ignore
 
-        self.ctx = ctx
+        self.itx = itx
         self.check_embeds = check_embeds
         self.message = None
         self.compact = compact
@@ -93,16 +92,12 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
 
     @discord.utils.cached_property
     def allowed_user_ids(self) -> set[int]:
-        if isinstance(self.ctx, commands.Context):
-            client: Any = self.ctx.bot
-            author_id = self.ctx.author.id
-        else:
-            client = self.ctx.client
-            author_id = self.ctx.user.id
+        client = cast('Erasmus', self.itx.client)
+        author_id = self.itx.user.id
 
         return {
             author_id,
-            client.owner_id,
+            cast('int', client.owner_id),
             cast('discord.ClientUser', client.user).id,
         }
 
@@ -110,12 +105,6 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         return itx.user.id in self.allowed_user_ids
 
     def has_embed_permission(self) -> bool:
-        if isinstance(self.ctx, commands.Context):
-            return (
-                isinstance(self.ctx.me, discord.Member)
-                and self.ctx.channel.permissions_for(self.ctx.me).embed_links
-            )
-
         return True
 
     def send_initial_message(
@@ -132,7 +121,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         view: discord.ui.View = _MISSING,
     ) -> Coroutine[discord.Message]:
         return utils.send(
-            self.ctx,
+            self.itx,
             content=content,
             tts=tts,
             ephemeral=ephemeral,

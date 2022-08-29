@@ -4,9 +4,8 @@ from importlib import metadata
 from typing import TYPE_CHECKING
 
 import discord
-from botus_receptus import Cog, Embed, utils
+from botus_receptus import Cog, Embed, formatting, utils
 from discord import app_commands
-from discord.ext import commands
 
 if TYPE_CHECKING:
     from ..erasmus import Erasmus
@@ -67,38 +66,6 @@ class AboutView(InviteView):
         )
 
 
-def get_about_embed(bot: Erasmus, localizer: MessageLocalizer) -> Embed:
-    channel_count = 0
-    guild_count = 0
-
-    for guild in bot.guilds:
-        guild_count += 1
-
-        if guild.unavailable or guild.member_count is None:
-            continue
-
-        channels = filter(lambda c: isinstance(c, discord.TextChannel), guild.channels)
-        channel_count += len(list(channels))
-
-    dpy_version = metadata.distribution('discord.py').version
-
-    return Embed(
-        title=localizer.format('title'),
-        fields=[
-            {'name': localizer.format('guilds'), 'value': str(guild_count)},
-            {
-                'name': localizer.format('channels'),
-                'value': str(channel_count),
-            },
-        ],
-        footer={
-            'text': localizer.format('footer', data={'version': dpy_version}),
-            'icon_url': 'http://i.imgur.com/5BFecvA.png',
-        },
-        timestamp=discord.utils.utcnow(),
-    )
-
-
 class Misc(Cog['Erasmus']):
     localizer: Localizer
 
@@ -107,40 +74,94 @@ class Misc(Cog['Erasmus']):
 
         self.localizer = bot.localizer
 
-    @commands.hybrid_command()
-    @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
-    async def invite(self, ctx: commands.Context[Erasmus], /) -> None:
+    @app_commands.command()
+    @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda itx: itx.channel_id)
+    async def invite(self, itx: discord.Interaction, /) -> None:
         '''Get a link to invite Erasmus to your server'''
 
-        localizer = self.localizer.for_message(
-            'about',
-            locale=ctx.interaction.locale if ctx.interaction is not None else None,
-        )
+        localizer = self.localizer.for_message('about', locale=itx.locale)
 
-        await utils.send(ctx, view=InviteView(self.bot.application_id, localizer))
+        await utils.send(itx, view=InviteView(self.bot.application_id, localizer))
 
-    @commands.hybrid_command()
-    @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.user)
-    async def about(self, ctx: commands.Context[Erasmus], /) -> None:
+    @app_commands.command()
+    @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda itx: itx.user.id)
+    async def about(self, itx: discord.Interaction, /) -> None:
         '''Get info about Erasmus'''
 
-        localizer = self.localizer.for_message(
-            'about',
-            locale=ctx.interaction.locale if ctx.interaction is not None else None,
-        )
+        localizer = self.localizer.for_message('about', locale=itx.locale)
+        channel_count = 0
+        guild_count = 0
+
+        for guild in self.bot.guilds:
+            guild_count += 1
+
+            if guild.unavailable or guild.member_count is None:
+                continue
+
+            channels = filter(
+                lambda c: isinstance(c, discord.TextChannel), guild.channels
+            )
+            channel_count += len(list(channels))
+
+        dpy_version = metadata.distribution('discord.py').version
 
         await utils.send(
-            ctx,
-            embeds=[get_about_embed(self.bot, localizer)],
+            itx,
+            embeds=[
+                Embed(
+                    title=localizer.format('title'),
+                    fields=[
+                        {'name': localizer.format('guilds'), 'value': str(guild_count)},
+                        {
+                            'name': localizer.format('channels'),
+                            'value': str(channel_count),
+                        },
+                    ],
+                    footer={
+                        'text': localizer.format(
+                            'footer', data={'version': dpy_version}
+                        ),
+                        'icon_url': 'http://i.imgur.com/5BFecvA.png',
+                    },
+                    timestamp=discord.utils.utcnow(),
+                )
+            ],
             view=AboutView(self.bot.application_id, localizer),
         )
 
     @app_commands.command()
-    @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
+    @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda itx: itx.channel_id)
     async def notice(self, itx: discord.Interaction, /) -> None:
         '''Display text-command deprecation notice'''
 
-        await self.bot._send_application_command_notice(itx)
+        await utils.send_embed(
+            itx,
+            title='Notice of future changes',
+            description=(
+                f'{formatting.underline(formatting.bold("Users"))}\n'
+                'Beginning <t:1661972400:D>, Erasmus will no longer respond to '
+                'text-based commands (`$confess` and others) or bracket citations '
+                '(`[John 1:1]`). At that time, Discord will require all bots to use '
+                'slash commands. All text-based commands have been converted into '
+                'slash commands and Erasmus will only respond to bracket citations if '
+                'it is mentioned as part of the message text.\n\n'
+                'To see a list of commands available, type `/` in the text input '
+                'for a server Erasmus is in and select its icon in the popup.\n\n'
+                f'{formatting.underline(formatting.bold("Server Moderators"))}\n'
+                'In order to allow your users to use the new slash commands, '
+                'you should reauthorize Erasmus in your server by doing the '
+                'following (**NOTE:** You **do not** have to remove Erasmus from your '
+                'server):\n\n'
+                '- Click [this link](https://discord.com/api/oauth2/authorize?'
+                'client_id=349394562336292876&permissions=274878000192&'
+                'scope=applications.commands%20bot)\n'
+                '- In the popup that opens, select your server in the drop down and '
+                'tap "Continue"\n'
+                '- In the popup that opens, tap "Authorize"\n\n'
+                'To see this message again, run `/notice`.'
+            ),
+            color=discord.Color.yellow(),
+        )
 
 
 async def setup(bot: Erasmus, /) -> None:
