@@ -16,7 +16,7 @@ from ..db import (
     Session,
 )
 from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
-from ..format import int_to_roman, roman_to_int
+from ..format import alpha_to_int, int_to_alpha, int_to_roman, roman_to_int
 from ..page_source import EmbedPageSource, ListPageSource
 from ..ui_pages import UIPages
 from ..utils import AutoCompleter
@@ -42,6 +42,7 @@ _roman_re: Final = re.group(
 _number_formatters: Final[dict[NumberingType, Callable[[int], str]]] = {
     NumberingType.ARABIC: lambda n: str(n),
     NumberingType.ROMAN: int_to_roman,
+    NumberingType.ALPHA: int_to_alpha,
 }
 
 
@@ -50,12 +51,14 @@ _reference_re: Final = re.compile(
     re.either(
         re.named_group('section_arabic')(re.one_or_more(re.DIGITS)),
         re.named_group('section_roman')(_roman_re),
+        re.named_group('section_alpha')(re.ALPHA),
     ),
     re.optional(
         re.DOT,
         re.either(
             re.named_group('subsection_arabic')(re.one_or_more(re.DIGITS)),
             re.named_group('subsection_roman')(_roman_re),
+            re.named_group('subsection_alpha')(re.ALPHA),
         ),
     ),
     re.END,
@@ -67,16 +70,21 @@ async def _get_output(
     session: AsyncSession, confession: ConfessionRecord, match: Match[str], /
 ) -> tuple[str | None, str]:
     format_number = _number_formatters[confession.numbering]
+    format_subsection_number = _number_formatters[confession.subsection_numbering]
 
     if match['section_arabic']:
         section_number = int(match['section_arabic'])
-    else:
+    elif match['section_roman']:
         section_number = roman_to_int(match['section_roman'])
+    else:
+        section_number = alpha_to_int(match['section_alpha'])
 
     if match['subsection_arabic']:
         subsection_number = int(match['subsection_arabic'])
     elif match['subsection_roman']:
         subsection_number = roman_to_int(match['subsection_roman'])
+    elif match['subsection_alpha']:
+        subsection_number = alpha_to_int(match['subsection_alpha'])
     else:
         subsection_number = None
 

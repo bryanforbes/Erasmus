@@ -46,6 +46,7 @@ class ConfessionType(Enum):
 class NumberingType(Enum):
     ARABIC = 'ARABIC'
     ROMAN = 'ROMAN'
+    ALPHA = 'ALPHA'
 
     def __repr__(self, /) -> str:
         return '<%s.%s>' % (self.__class__.__name__, self.name)
@@ -99,6 +100,9 @@ class Confession(Base):
     )
     numbering: Mapped[NumberingType] = mapped_column(
         ENUM(NumberingType, name='confession_numbering_type'), nullable=False
+    )
+    subsection_numbering: Mapped[NumberingType] = mapped_column(
+        ENUM(NumberingType, name='confession_numbering_type'), nullable=True
     )
     sortable_name: Mapped[str] = mapped_column(
         String,

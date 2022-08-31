@@ -30,3 +30,11 @@ def roman_to_int(numerals: str, /) -> int:
             index += len(letter)
 
     return result
+
+
+def int_to_alpha(number: int, /) -> str:
+    return chr(number + 96).upper()
+
+
+def alpha_to_int(alpha: str, /) -> int:
+    return ord(alpha[0].lower()) - 96
