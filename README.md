@@ -60,7 +60,7 @@ Ensure that [Poetry](https://https://python-poetry.org//) is [installed](https:/
 ### Running
 
 ```
-poetry install --no-dev
+poetry install --only main
 poetry run erasmus
 ```
 
