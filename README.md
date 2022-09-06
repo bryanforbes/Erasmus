@@ -11,7 +11,7 @@ A Bible bot for Discord
 
 [Invite Erasmus to your server](https://discordapp.com/oauth2/authorize?client_id=349394562336292876&scope=bot&permissions=388160)
 
-## Application Commands
+## Commands
 
 * `/verse` - Look up a verse in your preferred or selected version
 * `/search` - Search for terms in your preferred or selected version
@@ -32,26 +32,14 @@ A Bible bot for Discord
 * `/invite` - Get a link to invite Erasmus to your server
 * `/about` - Information about Erasmus
 
-## Text-based Commands
-
-* `$`, `$lookup` - Look up a verse in your preferred version
-* `$s`, `$search` - Search for terms in your perferred version
-* `$setversion` - Set your preferred version
-* `$versions` - List which Bible versions are available for lookup and search
-* `$<versions>` - Look up a verse in a specific version (ex. `$esv`)
-* `$s<version>` - Search for terms in a specific version (ex. `$sesv`)
-* `$confess` - Query confessions and catechisms
-* `$creeds` - List the supported creeds
-* `$help <command>` - Get more information about a specific command
-
 ## Data Privacy Policy
 
-Erasmus stores the following data:
+Erasmus retains the following data:
 
 * A user's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if the user set a preferred version (this can be deleted using `/prefs unsetdefault`)
 * A guild's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if a guild administrator sets a preferred version for the guild (this can be deleted using `/serverprefs unsetdefault`)
 
-While Erasmus uses message content to determine when it should execute a command, **no message content is ever stored**.
+Erasmus **never** retains message content.
 
 ## Setup
 
