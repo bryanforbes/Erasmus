@@ -22,24 +22,7 @@ if TYPE_CHECKING:
     from .config import Config
 
 _log: Final = logging.getLogger(__name__)
-
 _extensions: Final = ('admin', 'bible', 'confession', 'creeds', 'misc')
-
-
-_description: Final = '''
-Erasmus:
---------
-
-You can look up all verses in a message one of two ways:
-
-* Mention me in the message
-* Surround verse references in []
-    ex. [John 3:16] or [John 3:16 NASB]
-
-'''
-
-
-discord.http._set_api_version(9)
 
 
 class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
@@ -48,7 +31,6 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
 
     def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
         kwargs['help_command'] = None
-        kwargs['description'] = _description
         kwargs['allowed_mentions'] = discord.AllowedMentions.none()
 
         self.localizer = Localizer(discord.Locale.american_english)
@@ -92,10 +74,6 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         await self.bible_cog.lookup_from_message(message)
 
     async def on_ready(self, /) -> None:
-        await self.change_presence(
-            activity=discord.Game(name=f'| {self.default_prefix}help')
-        )
-
         user = self.user
         assert user is not None
         _log.info('Erasmus ready. Logged in as %s %s', user.name, user.id)
