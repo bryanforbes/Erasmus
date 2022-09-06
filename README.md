@@ -43,7 +43,7 @@ Erasmus **never** retains message content.
 
 ## Setup
 
-Ensure that [Poetry](https://https://python-poetry.org//) is [installed](https://python-poetry.org/docs/#installation)
+Ensure that [Poetry](https://python-poetry.org/) is [installed](https://python-poetry.org/docs/#installation)
 
 ### Running
 
