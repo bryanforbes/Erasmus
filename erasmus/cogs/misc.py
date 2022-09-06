@@ -103,7 +103,8 @@ class Misc(Cog['Erasmus']):
             )
             channel_count += len(list(channels))
 
-        dpy_version = metadata.distribution('discord.py').version
+        dpy_version = metadata.version('discord.py')
+        erasmus_version = metadata.version('erasmus')
 
         await utils.send(
             itx,
@@ -111,6 +112,11 @@ class Misc(Cog['Erasmus']):
                 Embed(
                     title=localizer.format('title'),
                     fields=[
+                        {
+                            'name': localizer.format('version'),
+                            'value': erasmus_version,
+                            'inline': False,
+                        },
                         {'name': localizer.format('guilds'), 'value': str(guild_count)},
                         {
                             'name': localizer.format('channels'),

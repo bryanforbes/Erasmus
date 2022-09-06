@@ -193,6 +193,7 @@ invite = invite
 about = about
     .description = Get info about Erasmus
     .title = About Erasmus
+    .version = Version
     .guilds = Guilds
     .channels = Channels
     .footer = Made with discord.py v{ $version }
