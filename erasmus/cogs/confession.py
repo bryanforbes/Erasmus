@@ -5,14 +5,7 @@ from typing import TYPE_CHECKING, Final, NamedTuple, TypeAlias, cast
 from attrs import define
 from botus_receptus import re, utils
 from botus_receptus.cog import GroupCog
-from botus_receptus.formatting import (
-    EmbedPaginator,
-    bold,
-    ellipsize,
-    escape,
-    pluralizer,
-    underline,
-)
+from botus_receptus.formatting import EmbedPaginator, bold, ellipsize, escape, underline
 from discord import app_commands
 
 from ..db import (
@@ -80,12 +73,6 @@ _reference_res: Final = {
         ),
         re.END,
     ),
-}
-
-_pluralizers: Final = {
-    ConfessionType.CHAPTERS: pluralizer('paragraph'),
-    ConfessionType.ARTICLES: pluralizer('article'),
-    ConfessionType.QA: pluralizer('question'),
 }
 
 _number_formatters: Final[dict[NumberingType, Callable[[int | None], str]]] = {

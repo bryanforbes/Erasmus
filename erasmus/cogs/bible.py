@@ -487,23 +487,6 @@ _shared_cooldown = app_commands.checks.cooldown(
     rate=8, per=60.0, key=lambda i: (i.guild_id, i.user.id)
 )
 
-_lookup_cooldown = commands.CooldownMapping.from_cooldown(
-    rate=8, per=60.0, type=commands.BucketType.user
-)
-
-
-def _get_cooldown_bucket(message: discord.Message, /) -> commands.Cooldown:
-    bucket = _lookup_cooldown.get_bucket(message)
-
-    assert bucket is not None
-
-    retry_after = bucket.update_rate_limit(message.created_at.timestamp())
-
-    if retry_after is not None:
-        raise app_commands.CommandOnCooldown(bucket, retry_after)
-
-    return bucket
-
 
 class Bible(Cog['Erasmus']):
     service_manager: ServiceManager
@@ -513,9 +496,14 @@ class Bible(Cog['Erasmus']):
     preferences = PreferencesGroup()
     server_preferences = ServerPreferencesGroup()
 
+    __lookup_cooldown: commands.CooldownMapping[discord.Message]
+
     def __init__(self, bot: Erasmus, /) -> None:
         self.service_manager = ServiceManager.from_config(bot.config, bot.session)
         self.localizer = bot.localizer
+        self.__lookup_cooldown = commands.CooldownMapping.from_cooldown(
+            rate=8, per=60.0, type=commands.BucketType.user
+        )
 
         super().__init__(bot)
 
@@ -540,6 +528,18 @@ class Bible(Cog['Erasmus']):
 
     async def cog_unload(self) -> None:
         _bible_lookup.clear()
+
+    def __get_cooldown_bucket(self, message: discord.Message, /) -> commands.Cooldown:
+        bucket = self.__lookup_cooldown.get_bucket(message)
+
+        assert bucket is not None
+
+        retry_after = bucket.update_rate_limit(message.created_at.timestamp())
+
+        if retry_after is not None:
+            raise app_commands.CommandOnCooldown(bucket, retry_after)
+
+        return bucket
 
     async def __lookup(
         self,
@@ -626,7 +626,7 @@ class Bible(Cog['Erasmus']):
             if not verse_ranges:
                 return
 
-            bucket = _get_cooldown_bucket(message)
+            bucket = self.__get_cooldown_bucket(message)
 
             async with message.channel.typing(), Session() as session:
                 user_bible = await BibleVersion.get_for_user(
