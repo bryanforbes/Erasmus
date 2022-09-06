@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from itertools import chain
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Final, Literal, TypedDict
+from typing import TYPE_CHECKING, Final, Literal, TypedDict
 
 import orjson
 from attrs import define, field
@@ -17,7 +17,6 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
     import discord
-    from discord.ext import commands
 
 
 class BookDict(TypedDict):
@@ -267,10 +266,6 @@ class VerseRange:
                 match = lookup_pattern.search(string, match.end())
 
         return ranges
-
-    @classmethod
-    async def convert(cls, ctx: commands.Context[Any], argument: str, /) -> Self:
-        return cls.from_string(argument)
 
     @classmethod
     async def transform(cls, itx: discord.Interaction, value: str, /) -> Self:

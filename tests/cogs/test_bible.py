@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from erasmus.cogs.bible import Bible, BibleAppCommands
+from erasmus.cogs.bible import Bible
 from erasmus.types import Refreshable
 
 if TYPE_CHECKING:
@@ -13,40 +13,14 @@ if TYPE_CHECKING:
     from pytest_mock import MockerFixture
 
     from erasmus.erasmus import Erasmus
-    from erasmus.service_manager import ServiceManager
-
-
-class MockServiceManager:
-    ...
-
-
-@pytest.fixture
-def mock_bot(mocker: MockerFixture) -> Mock:
-    return mocker.Mock()
-
-
-@pytest.fixture
-def mock_service_manager() -> MockServiceManager:
-    return MockServiceManager()
 
 
 class TestBible:
-    def test_instantiate(
-        self,
-        mock_bot: Erasmus,
-        mock_service_manager: ServiceManager,
-    ) -> None:
-        cog = Bible(mock_bot, mock_service_manager)
-        assert cog is not None
-        assert not isinstance(cog, Refreshable)
+    @pytest.fixture
+    def mock_bot(self, mocker: MockerFixture) -> Mock:
+        return mocker.Mock()
 
-
-class TestBibleAppCommands:
-    def test_instantiate(
-        self,
-        mock_bot: Erasmus,
-        mock_service_manager: ServiceManager,
-    ) -> None:
-        cog = BibleAppCommands(mock_bot, mock_service_manager)
+    def test_instantiate(self, mock_bot: Erasmus) -> None:
+        cog = Bible(mock_bot)
         assert cog is not None
         assert isinstance(cog, Refreshable)

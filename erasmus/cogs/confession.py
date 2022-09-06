@@ -1,22 +1,12 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Final, NamedTuple, TypeAlias, cast
+from typing import TYPE_CHECKING, Final, NamedTuple, TypeAlias, cast
 
-import discord
-from attrs import define, field
-from botus_receptus import Cog, re, utils
+from attrs import define
+from botus_receptus import re, utils
 from botus_receptus.cog import GroupCog
-from botus_receptus.formatting import (
-    EmbedPaginator,
-    bold,
-    ellipsize,
-    escape,
-    pluralizer,
-    underline,
-)
+from botus_receptus.formatting import EmbedPaginator, bold, ellipsize, escape, underline
 from discord import app_commands
-from discord.ext import commands
-from more_itertools import peekable, unique_everseen
 
 from ..db import (
     Confession as ConfessionRecord,
@@ -36,6 +26,7 @@ if TYPE_CHECKING:
     from re import Match
     from typing_extensions import Self
 
+    import discord
     from sqlalchemy.ext.asyncio import AsyncSession
 
     from ..erasmus import Erasmus
@@ -82,12 +73,6 @@ _reference_res: Final = {
         ),
         re.END,
     ),
-}
-
-_pluralizers: Final = {
-    ConfessionType.CHAPTERS: pluralizer('paragraph'),
-    ConfessionType.ARTICLES: pluralizer('article'),
-    ConfessionType.QA: pluralizer('question'),
 }
 
 _number_formatters: Final[dict[NumberingType, Callable[[int | None], str]]] = {
@@ -178,38 +163,6 @@ _output_getters: Final[dict[ConfessionType, _OUTPUT_GETTER]] = {
 }
 
 
-_confess_help: Final = '''
-Arguments:
-----------
-    [confession] - A confession to query. Can be found by invoking {prefix}confess
-                   with no arguments.
-
-    [args...] - Arguments to pass to query or look up in the confession.
-
-Examples:
----------
-    List all confessions/catechisms:
-        {prefix}confess
-
-    List the chapters of a confession:
-        {prefix}confess 1689
-
-    Show the number of questions in a catechism:
-        {prefix}confess hc
-
-    Search for terms in a confession/catechism:
-        {prefix}confess 1689 faith hope
-
-    Look up the paragraph of a confession:
-        {prefix}confess 1689 2.2
-
-    Look up a question, answer, or both in a catechism:
-        {prefix}confess hc q3
-        {prefix}confess hc a3
-        {prefix}confess hc 3
-'''
-
-
 class ConfessionSearchSource(
     EmbedPageSource['Sequence[Section]'], ListPageSource[Section]
 ):
@@ -247,210 +200,6 @@ class ConfessionSearchSource(
             lines.append(self.entry_text_string.format(entry=entry))
 
         self.embed.description = '\n'.join(lines)
-
-
-class ConfessionBase(Cog['Erasmus']):
-    localizer: Localizer
-
-    def __init__(self, bot: Erasmus, /) -> None:
-        self.localizer = bot.localizer
-
-        super().__init__(bot)
-
-    async def cog_command_error(
-        self,
-        ctx: commands.Context[Any] | discord.Interaction,
-        error: Exception,
-    ) -> None:
-        if (
-            isinstance(
-                error,
-                (
-                    commands.CommandInvokeError,
-                    commands.BadArgument,
-                    commands.ConversionError,
-                    app_commands.CommandInvokeError,
-                    app_commands.TransformerError,
-                ),
-            )
-            and error.__cause__ is not None
-        ):
-            error = cast('Exception', error.__cause__)
-
-        match error:
-            case InvalidConfessionError():
-                message_id = 'invalid-confession'
-                data = {'confession': error.confession}
-            case NoSectionError():
-                message_id = 'no-section'
-                data = {
-                    'confession': error.confession,
-                    'section_type': error.section_type,
-                    'section': error.section,
-                }
-            case NoSectionsError():
-                message_id = 'no-sections'
-                data = {
-                    'confession': error.confession,
-                    'section_type': error.section_type,
-                }
-            case _:
-                return
-
-        await utils.send_embed_error(
-            ctx,
-            description=escape(
-                self.localizer.format(
-                    message_id,
-                    data=data,
-                    locale=ctx.locale
-                    if isinstance(ctx, discord.Interaction)
-                    else (
-                        ctx.interaction.locale if ctx.interaction is not None else None
-                    ),
-                ),
-                mass_mentions=True,
-            ),
-        )
-
-    cog_app_command_error = cog_command_error  # type: ignore
-
-    async def _show_citation(
-        self,
-        ctx: commands.Context[Any] | discord.Interaction,
-        confession: ConfessionRecord,
-        match: Match[str],
-        /,
-    ) -> None:
-        paginator = EmbedPaginator()
-        get_output = _output_getters[confession.type]
-
-        async with Session() as session:
-            section_title, output = await get_output(session, confession, match)
-
-        title: str | None = underline(bold(confession.name))
-
-        if section_title:
-            paginator.add_line(bold(section_title))
-
-        if output:
-            paginator.add_line(output)
-
-        for page in paginator:
-            await utils.send_embed(ctx, description=page, title=title)
-            title = None
-
-
-class Confession(ConfessionBase):
-    @commands.command(brief='Query confessions and catechisms', help=_confess_help)
-    @commands.cooldown(rate=10, per=30.0, type=commands.BucketType.user)
-    async def confess(
-        self,
-        ctx: commands.Context[Erasmus],
-        confession: str | None = None,
-        /,
-        *args: str,
-    ) -> None:
-        if confession is None:
-            await self.list(ctx)
-            return
-
-        list_contents = len(args) == 0
-
-        async with Session() as session:
-            row = await ConfessionRecord.get_by_command(
-                session, confession, load_sections=list_contents
-            )
-
-        if list_contents:
-            await self.list_contents(ctx, row)
-            return
-
-        if not (match := _reference_res[row.type].match(args[0])):
-            await self.search(ctx, row, *args)
-            return
-
-        await self._show_citation(ctx, row, match)
-
-    async def list(self, ctx: commands.Context[Erasmus], /) -> None:
-        paginator = EmbedPaginator()
-        paginator.add_line('I support the following confessions:', empty=True)
-
-        async with Session() as session:
-            async for conf in ConfessionRecord.get_all(session):
-                paginator.add_line(f'  `{conf.command}`: {conf.name}')
-
-        for page in paginator:
-            await utils.send_embed(ctx, description=page)
-
-    async def list_contents(
-        self, ctx: commands.Context[Erasmus], confession: ConfessionRecord, /
-    ) -> None:
-        if (
-            confession.type == ConfessionType.CHAPTERS
-            or confession.type == ConfessionType.ARTICLES
-        ):
-            await self.list_sections(ctx, confession)
-        elif confession.type == ConfessionType.QA:
-            await self.list_questions(ctx, confession)
-
-    async def list_sections(
-        self, ctx: commands.Context[Erasmus], confession: ConfessionRecord, /
-    ) -> None:
-        if confession.type == ConfessionType.CHAPTERS:
-            sections = unique_everseen(confession.sections, key=lambda c: c.number)
-        else:  # ConfessionType.ARTICLES
-            sections = confession.sections
-
-        sections = peekable(sections)
-
-        if sections.peek(None) is None:
-            raise NoSectionsError(
-                confession.name,
-                'chapters'
-                if confession.type == ConfessionType.CHAPTERS
-                else 'articles',
-            )
-
-        paginator = EmbedPaginator()
-        format_number = _number_formatters[confession.numbering]
-
-        for section in sections:
-            paginator.add_line(f'**{format_number(section.number)}**. {section.title}')
-
-        for index, page in enumerate(paginator):
-            await utils.send_embed(
-                ctx,
-                description=page,
-                title=(underline(bold(confession.name)) if index == 0 else None),
-            )
-
-    async def list_questions(
-        self, ctx: commands.Context[Erasmus], confession: ConfessionRecord, /
-    ) -> None:
-        count = len(confession.sections)
-        question_str = _pluralizers[ConfessionType.QA](count)
-
-        await utils.send_embed(
-            ctx, description=f'`{confession.name}` has {question_str}'
-        )
-
-    async def search(
-        self,
-        ctx: commands.Context[Erasmus],
-        confession: ConfessionRecord,
-        /,
-        *terms: str,
-    ) -> None:
-        async with Session() as session:
-            results = [result async for result in confession.search(session, terms)]
-
-        localizer = self.localizer.for_message('confess__search')
-        source = ConfessionSearchSource(
-            results, type=confession.type, per_page=20, localizer=localizer
-        )
-        pages = UIPages(ctx, source, localizer=localizer)
-        await pages.start()
 
 
 class _SectionInfo(NamedTuple):
@@ -521,15 +270,8 @@ class _ConfessionOption:
 
 
 @define(eq=False)
-class ConfessionAutoCompleter(AutoCompleter[_ConfessionOption]):
-    create_option: Callable[[ConfessionRecord], _ConfessionOption] = field(
-        default=_ConfessionOption.create
-    )
-
-
-@define(eq=False)
 class SectionAutoCompleter(app_commands.Transformer):
-    confession_lookup: ConfessionAutoCompleter
+    confession_lookup: AutoCompleter[_ConfessionOption]
 
     async def transform(self, itx: discord.Interaction, value: str, /) -> str:
         return value
@@ -562,16 +304,22 @@ class SectionAutoCompleter(app_commands.Transformer):
         ][:25]
 
 
-_confession_lookup = ConfessionAutoCompleter()
+_confession_lookup: AutoCompleter[_ConfessionOption] = AutoCompleter()
 _section_lookup = SectionAutoCompleter(_confession_lookup)
 
 
-class ConfessionAppCommands(
-    ConfessionBase,
+class Confession(
     GroupCog['Erasmus'],
     group_name='confess',
     group_description='Confessions',
 ):
+    localizer: Localizer
+
+    def __init__(self, bot: Erasmus, /) -> None:
+        self.localizer = bot.localizer
+
+        super().__init__(bot)
+
     async def refresh(self, session: AsyncSession, /) -> None:
         _confession_lookup.clear()
         _confession_lookup.update(
@@ -589,6 +337,49 @@ class ConfessionAppCommands(
 
     async def cog_unload(self) -> None:
         _confession_lookup.clear()
+
+    async def cog_app_command_error(  # pyright: ignore [reportIncompatibleMethodOverride]  # noqa: B950
+        self, itx: discord.Interaction, error: Exception, /
+    ) -> None:
+        if (
+            isinstance(
+                error,
+                (
+                    app_commands.CommandInvokeError,
+                    app_commands.TransformerError,
+                ),
+            )
+            and error.__cause__ is not None
+        ):
+            error = cast('Exception', error.__cause__)
+
+        match error:
+            case InvalidConfessionError():
+                message_id = 'invalid-confession'
+                data = {'confession': error.confession}
+            case NoSectionError():
+                message_id = 'no-section'
+                data = {
+                    'confession': error.confession,
+                    'section_type': error.section_type,
+                    'section': error.section,
+                }
+            case NoSectionsError():
+                message_id = 'no-sections'
+                data = {
+                    'confession': error.confession,
+                    'section_type': error.section_type,
+                }
+            case _:
+                return
+
+        await utils.send_embed_error(
+            itx,
+            description=escape(
+                self.localizer.format(message_id, data=data, locale=itx.locale),
+                mass_mentions=True,
+            ),
+        )
 
     @app_commands.command()
     @app_commands.checks.cooldown(
@@ -645,9 +436,24 @@ class ConfessionAppCommands(
         if (match := _reference_res[confession.type].match(section)) is None:
             raise NoSectionError(confession.name, section, confession.type)
 
-        await self._show_citation(itx, confession, match)
+        paginator = EmbedPaginator()
+        get_output = _output_getters[confession.type]
+
+        async with Session() as session:
+            section_title, output = await get_output(session, confession, match)
+
+        title: str | None = underline(bold(confession.name))
+
+        if section_title:
+            paginator.add_line(bold(section_title))
+
+        if output:
+            paginator.add_line(output)
+
+        for page in paginator:
+            await utils.send_embed(itx, description=page, title=title)
+            title = None
 
 
 async def setup(bot: Erasmus, /) -> None:
     await bot.add_cog(Confession(bot))
-    await bot.add_cog(ConfessionAppCommands(bot))

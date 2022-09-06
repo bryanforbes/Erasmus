@@ -12,10 +12,8 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
 
     from botus_receptus.types import Coroutine
-    from discord.ext import commands
 
     from .data import Passage
-    from .erasmus import Erasmus
 
 _OptionT = TypeVar('_OptionT', bound='Option')
 
@@ -35,7 +33,7 @@ def _get_passage_text(passage: Passage, /) -> str:
 
 @overload
 async def send_passage(
-    ctx: commands.Context[Erasmus], passage: Passage, /
+    msg: discord.abc.Messageable | discord.Message, passage: Passage, /
 ) -> discord.Message:
     ...
 
@@ -47,14 +45,25 @@ async def send_passage(
     ...
 
 
+@overload
+async def send_passage(
+    itx: discord.abc.Messageable | discord.Message | discord.Interaction,
+    passage: Passage,
+    /,
+    *,
+    ephemeral: bool = False,
+) -> discord.Message:
+    ...
+
+
 def send_passage(
-    ctx_or_itx: commands.Context[Erasmus] | discord.Interaction,
+    msg_or_itx: discord.abc.Messageable | discord.Message | discord.Interaction,
     passage: Passage,
     /,
     ephemeral: bool = discord.utils.MISSING,
 ) -> Coroutine[discord.Message]:
     return utils.send_embed(
-        ctx_or_itx,
+        msg_or_itx,
         description=_get_passage_text(passage),
         footer={'text': passage.citation},
         ephemeral=ephemeral,

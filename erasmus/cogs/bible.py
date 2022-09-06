@@ -1,11 +1,11 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Final, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import discord
 from asyncpg.exceptions import UniqueViolationError
 from attrs import define
-from botus_receptus import Cog, checks, formatting, utils
+from botus_receptus import Cog, formatting, utils
 from botus_receptus.app_commands import admin_guild_only
 from discord import app_commands
 from discord.ext import commands
@@ -124,520 +124,6 @@ class SearchPageSource(FieldPageSource['Sequence[Passage]'], AsyncPageSource[Pas
         await super().set_page_text(page)
 
 
-_lookup_help: Final = '''
-Arguments:
-----------
-    <reference> - A verse reference in one of the following forms:
-        Book 1:1
-        Book 1:1-2
-        Book 1:1-2:1
-
-Example:
---------
-    {prefix} John 1:50-2:1
-
-NOTE: Before this command will work, you MUST set your prefered Bible version
-      using {prefix}setversion'''
-
-_search_help: Final = '''
-Arguments:
-----------
-    [terms...] - One or more terms to search for
-
-Example:
---------
-    {prefix}s faith hope
-
-NOTE: Before this command will work, you MUST set your prefered Bible version
-      using {prefix}setversion'''
-
-_setversion_help: Final = '''
-Arguments:
-----------
-    <version> - A supported version identifier listed in {prefix}versions
-
-Example:
---------
-    {prefix}setversion nasb'''
-
-_unsetversion_help: Final = '''
-
-Example:
---------
-    {prefix}unsetversion'''
-
-_setguildversion_help: Final = '''
-Arguments:
-----------
-    <version> - A supported version identifier listed in {prefix}versions
-
-Example:
---------
-    {prefix}setguildversion nasb'''
-
-_unsetguildversion_help: Final = '''
-
-Example:
---------
-    {prefix}unsetguildversion'''
-
-_version_lookup_help: Final = '''
-Arguments:
-----------
-    <reference> - A verse reference in one of the following forms:
-        Book 1:1
-        Book 1:1-2
-        Book 1:1-2:1
-
-Example:
---------
-    {prefix}{command} John 1:50-2:1'''
-
-
-_version_search_help: Final = '''
-Arguments:
-----------
-    [terms...] - One or more terms to search for
-
-Example:
---------
-    {prefix}{command} faith hope'''
-
-
-class BibleBase(Cog['Erasmus']):
-    service_manager: ServiceManager
-    localizer: Localizer
-
-    def __init__(self, bot: Erasmus, service_manager: ServiceManager, /) -> None:
-        self.service_manager = service_manager
-        self.localizer = bot.localizer
-
-        super().__init__(bot)
-
-    async def cog_command_error(
-        self,
-        ctx: commands.Context[Any] | discord.Interaction,
-        error: Exception,
-    ) -> None:
-        if (
-            isinstance(
-                error,
-                (
-                    commands.CommandInvokeError,
-                    commands.BadArgument,
-                    commands.ConversionError,
-                    app_commands.CommandInvokeError,
-                    app_commands.TransformerError,
-                ),
-            )
-            and error.__cause__ is not None
-        ):
-            error = cast('Exception', error.__cause__)
-
-        data: dict[str, Any] | None = None
-
-        match error:
-            case BookNotUnderstoodError():
-                message_id = 'book-not-understood'
-                data = {'book': error.book}
-            case BookNotInVersionError():
-                message_id = 'book-not-in-version'
-                data = {'book': error.book, 'version': error.version}
-            case DoNotUnderstandError():
-                message_id = 'do-not-understand'
-            case ReferenceNotUnderstoodError():
-                message_id = 'reference-not-understood'
-                data = {'reference': error.reference}
-            case BibleNotSupportedError():
-                if isinstance(ctx, commands.Context):
-                    data = {'version': f'{ctx.prefix}{error.version}'}
-                else:
-                    data = {'version': error.version}
-                message_id = 'bible-not-supported'
-            case NoUserVersionError():
-                message_id = 'no-user-version'
-            case InvalidVersionError():
-                message_id = 'invalid-version'
-                data = {'version': error.version}
-            case ServiceNotSupportedError():
-                if isinstance(ctx, commands.Context):
-                    version_text = f'{ctx.prefix}{ctx.invoked_with}'
-                else:
-                    version_text = f'{error.bible.name}'
-
-                message_id = 'service-not-supported'
-                data = {'name': version_text}
-            case ServiceLookupTimeout():
-                message_id = 'service-lookup-timeout'
-                data = {'name': error.bible.name, 'verses': str(error.verses)}
-            case ServiceSearchTimeout():
-                message_id = 'service-search-timeout'
-                data = {'name': error.bible.name, 'terms': ' '.join(error.terms)}
-            case _:
-                return
-
-        await utils.send_embed_error(
-            ctx,
-            description=formatting.escape(
-                self.localizer.format(
-                    message_id,
-                    data=data,
-                    locale=ctx.locale
-                    if isinstance(ctx, discord.Interaction)
-                    else (
-                        ctx.interaction.locale if ctx.interaction is not None else None
-                    ),
-                ),
-                mass_mentions=True,
-            ),
-        )
-
-    cog_app_command_error = cog_command_error  # type: ignore
-
-
-class Bible(BibleBase):
-    async def cog_load(self) -> None:
-        self._user_cooldown = commands.CooldownMapping.from_cooldown(
-            8, 60.0, commands.BucketType.user
-        )
-
-        # Share cooldown across commands
-        self.lookup._buckets = self.search._buckets = self._user_cooldown
-
-        async with Session() as session:
-            async for version in BibleVersion.get_all(session):
-                self.__add_bible_commands(version.command, version.name)
-
-    async def cog_unload(self) -> None:
-        async with Session() as session:
-            async for version in BibleVersion.get_all(session):
-                self.__remove_bible_commands(version.command)
-
-    async def lookup_from_message(
-        self, ctx: commands.Context[Erasmus], message: discord.Message, /
-    ) -> None:
-        try:
-            verse_ranges = VerseRange.get_all_from_string(
-                message.content,
-                only_bracketed=self.bot.user not in message.mentions,  # type: ignore
-            )
-
-            if len(verse_ranges) == 0:
-                return
-
-            bucket = self._user_cooldown.get_bucket(ctx.message)
-            assert bucket is not None
-
-            retry_after = bucket.update_rate_limit()
-
-            if retry_after:
-                raise commands.CommandOnCooldown(
-                    bucket, retry_after, commands.BucketType.user
-                )
-
-            await self.bot._application_command_notice_check(ctx)
-
-            async with ctx.typing():
-                async with Session() as session:
-                    user_bible = await BibleVersion.get_for_user(
-                        session, ctx.author, ctx.guild
-                    )
-
-                    for i, verse_range in enumerate(verse_ranges):
-                        if i > 0:
-                            bucket.update_rate_limit()
-
-                        bible: BibleVersion | None = None
-
-                        if isinstance(verse_range, Exception):
-                            raise verse_range
-
-                        if verse_range.version is not None:
-                            bible = await BibleVersion.get_by_abbr(
-                                session, verse_range.version
-                            )
-
-                        if bible is None:
-                            bible = user_bible
-
-                        await self.__lookup(ctx, bible, verse_range)
-        except Exception as exc:  # noqa: PIE786
-            await self.cog_command_error(ctx, exc)
-            await self.bot.on_command_error(ctx, exc)
-
-    @commands.command(
-        aliases=[''],
-        brief='Look up a verse in your preferred version',
-        help=_lookup_help,
-    )
-    async def lookup(
-        self, ctx: commands.Context[Erasmus], /, *, reference: VerseRange
-    ) -> None:
-        async with Session() as session:
-            bible = await BibleVersion.get_for_user(session, ctx.author, ctx.guild)
-
-        async with ctx.typing():
-            await self.__lookup(ctx, bible, reference)
-
-    @commands.command(
-        aliases=['s'],
-        brief='Search for terms in your preferred version',
-        help=_search_help,
-    )
-    async def search(self, ctx: commands.Context[Erasmus], /, *terms: str) -> None:
-        async with Session() as session:
-            bible = await BibleVersion.get_for_user(session, ctx.author, ctx.guild)
-
-        await self.__search(ctx, bible, *terms)
-
-    @commands.command(
-        brief='List which Bible versions are available for lookup and search'
-    )
-    @commands.cooldown(rate=2, per=30.0, type=commands.BucketType.channel)
-    async def versions(self, ctx: commands.Context[Erasmus], /) -> None:
-        lines = ['I support the following Bible versions:', '']
-
-        async with Session() as session:
-            lines += [
-                f'  `{ctx.prefix}{version.command}`: {version.name}'
-                async for version in BibleVersion.get_all(session, ordered=True)
-            ]
-
-        lines.append(
-            "\nYou can search any version by prefixing the version command with 's' "
-            f'(ex. `{ctx.prefix}sesv terms...`)'
-        )
-
-        output = '\n'.join(lines)
-        await utils.send_embed(ctx, description=f'\n{output}\n')
-
-    @commands.command(brief='Set your preferred version', help=_setversion_help)
-    @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
-    async def setversion(self, ctx: commands.Context[Erasmus], version: str, /) -> None:
-        version = version.lower()
-        if version[0] == ctx.prefix:
-            version = version[1:]
-
-        async with Session.begin() as session:
-            existing = await BibleVersion.get_by_command(session, version)
-            await existing.set_for_user(session, ctx.author)
-
-        await utils.send_embed(ctx, description=f'Version set to `{version}`')
-
-    @commands.command(brief='Delete your preferred version', help=_unsetversion_help)
-    @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
-    async def unsetversion(self, ctx: commands.Context[Erasmus], /) -> None:
-        async with Session.begin() as session:
-            user_prefs = await session.get(UserPref, ctx.author.id)
-
-            if user_prefs is not None:
-                await session.delete(user_prefs)
-                await utils.send_embed(ctx, description='Preferred version deleted')
-            else:
-                await utils.send_embed(
-                    ctx, description='Preferred version already deleted'
-                )
-
-    @commands.command(brief='Set the guild default version', help=_setguildversion_help)
-    @commands.has_permissions(administrator=True)
-    @commands.guild_only()
-    @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
-    async def setguildversion(
-        self, ctx: commands.Context[Erasmus], version: str, /
-    ) -> None:
-        assert ctx.guild is not None
-
-        version = version.lower()
-        if version[0] == ctx.prefix:
-            version = version[1:]
-
-        async with Session.begin() as session:
-            existing = await BibleVersion.get_by_command(session, version)
-            await existing.set_for_guild(session, ctx.guild)
-
-        await utils.send_embed(ctx, description=f'Guild version set to `{version}`')
-
-    @commands.command(
-        brief='Delete the guild default version', help=_unsetguildversion_help
-    )
-    @commands.has_permissions(administrator=True)
-    @commands.guild_only()
-    @commands.cooldown(rate=2, per=60.0, type=commands.BucketType.user)
-    async def unsetguildversion(self, ctx: commands.Context[Erasmus], /) -> None:
-        assert ctx.guild is not None
-
-        async with Session.begin() as session:
-            if (guild_prefs := await session.get(GuildPref, ctx.guild.id)) is not None:
-                await session.delete(guild_prefs)
-                await utils.send_embed(ctx, description='Guild version deleted')
-            else:
-                await utils.send_embed(ctx, description='Guild version already deleted')
-
-    @commands.command(name='addbible')
-    @checks.dm_only()
-    @commands.is_owner()
-    async def add_bible(
-        self,
-        ctx: commands.Context[Erasmus],
-        command: str,
-        name: str,
-        abbr: str,
-        service: str,
-        service_version: str,
-        books: str = 'OT,NT',
-        rtl: bool = False,
-        /,
-    ) -> None:
-        if service not in self.service_manager:
-            await utils.send_embed_error(
-                ctx, description=f'`{service}` is not a valid service'
-            )
-            return
-
-        try:
-            async with Session.begin() as session:
-                session.add(
-                    BibleVersion(
-                        command=command,
-                        name=name,
-                        abbr=abbr,
-                        service=service,
-                        service_version=service_version,
-                        rtl=rtl,
-                        books=_book_mask_from_books(books),
-                    )
-                )
-        except (UniqueViolationError, IntegrityError):
-            await utils.send_embed_error(ctx, description=f'`{command}` already exists')
-        else:
-            self.__add_bible_commands(command, name)
-            await utils.send_embed(ctx, description=f'Added `{command}` as "{name}"')
-
-    @commands.command(name='delbible')
-    @checks.dm_only()
-    @commands.is_owner()
-    async def delete_bible(
-        self, ctx: commands.Context[Erasmus], command: str, /
-    ) -> None:
-        async with Session.begin() as session:
-            version = await BibleVersion.get_by_command(session, command)
-            await session.delete(version)
-
-            self.__remove_bible_commands(command)
-
-            await utils.send_embed(ctx, description=f'Removed `{command}`')
-
-    @commands.command(name='upbible')
-    @checks.dm_only()
-    @commands.is_owner()
-    async def update_bible(
-        self,
-        ctx: commands.Context[Erasmus],
-        command: str,
-        service: str,
-        service_version: str,
-        /,
-    ) -> None:
-        try:
-            async with Session.begin() as session:
-                version = await BibleVersion.get_by_command(session, command)
-                version.service = service
-                version.service_version = service_version
-        except ErasmusError:
-            raise
-        except Exception:  # noqa: PIE786
-            await utils.send_embed_error(ctx, description=f'Error updating `{command}`')
-        else:
-            await utils.send_embed(ctx, description=f'Updated `{command}`')
-
-    async def __version_lookup(
-        self, ctx: commands.Context[Erasmus], /, *, reference: VerseRange
-    ) -> None:
-        async with Session() as session:
-            bible = await BibleVersion.get_by_command(
-                session, cast('str', ctx.invoked_with)
-            )
-
-        async with ctx.typing():
-            await self.__lookup(ctx, bible, reference)
-
-    async def __version_search(
-        self, ctx: commands.Context[Erasmus], /, *terms: str
-    ) -> None:
-        async with Session() as session:
-            bible = await BibleVersion.get_by_command(
-                session, cast('str', ctx.invoked_with)[1:]
-            )
-
-        await self.__search(ctx, bible, *terms)
-
-    async def __lookup(
-        self,
-        ctx: commands.Context[Erasmus],
-        bible: BibleVersion,
-        reference: VerseRange,
-        /,
-    ) -> None:
-        if reference.book_mask == 'DC' or not (bible.books & reference.book_mask):
-            raise BookNotInVersionError(reference.book, bible.name)
-
-        if reference is not None:
-            passage = await self.service_manager.get_passage(bible, reference)
-            await send_passage(ctx, passage)
-        else:
-            await utils.send_embed_error(
-                ctx, description=f'I do not understand the request `${reference}`'
-            )
-
-    async def __search(
-        self, ctx: commands.Context[Erasmus], bible: BibleVersion, /, *terms: str
-    ) -> None:
-        if not terms:
-            await utils.send_embed_error(
-                ctx, description='Please include some terms to search for'
-            )
-            return
-
-        def search(*, per_page: int, page_number: int) -> Coroutine[SearchResults]:
-            return self.service_manager.search(
-                bible, list(terms), limit=per_page, offset=page_number
-            )
-
-        localizer = self.localizer.for_message('search')
-        source = SearchPageSource(search, per_page=5, bible=bible, localizer=localizer)
-        view = UIPages(ctx, source, localizer=localizer)
-        await view.start()
-
-    def __add_bible_commands(self, command: str, name: str, /) -> None:
-        lookup = commands.Command(
-            Bible.__version_lookup,
-            name=command,
-            brief=f'Look up a verse in {name}',
-            help=_version_lookup_help.format(prefix='{prefix}', command=command),
-            hidden=True,
-            # Share cooldown across commands
-            cooldown=self._user_cooldown,
-        )
-        lookup.cog = self
-        search = commands.Command(
-            Bible.__version_search,
-            name=f's{command}',
-            brief=f'Search in {name}',
-            help=_version_search_help.format(prefix='{prefix}', command=f's{command}'),
-            hidden=True,
-            # Share cooldown across commands
-            cooldown=self._user_cooldown,
-        )
-        search.cog = self
-
-        self.bot.add_command(lookup)
-        self.bot.add_command(search)
-
-    def __remove_bible_commands(self, command: str, /) -> None:
-        self.bot.remove_command(command)
-        self.bot.remove_command(f's{command}')
-
-
 @define
 class _BibleOption:
     name: str
@@ -706,7 +192,7 @@ class ServerPreferencesGroup(
 ):
     localizer: Localizer
 
-    def initialize_from_cog(self, cog: BibleAppCommands, /) -> None:
+    def initialize_from_cog(self, cog: Bible, /) -> None:
         self.localizer = cog.localizer
 
     @app_commands.command()
@@ -768,7 +254,7 @@ class ServerPreferencesGroup(
 class PreferencesGroup(app_commands.Group, name='prefs', description='Preferences'):
     localizer: Localizer
 
-    def initialize_from_cog(self, cog: BibleAppCommands, /) -> None:
+    def initialize_from_cog(self, cog: Bible, /) -> None:
         self.localizer = cog.localizer
 
     @app_commands.command()
@@ -824,7 +310,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     service_manager: ServiceManager
     refresh_data: Callable[[AsyncSession], Awaitable[None]]
 
-    def initialize_from_cog(self, cog: BibleAppCommands, /) -> None:
+    def initialize_from_cog(self, cog: Bible, /) -> None:
         self.service_manager = cog.service_manager
         self.refresh_data = cog.refresh
 
@@ -1002,17 +488,30 @@ _shared_cooldown = app_commands.checks.cooldown(
 )
 
 
-class BibleAppCommands(BibleBase):
+class Bible(Cog['Erasmus']):
+    service_manager: ServiceManager
+    localizer: Localizer
+
     admin = BibleAdminGroup()
     preferences = PreferencesGroup()
     server_preferences = ServerPreferencesGroup()
 
-    def __init__(self, bot: Erasmus, service_manager: ServiceManager, /) -> None:
-        super().__init__(bot, service_manager)
+    __lookup_cooldown: commands.CooldownMapping[discord.Message]
+
+    def __init__(self, bot: Erasmus, /) -> None:
+        self.service_manager = ServiceManager.from_config(bot.config, bot.session)
+        self.localizer = bot.localizer
+        self.__lookup_cooldown = commands.CooldownMapping.from_cooldown(
+            rate=8, per=60.0, type=commands.BucketType.user
+        )
+
+        super().__init__(bot)
 
         self.admin.initialize_from_cog(self)
         self.preferences.initialize_from_cog(self)
         self.server_preferences.initialize_from_cog(self)
+
+        _service_lookup.service_manager = self.service_manager
 
     async def refresh(self, session: AsyncSession, /) -> None:
         _bible_lookup.clear()
@@ -1029,6 +528,132 @@ class BibleAppCommands(BibleBase):
 
     async def cog_unload(self) -> None:
         _bible_lookup.clear()
+
+    def __get_cooldown_bucket(self, message: discord.Message, /) -> commands.Cooldown:
+        bucket = self.__lookup_cooldown.get_bucket(message)
+
+        assert bucket is not None
+
+        retry_after = bucket.update_rate_limit(message.created_at.timestamp())
+
+        if retry_after is not None:
+            raise app_commands.CommandOnCooldown(bucket, retry_after)
+
+        return bucket
+
+    async def __lookup(
+        self,
+        itx: discord.Interaction | discord.Message,
+        /,
+        bible: BibleVersion,
+        reference: VerseRange,
+        only_me: bool = False,
+    ) -> None:
+        if reference.book_mask == 'DC' or not (bible.books & reference.book_mask):
+            raise BookNotInVersionError(reference.book, bible.name)
+
+        passage = await self.service_manager.get_passage(bible, reference)
+        await send_passage(itx, passage, ephemeral=only_me)
+
+    async def cog_app_command_error(  # pyright: ignore [reportIncompatibleMethodOverride]  # noqa: B950
+        self,
+        itx: discord.Interaction | discord.Message,
+        error: Exception,
+    ) -> None:
+        if (
+            isinstance(
+                error,
+                (
+                    app_commands.CommandInvokeError,
+                    app_commands.TransformerError,
+                ),
+            )
+            and error.__cause__ is not None
+        ):
+            error = cast('Exception', error.__cause__)
+
+        data: dict[str, Any] | None = None
+
+        match error:
+            case BookNotUnderstoodError():
+                message_id = 'book-not-understood'
+                data = {'book': error.book}
+            case BookNotInVersionError():
+                message_id = 'book-not-in-version'
+                data = {'book': error.book, 'version': error.version}
+            case DoNotUnderstandError():
+                message_id = 'do-not-understand'
+            case ReferenceNotUnderstoodError():
+                message_id = 'reference-not-understood'
+                data = {'reference': error.reference}
+            case BibleNotSupportedError():
+                data = {'version': error.version}
+                message_id = 'bible-not-supported'
+            case NoUserVersionError():
+                message_id = 'no-user-version'
+            case InvalidVersionError():
+                message_id = 'invalid-version'
+                data = {'version': error.version}
+            case ServiceNotSupportedError():
+                version_text = f'{error.bible.name}'
+                message_id = 'service-not-supported'
+                data = {'name': version_text}
+            case ServiceLookupTimeout():
+                message_id = 'service-lookup-timeout'
+                data = {'name': error.bible.name, 'verses': str(error.verses)}
+            case ServiceSearchTimeout():
+                message_id = 'service-search-timeout'
+                data = {'name': error.bible.name, 'terms': ' '.join(error.terms)}
+            case _:
+                return
+
+        await utils.send_embed_error(
+            itx,
+            description=formatting.escape(
+                self.localizer.format(
+                    message_id,
+                    data=data,
+                    locale=itx.locale if isinstance(itx, discord.Interaction) else None,
+                ),
+                mass_mentions=True,
+            ),
+        )
+
+    async def lookup_from_message(self, message: discord.Message, /) -> None:
+        try:
+            verse_ranges = VerseRange.get_all_from_string(message.content)
+
+            if not verse_ranges:
+                return
+
+            bucket = self.__get_cooldown_bucket(message)
+
+            async with message.channel.typing(), Session() as session:
+                user_bible = await BibleVersion.get_for_user(
+                    session, message.author, message.guild
+                )
+
+                for i, verse_range in enumerate(verse_ranges):
+                    if i > 0:
+                        bucket.update_rate_limit()
+
+                    bible: BibleVersion | None = None
+
+                    if isinstance(verse_range, Exception):
+                        raise verse_range
+
+                    if verse_range.version is not None:
+                        bible = await BibleVersion.get_by_abbr(
+                            session, verse_range.version
+                        )
+
+                    if bible is None:
+                        bible = user_bible
+
+                    await self.__lookup(message, bible, verse_range)
+        except Exception as exc:  # noqa: PIE786
+            await self.cog_app_command_error(message, exc)
+            await self.bot.on_app_command_error(message, exc)
 
     @app_commands.command()
     @_shared_cooldown
@@ -1059,12 +684,8 @@ class BibleAppCommands(BibleBase):
             if bible is None:
                 bible = await BibleVersion.get_for_user(session, itx.user, itx.guild)
 
-        if reference.book_mask == 'DC' or not (bible.books & reference.book_mask):
-            raise BookNotInVersionError(reference.book, bible.name)
-
         await itx.response.defer(thinking=True, ephemeral=only_me)
-        passage = await self.service_manager.get_passage(bible, reference)
-        await send_passage(itx, passage, ephemeral=only_me)
+        await self.__lookup(itx, bible, reference, only_me=only_me)
 
     @app_commands.command()
     @_shared_cooldown
@@ -1156,8 +777,4 @@ class BibleAppCommands(BibleBase):
 
 
 async def setup(bot: Erasmus, /) -> None:
-    service_manager = ServiceManager.from_config(bot.config, bot.session)
-    _service_lookup.service_manager = service_manager
-
-    await bot.add_cog(Bible(bot, service_manager))
-    await bot.add_cog(BibleAppCommands(bot, service_manager))
+    await bot.add_cog(Bible(bot))
