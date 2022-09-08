@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Final, NamedTuple, TypeAlias, cast
+from typing import TYPE_CHECKING, Final, NamedTuple, cast
 
 from attrs import define
 from botus_receptus import re, utils
@@ -22,7 +22,7 @@ from ..ui_pages import UIPages
 from ..utils import AutoCompleter
 
 if TYPE_CHECKING:
-    from collections.abc import Awaitable, Callable, Sequence
+    from collections.abc import Callable, Sequence
     from re import Match
     from typing_extensions import Self
 
@@ -39,128 +39,58 @@ _roman_re: Final = re.group(
     re.either('IX', 'IV', re.group(re.optional('V'), re.between(0, 3, 'I'))),
 )
 
-_reference_res: Final = {
-    ConfessionType.CHAPTERS: re.compile(
-        re.START,
-        re.either(
-            re.group(
-                re.named_group('chapter')(re.one_or_more(re.DIGITS)),
-                re.DOT,
-                re.named_group('paragraph')(re.one_or_more(re.DIGITS)),
-            ),
-            re.group(
-                re.named_group('chapter_roman')(_roman_re),
-                re.DOT,
-                re.named_group('paragraph_roman')(_roman_re),
-            ),
-        ),
-        re.END,
-    ),
-    ConfessionType.QA: re.compile(
-        re.START,
-        re.optional(re.named_group('qa')('[qaQA]')),
-        re.either(
-            re.named_group('number')(re.one_or_more(re.DIGITS)),
-            re.named_group('number_roman')(_roman_re),
-        ),
-        re.END,
-    ),
-    ConfessionType.ARTICLES: re.compile(
-        re.START,
-        re.either(
-            re.named_group('article')(re.one_or_more(re.DIGITS)),
-            re.named_group('article_roman')(_roman_re),
-        ),
-        re.END,
-    ),
-}
-
-_number_formatters: Final[dict[NumberingType, Callable[[int | None], str]]] = {
+_number_formatters: Final[dict[NumberingType, Callable[[int], str]]] = {
     NumberingType.ARABIC: lambda n: str(n),
     NumberingType.ROMAN: int_to_roman,
 }
 
 
-async def _get_chapters_output(
+_reference_re: Final = re.compile(
+    re.START,
+    re.either(
+        re.named_group('section_arabic')(re.one_or_more(re.DIGITS)),
+        re.named_group('section_roman')(_roman_re),
+    ),
+    re.optional(
+        re.DOT,
+        re.either(
+            re.named_group('subsection_arabic')(re.one_or_more(re.DIGITS)),
+            re.named_group('subsection_roman')(_roman_re),
+        ),
+    ),
+    re.END,
+    flags=re.IGNORECASE,
+)
+
+
+async def _get_output(
     session: AsyncSession, confession: ConfessionRecord, match: Match[str], /
 ) -> tuple[str | None, str]:
     format_number = _number_formatters[confession.numbering]
 
-    if match['chapter_roman']:
-        chapter_num = roman_to_int(match['chapter_roman'])
-        paragraph_num = roman_to_int(match['paragraph_roman'])
+    if match['section_arabic']:
+        section_number = int(match['section_arabic'])
     else:
-        chapter_num = int(match['chapter'])
-        paragraph_num = int(match['paragraph'])
+        section_number = roman_to_int(match['section_roman'])
 
-    section = await confession.get_section(session, chapter_num, paragraph_num)
-
-    paragraph_number = format_number(paragraph_num)
-    chapter_number = format_number(chapter_num)
-
-    return (
-        f'{chapter_number}.{paragraph_number} {section.title}',
-        section.text,
-    )
-
-
-async def _get_articles_output(
-    session: AsyncSession, confession: ConfessionRecord, match: Match[str], /
-) -> tuple[str | None, str]:
-    format_number = _number_formatters[confession.numbering]
-
-    if match['article_roman']:
-        article_number = roman_to_int(match['article_roman'])
+    if match['subsection_arabic']:
+        subsection_number = int(match['subsection_arabic'])
+    elif match['subsection_roman']:
+        subsection_number = roman_to_int(match['subsection_roman'])
     else:
-        article_number = int(match['article'])
+        subsection_number = None
 
-    section = await confession.get_section(session, article_number)
+    section = await confession.get_section(session, section_number, subsection_number)
 
-    return f'{format_number(article_number)}. {section.title}', section.text
+    formatted_section_number = format_number(section_number)
 
+    if subsection_number is not None:
+        formatted_section_number += f'.{format_number(subsection_number)}'
 
-async def _get_qa_output(
-    session: AsyncSession, confession: ConfessionRecord, match: Match[str], /
-) -> tuple[str | None, str]:
-    format_number = _number_formatters[confession.numbering]
-
-    q_or_a = match['qa']
-    if match['number_roman']:
-        question_number = roman_to_int(match['number_roman'])
+    if section.title is not None:
+        return f'{formatted_section_number}. {section.title}', section.text
     else:
-        question_number = int(match['number'])
-
-    section = await confession.get_section(session, question_number)
-
-    question_number_str = format_number(question_number)
-
-    section_title: str | None = None
-
-    if q_or_a is None:
-        section_title = bold(f'{question_number_str}. {section.title}')
-        output = section.text
-    elif q_or_a.lower() == 'q':
-        output = f'**Q{question_number_str}**. {section.title}'
-    else:
-        output = f'**A{question_number_str}**: {section.text}'
-
-    return section_title, output
-
-
-_OUTPUT_GETTER: TypeAlias = '''Callable[
-    [
-        AsyncSession,
-        ConfessionRecord,
-        Match[str],
-    ],
-    Awaitable[tuple[str | None, str]],
-]'''
-
-_output_getters: Final[dict[ConfessionType, _OUTPUT_GETTER]] = {
-    ConfessionType.CHAPTERS: _get_chapters_output,
-    ConfessionType.ARTICLES: _get_articles_output,
-    ConfessionType.QA: _get_qa_output,
-}
+        return None, f'{bold(formatted_section_number)}. {section.text}'
 
 
 class ConfessionSearchSource(
@@ -206,17 +136,8 @@ class _SectionInfo(NamedTuple):
     section: str
     text: str
     text_lower: str
-    text_ellipsized: str
-
-
-def _create_section_info(section: str, title: str, /) -> _SectionInfo:
-    text = f'{section}. {title}'
-    return _SectionInfo(
-        section=section,
-        text=text,
-        text_lower=text.lower(),
-        text_ellipsized=ellipsize(text, max_length=100),
-    )
+    choice_name: str
+    choice_value: str
 
 
 @define
@@ -239,25 +160,29 @@ class _ConfessionOption:
         return app_commands.Choice(name=self.name, value=self.command)
 
     @classmethod
-    async def create(cls, confession: ConfessionRecord, /) -> Self:
+    def create(cls, confession: ConfessionRecord, /) -> Self:
         format_number = _number_formatters[confession.numbering]
-        match confession.type:
-            case ConfessionType.CHAPTERS:
-                section_info = [
-                    _create_section_info(
-                        f'{format_number(section.number)}.'
-                        f'{format_number(section.subsection_number)}',
-                        section.title or confession.name,
-                    )
-                    for section in confession.sections
-                ]
-            case ConfessionType.ARTICLES | ConfessionType.QA:
-                section_info = [
-                    _create_section_info(
-                        format_number(section.number), section.title or confession.name
-                    )
-                    for section in confession.sections
-                ]
+
+        section_info: list[_SectionInfo] = []
+
+        for section in confession.sections:
+            section_str = format_number(section.number)
+            section_value = f'{section.number}'
+
+            if section.subsection_number is not None:
+                section_str += f'.{format_number(section.subsection_number)}'
+                section_value += f'.{section.subsection_number}'
+
+            text = f'{section_str}. {section.title or confession.name}'
+            section_info.append(
+                _SectionInfo(
+                    section=section_str,
+                    text=text,
+                    text_lower=text.lower(),
+                    choice_name=ellipsize(text, max_length=100),
+                    choice_value=section_value,
+                )
+            )
 
         return cls(
             name=confession.name,
@@ -295,7 +220,7 @@ class SectionAutoCompleter(app_commands.Transformer):
 
         return [
             app_commands.Choice(
-                name=section_info.text_ellipsized, value=section_info.section
+                name=section_info.choice_name, value=section_info.choice_value
             )
             for section_info in item.section_info
             if not value
@@ -324,7 +249,7 @@ class Confession(
         _confession_lookup.clear()
         _confession_lookup.update(
             [
-                await _ConfessionOption.create(confession)
+                _ConfessionOption.create(confession)
                 async for confession in ConfessionRecord.get_all(
                     session, order_by_name=True, load_sections=True
                 )
@@ -399,10 +324,7 @@ class Confession(
 
         async with Session() as session:
             confession = await ConfessionRecord.get_by_command(session, source)
-
-            results = [
-                result async for result in confession.search(session, terms.split(' '))
-            ]
+            results = await confession.search(session, terms.split(' '))
 
         localizer = self.localizer.for_message('confess__search', itx.locale)
         search_source = ConfessionSearchSource(
@@ -433,14 +355,12 @@ class Confession(
         async with Session() as session:
             confession = await ConfessionRecord.get_by_command(session, source)
 
-        if (match := _reference_res[confession.type].match(section)) is None:
-            raise NoSectionError(confession.name, section, confession.type)
+            if (match := _reference_re.match(section)) is None:
+                raise NoSectionError(confession.name, section, confession.type)
+
+            section_title, output = await _get_output(session, confession, match)
 
         paginator = EmbedPaginator()
-        get_output = _output_getters[confession.type]
-
-        async with Session() as session:
-            section_title, output = await get_output(session, confession, match)
 
         title: str | None = underline(bold(confession.name))
 

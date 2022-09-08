@@ -224,7 +224,7 @@ class Confession(Base):
 
     async def search(
         self, session: AsyncSession, terms: Sequence[str], /
-    ) -> AsyncIterator[Section]:
+    ) -> list[Section]:
         result = await session.scalars(
             select(Section)
             .filter(
@@ -234,8 +234,7 @@ class Confession(Base):
             .order_by(Section.number.asc(), Section.subsection_number.asc())
         )
 
-        for section in result:
-            yield section
+        return list(result)
 
     async def get_section(
         self,
