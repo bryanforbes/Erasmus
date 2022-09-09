@@ -10,52 +10,88 @@ from pathlib import Path
 import sqlalchemy as sa
 from orjson import loads
 from sqlalchemy.dialects.postgresql import ENUM
-from sqlalchemy.sql import column, table
 
 from alembic import op
 from erasmus.db.confession import ConfessionType, NumberingType
 
 # revision identifiers, used by Alembic.
 revision = 'cdf53768de2d'
-down_revision = '1f333584607a'
+down_revision = '7b16df83859b'
 branch_labels = None
 depends_on = None
 
 with (Path(__file__).resolve().parent / f'{revision}_add_lbcf_1646.json').open() as f:
-    keach_data = loads(f.read())
+    lbcf_data = loads(f.read())
 
 
-confessions = table(
+metadata = sa.MetaData()
+
+confessions = sa.Table(
     'confessions',
-    column('id', sa.Integer),
-    column('command', sa.String),
-    column('name', sa.String),
-    column('type', ENUM(ConfessionType)),
-    column('numbering', ENUM(NumberingType)),
+    metadata,
+    sa.Column('id', sa.Integer, primary_key=True),
+    sa.Column('command', sa.String, unique=True, nullable=False),
+    sa.Column('name', sa.String, nullable=False),
+    sa.Column('type', ENUM(ConfessionType, name='confession_type'), nullable=False),
+    sa.Column(
+        'numbering',
+        ENUM(NumberingType, name='confession_numbering_type'),
+        nullable=False,
+    ),
+    sa.Column(
+        'subsection_numbering',
+        ENUM(NumberingType, name='confession_numbering_type'),
+        nullable=True,
+    ),
 )
 
-sections = table(
+sections = sa.Table(
     'confession_sections',
-    column('id', sa.Integer),
-    column('confession_id', sa.Integer, sa.ForeignKey('confessions.id')),
-    column('number', sa.Integer),
-    column('text', sa.Text),
+    metadata,
+    sa.Column('id', sa.Integer, primary_key=True),
+    sa.Column(
+        'confession_id', sa.Integer, sa.ForeignKey('confessions.id'), nullable=False
+    ),
+    sa.Column('number', sa.Integer, nullable=False),
+    sa.Column('subsection_number', sa.Integer),
+    sa.Column('title', sa.Text),
+    sa.Column('text', sa.Text, nullable=False),
 )
 
 
 def upgrade() -> None:
-    lbcf_1646 = op.bulk_insert(
+    conn = op.get_bind()
+
+    op.bulk_insert(
         confessions,
         [
             {
                 'command': 'lbcf46',
-                'name': 'The London Baptist Confession of Faith (1646)',
-                'type': ConfessionType.ARTICLES,
+                'name': lbcf_data['title'],
+                'type': ConfessionType.SECTIONS,
                 'numbering': NumberingType.ROMAN,
             }
+        ],
+    )
+
+    lbcf = conn.execute(
+        sa.select(confessions).filter(confessions.c.command == 'lbcf46')
+    ).fetchone()
+
+    op.bulk_insert(
+        sections,
+        [
+            {'confession_id': lbcf['id'], 'number': index, 'text': section}
+            for index, section in enumerate(lbcf_data['sections'], 1)
         ],
     )
 
 
 def downgrade() -> None:
     conn = op.get_bind()
+
+    lbcf = conn.execute(
+        sa.select(confessions).filter(confessions.c.command == 'lbcf46')
+    ).fetchone()
+    op.execute(sections.delete().filter(sections.c.confession_id == lbcf['id']))
+    op.execute(confessions.delete().filter(confessions.c.command == 'lbcf46'))

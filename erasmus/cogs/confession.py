@@ -1,11 +1,12 @@
 from __future__ import annotations
 
+from itertools import pairwise
 from typing import TYPE_CHECKING, Final, NamedTuple, cast
 
 from attrs import define
 from botus_receptus import re, utils
 from botus_receptus.cog import GroupCog
-from botus_receptus.formatting import EmbedPaginator, bold, ellipsize, escape, underline
+from botus_receptus.formatting import EmbedPaginator, bold, escape, underline
 from discord import app_commands
 
 from ..db import (
@@ -64,6 +65,26 @@ _reference_re: Final = re.compile(
     re.END,
     flags=re.IGNORECASE,
 )
+
+_break_re: Final = re.compile(r'[.\s;,]+')
+
+
+def _ellipsize(string: str, /, *, max_length: int) -> tuple[str, str]:
+    if len(string) <= max_length:
+        return string, string
+
+    max_length = max_length - 1
+    result: str | None = None
+
+    for previous, current in pairwise(_break_re.finditer(string)):
+        if current.start() >= max_length:
+            result = string[: previous.start()]
+            break
+
+    if result is None:
+        result = string[:max_length].strip()
+
+    return result, f'{result}…'
 
 
 def _format_section_number(confession: ConfessionRecord, section: Section, /) -> str:
@@ -178,13 +199,16 @@ class _ConfessionOption:
             if section.subsection_number is not None:
                 section_value += f'.{section.subsection_number}'
 
-            text = f'{section_str}. {section.title or confession.name}'
+            text, choice_name = _ellipsize(
+                f'{section_str}. {section.title or section.text}', max_length=100
+            )
+
             section_info.append(
                 _SectionInfo(
                     section=section_str,
                     text=text,
                     text_lower=text.lower(),
-                    choice_name=ellipsize(text, max_length=100),
+                    choice_name=choice_name,
                     choice_value=section_value,
                 )
             )
