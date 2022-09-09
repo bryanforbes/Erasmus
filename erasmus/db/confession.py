@@ -10,7 +10,6 @@ from sqlalchemy import (
     Integer,
     String,
     Text,
-    and_,
     func,
     select,
     text as _sa_text,
@@ -24,11 +23,8 @@ from .base import (
     Mapped,
     TSVector,
     deref_column,
-    foreign,
     mapped_column,
-    mixin_column,
     model,
-    model_mixin,
     relationship,
 )
 
@@ -53,13 +49,6 @@ class NumberingType(Enum):
 
     def __repr__(self, /) -> str:
         return '<%s.%s>' % (self.__class__.__name__, self.name)
-
-
-@model_mixin
-class _ConfessionChildMixin(Base):
-    confess_id: Mapped[int] = mixin_column(
-        lambda: mapped_column(Integer, ForeignKey('confessions.id'), nullable=False)
-    )
 
 
 @model
@@ -93,99 +82,6 @@ class Section(Base):
                     _sa_text("' '"),
                 ),
             ),
-        ),
-        init=False,
-    )
-
-
-@model
-class Chapter(_ConfessionChildMixin):
-    __tablename__ = 'confession_chapters'
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    chapter_number: Mapped[int] = mapped_column(Integer, nullable=False)
-    chapter_title: Mapped[str] = mapped_column(String, nullable=False)
-
-
-@model
-class Paragraph(_ConfessionChildMixin):
-    __tablename__ = 'confession_paragraphs'
-    __table_args__ = (
-        Index(
-            'confession_paragraphs_text_idx',
-            func.to_tsvector(_sa_text("'english'"), _sa_text("'text'")),
-            postgresql_using='gin',
-        ),
-    )
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    chapter_number: Mapped[int] = mapped_column(Integer, nullable=False)
-    paragraph_number: Mapped[int] = mapped_column(Integer, nullable=False)
-    text: Mapped[str] = mapped_column(Text, nullable=False)
-
-    chapter: Mapped[Chapter] = relationship(
-        Chapter,
-        lazy='joined',
-        primaryjoin=lambda: and_(
-            Paragraph.chapter_number == foreign(Chapter.chapter_number),
-            Paragraph.confess_id == foreign(Chapter.confess_id),
-        ),
-        uselist=False,
-        nullable=False,
-    )
-
-
-@model
-class Question(_ConfessionChildMixin):
-    __tablename__ = 'confession_questions'
-    __table_args__ = (
-        Index(
-            'confession_questions_search_idx',
-            'search_vector',
-            postgresql_using='gin',
-        ),
-    )
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    question_number: Mapped[int] = mapped_column(Integer, nullable=False)
-    question_text: Mapped[str] = mapped_column(Text, nullable=False)
-    answer_text: Mapped[str] = mapped_column(Text, nullable=False)
-    search_vector: Mapped[str] = mapped_column(
-        TSVector,
-        Computed(
-            func.to_tsvector(
-                _sa_text("'english'"),
-                deref_column(question_text)
-                + _sa_text("' '")
-                + deref_column(answer_text),
-            )
-        ),
-        init=False,
-    )
-
-
-@model
-class Article(_ConfessionChildMixin):
-    __tablename__ = 'confession_articles'
-    __table_args__ = (
-        Index(
-            'confession_articles_search_idx',
-            'search_vector',
-            postgresql_using='gin',
-        ),
-    )
-
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    article_number: Mapped[int] = mapped_column(Integer, nullable=False)
-    title: Mapped[str] = mapped_column(Text, nullable=False)
-    text: Mapped[str] = mapped_column(Text, nullable=False)
-    search_vector: Mapped[str] = mapped_column(
-        TSVector,
-        Computed(
-            func.to_tsvector(
-                _sa_text("'english'"),
-                deref_column(title) + _sa_text("' '") + deref_column(text),
-            )
         ),
         init=False,
     )
