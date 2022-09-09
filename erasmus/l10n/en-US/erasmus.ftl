@@ -148,15 +148,10 @@ invalid-confession = `{ $confession }` is not a valid confession
 no-section =
     `{ $confession }` does not have { $section_type ->
        *[CHAPTERS] a paragraph
+        [SECTIONS] a section
         [QA] a question
         [ARTICLES] an article
     } `{ $section }`
-no-sections =
-    `{ $confession }` has no { $section_type ->
-       *[chapters] chapters
-        [paragraphs] paragraphs
-        [articles] articles
-    }
 
 # Creeds Cog
 

@@ -38,6 +38,7 @@ class ConfessionType(Enum):
     ARTICLES = 'ARTICLES'
     CHAPTERS = 'CHAPTERS'
     QA = 'QA'
+    SECTIONS = 'SECTIONS'
 
     def __repr__(self, /) -> str:
         return '<%s.%s>' % (self.__class__.__name__, self.name)
@@ -46,6 +47,7 @@ class ConfessionType(Enum):
 class NumberingType(Enum):
     ARABIC = 'ARABIC'
     ROMAN = 'ROMAN'
+    ALPHA = 'ALPHA'
 
     def __repr__(self, /) -> str:
         return '<%s.%s>' % (self.__class__.__name__, self.name)
@@ -100,6 +102,11 @@ class Confession(Base):
     numbering: Mapped[NumberingType] = mapped_column(
         ENUM(NumberingType, name='confession_numbering_type'), nullable=False
     )
+    _subsection_numbering: Mapped[NumberingType | None] = mapped_column(
+        ENUM(NumberingType, name='confession_numbering_type'),
+        name='subsection_numbering',
+        nullable=True,
+    )
     sortable_name: Mapped[str] = mapped_column(
         String,
         Computed(
@@ -114,9 +121,16 @@ class Confession(Base):
     )
     sections: Mapped[list[Section]] = relationship(
         Section,
-        order_by=lambda: [Section.number.asc(), Section.subsection_number.asc()],
+        order_by=lambda: [
+            Section.number.asc(),
+            Section.subsection_number.asc().nulls_first(),
+        ],
         lazy='raise',
     )
+
+    @property
+    def subsection_numbering(self) -> NumberingType:
+        return self._subsection_numbering or self.numbering
 
     async def search(
         self, session: AsyncSession, terms: Sequence[str], /
@@ -127,7 +141,9 @@ class Confession(Base):
                 Section.confession_id == self.id,
                 Section.search_vector.match(' & '.join(terms)),
             )
-            .order_by(Section.number.asc(), Section.subsection_number.asc())
+            .order_by(
+                Section.number.asc(), Section.subsection_number.asc().nulls_first()
+            )
         )
 
         return list(result)

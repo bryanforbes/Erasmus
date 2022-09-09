@@ -15,8 +15,8 @@ from ..db import (
     Section,
     Session,
 )
-from ..exceptions import InvalidConfessionError, NoSectionError, NoSectionsError
-from ..format import int_to_roman, roman_to_int
+from ..exceptions import InvalidConfessionError, NoSectionError
+from ..format import alpha_to_int, int_to_alpha, int_to_roman, roman_to_int
 from ..page_source import EmbedPageSource, ListPageSource
 from ..ui_pages import UIPages
 from ..utils import AutoCompleter
@@ -42,6 +42,7 @@ _roman_re: Final = re.group(
 _number_formatters: Final[dict[NumberingType, Callable[[int], str]]] = {
     NumberingType.ARABIC: lambda n: str(n),
     NumberingType.ROMAN: int_to_roman,
+    NumberingType.ALPHA: int_to_alpha,
 }
 
 
@@ -50,12 +51,14 @@ _reference_re: Final = re.compile(
     re.either(
         re.named_group('section_arabic')(re.one_or_more(re.DIGITS)),
         re.named_group('section_roman')(_roman_re),
+        re.named_group('section_alpha')(re.ALPHA),
     ),
     re.optional(
         re.DOT,
         re.either(
             re.named_group('subsection_arabic')(re.one_or_more(re.DIGITS)),
             re.named_group('subsection_roman')(_roman_re),
+            re.named_group('subsection_alpha')(re.ALPHA),
         ),
     ),
     re.END,
@@ -63,29 +66,39 @@ _reference_re: Final = re.compile(
 )
 
 
+def _format_section_number(confession: ConfessionRecord, section: Section, /) -> str:
+    format_number = _number_formatters[confession.numbering]
+
+    result = format_number(section.number)
+
+    if section.subsection_number is not None:
+        format_subsection_number = _number_formatters[confession.subsection_numbering]
+        result += f'.{format_subsection_number(section.subsection_number)}'
+
+    return result
+
+
 async def _get_output(
     session: AsyncSession, confession: ConfessionRecord, match: Match[str], /
 ) -> tuple[str | None, str]:
-    format_number = _number_formatters[confession.numbering]
-
     if match['section_arabic']:
         section_number = int(match['section_arabic'])
-    else:
+    elif match['section_roman']:
         section_number = roman_to_int(match['section_roman'])
+    else:
+        section_number = alpha_to_int(match['section_alpha'])
 
     if match['subsection_arabic']:
         subsection_number = int(match['subsection_arabic'])
     elif match['subsection_roman']:
         subsection_number = roman_to_int(match['subsection_roman'])
+    elif match['subsection_alpha']:
+        subsection_number = alpha_to_int(match['subsection_alpha'])
     else:
         subsection_number = None
 
     section = await confession.get_section(session, section_number, subsection_number)
-
-    formatted_section_number = format_number(section_number)
-
-    if subsection_number is not None:
-        formatted_section_number += f'.{format_number(subsection_number)}'
+    formatted_section_number = _format_section_number(confession, section)
 
     if section.title is not None:
         return f'{formatted_section_number}. {section.title}', section.text
@@ -96,7 +109,7 @@ async def _get_output(
 class ConfessionSearchSource(
     EmbedPageSource['Sequence[Section]'], ListPageSource[Section]
 ):
-    entry_text_string: str
+    confession: ConfessionRecord
     localizer: MessageLocalizer
 
     def __init__(
@@ -105,19 +118,13 @@ class ConfessionSearchSource(
         /,
         *,
         per_page: int,
-        type: ConfessionType,
+        confession: ConfessionRecord,
         localizer: MessageLocalizer,
     ) -> None:
         super().__init__(entries, per_page=per_page)
 
+        self.confession = confession
         self.localizer = localizer
-
-        if type == ConfessionType.CHAPTERS:
-            self.entry_text_string = (
-                '**{entry.number}.{entry.subsection_number}**. {entry.title}'
-            )
-        else:
-            self.entry_text_string = '**{entry.number}**. {entry.title}'
 
     async def set_page_text(self, entries: Sequence[Section] | None, /) -> None:
         if entries is None:
@@ -127,7 +134,8 @@ class ConfessionSearchSource(
         lines: list[str] = []
 
         for entry in entries:
-            lines.append(self.entry_text_string.format(entry=entry))
+            section_number = _format_section_number(self.confession, entry)
+            lines.append(f'**{section_number}**. {entry.title}')
 
         self.embed.description = '\n'.join(lines)
 
@@ -161,16 +169,13 @@ class _ConfessionOption:
 
     @classmethod
     def create(cls, confession: ConfessionRecord, /) -> Self:
-        format_number = _number_formatters[confession.numbering]
-
         section_info: list[_SectionInfo] = []
 
         for section in confession.sections:
-            section_str = format_number(section.number)
+            section_str = _format_section_number(confession, section)
             section_value = f'{section.number}'
 
             if section.subsection_number is not None:
-                section_str += f'.{format_number(section.subsection_number)}'
                 section_value += f'.{section.subsection_number}'
 
             text = f'{section_str}. {section.title or confession.name}'
@@ -289,12 +294,6 @@ class Confession(
                     'section_type': error.section_type,
                     'section': error.section,
                 }
-            case NoSectionsError():
-                message_id = 'no-sections'
-                data = {
-                    'confession': error.confession,
-                    'section_type': error.section_type,
-                }
             case _:
                 return
 
@@ -329,8 +328,8 @@ class Confession(
         localizer = self.localizer.for_message('confess__search', itx.locale)
         search_source = ConfessionSearchSource(
             results,
-            type=confession.type,
             per_page=20,
+            confession=confession,
             localizer=localizer,
         )
         pages = UIPages(itx, search_source, localizer=localizer)

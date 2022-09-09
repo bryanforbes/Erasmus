@@ -118,6 +118,7 @@ def mapped_column(
     column_type: _TypeEngineArgument[Any],
     /,
     *args: SchemaEventTarget,
+    name: str = ...,
     primary_key: Literal[True],
     init: Literal[False] = False,
 ) -> Mapped[Any]:
@@ -129,6 +130,7 @@ def mapped_column(
     column_type: _TypeEngineArgument[Any],
     /,
     *args: SchemaEventTarget,
+    name: str = ...,
     primary_key: Literal[True],
     init: Literal[True],
 ) -> Mapped[Any]:
@@ -140,6 +142,7 @@ def mapped_column(
     column_type: _TypeEngineArgument[Any],
     /,
     *args: SchemaEventTarget,
+    name: str = ...,
     primary_key: Literal[False] = ...,
     nullable: bool = ...,
     unique: bool | None = ...,
