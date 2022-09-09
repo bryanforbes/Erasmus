@@ -448,7 +448,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
             await utils.send_embed_error(
                 itx,
                 description=f'`{service}` is not a valid service',
-            ),
+            )
             return
 
         try:

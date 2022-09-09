@@ -187,18 +187,20 @@ class TestLocalizer:
             ]
         )
         no_localization.format.assert_has_calls(
-            [  # type: ignore
-                mocker.call('generic-error', None, use_fallbacks=True),
+            [
+                mocker.call('generic-error', None, use_fallbacks=True),  # type: ignore
             ]
         )
         en_localization.format.assert_has_calls(
-            [  # type: ignore
-                mocker.call('generic-error', None, use_fallbacks=True),
+            [
+                mocker.call('generic-error', None, use_fallbacks=True),  # type: ignore
             ]
         )
         hi_localization.format.assert_has_calls(
-            [  # type: ignore
-                mocker.call('no-private-message', {}, use_fallbacks=False),
+            [
+                mocker.call(
+                    'no-private-message', {}, use_fallbacks=False
+                ),  # type: ignore
             ]
         )
 
