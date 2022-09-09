@@ -104,12 +104,3 @@ class NoSectionError(ErasmusError):
         self.confession = confession
         self.section = section
         self.section_type = section_type.value
-
-
-class NoSectionsError(ErasmusError):
-    confession: str
-    section_type: str
-
-    def __init__(self, confession: str, section_type: str, /) -> None:
-        self.confession = confession
-        self.section_type = section_type
