@@ -64,11 +64,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             _log.info(f'Commands for {guild_id}: {list(_commands)!r}')  # type: ignore
 
     async def on_message(self, message: discord.Message, /) -> None:
-        if (
-            message.author.bot
-            or not message.content
-            or self.user not in message.mentions  # type: ignore
-        ):
+        if message.author.bot or not message.content:
             return
 
         await self.bible_cog.lookup_from_message(message)
