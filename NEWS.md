@@ -1,3 +1,6 @@
+# Version 22.9.4
+
+
 # Version 22.9.3
 
 * Re-enable bracket notation (`[John 1:1]`)
