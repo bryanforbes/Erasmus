@@ -56,7 +56,7 @@ class TSVector(_TSVectorBase):
                 and 'regconfig' in self.type.options
             ):
                 kwargs['postgresql_regconfig'] = self.type.options['regconfig']
-            return TSVECTOR.Comparator.match(self, other, **kwargs)  # type: ignore
+            return TSVECTOR.Comparator.match(self, other, **kwargs)
 
         def __or__(self, other: Any) -> ColumnElement[TSVector]:
             return self.op('||')(other)  # type: ignore
