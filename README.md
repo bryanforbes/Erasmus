@@ -31,6 +31,11 @@ A Bible bot for Discord
 * `/confess search` - Search for terms in the selected confession or catechism
 * `/invite` - Get a link to invite Erasmus to your server
 * `/about` - Information about Erasmus
+* `/news` - News from the latest release
+
+## Bracket Notation
+
+In addition to the slash-commands listed above, Erasmus will respond to all verse references surrounded in brackets (ex. `[John 1:1]`) anywhere in a message. By default, Erasmus will look up the verse using the user's default version (set with `/prefs setversion`), the servers's default version (`/serverprefs setdefault`), or the ESV. Users can also specify a version to use by appending the version abbreviation after the verse (ex. `[John 1:1 KJV]`).
 
 ## Data Privacy Policy
 

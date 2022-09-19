@@ -1,7 +1,9 @@
 from __future__ import annotations
 
+from collections import OrderedDict
 from importlib import metadata
-from typing import TYPE_CHECKING
+from pathlib import Path
+from typing import TYPE_CHECKING, Any
 
 import discord
 from botus_receptus import Cog, Embed, formatting, utils
@@ -68,11 +70,30 @@ class AboutView(InviteView):
 
 class Misc(Cog['Erasmus']):
     localizer: Localizer
+    version_map: OrderedDict[str, list[str]]
 
     def __init__(self, bot: Erasmus, /) -> None:
         super().__init__(bot)
 
         self.localizer = bot.localizer
+
+    async def refresh(self, _: Any = None, /) -> None:
+        version_map: OrderedDict[str, list[str]] = OrderedDict()
+        current_items: list[str] = []
+
+        with open(Path(__file__).resolve().parent.parent.parent / 'NEWS.md', 'r') as f:
+            for line in f.readlines():
+                if line.startswith('# Version '):
+                    current_items = []
+                    version_map[line[10:-1]] = current_items
+
+                if line.startswith('* '):
+                    current_items.append(f'• {line[2:-1]}')
+
+        self.version_map = version_map
+
+    async def cog_load(self) -> None:
+        await self.refresh()
 
     @app_commands.command()
     @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda itx: itx.channel_id)
@@ -135,6 +156,36 @@ class Misc(Cog['Erasmus']):
             view=AboutView(self.bot.application_id, localizer),
         )
 
+    async def __news_version_autocomplete(
+        self, itx: discord.Interaction, current: str, /
+    ) -> list[app_commands.Choice[str]]:
+        versions = self.version_map.keys()
+        return [
+            app_commands.Choice(name=version, value=version)
+            for version in versions
+            if current.lower() in version.lower()
+        ][:25]
+
+    @app_commands.command()
+    @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda itx: itx.channel_id)
+    @app_commands.autocomplete(version=__news_version_autocomplete)
+    async def news(
+        self, itx: discord.Interaction, /, version: str | None = None
+    ) -> None:
+        '''Display news from the latest release'''
+
+        if version is None:
+            version = next(iter(self.version_map))
+
+        localizer = self.localizer.for_message('news', locale=itx.locale)
+
+        await utils.send_embed(
+            itx,
+            title=localizer.format('news-for-version', data={'version': version}),
+            description='\n'.join(self.version_map[version]),
+            color=discord.Color.blue(),
+        )
+
     @app_commands.command()
     @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda itx: itx.channel_id)
     async def notice(self, itx: discord.Interaction, /) -> None:
@@ -146,11 +197,11 @@ class Misc(Cog['Erasmus']):
             description=(
                 f'{formatting.underline(formatting.bold("Users"))}\n'
                 'Beginning <t:1661972400:D>, Erasmus will no longer respond to '
-                'text-based commands (`$confess` and others) or bracket citations '
-                '(`[John 1:1]`). At that time, Discord will require all bots to use '
-                'slash commands. All text-based commands have been converted into '
-                'slash commands and Erasmus will only respond to bracket citations if '
-                'it is mentioned as part of the message text.\n\n'
+                'text-based commands (`$confess` and others). At that time, Discord '
+                'will require all bots to use slash commands. Because of this '
+                'new requirement, all text-based commands have been converted into '
+                'slash commands. However, Erasmus will still respond to bracket '
+                'citations (`[John 1:1]`).\n\n'
                 'To see a list of commands available, type `/` in the text input '
                 'for a server Erasmus is in and select its icon in the popup.\n\n'
                 f'{formatting.underline(formatting.bold("Server Moderators"))}\n'

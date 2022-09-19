@@ -197,3 +197,7 @@ about = about
 
 notice = notice
     .description = Display text-command deprecation notice
+
+news = news
+    .description = Display news from the latest release
+    .news-for-version = News for { $version }
