@@ -621,7 +621,10 @@ class Bible(Cog['Erasmus']):
 
     async def lookup_from_message(self, message: discord.Message, /) -> None:
         try:
-            verse_ranges = VerseRange.get_all_from_string(message.content)
+            verse_ranges = VerseRange.get_all_from_string(
+                message.content,
+                only_bracketed=self.bot.user not in message.mentions,  # pyright: ignore
+            )
 
             if not verse_ranges:
                 return
