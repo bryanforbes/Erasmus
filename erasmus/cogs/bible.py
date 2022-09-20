@@ -385,6 +385,8 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
                 session.add(bible)
 
                 await session.commit()
+
+            async with Session() as session:
                 await self.refresh_data(session)
         except (UniqueViolationError, IntegrityError):
             await utils.send_embed_error(
@@ -468,6 +470,8 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
                     bible.books = _book_mask_from_books(books)
 
                 await session.commit()
+
+            async with Session() as session:
                 await self.refresh_data(session)
         except ErasmusError:
             raise
