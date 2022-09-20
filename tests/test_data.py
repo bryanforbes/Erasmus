@@ -216,7 +216,7 @@ class TestVerseRange:
                 ],
             ),
             (
-                'foo [ 1 John 1:1 ] bar [Mark 2:1-4 KJV ] baz [Acts 3:5-6:7 sbl 123 ] '
+                'foo [ 1 John 1:1 ] bar [Mark 2:1-4  KJV ] baz [Acts 3:5-6:7 sbl 123 ] '
                 'blah',
                 [
                     [
@@ -230,24 +230,6 @@ class TestVerseRange:
                     ],
                 ],
             ),
-            # ('foo 1 John 1:1 bar', {'brackets': True}, []),
-            # ('foo [1 John 1:1] bar', {'brackets': True}, ['1 John 1:1']),
-            # ('foo 1 John 1:1 bar [Mark 2:1-4] baz', {'brackets': True}, ['Mark 2:1-4']),  # noqa
-            # (
-            #     'foo [1 John 1:1] bar [Mark 2:1-4] baz',
-            #     {'brackets': True},
-            #     ['1 John 1:1', 'Mark 2:1-4'],
-            # ),
-            # (
-            #     'foo [1 John 1:1] bar Mark 2:1-4 baz [Acts 3:5-6:7]',
-            #     {'brackets': True},
-            #     ['1 John 1:1', 'Acts 3:5-6:7'],
-            # ),
-            # (
-            #     'foo [1 John 1:1] bar [Mark 2:1-4] baz [Acts 3:5-6:7]',
-            #     {'brackets': True},
-            #     ['1 John 1:1', 'Mark 2:1-4', 'Acts 3:5-6:7'],
-            # ),
         ],
     )
     @pytest.mark.parametrize('only_bracketed', [False, True])

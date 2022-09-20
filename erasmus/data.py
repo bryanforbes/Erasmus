@@ -32,7 +32,7 @@ with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
 
 # Inspired by
 # https://github.com/TehShrike/verse-reference-regex/blob/master/create-regex.js
-_book_re: Final[Pattern[str]] = re.compile(
+_book_re: Final = re.compile(
     re.named_group('book')(
         re.either(
             *re.escape_all(
@@ -50,70 +50,61 @@ _book_re: Final[Pattern[str]] = re.compile(
     re.optional(re.DOT),
 )
 
-_chapter_start_group: Final = re.named_group('chapter_start')
-_chapter_end_group: Final = re.named_group('chapter_end')
-_verse_start_group: Final = re.named_group('verse_start')
-_verse_end_group: Final = re.named_group('verse_end')
 _version_group: Final = re.named_group('version')
 _one_or_more_digit: Final = re.one_or_more(re.DIGIT)
 _colon: Final = re.combine(
     re.any_number_of(re.WHITESPACE), ':', re.any_number_of(re.WHITESPACE)
 )
 
-_reference_re: Final[Pattern[str]] = re.compile(
+_reference_re: Final = re.compile(
     _book_re,
     re.one_or_more(re.WHITESPACE),
-    _chapter_start_group(_one_or_more_digit),
+    re.named_group('chapter_start')(_one_or_more_digit),
     _colon,
-    _verse_start_group(_one_or_more_digit),
+    re.named_group('verse_start')(_one_or_more_digit),
     re.optional(
-        re.group(
-            re.any_number_of(re.WHITESPACE),
-            '[',
-            re.DASH,
-            '\u2013',
-            '\u2014',
-            ']',
-            re.any_number_of(re.WHITESPACE),
-            re.optional(re.group(_chapter_end_group(_one_or_more_digit), _colon)),
-            _verse_end_group(_one_or_more_digit),
-        )
+        re.any_number_of(re.WHITESPACE),
+        '[',
+        re.DASH,
+        '\u2013',
+        '\u2014',
+        ']',
+        re.any_number_of(re.WHITESPACE),
+        re.optional(re.named_group('chapter_end')(_one_or_more_digit), _colon),
+        re.named_group('verse_end')(_one_or_more_digit),
     ),
     flags=re.IGNORECASE,
 )
 
-_reference_with_version_re: Final[Pattern[str]] = re.compile(
+_reference_with_version_re: Final = re.compile(
     _reference_re,
     re.optional(
-        re.group(
-            re.any_number_of(re.WHITESPACE),
-            _version_group(re.one_or_more(re.ALPHANUMERICS)),
-        )
+        re.any_number_of(re.WHITESPACE),
+        _version_group(re.one_or_more(re.ALPHANUMERICS)),
     ),
     flags=re.IGNORECASE,
 )
 
-_reference_or_bracketed_with_version_re: Final[Pattern[str]] = re.compile(
+_reference_or_bracketed_with_version_re: Final = re.compile(
     re.optional(
         re.named_group('bracket')(re.LEFT_BRACKET, re.any_number_of(re.WHITESPACE))
     ),
     _reference_re,
-    '(?(bracket)',
-    re.group(
-        re.optional(
-            re.group(
+    re.if_group(
+        'bracket',
+        re.group(
+            re.optional(
                 re.one_or_more(re.WHITESPACE),
                 _version_group(re.one_or_more(re.ALPHANUMERICS)),
-            )
+            ),
+            re.any_number_of(re.WHITESPACE),
+            re.RIGHT_BRACKET,
         ),
-        re.any_number_of(re.WHITESPACE),
-        re.RIGHT_BRACKET,
     ),
-    '|)',
     flags=re.IGNORECASE,
 )
 
-_bracketed_reference_with_version_re: Final[Pattern[str]] = re.compile(
+_bracketed_reference_with_version_re: Final = re.compile(
     re.LEFT_BRACKET,
     re.any_number_of(re.WHITESPACE),
     _reference_with_version_re,
@@ -122,11 +113,11 @@ _bracketed_reference_with_version_re: Final[Pattern[str]] = re.compile(
     flags=re.IGNORECASE,
 )
 
-_search_reference_re: Final[Pattern[str]] = re.compile(
+_search_reference_re: Final = re.compile(
     re.START, _reference_re, re.END, flags=re.IGNORECASE
 )
 
-_search_reference_with_version_re: Final[Pattern[str]] = re.compile(
+_search_reference_with_version_re: Final = re.compile(
     re.START, _reference_with_version_re, re.END, flags=re.IGNORECASE
 )
 

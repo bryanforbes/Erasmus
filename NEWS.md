@@ -1,5 +1,6 @@
 # Version UNRELEASED
 
+* Improved verse lookup regular expressions
 
 # Version 22.9.4
 
