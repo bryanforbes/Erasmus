@@ -125,7 +125,7 @@ class Localizer:
         )
 
 
-@define
+@define(frozen=True)
 class LocaleLocalizer:
     localizer: Localizer
     locale: discord.Locale
@@ -165,7 +165,7 @@ class LocaleLocalizer:
         )
 
 
-@define
+@define(frozen=True)
 class MessageLocalizer:
     localizer: LocaleLocalizer
     message_id: str

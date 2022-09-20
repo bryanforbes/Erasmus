@@ -20,14 +20,14 @@ _total_re: Final = re.compile(
 )
 
 
-@define
+@define(frozen=True)
 class BibleGateway(BaseService):
-    _passage_url: URL = field(init=False)
-    _search_url: URL = field(init=False)
-
-    def __attrs_post_init__(self, /) -> None:
-        self._passage_url = URL('https://www.biblegateway.com/passage/')
-        self._search_url = URL('https://www.biblegateway.com/quicksearch/')
+    _passage_url: URL = field(
+        init=False, factory=lambda: URL('https://www.biblegateway.com/passage/')
+    )
+    _search_url: URL = field(
+        init=False, factory=lambda: URL('https://www.biblegateway.com/quicksearch/')
+    )
 
     def __transform_verse_node(
         self,

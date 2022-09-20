@@ -16,6 +16,8 @@ from ..json import get
 from .base_service import BaseService
 
 if TYPE_CHECKING:
+    from typing_extensions import Self
+
     import aiohttp
 
     from ..types import Bible
@@ -32,24 +34,21 @@ class _ResponseDict(TypedDict):
     meta: _ResponseMetaDict | None
 
 
-@define
+@define(frozen=True)
 class ApiBible(BaseService):
-    _passage_url: URL = field(init=False)
-    _search_url: URL = field(init=False)
-    _headers: dict[str, str] = field(init=False)
-
-    def __attrs_post_init__(self, /) -> None:
-        self._passage_url = URL(
+    headers: dict[str, str]
+    _passage_url: URL = field(
+        init=False,
+        factory=lambda: URL(
             'https://api.scripture.api.bible/v1/bibles/{bibleId}/passages/{passageId}'
-        )
-        self._search_url = URL(
+        ),
+    )
+    _search_url: URL = field(
+        init=False,
+        factory=lambda: URL(
             'https://api.scripture.api.bible/v1/bibles/{bibleId}/search'
-        )
-
-        if self.config:
-            self._headers = {'api-key': self.config.get('api_key', '')}
-        else:
-            self._headers = {}
+        ),
+    )
 
     def __get_passage_id(self, verses: VerseRange, /) -> str:
         if verses.paratext is None:
@@ -121,7 +120,7 @@ class ApiBible(BaseService):
                     'include-verse-numbers': 'true',
                 }
             ),
-            headers=self._headers,
+            headers=self.headers,
         ) as response:
             data = await self.__process_response(response)
 
@@ -147,7 +146,7 @@ class ApiBible(BaseService):
                     'sort': 'canonical',
                 }
             ),
-            headers=self._headers,
+            headers=self.headers,
         ) as response:
             data = await self.__process_response(response)
 
@@ -163,3 +162,14 @@ class ApiBible(BaseService):
             ]
 
             return SearchResults(passages, total)
+
+    @classmethod
+    def from_config(
+        cls, config: dict[str, Any] | None, session: aiohttp.ClientSession, /
+    ) -> Self:
+        if config:
+            headers = {'api-key': config.get('api_key', '')}
+        else:
+            headers = {}
+
+        return cls(session, config, headers)

@@ -86,12 +86,11 @@ class Option(Protocol):
         ...
 
 
-@define(eq=False)
+@define(eq=False, frozen=True)
 class AutoCompleter(app_commands.Transformer, Generic[_OptionT]):
-    _storage: OrderedDict[str, _OptionT] = field(init=False)
-
-    def __attrs_post_init__(self) -> None:
-        self._storage = OrderedDict()
+    _storage: OrderedDict[str, _OptionT] = field(
+        init=False, factory=lambda: OrderedDict[str, _OptionT]()
+    )
 
     def add(self, option: _OptionT, /) -> None:
         self._storage[option.key] = option

@@ -305,4 +305,4 @@ class TestApiBible(ServiceTest):
     def service(
         self, config: Any, aiohttp_client_session: aiohttp.ClientSession
     ) -> Service:
-        return ApiBible(config=config, session=aiohttp_client_session)
+        return ApiBible.from_config(config, aiohttp_client_session)

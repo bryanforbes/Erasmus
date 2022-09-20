@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Final, Literal, TypedDict
 
 import orjson
-from attrs import define, field
+from attrs import define
 from botus_receptus import re
 from more_itertools import unique_everseen
 
@@ -155,7 +155,7 @@ def get_books_for_mask(book_mask: int, /) -> Iterator[BookDict]:
             yield book
 
 
-@define
+@define(frozen=True)
 class Verse:
     chapter: int
     verse: int
@@ -164,23 +164,15 @@ class Verse:
         return f'{self.chapter}:{self.verse}'
 
 
-@define
+@define(frozen=True)
 class VerseRange:
     book: str
     start: Verse
-    end: Verse | None = None
-    version: str | None = None
-    book_mask: int | Literal['DC'] = field(init=False)
-    osis: str = field(init=False)
-    paratext: str | None = field(init=False)
-
-    def __attrs_post_init__(self, /) -> None:
-        book = get_book_data(self.book)
-
-        self.book = book['name']
-        self.book_mask = book['section']
-        self.osis = book['osis']
-        self.paratext = book['paratext']
+    end: Verse | None
+    version: str | None
+    book_mask: int | Literal['DC']
+    osis: str
+    paratext: str | None
 
     @property
     def verses(self, /) -> str:
@@ -196,6 +188,27 @@ class VerseRange:
 
     def __str__(self, /) -> str:
         return f'{self.book} {self.verses}'
+
+    @classmethod
+    def create(
+        cls,
+        book: str,
+        start: Verse,
+        end: Verse | None = None,
+        version: str | None = None,
+        /,
+    ) -> Self:
+        data = get_book_data(book)
+
+        return cls(
+            data['name'],
+            start,
+            end,
+            version,
+            data['section'],
+            data['osis'],
+            data['paratext'],
+        )
 
     @classmethod
     def from_string(cls, verse: str, /) -> Self:
@@ -233,7 +246,7 @@ class VerseRange:
 
         version: str | None = groups.get('version')
 
-        return cls(groups['book'], start, end, version)
+        return cls.create(groups['book'], start, end, version)
 
     @classmethod
     def get_all_from_string(
@@ -263,7 +276,7 @@ class VerseRange:
         return cls.from_string_with_version(value)
 
 
-@define
+@define(frozen=True)
 class Passage:
     text: str
     range: VerseRange
@@ -280,7 +293,7 @@ class Passage:
         return f'{self.text}\n\n{self.citation}'
 
 
-@define
+@define(frozen=True)
 class SearchResults:
     verses: list[Passage]
     total: int

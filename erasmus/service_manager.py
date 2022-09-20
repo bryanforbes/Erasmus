@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import TYPE_CHECKING, Final
+from typing import TYPE_CHECKING, Any, Final, TypeGuard
 
 import async_timeout
 from attrs import define, field
@@ -19,12 +19,17 @@ if TYPE_CHECKING:
 
     from .config import Config
     from .data import Passage, SearchResults, VerseRange
+    from .services.base_service import BaseService
     from .types import Bible, Service
 
 _log: Final = logging.getLogger(__name__)
 
 
-@define
+def _is_service_cls(obj: Any, /) -> TypeGuard[type[BaseService]]:
+    return hasattr(obj, 'from_config') and callable(obj.from_config)
+
+
+@define(frozen=True)
 class ServiceManager:
     service_map: dict[str, Service] = field(factory=dict)
     timeout: float = 10
@@ -45,7 +50,6 @@ class ServiceManager:
             _log.debug(f'Getting passage {verses} ({bible.abbr})')
             async with async_timeout.timeout(self.timeout):
                 passage = await service.get_passage(bible, verses)
-                passage.version = bible.abbr
                 _log.debug(f'Got passage {passage.citation}')
                 return passage
         except asyncio.TimeoutError as e:
@@ -70,8 +74,8 @@ class ServiceManager:
         service_configs = config.get('services', {})
 
         for name, service_cls in services.__dict__.items():
-            if callable(service_cls):
+            if _is_service_cls(service_cls):
                 section = service_configs.get(name)
-                service_map[name] = service_cls(config=section, session=session)
+                service_map[name] = service_cls.from_config(section, session)
 
         return cls(service_map)

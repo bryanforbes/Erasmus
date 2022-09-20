@@ -169,7 +169,7 @@ class _SectionInfo(NamedTuple):
     choice_value: str
 
 
-@define
+@define(frozen=True)
 class _ConfessionOption:
     command: str
     command_lower: str
@@ -223,7 +223,7 @@ class _ConfessionOption:
         )
 
 
-@define(eq=False)
+@define(eq=False, frozen=True)
 class SectionAutoCompleter(app_commands.Transformer):
     confession_lookup: AutoCompleter[_ConfessionOption]
 

@@ -8,6 +8,8 @@ from attrs import define
 from botus_receptus import re
 
 if TYPE_CHECKING:
+    from typing_extensions import Self
+
     import aiohttp
 
     from ..data import Passage, SearchResults, VerseRange
@@ -27,7 +29,7 @@ _number_re: Final = re.compile(
 )
 
 
-@define
+@define(frozen=True)
 class BaseService:
     session: aiohttp.ClientSession
     config: dict[str, Any] | None
@@ -54,3 +56,9 @@ class BaseService:
             text = _number_re.sub('\u202b\\1\u202c', text)
 
         return text
+
+    @classmethod
+    def from_config(
+        cls, config: dict[str, Any] | None, session: aiohttp.ClientSession, /
+    ) -> Self:
+        return cls(session, config)

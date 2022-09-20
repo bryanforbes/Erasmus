@@ -50,8 +50,12 @@ class TestServiceManager:
     def services(self, mocker: pytest_mock.MockerFixture) -> dict[str, Any]:
         services = {
             '__all__': ['ServiceOne', 'ServiceTwo'],
-            'ServiceOne': mocker.Mock(return_value=mocker.sentinel.SERVICE_ONE),
-            'ServiceTwo': mocker.Mock(return_value=mocker.sentinel.SERVICE_TWO),
+            'ServiceOne': mocker.Mock(
+                **{'from_config.return_value': mocker.sentinel.SERVICE_ONE}
+            ),
+            'ServiceTwo': mocker.Mock(
+                **{'from_config.return_value': mocker.sentinel.SERVICE_TWO}
+            ),
         }
 
         mocker.patch.dict(
@@ -101,11 +105,11 @@ class TestServiceManager:
     ) -> None:
         manager = ServiceManager.from_config(config, mock_client_session)
 
-        services['ServiceOne'].assert_called_once_with(
-            config=None, session=mock_client_session
+        services['ServiceOne'].from_config.assert_called_once_with(
+            None, mock_client_session
         )
-        services['ServiceTwo'].assert_called_once_with(
-            config=config['services']['ServiceTwo'], session=mock_client_session
+        services['ServiceTwo'].from_config.assert_called_once_with(
+            config['services']['ServiceTwo'], mock_client_session
         )
         assert manager.service_map['ServiceOne'] == mocker.sentinel.SERVICE_ONE
         assert manager.service_map['ServiceTwo'] == mocker.sentinel.SERVICE_TWO
@@ -122,17 +126,16 @@ class TestServiceManager:
 
     async def test_get_passage(
         self,
-        config: Any,
         bible2: Bible,
         service_one: MockService,
         service_two: MockService,
     ) -> None:
         manager = ServiceManager({'ServiceOne': service_one, 'ServiceTwo': service_two})
         service_one.get_passage.return_value = Passage(
-            'blah', VerseRange.from_string('Genesis 2:2')
+            'blah', VerseRange.from_string('Genesis 2:2'), version='BIB1'
         )
         service_two.get_passage.return_value = Passage(
-            'blah', VerseRange.from_string('Genesis 1:2')
+            'blah', VerseRange.from_string('Genesis 1:2'), version='BIB2'
         )
 
         result = await manager.get_passage(
@@ -166,7 +169,6 @@ class TestServiceManager:
 
     async def test_search(
         self,
-        config: Any,
         bible1: Bible,
         service_one: MockService,
         service_two: MockService,

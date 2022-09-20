@@ -38,13 +38,13 @@ class TestVerseRange:
         verse_start = Verse(1, 1)
         verse_end = Verse(1, 4)
 
-        passage = VerseRange('John', verse_start, verse_end)
+        passage = VerseRange.create('John', verse_start, verse_end)
 
         assert passage.book == 'John'
         assert passage.start == verse_start
         assert passage.end == verse_end
 
-        passage = VerseRange('John', verse_start)
+        passage = VerseRange.create('John', verse_start)
         assert passage.book == 'John'
         assert passage.start == verse_start
         assert passage.end is None
@@ -52,9 +52,9 @@ class TestVerseRange:
     @pytest.mark.parametrize(
         'passage,expected',
         [
-            (VerseRange('John', Verse(1, 1)), 'John 1:1'),
-            (VerseRange('John', Verse(1, 1), Verse(1, 4)), 'John 1:1-4'),
-            (VerseRange('John', Verse(1, 1), Verse(2, 2)), 'John 1:1-2:2'),
+            (VerseRange.create('John', Verse(1, 1)), 'John 1:1'),
+            (VerseRange.create('John', Verse(1, 1), Verse(1, 4)), 'John 1:1-4'),
+            (VerseRange.create('John', Verse(1, 1), Verse(2, 2)), 'John 1:1-2:2'),
         ],
     )
     def test__str__(self, passage: VerseRange, expected: str) -> None:
@@ -63,15 +63,18 @@ class TestVerseRange:
     @pytest.mark.parametrize(
         'passage,expected',
         [
-            (VerseRange('John', Verse(1, 1)), None),
-            (VerseRange('John', Verse(1, 1)), VerseRange('John', Verse(1, 1))),
+            (VerseRange.create('John', Verse(1, 1)), None),
             (
-                VerseRange('John', Verse(1, 1), Verse(2, 1)),
-                VerseRange('John', Verse(1, 1), Verse(2, 1)),
+                VerseRange.create('John', Verse(1, 1)),
+                VerseRange.create('John', Verse(1, 1)),
             ),
             (
-                VerseRange('John', Verse(1, 1), Verse(2, 1), 'sbl'),
-                VerseRange('John', Verse(1, 1), Verse(2, 1), 'sbl'),
+                VerseRange.create('John', Verse(1, 1), Verse(2, 1)),
+                VerseRange.create('John', Verse(1, 1), Verse(2, 1)),
+            ),
+            (
+                VerseRange.create('John', Verse(1, 1), Verse(2, 1), 'sbl'),
+                VerseRange.create('John', Verse(1, 1), Verse(2, 1), 'sbl'),
             ),
         ],
     )
@@ -81,15 +84,18 @@ class TestVerseRange:
     @pytest.mark.parametrize(
         'passage,expected',
         [
-            (VerseRange('John', Verse(1, 1)), {}),
-            (VerseRange('John', Verse(1, 1)), VerseRange('John', Verse(1, 2))),
+            (VerseRange.create('John', Verse(1, 1)), {}),
             (
-                VerseRange('John', Verse(1, 1), Verse(2, 1)),
-                VerseRange('John', Verse(1, 1), Verse(3, 1)),
+                VerseRange.create('John', Verse(1, 1)),
+                VerseRange.create('John', Verse(1, 2)),
             ),
             (
-                VerseRange('John', Verse(1, 1), Verse(2, 1), 'sbl'),
-                VerseRange('John', Verse(1, 1), Verse(2, 1), 'niv'),
+                VerseRange.create('John', Verse(1, 1), Verse(2, 1)),
+                VerseRange.create('John', Verse(1, 1), Verse(3, 1)),
+            ),
+            (
+                VerseRange.create('John', Verse(1, 1), Verse(2, 1), 'sbl'),
+                VerseRange.create('John', Verse(1, 1), Verse(2, 1), 'niv'),
             ),
         ],
     )
@@ -127,13 +133,13 @@ class TestVerseRange:
     @pytest.mark.parametrize(
         'passage_str,expected',
         [
-            ('foo 1 John 1:1 bar', [[VerseRange('1 John', Verse(1, 1))], []]),
+            ('foo 1 John 1:1 bar', [[VerseRange.create('1 John', Verse(1, 1))], []]),
             (
                 'foo 1 John 1:1 bar Mark 2:1-4 baz',
                 [
                     [
-                        VerseRange('1 John', Verse(1, 1)),
-                        VerseRange('Mark', Verse(2, 1), Verse(2, 4)),
+                        VerseRange.create('1 John', Verse(1, 1)),
+                        VerseRange.create('Mark', Verse(2, 1), Verse(2, 4)),
                     ],
                     [],
                 ],
@@ -142,9 +148,9 @@ class TestVerseRange:
                 'foo 1 John 1:1 bar Mark 2:1-4 baz Acts 3:5-6:7',
                 [
                     [
-                        VerseRange('1 John', Verse(1, 1)),
-                        VerseRange('Mark', Verse(2, 1), Verse(2, 4)),
-                        VerseRange('Acts', Verse(3, 5), Verse(6, 7)),
+                        VerseRange.create('1 John', Verse(1, 1)),
+                        VerseRange.create('Mark', Verse(2, 1), Verse(2, 4)),
+                        VerseRange.create('Acts', Verse(3, 5), Verse(6, 7)),
                     ],
                     [],
                 ],
@@ -153,9 +159,9 @@ class TestVerseRange:
                 'foo 1 John 1:1 bar Mark 2:1\u20134 baz Acts 3:5-6:7',
                 [
                     [
-                        VerseRange('1 John', Verse(1, 1)),
-                        VerseRange('Mark', Verse(2, 1), Verse(2, 4)),
-                        VerseRange('Acts', Verse(3, 5), Verse(6, 7)),
+                        VerseRange.create('1 John', Verse(1, 1)),
+                        VerseRange.create('Mark', Verse(2, 1), Verse(2, 4)),
+                        VerseRange.create('Acts', Verse(3, 5), Verse(6, 7)),
                     ],
                     [],
                 ],
@@ -164,9 +170,9 @@ class TestVerseRange:
                 'foo 1 John 1:1 bar Mark 2:1\u20144 baz Acts 3:5-6:7',
                 [
                     [
-                        VerseRange('1 John', Verse(1, 1)),
-                        VerseRange('Mark', Verse(2, 1), Verse(2, 4)),
-                        VerseRange('Acts', Verse(3, 5), Verse(6, 7)),
+                        VerseRange.create('1 John', Verse(1, 1)),
+                        VerseRange.create('Mark', Verse(2, 1), Verse(2, 4)),
+                        VerseRange.create('Acts', Verse(3, 5), Verse(6, 7)),
                     ],
                     [],
                 ],
@@ -175,42 +181,42 @@ class TestVerseRange:
                 'foo 1 John 1:1 bar Mark    2 : 1   -     4 baz [Acts 3:5-6:7]',
                 [
                     [
-                        VerseRange('1 John', Verse(1, 1)),
-                        VerseRange('Mark', Verse(2, 1), Verse(2, 4)),
-                        VerseRange('Acts', Verse(3, 5), Verse(6, 7)),
+                        VerseRange.create('1 John', Verse(1, 1)),
+                        VerseRange.create('Mark', Verse(2, 1), Verse(2, 4)),
+                        VerseRange.create('Acts', Verse(3, 5), Verse(6, 7)),
                     ],
-                    [VerseRange('Acts', Verse(3, 5), Verse(6, 7))],
+                    [VerseRange.create('Acts', Verse(3, 5), Verse(6, 7))],
                 ],
             ),
             (
                 'foo 1 John 1:1 bar [Mark 2:1-4 KJV] baz Acts 3:5-6:7 blah',
                 [
                     [
-                        VerseRange('1 John', Verse(1, 1)),
-                        VerseRange('Mark', Verse(2, 1), Verse(2, 4), 'KJV'),
-                        VerseRange('Acts', Verse(3, 5), Verse(6, 7)),
+                        VerseRange.create('1 John', Verse(1, 1)),
+                        VerseRange.create('Mark', Verse(2, 1), Verse(2, 4), 'KJV'),
+                        VerseRange.create('Acts', Verse(3, 5), Verse(6, 7)),
                     ],
-                    [VerseRange('Mark', Verse(2, 1), Verse(2, 4), 'KJV')],
+                    [VerseRange.create('Mark', Verse(2, 1), Verse(2, 4), 'KJV')],
                 ],
             ),
             (
                 'foo 1 John 1:1 bar Mark 2:1-4 KJV baz [Acts 3:5-6:7 sbl123] blah',
                 [
                     [
-                        VerseRange('1 John', Verse(1, 1)),
-                        VerseRange('Mark', Verse(2, 1), Verse(2, 4)),
-                        VerseRange('Acts', Verse(3, 5), Verse(6, 7), 'sbl123'),
+                        VerseRange.create('1 John', Verse(1, 1)),
+                        VerseRange.create('Mark', Verse(2, 1), Verse(2, 4)),
+                        VerseRange.create('Acts', Verse(3, 5), Verse(6, 7), 'sbl123'),
                     ],
-                    [VerseRange('Acts', Verse(3, 5), Verse(6, 7), 'sbl123')],
+                    [VerseRange.create('Acts', Verse(3, 5), Verse(6, 7), 'sbl123')],
                 ],
             ),
             (
                 'foo 1 John 1:1 bar Mark 2:1-4 KJV baz [Acts 3:5-6:7 sbl 123] blah',
                 [
                     [
-                        VerseRange('1 John', Verse(1, 1)),
-                        VerseRange('Mark', Verse(2, 1), Verse(2, 4)),
-                        VerseRange('Acts', Verse(3, 5), Verse(6, 7)),
+                        VerseRange.create('1 John', Verse(1, 1)),
+                        VerseRange.create('Mark', Verse(2, 1), Verse(2, 4)),
+                        VerseRange.create('Acts', Verse(3, 5), Verse(6, 7)),
                     ],
                     [],
                 ],
@@ -220,13 +226,13 @@ class TestVerseRange:
                 'blah',
                 [
                     [
-                        VerseRange('1 John', Verse(1, 1)),
-                        VerseRange('Mark', Verse(2, 1), Verse(2, 4), 'KJV'),
-                        VerseRange('Acts', Verse(3, 5), Verse(6, 7)),
+                        VerseRange.create('1 John', Verse(1, 1)),
+                        VerseRange.create('Mark', Verse(2, 1), Verse(2, 4), 'KJV'),
+                        VerseRange.create('Acts', Verse(3, 5), Verse(6, 7)),
                     ],
                     [
-                        VerseRange('1 John', Verse(1, 1)),
-                        VerseRange('Mark', Verse(2, 1), Verse(2, 4), 'KJV'),
+                        VerseRange.create('1 John', Verse(1, 1)),
+                        VerseRange.create('Mark', Verse(2, 1), Verse(2, 4), 'KJV'),
                     ],
                 ],
             ),
@@ -260,7 +266,7 @@ class TestVerseRange:
 class TestPassage:
     def test_init(self) -> None:
         text = 'foo bar baz'
-        range = VerseRange('Exodus', Verse(1, 1))
+        range = VerseRange.create('Exodus', Verse(1, 1))
         passage = Passage(text, range)
 
         assert passage.text == text
@@ -320,7 +326,7 @@ class TestPassage:
 
 class TestSearchResults:
     def test_init(self) -> None:
-        verses = [Passage('asdf', VerseRange('Exodus', Verse(1, 1)))]
+        verses = [Passage('asdf', VerseRange.create('Exodus', Verse(1, 1)))]
         results = SearchResults(verses, 20)
 
         assert results.verses == verses

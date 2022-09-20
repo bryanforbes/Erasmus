@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any, cast
 
 import discord
 from asyncpg.exceptions import UniqueViolationError
-from attrs import define
+from attrs import define, evolve
 from botus_receptus import Cog, formatting, utils
 from botus_receptus.app_commands import admin_guild_only
 from discord import app_commands
@@ -124,7 +124,7 @@ class SearchPageSource(FieldPageSource['Sequence[Passage]'], AsyncPageSource[Pas
         await super().set_page_text(page)
 
 
-@define
+@define(frozen=True)
 class _BibleOption:
     name: str
     name_lower: str
@@ -136,12 +136,6 @@ class _BibleOption:
     @property
     def key(self) -> str:
         return self.command
-
-    def update(self, version: BibleVersion, /) -> None:
-        self.name = version.name
-        self.name_lower = version.name.lower()
-        self.abbreviation = version.abbr
-        self.abbreviation_lower = version.abbr.lower()
 
     def matches(self, text: str, /) -> bool:
         return (
@@ -678,7 +672,7 @@ class Bible(Cog['Erasmus']):
         bible: BibleVersion | None = None
 
         if version is not None:
-            reference.version = version
+            reference = evolve(reference, version=version)
 
         async with Session() as session:
             if reference.version is not None:
