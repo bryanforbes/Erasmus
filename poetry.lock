@@ -31,7 +31,7 @@ speedups = ["Brotli", "aiodns", "cchardet"]
 
 [[package]]
 name = "aioitertools"
-version = "0.10.0"
+version = "0.11.0"
 description = "itertools and builtins for AsyncIO and mixed iterables"
 category = "main"
 optional = false
@@ -191,7 +191,7 @@ python-versions = "^3.10"
 develop = false
 
 [package.dependencies]
-aioitertools = "^0.10.0"
+aioitertools = "^0.11.0"
 async-timeout = "~4.0.0"
 asyncpg = {version = "~0.26.0", optional = true}
 attrs = ">=22.1.0"
@@ -213,8 +213,8 @@ uvloop = ["uvloop (>=0.17.0,<0.18.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "3e819e38963eec2fff6cfaecba4d9a30a0627d36"
-resolved_reference = "3e819e38963eec2fff6cfaecba4d9a30a0627d36"
+reference = "8ea39dbf4070403d77d20f1c7a7a70992e6c2fd5"
+resolved_reference = "8ea39dbf4070403d77d20f1c7a7a70992e6c2fd5"
 
 [[package]]
 name = "brotli"
@@ -1128,7 +1128,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "8a5219ac8a6e540142e857995835be9aeeb893dbc531a741cc26a75723aeb5e9"
+content-hash = "f377960ea6ca12a8a6fee4dc2959f7d40841cb5134b0247ef12eb82474448fa7"
 
 [metadata.files]
 aiodns = [
@@ -1210,8 +1210,8 @@ aiohttp = [
     {file = "aiohttp-3.8.1.tar.gz", hash = "sha256:fc5471e1a54de15ef71c1bc6ebe80d4dc681ea600e68bfd1cbce40427f0b7578"},
 ]
 aioitertools = [
-    {file = "aioitertools-0.10.0-py3-none-any.whl", hash = "sha256:a2ea2a39ebf272a2fbb58bfdb73e1daeeb6686edbbc8082215dfc8b8ffffa6e8"},
-    {file = "aioitertools-0.10.0.tar.gz", hash = "sha256:7d1d1d4a03d462c5a0840787d3df098f125847e0d38b833b30f8f8cbc45a1420"},
+    {file = "aioitertools-0.11.0-py3-none-any.whl", hash = "sha256:04b95e3dab25b449def24d7df809411c10e62aab0cbe31a50ca4e68748c43394"},
+    {file = "aioitertools-0.11.0.tar.gz", hash = "sha256:42c68b8dd3a69c2bf7f2233bf7df4bb58b557bca5252ac02ed5187bbc67d6831"},
 ]
 aiosignal = [
     {file = "aiosignal-1.2.0-py3-none-any.whl", hash = "sha256:26e62109036cd181df6e6ad646f91f0dcfd05fe16d0cb924138ff2ab75d64e3a"},
