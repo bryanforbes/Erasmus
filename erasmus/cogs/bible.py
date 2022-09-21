@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING, Any, cast
 
 import discord
 from asyncpg.exceptions import UniqueViolationError
-from attrs import define, evolve
+from attrs import define
 from botus_receptus import Cog, formatting, utils
 from botus_receptus.app_commands import admin_guild_only
 from discord import app_commands
@@ -676,7 +676,7 @@ class Bible(Cog['Erasmus']):
         bible: BibleVersion | None = None
 
         if version is not None:
-            reference = evolve(reference, version=version)
+            reference = reference.with_version(version)
 
         async with Session() as session:
             if reference.version is not None:

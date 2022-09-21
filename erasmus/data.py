@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Final, Literal, TypedDict
 
 import orjson
-from attrs import define
+from attrs import define, evolve
 from botus_receptus import re
 from more_itertools import unique_everseen
 
@@ -185,6 +185,9 @@ class VerseRange:
                 verse += f'-{self.end}'
 
         return verse
+
+    def with_version(self, version: str | None, /) -> Self:
+        return evolve(self, version=version)
 
     def __str__(self, /) -> str:
         return f'{self.book} {self.verses}'
