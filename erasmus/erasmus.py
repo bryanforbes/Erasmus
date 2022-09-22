@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 import sys
-from typing import TYPE_CHECKING, Any, Final, cast
+from typing import TYPE_CHECKING, Final, cast
 
 import discord
 import discord.http
@@ -29,7 +29,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     config: Config
     localizer: Localizer
 
-    def __init__(self, config: Config, /, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, config: Config, /, *args: object, **kwargs: object) -> None:
         kwargs['help_command'] = None
         kwargs['allowed_mentions'] = discord.AllowedMentions.none()
 
@@ -76,7 +76,9 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
 
         await super().on_ready()
 
-    async def on_error(self, event_method: str, /, *args: Any, **kwargs: Any) -> None:
+    async def on_error(
+        self, event_method: str, /, *args: object, **kwargs: object
+    ) -> None:
         _, exception, _ = sys.exc_info()
 
         if exception is None:
@@ -108,7 +110,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             return
 
         message_id = 'generic-error'
-        data: dict[str, Any] | None = None
+        data: dict[str, object] | None = None
 
         match error:
             case commands.NoPrivateMessage():

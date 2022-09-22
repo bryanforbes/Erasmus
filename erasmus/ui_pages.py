@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import contextlib
-from typing import TYPE_CHECKING, Any, Final, Generic, TypeVar, cast
+from typing import TYPE_CHECKING, Final, Generic, TypeVar, cast
 
 import discord
 from botus_receptus import utils
@@ -23,10 +23,10 @@ T = TypeVar('T')
 _MISSING: Final = discord.utils.MISSING
 
 
-class PagesModal(discord.ui.Modal, title='Skip to page…'):
-    pages: UIPages[Any]
+class PagesModal(discord.ui.Modal, Generic[T], title='Skip to page…'):
+    pages: UIPages[T]
 
-    def __init__(self, pages: UIPages[Any], *, timeout: float | None = None) -> None:
+    def __init__(self, pages: UIPages[T], *, timeout: float | None = None) -> None:
         super().__init__(timeout=timeout)
 
         self.pages = pages

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import logging
 from abc import abstractmethod
-from typing import TYPE_CHECKING, Any, Final
+from typing import TYPE_CHECKING, Final
 
 from attrs import define
 from botus_receptus import re
@@ -12,6 +12,7 @@ if TYPE_CHECKING:
 
     import aiohttp
 
+    from ..config import ServiceConfig
     from ..data import Passage, SearchResults, VerseRange
     from ..types import Bible
 
@@ -32,7 +33,7 @@ _number_re: Final = re.compile(
 @define(frozen=True)
 class BaseService:
     session: aiohttp.ClientSession
-    config: dict[str, Any] | None
+    config: ServiceConfig | None
 
     @abstractmethod
     async def get_passage(self, bible: Bible, verses: VerseRange, /) -> Passage:
@@ -59,6 +60,6 @@ class BaseService:
 
     @classmethod
     def from_config(
-        cls, config: dict[str, Any] | None, session: aiohttp.ClientSession, /
+        cls, config: ServiceConfig | None, session: aiohttp.ClientSession, /
     ) -> Self:
         return cls(session, config)

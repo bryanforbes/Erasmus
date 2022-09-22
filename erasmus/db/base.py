@@ -13,10 +13,10 @@ from typing import (
     cast,
     overload,
 )
-from typing_extensions import dataclass_transform
+from typing_extensions import Self, dataclass_transform
 
 from botus_receptus.sqlalchemy import async_sessionmaker
-from sqlalchemy import BigInteger, Column, TypeDecorator
+from sqlalchemy import BigInteger, Boolean, Column, TypeDecorator
 from sqlalchemy.dialects.postgresql import TSVECTOR
 from sqlalchemy.orm import (
     Mapped as _SAMapped,
@@ -60,7 +60,7 @@ class TSVector(_TypeDecorator[str]):
     cache_ok = True
 
     class Comparator(_ComparatorBase):
-        def match(self, other: Any, **kwargs: Any) -> Any:
+        def match(self, other: object, **kwargs: object) -> ColumnElement[Boolean]:
             if (
                 'postgresql_regconfig' not in kwargs
                 and 'regconfig' in self.type.options
@@ -68,12 +68,12 @@ class TSVector(_TypeDecorator[str]):
                 kwargs['postgresql_regconfig'] = self.type.options['regconfig']
             return TSVECTOR.Comparator.match(self, other, **kwargs)
 
-        def __or__(self, other: Any) -> ColumnElement[TSVector]:
+        def __or__(self, other: object) -> ColumnElement[TSVector]:
             return self.op('||')(other)  # type: ignore
 
     comparator_factory = Comparator  # type: ignore
 
-    def __init__(self, *args: Any, **kwargs: Any) -> None:
+    def __init__(self, *args: object, **kwargs: object) -> None:
         """
         Initializes new TSVectorType
 
@@ -92,14 +92,16 @@ class Flag(_TypeDecorator[_FlagT]):
 
     _flag_cls: type[_FlagT]
 
-    def __init__(self, flag_cls: type[_FlagT], /, *args: Any, **kwargs: Any) -> None:
+    def __init__(
+        self, flag_cls: type[_FlagT], /, *args: object, **kwargs: object
+    ) -> None:
         self._flag_cls = flag_cls
         super().__init__(*args, **kwargs)
 
-    def process_bind_param(self, value: _FlagT | None, dialect: Any) -> int | None:
+    def process_bind_param(self, value: _FlagT | None, dialect: object) -> int | None:
         return value.value if value is not None else value
 
-    def process_result_value(self, value: int | None, dialect: Any) -> _FlagT | None:
+    def process_result_value(self, value: int | None, dialect: object) -> _FlagT | None:
         if value is not None:
             return self._flag_cls(value)  # type: ignore
 
@@ -118,24 +120,24 @@ class Mapped(_SAMapped[_T]):
     if TYPE_CHECKING:
 
         @overload
-        def __get__(self, instance: None, owner: Any) -> Mapped[_T]:
+        def __get__(self, instance: None, owner: type[object] | None = ...) -> Self:
             ...
 
         @overload
-        def __get__(self, instance: object, owner: Any) -> _T:
+        def __get__(self, instance: object, owner: type[object] | None = ...) -> _T:
             ...
 
-        def __get__(self, instance: Any, owner: Any) -> Any:
+        def __get__(self, instance: Any, owner: Any = None) -> Any:
             ...
 
-        def __set__(self, instance: Any, value: _T | ClauseElement) -> None:
+        def __set__(self, instance: object, value: _T | ClauseElement) -> None:
             ...
 
-        def __delete__(self, instance: Any) -> None:
+        def __delete__(self, instance: object) -> None:
             ...
 
         @classmethod
-        def _empty_constructor(cls, arg1: Any) -> Mapped[_T]:
+        def _empty_constructor(cls, arg1: object) -> Mapped[_T]:
             ...
 
 
@@ -180,7 +182,7 @@ def mapped_column(
     ...
 
 
-def mapped_column(*args: Any, init: Any = MISSING, **kwargs: Any) -> Any:
+def mapped_column(*args: Any, init: Any = MISSING, **kwargs: object) -> Any:
     if init is MISSING:
         primary_key = kwargs.get('primary_key', False)
         init = not primary_key
@@ -192,7 +194,7 @@ def mapped_column(*args: Any, init: Any = MISSING, **kwargs: Any) -> Any:
 
 def mixin_column(
     initializer: Callable[[], Mapped[Any]], /, *, init: bool = True
-) -> Any:
+) -> Mapped[Any]:
     return _dataclass_field(
         init=init,
         metadata={'sa': lambda: cast('Field[Any]', initializer()).metadata['sa']},
@@ -208,7 +210,7 @@ def relationship(
     lazy: str = ...,
     primaryjoin: str = ...,
     uselist: Literal[True] = ...,
-    order_by: Any = ...,
+    order_by: object = ...,
 ) -> Mapped[list[_T]]:
     ...
 
@@ -220,10 +222,10 @@ def relationship(
     *,
     init: Literal[False] = False,
     lazy: str = ...,
-    primaryjoin: Any = ...,
+    primaryjoin: object = ...,
     uselist: Literal[False],
     nullable: Literal[True] = ...,
-    order_by: Any = ...,
+    order_by: object = ...,
 ) -> Mapped[_T | None]:
     ...
 
@@ -235,10 +237,10 @@ def relationship(
     *,
     init: Literal[False] = False,
     lazy: str = ...,
-    primaryjoin: Any = ...,
+    primaryjoin: object = ...,
     uselist: Literal[False],
     nullable: Literal[False],
-    order_by: Any = ...,
+    order_by: object = ...,
 ) -> Mapped[_T]:
     ...
 

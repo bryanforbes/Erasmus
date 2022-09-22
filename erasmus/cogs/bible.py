@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, cast
 
 import discord
 from asyncpg.exceptions import UniqueViolationError
@@ -537,7 +537,7 @@ class Bible(Cog['Erasmus']):
         ):
             error = cast('Exception', error.__cause__)
 
-        data: dict[str, Any] | None = None
+        data: dict[str, object] | None = None
 
         match error:
             case BookNotUnderstoodError():

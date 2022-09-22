@@ -133,7 +133,7 @@ async def operation_guard(
 
 @admin_guild_only()
 class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin commands'):
-    _last_result: Any
+    _last_result: object
 
     async def cog_load(self) -> None:
         self._last_result = None

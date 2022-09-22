@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from datetime import timedelta
-from typing import TYPE_CHECKING, Any, ClassVar, Literal, get_args
+from typing import TYPE_CHECKING, ClassVar, Literal, get_args
 
 from attrs import define, field, validators
 from babel.dates import format_timedelta
@@ -34,7 +34,7 @@ class FluentPeriod(FluentType, Period):
     default_period_format_options: ClassVar = PeriodFormatOptions()
     options: PeriodFormatOptions
 
-    def _init_options(self, period: Period, **kwargs: Any) -> None:
+    def _init_options(self, period: Period, **kwargs: object) -> None:
         self.options = merge_options(
             PeriodFormatOptions,
             getattr(period, 'options', self.default_period_format_options),
@@ -42,7 +42,7 @@ class FluentPeriod(FluentType, Period):
         )
 
     @classmethod
-    def from_period(cls, period: Period, **kwargs: Any) -> Self:
+    def from_period(cls, period: Period, **kwargs: object) -> Self:
         obj = cls(period.start, period.end)
         obj._init_options(period, **kwargs)
         return obj
@@ -73,7 +73,7 @@ class FluentPeriod(FluentType, Period):
         return self.options.separator.join(parts)
 
 
-def fluent_period(delta: object, **kwargs: Any) -> Any:
+def fluent_period(delta: object, **kwargs: object) -> FluentPeriod:
     if isinstance(delta, FluentPeriod) and not kwargs:
         return delta
 
@@ -87,7 +87,7 @@ def fluent_period(delta: object, **kwargs: Any) -> Any:
     )
 
 
-def native_to_fluent(val: Any) -> Any:
+def native_to_fluent(val: object) -> object:
     if isinstance(val, Period):
         return FluentPeriod.from_period(val)
 
@@ -96,7 +96,9 @@ def native_to_fluent(val: Any) -> Any:
 
 class Bundle(FluentBundle):
     def format_pattern(
-        self, pattern: Pattern | TextElement, args: SupportsItems[str, Any] | None = ...
+        self,
+        pattern: Pattern | TextElement,
+        args: SupportsItems[str, object] | None = ...,
     ) -> tuple[str, list[FluentFormatError]]:
         if args is not None:
             fluent_args = {
@@ -132,7 +134,7 @@ class Localization(FluentLocalization):
     def format(
         self,
         message_id: str,
-        args: SupportsItems[str, Any] | None = None,
+        args: SupportsItems[str, object] | None = None,
         /,
         *,
         use_fallbacks: bool = True,

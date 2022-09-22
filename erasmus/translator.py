@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 from discord import app_commands
 
@@ -24,7 +24,7 @@ class Translator(app_commands.Translator):
     ) -> str | None:
         message_id: str = ''
         translation: str | None = None
-        command: Any | None = None
+        command: object = None
 
         if (
             context.location == app_commands.TranslationContextLocation.command_name

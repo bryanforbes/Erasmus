@@ -3,7 +3,7 @@ from __future__ import annotations
 from collections import OrderedDict
 from importlib import metadata
 from pathlib import Path
-from typing import TYPE_CHECKING, Any
+from typing import TYPE_CHECKING
 
 import discord
 from botus_receptus import Cog, Embed, formatting, utils
@@ -77,7 +77,7 @@ class Misc(Cog['Erasmus']):
 
         self.localizer = bot.localizer
 
-    async def refresh(self, _: Any = None, /) -> None:
+    async def refresh(self, _: object = None, /) -> None:
         version_map: OrderedDict[str, list[str]] = OrderedDict()
         current_items: list[str] = []
 

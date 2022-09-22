@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from pathlib import Path
-from typing import TYPE_CHECKING, Any, Literal, overload
+from typing import TYPE_CHECKING, Literal, overload
 
 from attrs import define, field
 from fluent.runtime import FluentResourceLoader
@@ -70,7 +70,7 @@ class Localizer:
         /,
         *,
         locale: discord.Locale | None = None,
-        data: SupportsItems[str, Any] | None = ...,
+        data: SupportsItems[str, object] | None = ...,
         use_fallbacks: bool,
     ) -> str | None:
         ...
@@ -82,7 +82,7 @@ class Localizer:
         /,
         *,
         locale: discord.Locale | None = None,
-        data: SupportsItems[str, Any] | None = ...,
+        data: SupportsItems[str, object] | None = ...,
         use_fallbacks: Literal[True] = ...,
     ) -> str:
         ...
@@ -93,7 +93,7 @@ class Localizer:
         /,
         *,
         locale: discord.Locale | None = None,
-        data: SupportsItems[str, Any] | None = None,
+        data: SupportsItems[str, object] | None = None,
         use_fallbacks: bool = True,
     ) -> str | None:
         return self._get_l10n(locale).format(
@@ -136,7 +136,7 @@ class LocaleLocalizer:
         message_id: str | app_commands.locale_str,
         /,
         *,
-        data: SupportsItems[str, Any] | None = ...,
+        data: SupportsItems[str, object] | None = ...,
         use_fallbacks: bool,
     ) -> str | None:
         ...
@@ -147,7 +147,7 @@ class LocaleLocalizer:
         message_id: str | app_commands.locale_str,
         /,
         *,
-        data: SupportsItems[str, Any] | None = ...,
+        data: SupportsItems[str, object] | None = ...,
         use_fallbacks: Literal[True] = ...,
     ) -> str:
         ...
@@ -157,7 +157,7 @@ class LocaleLocalizer:
         message_id: str | app_commands.locale_str,
         /,
         *,
-        data: SupportsItems[str, Any] | None = None,
+        data: SupportsItems[str, object] | None = None,
         use_fallbacks: bool = True,
     ) -> str | None:
         return self.localizer.format(
@@ -176,7 +176,7 @@ class MessageLocalizer:
         attribute_id: str | None = None,
         /,
         *,
-        data: SupportsItems[str, Any] | None = ...,
+        data: SupportsItems[str, object] | None = ...,
         use_fallbacks: bool,
     ) -> str | None:
         ...
@@ -187,7 +187,7 @@ class MessageLocalizer:
         attribute_id: str | None = None,
         /,
         *,
-        data: SupportsItems[str, Any] | None = ...,
+        data: SupportsItems[str, object] | None = ...,
         use_fallbacks: Literal[True] = ...,
     ) -> str:
         ...
@@ -197,7 +197,7 @@ class MessageLocalizer:
         attribute_id: str | None = None,
         /,
         *,
-        data: SupportsItems[str, Any] | None = None,
+        data: SupportsItems[str, object] | None = None,
         use_fallbacks: bool = True,
     ) -> str | None:
         message_id = self.message_id

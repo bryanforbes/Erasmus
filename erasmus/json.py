@@ -1,16 +1,20 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import TYPE_CHECKING, Any, Final
+
+if TYPE_CHECKING:
+    from collections.abc import Mapping
 
 
-def get(obj: Any, key: str, fallback: Any = None, /) -> Any:
+def get(obj: Mapping[str, object], key: str, fallback: object = None, /) -> Any:
     result: Any = obj
+
     for part in key.split('.'):
         try:
             if isinstance(result, list):
-                result: Any = result[int(part)]
+                result = result[int(part)]
             elif isinstance(result, dict):
-                result: Any = result[part]
+                result = result[part]
             else:
                 return fallback
         except (KeyError, TypeError, IndexError):
@@ -19,8 +23,10 @@ def get(obj: Any, key: str, fallback: Any = None, /) -> Any:
     return result
 
 
-def has(obj: Any, key: str, /) -> bool:
-    fallback = object()
-    result = get(obj, key, fallback)
+MISSING: Final = object()
 
-    return result is not fallback
+
+def has(obj: Mapping[str, object], key: str, /) -> bool:
+    result = get(obj, key, MISSING)
+
+    return result is not MISSING

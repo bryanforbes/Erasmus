@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
-from typing import TYPE_CHECKING, Any, Final, TypedDict
+from typing import TYPE_CHECKING, Final, TypedDict
 
 import orjson
 from attrs import define, field
@@ -20,6 +20,7 @@ if TYPE_CHECKING:
 
     import aiohttp
 
+    from ..config import ServiceConfig
     from ..types import Bible
 
 _img_re: Final = re.compile('src="', re.named_group('src')('[^"]+'), '"')
@@ -29,8 +30,12 @@ class _ResponseMetaDict(TypedDict):
     fumsNoScript: str | None
 
 
+class _DataDict(TypedDict):
+    content: str
+
+
 class _ResponseDict(TypedDict):
-    data: dict[str, Any]
+    data: _DataDict
     meta: _ResponseMetaDict | None
 
 
@@ -90,7 +95,7 @@ class ApiBible(BaseService):
 
     async def __process_response(
         self, response: aiohttp.ClientResponse, /
-    ) -> dict[str, Any]:
+    ) -> _DataDict:
         if response.status != 200:
             raise DoNotUnderstandError()
 
@@ -165,7 +170,7 @@ class ApiBible(BaseService):
 
     @classmethod
     def from_config(
-        cls, config: dict[str, Any] | None, session: aiohttp.ClientSession, /
+        cls, config: ServiceConfig | None, session: aiohttp.ClientSession, /
     ) -> Self:
         if config:
             headers = {'api-key': config.get('api_key', '')}
