@@ -1,8 +1,8 @@
 from __future__ import annotations
 
-from itertools import chain
+from enum import Flag, auto
 from pathlib import Path
-from typing import TYPE_CHECKING, Final, Literal, TypedDict
+from typing import TYPE_CHECKING, Final, TypedDict
 
 import orjson
 from attrs import define, evolve
@@ -19,33 +19,153 @@ if TYPE_CHECKING:
     import discord
 
 
-class BookDict(TypedDict):
+class SectionFlag(Flag):
+    NONE = 0
+
+    OT = auto()
+    Gen = Exod = Lev = Num = Deut = Josh = Judg = Ruth = Sam_1 = Sam_2 = Kgs_1 = OT
+    Kgs_2 = Chr_1 = Chr_2 = Ezra = Neh = Esth = Job = Ps = Prov = Eccl = Song = Isa = OT
+    Jer = Lam = Ezek = Dan = Hos = Joel = Amos = Obad = Jonah = Mic = Nah = Hab = OT
+    Zeph = Hag = Zech = Mal = OT
+
+    NT = auto()
+    Matt = Mark = Luke = John = Acts = Rom = Cor_1 = Cor_2 = Gal = Eph = Phil = Col = NT
+    Thess_1 = Thess_2 = Tim_1 = Tim_2 = Titus = Phlm = Heb = Jas = Pet_1 = Pet_2 = NT
+    John_1 = John_2 = John_3 = Jude = Rev = NT
+
+    Tob = auto()
+    Jdt = auto()
+    Wis = auto()
+    Sir = auto()
+    Bar = auto()
+    EpJer = auto()
+    PrAzar = auto()
+    Sus = auto()
+    Bel = auto()
+    Macc_1 = auto()
+    Macc_2 = auto()
+    Macc_3 = auto()
+    Macc_4 = auto()
+    PrMan = auto()
+    Esd_1 = auto()
+    Esd_2 = auto()
+    AddPs = auto()
+    EsthGr = auto()
+    Odes = auto()
+    PssSol = auto()
+    DanGr = auto()
+    AddEsth = auto()
+    AddDan = auto()
+
+    @property
+    def book_names(self) -> Iterator[str]:
+        for section, book in _book_mask_map.items():
+            if self & section:
+                match book.name:
+                    case 'Genesis':
+                        yield 'Old Testament'
+                    case 'Matthew':
+                        yield 'New Testament'
+                    case _:
+                        yield book.name
+
+    @classmethod
+    def from_book_names(cls, book_names: str, /) -> Self:
+        book_mask = SectionFlag.NONE
+
+        if book_names:
+            for book_name in book_names.split(','):
+                book_name = book_name.strip()
+                if book_name == 'OT':
+                    book_name = 'Genesis'
+                elif book_name == 'NT':
+                    book_name = 'Matthew'
+
+                book_mask = book_mask | Book.from_name(book_name).section
+
+        return book_mask
+
+
+class _RawBookDict(TypedDict):
     name: str
     osis: str
     paratext: str | None
     alt: list[str]
-    section: int | Literal['DC']
 
 
-with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
-    _books_data: Final[list[BookDict]] = orjson.loads(f.read())
+@define(frozen=True)
+class Book:
+    name: str
+    osis: str
+    paratext: str | None
+    alt: frozenset[str]
+    section: SectionFlag
+
+    def __str__(self) -> str:
+        return self.name
+
+    @classmethod
+    def from_name(cls, name_or_abbr: str, /) -> Self:
+        book = _book_map.get(name_or_abbr.lower())
+
+        if book is None:
+            raise BookNotUnderstoodError(name_or_abbr)
+
+        return book
+
+
+def __populate_maps() -> tuple[dict[str, Book], dict[SectionFlag, Book]]:
+    book_map: Final[dict[str, Book]] = {}
+    book_mask_map: Final[dict[SectionFlag, Book]] = {}
+
+    with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
+        raw_books: list[_RawBookDict] = orjson.loads(f.read())
+
+        for raw_book in raw_books:
+            osis: str = raw_book['osis']
+
+            if osis[0].isdecimal():
+                section = SectionFlag[f'{osis[1:]}_{osis[0]}']
+            else:
+                section = SectionFlag[osis]
+
+            book = Book(
+                raw_book['name'],
+                raw_book['osis'],
+                raw_book['paratext'],
+                frozenset(raw_book['alt']),
+                section,
+            )
+
+            if book.section not in book_mask_map:
+                book_mask_map[book.section] = book
+
+            for input_string in {book.name, book.osis} | book.alt:
+                book_map[input_string.lower()] = book
+
+    return book_map, book_mask_map
+
+
+_book_map, _book_mask_map = __populate_maps()
+
+_book_map: Final
+_book_mask_map: Final
+
+
+@define(frozen=True)
+class Verse:
+    chapter: int
+    verse: int
+
+    def __str__(self, /) -> str:
+        return f'{self.chapter}:{self.verse}'
+
 
 # Inspired by
 # https://github.com/TehShrike/verse-reference-regex/blob/master/create-regex.js
 _book_re: Final = re.compile(
     re.named_group('book')(
-        re.either(
-            *re.escape_all(
-                unique_everseen(
-                    chain.from_iterable(
-                        [
-                            [book['name'], book['osis']] + book['alt']
-                            for book in _books_data
-                        ]
-                    )
-                )
-            )
-        )
+        re.either(*re.escape_all(unique_everseen(_book_map.keys())))
     ),
     re.optional(re.DOT),
 )
@@ -121,58 +241,25 @@ _search_reference_with_version_re: Final = re.compile(
     re.START, _reference_with_version_re, re.END, flags=re.IGNORECASE
 )
 
-_book_input_map: Final[dict[str, str]] = {}
-_book_data_map: Final[dict[str, BookDict]] = {}
-_book_mask_map: Final[dict[str, int | Literal['DC']]] = {}
-
-for _book in _books_data:
-    for input_string in [_book['name'], _book['osis']] + _book['alt']:
-        _book_input_map[input_string.lower()] = _book['name']
-        _book_data_map[input_string.lower()] = _book
-    _book_mask_map[_book['name']] = _book['section']
-
-
-def get_book_data(book_name_or_abbr: str, /) -> BookDict:
-    book = _book_data_map.get(book_name_or_abbr.lower())
-
-    if book is None:
-        raise BookNotUnderstoodError(book_name_or_abbr)
-
-    return book
-
-
-def get_books_for_mask(book_mask: int, /) -> Iterator[BookDict]:
-    if book_mask & 1:
-        yield _book_data_map['genesis']
-    if book_mask & 2:
-        yield _book_data_map['matthew']
-
-    for book in _books_data:
-        if book['section'] == 1 or book['section'] == 2 or book['section'] == 'DC':
-            continue
-
-        if book_mask & book['section']:
-            yield book
-
-
-@define(frozen=True)
-class Verse:
-    chapter: int
-    verse: int
-
-    def __str__(self, /) -> str:
-        return f'{self.chapter}:{self.verse}'
-
 
 @define(frozen=True)
 class VerseRange:
-    book: str
+    book: Book
     start: Verse
     end: Verse | None
     version: str | None
-    book_mask: int | Literal['DC']
-    osis: str
-    paratext: str | None
+
+    @property
+    def book_mask(self) -> SectionFlag:
+        return self.book.section
+
+    @property
+    def osis(self) -> str:
+        return self.book.osis
+
+    @property
+    def paratext(self) -> str | None:
+        return self.book.paratext
 
     @property
     def verses(self, /) -> str:
@@ -201,16 +288,11 @@ class VerseRange:
         version: str | None = None,
         /,
     ) -> Self:
-        data = get_book_data(book)
-
         return cls(
-            data['name'],
+            Book.from_name(book),
             start,
             end,
             version,
-            data['section'],
-            data['osis'],
-            data['paratext'],
         )
 
     @classmethod
@@ -302,4 +384,4 @@ class SearchResults:
     total: int
 
     def __iter__(self, /) -> Iterator[Passage]:
-        return self.verses.__iter__()
+        yield from self.verses

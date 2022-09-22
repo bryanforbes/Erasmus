@@ -123,7 +123,7 @@ class Unbound(BaseService):
                 'search_type': 'simple_search',
                 'parallel_1': bible.service_version,
                 'book_section': '00',
-                'book': _book_map[verses.book],
+                'book': _book_map[verses.book.name],
                 'displayFormat': 'normalNoHeader',
                 'from_chap': str(verses.start.chapter),
                 'from_verse': str(verses.start.verse),

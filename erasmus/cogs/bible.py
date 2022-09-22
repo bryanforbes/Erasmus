@@ -11,7 +11,7 @@ from discord import app_commands
 from discord.ext import commands
 from sqlalchemy.exc import IntegrityError
 
-from ..data import Passage, SearchResults, VerseRange, get_book_data, get_books_for_mask
+from ..data import Passage, SearchResults, SectionFlag, VerseRange
 from ..db import BibleVersion, GuildPref, Session, UserPref
 from ..exceptions import (
     BibleNotSupportedError,
@@ -32,7 +32,7 @@ from ..ui_pages import UIPages
 from ..utils import AutoCompleter, send_passage
 
 if TYPE_CHECKING:
-    from collections.abc import Awaitable, Callable, Iterable, Iterator, Sequence
+    from collections.abc import Awaitable, Callable, Iterable, Sequence
     from typing_extensions import Self
 
     from botus_receptus.types import Coroutine
@@ -41,37 +41,6 @@ if TYPE_CHECKING:
     from ..erasmus import Erasmus
     from ..l10n import Localizer, MessageLocalizer
     from ..types import Bible as _Bible
-
-
-def _book_mask_from_books(books: str, /) -> int:
-    book_mask = 0
-
-    for book in books.split(','):
-        book = book.strip()
-        if book == 'OT':
-            book = 'Genesis'
-        elif book == 'NT':
-            book = 'Matthew'
-
-        book_data = get_book_data(book)
-
-        if book_data['section'] == 'DC':
-            continue
-
-        book_mask = book_mask | book_data['section']
-
-    return book_mask
-
-
-def _book_names_from_book_mask(book_mask: int, /) -> Iterator[str]:
-    for book in get_books_for_mask(book_mask):
-        match book['name']:
-            case 'Genesis':
-                yield 'Old Testament'
-            case 'Matthew':
-                yield 'New Testament'
-            case _:
-                yield book['name']
 
 
 class SearchPageSource(FieldPageSource['Sequence[Passage]'], AsyncPageSource[Passage]):
@@ -330,9 +299,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
                 {'name': 'Right to left', 'value': 'Yes' if existing.rtl else 'No'},
                 {
                     'name': 'Books',
-                    'value': '\n'.join(
-                        list(_book_names_from_book_mask(existing.books))
-                    ),
+                    'value': '\n'.join(existing.books.book_names),
                     'inline': False,
                 },
                 {'name': 'Service', 'value': existing.service},
@@ -373,14 +340,14 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
 
         try:
             async with Session.begin() as session:
-                bible = BibleVersion(
+                bible = BibleVersion.create(
                     command=command,
                     name=name,
                     abbr=abbreviation,
                     service=service,
                     service_version=service_version,
+                    books=books,
                     rtl=rtl,
-                    books=_book_mask_from_books(books),
                 )
                 session.add(bible)
 
@@ -467,7 +434,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
                     bible.rtl = rtl
 
                 if books is not None:
-                    bible.books = _book_mask_from_books(books)
+                    bible.books = SectionFlag.from_book_names(books)
 
                 await session.commit()
 
@@ -547,8 +514,8 @@ class Bible(Cog['Erasmus']):
         reference: VerseRange,
         only_me: bool = False,
     ) -> None:
-        if reference.book_mask == 'DC' or not (bible.books & reference.book_mask):
-            raise BookNotInVersionError(reference.book, bible.name)
+        if not bible.books & reference.book_mask:
+            raise BookNotInVersionError(reference.book.name, bible.name)
 
         passage = await self.service_manager.get_passage(bible, reference)
         await send_passage(itx, passage, ephemeral=only_me)
@@ -768,9 +735,7 @@ class Bible(Cog['Erasmus']):
                 },
                 {
                     'name': self.localizer.format('bibleinfo.books', locale=itx.locale),
-                    'value': '\n'.join(
-                        list(_book_names_from_book_mask(existing.books))
-                    ),
+                    'value': '\n'.join(existing.books.book_names),
                     'inline': False,
                 },
             ],

@@ -3,12 +3,14 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from botus_receptus.sqlalchemy import Snowflake
-from sqlalchemy import BigInteger, Boolean, ForeignKey, Integer, String, func, select
+from sqlalchemy import Boolean, ForeignKey, Integer, String, func, select
 from sqlalchemy.dialects.postgresql import insert
 
+from ..data import SectionFlag
 from ..exceptions import InvalidVersionError
 from .base import (
     Base,
+    Flag,
     Mapped,
     mapped_column,
     mixin_column,
@@ -35,7 +37,7 @@ class BibleVersion(Base):
     service: Mapped[str] = mapped_column(String, nullable=False)
     service_version: Mapped[str] = mapped_column(String, nullable=False)
     rtl: Mapped[bool | None] = mapped_column(Boolean)
-    books: Mapped[int] = mapped_column(BigInteger, nullable=False)
+    books: Mapped[SectionFlag] = mapped_column(Flag(SectionFlag), nullable=False)
 
     async def set_for_user(
         self, session: AsyncSession, user: discord.User | discord.Member, /
@@ -57,6 +59,27 @@ class BibleVersion(Base):
             .on_conflict_do_update(
                 index_elements=['guild_id'], set_={'bible_id': self.id}
             )
+        )
+
+    @staticmethod
+    def create(
+        *,
+        command: str,
+        name: str,
+        abbr: str,
+        service: str,
+        service_version: str,
+        books: str,
+        rtl: bool,
+    ) -> BibleVersion:
+        return BibleVersion(
+            command=command,
+            name=name,
+            abbr=abbr,
+            service=service,
+            service_version=service_version,
+            rtl=rtl,
+            books=SectionFlag.from_book_names(books),
         )
 
     @staticmethod

@@ -52,7 +52,7 @@ class ApiBible(BaseService):
 
     def __get_passage_id(self, verses: VerseRange, /) -> str:
         if verses.paratext is None:
-            raise BookNotInVersionError(verses.book, verses.version or 'default')
+            raise BookNotInVersionError(verses.book.name, verses.version or 'default')
 
         passage_id: str = (
             f'{verses.paratext}.{verses.start.chapter}.{verses.start.verse}'

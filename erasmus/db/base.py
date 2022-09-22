@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 from dataclasses import MISSING, Field, dataclass, field as _dataclass_field
+from enum import Flag as _EnumFlag
 from typing import (
     TYPE_CHECKING,
     Any,
     Final,
+    Generic,
     Literal,
     TypeAlias,
     TypeVar,
@@ -14,7 +16,7 @@ from typing import (
 from typing_extensions import dataclass_transform
 
 from botus_receptus.sqlalchemy import async_sessionmaker
-from sqlalchemy import Column, TypeDecorator
+from sqlalchemy import BigInteger, Column, TypeDecorator
 from sqlalchemy.dialects.postgresql import TSVECTOR
 from sqlalchemy.orm import (
     Mapped as _SAMapped,
@@ -24,6 +26,9 @@ from sqlalchemy.orm import (
 
 from sqlalchemy.orm import foreign as _sa_foreign  # pyright: ignore  # isort: skip
 
+_T = TypeVar('_T')
+_FlagT = TypeVar('_FlagT', bound=_EnumFlag)
+
 if TYPE_CHECKING:
     from collections.abc import Callable
 
@@ -32,11 +37,16 @@ if TYPE_CHECKING:
     from sqlalchemy.sql.elements import ColumnElement
     from sqlalchemy.types import TypeEngine
 
-    _TSVectorBase = TypeDecorator[str]
     _ComparatorBase = TypeEngine.Comparator['TSVector']
+
+    class _TypeDecorator(TypeDecorator[_T]):
+        ...
+
 else:
-    _TSVectorBase = TypeDecorator
     _ComparatorBase = TSVECTOR.Comparator
+
+    class _TypeDecorator(TypeDecorator, Generic[_T]):
+        ...
 
 
 _mapper_registry: Final = registry()
@@ -45,11 +55,11 @@ mapped: Final = _mapper_registry.mapped
 Session: Final = async_sessionmaker(expire_on_commit=False)
 
 
-class TSVector(_TSVectorBase):
+class TSVector(_TypeDecorator[str]):
     impl = TSVECTOR
     cache_ok = True
 
-    class Comparator(_ComparatorBase):  # type: ignore
+    class Comparator(_ComparatorBase):
         def match(self, other: Any, **kwargs: Any) -> Any:
             if (
                 'postgresql_regconfig' not in kwargs
@@ -76,13 +86,32 @@ class TSVector(_TSVectorBase):
         super().__init__()
 
 
+class Flag(_TypeDecorator[_FlagT]):
+    impl = BigInteger
+    cache_ok = True
+
+    _flag_cls: type[_FlagT]
+
+    def __init__(self, flag_cls: type[_FlagT], /, *args: Any, **kwargs: Any) -> None:
+        self._flag_cls = flag_cls
+        super().__init__(*args, **kwargs)
+
+    def process_bind_param(self, value: _FlagT | None, dialect: Any) -> int | None:
+        return value.value if value is not None else value
+
+    def process_result_value(self, value: int | None, dialect: Any) -> _FlagT | None:
+        if value is not None:
+            return self._flag_cls(value)  # type: ignore
+
+        return value
+
+
 @dataclass
 class Base:
     __sa_dataclass_metadata_key__ = 'sa'
 
 
 _BaseT = TypeVar('_BaseT', bound=Base)
-_T = TypeVar('_T')
 
 
 class Mapped(_SAMapped[_T]):
@@ -115,7 +144,7 @@ _TypeEngineArgument: TypeAlias = 'TypeEngine[_T] | type[TypeEngine[_T]]'
 
 @overload
 def mapped_column(
-    column_type: _TypeEngineArgument[Any],
+    column_type: _TypeEngineArgument[_T],
     /,
     *args: SchemaEventTarget,
     name: str = ...,
@@ -127,7 +156,7 @@ def mapped_column(
 
 @overload
 def mapped_column(
-    column_type: _TypeEngineArgument[Any],
+    column_type: _TypeEngineArgument[_T],
     /,
     *args: SchemaEventTarget,
     name: str = ...,
@@ -139,7 +168,7 @@ def mapped_column(
 
 @overload
 def mapped_column(
-    column_type: _TypeEngineArgument[Any],
+    column_type: _TypeEngineArgument[_T],
     /,
     *args: SchemaEventTarget,
     name: str = ...,

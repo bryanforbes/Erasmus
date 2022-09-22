@@ -1,11 +1,96 @@
 from __future__ import annotations
 
-from typing import Any
+from itertools import chain
+from pathlib import Path
+from typing import Any, TypedDict
 
+import orjson
 import pytest
 
-from erasmus.data import Passage, SearchResults, Verse, VerseRange
-from erasmus.exceptions import ReferenceNotUnderstoodError
+from erasmus import data
+from erasmus.data import Book, Passage, SearchResults, SectionFlag, Verse, VerseRange
+from erasmus.exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
+
+
+class _RawBookDict(TypedDict):
+    name: str
+    osis: str
+    paratext: str | None
+    alt: list[str]
+
+
+with (Path(data.__file__).parent.resolve() / 'data' / 'books.json').open() as f:
+    _book_data: list[_RawBookDict] = orjson.loads(f.read())
+
+
+class TestSectionFlag:
+    def test_book_names(self) -> None:
+        assert list(SectionFlag.NONE.book_names) == []
+        assert list((SectionFlag.NONE | SectionFlag.John).book_names) == [
+            'New Testament'
+        ]
+        assert list((SectionFlag.OT | SectionFlag.NT).book_names) == [
+            'Old Testament',
+            'New Testament',
+        ]
+        assert list(
+            (
+                SectionFlag.Tob | SectionFlag.Jdt | SectionFlag.Wis | SectionFlag.Macc_1
+            ).book_names
+        ) == ['Tobit', 'Judith', 'Wisdom', '1 Maccabees']
+
+    @pytest.mark.parametrize(
+        'book_name,expected_section',
+        [
+            (
+                book['name'].upper(),
+                SectionFlag[
+                    book['osis']
+                    if not book['osis'][0].isdecimal()
+                    else f'{book["osis"][1:]}_{book["osis"][0]}'
+                ],
+            )
+            for book in _book_data
+        ],
+    )
+    def test_from_book_names(
+        self, book_name: str, expected_section: SectionFlag
+    ) -> None:
+        assert SectionFlag.from_book_names(book_name) == expected_section
+
+    @pytest.mark.parametrize(
+        'book_name,expected_section',
+        [
+            ('OT', SectionFlag.OT),
+            ('NT', SectionFlag.NT),
+            ('', SectionFlag.NONE),
+        ],
+    )
+    def test_from_book_names_special(
+        self, book_name: str, expected_section: SectionFlag
+    ) -> None:
+        assert SectionFlag.from_book_names(book_name) == expected_section
+
+    def test_from_book_names_raises(self) -> None:
+        with pytest.raises(BookNotUnderstoodError):
+            SectionFlag.from_book_names('NONE')
+
+
+class TestBook:
+    @pytest.mark.parametrize(
+        'book_name,expected_osis',
+        list(
+            chain.from_iterable(
+                [
+                    (name, book['osis'])
+                    for name in ([book['name'], book['osis']] + book['alt'])
+                ]
+                for book in _book_data
+            )
+        ),
+    )
+    def test_from_name(self, book_name: str, expected_osis: str) -> None:
+        assert Book.from_name(book_name).osis == expected_osis
 
 
 class TestVerse:
@@ -34,20 +119,30 @@ class TestVerse:
 
 
 class TestVerseRange:
-    def test_init(self) -> None:
+    def test_create(self) -> None:
         verse_start = Verse(1, 1)
         verse_end = Verse(1, 4)
 
         passage = VerseRange.create('John', verse_start, verse_end)
 
-        assert passage.book == 'John'
+        assert passage.book.name == 'John'
+        assert passage.osis == 'John'
+        assert passage.paratext == 'JHN'
+        assert passage.book_mask == SectionFlag.John
         assert passage.start == verse_start
         assert passage.end == verse_end
 
-        passage = VerseRange.create('John', verse_start)
-        assert passage.book == 'John'
+        passage = VerseRange.create('Genesis', verse_start)
+        assert passage.book.name == 'Genesis'
+        assert passage.osis == 'Gen'
+        assert passage.paratext == 'GEN'
+        assert passage.book_mask == SectionFlag.OT
         assert passage.start == verse_start
         assert passage.end is None
+
+    def test_create_raises(self) -> None:
+        with pytest.raises(BookNotUnderstoodError):
+            VerseRange.create('asdf', Verse(1, 1))
 
     @pytest.mark.parametrize(
         'passage,expected',
@@ -105,9 +200,9 @@ class TestVerseRange:
     @pytest.mark.parametrize(
         'passage_str,expected',
         [
-            ('1 John 1:1', None),
-            ('Mark 2:1-4', None),
-            ('Acts 3:5-6:7', None),
+            ('1 John 1:1', '1 John 1:1'),
+            ('Mark 2:1-4', 'Mark 2:1-4'),
+            ('Acts 3:5-6:7', 'Acts 3:5-6:7'),
             ('Mark 2:1\u20134', 'Mark 2:1-4'),
             ('Mark 2:1\u20144', 'Mark 2:1-4'),
             ('1 Pet. 3:1', '1 Peter 3:1'),
@@ -122,13 +217,60 @@ class TestVerseRange:
             ('Isa   54 : 2   - 23', 'Isaiah 54:2-23'),
         ],
     )
-    def test_from_string(self, passage_str: str, expected: str | None) -> None:
-        if expected is None:
-            expected = passage_str
-
+    def test_from_string(self, passage_str: str, expected: str) -> None:
         passage = VerseRange.from_string(passage_str)
         assert passage is not None
         assert str(passage) == expected
+
+    @pytest.mark.parametrize(
+        'passage_str', ['asdfc083u4r', 'Gen 1', 'Gen 1:', 'Gen 1:1 -', 'Gen 1:1 - 2:']
+    )
+    def test_from_string_raises(self, passage_str: str) -> None:
+        with pytest.raises(ReferenceNotUnderstoodError):
+            VerseRange.from_string(passage_str)
+
+    @pytest.mark.parametrize(
+        'passage_str,expected_range,expected_version',
+        [
+            ('1 John 1:1', '1 John 1:1', None),
+            ('Mark 2:1-4 qwer', 'Mark 2:1-4', 'qwer'),
+            ('Acts 3:5-6:7 asdf', 'Acts 3:5-6:7', 'asdf'),
+            ('Mark 2:1\u20134 qwer', 'Mark 2:1-4', 'qwer'),
+            ('Mark 2:1\u20144 asdf', 'Mark 2:1-4', 'asdf'),
+            ('1 Pet. 3:1    qwer', '1 Peter 3:1', 'qwer'),
+            ('1Pet. 3:1 - 4   asdf', '1 Peter 3:1-4', 'asdf'),
+            ('1Pet. 3:1- 4      qwer', '1 Peter 3:1-4', 'qwer'),
+            ('1Pet 3:1 - 4:5   asdf', '1 Peter 3:1-4:5', 'asdf'),
+            ('Isa   54:2   - 23   qwer', 'Isaiah 54:2-23', 'qwer'),
+            ('1 Pet. 3 : 1      asdf', '1 Peter 3:1', 'asdf'),
+            ('1Pet. 3 : 1 - 4   qwer', '1 Peter 3:1-4', 'qwer'),
+            ('1Pet. 3 : 1- 4      asdf', '1 Peter 3:1-4', 'asdf'),
+            ('1Pet 3 : 1 - 4 : 5   qwer', '1 Peter 3:1-4:5', 'qwer'),
+            ('Isa   54 : 2   - 23      asdf', 'Isaiah 54:2-23', 'asdf'),
+        ],
+    )
+    def test_from_string_with_version(
+        self, passage_str: str, expected_range: str, expected_version: str | None
+    ) -> None:
+        passage = VerseRange.from_string_with_version(passage_str)
+        assert passage is not None
+        assert str(passage) == expected_range
+        assert passage.version == expected_version
+
+    @pytest.mark.parametrize(
+        'passage_str',
+        [
+            'asdfc083u4r',
+            'Gen 1',
+            'Gen 1:',
+            'Gen 1:1 -',
+            'Gen 1:1 - 2:',
+            'Gen 1:1 asdf qwer',
+        ],
+    )
+    def test_from_string_with_version_raises(self, passage_str: str) -> None:
+        with pytest.raises(ReferenceNotUnderstoodError):
+            VerseRange.from_string_with_version(passage_str)
 
     @pytest.mark.parametrize(
         'passage_str,expected',
@@ -239,7 +381,7 @@ class TestVerseRange:
         ],
     )
     @pytest.mark.parametrize('only_bracketed', [False, True])
-    def test_get_all_from_string_optional(
+    def test_get_all_from_string(
         self, passage_str: str, only_bracketed: bool, expected: list[list[VerseRange]]
     ) -> None:
         passages = VerseRange.get_all_from_string(
@@ -254,13 +396,6 @@ class TestVerseRange:
             index = 0
 
         assert passages == expected[index]
-
-    @pytest.mark.parametrize(
-        'passage_str', ['asdfc083u4r', 'Gen 1', 'Gen 1:', 'Gen 1:1 -', 'Gen 1:1 - 2:']
-    )
-    def test_from_string_raises(self, passage_str: str) -> None:
-        with pytest.raises(ReferenceNotUnderstoodError):
-            VerseRange.from_string(passage_str)
 
 
 class TestPassage:
@@ -385,3 +520,12 @@ class TestSearchResults:
     )
     def test__ne__(self, results: SearchResults, expected: Any) -> None:
         assert results != expected
+
+    def test__iter__(self) -> None:
+        passages = [
+            Passage('asdf', VerseRange.from_string('Genesis 1:2-3')),
+            Passage('asdf2', VerseRange.from_string('Genesis 1:8-10')),
+        ]
+        results = SearchResults(passages, 20)
+
+        assert list(results) == passages
