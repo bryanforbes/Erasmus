@@ -43,6 +43,10 @@ class Bible(Protocol):
     def books(self) -> int:
         ...
 
+    @property
+    def book_mapping(self) -> dict[str, str] | None:
+        ...
+
 
 class Service(Protocol):
     async def get_passage(self, bible: Bible, verses: VerseRange, /) -> Passage:

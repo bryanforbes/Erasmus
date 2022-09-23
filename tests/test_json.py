@@ -4,7 +4,7 @@ from typing import Any
 
 import pytest
 
-from erasmus.json import get, has
+from erasmus.json import deserialize, get, has, serialize
 
 
 @pytest.mark.parametrize(
@@ -33,3 +33,11 @@ def test_get(data: dict[str, Any], key: str, expected: Any) -> None:
 )
 def test_jsonobject_has(data: dict[str, Any], key: str, expected: Any) -> None:
     assert has(data, key) == expected
+
+
+def test_json_serialize() -> None:
+    assert serialize({'a': 1}) == '{"a":1}'
+
+
+def test_json_deserialize() -> None:
+    assert deserialize('{"a":1}') == {'a': 1}

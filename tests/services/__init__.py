@@ -46,6 +46,13 @@ class ServiceTest:
         else:
             data = {}
 
+        try:
+            book_mapping: dict[str, str] | None = request.getfixturevalue(
+                'book_mapping'
+            )
+        except pytest.FixtureLookupError:
+            book_mapping = None
+
         return MockBible(
             command='bib',
             name='The Bible',
@@ -53,6 +60,7 @@ class ServiceTest:
             service='MyService',
             service_version=data.get('version', default_version),
             rtl=False,
+            book_mapping=book_mapping,
         )
 
     @pytest.mark.vcr

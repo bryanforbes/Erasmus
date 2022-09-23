@@ -9,7 +9,11 @@ from attrs import define, evolve
 from botus_receptus import re
 from more_itertools import unique_everseen
 
-from .exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
+from .exceptions import (
+    BookMappingInvalid,
+    BookNotUnderstoodError,
+    ReferenceNotUnderstoodError,
+)
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -17,6 +21,8 @@ if TYPE_CHECKING:
     from typing_extensions import Self
 
     import discord
+
+    from .types import Bible
 
 
 class SectionFlag(Flag):
@@ -114,8 +120,11 @@ class Book:
         return book
 
 
-def __populate_maps() -> tuple[dict[str, Book], dict[SectionFlag, Book]]:
+def __populate_maps() -> tuple[
+    dict[str, Book], dict[str, Book], dict[SectionFlag, Book]
+]:
     book_map: Final[dict[str, Book]] = {}
+    osis_map: Final[dict[str, Book]] = {}
     book_mask_map: Final[dict[SectionFlag, Book]] = {}
 
     with (Path(__file__).resolve().parent / 'data' / 'books.json').open() as f:
@@ -140,15 +149,18 @@ def __populate_maps() -> tuple[dict[str, Book], dict[SectionFlag, Book]]:
             if book.section not in book_mask_map:
                 book_mask_map[book.section] = book
 
+            osis_map[book.osis] = book
+
             for input_string in {book.name, book.osis} | book.alt:
                 book_map[input_string.lower()] = book
 
-    return book_map, book_mask_map
+    return book_map, osis_map, book_mask_map
 
 
-_book_map, _book_mask_map = __populate_maps()
+_book_map, _osis_map, _book_mask_map = __populate_maps()
 
 _book_map: Final
+_osis_map: Final
 _book_mask_map: Final
 
 
@@ -272,6 +284,18 @@ class VerseRange:
                 verse += f'-{self.end}'
 
         return verse
+
+    def for_bible(self, bible: Bible, /) -> Self:
+        if bible.book_mapping is not None and self.osis in bible.book_mapping:
+            osis = bible.book_mapping[self.osis]
+            book = _osis_map.get(osis)
+
+            if book is None:
+                raise BookMappingInvalid(bible.name, self.book, osis)
+
+            return evolve(self, book=book)
+
+        return self
 
     def with_version(self, version: str | None, /) -> Self:
         return evolve(self, version=version)

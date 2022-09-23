@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from enum import Enum
 
-    from .data import VerseRange
+    from .data import Book, VerseRange
     from .types import Bible
 
 
@@ -38,6 +38,17 @@ class BookNotInVersionError(ErasmusError):
     def __init__(self, book: str, version: str, /) -> None:
         self.book = book
         self.version = version
+
+
+class BookMappingInvalid(ErasmusError):
+    version: str
+    from_book: Book
+    to_osis: str
+
+    def __init__(self, version: str, from_book: Book, to_osis: str, /) -> None:
+        self.version = version
+        self.from_book = from_book
+        self.to_osis = to_osis
 
 
 class ReferenceNotUnderstoodError(ErasmusError):

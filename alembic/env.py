@@ -10,6 +10,7 @@ from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config  # type: ignore
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
+import erasmus.json
 from alembic import context
 from alembic.operations.ops import MigrationScript
 from alembic.runtime.migration import MigrationContext
@@ -98,6 +99,8 @@ async def run_migrations_online() -> None:
         prefix='sqlalchemy.',
         poolclass=pool.NullPool,
         url=bot_config.get('db_url', ''),
+        json_serializer=erasmus.json.serialize,
+        json_deserializer=erasmus.json.deserialize,
     )
 
     async with connectable.connect() as connection:

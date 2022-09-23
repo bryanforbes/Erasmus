@@ -152,6 +152,7 @@ def mapped_column(
     name: str = ...,
     primary_key: Literal[True],
     init: Literal[False] = False,
+    **kwargs: object,
 ) -> Mapped[Any]:
     ...
 
@@ -164,6 +165,7 @@ def mapped_column(
     name: str = ...,
     primary_key: Literal[True],
     init: Literal[True],
+    **kwargs: object,
 ) -> Mapped[Any]:
     ...
 
@@ -178,6 +180,7 @@ def mapped_column(
     nullable: bool = ...,
     unique: bool | None = ...,
     init: bool = True,
+    **kwargs: object,
 ) -> Mapped[Any]:
     ...
 

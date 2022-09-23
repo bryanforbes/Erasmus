@@ -9,13 +9,13 @@ import aiohttp
 import pytest
 import toml
 
-from erasmus.data import Passage, VerseRange
+from erasmus.data import Passage, Verse, VerseRange
 from erasmus.services.apibible import ApiBible
 
 from . import ServiceTest
 
 if TYPE_CHECKING:
-    from erasmus.types import Service
+    from erasmus.types import Bible, Service
 
 
 class TestApiBible(ServiceTest):
@@ -306,3 +306,44 @@ class TestApiBible(ServiceTest):
         self, config: Any, aiohttp_client_session: aiohttp.ClientSession
     ) -> Service:
         return ApiBible.from_config(config, aiohttp_client_session)
+
+    @pytest.mark.vcr
+    @pytest.mark.parametrize(
+        'book_mapping,expected_text,expected_book_name',
+        [
+            (
+                {'Dan': 'DanGr'},
+                '**1.** ἘΝ ἔτει τρίτῳ τῆς βασιλείας Ἰωακεὶμ βασιλέως Ἰούδα, ἦλθε '
+                'Ναβουχοδονόσορ ὁ βασιλεὺς Βαβυλῶνος εἰς Ἱερουσαλὴμ, καὶ ἐπολιόρκει '
+                'αὐτήν.',
+                'Daniel',
+            ),
+            (
+                {'Esth': 'EsthGr'},
+                '**1.** ΤΟ λῆμμα ὃ εἶδεν Ἀμβακοὺμ ὁ προφήτης.',
+                'Esther',
+            ),
+        ],
+        ids=['Daniel', 'Esther'],
+    )
+    @pytest.mark.parametrize(
+        'default_version,default_abbr',
+        [('c114c33098c4fef1-01', 'LXX')],
+        ids=['LXX'],
+    )
+    async def test_mapping(
+        self,
+        service: Service,
+        bible: Bible,
+        book_mapping: None,
+        expected_text: str,
+        expected_book_name: str,
+    ) -> None:
+        response = await service.get_passage(
+            bible, VerseRange.from_string(f'{expected_book_name} 1:1')
+        )
+        assert response == Passage(
+            expected_text,
+            VerseRange.create(expected_book_name, Verse(1, 1)),
+            version='LXX',
+        )

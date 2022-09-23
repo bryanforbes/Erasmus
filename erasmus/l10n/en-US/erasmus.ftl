@@ -99,6 +99,7 @@ bibleinfo = bibleinfo
 
 book-not-understood = I do not understand the book "{ $book }"
 book-not-in-version = { $version } does not contain { $book }
+book-mapping-invalid = The mapping for `{ $book }` in `{ $version }` is invalid
 do-not-understand = I do not understand that request
 reference-not-understood = I do not understand the reference "{ $reference }"
 bible-not-supported = `{ $version }` is not supported

@@ -2,14 +2,21 @@ from __future__ import annotations
 
 from itertools import chain
 from pathlib import Path
-from typing import Any, TypedDict
+from typing import TYPE_CHECKING, Any, TypedDict
 
 import orjson
 import pytest
 
 from erasmus import data
 from erasmus.data import Book, Passage, SearchResults, SectionFlag, Verse, VerseRange
-from erasmus.exceptions import BookNotUnderstoodError, ReferenceNotUnderstoodError
+from erasmus.exceptions import (
+    BookMappingInvalid,
+    BookNotUnderstoodError,
+    ReferenceNotUnderstoodError,
+)
+
+if TYPE_CHECKING:
+    from pytest_mock import MockFixture
 
 
 class _RawBookDict(TypedDict):
@@ -92,6 +99,10 @@ class TestBook:
     def test_from_name(self, book_name: str, expected_osis: str) -> None:
         assert Book.from_name(book_name).osis == expected_osis
 
+    def test_from_name_raises(self) -> None:
+        with pytest.raises(BookNotUnderstoodError):
+            assert Book.from_name('Harry Potter')
+
 
 class TestVerse:
     def test_init(self) -> None:
@@ -143,6 +154,51 @@ class TestVerseRange:
     def test_create_raises(self) -> None:
         with pytest.raises(BookNotUnderstoodError):
             VerseRange.create('asdf', Verse(1, 1))
+
+    @pytest.mark.parametrize(
+        'osis,book_name',
+        [(book['osis'], book['name']) for book in _book_data],
+    )
+    def test_for_bible_permutations(
+        self, osis: str, book_name: str, mocker: MockFixture
+    ) -> None:
+        osis_to_map = 'Exod' if osis == 'Gen' else 'Gen'
+        expected_name = 'Exodus' if osis == 'Gen' else 'Genesis'
+
+        mock_bible = mocker.Mock()
+        mock_bible.book_mapping = {osis: osis_to_map}
+
+        verse_range = VerseRange.create(book_name, Verse(1, 1), Verse(1, 4))
+
+        assert verse_range.for_bible(mock_bible).book.name == expected_name
+
+    def test_for_bible(self, mocker: MockFixture) -> None:
+        mock_bible = mocker.Mock()
+        mock_bible.book_mapping = None
+
+        verse_range = VerseRange.create('Daniel', Verse(1, 1), Verse(1, 4))
+
+        assert verse_range.for_bible(mock_bible) is verse_range
+
+        mock_bible.book_mapping = {'Esth': 'EsthGr'}
+
+        assert verse_range.for_bible(mock_bible) is verse_range
+
+        mock_bible.book_mapping = {'Dan': 'DanGr'}
+
+        mapped_verse_range = verse_range.for_bible(mock_bible)
+
+        assert mapped_verse_range is not verse_range
+        assert mapped_verse_range.book.osis == 'DanGr'
+
+    def test_for_bible_raises(self, mocker: MockFixture) -> None:
+        mock_bible = mocker.Mock()
+        mock_bible.book_mapping = {'John': 'HPotter'}
+
+        verse_range = VerseRange.create('John', Verse(1, 1), Verse(1, 4))
+
+        with pytest.raises(BookMappingInvalid):
+            verse_range.for_bible(mock_bible)
 
     @pytest.mark.parametrize(
         'passage,expected',

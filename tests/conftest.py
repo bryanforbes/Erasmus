@@ -25,6 +25,7 @@ class MockBible:
     service: str
     service_version: str
     rtl: bool = False
+    book_mapping: dict[str, str] | None = None
 
 
 @pytest.fixture(name='MockBible', scope='session')

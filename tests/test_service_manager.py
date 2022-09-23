@@ -24,7 +24,16 @@ class MockService:
 
 
 class MockBible:
-    __slots__ = 'command', 'name', 'abbr', 'service', 'service_version', 'rtl', 'books'
+    __slots__ = (
+        'command',
+        'name',
+        'abbr',
+        'service',
+        'service_version',
+        'rtl',
+        'books',
+        'book_mapping',
+    )
 
     def __init__(
         self,
@@ -43,6 +52,7 @@ class MockBible:
         self.service_version = service_version
         self.rtl = rtl
         self.books = 1
+        self.book_mapping = None
 
 
 class TestServiceManager:

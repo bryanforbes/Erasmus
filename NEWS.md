@@ -2,6 +2,7 @@
 
 * Improved verse lookup regular expressions
 * Fixed searching NRSV
+* Switched to Brenton Septuagint for LXX
 
 # Version 22.9.4
 

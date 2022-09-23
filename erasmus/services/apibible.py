@@ -55,18 +55,21 @@ class ApiBible(BaseService):
         ),
     )
 
-    def __get_passage_id(self, verses: VerseRange, /) -> str:
-        if verses.paratext is None:
+    def __get_passage_id(self, bible: Bible, verses: VerseRange, /) -> str:
+        mapped_verses = verses.for_bible(bible)
+
+        if mapped_verses.paratext is None:
             raise BookNotInVersionError(verses.book.name, verses.version or 'default')
 
         passage_id: str = (
-            f'{verses.paratext}.{verses.start.chapter}.{verses.start.verse}'
+            f'{mapped_verses.paratext}.'
+            f'{mapped_verses.start.chapter}.{mapped_verses.start.verse}'
         )
 
-        if verses.end is not None:
+        if mapped_verses.end is not None:
             passage_id = (
-                f'{passage_id}-{verses.paratext}.'
-                f'{verses.end.chapter}.{verses.end.verse}'
+                f'{passage_id}-{mapped_verses.paratext}.'
+                f'{mapped_verses.end.chapter}.{mapped_verses.end.verse}'
             )
 
         return passage_id
@@ -115,7 +118,7 @@ class ApiBible(BaseService):
             self._passage_url.with_path(
                 self._passage_url.path.format(
                     bibleId=bible.service_version,
-                    passageId=self.__get_passage_id(verses),
+                    passageId=self.__get_passage_id(bible, verses),
                 )
             ).with_query(
                 {

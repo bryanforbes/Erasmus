@@ -3,8 +3,18 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 from botus_receptus.sqlalchemy import Snowflake
-from sqlalchemy import Boolean, ForeignKey, Integer, String, func, select
-from sqlalchemy.dialects.postgresql import insert
+from sqlalchemy import (
+    Boolean,
+    Computed,
+    ForeignKey,
+    Index,
+    Integer,
+    String,
+    func,
+    select,
+    text,
+)
+from sqlalchemy.dialects.postgresql import JSONB, insert
 
 from ..data import SectionFlag
 from ..exceptions import InvalidVersionError
@@ -12,6 +22,7 @@ from .base import (
     Base,
     Flag,
     Mapped,
+    deref_column,
     mapped_column,
     mixin_column,
     model,
@@ -38,6 +49,28 @@ class BibleVersion(Base):
     service_version: Mapped[str] = mapped_column(String, nullable=False)
     rtl: Mapped[bool | None] = mapped_column(Boolean)
     books: Mapped[SectionFlag] = mapped_column(Flag(SectionFlag), nullable=False)
+    book_mapping: Mapped[dict[str, str] | None] = mapped_column(
+        JSONB(none_as_null=True)
+    )
+    sortable_name: Mapped[str] = mapped_column(
+        String,
+        Computed(
+            func.regexp_replace(
+                deref_column(name),
+                text(r"'^(the|an?)\s+(.*)$'"),
+                text(r"'\2, \1'"),
+                text("'i'"),
+            )
+        ),
+        init=False,
+    )
+
+    __table_args__ = (
+        Index(
+            'bible_versions_sortable_name_order_idx',
+            deref_column(sortable_name).asc(),
+        ),
+    )
 
     async def set_for_user(
         self, session: AsyncSession, user: discord.User | discord.Member, /
@@ -71,6 +104,7 @@ class BibleVersion(Base):
         service_version: str,
         books: str,
         rtl: bool,
+        book_mapping: dict[str, str] | None,
     ) -> BibleVersion:
         return BibleVersion(
             command=command,
@@ -80,6 +114,7 @@ class BibleVersion(Base):
             service_version=service_version,
             rtl=rtl,
             books=SectionFlag.from_book_names(books),
+            book_mapping=book_mapping,
         )
 
     @staticmethod
@@ -94,7 +129,7 @@ class BibleVersion(Base):
         stmt = select(BibleVersion)
 
         if ordered:
-            stmt = stmt.order_by(BibleVersion.command.asc())
+            stmt = stmt.order_by(BibleVersion.sortable_name.asc())
 
         if limit:
             stmt = stmt.limit(limit)

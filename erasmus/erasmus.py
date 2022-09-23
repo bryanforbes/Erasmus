@@ -12,6 +12,7 @@ from botus_receptus.interactive_pager import CannotPaginate, CannotPaginateReaso
 from discord import app_commands
 from discord.ext import commands
 
+from . import json
 from .db import Session
 from .exceptions import ErasmusError
 from .l10n import Localizer
@@ -30,12 +31,20 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     localizer: Localizer
 
     def __init__(self, config: Config, /, *args: object, **kwargs: object) -> None:
-        kwargs['help_command'] = None
-        kwargs['allowed_mentions'] = discord.AllowedMentions.none()
-
         self.localizer = Localizer(discord.Locale.american_english)
 
-        super().__init__(config, *args, sessionmaker=Session, **kwargs)
+        super().__init__(
+            config,
+            *args,
+            sessionmaker=Session,
+            engine_kwargs={
+                'json_serializer': json.serialize,
+                'json_deserializer': json.deserialize,
+            },
+            help_command=None,
+            allowed_mentions=discord.AllowedMentions.none(),
+            **kwargs,
+        )
 
         self.tree.error(self.on_app_command_error)
 

@@ -1,8 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, cast
+import logging
+from typing import TYPE_CHECKING, Final, cast
 
 import discord
+import orjson
 from asyncpg.exceptions import UniqueViolationError
 from attrs import define
 from botus_receptus import Cog, formatting, utils
@@ -15,6 +17,7 @@ from ..data import Passage, SearchResults, SectionFlag, VerseRange
 from ..db import BibleVersion, GuildPref, Session, UserPref
 from ..exceptions import (
     BibleNotSupportedError,
+    BookMappingInvalid,
     BookNotInVersionError,
     BookNotUnderstoodError,
     DoNotUnderstandError,
@@ -41,6 +44,12 @@ if TYPE_CHECKING:
     from ..erasmus import Erasmus
     from ..l10n import Localizer, MessageLocalizer
     from ..types import Bible as _Bible
+
+_log: Final = logging.getLogger(__name__)
+
+
+def _decode_book_mapping(book_mapping: str | None) -> dict[str, str] | None:
+    return orjson.loads(book_mapping) if book_mapping is not None else None
 
 
 class SearchPageSource(FieldPageSource['Sequence[Passage]'], AsyncPageSource[Passage]):
@@ -328,6 +337,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         service_version: str,
         books: str = 'OT,NT',
         rtl: bool = False,
+        book_mapping: str | None = None,
     ) -> None:
         '''Add a Bible version'''
 
@@ -348,6 +358,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
                     service_version=service_version,
                     books=books,
                     rtl=rtl,
+                    book_mapping=_decode_book_mapping(book_mapping),
                 )
                 session.add(bible)
 
@@ -359,6 +370,11 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
             await utils.send_embed_error(
                 itx,
                 description=f'`{command}` already exists',
+            )
+        except orjson.JSONDecodeError:
+            await utils.send_embed_error(
+                itx,
+                description=f'`{book_mapping}` is invalid JSON',
             )
         else:
             await utils.send_embed(
@@ -404,6 +420,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         service_version: str | None = None,
         rtl: bool | None = None,
         books: str | None = None,
+        book_mapping: str | None = None,
     ) -> None:
         '''Update a Bible'''
 
@@ -436,10 +453,18 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
                 if books is not None:
                     bible.books = SectionFlag.from_book_names(books)
 
+                if book_mapping is not None:
+                    bible.book_mapping = _decode_book_mapping(book_mapping)
+
                 await session.commit()
 
             async with Session() as session:
                 await self.refresh_data(session)
+        except orjson.JSONDecodeError:
+            await utils.send_embed_error(
+                itx,
+                description=f'`{book_mapping}` is invalid JSON',
+            )
         except ErasmusError:
             raise
         except Exception:  # noqa: PIE786
@@ -546,6 +571,21 @@ class Bible(Cog['Erasmus']):
             case BookNotInVersionError():
                 message_id = 'book-not-in-version'
                 data = {'book': error.book, 'version': error.version}
+            case BookMappingInvalid():
+                message_id = 'book-mapping-invalid'
+                data = {
+                    'book': error.from_book.name,
+                    'version': error.version,
+                }
+
+                _log.exception(
+                    'The mapping "%s" -> "%s" is invalid for "%s"',
+                    error.from_book.osis,
+                    error.to_osis,
+                    error.version,
+                    exc_info=error,
+                    stack_info=True,
+                )
             case DoNotUnderstandError():
                 message_id = 'do-not-understand'
             case ReferenceNotUnderstoodError():
@@ -695,14 +735,9 @@ class Bible(Cog['Erasmus']):
     async def bibles(self, itx: discord.Interaction, /) -> None:
         '''List which Bible versions are available for lookup and search'''
 
-        lines = [
-            self.localizer.format('bibles.prefix', locale=itx.locale),
-            '',
-        ]
-
         async with Session() as session:
-            lines += [
-                f'  `{version.command}`: {version.name}'
+            lines = [self.localizer.format('bibles.prefix', locale=itx.locale), ''] + [
+                f'  {version.name} (`{version.command}`)'
                 async for version in BibleVersion.get_all(session, ordered=True)
             ]
 
