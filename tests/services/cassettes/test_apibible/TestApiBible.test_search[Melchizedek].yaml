@@ -33,12 +33,12 @@ interactions:
         an oath by him that said unto him, The Lord sware and will not repent, Thou
         art  a priest for ever after the order of Melchisedec:)"}]},"meta":{"fums":"<script>\nvar
         _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''28a3451b-d72d-41ab-9ff0-24f1f0de5baf'');\\x3C/script\\x3E\");\n</script><noscript><img
-        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''28a3451b-d72d-41ab-9ff0-24f1f0de5baf''\"
+        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''da2cad99-fb7d-40f7-9b84-5f987ad0a1b4'');\\x3C/script\\x3E\");\n</script><noscript><img
+        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''da2cad99-fb7d-40f7-9b84-5f987ad0a1b4''\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        /></noscript>","fumsId":"28a3451b-d72d-41ab-9ff0-24f1f0de5baf","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''28a3451b-d72d-41ab-9ff0-24f1f0de5baf'');
-        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=28a3451b-d72d-41ab-9ff0-24f1f0de5baf\"
+        /></noscript>","fumsId":"da2cad99-fb7d-40f7-9b84-5f987ad0a1b4","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''da2cad99-fb7d-40f7-9b84-5f987ad0a1b4'');
+        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=da2cad99-fb7d-40f7-9b84-5f987ad0a1b4\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
         />"}}'
     headers:
@@ -53,7 +53,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 04 May 2022 14:40:13 GMT
+      - Sat, 24 Sep 2022 00:58:04 GMT
       Server:
       - nginx/1.16.1
       Transfer-Encoding:
@@ -72,7 +72,7 @@ interactions:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=28a3451b-d72d-41ab-9ff0-24f1f0de5baf
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=da2cad99-fb7d-40f7-9b84-5f987ad0a1b4
   response:
     body:
       string: !!binary |
@@ -81,116 +81,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '14908'
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '35'
-      Content-Type:
-      - image/gif
-      Date:
-      - Wed, 04 May 2022 10:31:46 GMT
-      Etag:
-      - '"28d6814f309ea289f847c69cf91194c6"'
-      Last-Modified:
-      - Wed, 10 May 2017 13:35:25 GMT
-      Server:
-      - AmazonS3
-      Via:
-      - 1.1 249aa6f890bf73000af910ed0724d954.cloudfront.net (CloudFront)
-      X-Amz-Cf-Id:
-      - yLew76-NCHpQaYMoFnfum8DD7b9y3nVHc1-sMN0NQr8FKpV0DEMFiA==
-      X-Amz-Cf-Pop:
-      - ORD52-C2
-      X-Cache:
-      - Hit from cloudfront
-    status:
-      code: 200
-      message: OK
-    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=28a3451b-d72d-41ab-9ff0-24f1f0de5baf
-- request:
-    body: null
-    headers: {}
-    method: GET
-    uri: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/search?query=Melchizedek&limit=20&offset=0&sort=canonical
-  response:
-    body:
-      string: '{"data":{"query":"Melchizedek","limit":20,"offset":0,"total":11,"verseCount":11,"verses":[{"id":"GEN.14.18","orgId":"GEN.14.18","bookId":"GEN","bibleId":"de4e12af7f28f599-02","chapterId":"GEN.14","reference":"Genesis
-        14:18","text":"And Melchizedek king of Salem brought forth bread and wine:
-        and he was  the priest of the most high God."},{"id":"PSA.110.4","orgId":"PSA.110.4","bookId":"PSA","bibleId":"de4e12af7f28f599-02","chapterId":"PSA.110","reference":"Psalms
-        110:4","text":"The LORD  hath sworn, and will not repent, Thou  art  a priest
-        for ever after the order of Melchizedek."},{"id":"HEB.5.6","orgId":"HEB.5.6","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.5","reference":"Hebrews
-        5:6","text":"As he saith also in another place , Thou  art  a priest for ever
-        after the order of Melchisedec."},{"id":"HEB.5.10","orgId":"HEB.5.10","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.5","reference":"Hebrews
-        5:10","text":"Called of God an high priest after the order of Melchisedec."},{"id":"HEB.6.20","orgId":"HEB.6.20","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.6","reference":"Hebrews
-        6:20","text":"Whither the forerunner is for us entered, even  Jesus, made
-        an high priest for ever after the order of Melchisedec."},{"id":"HEB.7.1","orgId":"HEB.7.1","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.7","reference":"Hebrews
-        7:1","text":"For this Melchisedec, king of Salem, priest of the most high
-        God, who met Abraham returning from the slaughter of the kings, and blessed
-        him;"},{"id":"HEB.7.10","orgId":"HEB.7.10","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.7","reference":"Hebrews
-        7:10","text":"For he was yet in the loins of his father, when Melchisedec
-        met him."},{"id":"HEB.7.11","orgId":"HEB.7.11","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.7","reference":"Hebrews
-        7:11","text":"If therefore perfection were by the Levitical priesthood, (for
-        under it the people received the law,) what further need was there  that another
-        priest should rise after the order of Melchisedec, and not be called after
-        the order of Aaron?"},{"id":"HEB.7.15","orgId":"HEB.7.15","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.7","reference":"Hebrews
-        7:15","text":"And it is yet far more evident: for that after the similitude
-        of Melchisedec there ariseth another priest,"},{"id":"HEB.7.17","orgId":"HEB.7.17","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.7","reference":"Hebrews
-        7:17","text":"For he testifieth, Thou art  a priest for ever after the order
-        of Melchisedec."},{"id":"HEB.7.21","orgId":"HEB.7.21","bookId":"HEB","bibleId":"de4e12af7f28f599-02","chapterId":"HEB.7","reference":"Hebrews
-        7:21","text":"(For those priests were made without an oath; but this with
-        an oath by him that said unto him, The Lord sware and will not repent, Thou
-        art  a priest for ever after the order of Melchisedec:)"}]},"meta":{"fums":"<script>\nvar
-        _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''ca13f677-e4bf-4b77-b20e-ce1e30e485fc'');\\x3C/script\\x3E\");\n</script><noscript><img
-        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''ca13f677-e4bf-4b77-b20e-ce1e30e485fc''\"
-        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        /></noscript>","fumsId":"ca13f677-e4bf-4b77-b20e-ce1e30e485fc","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''ca13f677-e4bf-4b77-b20e-ce1e30e485fc'');
-        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=ca13f677-e4bf-4b77-b20e-ce1e30e485fc\"
-        height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        />"}}'
-    headers:
-      Access-Control-Expose-Headers:
-      - WWW-Authenticate,Server-Authorization
-      Cache-Control:
-      - no-cache
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Fri, 23 Sep 2022 23:59:01 GMT
-      Server:
-      - nginx/1.16.1
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - origin,accept-encoding
-      x-request-wants-bypass:
-      - static
-      x-server-allows-bypass:
-      - static
-    status:
-      code: 200
-      message: OK
-    url: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/search?query=Melchizedek&limit=20&offset=0&sort=canonical
-- request:
-    body: null
-    headers: {}
-    method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=ca13f677-e4bf-4b77-b20e-ce1e30e485fc
-  response:
-    body:
-      string: !!binary |
-        R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
-    headers:
-      Accept-Ranges:
-      - bytes
-      Age:
-      - '82637'
+      - '86180'
       Connection:
       - keep-alive
       Content-Length:
@@ -206,15 +97,15 @@ interactions:
       Server:
       - AmazonS3
       Via:
-      - 1.1 b3dcbb5db65271a2024ef727d001a4e2.cloudfront.net (CloudFront)
+      - 1.1 7fca1c00381ef50504deb286fd5fc26c.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - AQtFrxA3dRmFYNXXDYZDNMgrPFVhx2erVIvviT1-XeA1x2PqH47HvQ==
+      - YnHQ-ohQ7LA7gj-hBXSQOxmDRu3QD5IJFfVkLng079dSRz-c-RI86g==
       X-Amz-Cf-Pop:
-      - ORD51-C2
+      - ORD53-C2
       X-Cache:
       - Hit from cloudfront
     status:
       code: 200
       message: OK
-    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=ca13f677-e4bf-4b77-b20e-ce1e30e485fc
+    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=da2cad99-fb7d-40f7-9b84-5f987ad0a1b4
 version: 1

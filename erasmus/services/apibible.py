@@ -2,12 +2,11 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
-from typing import TYPE_CHECKING, Final, TypedDict
+from typing import TYPE_CHECKING, Final, Literal, TypedDict
 
 import orjson
 from attrs import define, field
 from botus_receptus import re
-from bs4 import BeautifulSoup
 from yarl import URL
 
 from ..data import Passage, SearchResults, VerseRange
@@ -26,17 +25,40 @@ if TYPE_CHECKING:
 _img_re: Final = re.compile('src="', re.named_group('src')('[^"]+'), '"')
 
 
-class _ResponseMetaDict(TypedDict):
+class _Text(TypedDict):
+    type: Literal['text']
+    text: str
+
+
+class _Add(TypedDict):
+    name: Literal['char']
+    type: Literal['tag']
+    items: list[_Text]
+
+
+class _VerseNumber(TypedDict):
+    name: Literal['verse']
+    type: Literal['tag']
+    items: list[_Text]
+
+
+class _Paragraph(TypedDict):
+    name: Literal['para']
+    type: Literal['tag']
+    items: list[_Text | _Add | _VerseNumber]
+
+
+class _Meta(TypedDict):
     fumsNoScript: str | None
 
 
-class _DataDict(TypedDict):
-    content: str
+class _Data(TypedDict):
+    content: list[_Paragraph]
 
 
-class _ResponseDict(TypedDict):
-    data: _DataDict
-    meta: _ResponseMetaDict | None
+class _Response(TypedDict):
+    data: _Data
+    meta: _Meta | None
 
 
 @define(frozen=True)
@@ -74,35 +96,41 @@ class ApiBible(BaseService):
 
         return passage_id
 
+    def __transform_item(
+        self, item: _Paragraph | _VerseNumber | _Add | _Text, buffer: list[str], /
+    ) -> None:
+        match item:
+            case {'type': 'text', 'text': text}:
+                buffer.append(text)
+            case {'name': name, 'items': items}:
+                if name != 'para':
+                    buffer.append(' __BOLD__' if name == 'verse' else ' __ITALIC__')
+
+                for item in items:
+                    self.__transform_item(item, buffer)
+
+                if name != 'para':
+                    buffer.append('.__BOLD__ ' if name == 'verse' else '__ITALIC__ ')
+            case _:
+                pass
+
     def __transform_verse(
-        self, bible: Bible, verses: VerseRange, content: str, /
+        self, bible: Bible, verses: VerseRange, content: list[_Paragraph], /
     ) -> Passage:
-        soup = BeautifulSoup(content, 'html.parser')
+        text_buffer: list[str] = []
 
-        for number in soup.select('span.v'):
-            # Add a period after verse numbers
-            number.insert_before(' __BOLD__')
-            number.insert_after('__BOLD__ ')
-            number.string = f'{number.string}.'
-            number.unwrap()
-        for it in soup.select('span.add'):
-            it.insert_before('__ITALIC__')
-            it.insert_after('__ITALIC__')
-            it.unwrap()
-        for br in soup.select('br'):
-            br.replace_with('\n')
+        for paragraph in content:
+            self.__transform_item(paragraph, text_buffer)
 
-        text = self.replace_special_escapes(bible, soup.get_text(''))
+        text = self.replace_special_escapes(bible, ''.join(text_buffer).strip())
 
         return Passage(text=text, range=verses, version=bible.abbr)
 
-    async def __process_response(
-        self, response: aiohttp.ClientResponse, /
-    ) -> _DataDict:
+    async def __process_response(self, response: aiohttp.ClientResponse, /) -> _Data:
         if response.status != 200:
             raise DoNotUnderstandError()
 
-        json: _ResponseDict = await response.json(loads=orjson.loads, content_type=None)
+        json: _Response = await response.json(loads=orjson.loads, content_type=None)
 
         # Make a request for the image to report to the Fair Use Management System
         meta: str | None = get(json, 'meta.fumsNoScript')
@@ -122,6 +150,7 @@ class ApiBible(BaseService):
                 )
             ).with_query(
                 {
+                    'content-type': 'json',
                     'include-notes': 'false',
                     'include-titles': 'false',
                     'include-chapter-numbers': 'false',
