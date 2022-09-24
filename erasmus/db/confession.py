@@ -56,13 +56,6 @@ class NumberingType(Enum):
 @model
 class Section(Base):
     __tablename__ = 'confession_sections'
-    __table_args__ = (
-        Index(
-            'confession_sections_search_idx',
-            'search_vector',
-            postgresql_using='gin',
-        ),
-    )
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)
     confession_id: Mapped[int] = mapped_column(
@@ -86,6 +79,14 @@ class Section(Base):
             ),
         ),
         init=False,
+    )
+
+    __table_args__ = (
+        Index(
+            'confession_sections_search_idx',
+            deref_column(search_vector),
+            postgresql_using='gin',
+        ),
     )
 
 
