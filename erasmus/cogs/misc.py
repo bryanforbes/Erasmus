@@ -174,7 +174,7 @@ class Misc(Cog['Erasmus']):
     ) -> None:
         '''Display news from the latest release'''
 
-        if version is None:
+        if version is None or version not in self.version_map:
             version = next(iter(self.version_map))
 
         localizer = self.localizer.for_message('news', locale=itx.locale)

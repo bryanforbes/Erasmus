@@ -97,32 +97,32 @@ class ApiBible(BaseService):
         return passage_id
 
     def __transform_item(
-        self, item: _Paragraph | _VerseNumber | _Add | _Text, buffer: list[str], /
+        self, item: _Paragraph | _VerseNumber | _Add | _Text, strings: list[str], /
     ) -> None:
         match item:
             case {'type': 'text', 'text': text}:
-                buffer.append(text)
+                strings.append(text)
             case {'name': name, 'items': items}:
                 if name != 'para':
-                    buffer.append(' __BOLD__' if name == 'verse' else ' __ITALIC__')
+                    strings.append(' __BOLD__' if name == 'verse' else ' __ITALIC__')
 
                 for item in items:
-                    self.__transform_item(item, buffer)
+                    self.__transform_item(item, strings)
 
                 if name != 'para':
-                    buffer.append('.__BOLD__ ' if name == 'verse' else '__ITALIC__ ')
+                    strings.append('.__BOLD__ ' if name == 'verse' else '__ITALIC__ ')
             case _:
                 pass
 
     def __transform_verse(
         self, bible: Bible, verses: VerseRange, content: list[_Paragraph], /
     ) -> Passage:
-        text_buffer: list[str] = []
+        strings: list[str] = []
 
         for paragraph in content:
-            self.__transform_item(paragraph, text_buffer)
+            self.__transform_item(paragraph, strings)
 
-        text = self.replace_special_escapes(bible, ''.join(text_buffer).strip())
+        text = self.replace_special_escapes(bible, ''.join(strings).strip())
 
         return Passage(text=text, range=verses, version=bible.abbr)
 
