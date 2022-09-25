@@ -1,4 +1,4 @@
-# Version UNRELEASED
+# Version 22.9.5
 
 * Improved verse lookup regular expressions
 * Fixed searching NRSV
