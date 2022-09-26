@@ -13,9 +13,9 @@ from discord import app_commands
 from discord.ext import commands
 from sqlalchemy.exc import IntegrityError
 
-from ..data import Passage, SearchResults, SectionFlag, VerseRange
-from ..db import BibleVersion, GuildPref, Session, UserPref
-from ..exceptions import (
+from ...data import SearchResults, SectionFlag, VerseRange
+from ...db import BibleVersion, GuildPref, Session, UserPref
+from ...exceptions import (
     BibleNotSupportedError,
     BookMappingInvalid,
     BookNotInVersionError,
@@ -29,77 +29,27 @@ from ..exceptions import (
     ServiceNotSupportedError,
     ServiceSearchTimeout,
 )
-from ..page_source import AsyncCallback, AsyncPageSource, FieldPageSource, Pages
-from ..service_manager import ServiceManager
-from ..ui_pages import UIPages
-from ..utils import AutoCompleter, send_passage
+from ...service_manager import ServiceManager
+from ...ui_pages import UIPages
+from ...utils import AutoCompleter, send_passage
+from .search_page_source import SearchPageSource
+from .verse_of_the_day_group import VerseOfTheDayGroup
 
 if TYPE_CHECKING:
-    from collections.abc import Awaitable, Callable, Iterable, Sequence
+    from collections.abc import Awaitable, Callable
     from typing_extensions import Self
 
     from botus_receptus.types import Coroutine
     from sqlalchemy.ext.asyncio import AsyncSession
 
-    from ..erasmus import Erasmus
-    from ..l10n import Localizer, MessageLocalizer
-    from ..types import Bible as _Bible
+    from ...erasmus import Erasmus
+    from ...l10n import Localizer
 
 _log: Final = logging.getLogger(__name__)
 
 
 def _decode_book_mapping(book_mapping: str | None) -> dict[str, str] | None:
     return orjson.loads(book_mapping) if book_mapping is not None else None
-
-
-class SearchPageSource(FieldPageSource['Sequence[Passage]'], AsyncPageSource[Passage]):
-    bible: _Bible
-    localizer: MessageLocalizer
-
-    def __init__(
-        self,
-        callback: AsyncCallback[Passage],
-        /,
-        *,
-        per_page: int,
-        bible: _Bible,
-        localizer: MessageLocalizer,
-    ) -> None:
-        super().__init__(callback, per_page=per_page)
-
-        self.bible = bible
-        self.localizer = localizer
-
-    def get_field_values(
-        self, entries: Sequence[Passage], /
-    ) -> Iterable[tuple[str, str]]:
-        for entry in entries:
-            yield str(entry.range), (
-                entry.text if len(entry.text) < 1024 else f'{entry.text[:1023]}\u2026'
-            )
-
-    def format_footer_text(
-        self, pages: Pages[Sequence[Passage]], max_pages: int
-    ) -> str:
-        return self.localizer.format(
-            'footer',
-            data={
-                'current_page': pages.current_page + 1,
-                'max_pages': max_pages,
-                'total': self.get_total(),
-            },
-        )
-
-    async def set_page_text(self, page: Sequence[Passage] | None, /) -> None:
-        self.embed.title = self.localizer.format(
-            'title', data={'bible_name': self.bible.name}
-        )
-
-        if page is None:
-            self.embed.description = self.localizer.format('no-results')
-            return
-
-        await super().set_page_text(page)
 
 
 @define(frozen=True)
@@ -164,8 +114,12 @@ class ServerPreferencesGroup(
 ):
     localizer: Localizer
 
+    verse_of_the_day = VerseOfTheDayGroup()
+
     def initialize_from_cog(self, cog: Bible, /) -> None:
         self.localizer = cog.localizer
+
+        self.verse_of_the_day.initialize_from_cog(cog)
 
     @app_commands.command()
     @app_commands.describe(version='Bible version')
@@ -283,6 +237,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     refresh_data: Callable[[AsyncSession], Awaitable[None]]
 
     def initialize_from_cog(self, cog: Bible, /) -> None:
+        _service_lookup.service_manager = cog.service_manager
         self.service_manager = cog.service_manager
         self.refresh_data = cog.refresh
 
@@ -501,8 +456,6 @@ class Bible(Cog['Erasmus']):
         self.preferences.initialize_from_cog(self)
         self.server_preferences.initialize_from_cog(self)
 
-        _service_lookup.service_manager = self.service_manager
-
     async def refresh(self, session: AsyncSession, /) -> None:
         _bible_lookup.clear()
         _bible_lookup.update(
@@ -513,11 +466,15 @@ class Bible(Cog['Erasmus']):
         )
 
     async def cog_load(self) -> None:
+        await self.server_preferences.verse_of_the_day.start_task()
+
         async with Session() as session:
             await self.refresh(session)
 
     async def cog_unload(self) -> None:
         _bible_lookup.clear()
+
+        await self.server_preferences.verse_of_the_day.stop_task()
 
     def __get_cooldown_bucket(self, message: discord.Message, /) -> commands.Cooldown:
         bucket = self.__lookup_cooldown.get_bucket(message)
@@ -758,18 +715,18 @@ class Bible(Cog['Erasmus']):
         async with Session() as session:
             existing = await BibleVersion.get_by_command(session, version)
 
+        localizer = self.localizer.for_message('bibleinfo', locale=itx.locale)
+
         await utils.send_embed(
             itx,
             title=existing.name,
             fields=[
                 {
-                    'name': self.localizer.format(
-                        'bibleinfo.abbreviation', locale=itx.locale
-                    ),
+                    'name': localizer.format('abbreviation'),
                     'value': existing.command,
                 },
                 {
-                    'name': self.localizer.format('bibleinfo.books', locale=itx.locale),
+                    'name': localizer.format('books'),
                     'value': '\n'.join(existing.books.book_names),
                     'inline': False,
                 },

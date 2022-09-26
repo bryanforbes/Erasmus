@@ -14,7 +14,7 @@ from sqlalchemy import (
     select,
     text,
 )
-from sqlalchemy.dialects.postgresql import JSONB, insert
+from sqlalchemy.dialects.postgresql import JSONB, TIMESTAMP, insert
 
 from ..data import SectionFlag
 from ..exceptions import InvalidVersionError
@@ -31,6 +31,7 @@ from .base import (
 )
 
 if TYPE_CHECKING:
+    import datetime
     from collections.abc import AsyncIterator
 
     import discord
@@ -213,3 +214,24 @@ class GuildPref(_BibleVersionMixin):
     __tablename__ = 'guild_prefs'
 
     guild_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
+
+
+@model
+class GuildVotd(Base):
+    __tablename__ = 'guild_votd'
+
+    guild_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
+    channel_id: Mapped[int] = mapped_column(Snowflake, nullable=False)
+    webhook: Mapped[str] = mapped_column(String, nullable=False)
+    next_scheduled: Mapped[datetime.datetime] = mapped_column(
+        TIMESTAMP(timezone=True), nullable=False
+    )
+    last_sent: Mapped[datetime.datetime] = mapped_column(
+        TIMESTAMP(timezone=True), init=False
+    )
+
+    @staticmethod
+    async def for_guild(
+        session: AsyncSession, guild: discord.Guild, /
+    ) -> GuildVotd | None:
+        return await session.get(GuildVotd, guild.id)
