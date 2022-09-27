@@ -2,24 +2,35 @@ from __future__ import annotations
 
 import datetime
 from itertools import chain
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Final, cast
 
 import aiohttp
+import async_timeout
 import discord
 import pendulum
 from attrs import define
 from botus_receptus import re, utils
+from bs4 import BeautifulSoup, SoupStrainer
 from discord import app_commands
 from discord.ext import tasks
 from sqlalchemy import select
 
+from erasmus.utils import send_passage
+
+from ...data import Passage, VerseRange
 from ...db import GuildVotd, Session
-from ...exceptions import InvalidTimeError
+from ...db.bible import BibleVersion
+from ...exceptions import DoNotUnderstandError, InvalidTimeError, InvalidTimeZoneError
 
 if TYPE_CHECKING:
-    from collections.abc import Iterable
+    from collections.abc import Callable
     from typing_extensions import Self
 
+    from botus_receptus.types import Coroutine
+
+    from ...erasmus import Erasmus
+    from ...l10n import Localizer
+    from ...service_manager import ServiceManager
     from .cog import Bible
 
 _time_re = re.compile(
@@ -50,7 +61,10 @@ _time_re = re.compile(
 )
 
 
-class TimeTransformer(app_commands.Transformer):
+_TASK_INTERVAL: Final = 15
+
+
+class _TimeTransformer(app_commands.Transformer):
     times = [
         f'{str(12 if hour == 0 else hour):0>2}:{str(minute):0>2} {meridian}'
         for hour, minute, meridian in chain.from_iterable(
@@ -73,6 +87,9 @@ class TimeTransformer(app_commands.Transformer):
         hours = int(match['hours'])
         minutes = int(match['minutes'])
 
+        if (remainder := minutes % _TASK_INTERVAL) > 0:
+            minutes += _TASK_INTERVAL - remainder
+
         if match['ampm']:
             meridian = match['ampm'].lower()
 
@@ -80,6 +97,14 @@ class TimeTransformer(app_commands.Transformer):
                 hours = 0
             if meridian == 'pm' and hours < 12:
                 hours += 12
+
+        if minutes > 59:
+            if hours >= 23:
+                hours = 0
+            else:
+                hours += 1
+
+            minutes = 0
 
         return hours, minutes
 
@@ -106,12 +131,23 @@ class _TimeZoneItem:
         return _TimeZoneItem(name=name, name_lower=name.lower(), value=value)
 
 
-class TimeZoneTransformer(app_commands.Transformer):
+class _TimeZoneTransformer(app_commands.Transformer):
     timezones: list[_TimeZoneItem] = [
         _TimeZoneItem.create(zone) for zone in pendulum.tz.timezones
     ]
+    valid_tz_input: set[str] = set(
+        chain.from_iterable(
+            [
+                [zone.replace('_', ' ').lower(), zone.lower()]
+                for zone in pendulum.tz.timezones
+            ]
+        )
+    )
 
     async def transform(self, itx: discord.Interaction, value: str, /) -> str:
+        if value.lower() not in self.valid_tz_input:
+            raise InvalidTimeZoneError(value)
+
         return value
 
     async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
@@ -125,23 +161,60 @@ class TimeZoneTransformer(app_commands.Transformer):
         ][:25]
 
 
+_shared_cooldown = app_commands.checks.cooldown(
+    rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
+)
+
+
 class VerseOfTheDayGroup(
     app_commands.Group, name='verse-of-the-day', description='Verse of the day'
 ):
+    bot: Erasmus
     session: aiohttp.ClientSession
+    service_manager: ServiceManager
+    localizer: Localizer
 
     def initialize_from_cog(self, cog: Bible, /) -> None:
+        self.bot = cog.bot
         self.session = cog.bot.session
-        # self.localizer = cog.localizer
+        self.service_manager = cog.service_manager
+        self.localizer = cog.localizer
+
+    async def __get_votd(self) -> VerseRange:
+        async with async_timeout.timeout(10), self.session.get(
+            'https://www.biblegateway.com/reading-plans/verse-of-the-day'
+            '/next?interface=print'
+        ) as response:
+            text = await response.text(errors='replace')
+            strainer = SoupStrainer(
+                class_=re.compile(
+                    re.WORD_BOUNDARY,
+                    'rp-passage-display',
+                    re.WORD_BOUNDARY,
+                )
+            )
+            soup = BeautifulSoup(text, 'html.parser', parse_only=strainer)
+            passage_node = soup.select_one('.rp-passage-display')
+
+            if passage_node is None:
+                raise DoNotUnderstandError
+
+            return VerseRange.from_string(passage_node.get_text(''))
 
     @app_commands.command()
+    @_shared_cooldown
+    @app_commands.describe(
+        channel='The channel to post the verse of the day to',
+        time='The time to post at',
+        timezone='The time zone for the time to post',
+    )
     async def set(
         self,
         itx: discord.Interaction,
         /,
-        channel: discord.TextChannel,
-        time: app_commands.Transform[tuple[int, int], TimeTransformer],
-        timezone: app_commands.Transform[str, TimeZoneTransformer],
+        channel: discord.TextChannel | discord.Thread,
+        time: app_commands.Transform[tuple[int, int], _TimeTransformer],
+        timezone: app_commands.Transform[str, _TimeZoneTransformer],
     ) -> None:
         assert itx.guild is not None
 
@@ -151,28 +224,42 @@ class VerseOfTheDayGroup(
         if next_scheduled <= now:
             next_scheduled = next_scheduled.add(hours=24)
 
+        if isinstance(channel, discord.Thread):
+            thread_id = channel.id
+            actual_channel = cast(
+                'discord.TextChannel | discord.ForumChannel',
+                await itx.guild.fetch_channel(channel.parent_id),
+            )
+        else:
+            thread_id = None
+            actual_channel = channel
+
         async with Session.begin() as session:
             votd = await session.get(GuildVotd, itx.guild.id)
 
             if votd is not None:
-                if votd.channel_id != channel.id:
-                    webhook = discord.Webhook.from_url(
-                        f'https://discord.com/api/webhooks/{votd.webhook}',
-                        session=self.session,
-                    )
-                    await webhook.delete()
-                    webhook = await channel.create_webhook(
-                        name='Erasmus Verse of the Day'
-                    )
-                    votd.webhook = f'{webhook.id}/{webhook.token}'
+                updated = True
+                if votd.channel_id != actual_channel.id:
+                    webhook = votd.get_webhook(self.session, token=self.bot.http.token)
+                    webhook = await webhook.edit(channel=actual_channel)
+
+                    votd.channel_id = actual_channel.id
+                    votd.url = f'{webhook.id}/{webhook.token}'
+
+                if votd.thread_id != thread_id:
+                    votd.thread_id = thread_id
 
                 votd.next_scheduled = next_scheduled
             else:
-                webhook = await channel.create_webhook(name='Erasmus Verse of the Day')
+                updated = False
+                webhook = await actual_channel.create_webhook(
+                    name='Erasmus Verse of the Day'
+                )
                 votd = GuildVotd(
                     guild_id=itx.guild.id,
-                    channel_id=channel.id,
-                    webhook=f'{webhook.id}/{webhook.token}',
+                    channel_id=actual_channel.id,
+                    thread_id=thread_id,
+                    url=f'{webhook.id}/{webhook.token}',
                     next_scheduled=next_scheduled,
                 )
                 session.add(votd)
@@ -180,79 +267,132 @@ class VerseOfTheDayGroup(
             await session.commit()
 
         await utils.send_embed(
-            itx, description='Verse of the day started for this server'
+            itx,
+            description=(
+                self.localizer.format(
+                    'serverprefs__verse-of-the-day__set'
+                    f'.{"updated" if updated else "started"}',
+                    locale=itx.locale,
+                    data={
+                        'channel': channel.mention,
+                        'next_scheduled': discord.utils.format_dt(votd.next_scheduled),
+                    },
+                )
+            ),
         )
 
     @app_commands.command()
+    @_shared_cooldown
     async def info(self, itx: discord.Interaction, /) -> None:
         assert itx.guild is not None
+
+        localizer = self.localizer.for_message(
+            'serverprefs__verse-of-the-day__info', locale=itx.locale
+        )
 
         async with Session.begin() as session:
             votd = await GuildVotd.for_guild(session, itx.guild)
 
             if votd:
-                channel = await itx.guild.fetch_channel(votd.channel_id)
+                channel = await itx.guild.fetch_channel(
+                    votd.thread_id or votd.channel_id
+                )
                 await utils.send_embed(
                     itx,
-                    title='Verse of the Day Information',
+                    title=localizer.format('title'),
                     fields=[
-                        {'name': 'Channel', 'value': channel.mention, 'inline': False},
                         {
-                            'name': 'Next Scheduled',
+                            'name': localizer.format('channel'),
+                            'value': channel.mention,
+                            'inline': False,
+                        },
+                        {
+                            'name': localizer.format('next_scheduled'),
                             'value': discord.utils.format_dt(votd.next_scheduled),
                             'inline': False,
                         },
                     ],
                 )
             else:
-                await utils.send_embed(itx, description='No verse of the day set')
+                await utils.send_embed(itx, description=localizer.format('not_set'))
 
     @app_commands.command()
+    @_shared_cooldown
     async def stop(self, itx: discord.Interaction, /) -> None:
         assert itx.guild is not None
+
+        localizer = self.localizer.for_message(
+            'serverprefs__verse-of-the-day__stop', locale=itx.locale
+        )
 
         async with Session.begin() as session:
             votd = await GuildVotd.for_guild(session, itx.guild)
 
             if votd is not None:
-                webhook = discord.Webhook.from_url(
-                    f'https://discord.com/api/webhooks/{votd.webhook}',
-                    session=self.session,
-                )
+                webhook = votd.get_webhook(self.session)
                 await webhook.delete()
                 await session.delete(votd)
 
-                await utils.send_embed(
-                    itx, description='Verse of the day stopped for this server'
-                )
+                await utils.send_embed(itx, description=localizer.format('stopped'))
             else:
-                await utils.send_embed(itx, description='No verse of the day set')
+                await utils.send_embed(itx, description=localizer.format('not_set'))
 
-    @tasks.loop(
-        time=[
-            datetime.time(*args)
-            for args in chain.from_iterable(
-                [(hour, minute) for minute in range(0, 60, 15)] for hour in range(24)
-            )
-        ]
-    )
-    async def __task(self) -> None:
+    async def __check_and_post(self) -> None:
+        print('here')
+
         now = pendulum.now().set(second=0, microsecond=0)
+        next_scheduled = now.add(hours=24)
 
         async with Session.begin() as session:
             result = cast(
-                'Iterable[GuildVotd]',
-                await session.scalars(
-                    select(GuildVotd).filter(GuildVotd.next_scheduled <= now)
-                ),
+                'list[GuildVotd]',
+                (
+                    await session.scalars(
+                        select(GuildVotd).filter(GuildVotd.next_scheduled <= now)
+                    )
+                ).fetchall(),
             )
 
-            print(list(result))
+            if result:
+                localizer = self.localizer.for_message('serverprefs__verse-of-the-day')
+                title = localizer.format('title')
+                verse_range = await self.__get_votd()
+                version_map: dict[int, Passage] = {}
 
-    async def start_task(self) -> None:
-        self.__task.start()
+                for votd in result:
+                    webhook = votd.get_webhook(self.session)
+                    bible = await BibleVersion.get_for(
+                        session, guild=discord.Object(votd.guild_id)
+                    )
 
-        await self.__task()
+                    if bible.id in version_map:
+                        passage = version_map[bible.id]
+                    else:
+                        passage = await self.service_manager.get_passage(
+                            bible, verse_range
+                        )
+                        version_map[bible.id] = passage
 
-    async def stop_task(self) -> None:
-        self.__task.cancel()
+                    await send_passage(
+                        webhook,
+                        passage,
+                        title=title,
+                        thread=discord.Object(votd.thread_id)
+                        if votd.thread_id is not None
+                        else discord.utils.MISSING,
+                        avatar_url='https://i.imgur.com/XQ8N2vH.png',
+                    )
+                    votd.next_scheduled = next_scheduled
+
+                await session.commit()
+
+    def get_task(self) -> tasks.Loop[Callable[[], Coroutine[None]]]:
+        return tasks.loop(
+            time=[
+                datetime.time(*args)
+                for args in chain.from_iterable(
+                    [(hour, minute) for minute in range(0, 60, _TASK_INTERVAL)]
+                    for hour in range(24)
+                )
+            ],
+        )(self.__check_and_post)

@@ -10,7 +10,7 @@ from ...utils import AutoCompleter
 if TYPE_CHECKING:
     from typing_extensions import Self
 
-    from ...db.bible import BibleVersion
+    from ...types import Bible
 
 
 @define(frozen=True)
@@ -37,7 +37,7 @@ class _BibleOption:
         return app_commands.Choice(name=self.name, value=self.command)
 
     @classmethod
-    def create(cls, version: BibleVersion, /) -> Self:
+    def create(cls, version: Bible, /) -> Self:
         return cls(
             name=version.name,
             name_lower=version.name.lower(),

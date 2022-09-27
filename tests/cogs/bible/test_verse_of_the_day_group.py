@@ -3,7 +3,7 @@ from __future__ import annotations
 import discord
 import pytest
 
-from erasmus.cogs.bible.verse_of_the_day_group import TimeTransformer
+from erasmus.cogs.bible.verse_of_the_day_group import _TimeTransformer
 from erasmus.exceptions import InvalidTimeError
 
 
@@ -19,14 +19,20 @@ class TestTimeTransformer:
             ('12:15', (12, 15)),
             ('12:00 am', (0, 0)),
             ('1:00', (1, 0)),
-            ('1:00 am', (1, 0)),
+            ('1:00am', (1, 0)),
             ('01:00 am', (1, 0)),
             ('1:00 pm', (13, 0)),
             ('01:00 pm', (13, 0)),
             ('12:00 pm', (12, 0)),
-            ('00:59', (0, 59)),
-            ('23:48', (23, 48)),
+            ('1:05', (1, 15)),
+            ('1:25', (1, 30)),
+            ('1:35', (1, 45)),
+            ('1:55', (2, 0)),
+            ('00:59', (1, 0)),
+            ('23:48', (0, 0)),
+            ('11:48 pm', (0, 0)),
             ('12          :      00', (12, 0)),
+            ('23          :      18', (23, 30)),
             ('           12      :         00           pm        ', (12, 0)),
         ],
     )
@@ -36,7 +42,7 @@ class TestTimeTransformer:
         input: str,
         expected: tuple[int, int],
     ) -> None:
-        transformer = TimeTransformer()
+        transformer = _TimeTransformer()
         assert await transformer.transform(mock_interaction, input) == expected
 
     @pytest.mark.parametrize(
@@ -56,6 +62,6 @@ class TestTimeTransformer:
         mock_interaction: discord.Interaction,
         input: str,
     ) -> None:
-        transformer = TimeTransformer()
+        transformer = _TimeTransformer()
         with pytest.raises(InvalidTimeError):
             await transformer.transform(mock_interaction, input)

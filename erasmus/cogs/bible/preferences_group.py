@@ -5,8 +5,7 @@ from typing import TYPE_CHECKING
 from botus_receptus import utils
 from discord import app_commands
 
-from ...db.base import Session
-from ...db.bible import BibleVersion, UserPref
+from ...db import BibleVersion, Session, UserPref
 from .bible_lookup import bible_lookup  # noqa
 
 if TYPE_CHECKING:

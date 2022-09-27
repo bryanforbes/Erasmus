@@ -5,8 +5,7 @@ from typing import TYPE_CHECKING
 from botus_receptus import utils
 from discord import app_commands
 
-from ...db.base import Session
-from ...db.bible import BibleVersion, GuildPref
+from ...db import BibleVersion, GuildPref, Session
 from .bible_lookup import bible_lookup  # noqa
 from .verse_of_the_day_group import VerseOfTheDayGroup
 

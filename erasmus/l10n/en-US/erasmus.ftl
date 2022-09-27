@@ -42,6 +42,33 @@ serverprefs__unsetdefault = unsetdefault
     .deleted = Server version deleted
     .already-deleted = Server version already deleted
 
+serverprefs__verse-of-the-day = verse-of-the-day
+    .description = Verse of the day
+    .title = Verse of the Day
+
+serverprefs__verse-of-the-day__set = set
+    .description = Set or update the verse of the day settings for this server
+    .PARAM--channel--name = channel
+    .PARAM--channel--description = The channel to post the verse of the day to
+    .PARAM--time--name = time
+    .PARAM--time--description = The time to post at
+    .PARAM--timezone--name = timezone
+    .PARAM--timezone--description = The time zone for the time to post
+    .started = Verse of the day has been started. It will be posted daily in { $channel } starting at { $next_scheduled }.
+    .updated = Verse of the day has been updated. It will be posted daily in { $channel } starting at { $next_scheduled }.
+
+serverprefs__verse-of-the-day__info = info
+    .description = Get information about verse of the day for this server
+    .not_set = No verse of the day has been set
+    .title = Verse of the Day Information
+    .channel = Channel
+    .next_scheduled = Next Scheduled
+
+serverprefs__verse-of-the-day__stop = stop
+    .description = Stop posting the verse of the day
+    .stopped = Verse of the day stopped for this server
+    .not_set = No verse of the day has been set
+
 prefs = prefs
     .description = Preferences
 
@@ -109,6 +136,8 @@ invalid-version = `{ $version }` is not a valid version. Check `/bibles` for val
 service-not-supported = The service configured for `{ $name }` is not supported
 service-lookup-timeout = The request timed out looking up { $verses } in { $name }
 service-search-timeout = The request timed out searching for { $terms } in { $name }
+invalid-time = `{ $time }` is not a valid time representation
+invalid-timezone = `{ $timezone }` is not a recognized time zone
 
 # Confessions Cog
 

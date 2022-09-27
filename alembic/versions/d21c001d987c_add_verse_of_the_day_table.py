@@ -23,11 +23,11 @@ def upgrade():
         'guild_votd',
         sa.Column('guild_id', Snowflake(), nullable=False),
         sa.Column('channel_id', Snowflake(), nullable=False),
-        sa.Column('webhook', sa.String(), nullable=False),
+        sa.Column('thread_id', Snowflake(), nullable=True),
+        sa.Column('url', sa.String(), nullable=False),
         sa.Column(
             'next_scheduled', postgresql.TIMESTAMP(timezone=True), nullable=False
         ),
-        sa.Column('last_sent', postgresql.TIMESTAMP(timezone=True), nullable=True),
         sa.PrimaryKeyConstraint('guild_id'),
     )
 

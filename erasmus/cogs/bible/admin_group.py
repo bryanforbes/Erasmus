@@ -11,8 +11,7 @@ from discord import app_commands
 from sqlalchemy.exc import IntegrityError
 
 from ...data import SectionFlag
-from ...db.base import Session
-from ...db.bible import BibleVersion
+from ...db import BibleVersion, Session
 from ...exceptions import ErasmusError
 from .bible_lookup import bible_lookup
 

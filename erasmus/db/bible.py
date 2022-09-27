@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import discord
 from botus_receptus.sqlalchemy import Snowflake
 from sqlalchemy import (
     Boolean,
@@ -34,7 +35,7 @@ if TYPE_CHECKING:
     import datetime
     from collections.abc import AsyncIterator
 
-    import discord
+    import aiohttp
     from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -172,16 +173,18 @@ class BibleVersion(Base):
         ).first()
 
     @staticmethod
-    async def get_for_user(
+    async def get_for(
         session: AsyncSession,
-        user: discord.User | discord.Member,
-        guild: discord.Guild | None,
         /,
+        *,
+        user: discord.User | discord.Member | discord.Object | None = None,
+        guild: discord.Guild | discord.Object | None = None,
     ) -> BibleVersion:
-        user_pref = await session.get(UserPref, user.id)
+        if user is not None:
+            user_pref = await session.get(UserPref, user.id)
 
-        if user_pref is not None and user_pref.bible_version is not None:
-            return user_pref.bible_version
+            if user_pref is not None and user_pref.bible_version is not None:
+                return user_pref.bible_version
 
         if guild is not None:
             guild_pref = await session.get(GuildPref, guild.id)
@@ -222,13 +225,20 @@ class GuildVotd(Base):
 
     guild_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
     channel_id: Mapped[int] = mapped_column(Snowflake, nullable=False)
-    webhook: Mapped[str] = mapped_column(String, nullable=False)
+    thread_id: Mapped[int | None] = mapped_column(Snowflake)
+    url: Mapped[str] = mapped_column(String, nullable=False)
     next_scheduled: Mapped[datetime.datetime] = mapped_column(
         TIMESTAMP(timezone=True), nullable=False
     )
-    last_sent: Mapped[datetime.datetime] = mapped_column(
-        TIMESTAMP(timezone=True), init=False
-    )
+
+    def get_webhook(
+        self, session: aiohttp.ClientSession, /, *, token: str | None = None
+    ) -> discord.Webhook:
+        return discord.Webhook.from_url(
+            f'https://discord.com/api/webhooks/{self.url}',
+            session=session,
+            bot_token=token,
+        )
 
     @staticmethod
     async def for_guild(

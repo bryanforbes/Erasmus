@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Final, cast
 import discord
 from botus_receptus import Cog, formatting, utils
 from discord import app_commands
-from discord.ext import commands
+from discord.ext import commands, tasks
 
 from ...data import SearchResults, VerseRange
 from ...db import BibleVersion, Session
@@ -16,6 +16,8 @@ from ...exceptions import (
     BookNotInVersionError,
     BookNotUnderstoodError,
     DoNotUnderstandError,
+    InvalidTimeError,
+    InvalidTimeZoneError,
     InvalidVersionError,
     NoUserVersionError,
     ReferenceNotUnderstoodError,
@@ -33,6 +35,8 @@ from .search_page_source import SearchPageSource
 from .server_preferences_group import ServerPreferencesGroup
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from botus_receptus.types import Coroutine
     from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -56,6 +60,7 @@ class Bible(Cog['Erasmus']):
     server_preferences = ServerPreferencesGroup()
 
     __lookup_cooldown: commands.CooldownMapping[discord.Message]
+    __votd_task: tasks.Loop[Callable[[], Coroutine[None]]]
 
     def __init__(self, bot: Erasmus, /) -> None:
         self.service_manager = ServiceManager.from_config(bot.config, bot.session)
@@ -80,7 +85,9 @@ class Bible(Cog['Erasmus']):
         )
 
     async def cog_load(self) -> None:
-        await self.server_preferences.verse_of_the_day.start_task()
+        self.__votd_task = self.server_preferences.verse_of_the_day.get_task()
+        self.__votd_task.start()
+        await self.__votd_task()
 
         async with Session() as session:
             await self.refresh(session)
@@ -88,7 +95,7 @@ class Bible(Cog['Erasmus']):
     async def cog_unload(self) -> None:
         bible_lookup.clear()
 
-        await self.server_preferences.verse_of_the_day.stop_task()
+        self.__votd_task.cancel()
 
     def __get_cooldown_bucket(self, message: discord.Message, /) -> commands.Cooldown:
         bucket = self.__lookup_cooldown.get_bucket(message)
@@ -180,6 +187,12 @@ class Bible(Cog['Erasmus']):
             case ServiceSearchTimeout():
                 message_id = 'service-search-timeout'
                 data = {'name': error.bible.name, 'terms': ' '.join(error.terms)}
+            case InvalidTimeError():
+                message_id = 'invalid-time'
+                data = {'time': error.time}
+            case InvalidTimeZoneError():
+                message_id = 'invalid-timezone'
+                data = {'timezone': error.timezone}
             case _:
                 return
 
@@ -208,8 +221,8 @@ class Bible(Cog['Erasmus']):
             bucket = self.__get_cooldown_bucket(message)
 
             async with message.channel.typing(), Session() as session:
-                user_bible = await BibleVersion.get_for_user(
-                    session, message.author, message.guild
+                user_bible = await BibleVersion.get_for(
+                    session, user=message.author, guild=message.guild
                 )
 
                 for i, verse_range in enumerate(verse_ranges):
@@ -261,7 +274,9 @@ class Bible(Cog['Erasmus']):
                 bible = await BibleVersion.get_by_abbr(session, reference.version)
 
             if bible is None:
-                bible = await BibleVersion.get_for_user(session, itx.user, itx.guild)
+                bible = await BibleVersion.get_for(
+                    session, user=itx.user, guild=itx.guild
+                )
 
         await itx.response.defer(thinking=True, ephemeral=only_me)
         await self.__lookup(itx, bible, reference, only_me=only_me)
@@ -287,7 +302,9 @@ class Bible(Cog['Erasmus']):
                 bible = await BibleVersion.get_by_abbr(session, version)
 
             if bible is None:
-                bible = await BibleVersion.get_for_user(session, itx.user, itx.guild)
+                bible = await BibleVersion.get_for(
+                    session, user=itx.user, guild=itx.guild
+                )
 
         def search(*, per_page: int, page_number: int) -> Coroutine[SearchResults]:
             return self.service_manager.search(

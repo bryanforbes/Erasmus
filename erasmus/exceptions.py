@@ -106,6 +106,13 @@ class InvalidTimeError(ErasmusError):
         self.time = time
 
 
+class InvalidTimeZoneError(ErasmusError):
+    timezone: str
+
+    def __init__(self, timezone: str, /) -> None:
+        self.timezone = timezone
+
+
 class InvalidConfessionError(ErasmusError):
     confession: str
 
