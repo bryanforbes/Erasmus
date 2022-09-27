@@ -20,7 +20,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterable
     from typing_extensions import Self
 
-    from . import Bible
+    from .cog import Bible
 
 _time_re = re.compile(
     re.START,

@@ -4,7 +4,7 @@ from typing import TYPE_CHECKING
 
 import pytest
 
-from erasmus.cogs.bible import Bible
+from erasmus.cogs.bible.cog import Bible
 from erasmus.types import Refreshable
 
 if TYPE_CHECKING:
