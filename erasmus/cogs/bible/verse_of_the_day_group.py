@@ -17,7 +17,7 @@ from sqlalchemy import select
 from erasmus.utils import send_passage
 
 from ...data import Passage, VerseRange
-from ...db import GuildVotd, Session
+from ...db import Session, VerseOfTheDay
 from ...db.bible import BibleVersion
 from ...exceptions import DoNotUnderstandError, InvalidTimeError, InvalidTimeZoneError
 
@@ -178,7 +178,7 @@ class VerseOfTheDayGroup(
         self.localizer = cog.localizer
 
     def __get_webhook(
-        self, votd: GuildVotd, /, *, use_auth: bool = False
+        self, votd: VerseOfTheDay, /, *, use_auth: bool = False
     ) -> discord.Webhook:
         return discord.Webhook.from_url(
             f'https://discord.com/api/webhooks/{votd.url}',
@@ -241,7 +241,7 @@ class VerseOfTheDayGroup(
             actual_channel = channel
 
         async with Session.begin() as session:
-            votd = await session.get(GuildVotd, itx.guild.id)
+            votd = await session.get(VerseOfTheDay, itx.guild.id)
 
             if votd is not None:
                 updated = True
@@ -261,7 +261,7 @@ class VerseOfTheDayGroup(
                 webhook = await actual_channel.create_webhook(
                     name='Erasmus Verse of the Day'
                 )
-                votd = GuildVotd(
+                votd = VerseOfTheDay(
                     guild_id=itx.guild.id,
                     channel_id=actual_channel.id,
                     thread_id=thread_id,
@@ -297,7 +297,7 @@ class VerseOfTheDayGroup(
         )
 
         async with Session.begin() as session:
-            votd = await GuildVotd.for_guild(session, itx.guild)
+            votd = await VerseOfTheDay.for_guild(session, itx.guild)
 
             if votd:
                 channel = await itx.guild.fetch_channel(
@@ -332,7 +332,7 @@ class VerseOfTheDayGroup(
         )
 
         async with Session.begin() as session:
-            votd = await GuildVotd.for_guild(session, itx.guild)
+            votd = await VerseOfTheDay.for_guild(session, itx.guild)
 
             if votd is not None:
                 webhook = self.__get_webhook(votd)
@@ -349,10 +349,12 @@ class VerseOfTheDayGroup(
 
         async with Session.begin() as session:
             result = cast(
-                'list[GuildVotd]',
+                'list[VerseOfTheDay]',
                 (
                     await session.scalars(
-                        select(GuildVotd).filter(GuildVotd.next_scheduled <= now)
+                        select(VerseOfTheDay).filter(
+                            VerseOfTheDay.next_scheduled <= now
+                        )
                     )
                 ).fetchall(),
             )

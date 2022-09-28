@@ -219,8 +219,8 @@ class GuildPref(_BibleVersionMixin):
 
 
 @model
-class GuildVotd(Base):
-    __tablename__ = 'guild_votd'
+class VerseOfTheDay(Base):
+    __tablename__ = 'verse_of_the_days'
 
     guild_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
     channel_id: Mapped[int] = mapped_column(Snowflake, nullable=False)
@@ -233,5 +233,5 @@ class GuildVotd(Base):
     @staticmethod
     async def for_guild(
         session: AsyncSession, guild: discord.Guild, /
-    ) -> GuildVotd | None:
-        return await session.get(GuildVotd, guild.id)
+    ) -> VerseOfTheDay | None:
+        return await session.get(VerseOfTheDay, guild.id)

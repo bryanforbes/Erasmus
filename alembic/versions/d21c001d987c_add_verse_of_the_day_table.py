@@ -20,7 +20,7 @@ depends_on = None
 
 def upgrade():
     op.create_table(
-        'guild_votd',
+        'verse_of_the_days',
         sa.Column('guild_id', Snowflake(), nullable=False),
         sa.Column('channel_id', Snowflake(), nullable=False),
         sa.Column('thread_id', Snowflake(), nullable=True),
@@ -33,4 +33,4 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('guild_votd')
+    op.drop_table('verse_of_the_days')
