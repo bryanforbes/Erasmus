@@ -1,5 +1,6 @@
 # Version UNRELEASED
 
+* Added Luther's 95 theses
 
 # Version 22.9.5
 
