@@ -1,16 +1,17 @@
 from __future__ import annotations
 
 from collections import OrderedDict
-from typing import TYPE_CHECKING, Final, Generic, Protocol, TypeVar, overload
+from typing import TYPE_CHECKING, Final, Generic, Protocol, TypedDict, TypeVar, overload
 
-import discord
 from attrs import define, field
 from botus_receptus import utils
 from discord import app_commands
 
 if TYPE_CHECKING:
     from collections.abc import Iterable
+    from typing_extensions import NotRequired, Unpack
 
+    import discord
     from botus_receptus.types import Coroutine
 
     from .data import Passage
@@ -31,42 +32,77 @@ def _get_passage_text(passage: Passage, /) -> str:
     return text
 
 
-@overload
-async def send_passage(
-    msg: discord.abc.Messageable | discord.Message, passage: Passage, /
-) -> discord.Message:
-    ...
+class SendPassageBaseKwargs(TypedDict):
+    title: NotRequired[str | None]
+
+
+class SendPassageInteractionKwargs(SendPassageBaseKwargs):
+    ephemeral: NotRequired[bool]
+
+
+class SendPassageWebhookKwargs(SendPassageInteractionKwargs):
+    username: NotRequired[str]
+    avatar_url: NotRequired[str]
+    thread: NotRequired[discord.Object | discord.Thread]
 
 
 @overload
 async def send_passage(
-    itx: discord.Interaction, passage: Passage, /, *, ephemeral: bool = False
-) -> discord.Message:
-    ...
-
-
-@overload
-async def send_passage(
-    itx: discord.abc.Messageable | discord.Message | discord.Interaction,
+    msg: discord.abc.Messageable | discord.Message,
     passage: Passage,
     /,
-    *,
-    ephemeral: bool = False,
+    **kwargs: Unpack[SendPassageBaseKwargs],
+) -> discord.Message:
+    ...
+
+
+@overload
+async def send_passage(
+    itx: discord.Webhook,
+    passage: Passage,
+    /,
+    **kwargs: Unpack[SendPassageWebhookKwargs],
+) -> discord.WebhookMessage:
+    ...
+
+
+@overload
+async def send_passage(
+    itx: discord.Interaction,
+    passage: Passage,
+    /,
+    **kwargs: Unpack[SendPassageInteractionKwargs],
+) -> discord.Message:
+    ...
+
+
+@overload
+async def send_passage(
+    itx: discord.abc.Messageable
+    | discord.Message
+    | discord.Webhook
+    | discord.Interaction,
+    passage: Passage,
+    /,
+    **kwargs: Unpack[SendPassageWebhookKwargs],
 ) -> discord.Message:
     ...
 
 
 def send_passage(
-    msg_or_itx: discord.abc.Messageable | discord.Message | discord.Interaction,
+    msg_or_itx: discord.abc.Messageable
+    | discord.Message
+    | discord.Webhook
+    | discord.Interaction,
     passage: Passage,
     /,
-    ephemeral: bool = discord.utils.MISSING,
+    **kwargs: Unpack[SendPassageWebhookKwargs],
 ) -> Coroutine[discord.Message]:
     return utils.send_embed(
         msg_or_itx,
         description=_get_passage_text(passage),
         footer={'text': passage.citation},
-        ephemeral=ephemeral,
+        **kwargs,
     )
 
 

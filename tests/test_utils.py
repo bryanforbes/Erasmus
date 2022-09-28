@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, cast
 
-import discord
 import pytest
 import pytest_mock
 from attr import define
@@ -25,7 +24,7 @@ def mock_send_embed(mocker: pytest_mock.MockerFixture) -> AsyncMock:
 
 
 @pytest.mark.parametrize(
-    'passage,kwargs,description,footer,ephemeral',
+    'passage,kwargs,expected_kwargs',
     [
         (
             Passage(
@@ -38,13 +37,16 @@ def mock_send_embed(mocker: pytest_mock.MockerFixture) -> AsyncMock:
                 'KJV',
             ),
             {},
-            '**10.** For as many as are of the works of the law are under the '
-            'curse: for it is written, Cursed _is_ every one that continueth '
-            'not in all things which are written in the book of the law to do '
-            'them. **11.** But that no man is justified by the law in the '
-            'sight of God, _it is_ evident: for, The just shall live by faith.',
-            'Galatians 3:10-11 (KJV)',
-            discord.utils.MISSING,
+            {
+                'description': (
+                    '**10.** For as many as are of the works of the law are under the '
+                    'curse: for it is written, Cursed _is_ every one that continueth '
+                    'not in all things which are written in the book of the law to do '
+                    'them. **11.** But that no man is justified by the law in the '
+                    'sight of God, _it is_ evident: for, The just shall live by faith.'
+                ),
+                'footer': {'text': 'Galatians 3:10-11 (KJV)'},
+            },
         ),
         (
             Passage(
@@ -53,9 +55,11 @@ def mock_send_embed(mocker: pytest_mock.MockerFixture) -> AsyncMock:
                 'ESV',
             ),
             {'ephemeral': True},
-            'a' * 4096,
-            'Genesis 3:10-11 (ESV)',
-            True,
+            {
+                'description': 'a' * 4096,
+                'footer': {'text': 'Genesis 3:10-11 (ESV)'},
+                'ephemeral': True,
+            },
         ),
         (
             Passage(
@@ -63,11 +67,15 @@ def mock_send_embed(mocker: pytest_mock.MockerFixture) -> AsyncMock:
                 VerseRange.from_string('Gen 3:10-11'),
                 'ESV',
             ),
-            {'ephemeral': True},
-            f'**The passage was too long and has been truncated:**\n\n{"a" * 4041}'
-            '\u2026',
-            'Genesis 3:10-11 (ESV)',
-            True,
+            {'ephemeral': True, 'title': 'A title'},
+            {
+                'description': '**The passage was too long and has been truncated:'
+                f'**\n\n{"a" * 4041}'
+                '\u2026',
+                'footer': {'text': 'Genesis 3:10-11 (ESV)'},
+                'ephemeral': True,
+                'title': 'A title',
+            },
         ),
     ],
 )
@@ -76,18 +84,13 @@ async def test_send_passage(
     mock_send_embed: AsyncMock,
     passage: Passage,
     kwargs: dict[str, Any],
-    description: str,
-    footer: str,
-    ephemeral: Any,
+    expected_kwargs: dict[str, object],
 ) -> None:
     result = await utils.send_passage(mocker.sentinel.ctx_or_intx, passage, **kwargs)
 
     assert result is mocker.sentinel.send_embed_return
     mock_send_embed.assert_awaited_once_with(
-        mocker.sentinel.ctx_or_intx,
-        description=description,
-        footer={'text': footer},
-        ephemeral=ephemeral,
+        mocker.sentinel.ctx_or_intx, **expected_kwargs
     )
 
 

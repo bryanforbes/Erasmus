@@ -261,9 +261,7 @@ class TestLocalizer:
             [  # type: ignore
                 mocker.call(
                     'generic-error',
-                    data=None,
                     locale=discord.Locale.norwegian,
-                    use_fallbacks=True,
                 ),
                 mocker.call(
                     'no-private-message',
@@ -303,9 +301,7 @@ class TestLocalizer:
             [  # type: ignore
                 mocker.call(
                     'serverprefs',
-                    data=None,
                     locale=discord.Locale.american_english,
-                    use_fallbacks=True,
                 ),
                 mocker.call(
                     'serverprefs',
@@ -315,9 +311,7 @@ class TestLocalizer:
                 ),
                 mocker.call(
                     'serverprefs.description',
-                    data=None,
                     locale=discord.Locale.american_english,
-                    use_fallbacks=True,
                 ),
                 mocker.call(
                     'serverprefs.description',
@@ -327,9 +321,7 @@ class TestLocalizer:
                 ),
                 mocker.call(
                     'serverprefs__setdefault',
-                    data=None,
                     locale=discord.Locale.norwegian,
-                    use_fallbacks=True,
                 ),
                 mocker.call(
                     'serverprefs__setdefault',
@@ -339,9 +331,7 @@ class TestLocalizer:
                 ),
                 mocker.call(
                     'serverprefs__setdefault.description',
-                    data=None,
                     locale=discord.Locale.norwegian,
-                    use_fallbacks=True,
                 ),
                 mocker.call(
                     'serverprefs__setdefault.description',

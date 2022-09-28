@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from pathlib import Path
-from typing import TYPE_CHECKING, Literal, overload
+from typing import TYPE_CHECKING, Literal, TypedDict, overload
 
 from attrs import define, field
 from fluent.runtime import FluentResourceLoader
@@ -12,6 +12,7 @@ from .fluent import Localization
 if TYPE_CHECKING:
     from _typeshed import SupportsItems
     from collections.abc import Iterator
+    from typing_extensions import NotRequired, Unpack
 
     import discord
     from discord import app_commands
@@ -31,6 +32,36 @@ def _get_fluent_locale(locale: discord.Locale) -> str:
         return _fluent_locale_map[result]
     else:
         return str(locale)
+
+
+class FormatKwargs(TypedDict):
+    data: NotRequired[SupportsItems[str, object] | None]
+
+
+class FormatFallbackKwargs(FormatKwargs):
+    use_fallbacks: bool
+
+
+class FormatFallbackTrueKwargs(FormatKwargs):
+    use_fallbacks: NotRequired[Literal[True]]
+
+
+class FormatAnyKwargs(FormatKwargs):
+    use_fallbacks: NotRequired[bool]
+
+
+class LocalizerFormatKwargs(FormatKwargs):
+    locale: NotRequired[discord.Locale | None]
+
+
+class LocalizerFormatFallbackKwargs(LocalizerFormatKwargs, FormatFallbackKwargs):
+    ...
+
+
+class LocalizerFormatFallbackTrueKwargs(
+    LocalizerFormatKwargs, FormatFallbackTrueKwargs
+):
+    ...
 
 
 @define
@@ -68,10 +99,7 @@ class Localizer:
         self,
         message_id: str | app_commands.locale_str,
         /,
-        *,
-        locale: discord.Locale | None = None,
-        data: SupportsItems[str, object] | None = ...,
-        use_fallbacks: bool,
+        **kwargs: Unpack[LocalizerFormatFallbackKwargs],
     ) -> str | None:
         ...
 
@@ -80,10 +108,7 @@ class Localizer:
         self,
         message_id: str | app_commands.locale_str,
         /,
-        *,
-        locale: discord.Locale | None = None,
-        data: SupportsItems[str, object] | None = ...,
-        use_fallbacks: Literal[True] = ...,
+        **kwargs: Unpack[LocalizerFormatFallbackTrueKwargs],
     ) -> str:
         ...
 
@@ -135,9 +160,7 @@ class LocaleLocalizer:
         self,
         message_id: str | app_commands.locale_str,
         /,
-        *,
-        data: SupportsItems[str, object] | None = ...,
-        use_fallbacks: bool,
+        **kwargs: Unpack[FormatFallbackKwargs],
     ) -> str | None:
         ...
 
@@ -146,9 +169,7 @@ class LocaleLocalizer:
         self,
         message_id: str | app_commands.locale_str,
         /,
-        *,
-        data: SupportsItems[str, object] | None = ...,
-        use_fallbacks: Literal[True] = ...,
+        **kwargs: Unpack[FormatFallbackTrueKwargs],
     ) -> str:
         ...
 
@@ -156,13 +177,9 @@ class LocaleLocalizer:
         self,
         message_id: str | app_commands.locale_str,
         /,
-        *,
-        data: SupportsItems[str, object] | None = None,
-        use_fallbacks: bool = True,
+        **kwargs: Unpack[FormatAnyKwargs],
     ) -> str | None:
-        return self.localizer.format(
-            message_id, data=data, locale=self.locale, use_fallbacks=use_fallbacks
-        )
+        return self.localizer.format(message_id, locale=self.locale, **kwargs)
 
 
 @define(frozen=True)
@@ -175,9 +192,7 @@ class MessageLocalizer:
         self,
         attribute_id: str | None = None,
         /,
-        *,
-        data: SupportsItems[str, object] | None = ...,
-        use_fallbacks: bool,
+        **kwargs: Unpack[FormatFallbackKwargs],
     ) -> str | None:
         ...
 
@@ -186,9 +201,7 @@ class MessageLocalizer:
         self,
         attribute_id: str | None = None,
         /,
-        *,
-        data: SupportsItems[str, object] | None = ...,
-        use_fallbacks: Literal[True] = ...,
+        **kwargs: Unpack[FormatFallbackTrueKwargs],
     ) -> str:
         ...
 
@@ -196,13 +209,11 @@ class MessageLocalizer:
         self,
         attribute_id: str | None = None,
         /,
-        *,
-        data: SupportsItems[str, object] | None = None,
-        use_fallbacks: bool = True,
+        **kwargs: Unpack[FormatAnyKwargs],
     ) -> str | None:
         message_id = self.message_id
 
         if attribute_id is not None:
             message_id = f'{message_id}.{attribute_id}'
 
-        return self.localizer.format(message_id, data=data, use_fallbacks=use_fallbacks)
+        return self.localizer.format(message_id, **kwargs)
