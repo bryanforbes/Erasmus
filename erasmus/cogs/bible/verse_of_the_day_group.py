@@ -7,7 +7,7 @@ from typing import TYPE_CHECKING, Final, cast
 import async_timeout
 import discord
 import pendulum
-from attrs import define
+from attrs import define, field
 from botus_receptus import re, utils
 from bs4 import BeautifulSoup, SoupStrainer
 from discord import app_commands
@@ -30,6 +30,7 @@ if TYPE_CHECKING:
     from ...erasmus import Erasmus
     from ...l10n import Localizer
     from ...service_manager import ServiceManager
+    from ...types import Bible as _BibleType
     from .cog import Bible
 
 _time_re = re.compile(
@@ -165,6 +166,22 @@ _shared_cooldown = app_commands.checks.cooldown(
 )
 
 
+@define(frozen=True)
+class VerseOfTheDayFetcher:
+    verse_range: VerseRange
+    service_manager: ServiceManager
+    passage_map: dict[int, Passage] = field(init=False, factory=dict)
+
+    async def __call__(self, bible: _BibleType, /) -> Passage:
+        if bible.id in self.passage_map:
+            return self.passage_map[bible.id]
+
+        passage = await self.service_manager.get_passage(bible, self.verse_range)
+        self.passage_map[bible.id] = passage
+
+        return passage
+
+
 class VerseOfTheDayGroup(
     app_commands.Group, name='verse-of-the-day', description='Verse of the day'
 ):
@@ -172,10 +189,14 @@ class VerseOfTheDayGroup(
     service_manager: ServiceManager
     localizer: Localizer
 
+    __fetcher: VerseOfTheDayFetcher | None
+
     def initialize_from_cog(self, cog: Bible, /) -> None:
         self.bot = cog.bot
         self.service_manager = cog.service_manager
         self.localizer = cog.localizer
+
+        self.__fetcher = None
 
     def __get_webhook(
         self, votd: VerseOfTheDay, /, *, use_auth: bool = False
@@ -360,24 +381,22 @@ class VerseOfTheDayGroup(
             )
 
             if result:
+                verse_range = await self.__get_votd()
+
+                if self.__fetcher is None or verse_range != self.__fetcher.verse_range:
+                    self.__fetcher = VerseOfTheDayFetcher(
+                        verse_range, self.service_manager
+                    )
+
                 localizer = self.localizer.for_message('serverprefs__verse-of-the-day')
                 title = localizer.format('title')
-                verse_range = await self.__get_votd()
-                version_map: dict[int, Passage] = {}
 
                 for votd in result:
                     webhook = self.__get_webhook(votd)
                     bible = await BibleVersion.get_for(
                         session, guild=discord.Object(votd.guild_id)
                     )
-
-                    if bible.id in version_map:
-                        passage = version_map[bible.id]
-                    else:
-                        passage = await self.service_manager.get_passage(
-                            bible, verse_range
-                        )
-                        version_map[bible.id] = passage
+                    passage = await self.__fetcher(bible)
 
                     await send_passage(
                         webhook,
