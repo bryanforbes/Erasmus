@@ -1,5 +1,6 @@
 # Version UNRELEASED
 
+* Fixed searching confessions with no section titles
 
 # Version 22.9.6
 

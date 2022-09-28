@@ -156,7 +156,14 @@ class ConfessionSearchSource(
 
         for entry in entries:
             section_number = _format_section_number(self.confession, entry)
-            lines.append(f'**{section_number}**. {entry.title}')
+            lines.append(
+                f'**{section_number}**. '
+                + (
+                    entry.title
+                    if entry.title is not None
+                    else _ellipsize(entry.text, max_length=50)[1]
+                )
+            )
 
         self.embed.description = '\n'.join(lines)
 
