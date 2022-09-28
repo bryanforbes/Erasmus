@@ -70,12 +70,12 @@ class ServiceManager:
     def from_config(
         cls, config: Config, session: aiohttp.ClientSession, /
     ) -> ServiceManager:
-        service_map: dict[str, Service] = {}
         service_configs = config.get('services', {})
 
-        for name, service_cls in services.__dict__.items():
-            if _is_service_cls(service_cls):
-                section = service_configs.get(name)
-                service_map[name] = service_cls.from_config(section, session)
-
-        return cls(service_map)
+        return cls(
+            {
+                name: service_cls.from_config(service_configs.get(name), session)
+                for name, service_cls in services.__dict__.items()
+                if _is_service_cls(service_cls)
+            }
+        )
