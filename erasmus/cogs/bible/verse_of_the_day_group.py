@@ -4,7 +4,6 @@ import datetime
 from itertools import chain
 from typing import TYPE_CHECKING, Final, cast
 
-import aiohttp
 import async_timeout
 import discord
 import pendulum
@@ -170,18 +169,25 @@ class VerseOfTheDayGroup(
     app_commands.Group, name='verse-of-the-day', description='Verse of the day'
 ):
     bot: Erasmus
-    session: aiohttp.ClientSession
     service_manager: ServiceManager
     localizer: Localizer
 
     def initialize_from_cog(self, cog: Bible, /) -> None:
         self.bot = cog.bot
-        self.session = cog.bot.session
         self.service_manager = cog.service_manager
         self.localizer = cog.localizer
 
+    def __get_webhook(
+        self, votd: GuildVotd, /, *, use_auth: bool = False
+    ) -> discord.Webhook:
+        return discord.Webhook.from_url(
+            f'https://discord.com/api/webhooks/{votd.url}',
+            session=self.bot.session,
+            bot_token=self.bot.http.token if use_auth else None,
+        )
+
     async def __get_votd(self) -> VerseRange:
-        async with async_timeout.timeout(10), self.session.get(
+        async with async_timeout.timeout(10), self.bot.session.get(
             'https://www.biblegateway.com/reading-plans/verse-of-the-day'
             '/next?interface=print'
         ) as response:
@@ -240,7 +246,7 @@ class VerseOfTheDayGroup(
             if votd is not None:
                 updated = True
                 if votd.channel_id != actual_channel.id:
-                    webhook = votd.get_webhook(self.session, token=self.bot.http.token)
+                    webhook = self.__get_webhook(votd, use_auth=True)
                     webhook = await webhook.edit(channel=actual_channel)
 
                     votd.channel_id = actual_channel.id
@@ -329,7 +335,7 @@ class VerseOfTheDayGroup(
             votd = await GuildVotd.for_guild(session, itx.guild)
 
             if votd is not None:
-                webhook = votd.get_webhook(self.session)
+                webhook = self.__get_webhook(votd)
                 await webhook.delete()
                 await session.delete(votd)
 
@@ -338,8 +344,6 @@ class VerseOfTheDayGroup(
                 await utils.send_embed(itx, description=localizer.format('not_set'))
 
     async def __check_and_post(self) -> None:
-        print('here')
-
         now = pendulum.now().set(second=0, microsecond=0)
         next_scheduled = now.add(hours=24)
 
@@ -360,7 +364,7 @@ class VerseOfTheDayGroup(
                 version_map: dict[int, Passage] = {}
 
                 for votd in result:
-                    webhook = votd.get_webhook(self.session)
+                    webhook = self.__get_webhook(votd)
                     bible = await BibleVersion.get_for(
                         session, guild=discord.Object(votd.guild_id)
                     )

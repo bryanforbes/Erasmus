@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-import discord
 from botus_receptus.sqlalchemy import Snowflake
 from sqlalchemy import (
     Boolean,
@@ -35,7 +34,7 @@ if TYPE_CHECKING:
     import datetime
     from collections.abc import AsyncIterator
 
-    import aiohttp
+    import discord
     from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -230,15 +229,6 @@ class GuildVotd(Base):
     next_scheduled: Mapped[datetime.datetime] = mapped_column(
         TIMESTAMP(timezone=True), nullable=False
     )
-
-    def get_webhook(
-        self, session: aiohttp.ClientSession, /, *, token: str | None = None
-    ) -> discord.Webhook:
-        return discord.Webhook.from_url(
-            f'https://discord.com/api/webhooks/{self.url}',
-            session=session,
-            bot_token=token,
-        )
 
     @staticmethod
     async def for_guild(

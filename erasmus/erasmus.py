@@ -64,8 +64,6 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             except commands.ExtensionError:
                 _log.exception('Failed to load extension %s.', extension)
 
-        print(self.cogs)
-
         await self.tree.set_translator(Translator(self.localizer))
         await self.sync_app_commands()
 
