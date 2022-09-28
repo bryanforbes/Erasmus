@@ -21,6 +21,9 @@ A Bible bot for Discord
 * `/prefs unsetdefault` - Unset your preferred version
 * `/serverprefs setdefault` - Set the server's preferred version (Administrator only)
 * `/serverprefs unsetdefault` - Unset the server's preferred version (Administrator only)
+* `/serverprefs verse-of-the-day set` - Schedule the daily verse of the day (Administrator only)
+* `/serverprefs verse-of-the-day info` - Display the daily verse of the day information (Administrator only)
+* `/serverprefs verse-of-the-day stop` - Stop the daily verse of the day (Administrator only)
 * `/creed apostles` - Display The Apostles' Creed
 * `/creed athanasian` - Display The Athanasian Creed
 * `/creed chalcedon` - Display The Chalcedonian Definition
@@ -42,7 +45,9 @@ In addition to the slash-commands listed above, Erasmus will respond to all vers
 Erasmus retains the following data:
 
 * A user's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if the user sets a preferred version using `/prefs setdefault` (this can be deleted using `/prefs unsetdefault`)
-* A guild's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if a guild administrator sets a preferred version for the guild using `/serverprefs setdefault` (this can be deleted using `/serverprefs unsetdefault`)
+* A guild's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if one of the following conditions is met:
+  * A guild administrator sets a preferred version for the guild using `/serverprefs setdefault` (this can be deleted using `/serverprefs unsetdefault`)
+  * A guild administrator schedules the verse of the day for the guild using `/serverprefs verse-of-the-day set` (this can be deleted using `/serverprefs verse-of-the-day stop`)
 
 Erasmus **never** retains message content.
 
