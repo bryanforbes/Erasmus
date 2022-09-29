@@ -20,6 +20,7 @@ from sqlalchemy import BigInteger, Boolean, Column, TypeDecorator
 from sqlalchemy.dialects.postgresql import TSVECTOR
 from sqlalchemy.orm import (
     Mapped as _SAMapped,
+    declared_attr as _sa_declared_attr,
     registry,
     relationship as _sa_relationship,
 )
@@ -292,3 +293,15 @@ def model_mixin(cls: type[_BaseT], /) -> type[_BaseT]:
 @dataclass_transform(field_specifiers=(_dataclass_field, mapped_column, relationship))
 def model(cls: type[_BaseT], /) -> type[_BaseT]:
     return mapped(dataclass(cls))
+
+
+def declared_attr(func: Callable[[_BaseT], _T]) -> _T:
+    def unwrapper(cls: _BaseT) -> _T:
+        attr = func(cls)
+
+        if isinstance(attr, Field):
+            return cast('Field[_T]', attr).metadata['sa']()
+
+        return attr
+
+    return _sa_declared_attr(unwrapper)  # type: ignore

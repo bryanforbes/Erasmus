@@ -239,15 +239,6 @@ class VerseOfTheDay(Base):
         primaryjoin=deref_column(guild_id) == foreign(GuildPref.guild_id),
     )
 
-    # bible: Mapped[BibleVersion] = relationship(
-    #     BibleVersion,
-    #     lazy='joined',
-    #     uselist=False,
-    #     nullable=False,
-    #     viewonly=True,
-    #     primaryjoin=deref_column(guild_id) == GuildPref.guild_id,
-    # )
-
     @staticmethod
     async def for_guild(
         session: AsyncSession, guild: discord.Guild, /
