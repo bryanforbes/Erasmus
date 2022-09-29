@@ -1,5 +1,6 @@
 # Version UNRELEASED
 
+* Fixed verse display incorrectly italicizing Jesus' words
 
 # Version 22.9.7
 

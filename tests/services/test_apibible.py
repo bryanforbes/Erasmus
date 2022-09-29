@@ -277,8 +277,21 @@ class TestApiBible(ServiceTest):
                     'KJV',
                 ),
             },
+            {
+                'verse': VerseRange.from_string('John 3:10-12'),
+                'passage': Passage(
+                    '**10.** Jesus answered and said unto him, Art thou a master of '
+                    'Israel, and knowest not these things? **11.** Verily, verily, I '
+                    'say unto thee, We speak that we do know, and testify that we have '
+                    'seen; and ye receive not our witness. **12.** If I have told you '
+                    'earthly things, and ye believe not, how shall ye believe, if I '
+                    'tell you _of_ heavenly things?',
+                    VerseRange.from_string('John 3:10-12'),
+                    'KJV',
+                ),
+            },
         ],
-        ids=['Gal 3:10-11 KJV', 'Mark 5:1 KJV'],
+        ids=['Gal 3:10-11 KJV', 'Mark 5:1 KJV', 'John 3:20-21'],
     )
     def passage_data(self, request: _pytest.fixtures.SubRequest) -> dict[str, Any]:
         return cast('dict[str, Any]', request.param)

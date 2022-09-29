@@ -30,22 +30,32 @@ class _Text(TypedDict):
     text: str
 
 
-class _Add(TypedDict):
+class _CharAttrs(TypedDict):
+    style: Literal['add', 'wj']
+
+
+class _Char(TypedDict):
     name: Literal['char']
     type: Literal['tag']
+    attrs: _CharAttrs
     items: list[_Text]
+
+
+class _VerseNumberAttrs(TypedDict):
+    style: Literal['v']
 
 
 class _VerseNumber(TypedDict):
     name: Literal['verse']
     type: Literal['tag']
+    attrs: _VerseNumberAttrs
     items: list[_Text]
 
 
 class _Paragraph(TypedDict):
     name: Literal['para']
     type: Literal['tag']
-    items: list[_Text | _Add | _VerseNumber]
+    items: list[_Text | _Char | _VerseNumber]
 
 
 class _Meta(TypedDict):
@@ -97,20 +107,27 @@ class ApiBible(BaseService):
         return passage_id
 
     def __transform_item(
-        self, item: _Paragraph | _VerseNumber | _Add | _Text, strings: list[str], /
+        self, item: _Paragraph | _VerseNumber | _Char | _Text, strings: list[str], /
     ) -> None:
         match item:
             case {'type': 'text', 'text': text}:
                 strings.append(text)
-            case {'name': name, 'items': items}:
-                if name != 'para':
-                    strings.append(' __BOLD__' if name == 'verse' else ' __ITALIC__')
+            case {'name': 'para', 'items': items}:
+                for child_item in items:
+                    self.__transform_item(child_item, strings)
+            case {'name': 'char' | 'verse', 'attrs': attrs, 'items': items}:
+                if attrs['style'] == 'add':
+                    strings.append(' __ITALIC__')
+                elif attrs['style'] == 'v':
+                    strings.append(' __BOLD__')
 
-                for item in items:
-                    self.__transform_item(item, strings)
+                for child_item in items:
+                    self.__transform_item(child_item, strings)
 
-                if name != 'para':
-                    strings.append('.__BOLD__ ' if name == 'verse' else '__ITALIC__ ')
+                if attrs['style'] == 'add':
+                    strings.append('__ITALIC__ ')
+                elif attrs['style'] == 'v':
+                    strings.append('.__BOLD__ ')
             case _:
                 pass
 
