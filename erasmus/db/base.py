@@ -25,6 +25,7 @@ from sqlalchemy.orm import (
 )
 
 from sqlalchemy.orm import foreign as _sa_foreign  # pyright: ignore  # isort: skip
+from sqlalchemy.orm import remote as _sa_remote  # pyright: ignore  # isort: skip
 
 _T = TypeVar('_T')
 _FlagT = TypeVar('_FlagT', bound=_EnumFlag)
@@ -208,12 +209,15 @@ def mixin_column(
 def relationship(
     entity: type[_T],
     /,
+    secondary: type[object] = ...,
     *,
     init: Literal[False] = False,
     lazy: str = ...,
-    primaryjoin: str = ...,
+    primaryjoin: object = ...,
+    secondaryjoin: object = ...,
     uselist: Literal[True] = ...,
     order_by: object = ...,
+    viewonly: bool = ...,
 ) -> Mapped[list[_T]]:
     ...
 
@@ -222,13 +226,16 @@ def relationship(
 def relationship(
     entity: type[_T],
     /,
+    secondary: type[object] = ...,
     *,
     init: Literal[False] = False,
     lazy: str = ...,
     primaryjoin: object = ...,
+    secondaryjoin: object = ...,
     uselist: Literal[False],
     nullable: Literal[True] = ...,
     order_by: object = ...,
+    viewonly: bool = ...,
 ) -> Mapped[_T | None]:
     ...
 
@@ -237,13 +244,16 @@ def relationship(
 def relationship(
     entity: type[_T],
     /,
+    secondary: type[object] = ...,
     *,
     init: Literal[False] = False,
     lazy: str = ...,
     primaryjoin: object = ...,
+    secondaryjoin: object = ...,
     uselist: Literal[False],
     nullable: Literal[False],
     order_by: object = ...,
+    viewonly: bool = ...,
 ) -> Mapped[_T]:
     ...
 
@@ -262,6 +272,10 @@ _CEA = TypeVar('_CEA', bound='ColumnElement[Any] | Callable[[], ColumnElement[An
 
 def foreign(expr: _CEA, /) -> _CEA:
     return _sa_foreign(expr)  # pyright: ignore
+
+
+def remote(expr: _CEA, /) -> _CEA:
+    return _sa_remote(expr)  # pyright: ignore
 
 
 def deref_column(obj: Mapped[_T]) -> Mapped[_T]:

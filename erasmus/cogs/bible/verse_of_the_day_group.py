@@ -391,11 +391,16 @@ class VerseOfTheDayGroup(
                 localizer = self.localizer.for_message('serverprefs__verse-of-the-day')
                 title = localizer.format('title')
 
+                fallback = await BibleVersion.get_by_command(session, 'esv')
+
                 for votd in result:
                     webhook = self.__get_webhook(votd)
-                    bible = await BibleVersion.get_for(
-                        session, guild=discord.Object(votd.guild_id)
-                    )
+
+                    if votd.prefs is not None and votd.prefs.bible_version is not None:
+                        bible = votd.prefs.bible_version
+                    else:
+                        bible = fallback
+
                     passage = await self.__fetcher(bible)
 
                     await send_passage(

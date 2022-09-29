@@ -23,6 +23,7 @@ from .base import (
     Flag,
     Mapped,
     deref_column,
+    foreign,
     mapped_column,
     mixin_column,
     model,
@@ -229,6 +230,23 @@ class VerseOfTheDay(Base):
     next_scheduled: Mapped[datetime.datetime] = mapped_column(
         TIMESTAMP(timezone=True), nullable=False
     )
+
+    prefs: Mapped[GuildPref | None] = relationship(
+        GuildPref,
+        lazy='joined',
+        uselist=False,
+        viewonly=True,
+        primaryjoin=deref_column(guild_id) == foreign(GuildPref.guild_id),
+    )
+
+    # bible: Mapped[BibleVersion] = relationship(
+    #     BibleVersion,
+    #     lazy='joined',
+    #     uselist=False,
+    #     nullable=False,
+    #     viewonly=True,
+    #     primaryjoin=deref_column(guild_id) == GuildPref.guild_id,
+    # )
 
     @staticmethod
     async def for_guild(
