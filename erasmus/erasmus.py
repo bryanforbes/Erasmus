@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import sys
+from importlib import metadata
 from typing import TYPE_CHECKING, Final, cast
 
 import discord
@@ -24,6 +25,8 @@ if TYPE_CHECKING:
 
 _log: Final = logging.getLogger(__name__)
 _extensions: Final = ('admin', 'bible', 'confession', 'creeds', 'misc')
+
+_version: Final = metadata.version('erasmus')
 
 
 class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
@@ -84,6 +87,23 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         _log.info('Erasmus ready. Logged in as %s %s', user.name, user.id)
 
         await super().on_ready()
+
+    async def on_shard_connect(self, shard_id: int, /) -> None:
+        _log.info(f'Shard {shard_id + 1} connected')
+
+    async def on_shard_disconnect(self, shard_id: int, /) -> None:
+        _log.info(f'Shard {shard_id + 1} disconnected')
+
+    async def on_shard_ready(self, shard_id: int, /) -> None:
+        await self.change_presence(
+            activity=discord.Game(f'v{_version} | shard {shard_id + 1}'),
+            shard_id=shard_id,
+        )
+
+        _log.info(f'Shard {shard_id + 1} ready')
+
+    async def on_shard_resumed(self, shard_id: int, /) -> None:
+        _log.info(f'Shard {shard_id + 1} resumed')
 
     async def on_error(
         self, event_method: str, /, *args: object, **kwargs: object

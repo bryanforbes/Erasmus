@@ -1,6 +1,7 @@
 # Version UNRELEASED
 
 * Fixed verse display incorrectly italicizing Jesus' words
+* Added version and shard number to activity display
 
 # Version 22.9.7
 
