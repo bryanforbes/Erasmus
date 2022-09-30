@@ -1,6 +1,6 @@
 # Version UNRELEASED
 
-* Add verse of the day functionality
+* Added verse of the day functionality
 * Fixed verse display incorrectly italicizing Jesus' words
 * Added version and shard number to activity display
 
