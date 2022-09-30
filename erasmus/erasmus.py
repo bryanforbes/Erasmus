@@ -52,6 +52,21 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         self.tree.error(self.on_app_command_error)
 
     @property
+    def invite_url(self) -> str:
+        perms = discord.Permissions(
+            add_reactions=True,
+            embed_links=True,
+            manage_messages=True,
+            manage_webhooks=True,
+            read_message_history=True,
+            read_messages=True,
+            send_messages=True,
+            send_messages_in_threads=True,
+        )
+
+        return discord.utils.oauth_url(self.application_id, permissions=perms)
+
+    @property
     def bible_cog(self) -> Bible:
         return self.cogs['Bible']  # type: ignore
 

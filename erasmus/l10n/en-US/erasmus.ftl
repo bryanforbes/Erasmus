@@ -56,6 +56,8 @@ serverprefs__verse-of-the-day__set = set
     .PARAM--timezone--description = The time zone for the time to post
     .started = Verse of the day has been started. It will be posted daily in { $channel } starting at { $next_scheduled }.
     .updated = Verse of the day has been updated. It will be posted daily in { $channel } starting at { $next_scheduled }.
+    .need-guild-webhooks-permission = I need the "Manage Webhooks" permission in order to post the verse of the day. [Click here]({ $invite_url }) to re-authorize me with the correct permissions. Afterwards, please re-run this command.
+    .need-channel-webhooks-permission = I need the "Manage Webhooks" permission enabled for me in { $actual_channel } to allow me to post the verse of the day in { $channel }. After doing so, please re-run this command.
 
 serverprefs__verse-of-the-day__info = info
     .description = Get information about verse of the day for this server
@@ -68,6 +70,7 @@ serverprefs__verse-of-the-day__stop = stop
     .description = Stop posting the verse of the day
     .stopped = Verse of the day stopped for this server
     .not_set = No verse of the day has been set
+    .unable-to-remove-existing = I was unable to remove my existing webhooks. You will need to manually remove any webhooks in my integrations settings in the "Integrations" server settings under "Bots and Apps".
 
 prefs = prefs
     .description = Preferences
