@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import sys
+from functools import cached_property
 from importlib import metadata
 from typing import TYPE_CHECKING, Final, cast
 
@@ -51,7 +52,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
 
         self.tree.error(self.on_app_command_error)
 
-    @property
+    @cached_property
     def invite_url(self) -> str:
         perms = discord.Permissions(
             add_reactions=True,

@@ -220,8 +220,8 @@ class GuildPref(_BibleVersionMixin):
 
 
 @model
-class VerseOfTheDay(Base):
-    __tablename__ = 'verse_of_the_days'
+class DailyBread(Base):
+    __tablename__ = 'daily_breads'
 
     guild_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
     channel_id: Mapped[int] = mapped_column(Snowflake, nullable=False)
@@ -242,5 +242,5 @@ class VerseOfTheDay(Base):
     @staticmethod
     async def for_guild(
         session: AsyncSession, guild: discord.Guild, /
-    ) -> VerseOfTheDay | None:
-        return await session.get(VerseOfTheDay, guild.id)
+    ) -> DailyBread | None:
+        return await session.get(DailyBread, guild.id)

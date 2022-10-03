@@ -42,34 +42,36 @@ serverprefs__unsetdefault = unsetdefault
     .deleted = Server version deleted
     .already-deleted = Server version already deleted
 
-serverprefs__verse-of-the-day = verse-of-the-day
-    .description = Verse of the day
-    .title = Verse of the Day
+serverprefs__daily-bread = daily-bread
+    .description = Daily bread
 
-serverprefs__verse-of-the-day__set = set
-    .description = Set or update the verse of the day settings for this server
+serverprefs__daily-bread__set = set
+    .description = Set or update the automated daily bread post settings for this server
     .PARAM--channel--name = channel
-    .PARAM--channel--description = The channel to post the verse of the day to
+    .PARAM--channel--description = The channel to post the daily bread to
     .PARAM--time--name = time
     .PARAM--time--description = The time to post at
     .PARAM--timezone--name = timezone
     .PARAM--timezone--description = The time zone for the time to post
-    .started = Verse of the day has been started. It will be posted daily in { $channel } starting at { $next_scheduled }.
-    .updated = Verse of the day has been updated. It will be posted daily in { $channel } starting at { $next_scheduled }.
-    .need-guild-webhooks-permission = I need the "Manage Webhooks" permission in order to post the verse of the day. [Click here]({ $invite_url }) to re-authorize me with the correct permissions. Afterwards, please re-run this command.
-    .need-channel-webhooks-permission = I need the "Manage Webhooks" permission enabled for me in { $actual_channel } to allow me to post the verse of the day in { $channel }. After doing so, please re-run this command.
+    .started =
+        Automated daily bread posting has been started. I will post the daily bread in { $channel } starting at { $next_scheduled } using `{ $version }`.
 
-serverprefs__verse-of-the-day__info = info
-    .description = Get information about verse of the day for this server
-    .not_set = No verse of the day has been set
-    .title = Verse of the Day Information
-    .channel = Channel
-    .next_scheduled = Next Scheduled
+        Use `/serverprefs daily-bread set` to set a new channel or time.
+        Use `/serverprefs daily-bread stop` to stop automated posts.
+        Use `/serverprefs setdefault` to change the version.
+    .updated =
+        Automated daily bread posting has been updated. I will post the daily bread in { $channel } starting at { $next_scheduled } using `{ $version }`.
 
-serverprefs__verse-of-the-day__stop = stop
-    .description = Stop posting the verse of the day
-    .stopped = Verse of the day stopped for this server
-    .not_set = No verse of the day has been set
+        Use `/serverprefs daily-bread set` to set a new channel or time.
+        Use `/serverprefs daily-bread stop` to stop automated posts.
+        Use `/serverprefs setdefault` to change the version.
+    .need-guild-webhooks-permission = I need the "Manage Webhooks" permission in order to post the daily bread. [Click here]({ $invite_url }) to re-authorize me with the correct permissions. Afterwards, please re-run this command.
+    .need-channel-webhooks-permission = I need the "Manage Webhooks" permission enabled for me in { $actual_channel } to allow me to post the daily bread in { $channel }. After doing so, please re-run this command.
+
+serverprefs__daily-bread__stop = stop
+    .description = Stop the automated daily bread posts for this server
+    .stopped = Automated daily bread posting has been stopped for this server
+    .not_set = Automated daily bread posting has not been set for this server
     .unable-to-remove-existing = I was unable to remove my existing webhooks. You will need to manually remove any webhooks in my integrations settings in the "Integrations" server settings under "Bots and Apps".
 
 prefs = prefs
@@ -124,6 +126,23 @@ bibleinfo = bibleinfo
     .PARAM--version--description = The { -bible-version } to get information for
     .abbreviation = Abbreviation
     .books = Books
+
+daily-bread = daily-bread
+    .description = Daily bread
+
+daily-bread__show = show
+    .description = Display today's daily bread
+    .PARAM--version--name = version
+    .PARAM--version--description = The version to display the daily bread in
+    .PARAM--only_me--name = only_me
+    .PARAM--only_me--description = Whether to display the daily bread to yourself or everyone
+
+daily-bread__status = status
+    .description = Display the status of automated daily bread posts for this server
+    .not_set = Automated daily bread posts have not been set up in this server. You will need to ask an administrator to set it up.
+    .title = Daily Bread Status
+    .channel = Channel
+    .next_scheduled = Next Scheduled
 
 ## Errors
 

@@ -1,14 +1,15 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Final, cast
+from typing import TYPE_CHECKING, Callable, Final, cast
 
 import discord
+from attrs import define, field
 from botus_receptus import Cog, formatting, utils
 from discord import app_commands
 from discord.ext import commands, tasks
 
-from ...data import SearchResults, VerseRange
+from ...data import Passage, SearchResults, VerseRange
 from ...db import BibleVersion, Session
 from ...exceptions import (
     BibleNotSupportedError,
@@ -30,25 +31,40 @@ from ...ui_pages import UIPages
 from ...utils import send_passage
 from .admin_group import BibleAdminGroup
 from .bible_lookup import _BibleOption, bible_lookup
+from .daily_bread_group import DailyBreadGroup
 from .preferences_group import PreferencesGroup
 from .search_page_source import SearchPageSource
 from .server_preferences_group import ServerPreferencesGroup
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
-
     from botus_receptus.types import Coroutine
     from sqlalchemy.ext.asyncio import AsyncSession
 
     from ...erasmus import Erasmus
     from ...l10n import Localizer
+    from ...types import Bible as _BibleType
 
 _log: Final = logging.getLogger(__name__)
-
 
 _shared_cooldown = app_commands.checks.cooldown(
     rate=8, per=60.0, key=lambda i: (i.guild_id, i.user.id)
 )
+
+
+@define(frozen=True)
+class PassageFetcher:
+    verse_range: VerseRange
+    service_manager: ServiceManager
+    passage_map: dict[int, Passage] = field(init=False, factory=dict)
+
+    async def __call__(self, bible: _BibleType, /) -> Passage:
+        if bible.id in self.passage_map:
+            return self.passage_map[bible.id]
+
+        passage = await self.service_manager.get_passage(bible, self.verse_range)
+        self.passage_map[bible.id] = passage
+
+        return passage
 
 
 class Bible(Cog['Erasmus']):
@@ -58,9 +74,10 @@ class Bible(Cog['Erasmus']):
     admin = BibleAdminGroup()
     preferences = PreferencesGroup()
     server_preferences = ServerPreferencesGroup()
+    daily_bread = DailyBreadGroup()
 
     __lookup_cooldown: commands.CooldownMapping[discord.Message]
-    __votd_task: tasks.Loop[Callable[[], Coroutine[None]]]
+    __daily_bread_task: tasks.Loop[Callable[[], Coroutine[None]]]
 
     def __init__(self, bot: Erasmus, /) -> None:
         self.service_manager = ServiceManager.from_config(bot.config, bot.session)
@@ -74,6 +91,7 @@ class Bible(Cog['Erasmus']):
         self.admin.initialize_from_cog(self)
         self.preferences.initialize_from_cog(self)
         self.server_preferences.initialize_from_cog(self)
+        self.daily_bread.initialize_from_cog(self)
 
     async def refresh(self, session: AsyncSession, /) -> None:
         bible_lookup.clear()
@@ -85,9 +103,9 @@ class Bible(Cog['Erasmus']):
         )
 
     async def cog_load(self) -> None:
-        self.__votd_task = self.server_preferences.verse_of_the_day.get_task()
-        self.__votd_task.start()
-        await self.__votd_task()
+        self.__daily_bread_task = self.daily_bread.get_task()
+        self.__daily_bread_task.start()
+        await self.__daily_bread_task()
 
         async with Session() as session:
             await self.refresh(session)
@@ -95,7 +113,7 @@ class Bible(Cog['Erasmus']):
     async def cog_unload(self) -> None:
         bible_lookup.clear()
 
-        self.__votd_task.cancel()
+        self.__daily_bread_task.cancel()
 
     def __get_cooldown_bucket(self, message: discord.Message, /) -> commands.Cooldown:
         bucket = self.__lookup_cooldown.get_bucket(message)

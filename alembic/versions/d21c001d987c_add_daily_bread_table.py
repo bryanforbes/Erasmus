@@ -1,4 +1,4 @@
-"""Add verse of the day table
+"""Add daily bread table
 
 Revision ID: d21c001d987c
 Revises: 300fb8300fb7
@@ -20,7 +20,7 @@ depends_on = None
 
 def upgrade():
     op.create_table(
-        'verse_of_the_days',
+        'daily_breads',
         sa.Column('guild_id', Snowflake(), nullable=False),
         sa.Column('channel_id', Snowflake(), nullable=False),
         sa.Column('thread_id', Snowflake(), nullable=True),
@@ -33,4 +33,4 @@ def upgrade():
 
 
 def downgrade():
-    op.drop_table('verse_of_the_days')
+    op.drop_table('daily_breads')

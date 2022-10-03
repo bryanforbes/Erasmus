@@ -7,7 +7,7 @@ from discord import app_commands
 
 from ...db import BibleVersion, GuildPref, Session
 from .bible_lookup import bible_lookup  # noqa
-from .verse_of_the_day_group import VerseOfTheDayGroup
+from .daily_bread_group import DailyBreadPreferencesGroup
 
 if TYPE_CHECKING:
     import discord
@@ -23,12 +23,12 @@ class ServerPreferencesGroup(
 ):
     localizer: Localizer
 
-    verse_of_the_day = VerseOfTheDayGroup()
+    daily_bread = DailyBreadPreferencesGroup()
 
     def initialize_from_cog(self, cog: Bible, /) -> None:
         self.localizer = cog.localizer
 
-        self.verse_of_the_day.initialize_from_cog(cog)
+        self.daily_bread.initialize_from_cog(cog)
 
     @app_commands.command()
     @app_commands.describe(version='Bible version')

@@ -6,10 +6,7 @@ import discord
 import pytest
 from attrs import define
 
-from erasmus.cogs.bible.verse_of_the_day_group import (
-    VerseOfTheDayFetcher,
-    _TimeTransformer,
-)
+from erasmus.cogs.bible.daily_bread_group import PassageFetcher, _TimeTransformer
 from erasmus.data import VerseRange
 from erasmus.exceptions import InvalidTimeError
 from erasmus.service_manager import ServiceManager
@@ -95,7 +92,7 @@ class TestTimeTransformer:
             await transformer.transform(mock_interaction, input)
 
 
-class TestVerseOfTheDayFetcher:
+class TestPassageFetcher:
     @pytest.fixture
     def mock_service_manager(self, mocker: MockerFixture) -> Mock:
         return mocker.create_autospec(ServiceManager)
@@ -123,7 +120,7 @@ class TestVerseOfTheDayFetcher:
         )
 
     def test_init(self, mock_service_manager: Mock) -> None:
-        fetcher = VerseOfTheDayFetcher(
+        fetcher = PassageFetcher(
             VerseRange.from_string('Genesis 1:2'), mock_service_manager
         )
 
@@ -141,7 +138,7 @@ class TestVerseOfTheDayFetcher:
         mock_service_manager.configure_mock(
             **{'get_passage.return_value': mocker.sentinel.get_passage_return}
         )
-        fetcher = VerseOfTheDayFetcher(
+        fetcher = PassageFetcher(
             VerseRange.from_string('Genesis 1:2'), mock_service_manager
         )
 
@@ -165,7 +162,7 @@ class TestVerseOfTheDayFetcher:
         mock_service_manager.configure_mock(
             **{'get_passage.return_value': mocker.sentinel.get_passage_return}
         )
-        fetcher = VerseOfTheDayFetcher(
+        fetcher = PassageFetcher(
             VerseRange.from_string('Genesis 1:2'), mock_service_manager
         )
 

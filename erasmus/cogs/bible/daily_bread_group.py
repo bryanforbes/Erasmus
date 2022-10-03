@@ -5,6 +5,7 @@ import logging
 from itertools import chain
 from typing import TYPE_CHECKING, Final, cast
 
+import aiohttp
 import async_timeout
 import discord
 import pendulum
@@ -16,7 +17,7 @@ from discord.ext import tasks
 from sqlalchemy import select
 
 from ...data import Passage, VerseRange
-from ...db import Session, VerseOfTheDay
+from ...db import DailyBread, Session
 from ...db.bible import BibleVersion
 from ...exceptions import (
     DoNotUnderstandError,
@@ -25,6 +26,7 @@ from ...exceptions import (
     InvalidTimeZoneError,
 )
 from ...utils import send_passage
+from .bible_lookup import bible_lookup  # noqa: TC002
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -38,9 +40,8 @@ if TYPE_CHECKING:
     from ...types import Bible as _BibleType
     from .cog import Bible
 
-_log = logging.getLogger(__name__)
-
-_invite_re = re.compile('\\(\u2068(https://[^\u2069]+?)\u2069\\)')
+_log: Final = logging.getLogger(__name__)
+_invite_re: Final = re.compile('\\(\u2068(https://[^\u2069]+?)\u2069\\)')
 
 
 def _format_with_invite(
@@ -175,13 +176,25 @@ class _TimeZoneTransformer(app_commands.Transformer):
         ][:25]
 
 
-_shared_cooldown = app_commands.checks.cooldown(
+_shared_cooldown: Final = app_commands.checks.cooldown(
     rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
+)
+_shared_prefs_cooldown: Final = app_commands.checks.cooldown(
+    rate=2, per=30.0, key=lambda i: (i.guild_id, i.user.id)
 )
 
 
+def _get_daily_bread_webhook(
+    daily_bread: DailyBread, session: aiohttp.ClientSession, /
+) -> discord.Webhook:
+    return discord.Webhook.from_url(
+        f'https://discord.com/api/webhooks/{daily_bread.url}',
+        session=session,
+    )
+
+
 @define(frozen=True)
-class VerseOfTheDayFetcher:
+class PassageFetcher:
     verse_range: VerseRange
     service_manager: ServiceManager
     passage_map: dict[int, Passage] = field(init=False, factory=dict)
@@ -196,44 +209,24 @@ class VerseOfTheDayFetcher:
         return passage
 
 
-class VerseOfTheDayGroup(
-    app_commands.Group, name='verse-of-the-day', description='Verse of the day'
+class DailyBreadGroup(
+    app_commands.Group, name='daily-bread', description='Daily bread'
 ):
-    bot: Erasmus
+    session: aiohttp.ClientSession
     service_manager: ServiceManager
     localizer: Localizer
 
-    __fetcher: VerseOfTheDayFetcher | None
+    __fetcher: PassageFetcher | None
 
     def initialize_from_cog(self, cog: Bible, /) -> None:
-        self.bot = cog.bot
+        self.session = cog.bot.session
         self.service_manager = cog.service_manager
         self.localizer = cog.localizer
 
         self.__fetcher = None
 
-    def __get_webhook(self, votd: VerseOfTheDay, /) -> discord.Webhook:
-        return discord.Webhook.from_url(
-            f'https://discord.com/api/webhooks/{votd.url}', session=self.bot.session
-        )
-
-    async def __remove_webhooks(
-        self,
-        itx: discord.Interaction,
-        guild: discord.Guild,
-        /,
-    ) -> None:
-        me = guild.me
-
-        for webhook in await guild.webhooks():
-            if webhook.user == me:
-                await webhook.delete(
-                    reason=f'{itx.user} ({itx.user.id}) updated the verse of the '
-                    'day settings for Erasmus'
-                )
-
-    async def __get_votd(self) -> VerseRange:
-        async with async_timeout.timeout(10), self.bot.session.get(
+    async def __get_verse_range(self) -> VerseRange:
+        async with async_timeout.timeout(10), self.session.get(
             'https://www.biblegateway.com/reading-plans/verse-of-the-day'
             '/next?interface=print'
         ) as response:
@@ -253,10 +246,177 @@ class VerseOfTheDayGroup(
 
             return VerseRange.from_string(passage_node.get_text(''))
 
+    async def __check_and_post(self) -> None:
+        now = pendulum.now().set(second=0, microsecond=0)
+
+        async with Session.begin() as session:
+            result = cast(
+                'list[DailyBread]',
+                (
+                    await session.scalars(
+                        select(DailyBread).filter(DailyBread.next_scheduled <= now)
+                    )
+                ).fetchall(),
+            )
+
+            if not result:
+                return
+
+            next_scheduled = now.add(hours=24)
+            verse_range = await self.__get_verse_range()
+
+            if self.__fetcher is None or self.__fetcher.verse_range != verse_range:
+                self.__fetcher = PassageFetcher(verse_range, self.service_manager)
+
+            fallback = await BibleVersion.get_by_command(session, 'esv')
+
+            for daily_bread in result:
+                webhook = _get_daily_bread_webhook(daily_bread, self.session)
+
+                if (
+                    daily_bread.prefs is not None
+                    and daily_bread.prefs.bible_version is not None
+                ):
+                    bible = daily_bread.prefs.bible_version
+                else:
+                    bible = fallback
+
+                passage = await self.__fetcher(bible)
+
+                try:
+                    await send_passage(
+                        webhook,
+                        passage,
+                        thread=discord.Object(daily_bread.thread_id)
+                        if daily_bread.thread_id is not None
+                        else discord.utils.MISSING,
+                        avatar_url='https://i.imgur.com/XQ8N2vH.png',
+                    )
+                    daily_bread.next_scheduled = next_scheduled
+                except (discord.DiscordException, ErasmusError) as error:
+                    _log.exception(
+                        'An error occurred while posting the daily bread to '
+                        'guild ID %s',
+                        daily_bread.guild_id,
+                        exc_info=error,
+                        stack_info=True,
+                    )
+
+            await session.commit()
+
+    def get_task(self) -> tasks.Loop[Callable[[], Coroutine[None]]]:
+        return tasks.loop(
+            time=[
+                datetime.time(*args)
+                for args in chain.from_iterable(
+                    [(hour, minute) for minute in range(0, 60, _TASK_INTERVAL)]
+                    for hour in range(24)
+                )
+            ],
+        )(self.__check_and_post)
+
     @app_commands.command()
     @_shared_cooldown
     @app_commands.describe(
-        channel='The channel to post the verse of the day to',
+        version='The version to display the daily bread in',
+        only_me='Whether to display the daily bread to yourself or everyone',
+    )
+    async def show(
+        self,
+        itx: discord.Interaction,
+        /,
+        version: app_commands.Transform[str | None, bible_lookup] = None,
+        only_me: bool = False,
+    ) -> None:
+        '''Display today's daily bread'''
+
+        bible: BibleVersion | None = None
+
+        async with Session() as session:
+            if version is not None:
+                bible = await BibleVersion.get_by_abbr(session, version)
+
+            if bible is None:
+                bible = await BibleVersion.get_for(
+                    session, user=itx.user, guild=itx.guild
+                )
+
+        if self.__fetcher is None:
+            self.__fetcher = PassageFetcher(
+                await self.__get_verse_range(), self.service_manager
+            )
+
+        passage = await self.__fetcher(bible)
+
+        await send_passage(itx, passage, ephemeral=only_me)
+
+    @app_commands.command()
+    @_shared_cooldown
+    async def status(self, itx: discord.Interaction, /) -> None:
+        '''Display the status of automated daily bread posts for this server'''
+
+        assert itx.guild is not None
+
+        localizer = self.localizer.for_message('daily-bread__status', locale=itx.locale)
+
+        async with Session.begin() as session:
+            daily_bread = await DailyBread.for_guild(session, itx.guild)
+
+            if daily_bread:
+                channel = await itx.guild.fetch_channel(
+                    daily_bread.thread_id or daily_bread.channel_id
+                )
+                await utils.send_embed(
+                    itx,
+                    title=localizer.format('title'),
+                    fields=[
+                        {
+                            'name': localizer.format('channel'),
+                            'value': channel.mention,
+                            'inline': False,
+                        },
+                        {
+                            'name': localizer.format('next_scheduled'),
+                            'value': discord.utils.format_dt(
+                                daily_bread.next_scheduled
+                            ),
+                            'inline': False,
+                        },
+                    ],
+                )
+            else:
+                await utils.send_embed(itx, description=localizer.format('not_set'))
+
+
+class DailyBreadPreferencesGroup(
+    app_commands.Group, name='daily-bread', description='Daily bread settings'
+):
+    bot: Erasmus
+    localizer: Localizer
+
+    def initialize_from_cog(self, cog: Bible, /) -> None:
+        self.bot = cog.bot
+        self.localizer = cog.localizer
+
+    async def __remove_webhooks(
+        self,
+        itx: discord.Interaction,
+        guild: discord.Guild,
+        /,
+    ) -> None:
+        me = guild.me
+
+        for webhook in await guild.webhooks():
+            if webhook.user == me:
+                await webhook.delete(
+                    reason=f'{itx.user} ({itx.user.id}) updated the daily bread '
+                    'settings for Erasmus'
+                )
+
+    @app_commands.command()
+    @_shared_prefs_cooldown
+    @app_commands.describe(
+        channel='The channel to post the daily bread to',
         time='The time to post at',
         timezone='The time zone for the time to post',
     )
@@ -268,6 +428,8 @@ class VerseOfTheDayGroup(
         time: app_commands.Transform[tuple[int, int], _TimeTransformer],
         timezone: app_commands.Transform[str, _TimeZoneTransformer],
     ) -> None:
+        '''Set or update the automated daily bread post settings for this server'''
+
         assert itx.guild is not None
 
         if isinstance(channel, discord.Thread):
@@ -281,7 +443,7 @@ class VerseOfTheDayGroup(
             actual_channel = channel
 
         localizer = self.localizer.for_message(
-            'serverprefs__verse-of-the-day__set', locale=itx.locale
+            'serverprefs__daily-bread__set', locale=itx.locale
         )
 
         if not itx.guild.me.guild_permissions & discord.Permissions(
@@ -313,7 +475,7 @@ class VerseOfTheDayGroup(
             return
 
         await self.__remove_webhooks(itx, itx.guild)
-        webhook = await actual_channel.create_webhook(name='Erasmus Verse of the Day')
+        webhook = await actual_channel.create_webhook(name='Daily Bread from Erasmus')
 
         now = pendulum.now(tz=timezone)
         next_scheduled = now.set(hour=time[0], minute=time[1], second=0, microsecond=0)
@@ -322,28 +484,30 @@ class VerseOfTheDayGroup(
             next_scheduled = next_scheduled.add(hours=24)
 
         async with Session.begin() as session:
-            votd = await session.get(VerseOfTheDay, itx.guild.id)
+            daily_bread = await session.get(DailyBread, itx.guild.id)
 
-            if votd is not None:
+            if daily_bread is not None:
                 updated = True
 
-                votd.channel_id = actual_channel.id
-                votd.url = f'{webhook.id}/{webhook.token}'
+                daily_bread.channel_id = actual_channel.id
+                daily_bread.url = f'{webhook.id}/{webhook.token}'
 
-                if votd.thread_id != thread_id:
-                    votd.thread_id = thread_id
+                if daily_bread.thread_id != thread_id:
+                    daily_bread.thread_id = thread_id
 
-                votd.next_scheduled = next_scheduled
+                daily_bread.next_scheduled = next_scheduled
             else:
                 updated = False
-                votd = VerseOfTheDay(
+                daily_bread = DailyBread(
                     guild_id=itx.guild.id,
                     channel_id=actual_channel.id,
                     thread_id=thread_id,
                     url=f'{webhook.id}/{webhook.token}',
                     next_scheduled=next_scheduled,
                 )
-                session.add(votd)
+                session.add(daily_bread)
+
+            version = await BibleVersion.get_for(session, guild=itx.guild)
 
             await session.commit()
 
@@ -354,60 +518,30 @@ class VerseOfTheDayGroup(
                     'updated' if updated else 'started',
                     data={
                         'channel': channel.mention,
-                        'next_scheduled': discord.utils.format_dt(votd.next_scheduled),
+                        'next_scheduled': discord.utils.format_dt(
+                            daily_bread.next_scheduled
+                        ),
+                        'version': version.name,
                     },
                 )
             ),
         )
 
     @app_commands.command()
-    @_shared_cooldown
-    async def info(self, itx: discord.Interaction, /) -> None:
-        assert itx.guild is not None
-
-        localizer = self.localizer.for_message(
-            'serverprefs__verse-of-the-day__info', locale=itx.locale
-        )
-
-        async with Session.begin() as session:
-            votd = await VerseOfTheDay.for_guild(session, itx.guild)
-
-            if votd:
-                channel = await itx.guild.fetch_channel(
-                    votd.thread_id or votd.channel_id
-                )
-                await utils.send_embed(
-                    itx,
-                    title=localizer.format('title'),
-                    fields=[
-                        {
-                            'name': localizer.format('channel'),
-                            'value': channel.mention,
-                            'inline': False,
-                        },
-                        {
-                            'name': localizer.format('next_scheduled'),
-                            'value': discord.utils.format_dt(votd.next_scheduled),
-                            'inline': False,
-                        },
-                    ],
-                )
-            else:
-                await utils.send_embed(itx, description=localizer.format('not_set'))
-
-    @app_commands.command()
-    @_shared_cooldown
+    @_shared_prefs_cooldown
     async def stop(self, itx: discord.Interaction, /) -> None:
+        '''Stop the automated daily bread posts for this server'''
+
         assert itx.guild is not None
 
         localizer = self.localizer.for_message(
-            'serverprefs__verse-of-the-day__stop', locale=itx.locale
+            'serverprefs__daily-bread__stop', locale=itx.locale
         )
 
         async with Session.begin() as session:
-            votd = await VerseOfTheDay.for_guild(session, itx.guild)
+            daily_bread = await DailyBread.for_guild(session, itx.guild)
 
-            if votd is not None:
+            if daily_bread is not None:
                 if not itx.guild.me.guild_permissions & discord.Permissions(
                     manage_webhooks=True
                 ):
@@ -418,81 +552,10 @@ class VerseOfTheDayGroup(
                 else:
                     await self.__remove_webhooks(itx, itx.guild)
 
-                await session.delete(votd)
+                await session.delete(daily_bread)
 
                 await utils.send_embed(itx, description=localizer.format('stopped'))
             else:
                 await utils.send_embed(itx, description=localizer.format('not_set'))
 
             await session.commit()
-
-    async def __check_and_post(self) -> None:
-        now = pendulum.now().set(second=0, microsecond=0)
-        next_scheduled = now.add(hours=24)
-
-        async with Session.begin() as session:
-            result = cast(
-                'list[VerseOfTheDay]',
-                (
-                    await session.scalars(
-                        select(VerseOfTheDay).filter(
-                            VerseOfTheDay.next_scheduled <= now
-                        )
-                    )
-                ).fetchall(),
-            )
-
-            if not result:
-                return
-
-            verse_range = await self.__get_votd()
-
-            if self.__fetcher is None or self.__fetcher.verse_range != verse_range:
-                self.__fetcher = VerseOfTheDayFetcher(verse_range, self.service_manager)
-
-            localizer = self.localizer.for_message('serverprefs__verse-of-the-day')
-            title = localizer.format('title')
-            fallback = await BibleVersion.get_by_command(session, 'esv')
-
-            for votd in result:
-                webhook = self.__get_webhook(votd)
-
-                if votd.prefs is not None and votd.prefs.bible_version is not None:
-                    bible = votd.prefs.bible_version
-                else:
-                    bible = fallback
-
-                passage = await self.__fetcher(bible)
-
-                try:
-                    await send_passage(
-                        webhook,
-                        passage,
-                        title=title,
-                        thread=discord.Object(votd.thread_id)
-                        if votd.thread_id is not None
-                        else discord.utils.MISSING,
-                        avatar_url='https://i.imgur.com/XQ8N2vH.png',
-                    )
-                    votd.next_scheduled = next_scheduled
-                except (discord.DiscordException, ErasmusError) as error:
-                    _log.exception(
-                        'An error occurred while posting the verse of the day to guild '
-                        'ID %s',
-                        votd.guild_id,
-                        exc_info=error,
-                        stack_info=True,
-                    )
-
-            await session.commit()
-
-    def get_task(self) -> tasks.Loop[Callable[[], Coroutine[None]]]:
-        return tasks.loop(
-            time=[
-                datetime.time(*args)
-                for args in chain.from_iterable(
-                    [(hour, minute) for minute in range(0, 60, _TASK_INTERVAL)]
-                    for hour in range(24)
-                )
-            ],
-        )(self.__check_and_post)
