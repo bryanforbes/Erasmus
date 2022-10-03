@@ -113,6 +113,13 @@ class InvalidTimeZoneError(ErasmusError):
         self.timezone = timezone
 
 
+class DailyBreadNotInVersionError(ErasmusError):
+    version: str
+
+    def __init__(self, version: str, /) -> None:
+        self.version = version
+
+
 class InvalidConfessionError(ErasmusError):
     confession: str
 

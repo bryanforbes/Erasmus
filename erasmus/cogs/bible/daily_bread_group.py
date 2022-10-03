@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import datetime
 import logging
 from itertools import chain
 from typing import TYPE_CHECKING, Final, cast
@@ -16,10 +15,11 @@ from discord import app_commands
 from discord.ext import tasks
 from sqlalchemy import select
 
-from ...data import Passage, VerseRange
+from ...data import Passage, SectionFlag, VerseRange
 from ...db import DailyBread, Session
 from ...db.bible import BibleVersion
 from ...exceptions import (
+    DailyBreadNotInVersionError,
     DoNotUnderstandError,
     ErasmusError,
     InvalidTimeError,
@@ -262,7 +262,6 @@ class DailyBreadGroup(
             if not result:
                 return
 
-            next_scheduled = now.add(hours=24)
             verse_range = await self.__get_verse_range()
 
             if self.__fetcher is None or self.__fetcher.verse_range != verse_range:
@@ -271,6 +270,9 @@ class DailyBreadGroup(
             fallback = await BibleVersion.get_by_command(session, 'esv')
 
             for daily_bread in result:
+                next_scheduled = pendulum.instance(daily_bread.next_scheduled).add(
+                    hours=24
+                )
                 webhook = _get_daily_bread_webhook(daily_bread, self.session)
 
                 if (
@@ -280,6 +282,10 @@ class DailyBreadGroup(
                     bible = daily_bread.prefs.bible_version
                 else:
                     bible = fallback
+
+                if not bible.books & verse_range.book_mask:
+                    daily_bread.next_scheduled = next_scheduled
+                    continue
 
                 passage = await self.__fetcher(bible)
 
@@ -307,7 +313,7 @@ class DailyBreadGroup(
     def get_task(self) -> tasks.Loop[Callable[[], Coroutine[None]]]:
         return tasks.loop(
             time=[
-                datetime.time(*args)
+                pendulum.time(*args)
                 for args in chain.from_iterable(
                     [(hour, minute) for minute in range(0, 60, _TASK_INTERVAL)]
                     for hour in range(24)
@@ -345,6 +351,9 @@ class DailyBreadGroup(
             self.__fetcher = PassageFetcher(
                 await self.__get_verse_range(), self.service_manager
             )
+
+        if not bible.books & self.__fetcher.verse_range.book_mask:
+            raise DailyBreadNotInVersionError(bible.name)
 
         passage = await self.__fetcher(bible)
 
@@ -510,6 +519,15 @@ class DailyBreadPreferencesGroup(
             version = await BibleVersion.get_for(session, guild=itx.guild)
 
             await session.commit()
+
+        if version.books & (SectionFlag.OT | SectionFlag.NT):
+            await utils.send_embed(
+                itx,
+                description=(
+                    localizer.format('version-warning', data={'version': version.name})
+                ),
+                color=discord.Color.yellow(),
+            )
 
         await utils.send_embed(
             itx,

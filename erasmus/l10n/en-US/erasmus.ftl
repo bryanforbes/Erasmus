@@ -67,6 +67,7 @@ serverprefs__daily-bread__set = set
         Use `/serverprefs setdefault` to change the version.
     .need-guild-webhooks-permission = I need the "Manage Webhooks" permission in order to post the daily bread. [Click here]({ $invite_url }) to re-authorize me with the correct permissions. Afterwards, please re-run this command.
     .need-channel-webhooks-permission = I need the "Manage Webhooks" permission enabled for me in { $actual_channel } to allow me to post the daily bread in { $channel }. After doing so, please re-run this command.
+    .version-warning = The server's current default version (`{ $version }`) does not include both Old and New Testaments. I will skip posting daily bread for days where the verse or verses are in a book missing from this version. In order to get daily bread posted every day, please change the server's default version to a version that includes both the Old and New Testaments using `/serverprefs setdefault`.
 
 serverprefs__daily-bread__stop = stop
     .description = Stop the automated daily bread posts for this server
@@ -160,6 +161,7 @@ service-lookup-timeout = The request timed out looking up { $verses } in { $name
 service-search-timeout = The request timed out searching for { $terms } in { $name }
 invalid-time = `{ $time }` is not a valid time representation
 invalid-timezone = `{ $timezone }` is not a recognized time zone
+daily-bread-not-in-version = Today's daily bread is not in `{ $version }`
 
 # Confessions Cog
 

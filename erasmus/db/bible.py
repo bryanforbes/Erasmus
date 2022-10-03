@@ -14,12 +14,13 @@ from sqlalchemy import (
     select,
     text,
 )
-from sqlalchemy.dialects.postgresql import JSONB, TIMESTAMP, insert
+from sqlalchemy.dialects.postgresql import JSONB, insert
 
 from ..data import SectionFlag
 from ..exceptions import InvalidVersionError
 from .base import (
     Base,
+    DateTime,
     Flag,
     Mapped,
     deref_column,
@@ -32,10 +33,10 @@ from .base import (
 )
 
 if TYPE_CHECKING:
-    import datetime
     from collections.abc import AsyncIterator
 
     import discord
+    import pendulum
     from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -227,8 +228,8 @@ class DailyBread(Base):
     channel_id: Mapped[int] = mapped_column(Snowflake, nullable=False)
     thread_id: Mapped[int | None] = mapped_column(Snowflake)
     url: Mapped[str] = mapped_column(String, nullable=False)
-    next_scheduled: Mapped[datetime.datetime] = mapped_column(
-        TIMESTAMP(timezone=True), nullable=False
+    next_scheduled: Mapped[pendulum.DateTime] = mapped_column(
+        DateTime(timezone=True), nullable=False
     )
 
     prefs: Mapped[GuildPref | None] = relationship(

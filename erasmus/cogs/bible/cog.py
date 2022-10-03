@@ -16,6 +16,7 @@ from ...exceptions import (
     BookMappingInvalid,
     BookNotInVersionError,
     BookNotUnderstoodError,
+    DailyBreadNotInVersionError,
     DoNotUnderstandError,
     InvalidTimeError,
     InvalidTimeZoneError,
@@ -211,6 +212,9 @@ class Bible(Cog['Erasmus']):
             case InvalidTimeZoneError():
                 message_id = 'invalid-timezone'
                 data = {'timezone': error.timezone}
+            case DailyBreadNotInVersionError():
+                message_id = 'daily-bread-not-in-version'
+                data = {'version': error.version}
             case _:
                 return
 

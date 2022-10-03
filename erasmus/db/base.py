@@ -15,9 +15,10 @@ from typing import (
 )
 from typing_extensions import Self, dataclass_transform
 
+import pendulum
 from botus_receptus.sqlalchemy import async_sessionmaker
 from sqlalchemy import BigInteger, Boolean, Column, TypeDecorator
-from sqlalchemy.dialects.postgresql import TSVECTOR
+from sqlalchemy.dialects.postgresql import TIMESTAMP, TSVECTOR
 from sqlalchemy.orm import (
     Mapped as _SAMapped,
     declared_attr as _sa_declared_attr,
@@ -33,6 +34,7 @@ _FlagT = TypeVar('_FlagT', bound=_EnumFlag)
 
 if TYPE_CHECKING:
     from collections.abc import Callable
+    from datetime import datetime
 
     from sqlalchemy.sql import ClauseElement
     from sqlalchemy.sql.base import SchemaEventTarget
@@ -108,6 +110,24 @@ class Flag(_TypeDecorator[_FlagT]):
             return self._flag_cls(value)  # type: ignore
 
         return value
+
+
+class DateTime(_TypeDecorator[pendulum.DateTime]):
+    impl = TIMESTAMP
+    cache_ok = True
+
+    def __init__(self, timezone: bool = False, precision: int | None = None) -> None:
+        super().__init__(timezone=timezone, precision=precision)
+
+    def process_bind_param(
+        self, value: pendulum.DateTime | None, dialect: object
+    ) -> datetime | None:
+        return value
+
+    def process_result_value(
+        self, value: datetime | None, dialect: object
+    ) -> pendulum.DateTime | None:
+        return pendulum.instance(value) if value is not None else value
 
 
 @dataclass
