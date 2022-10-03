@@ -21,13 +21,11 @@ from sqlalchemy import BigInteger, Boolean, Column, TypeDecorator
 from sqlalchemy.dialects.postgresql import TIMESTAMP, TSVECTOR
 from sqlalchemy.orm import (
     Mapped as _SAMapped,
-    declared_attr as _sa_declared_attr,
     registry,
     relationship as _sa_relationship,
 )
 
 from sqlalchemy.orm import foreign as _sa_foreign  # pyright: ignore  # isort: skip
-from sqlalchemy.orm import remote as _sa_remote  # pyright: ignore  # isort: skip
 
 _T = TypeVar('_T')
 _FlagT = TypeVar('_FlagT', bound=_EnumFlag)
@@ -295,10 +293,6 @@ def foreign(expr: _CEA, /) -> _CEA:
     return _sa_foreign(expr)  # pyright: ignore
 
 
-def remote(expr: _CEA, /) -> _CEA:
-    return _sa_remote(expr)  # pyright: ignore
-
-
 def deref_column(obj: Mapped[_T]) -> Mapped[_T]:
     if isinstance(obj, Field):
         return cast('Field[_T]', obj).metadata['sa']
@@ -313,15 +307,3 @@ def model_mixin(cls: type[_BaseT], /) -> type[_BaseT]:
 @dataclass_transform(field_specifiers=(_dataclass_field, mapped_column, relationship))
 def model(cls: type[_BaseT], /) -> type[_BaseT]:
     return mapped(dataclass(cls))
-
-
-def declared_attr(func: Callable[[_BaseT], _T]) -> _T:
-    def unwrapper(cls: _BaseT) -> _T:
-        attr = func(cls)
-
-        if isinstance(attr, Field):
-            return cast('Field[_T]', attr).metadata['sa']()
-
-        return attr
-
-    return _sa_declared_attr(unwrapper)  # type: ignore
