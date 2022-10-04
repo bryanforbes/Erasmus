@@ -9,7 +9,7 @@
 
 A Bible bot for Discord
 
-[Invite Erasmus to your server](https://discord.com/oauth2/authorize?client_id=362261298139889664&scope=bot+applications.commands&permissions=275414871104)
+[Invite Erasmus to your server](https://discord.com/oauth2/authorize?client_id=349394562336292876&scope=bot+applications.commands&permissions=275414871104)
 
 ## Commands
 
