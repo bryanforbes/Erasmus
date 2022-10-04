@@ -35,7 +35,7 @@ if TYPE_CHECKING:
     from botus_receptus.types import Coroutine
 
     from ...erasmus import Erasmus
-    from ...l10n import FormatKwargs, Localizer, MessageLocalizer
+    from ...l10n import FormatKwargs, GroupLocalizer, MessageLocalizer
     from ...service_manager import ServiceManager
     from ...types import Bible as _BibleType
     from .cog import Bible
@@ -216,14 +216,14 @@ class DailyBreadGroup(
 ):
     session: aiohttp.ClientSession
     service_manager: ServiceManager
-    localizer: Localizer
+    localizer: GroupLocalizer
 
     __fetcher: PassageFetcher | None
 
     def initialize_from_cog(self, cog: Bible, /) -> None:
         self.session = cog.bot.session
         self.service_manager = cog.service_manager
-        self.localizer = cog.localizer
+        self.localizer = cog.localizer.for_group(self)
 
         self.__fetcher = None
 
@@ -357,7 +357,7 @@ class DailyBreadGroup(
 
         assert itx.guild is not None
 
-        localizer = self.localizer.for_message('daily-bread__status', locale=itx.locale)
+        localizer = self.localizer.for_message('status', locale=itx.locale)
 
         async with Session.begin() as session:
             daily_bread = await DailyBread.for_guild(session, itx.guild)
@@ -392,11 +392,11 @@ class DailyBreadPreferencesGroup(
     app_commands.Group, name='daily-bread', description='Daily bread settings'
 ):
     bot: Erasmus
-    localizer: Localizer
+    localizer: GroupLocalizer
 
-    def initialize_from_cog(self, cog: Bible, /) -> None:
+    def initialize_from_cog(self, cog: Bible, localizer: GroupLocalizer, /) -> None:
         self.bot = cog.bot
-        self.localizer = cog.localizer
+        self.localizer = localizer.for_group(self)
 
     async def __remove_webhooks(
         self,
@@ -442,9 +442,7 @@ class DailyBreadPreferencesGroup(
             thread_id = None
             actual_channel = channel
 
-        localizer = self.localizer.for_message(
-            'serverprefs__daily-bread__set', locale=itx.locale
-        )
+        localizer = self.localizer.for_message('set', locale=itx.locale)
 
         if not itx.guild.me.guild_permissions.manage_webhooks:
             await utils.send_embed_error(
@@ -539,9 +537,7 @@ class DailyBreadPreferencesGroup(
 
         assert itx.guild is not None
 
-        localizer = self.localizer.for_message(
-            'serverprefs__daily-bread__stop', locale=itx.locale
-        )
+        localizer = self.localizer.for_message('stop', locale=itx.locale)
 
         async with Session.begin() as session:
             daily_bread = await DailyBread.for_guild(session, itx.guild)
@@ -571,12 +567,12 @@ class TestingServerPreferencesGroup(
     app_commands.Group, name='test-server-prefs', description='Testing group'
 ):
     bot: Erasmus
-    localizer: Localizer
+    localizer: GroupLocalizer
 
     daily_bread = DailyBreadPreferencesGroup()
 
     def initialize_from_cog(self, cog: Bible, /) -> None:
         self.bot = cog.bot
-        self.localizer = cog.localizer
+        self.localizer = cog.localizer.for_group('serverprefs')
 
-        self.daily_bread.initialize_from_cog(cog)
+        self.daily_bread.initialize_from_cog(cog, self.localizer)

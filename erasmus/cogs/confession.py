@@ -31,7 +31,7 @@ if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
     from ..erasmus import Erasmus
-    from ..l10n import Localizer, MessageLocalizer
+    from ..l10n import GroupLocalizer, MessageLocalizer
 
 _roman_re: Final = re.group(
     re.between(0, 4, 'M'),
@@ -274,10 +274,10 @@ class Confession(
     group_name='confess',
     group_description='Confessions',
 ):
-    localizer: Localizer
+    localizer: GroupLocalizer
 
     def __init__(self, bot: Erasmus, /) -> None:
-        self.localizer = bot.localizer
+        self.localizer = bot.localizer.for_group(self)
 
         super().__init__(bot)
 
@@ -356,7 +356,7 @@ class Confession(
             confession = await ConfessionRecord.get_by_command(session, source)
             results = await confession.search(session, terms.split(' '))
 
-        localizer = self.localizer.for_message('confess__search', itx.locale)
+        localizer = self.localizer.for_message('search', itx.locale)
         search_source = ConfessionSearchSource(
             results,
             per_page=20,

@@ -5,20 +5,21 @@ from typing import TYPE_CHECKING
 import pytest
 
 from erasmus.cogs.confession import Confession
+from erasmus.erasmus import Erasmus
+from erasmus.l10n import Localizer
 from erasmus.types import Refreshable
 
 if TYPE_CHECKING:
-    from erasmus.erasmus import Erasmus
+    from unittest.mock import Mock
 
-
-class MockBot:
-    localizer = object()
+    import pytest_mock
 
 
 class TestConfession:
     @pytest.fixture
-    def mock_bot(self) -> MockBot:
-        return MockBot()
+    def mock_bot(self, mocker: pytest_mock.MockerFixture) -> Mock:
+        localizer: Mock = mocker.Mock(spec_set=Localizer)
+        return mocker.Mock(spec=Erasmus, localizer=localizer)
 
     def test_instantiate(self, mock_bot: Erasmus) -> None:
         cog = Confession(mock_bot)

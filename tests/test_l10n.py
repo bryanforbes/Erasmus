@@ -9,8 +9,9 @@ import discord
 import pytest
 import pytest_mock
 from discord import app_commands
+from discord.ext import commands
 
-from erasmus.l10n import LocaleLocalizer, Localizer, MessageLocalizer
+from erasmus.l10n import GroupLocalizer, LocaleLocalizer, Localizer, MessageLocalizer
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
@@ -257,6 +258,7 @@ class TestLocalizer:
 
         locale_localizer.format('generic-error')
         locale_localizer.format('no-private-message', data={}, use_fallbacks=False)
+
         localizer_format.assert_has_calls(
             [  # type: ignore
                 mocker.call(
@@ -337,6 +339,136 @@ class TestLocalizer:
                     'serverprefs__setdefault.description',
                     data={},
                     locale=discord.Locale.norwegian,
+                    use_fallbacks=False,
+                ),
+            ]
+        )
+
+    def test_for_group(
+        self, mocker: pytest_mock.MockerFixture, localizer_format: Mock
+    ) -> None:
+        app_group_mock: Mock = mocker.Mock(
+            spec=app_commands.Group, __discord_app_commands_group_name__='app-group'
+        )
+        group_cog_mock: Mock = mocker.Mock(
+            spec=commands.GroupCog, __cog_group_name__='group-cog'
+        )
+        localizer = Localizer(discord.Locale.american_english)
+
+        group_localizer = localizer.for_group('foo')
+        sub_group_localizer = group_localizer.for_group('bar')
+        app_group_localizer = localizer.for_group(app_group_mock)
+        group_cog_localizer = localizer.for_group(group_cog_mock)
+
+        group_locale_localizer = group_localizer.for_locale(discord.Locale.swedish)
+        group_en_message_localizer = sub_group_localizer.for_message('baz')
+        group_de_message_localizer = sub_group_localizer.for_message(
+            'spam', locale=discord.Locale.german
+        )
+
+        assert isinstance(group_localizer, GroupLocalizer)
+        assert isinstance(sub_group_localizer, GroupLocalizer)
+        assert isinstance(app_group_localizer, GroupLocalizer)
+        assert isinstance(group_cog_localizer, GroupLocalizer)
+        assert isinstance(group_locale_localizer, LocaleLocalizer)
+        assert isinstance(group_en_message_localizer, MessageLocalizer)
+        assert isinstance(group_de_message_localizer, MessageLocalizer)
+
+        assert group_localizer.localizer is localizer
+        assert sub_group_localizer.localizer is localizer
+        assert app_group_localizer.localizer is localizer
+        assert group_cog_localizer.localizer is localizer
+
+        group_localizer.format('generic-error', locale=discord.Locale.norwegian)
+        group_localizer.format('no-private-message', data={}, use_fallbacks=False)
+        sub_group_localizer.format('generic-error', locale=discord.Locale.norwegian)
+        sub_group_localizer.format('no-private-message', data={}, use_fallbacks=False)
+        app_group_localizer.format('generic-error', locale=discord.Locale.norwegian)
+        app_group_localizer.format('no-private-message', data={}, use_fallbacks=False)
+        group_cog_localizer.format('generic-error', locale=discord.Locale.norwegian)
+        group_cog_localizer.format('no-private-message', data={}, use_fallbacks=False)
+
+        group_locale_localizer.format('generic-error')
+        group_locale_localizer.format(
+            'no-private-message', data={}, use_fallbacks=False
+        )
+        group_en_message_localizer.format()
+        group_en_message_localizer.format(data={}, use_fallbacks=False)
+        group_en_message_localizer.format('description')
+        group_en_message_localizer.format('description', data={}, use_fallbacks=False)
+        group_de_message_localizer.format()
+        group_de_message_localizer.format(data={}, use_fallbacks=False)
+        group_de_message_localizer.format('description')
+        group_de_message_localizer.format('description', data={}, use_fallbacks=False)
+
+        localizer_format.assert_has_calls(
+            [  # type: ignore
+                mocker.call('foo__generic-error', locale=discord.Locale.norwegian),
+                mocker.call('foo__no-private-message', data={}, use_fallbacks=False),
+                mocker.call('foo__bar__generic-error', locale=discord.Locale.norwegian),
+                mocker.call(
+                    'foo__bar__no-private-message', data={}, use_fallbacks=False
+                ),
+                mocker.call(
+                    'app-group__generic-error', locale=discord.Locale.norwegian
+                ),
+                mocker.call(
+                    'app-group__no-private-message', data={}, use_fallbacks=False
+                ),
+                mocker.call(
+                    'group-cog__generic-error', locale=discord.Locale.norwegian
+                ),
+                mocker.call(
+                    'group-cog__no-private-message', data={}, use_fallbacks=False
+                ),
+                mocker.call(
+                    'foo__generic-error',
+                    locale=discord.Locale.swedish,
+                ),
+                mocker.call(
+                    'foo__no-private-message',
+                    data={},
+                    locale=discord.Locale.swedish,
+                    use_fallbacks=False,
+                ),
+                mocker.call(
+                    'foo__bar__baz',
+                    locale=discord.Locale.american_english,
+                ),
+                mocker.call(
+                    'foo__bar__baz',
+                    data={},
+                    locale=discord.Locale.american_english,
+                    use_fallbacks=False,
+                ),
+                mocker.call(
+                    'foo__bar__baz.description',
+                    locale=discord.Locale.american_english,
+                ),
+                mocker.call(
+                    'foo__bar__baz.description',
+                    data={},
+                    locale=discord.Locale.american_english,
+                    use_fallbacks=False,
+                ),
+                mocker.call(
+                    'foo__bar__spam',
+                    locale=discord.Locale.german,
+                ),
+                mocker.call(
+                    'foo__bar__spam',
+                    data={},
+                    locale=discord.Locale.german,
+                    use_fallbacks=False,
+                ),
+                mocker.call(
+                    'foo__bar__spam.description',
+                    locale=discord.Locale.german,
+                ),
+                mocker.call(
+                    'foo__bar__spam.description',
+                    data={},
+                    locale=discord.Locale.german,
                     use_fallbacks=False,
                 ),
             ]

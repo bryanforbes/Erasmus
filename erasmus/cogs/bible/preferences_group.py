@@ -11,15 +11,15 @@ from .bible_lookup import bible_lookup  # noqa
 if TYPE_CHECKING:
     import discord
 
-    from ...l10n import Localizer
+    from ...l10n import GroupLocalizer
     from .cog import Bible
 
 
 class PreferencesGroup(app_commands.Group, name='prefs', description='Preferences'):
-    localizer: Localizer
+    localizer: GroupLocalizer
 
     def initialize_from_cog(self, cog: Bible, /) -> None:
-        self.localizer = cog.localizer
+        self.localizer = cog.localizer.for_group(self)
 
     @app_commands.command()
     @app_commands.describe(version='Bible version')
@@ -40,7 +40,7 @@ class PreferencesGroup(app_commands.Group, name='prefs', description='Preference
         await utils.send_embed(
             itx,
             description=self.localizer.format(
-                'prefs__setdefault.response',
+                'setdefault.response',
                 data={'version': version},
                 locale=itx.locale,
             ),
@@ -63,7 +63,7 @@ class PreferencesGroup(app_commands.Group, name='prefs', description='Preference
         await utils.send_embed(
             itx,
             description=self.localizer.format(
-                f'prefs__unsetdefault.{attribute_id}', locale=itx.locale
+                f'unsetdefault.{attribute_id}', locale=itx.locale
             ),
             ephemeral=True,
         )

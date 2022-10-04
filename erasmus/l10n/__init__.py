@@ -5,6 +5,8 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Literal, TypedDict, overload
 
 from attrs import define, field
+from discord import app_commands
+from discord.ext import commands
 from fluent.runtime import FluentResourceLoader
 
 from .fluent import Localization
@@ -15,7 +17,6 @@ if TYPE_CHECKING:
     from typing_extensions import NotRequired, Unpack
 
     import discord
-    from discord import app_commands
 
 
 # These need to be mapped because pontoon uses the full code rather than the two-letter
@@ -62,6 +63,21 @@ class LocalizerFormatFallbackTrueKwargs(
     LocalizerFormatKwargs, FormatFallbackTrueKwargs
 ):
     ...
+
+
+class LocalizerFormatAnyKwargs(LocalizerFormatKwargs):
+    use_fallbacks: NotRequired[bool]
+
+
+def _get_group_prefix(
+    group_prefix: str | app_commands.Group | commands.GroupCog, /
+) -> str:
+    if isinstance(group_prefix, app_commands.Group):
+        group_prefix = str(group_prefix.__discord_app_commands_group_name__)
+    elif isinstance(group_prefix, commands.GroupCog):
+        group_prefix = str(group_prefix.__cog_group_name__)
+
+    return group_prefix
 
 
 @define
@@ -135,6 +151,11 @@ class Localizer:
             self._l10n_map = old_map
             raise
 
+    def for_group(
+        self, group_prefix: str | app_commands.Group | commands.GroupCog, /
+    ) -> GroupLocalizer:
+        return GroupLocalizer(self, _get_group_prefix(group_prefix))
+
     def for_locale(self, locale: discord.Locale, /) -> LocaleLocalizer:
         return LocaleLocalizer(self, locale)
 
@@ -151,8 +172,63 @@ class Localizer:
 
 
 @define(frozen=True)
-class LocaleLocalizer:
+class GroupLocalizer:
     localizer: Localizer
+    group_prefix: str
+
+    @overload
+    def format(
+        self,
+        message_id: str | app_commands.locale_str,
+        /,
+        **kwargs: Unpack[LocalizerFormatFallbackKwargs],
+    ) -> str | None:
+        ...
+
+    @overload
+    def format(
+        self,
+        message_id: str | app_commands.locale_str,
+        /,
+        **kwargs: Unpack[LocalizerFormatFallbackTrueKwargs],
+    ) -> str:
+        ...
+
+    def format(
+        self,
+        message_id: str | app_commands.locale_str,
+        /,
+        **kwargs: Unpack[LocalizerFormatAnyKwargs],
+    ) -> str | None:
+        return self.localizer.format(f'{self.group_prefix}__{message_id}', **kwargs)
+
+    def for_group(
+        self, group_prefix: str | app_commands.Group | commands.GroupCog, /
+    ) -> GroupLocalizer:
+        group_prefix = _get_group_prefix(group_prefix)
+
+        return self.localizer.for_group(f'{self.group_prefix}__{group_prefix}')
+
+    def for_locale(self, locale: discord.Locale, /) -> LocaleLocalizer:
+        return LocaleLocalizer(self, locale)
+
+    def for_message(
+        self,
+        message_id: str,
+        /,
+        locale: discord.Locale | None = None,
+    ) -> MessageLocalizer:
+        return MessageLocalizer(
+            self.for_locale(
+                self.localizer.default_locale if locale is None else locale
+            ),
+            message_id,
+        )
+
+
+@define(frozen=True)
+class LocaleLocalizer:
+    localizer: Localizer | GroupLocalizer
     locale: discord.Locale
 
     @overload
@@ -184,7 +260,7 @@ class LocaleLocalizer:
 
 @define(frozen=True)
 class MessageLocalizer:
-    localizer: LocaleLocalizer
+    localizer: LocaleLocalizer | GroupLocalizer
     message_id: str
 
     @overload
