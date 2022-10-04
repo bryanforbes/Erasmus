@@ -26,7 +26,6 @@ if TYPE_CHECKING:
 
 _log: Final = logging.getLogger(__name__)
 _extensions: Final = ('admin', 'bible', 'confession', 'creeds', 'misc')
-
 _version: Final = metadata.version('erasmus')
 
 
@@ -54,18 +53,19 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
 
     @cached_property
     def invite_url(self) -> str:
-        perms = discord.Permissions(
-            add_reactions=True,
-            embed_links=True,
-            manage_messages=True,
-            manage_webhooks=True,
-            read_message_history=True,
-            read_messages=True,
-            send_messages=True,
-            send_messages_in_threads=True,
+        return discord.utils.oauth_url(
+            self.application_id,
+            permissions=discord.Permissions(
+                add_reactions=True,
+                embed_links=True,
+                manage_messages=True,
+                manage_webhooks=True,
+                read_message_history=True,
+                read_messages=True,
+                send_messages=True,
+                send_messages_in_threads=True,
+            ),
         )
-
-        return discord.utils.oauth_url(self.application_id, permissions=perms)
 
     @property
     def bible_cog(self) -> Bible:
