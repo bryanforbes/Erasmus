@@ -10,6 +10,7 @@ import discord
 import pendulum
 from attrs import define, field
 from botus_receptus import re, utils
+from botus_receptus.app_commands import test_guilds_only
 from bs4 import BeautifulSoup, SoupStrainer
 from discord import app_commands
 from discord.ext import tasks
@@ -208,6 +209,8 @@ class PassageFetcher:
         return passage
 
 
+@app_commands.guild_only()
+@test_guilds_only
 class DailyBreadGroup(
     app_commands.Group, name='daily-bread', description='Daily bread'
 ):
@@ -559,3 +562,21 @@ class DailyBreadPreferencesGroup(
                 await utils.send_embed(itx, description=localizer.format('not_set'))
 
             await session.commit()
+
+
+@app_commands.default_permissions(administrator=True)
+@app_commands.guild_only()
+@test_guilds_only
+class TestingServerPreferencesGroup(
+    app_commands.Group, name='test-server-prefs', description='Testing group'
+):
+    bot: Erasmus
+    localizer: Localizer
+
+    daily_bread = DailyBreadPreferencesGroup()
+
+    def initialize_from_cog(self, cog: Bible, /) -> None:
+        self.bot = cog.bot
+        self.localizer = cog.localizer
+
+        self.daily_bread.initialize_from_cog(cog)

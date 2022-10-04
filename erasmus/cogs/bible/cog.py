@@ -32,7 +32,7 @@ from ...ui_pages import UIPages
 from ...utils import send_passage
 from .admin_group import BibleAdminGroup
 from .bible_lookup import _BibleOption, bible_lookup
-from .daily_bread_group import DailyBreadGroup
+from .daily_bread_group import DailyBreadGroup, TestingServerPreferencesGroup
 from .preferences_group import PreferencesGroup
 from .search_page_source import SearchPageSource
 from .server_preferences_group import ServerPreferencesGroup
@@ -76,6 +76,7 @@ class Bible(Cog['Erasmus']):
     preferences = PreferencesGroup()
     server_preferences = ServerPreferencesGroup()
     daily_bread = DailyBreadGroup()
+    testing = TestingServerPreferencesGroup()
 
     __lookup_cooldown: commands.CooldownMapping[discord.Message]
     __daily_bread_task: tasks.Loop[Callable[[], Coroutine[None]]]
@@ -92,6 +93,7 @@ class Bible(Cog['Erasmus']):
         self.admin.initialize_from_cog(self)
         self.preferences.initialize_from_cog(self)
         self.server_preferences.initialize_from_cog(self)
+        self.testing.initialize_from_cog(self)
         self.daily_bread.initialize_from_cog(self)
 
     async def refresh(self, session: AsyncSession, /) -> None:

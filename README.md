@@ -9,7 +9,7 @@
 
 A Bible bot for Discord
 
-[Invite Erasmus to your server](https://discordapp.com/oauth2/authorize?client_id=349394562336292876&scope=bot&permissions=388160)
+[Invite Erasmus to your server](https://discord.com/oauth2/authorize?client_id=362261298139889664&scope=bot+applications.commands&permissions=275414871104)
 
 ## Commands
 
@@ -17,14 +17,10 @@ A Bible bot for Discord
 * `/search` - Search for terms in your preferred or selected version
 * `/bibles` - List the Bible versions supported
 * `/bibleinfo` - Display information about the specified Bible version
-* `/daily-bread show` - Display today's daily bread
-* `/daily-bread status` - Display the status of automated daily bread posts for this server
 * `/prefs setdefault` - Set your preferred version
 * `/prefs unsetdefault` - Unset your preferred version
 * `/serverprefs setdefault` - Set the server's preferred version (Administrator only)
 * `/serverprefs unsetdefault` - Unset the server's preferred version (Administrator only)
-* `/serverprefs daily-bread set` - Schedule the automated daily bread posts (Administrator only)
-* `/serverprefs daily-bread stop` - Stop the automated daily bread posts (Administrator only)
 * `/creed apostles` - Display The Apostles' Creed
 * `/creed athanasian` - Display The Athanasian Creed
 * `/creed chalcedon` - Display The Chalcedonian Definition
@@ -46,9 +42,7 @@ In addition to the slash-commands listed above, Erasmus will respond to all vers
 Erasmus retains the following data:
 
 * A user's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if the user sets a preferred version using `/prefs setdefault` (this can be deleted using `/prefs unsetdefault`)
-* A guild's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if one of the following conditions is met:
-  * A guild administrator sets a preferred version for the guild using `/serverprefs setdefault` (this can be deleted using `/serverprefs unsetdefault`)
-  * A guild administrator schedules the automatic daily bread posts for the guild using `/serverprefs daily-bread set` (this can be deleted using `/serverprefs daily-bread stop`)
+* A guild's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if a guild administrator sets a preferred version for the guild using `/serverprefs setdefault` (this can be deleted using `/serverprefs unsetdefault`)
 
 Erasmus **never** retains message content.
 
