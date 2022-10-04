@@ -25,6 +25,7 @@ class MockService:
 
 class MockBible:
     __slots__ = (
+        'id',
         'command',
         'name',
         'abbr',
@@ -38,6 +39,7 @@ class MockBible:
     def __init__(
         self,
         *,
+        id: int,
         command: str,
         name: str,
         abbr: str,
@@ -45,6 +47,7 @@ class MockBible:
         service_version: str,
         rtl: bool | None = False,
     ) -> None:
+        self.id = id
         self.command = command
         self.name = name
         self.abbr = abbr
@@ -89,6 +92,7 @@ class TestServiceManager:
     @pytest.fixture
     def bible1(self) -> Bible:
         return MockBible(
+            id=1,
             command='bible1',
             name='Bible 1',
             abbr='BIB1',
@@ -99,6 +103,7 @@ class TestServiceManager:
     @pytest.fixture
     def bible2(self) -> Bible:
         return MockBible(
+            id=2,
             command='bible2',
             name='Bible 2',
             abbr='BIB2',

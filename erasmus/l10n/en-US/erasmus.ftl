@@ -42,6 +42,39 @@ serverprefs__unsetdefault = unsetdefault
     .deleted = Server version deleted
     .already-deleted = Server version already deleted
 
+serverprefs__daily-bread = daily-bread
+    .description = Daily bread
+
+serverprefs__daily-bread__set = set
+    .description = Set or update the automated daily bread post settings for this server
+    .PARAM--channel--name = channel
+    .PARAM--channel--description = The channel to post the daily bread to
+    .PARAM--time--name = time
+    .PARAM--time--description = The time to post at
+    .PARAM--timezone--name = timezone
+    .PARAM--timezone--description = The time zone for the time to post
+    .started =
+        Automated daily bread posting has been started. I will post the daily bread in { $channel } starting at { $next_scheduled } using `{ $version }`.
+
+        Use `/serverprefs daily-bread set` to set a new channel or time.
+        Use `/serverprefs daily-bread stop` to stop automated posts.
+        Use `/serverprefs setdefault` to change the version.
+    .updated =
+        Automated daily bread posting has been updated. I will post the daily bread in { $channel } starting at { $next_scheduled } using `{ $version }`.
+
+        Use `/serverprefs daily-bread set` to set a new channel or time.
+        Use `/serverprefs daily-bread stop` to stop automated posts.
+        Use `/serverprefs setdefault` to change the version.
+    .need-guild-webhooks-permission = I need the "Manage Webhooks" permission in order to post the daily bread. [Click here]({ $invite_url }) to re-authorize me with the correct permissions. Afterwards, please re-run this command.
+    .need-channel-webhooks-permission = I need the "Manage Webhooks" permission enabled for me in { $actual_channel } to allow me to post the daily bread in { $channel }. After doing so, please re-run this command.
+    .version-warning = The server's current default version (`{ $version }`) does not include both Old and New Testaments. I will skip posting daily bread for days where the verse or verses are in a book missing from this version. In order to get daily bread posted every day, please change the server's default version to a version that includes both the Old and New Testaments using `/serverprefs setdefault`.
+
+serverprefs__daily-bread__stop = stop
+    .description = Stop the automated daily bread posts for this server
+    .stopped = Automated daily bread posting has been stopped for this server
+    .not_set = Automated daily bread posting has not been set for this server
+    .unable-to-remove-existing = I was unable to remove my existing webhooks. You will need to manually remove any webhooks in my integrations settings in the "Integrations" server settings under "Bots and Apps".
+
 prefs = prefs
     .description = Preferences
 
@@ -95,6 +128,23 @@ bibleinfo = bibleinfo
     .abbreviation = Abbreviation
     .books = Books
 
+daily-bread = daily-bread
+    .description = Daily bread
+
+daily-bread__show = show
+    .description = Display today's daily bread
+    .PARAM--version--name = version
+    .PARAM--version--description = The version to display the daily bread in
+    .PARAM--only_me--name = only_me
+    .PARAM--only_me--description = Whether to display the daily bread to yourself or everyone
+
+daily-bread__status = status
+    .description = Display the status of automated daily bread posts for this server
+    .not_set = Automated daily bread posts have not been set up in this server. You will need to ask an administrator to set it up.
+    .title = Daily Bread Status
+    .channel = Channel
+    .next_scheduled = Next Scheduled
+
 ## Errors
 
 book-not-understood = I do not understand the book "{ $book }"
@@ -109,6 +159,9 @@ invalid-version = `{ $version }` is not a valid version. Check `/bibles` for val
 service-not-supported = The service configured for `{ $name }` is not supported
 service-lookup-timeout = The request timed out looking up { $verses } in { $name }
 service-search-timeout = The request timed out searching for { $terms } in { $name }
+invalid-time = `{ $time }` is not a valid time representation
+invalid-timezone = `{ $timezone }` is not a recognized time zone
+daily-bread-not-in-version = Today's daily bread is not in `{ $version }`
 
 # Confessions Cog
 

@@ -66,7 +66,7 @@ class SectionFlag(Flag):
     @property
     def book_names(self) -> Iterator[str]:
         for section, book in _book_mask_map.items():
-            if self & section:
+            if section in self:
                 match book.name:
                     case 'Genesis':
                         yield 'Old Testament'

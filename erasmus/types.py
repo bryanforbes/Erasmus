@@ -16,6 +16,10 @@ else:
 
 class Bible(Protocol):
     @property
+    def id(self) -> int:
+        ...
+
+    @property
     def command(self) -> str:
         ...
 

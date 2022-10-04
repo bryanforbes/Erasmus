@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 import sys
+from functools import cached_property
 from importlib import metadata
 from typing import TYPE_CHECKING, Final, cast
 
@@ -25,7 +26,6 @@ if TYPE_CHECKING:
 
 _log: Final = logging.getLogger(__name__)
 _extensions: Final = ('admin', 'bible', 'confession', 'creeds', 'misc')
-
 _version: Final = metadata.version('erasmus')
 
 
@@ -50,6 +50,22 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         )
 
         self.tree.error(self.on_app_command_error)
+
+    @cached_property
+    def invite_url(self) -> str:
+        return discord.utils.oauth_url(
+            self.application_id,
+            permissions=discord.Permissions(
+                add_reactions=True,
+                embed_links=True,
+                manage_messages=True,
+                manage_webhooks=True,
+                read_message_history=True,
+                read_messages=True,
+                send_messages=True,
+                send_messages_in_threads=True,
+            ),
+        )
 
     @property
     def bible_cog(self) -> Bible:

@@ -99,6 +99,27 @@ class InvalidVersionError(ErasmusError):
         self.version = version
 
 
+class InvalidTimeError(ErasmusError):
+    time: str
+
+    def __init__(self, time: str, /) -> None:
+        self.time = time
+
+
+class InvalidTimeZoneError(ErasmusError):
+    timezone: str
+
+    def __init__(self, timezone: str, /) -> None:
+        self.timezone = timezone
+
+
+class DailyBreadNotInVersionError(ErasmusError):
+    version: str
+
+    def __init__(self, version: str, /) -> None:
+        self.version = version
+
+
 class InvalidConfessionError(ErasmusError):
     confession: str
 

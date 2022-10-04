@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import pendulum
 from botus_receptus.sqlalchemy import Snowflake
 from sqlalchemy import (
     Boolean,
@@ -20,9 +21,11 @@ from ..data import SectionFlag
 from ..exceptions import InvalidVersionError
 from .base import (
     Base,
+    DateTime,
     Flag,
     Mapped,
     deref_column,
+    foreign,
     mapped_column,
     mixin_column,
     model,
@@ -34,6 +37,7 @@ if TYPE_CHECKING:
     from collections.abc import AsyncIterator
 
     import discord
+    from botus_receptus.types import Coroutine
     from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -171,16 +175,18 @@ class BibleVersion(Base):
         ).first()
 
     @staticmethod
-    async def get_for_user(
+    async def get_for(
         session: AsyncSession,
-        user: discord.User | discord.Member,
-        guild: discord.Guild | None,
         /,
+        *,
+        user: discord.User | discord.Member | discord.Object | None = None,
+        guild: discord.Guild | discord.Object | None = None,
     ) -> BibleVersion:
-        user_pref = await session.get(UserPref, user.id)
+        if user is not None:
+            user_pref = await session.get(UserPref, user.id)
 
-        if user_pref is not None and user_pref.bible_version is not None:
-            return user_pref.bible_version
+            if user_pref is not None and user_pref.bible_version is not None:
+                return user_pref.bible_version
 
         if guild is not None:
             guild_pref = await session.get(GuildPref, guild.id)
@@ -207,9 +213,59 @@ class UserPref(_BibleVersionMixin):
 
     user_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
 
+    @staticmethod
+    def for_user(
+        session: AsyncSession, user: discord.User | discord.Member, /
+    ) -> Coroutine[UserPref | None]:
+        return session.get(UserPref, user.id)
+
 
 @model
 class GuildPref(_BibleVersionMixin):
     __tablename__ = 'guild_prefs'
 
     guild_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
+
+    @staticmethod
+    def for_guild(
+        session: AsyncSession, guild: discord.Guild, /
+    ) -> Coroutine[GuildPref | None]:
+        return session.get(GuildPref, guild.id)
+
+
+@model
+class DailyBread(Base):
+    __tablename__ = 'daily_breads'
+
+    guild_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
+    channel_id: Mapped[int] = mapped_column(Snowflake, nullable=False)
+    thread_id: Mapped[int | None] = mapped_column(Snowflake)
+    url: Mapped[str] = mapped_column(String, nullable=False)
+    next_scheduled: Mapped[pendulum.DateTime] = mapped_column(
+        DateTime(timezone=True), nullable=False
+    )
+
+    prefs: Mapped[GuildPref | None] = relationship(
+        GuildPref,
+        lazy='joined',
+        uselist=False,
+        viewonly=True,
+        primaryjoin=deref_column(guild_id) == foreign(GuildPref.guild_id),
+    )
+
+    @staticmethod
+    def for_guild(
+        session: AsyncSession, guild: discord.Guild, /
+    ) -> Coroutine[DailyBread | None]:
+        return session.get(DailyBread, guild.id)
+
+    @staticmethod
+    async def scheduled(session: AsyncSession, /) -> list[DailyBread]:
+        return (
+            await session.scalars(
+                select(DailyBread).filter(
+                    DailyBread.next_scheduled
+                    <= pendulum.now().set(second=0, microsecond=0)
+                )
+            )
+        ).fetchall()

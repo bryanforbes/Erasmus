@@ -17,7 +17,7 @@ if TYPE_CHECKING:
 class InviteView(discord.ui.View):
     def __init__(
         self,
-        application_id: int,
+        invite_url: str,
         localizer: MessageLocalizer,
         /,
         *,
@@ -25,34 +25,21 @@ class InviteView(discord.ui.View):
     ) -> None:
         super().__init__(timeout=timeout)
 
-        perms = discord.Permissions(
-            add_reactions=True,
-            embed_links=True,
-            manage_messages=True,
-            read_message_history=True,
-            read_messages=True,
-            send_messages=True,
-            send_messages_in_threads=True,
-        )
-
         self.add_item(
-            discord.ui.Button(
-                label=localizer.format('invite'),
-                url=discord.utils.oauth_url(application_id, permissions=perms),
-            )
+            discord.ui.Button(label=localizer.format('invite'), url=invite_url)
         )
 
 
 class AboutView(InviteView):
     def __init__(
         self,
-        application_id: int,
+        invite_url: str,
         localizer: MessageLocalizer,
         /,
         *,
         timeout: float | None = 180,
     ) -> None:
-        super().__init__(application_id, localizer, timeout=timeout)
+        super().__init__(invite_url, localizer, timeout=timeout)
 
         self.add_item(
             discord.ui.Button(
@@ -102,7 +89,7 @@ class Misc(Cog['Erasmus']):
 
         localizer = self.localizer.for_message('about', locale=itx.locale)
 
-        await utils.send(itx, view=InviteView(self.bot.application_id, localizer))
+        await utils.send(itx, view=InviteView(self.bot.invite_url, localizer))
 
     @app_commands.command()
     @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda itx: itx.user.id)
@@ -153,11 +140,11 @@ class Misc(Cog['Erasmus']):
                     timestamp=discord.utils.utcnow(),
                 )
             ],
-            view=AboutView(self.bot.application_id, localizer),
+            view=AboutView(self.bot.invite_url, localizer),
         )
 
     async def __news_version_autocomplete(
-        self, itx: discord.Interaction, current: str, /
+        self, _: discord.Interaction, current: str, /
     ) -> list[app_commands.Choice[str]]:
         versions = self.version_map.keys()
         return [
@@ -209,9 +196,7 @@ class Misc(Cog['Erasmus']):
                 'you should reauthorize Erasmus in your server by doing the '
                 'following (**NOTE:** You **do not** have to remove Erasmus from your '
                 'server):\n\n'
-                '- Click [this link](https://discord.com/api/oauth2/authorize?'
-                'client_id=349394562336292876&permissions=274878000192&'
-                'scope=applications.commands%20bot)\n'
+                f'- Click [this link]({self.bot.invite_url})\n'
                 '- In the popup that opens, select your server in the drop down and '
                 'tap "Continue"\n'
                 '- In the popup that opens, tap "Authorize"\n\n'

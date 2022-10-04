@@ -1,5 +1,6 @@
 # Version UNRELEASED
 
+* Added `/daily-bread` commands
 * Fixed verse display incorrectly italicizing Jesus' words
 * Added version and shard number to activity display
 
