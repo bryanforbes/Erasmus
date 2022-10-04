@@ -71,7 +71,9 @@ class ServerPreferencesGroup(
         assert itx.guild is not None
 
         async with Session.begin() as session:
-            if (guild_prefs := await session.get(GuildPref, itx.guild.id)) is not None:
+            if (
+                guild_prefs := await GuildPref.for_guild(session, itx.guild)
+            ) is not None:
                 await session.delete(guild_prefs)
                 attribute_id = 'deleted'
             else:

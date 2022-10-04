@@ -13,7 +13,6 @@ from botus_receptus import re, utils
 from bs4 import BeautifulSoup, SoupStrainer
 from discord import app_commands
 from discord.ext import tasks
-from sqlalchemy import select
 
 from ...data import Passage, SectionFlag, VerseRange
 from ...db import DailyBread, Session
@@ -247,17 +246,8 @@ class DailyBreadGroup(
             return VerseRange.from_string(passage_node.get_text(''))
 
     async def __check_and_post(self) -> None:
-        now = pendulum.now().set(second=0, microsecond=0)
-
         async with Session.begin() as session:
-            result = cast(
-                'list[DailyBread]',
-                (
-                    await session.scalars(
-                        select(DailyBread).filter(DailyBread.next_scheduled <= now)
-                    )
-                ).fetchall(),
-            )
+            result = await DailyBread.scheduled(session)
 
             if not result:
                 return
@@ -270,9 +260,7 @@ class DailyBreadGroup(
             fallback = await BibleVersion.get_by_command(session, 'esv')
 
             for daily_bread in result:
-                next_scheduled = pendulum.instance(daily_bread.next_scheduled).add(
-                    hours=24
-                )
+                next_scheduled = daily_bread.next_scheduled.add(hours=24)
                 webhook = _get_daily_bread_webhook(daily_bread, self.session)
 
                 if (
@@ -283,7 +271,7 @@ class DailyBreadGroup(
                 else:
                     bible = fallback
 
-                if not bible.books & verse_range.book_mask:
+                if verse_range.book_mask not in bible.books:
                     daily_bread.next_scheduled = next_scheduled
                     continue
 
@@ -352,7 +340,7 @@ class DailyBreadGroup(
                 await self.__get_verse_range(), self.service_manager
             )
 
-        if not bible.books & self.__fetcher.verse_range.book_mask:
+        if self.__fetcher.verse_range.book_mask not in bible.books:
             raise DailyBreadNotInVersionError(bible.name)
 
         passage = await self.__fetcher(bible)
@@ -455,9 +443,7 @@ class DailyBreadPreferencesGroup(
             'serverprefs__daily-bread__set', locale=itx.locale
         )
 
-        if not itx.guild.me.guild_permissions & discord.Permissions(
-            manage_webhooks=True
-        ):
+        if not itx.guild.me.guild_permissions.manage_webhooks:
             await utils.send_embed_error(
                 itx,
                 description=_format_with_invite(
@@ -468,9 +454,7 @@ class DailyBreadPreferencesGroup(
             )
             return
 
-        if not actual_channel.permissions_for(itx.guild.me) & discord.Permissions(
-            manage_webhooks=True
-        ):
+        if not actual_channel.permissions_for(itx.guild.me).manage_webhooks:
             await utils.send_embed_error(
                 itx,
                 description=localizer.format(
@@ -493,7 +477,7 @@ class DailyBreadPreferencesGroup(
             next_scheduled = next_scheduled.add(hours=24)
 
         async with Session.begin() as session:
-            daily_bread = await session.get(DailyBread, itx.guild.id)
+            daily_bread = await DailyBread.for_guild(session, itx.guild)
 
             if daily_bread is not None:
                 updated = True
@@ -520,7 +504,7 @@ class DailyBreadPreferencesGroup(
 
             await session.commit()
 
-        if version.books & (SectionFlag.OT | SectionFlag.NT):
+        if (SectionFlag.OT | SectionFlag.NT) not in version.books:
             await utils.send_embed(
                 itx,
                 description=(
@@ -560,9 +544,7 @@ class DailyBreadPreferencesGroup(
             daily_bread = await DailyBread.for_guild(session, itx.guild)
 
             if daily_bread is not None:
-                if not itx.guild.me.guild_permissions & discord.Permissions(
-                    manage_webhooks=True
-                ):
+                if not itx.guild.me.guild_permissions.manage_webhooks:
                     await utils.send_embed_error(
                         itx,
                         description=localizer.format('unable-to-remove-existing'),

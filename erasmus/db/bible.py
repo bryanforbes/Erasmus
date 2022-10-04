@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import pendulum
 from botus_receptus.sqlalchemy import Snowflake
 from sqlalchemy import (
     Boolean,
@@ -36,7 +37,7 @@ if TYPE_CHECKING:
     from collections.abc import AsyncIterator
 
     import discord
-    import pendulum
+    from botus_receptus.types import Coroutine
     from sqlalchemy.ext.asyncio import AsyncSession
 
 
@@ -212,12 +213,24 @@ class UserPref(_BibleVersionMixin):
 
     user_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
 
+    @staticmethod
+    def for_user(
+        session: AsyncSession, user: discord.User | discord.Member, /
+    ) -> Coroutine[UserPref | None]:
+        return session.get(UserPref, user.id)
+
 
 @model
 class GuildPref(_BibleVersionMixin):
     __tablename__ = 'guild_prefs'
 
     guild_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
+
+    @staticmethod
+    def for_guild(
+        session: AsyncSession, guild: discord.Guild, /
+    ) -> Coroutine[GuildPref | None]:
+        return session.get(GuildPref, guild.id)
 
 
 @model
@@ -241,7 +254,18 @@ class DailyBread(Base):
     )
 
     @staticmethod
-    async def for_guild(
+    def for_guild(
         session: AsyncSession, guild: discord.Guild, /
-    ) -> DailyBread | None:
-        return await session.get(DailyBread, guild.id)
+    ) -> Coroutine[DailyBread | None]:
+        return session.get(DailyBread, guild.id)
+
+    @staticmethod
+    async def scheduled(session: AsyncSession, /) -> list[DailyBread]:
+        return (
+            await session.scalars(
+                select(DailyBread).filter(
+                    DailyBread.next_scheduled
+                    <= pendulum.now().set(second=0, microsecond=0)
+                )
+            )
+        ).fetchall()

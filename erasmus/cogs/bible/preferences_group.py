@@ -52,7 +52,7 @@ class PreferencesGroup(app_commands.Group, name='prefs', description='Preference
     async def unsetdefault(self, itx: discord.Interaction, /) -> None:
         '''Unset your default Bible version'''
         async with Session.begin() as session:
-            user_prefs = await session.get(UserPref, itx.user.id)
+            user_prefs = await UserPref.for_user(session, itx.user)
 
             if user_prefs is not None:
                 await session.delete(user_prefs)

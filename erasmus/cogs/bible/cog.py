@@ -136,7 +136,7 @@ class Bible(Cog['Erasmus']):
         reference: VerseRange,
         only_me: bool = False,
     ) -> None:
-        if not bible.books & reference.book_mask:
+        if reference.book_mask not in bible.books:
             raise BookNotInVersionError(reference.book.name, bible.name)
 
         passage = await self.service_manager.get_passage(bible, reference)

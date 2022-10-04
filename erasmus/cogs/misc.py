@@ -144,7 +144,7 @@ class Misc(Cog['Erasmus']):
         )
 
     async def __news_version_autocomplete(
-        self, itx: discord.Interaction, current: str, /
+        self, _: discord.Interaction, current: str, /
     ) -> list[app_commands.Choice[str]]:
         versions = self.version_map.keys()
         return [
@@ -196,9 +196,7 @@ class Misc(Cog['Erasmus']):
                 'you should reauthorize Erasmus in your server by doing the '
                 'following (**NOTE:** You **do not** have to remove Erasmus from your '
                 'server):\n\n'
-                '- Click [this link](https://discord.com/api/oauth2/authorize?'
-                'client_id=349394562336292876&permissions=274878000192&'
-                'scope=applications.commands%20bot)\n'
+                f'- Click [this link]({self.bot.invite_url})\n'
                 '- In the popup that opens, select your server in the drop down and '
                 'tap "Continue"\n'
                 '- In the popup that opens, tap "Authorize"\n\n'
