@@ -8,7 +8,11 @@ import pytest
 import pytest_mock
 
 from erasmus.data import Passage, SearchResults, VerseRange
-from erasmus.exceptions import ServiceLookupTimeout, ServiceSearchTimeout
+from erasmus.exceptions import (
+    ServiceLookupTimeout,
+    ServiceNotSupportedError,
+    ServiceSearchTimeout,
+)
 from erasmus.service_manager import ServiceManager
 
 if TYPE_CHECKING:
@@ -111,6 +115,17 @@ class TestServiceManager:
             service_version='service-BIB2',
         )
 
+    @pytest.fixture
+    def bible3(self) -> Bible:
+        return MockBible(
+            id=3,
+            command='bible2',
+            name='Bible 3',
+            abbr='BIB3',
+            service='ServiceThree',
+            service_version='service-BIB3',
+        )
+
     def test_from_config(
         self,
         mocker: pytest_mock.MockerFixture,
@@ -161,6 +176,14 @@ class TestServiceManager:
         service_two.get_passage.assert_called_once_with(
             bible2, VerseRange.from_string('Genesis 1:2')
         )
+
+    async def test_get_passage_raises(
+        self, service_one: MockService, service_two: MockService, bible3: MockBible
+    ) -> None:
+        manager = ServiceManager({'ServiceOne': service_one, 'ServiceTwo': service_two})
+
+        with pytest.raises(ServiceNotSupportedError):
+            await manager.get_passage(bible3, VerseRange.from_string('Genesis 1:2'))
 
     async def test_get_passage_timeout(
         self,
