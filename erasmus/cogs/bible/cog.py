@@ -33,9 +33,9 @@ from ...utils import send_passage
 from .admin_group import BibleAdminGroup
 from .bible_lookup import _BibleOption, bible_lookup
 from .daily_bread_group import DailyBreadGroup, TestingServerPreferencesGroup
-from .preferences_group import PreferencesGroup
 from .search_page_source import SearchPageSource
 from .server_preferences_group import ServerPreferencesGroup
+from .version_group import VersionGroup
 
 if TYPE_CHECKING:
     from botus_receptus.types import Coroutine
@@ -73,7 +73,7 @@ class Bible(Cog['Erasmus']):
     localizer: Localizer
 
     admin = BibleAdminGroup()
-    preferences = PreferencesGroup()
+    version = VersionGroup()
     server_preferences = ServerPreferencesGroup()
     daily_bread = DailyBreadGroup()
     testing = TestingServerPreferencesGroup()
@@ -90,11 +90,11 @@ class Bible(Cog['Erasmus']):
 
         super().__init__(bot)
 
-        self.admin.initialize_from_cog(self)
-        self.preferences.initialize_from_cog(self)
-        self.server_preferences.initialize_from_cog(self)
-        self.testing.initialize_from_cog(self)
-        self.daily_bread.initialize_from_cog(self)
+        self.admin.initialize_from_parent(self)
+        self.version.initialize_from_parent(self)
+        self.server_preferences.initialize_from_parent(self)
+        self.testing.initialize_from_parent(self)
+        self.daily_bread.initialize_from_parent(self)
 
     async def refresh(self, session: AsyncSession, /) -> None:
         bible_lookup.clear()

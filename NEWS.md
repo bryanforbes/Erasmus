@@ -1,5 +1,12 @@
 # Version UNRELEASED
 
+* Renamed some commands:
+  * `/prefs setdefault` -> `/version set`
+  * `/prefs unsetdefault` -> `/version clear`
+  * `/serverprefs setdefault` -> `/serverprefs version set`
+  * `/serverprefs unsetdefault` -> `/serverprefs version clear`
+* Added `/version show`
+* Added `/serverprefs version show` (Administrator only)
 * Fixed verse display incorrectly italicizing Jesus' words
 * Added version and shard number to activity display
 

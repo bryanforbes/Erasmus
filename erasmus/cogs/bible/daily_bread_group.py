@@ -220,10 +220,10 @@ class DailyBreadGroup(
 
     __fetcher: PassageFetcher | None
 
-    def initialize_from_cog(self, cog: Bible, /) -> None:
-        self.session = cog.bot.session
-        self.service_manager = cog.service_manager
-        self.localizer = cog.localizer.for_group(self)
+    def initialize_from_parent(self, parent: Bible, /) -> None:
+        self.session = parent.bot.session
+        self.service_manager = parent.service_manager
+        self.localizer = parent.localizer.for_group(self)
 
         self.__fetcher = None
 
@@ -394,9 +394,9 @@ class DailyBreadPreferencesGroup(
     bot: Erasmus
     localizer: GroupLocalizer
 
-    def initialize_from_cog(self, cog: Bible, localizer: GroupLocalizer, /) -> None:
-        self.bot = cog.bot
-        self.localizer = localizer.for_group(self)
+    def initialize_from_parent(self, parent: TestingServerPreferencesGroup, /) -> None:
+        self.bot = parent.bot
+        self.localizer = parent.localizer.for_group(self)
 
     async def __remove_webhooks(
         self,
@@ -571,8 +571,8 @@ class TestingServerPreferencesGroup(
 
     daily_bread = DailyBreadPreferencesGroup()
 
-    def initialize_from_cog(self, cog: Bible, /) -> None:
-        self.bot = cog.bot
-        self.localizer = cog.localizer.for_group('serverprefs')
+    def initialize_from_parent(self, parent: Bible, /) -> None:
+        self.bot = parent.bot
+        self.localizer = parent.localizer.for_group('serverprefs')
 
-        self.daily_bread.initialize_from_cog(cog, self.localizer)
+        self.daily_bread.initialize_from_parent(self)

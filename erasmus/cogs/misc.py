@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING
 
 import discord
-from botus_receptus import Cog, Embed, formatting, utils
+from botus_receptus import Cog, Embed, formatting, re, utils
 from discord import app_commands
 
 if TYPE_CHECKING:
@@ -55,6 +55,14 @@ class AboutView(InviteView):
         )
 
 
+_news_item_re = re.compile(
+    re.START,
+    re.capture(re.any_number_of(re.exactly(2, re.WHITESPACE))),
+    r'\*',
+    re.capture(re.WHITESPACE, re.any_number_of(re.ANY_CHARACTER)),
+)
+
+
 class Misc(Cog['Erasmus']):
     localizer: Localizer
     version_map: OrderedDict[str, list[str]]
@@ -74,8 +82,9 @@ class Misc(Cog['Erasmus']):
                     current_items = []
                     version_map[line[10:-1]] = current_items
 
-                if line.startswith('* '):
-                    current_items.append(f'• {line[2:-1]}')
+                if (match := _news_item_re.match(line)) is not None:
+                    prefix = match[1].replace(' ', '\u2002')
+                    current_items.append(f'{prefix}•{match[2]}')
 
         self.version_map = version_map
 

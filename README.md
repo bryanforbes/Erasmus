@@ -17,10 +17,12 @@ A Bible bot for Discord
 * `/search` - Search for terms in your preferred or selected version
 * `/bibles` - List the Bible versions supported
 * `/bibleinfo` - Display information about the specified Bible version
-* `/prefs setdefault` - Set your preferred version
-* `/prefs unsetdefault` - Unset your preferred version
-* `/serverprefs setdefault` - Set the server's preferred version (Administrator only)
-* `/serverprefs unsetdefault` - Unset the server's preferred version (Administrator only)
+* `/version set` - Set your preferred version
+* `/version clear` - Clear your preferred version
+* `/version show` - Display information about how Erasmus will display verses for you
+* `/serverprefs version set` - Set the server's preferred version (Administrator only)
+* `/serverprefs version clear` - Clear the server's preferred version (Administrator only)
+* `/serverprefs version show` - Display the server's preferred version (Administrator only)
 * `/creed apostles` - Display The Apostles' Creed
 * `/creed athanasian` - Display The Athanasian Creed
 * `/creed chalcedon` - Display The Chalcedonian Definition
@@ -35,14 +37,14 @@ A Bible bot for Discord
 
 ## Bracket Notation
 
-In addition to the slash-commands listed above, Erasmus will respond to all verse references surrounded in brackets (ex. `[John 1:1]`) anywhere in a message. By default, Erasmus will look up the verse using the user's default version (set with `/prefs setversion`), the servers's default version (`/serverprefs setdefault`), or the ESV. Users can also specify a version to use by appending the version abbreviation after the verse (ex. `[John 1:1 KJV]`).
+In addition to the slash-commands listed above, Erasmus will respond to all verse references surrounded in brackets (ex. `[John 1:1]`) anywhere in a message. By default, Erasmus will look up the verse using the user's default version (set with `/version set`), the servers's default version (`/serverprefs version set`), or the ESV. Users can also specify a version to use by appending the version abbreviation after the verse (ex. `[John 1:1 KJV]`).
 
 ## Data Privacy Policy
 
 Erasmus retains the following data:
 
-* A user's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if the user sets a preferred version using `/prefs setdefault` (this can be deleted using `/prefs unsetdefault`)
-* A guild's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if a guild administrator sets a preferred version for the guild using `/serverprefs setdefault` (this can be deleted using `/serverprefs unsetdefault`)
+* A user's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if the user sets a preferred version using `/version set` (this can be deleted using `/version clear`)
+* A guild's internal Discord ID (a [snowflake](https://discord.com/developers/docs/reference#snowflakes)) ONLY if a guild administrator sets a preferred version for the guild using `/serverprefs version set` (this can be deleted using `/serverprefs version clear`)
 
 Erasmus **never** retains message content.
 

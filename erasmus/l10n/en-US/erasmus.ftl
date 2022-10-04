@@ -31,16 +31,24 @@ cannot-paginate =
 serverprefs = serverprefs
     .description = Server preferences
 
-serverprefs__setdefault = setdefault
+serverprefs__version = version
+    .description = Server Bible version preferences
+
+serverprefs__version__set = set
     .description = Set the default { -bible-version } for this server
     .PARAM--version--name = version
     .PARAM--version--description = { -bible-version }
-    .response = Server version set to `{ $version }`
+    .response = This server's version has been set to `{ $version }`
 
-serverprefs__unsetdefault = unsetdefault
-    .description = Unset the default version for this server
-    .deleted = Server version deleted
-    .already-deleted = Server version already deleted
+serverprefs__version__clear = clear
+    .description = Clear the default version for this server
+    .deleted = This server's version has been cleared
+    .already-deleted = This server's version has already been cleared
+
+serverprefs__version__show = show
+    .description = Display the default version for this server
+    .not-set = This server's default version is not set.
+    .set = This server's default version is set to `{ $version }`.
 
 serverprefs__daily-bread = daily-bread
     .description = Daily bread
@@ -58,16 +66,16 @@ serverprefs__daily-bread__set = set
 
         Use `/serverprefs daily-bread set` to set a new channel or time.
         Use `/serverprefs daily-bread stop` to stop automated posts.
-        Use `/serverprefs setdefault` to change the version.
+        Use `/serverprefs version set` to change the version.
     .updated =
         Automated daily bread posting has been updated. I will post the daily bread in { $channel } starting at { $next_scheduled } using `{ $version }`.
 
         Use `/serverprefs daily-bread set` to set a new channel or time.
         Use `/serverprefs daily-bread stop` to stop automated posts.
-        Use `/serverprefs setdefault` to change the version.
+        Use `/serverprefs version set` to change the version.
     .need-guild-webhooks-permission = I need the "Manage Webhooks" permission in order to post the daily bread. [Click here]({ $invite_url }) to re-authorize me with the correct permissions. Afterwards, please re-run this command.
     .need-channel-webhooks-permission = I need the "Manage Webhooks" permission enabled for me in { $actual_channel } to allow me to post the daily bread in { $channel }. After doing so, please re-run this command.
-    .version-warning = The server's current default version (`{ $version }`) does not include both Old and New Testaments. I will skip posting daily bread for days where the verse or verses are in a book missing from this version. In order to get daily bread posted every day, please change the server's default version to a version that includes both the Old and New Testaments using `/serverprefs setdefault`.
+    .version-warning = The server's current default version (`{ $version }`) does not include both Old and New Testaments. I will skip posting daily bread for days where the verse or verses are in a book missing from this version. In order to get daily bread posted every day, please change the server's default version to a version that includes both the Old and New Testaments using `/serverprefs version set`.
 
 serverprefs__daily-bread__stop = stop
     .description = Stop the automated daily bread posts for this server
@@ -75,19 +83,27 @@ serverprefs__daily-bread__stop = stop
     .not_set = Automated daily bread posting has not been set for this server
     .unable-to-remove-existing = I was unable to remove my existing webhooks. You will need to manually remove any webhooks in my integrations settings in the "Integrations" server settings under "Bots and Apps".
 
-prefs = prefs
-    .description = Preferences
+version = version
+    .description = Bible version preferences
 
-prefs__setdefault = setdefault
+version__set = set
     .description = Set your default { -bible-version }
     .PARAM--version--name = version
     .PARAM--version--description = { -bible-version }
     .response = Default version set to `{ $version }`
 
-prefs__unsetdefault = unsetdefault
-    .description = Unset your default { -bible-version }
-    .deleted = Default version unset
-    .already-deleted = Default version already unset
+version__clear = clear
+    .description = Clear your default { -bible-version }
+    .deleted = Default version cleared
+    .already-deleted = Default version already cleared
+
+version__show = show
+    .description = Display your default { -bible-version } preferences
+    .user-not-set = Your default version is not set.
+    .user-set = Your default version is set to `{ $version }`.
+    .guild-not-set = This server's default version is not set.
+    .guild-set = This server's default version is set to `{ $version }`.
+    .display-version = I will display verses using `{ $version }`.
 
 verse = verse
     .description = Look up a verse

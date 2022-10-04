@@ -15,22 +15,20 @@ if TYPE_CHECKING:
     from .cog import Bible
 
 
-@app_commands.default_permissions(administrator=True)
-@app_commands.guild_only()
-class ServerPreferencesGroup(
-    app_commands.Group, name='serverprefs', description='Server preferences'
+class ServerPreferencesVersionGroup(
+    app_commands.Group, name='version', description='Server Bible version preferences'
 ):
     localizer: GroupLocalizer
 
-    def initialize_from_cog(self, cog: Bible, /) -> None:
-        self.localizer = cog.localizer.for_group(self)
+    def initialize_from_parent(self, parent: ServerPreferencesGroup, /) -> None:
+        self.localizer = parent.localizer.for_group(self)
 
     @app_commands.command()
     @app_commands.describe(version='Bible version')
     @app_commands.checks.cooldown(
         rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
     )
-    async def setdefault(
+    async def set(
         self,
         itx: discord.Interaction,
         /,
@@ -49,7 +47,7 @@ class ServerPreferencesGroup(
         await utils.send_embed(
             itx,
             description=self.localizer.format(
-                'setdefault.response',
+                'set.response',
                 data={'version': version},
                 locale=itx.locale,
             ),
@@ -60,8 +58,8 @@ class ServerPreferencesGroup(
     @app_commands.checks.cooldown(
         rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
     )
-    async def unsetdefault(self, itx: discord.Interaction, /) -> None:
-        '''Unset the default version for this server'''
+    async def clear(self, itx: discord.Interaction, /) -> None:
+        '''Clear the default version for this server'''
 
         assert itx.guild is not None
 
@@ -77,7 +75,49 @@ class ServerPreferencesGroup(
         await utils.send_embed(
             itx,
             description=self.localizer.format(
-                f'unsetdefault.{attribute_id}', locale=itx.locale
+                f'clear.{attribute_id}', locale=itx.locale
             ),
             ephemeral=True,
         )
+
+    @app_commands.command()
+    @app_commands.checks.cooldown(
+        rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
+    )
+    async def show(self, itx: discord.Interaction, /) -> None:
+        '''Display the default version for this server'''
+
+        assert itx.guild is not None
+
+        async with Session() as session:
+            guild_prefs = await GuildPref.for_guild(session, itx.guild)
+
+        if guild_prefs is not None and guild_prefs.bible_version is not None:
+            attribute_id = 'set'
+            data = {'version': guild_prefs.bible_version.name}
+        else:
+            attribute_id = 'not-set'
+            data = None
+
+        await utils.send_embed(
+            itx,
+            description=self.localizer.format(
+                f'show.{attribute_id}', locale=itx.locale, data=data
+            ),
+            ephemeral=True,
+        )
+
+
+@app_commands.default_permissions(administrator=True)
+@app_commands.guild_only()
+class ServerPreferencesGroup(
+    app_commands.Group, name='serverprefs', description='Server preferences'
+):
+    localizer: GroupLocalizer
+
+    version_group = ServerPreferencesVersionGroup()
+
+    def initialize_from_parent(self, parent: Bible, /) -> None:
+        self.localizer = parent.localizer.for_group(self)
+
+        self.version_group.initialize_from_parent(self)
