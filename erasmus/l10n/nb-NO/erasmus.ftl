@@ -1,4 +1,4 @@
-# General error messages
+## General error messages
 
 generic-error = Noe gikk galt
 no-private-message = Denne handlingen er ikke tilgjengelig i private meldinger
@@ -13,18 +13,19 @@ need-permission-send-messages = Jeg trenger tillatelsen "Send Meldinger"
 need-permission-add-reactions = Jeg trenger tillatelsen "Legg Til Reaksjoner"
 need-permission-read-message-history = Jeg trenger tillatelsen "Les Meldingshistorikk"
 
-# Bible Cog
-
-
-## Commands
+## Bible Commands
 
 -bible-version =
     { $number ->
        *[singular] Bibel versjon
         [plural] Bibel versjoner
     }
+
+# /serverprefs
 serverprefs = serverpreferanse
     .description = Server instillinger
+
+# /verse
 verse = vers
     .description = Søk etter et vers
     .PARAM--reference--name = referanse
@@ -34,22 +35,24 @@ verse = vers
     .PARAM--only_me--name = bare_meg
     .PARAM--only_me--description = Velg om du vil vise verset til bare deg selv, eller alle
 
-## Errors
+## Bible Commands Errors
 
 
-# Confessions Cog
+## Confessions Commands
 
-
-## Commands
-
+# /confess
 confess = forkynnelse
     .description = Trosbekjennelser
+
+# /confess cite
 confess__cite = siter
     .description = Siter en seksjon fra en trosbekjennelse
     .PARAM--source--name = kilde
     .PARAM--source--description = Trosbekjennelsen du vil sitere
     .PARAM--section--name = seksjon
     .PARAM--section--description = Seksjonen du vil sitere
+
+# /confess search
 confess__search = søk
     .description = Søk etter begrep i en trosbekjennelse
     .PARAM--source--name = kilde
@@ -69,39 +72,49 @@ confess__search = søk
     .modal-generic-error = Det har skjedd en feil
     .modal-not-a-number-error = Du må skrive inn et nummer
 
-## Errors
+## Confessions Errors
 
 no-section-chapters = `{ $confession }` har ikke et paragraf `{ $section }`
 no-section-qa = `{ $confession }` har ikke et spørsmål `{ $section }`
 no-section-articles = `{ $confession }` har ikke en artikkel `{ $section }`
 
-# Creeds Cog
+## Creeds Commands
 
-
-## Commands
-
+# /creed
 creed = trosbekjennelse
     .description = Historiske trosbekjennelser
+
+# /creed apostles
 creed__apostles = apostlene
     .description = Apostlenes trosbekjennelse
+
+# /creed athanasian
 creed__athanasian = athanasian
     .description = Athanasian trosbekjennelse
+
+# /creed chalcedon
 creed__chalcedon = chalcedon
     .description = Chalcedonian trosbekjennelse
+
+# /creed nicene
 creed__nicene = nicene
     .description = Nicene trosbekjennelse
+
+# /creed nicene325
 creed__nicene325 = nicene325
     .description = Nicene trosbekjennelse (325 e.Kr.)
+
+# /creed nicene381
 creed__nicene381 = nicene381
     .description = Nicene trosbekjennelse (381 e.Kr.)
 
-# Misc Cog
+## Miscellaneous Commands
 
-
-## Commands
-
+# /invite
 invite = inviter
     .description = Bruk en link for å inivitere Erasmus til din server
+
+# /about
 about = informasjon
     .description = Informasjon om Erasmus
     .title = Om Erasmus
@@ -111,5 +124,7 @@ about = informasjon
     .footer = Laget av discord.py v{ $version }
     .invite = Inviter Erasmus
     .support-server = Offisiell Discord support server
+
+# /notice
 notice = varsel
     .description = Vis text-kommando

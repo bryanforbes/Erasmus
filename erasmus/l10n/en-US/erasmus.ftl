@@ -1,4 +1,4 @@
-# General error messages
+## General error messages
 
 generic-error = An error occurred
 no-private-message = This command is not available in private messages
@@ -15,9 +15,7 @@ need-permission-send-messages = I need the "Send Messages" permission
 need-permission-add-reactions = I need the "Add Reactions" permission
 need-permission-read-message-history = I need the "Read Message History" permission
 
-# Bible Cog
-
-## Commands
+## Bible Commands
 
 -bible-version =
     { $number ->
@@ -25,31 +23,38 @@ need-permission-read-message-history = I need the "Read Message History" permiss
         [plural] Bible versions
     }
 
+# /serverprefs
 serverprefs = serverprefs
     .description = Server preferences
 
+# /serverprefs version
 serverprefs__version = version
     .description = Server Bible version preferences
 
+# /serverprefs version set
 serverprefs__version__set = set
     .description = Set the default { -bible-version } for this server
     .PARAM--version--name = version
     .PARAM--version--description = { -bible-version }
     .response = This server's version has been set to `{ $version }`
 
+# /serverprefs version clear
 serverprefs__version__clear = clear
     .description = Clear the default version for this server
     .deleted = This server's version has been cleared
     .already-deleted = This server's version has already been cleared
 
+# /serverprefs version show
 serverprefs__version__show = show
     .description = Display the default version for this server
     .not-set = This server's default version is not set.
     .set = This server's default version is set to `{ $version }`.
 
+# /serverprefs daily-bread
 serverprefs__daily-bread = daily-bread
     .description = Daily bread
 
+# /serverprefs daily-bread set
 serverprefs__daily-bread__set = set
     .description = Set or update the automated daily bread post settings for this server
     .PARAM--channel--name = channel
@@ -74,26 +79,31 @@ serverprefs__daily-bread__set = set
     .need-channel-webhooks-permission = I need the "Manage Webhooks" permission enabled for me in { $actual_channel } to allow me to post the daily bread in { $channel }. After doing so, please re-run this command.
     .version-warning = The server's current default version (`{ $version }`) does not include both Old and New Testaments. I will skip posting daily bread for days where the verse or verses are in a book missing from this version. In order to get daily bread posted every day, please change the server's default version to a version that includes both the Old and New Testaments using `/serverprefs version set`.
 
+# /serverprefs daily-bread stop
 serverprefs__daily-bread__stop = stop
     .description = Stop the automated daily bread posts for this server
     .stopped = Automated daily bread posting has been stopped for this server
     .not_set = Automated daily bread posting has not been set for this server
     .unable-to-remove-existing = I was unable to remove my existing webhooks. You will need to manually remove any webhooks in my integrations settings in the "Integrations" server settings under "Bots and Apps".
 
+# /version
 version = version
     .description = Bible version preferences
 
+# /version set
 version__set = set
     .description = Set your default { -bible-version }
     .PARAM--version--name = version
     .PARAM--version--description = { -bible-version }
     .response = Default version set to `{ $version }`
 
+# /version clear
 version__clear = clear
     .description = Clear your default { -bible-version }
     .deleted = Default version cleared
     .already-deleted = Default version already cleared
 
+# /version show
 version__show = show
     .description = Display your default { -bible-version } preferences
     .user-not-set = Your default version is not set.
@@ -102,6 +112,7 @@ version__show = show
     .guild-set = This server's default version is set to `{ $version }`.
     .display-version = I will display verses using `{ $version }`.
 
+# /verse
 verse = verse
     .description = Look up a verse
     .PARAM--reference--name = reference
@@ -111,6 +122,7 @@ verse = verse
     .PARAM--only_me--name = only_me
     .PARAM--only_me--description = Whether to display the verse to yourself or everyone
 
+# /search
 search = search
     .description = Search in the Bible
     .PARAM--terms--name = terms
@@ -130,10 +142,12 @@ search = search
     .modal-generic-error = An error occurred
     .modal-not-a-number-error = You must enter a number
 
+# /bibles
 bibles = bibles
     .description = List which { -bible-version(number: "plural") } are available for lookup and search
     .prefix = I support the following { -bible-version(number: "plural") }:
 
+# /bibleinfo
 bibleinfo = bibleinfo
     .description = Get information about a { -bible-version }
     .PARAM--version--name = version
@@ -141,9 +155,11 @@ bibleinfo = bibleinfo
     .abbreviation = Abbreviation
     .books = Books
 
+# /daily-bread
 daily-bread = daily-bread
     .description = Daily bread
 
+# /daily-bread show
 daily-bread__show = show
     .description = Display today's daily bread
     .PARAM--version--name = version
@@ -151,6 +167,7 @@ daily-bread__show = show
     .PARAM--only_me--name = only_me
     .PARAM--only_me--description = Whether to display the daily bread to yourself or everyone
 
+# /daily-bread status
 daily-bread__status = status
     .description = Display the status of automated daily bread posts for this server
     .not_set = Automated daily bread posts have not been set up in this server. You will need to ask an administrator to set it up.
@@ -158,7 +175,7 @@ daily-bread__status = status
     .channel = Channel
     .next_scheduled = Next Scheduled
 
-## Errors
+## Bible Commands Errors
 
 book-not-understood = I do not understand the book "{ $book }"
 book-not-in-version = { $version } does not contain { $book }
@@ -176,13 +193,13 @@ invalid-time = `{ $time }` is not a valid time representation
 invalid-timezone = `{ $timezone }` is not a recognized time zone
 daily-bread-not-in-version = Today's daily bread is not in `{ $version }`
 
-# Confessions Cog
+## Confessions Commands
 
-## Commands
-
+# /confess
 confess = confess
     .description = Confessions
 
+# /confess cite
 confess__cite = cite
     .description = Cite a section from a confession or catechism
     .PARAM--source--name = source
@@ -190,6 +207,7 @@ confess__cite = cite
     .PARAM--section--name = section
     .PARAM--section--description = The section to cite
 
+# /confess search
 confess__search = search
     .description = Search for terms in a confession or catechism
     .PARAM--source--name = source
@@ -209,7 +227,7 @@ confess__search = search
     .modal-generic-error = An error occurred
     .modal-not-a-number-error = You must enter a number
 
-## Errors
+## Confessions Errors
 
 invalid-confession = `{ $confession }` is not a valid confession
 no-section-chapters = `{ $confession }` does not have a paragraph `{ $section }`
@@ -217,38 +235,43 @@ no-section-sections = `{ $confession }` does not have a section `{ $section }`
 no-section-qa = `{ $confession }` does not have a question `{ $section }`
 no-section-articles = `{ $confession }` does not have an article `{ $section }`
 
-# Creeds Cog
+## Creeds Commands
 
-## Commands
-
+# /creed
 creed = creed
     .description = Historic creeds
 
+# /creed apostles
 creed__apostles = apostles
     .description = The Apostles' Creed
 
+# /creed athanasian
 creed__athanasian = athanasian
     .description = The Athanasian Creed
 
+# /creed chalcedon
 creed__chalcedon = chalcedon
     .description = The Chalcedonian Definition
 
+# /creed nicene
 creed__nicene = nicene
     .description = The Nicene Creed
 
+# /creed nicene325
 creed__nicene325 = nicene325
     .description = The Nicene Creed (325 AD)
 
+# /creed nicene381
 creed__nicene381 = nicene381
     .description = The Nicene Creed (381 AD)
 
-# Misc Cog
+## Miscellaneous Commands
 
-## Commands
-
+# /invite
 invite = invite
     .description = Get a link to invite Erasmus to your server
 
+# /about
 about = about
     .description = Get info about Erasmus
     .title = About Erasmus
@@ -259,9 +282,11 @@ about = about
     .invite = Invite Erasmus
     .support-server = Official Support Server
 
+# /notice
 notice = notice
     .description = Display text-command deprecation notice
 
+# /news
 news = news
     .description = Display news from the latest release
     .news-for-version = News for { $version }
