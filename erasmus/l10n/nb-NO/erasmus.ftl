@@ -8,13 +8,10 @@ cooldown-error = Du kan prøve igjen om { PERIOD($period) }.
 user-on-cooldown = Du har utført denne handlingen for mange ganger. Du kan prøve igjen om { PERIOD($period) }.
 command-on-cooldown = Du har utført denne handlingen for mange ganger i denne kanalen. Du kan prøve igjen om { PERIOD($period) }.
 missing-permissions = Du har ikke tilgang til denne handlingen
-cannot-paginate =
-    { $permission ->
-        [embed-links] Jeg trenger tillatelsen "Bygg Inn Lenker"
-        [send-messages] Jeg trenger tillatelsen "Send Meldinger"
-        [add-reactions] Jeg trenger tillatelsen "Legg Til Reaksjoner"
-       *[read-message-history] Jeg trenger tillatelsen "Les Meldingshistorikk"
-    }
+need-permission-embed-links = Jeg trenger tillatelsen "Bygg Inn Lenker"
+need-permission-send-messages = Jeg trenger tillatelsen "Send Meldinger"
+need-permission-add-reactions = Jeg trenger tillatelsen "Legg Til Reaksjoner"
+need-permission-read-message-history = Jeg trenger tillatelsen "Les Meldingshistorikk"
 
 # Bible Cog
 
@@ -74,12 +71,9 @@ confess__search = søk
 
 ## Errors
 
-no-section =
-    { $section_type ->
-       *[CHAPTERS] `{ $confession }` har ikke et paragraf `{ $section }`
-        [QA] `{ $confession }` har ikke et spørsmål `{ $section }`
-        [ARTICLES] `{ $confession }` har ikke en artikkel `{ $section }`
-    }
+no-section-chapters = `{ $confession }` har ikke et paragraf `{ $section }`
+no-section-qa = `{ $confession }` har ikke et spørsmål `{ $section }`
+no-section-articles = `{ $confession }` har ikke en artikkel `{ $section }`
 
 # Creeds Cog
 

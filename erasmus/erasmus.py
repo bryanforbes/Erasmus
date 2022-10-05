@@ -170,16 +170,13 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             case CannotPaginate():
                 match error.reason:
                     case CannotPaginateReason.embed_links:
-                        permission = 'embed-links'
+                        message_id = 'need-permission-embed-links'
                     case CannotPaginateReason.send_messages:
-                        permission = 'send-messages'
+                        message_id = 'need-permission-send-messages'
                     case CannotPaginateReason.add_reactions:
-                        permission = 'add-reactions'
+                        message_id = 'need-permission-add-reactions'
                     case CannotPaginateReason.read_message_history:
-                        permission = 'read-message-history'
-
-                message_id = 'cannot-paginate'
-                data = {'permission': permission}
+                        message_id = 'need-permission-read-message-history'
             case _:
                 if isinstance(itx, discord.Interaction):
                     action = 'interaction'

@@ -321,12 +321,17 @@ class Confession(
                 message_id = 'invalid-confession'
                 data = {'confession': error.confession}
             case NoSectionError():
-                message_id = 'no-section'
-                data = {
-                    'confession': error.confession,
-                    'section_type': error.section_type,
-                    'section': error.section,
-                }
+                match error.section_type:
+                    case 'ARTICLES':
+                        message_id = 'no-section-articles'
+                    case 'QA':
+                        message_id = 'no-section-qa'
+                    case 'CHAPTERS':
+                        message_id = 'no-section-chapters'
+                    case str():
+                        message_id = 'no-section-sections'
+
+                data = {'confession': error.confession, 'section': error.section}
             case _:
                 return
 

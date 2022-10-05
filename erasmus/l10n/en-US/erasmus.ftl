@@ -10,13 +10,10 @@ user-on-cooldown =
 command-on-cooldown =
     This command has been used too many times in this channel. You can retry again in { PERIOD($period) }.
 missing-permissions = You do not have the correct permissions to run this command
-cannot-paginate =
-    I need the "{ $permission ->
-        [embed-links] Embed Links
-        [send-messages] Send Messages
-        [add-reactions] Add Reactions
-       *[read-message-history] Read Message History
-    }" permission
+need-permission-embed-links = I need the "Embed Links" permission
+need-permission-send-messages = I need the "Send Messages" permission
+need-permission-add-reactions = I need the "Add Reactions" permission
+need-permission-read-message-history = I need the "Read Message History" permission
 
 # Bible Cog
 
@@ -215,13 +212,10 @@ confess__search = search
 ## Errors
 
 invalid-confession = `{ $confession }` is not a valid confession
-no-section =
-    `{ $confession }` does not have { $section_type ->
-       *[CHAPTERS] a paragraph
-        [SECTIONS] a section
-        [QA] a question
-        [ARTICLES] an article
-    } `{ $section }`
+no-section-chapters = `{ $confession }` does not have a paragraph `{ $section }`
+no-section-sections = `{ $confession }` does not have a section `{ $section }`
+no-section-qa = `{ $confession }` does not have a question `{ $section }`
+no-section-articles = `{ $confession }` does not have an article `{ $section }`
 
 # Creeds Cog
 
