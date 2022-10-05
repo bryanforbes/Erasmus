@@ -28,15 +28,6 @@ cannot-paginate =
     }
 serverprefs = serverpreferanse
     .description = Server instillinger
-serverprefs__setdefault = setstandard
-    .description = Set standard { -bible-version } for denne serveren.
-    .PARAM--version--name = versjon
-    .PARAM--version--description = { -bible-version }
-    .response = Server versjon er `{ $version }`
-serverprefs__unsetdefault = fjernstandard
-    .description = Fjern standard versjonen for denne serveren
-    .deleted = Versjonen som blir brukt på serveren har blitt slettet
-    .already-deleted = Versjonen som blir brukt på serveren har allerede blitt slettet
 verse = vers
     .description = Søk etter et vers
     .PARAM--reference--name = referanse
@@ -89,12 +80,6 @@ no-section =
         [QA] `{ $confession }` har ikke et spørsmål `{ $section }`
         [ARTICLES] `{ $confession }` har ikke en artikkel `{ $section }`
     }
-no-sections =
-    { $section_type ->
-       *[chapters] `{ $confession }` har ingen kapitler
-        [paragraphs] `{ $confession }` har ingen paragrafer
-        [articles] `{ $confession }` har ingen artikler
-    }
 
 # Creeds Cog
 
@@ -126,6 +111,7 @@ invite = inviter
 about = informasjon
     .description = Informasjon om Erasmus
     .title = Om Erasmus
+    .version = Versjon
     .guilds = Guilds
     .channels = Kanaler
     .footer = Laget av discord.py v{ $version }
