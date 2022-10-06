@@ -1,5 +1,6 @@
 # Version UNRELEASED
 
+* Added The Second Helvetic Confession
 
 # Version 22.10.0
 
