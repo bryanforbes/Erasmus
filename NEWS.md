@@ -1,6 +1,7 @@
 # Version UNRELEASED
 
 * Added The Second Helvetic Confession
+* Added The Augsburg Confession
 
 # Version 22.10.0
 
