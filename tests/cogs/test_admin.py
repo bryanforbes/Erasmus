@@ -16,9 +16,17 @@ if TYPE_CHECKING:
 class TestAdmin:
     @pytest.fixture
     def mock_bot(self, mocker: pytest_mock.MockerFixture) -> Mock:
-        return mocker.Mock(spec=Erasmus)
+        return mocker.Mock(spec=Erasmus, config={})
 
-    def test_instantiate(self, mock_bot: Erasmus) -> None:
+    def test_instantiate(self, mock_bot: Mock) -> None:
         cog = Admin(mock_bot)
         assert cog is not None
         assert not isinstance(cog, Refreshable)
+        assert not hasattr(cog, '_eval')
+
+    def test_instantiate_with_eval(self, mock_bot: Mock) -> None:
+        mock_bot.configure_mock(config={'enable_eval': True})
+        cog = Admin(mock_bot)
+        assert cog is not None
+        assert not isinstance(cog, Refreshable)
+        assert hasattr(cog, '_eval')

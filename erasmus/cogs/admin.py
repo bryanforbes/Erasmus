@@ -17,7 +17,7 @@ from ..erasmus import Erasmus, _extensions as _extension_names
 from ..types import Refreshable
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
+    from collections.abc import AsyncIterator, Iterator
     from typing_extensions import Self
 
 _available_extensions: Final = {f'erasmus.cogs.{name}' for name in _extension_names}
@@ -135,11 +135,25 @@ async def operation_guard(
 class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin commands'):
     _last_result: object
 
+    def __init__(self, bot: Erasmus, /) -> None:
+        if bot.config.get('enable_eval', False):
+            self._eval = app_commands.command(name='eval')(self.__eval)
+
+            self.__cog_app_commands_group__.add_command(self._eval)  # type: ignore
+
+        super().__init__(bot)
+
     async def cog_load(self) -> None:
         self._last_result = None
 
+    @checks.is_owner()
+    async def __eval(self, itx: discord.Interaction, /) -> None:
+        '''Evaluates code'''
+
+        await itx.response.send_modal(_EvalModal(self))
+
     async def __unloaded_modules_autocomplete(
-        self, itx: discord.Interaction, current: str, /
+        self, _: discord.Interaction, current: str, /
     ) -> list[app_commands.Choice[str]]:
         loaded_extensions = set(self.bot.extensions.keys())
         return [
@@ -159,14 +173,21 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
         async with operation_guard(itx, f'`{module}` loaded'):
             await self.bot.load_extension(module)
 
+    @property
+    def __loaded_modules(self) -> Iterator[str]:
+        yield from [
+            extension_name
+            for extension_name in sorted(self.bot.extensions.keys())
+            if extension_name in _available_extensions
+        ]
+
     async def __loaded_modules_autocomplete(
-        self, itx: discord.Interaction, current: str, /
+        self, _: discord.Interaction, current: str, /
     ) -> list[app_commands.Choice[str]]:
         return [
             app_commands.Choice(name=extension_name, value=extension_name)
-            for extension_name in self.bot.extensions.keys()
-            if extension_name in _available_extensions
-            and current.lower() in extension_name.lower()
+            for extension_name in self.__loaded_modules
+            if current.lower() in extension_name.lower()
         ][:25]
 
     @app_commands.command()
@@ -180,13 +201,12 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
             await self.bot.reload_extension(module)
 
     async def __loaded_modules_without_admin_autocomplete(
-        self, itx: discord.Interaction, current: str, /
+        self, _: discord.Interaction, current: str, /
     ) -> list[app_commands.Choice[str]]:
         return [
             app_commands.Choice(name=extension_name, value=extension_name)
-            for extension_name in self.bot.extensions.keys()
-            if extension_name in _available_extensions
-            and not extension_name.endswith('.admin')
+            for extension_name in self.__loaded_modules
+            if not extension_name.endswith('.admin')
             and current.lower() in extension_name.lower()
         ][:25]
 
@@ -207,13 +227,6 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
 
         async with operation_guard(itx, 'Commands synced'):
             await self.bot.sync_app_commands()
-
-    @app_commands.command(name='eval')
-    @checks.is_owner()
-    async def _eval(self, itx: discord.Interaction, /) -> None:
-        '''Evaluates code'''
-
-        await itx.response.send_modal(_EvalModal(self))
 
     @app_commands.command(name='refresh-data')
     @checks.is_owner()
