@@ -94,4 +94,99 @@ interactions:
       code: 200
       message: OK
     url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=98e8a7a3-0987-499e-9d24-dceafc90bce3
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://api.scripture.api.bible/v1/bibles/c114c33098c4fef1-01/passages/DAG.1.1?content-type=json&include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
+  response:
+    body:
+      string: "{\"data\":{\"id\":\"DAG.1.1\",\"orgId\":\"DAN.1.1\",\"bibleId\":\"c114c33098c4fef1-01\",\"bookId\":\"DAG\",\"chapterIds\":[\"DAG.1\"],\"reference\":\"\u0394\u0391\u039D\u0399\u0397\u039B
+        (\u0395\u03BB\u03BB\u03B7\u03BD\u03B9\u03BA\u03AC) 1:1\",\"content\":[{\"name\":\"para\",\"type\":\"tag\",\"attrs\":{\"style\":\"p\"},\"items\":[{\"name\":\"verse\",\"type\":\"tag\",\"attrs\":{\"number\":\"1\",\"style\":\"v\",\"sid\":\"DAG
+        1:1\"},\"items\":[{\"text\":\"1\",\"type\":\"text\"}]},{\"text\":\"\u1F18\u039D
+        \u1F14\u03C4\u03B5\u03B9 \u03C4\u03C1\u03AF\u03C4\u1FF3 \u03C4\u1FC6\u03C2
+        \u03B2\u03B1\u03C3\u03B9\u03BB\u03B5\u03AF\u03B1\u03C2 \u1F38\u03C9\u03B1\u03BA\u03B5\u1F76\u03BC
+        \u03B2\u03B1\u03C3\u03B9\u03BB\u03AD\u03C9\u03C2 \u1F38\u03BF\u03CD\u03B4\u03B1,
+        \u1F26\u03BB\u03B8\u03B5 \u039D\u03B1\u03B2\u03BF\u03C5\u03C7\u03BF\u03B4\u03BF\u03BD\u03CC\u03C3\u03BF\u03C1
+        \u1F41 \u03B2\u03B1\u03C3\u03B9\u03BB\u03B5\u1F7A\u03C2 \u0392\u03B1\u03B2\u03C5\u03BB\u1FF6\u03BD\u03BF\u03C2
+        \u03B5\u1F30\u03C2 \u1F39\u03B5\u03C1\u03BF\u03C5\u03C3\u03B1\u03BB\u1F74\u03BC,
+        \u03BA\u03B1\u1F76 \u1F10\u03C0\u03BF\u03BB\u03B9\u03CC\u03C1\u03BA\u03B5\u03B9
+        \u03B1\u1F50\u03C4\u03AE\u03BD. \",\"type\":\"text\",\"attrs\":{\"verseId\":\"DAG.1.1\",\"verseOrgIds\":[\"DAN.1.1\"]}}]}],\"verseCount\":1,\"copyright\":\"This
+        work is in the PUBLIC DOMAIN. It is not copyrighted. You may not claim a copyright
+        on this work.\"},\"meta\":{\"fums\":\"<script>\\nvar _BAPI=_BAPI||{};\\nif(typeof(_BAPI.t)==='undefined'){\\ndocument.write('\\\\x3Cscript
+        src=\\\"'+document.location.protocol+'//cdn.scripture.api.bible/fums/fumsv2.min.js\\\"\\\\x3E\\\\x3C/script\\\\x3E');}\\ndocument.write(\\\"\\\\x3Cscript\\\\x3E_BAPI.t('daa95ff6-66af-4ca9-8cef-46d4ff1ec1bb');\\\\x3C/script\\\\x3E\\\");\\n</script><noscript><img
+        src=\\\"https://d3a2okcloueqyx.cloudfront.net/nf1?t='daa95ff6-66af-4ca9-8cef-46d4ff1ec1bb'\\\"
+        height=\\\"1\\\" width=\\\"1\\\" border=\\\"0\\\" alt=\\\"\\\" style=\\\"height:
+        0; width: 0;\\\" /></noscript>\",\"fumsId\":\"daa95ff6-66af-4ca9-8cef-46d4ff1ec1bb\",\"fumsJsInclude\":\"cdn.scripture.api.bible/fums/fumsv2.min.js\",\"fumsJs\":\"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!='undefined'){ _BAPI.t('daa95ff6-66af-4ca9-8cef-46d4ff1ec1bb');
+        }\",\"fumsNoScript\":\"<img src=\\\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=daa95ff6-66af-4ca9-8cef-46d4ff1ec1bb\\\"
+        height=\\\"1\\\" width=\\\"1\\\" border=\\\"0\\\" alt=\\\"\\\" style=\\\"height:
+        0; width: 0;\\\" />\"}}"
+    headers:
+      Access-Control-Expose-Headers:
+      - WWW-Authenticate,Server-Authorization
+      Cache-Control:
+      - no-cache
+      Connection:
+      - keep-alive
+      Content-Encoding:
+      - gzip
+      Content-Type:
+      - application/json; charset=utf-8
+      Date:
+      - Fri, 07 Oct 2022 20:04:38 GMT
+      Server:
+      - nginx/1.16.1
+      Transfer-Encoding:
+      - chunked
+      Vary:
+      - origin,accept-encoding
+      x-request-wants-bypass:
+      - static
+      x-server-allows-bypass:
+      - static
+    status:
+      code: 200
+      message: OK
+    url: https://api.scripture.api.bible/v1/bibles/c114c33098c4fef1-01/passages/DAG.1.1?content-type=json&include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
+- request:
+    body: null
+    headers: {}
+    method: GET
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=daa95ff6-66af-4ca9-8cef-46d4ff1ec1bb
+  response:
+    body:
+      string: !!binary |
+        R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
+    headers:
+      Accept-Ranges:
+      - bytes
+      Age:
+      - '27000'
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '35'
+      Content-Type:
+      - image/gif
+      Date:
+      - Fri, 07 Oct 2022 12:34:40 GMT
+      Etag:
+      - '"28d6814f309ea289f847c69cf91194c6"'
+      Last-Modified:
+      - Wed, 10 May 2017 13:35:25 GMT
+      Server:
+      - AmazonS3
+      Via:
+      - 1.1 e01091b7c39d5f291f684f22eebc396e.cloudfront.net (CloudFront)
+      X-Amz-Cf-Id:
+      - MdF83x9tsjbsIXUzAK1PO1poBu_N_qx0liJN_gDc-FrMWUOIOdQ5PA==
+      X-Amz-Cf-Pop:
+      - ORD51-C2
+      X-Cache:
+      - Hit from cloudfront
+    status:
+      code: 200
+      message: OK
+    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=daa95ff6-66af-4ca9-8cef-46d4ff1ec1bb
 version: 1
