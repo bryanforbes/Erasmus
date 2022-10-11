@@ -193,6 +193,79 @@ def _get_daily_bread_webhook(
     )
 
 
+def _can_manage_guild_webhooks(guild: discord.Guild, /) -> bool:
+    me = guild.me
+
+    if guild.owner_id == me.id:
+        return True
+
+    base = discord.Permissions.none()
+    for role in me.roles:
+        base.value |= role.permissions.value
+
+    if base.administrator:
+        return True
+
+    return base.manage_webhooks
+
+
+def _can_manage_channel_webhooks(
+    channel: discord.TextChannel | discord.ForumChannel, /
+) -> bool:
+    guild = channel.guild
+    me = guild.me
+
+    if guild.owner_id == me.id:
+        return True
+
+    default = guild.default_role
+    base = discord.Permissions(default.permissions.value)
+
+    roles = me._roles
+    get_role = guild.get_role
+
+    # Apply guild roles that the member has.
+    for role_id in roles:
+        role = get_role(role_id)
+        if role is not None:
+            base.value |= role._permissions
+
+    # Guild-wide Administrator -> True for everything
+    # Bypass all channel-specific overrides
+    if base.administrator:
+        return True
+
+    # Apply @everyone allow/deny first since it's special
+    try:
+        maybe_everyone = channel._overwrites[0]
+        if maybe_everyone.id == guild.id:
+            base.handle_overwrite(allow=maybe_everyone.allow, deny=maybe_everyone.deny)
+            remaining_overwrites = channel._overwrites[1:]
+        else:
+            remaining_overwrites = channel._overwrites
+    except IndexError:
+        remaining_overwrites = channel._overwrites
+
+    denies = 0
+    allows = 0
+
+    # Apply channel specific role permission overwrites
+    for overwrite in remaining_overwrites:
+        if overwrite.is_role() and roles.has(overwrite.id):
+            denies |= overwrite.deny
+            allows |= overwrite.allow
+
+    base.handle_overwrite(allow=allows, deny=denies)
+
+    # Apply member specific permission overwrites
+    for overwrite in remaining_overwrites:
+        if overwrite.is_member() and overwrite.id == me.id:
+            base.handle_overwrite(allow=overwrite.allow, deny=overwrite.deny)
+            break
+
+    return base.manage_webhooks
+
+
 @define(frozen=True)
 class PassageFetcher:
     verse_range: VerseRange
@@ -405,7 +478,6 @@ class DailyBreadPreferencesGroup(
         /,
     ) -> None:
         me = guild.me
-
         for webhook in await guild.webhooks():
             if webhook.user == me:
                 await webhook.delete(
@@ -444,7 +516,7 @@ class DailyBreadPreferencesGroup(
 
         localizer = self.localizer.for_message('set', locale=itx.locale)
 
-        if not itx.guild.me.guild_permissions.manage_webhooks:
+        if not _can_manage_guild_webhooks(itx.guild):
             await utils.send_embed_error(
                 itx,
                 description=_format_with_invite(
@@ -455,7 +527,7 @@ class DailyBreadPreferencesGroup(
             )
             return
 
-        if not actual_channel.permissions_for(itx.guild.me).manage_webhooks:
+        if not _can_manage_channel_webhooks(actual_channel):
             await utils.send_embed_error(
                 itx,
                 description=localizer.format(
@@ -543,10 +615,11 @@ class DailyBreadPreferencesGroup(
             daily_bread = await DailyBread.for_guild(session, itx.guild)
 
             if daily_bread is not None:
-                if not itx.guild.me.guild_permissions.manage_webhooks:
+                if not _can_manage_guild_webhooks(itx.guild):
                     await utils.send_embed_error(
                         itx,
                         description=localizer.format('unable-to-remove-existing'),
+                        color=discord.Color.yellow(),
                     )
                 else:
                     await self.__remove_webhooks(itx, itx.guild)

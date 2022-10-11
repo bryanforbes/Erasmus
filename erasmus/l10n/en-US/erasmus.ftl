@@ -75,7 +75,7 @@ serverprefs__daily-bread__set = set
         Use `/serverprefs daily-bread set` to set a new channel or time.
         Use `/serverprefs daily-bread stop` to stop automated posts.
         Use `/serverprefs version set` to change the version.
-    .need-guild-webhooks-permission = I need the "Manage Webhooks" permission in order to post the daily bread. [Click here]({ $invite_url }) to re-authorize me with the correct permissions. Afterwards, please re-run this command.
+    .need-guild-webhooks-permission = I need the "Manage Webhooks" permission enabled for me in this server in order to post the daily bread. [Click here]({ $invite_url }) to re-authorize me with the correct permissions. Afterwards, please re-run this command.
     .need-channel-webhooks-permission = I need the "Manage Webhooks" permission enabled for me in { $actual_channel } to allow me to post the daily bread in { $channel }. After doing so, please re-run this command.
     .version-warning = The server's current default version (`{ $version }`) does not include both Old and New Testaments. I will skip posting daily bread for days where the verse or verses are in a book missing from this version. In order to get daily bread posted every day, please change the server's default version to a version that includes both the Old and New Testaments using `/serverprefs version set`.
 
