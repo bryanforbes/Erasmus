@@ -52,10 +52,10 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
     service_manager: ServiceManager
     refresh_data: Callable[[AsyncSession], Awaitable[None]]
 
-    def initialize_from_parent(self, parent: Bible, /) -> None:
-        _service_lookup.service_manager = parent.service_manager
-        self.service_manager = parent.service_manager
-        self.refresh_data = parent.refresh
+    def initialize_from_parent(self, cog: Bible, /) -> None:
+        _service_lookup.service_manager = cog.service_manager
+        self.service_manager = cog.service_manager
+        self.refresh_data = cog.refresh
 
     @app_commands.command()
     @app_commands.describe(version='The Bible version to get information for')

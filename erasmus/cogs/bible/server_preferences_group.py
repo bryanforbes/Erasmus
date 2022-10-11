@@ -7,12 +7,14 @@ from discord import app_commands
 
 from ...db import BibleVersion, GuildPref, Session
 from .bible_lookup import bible_lookup  # noqa
+from .daily_bread_group import DailyBreadPreferencesGroup
 
 if TYPE_CHECKING:
     import discord
 
+    from ...erasmus import Erasmus
     from ...l10n import GroupLocalizer
-    from .cog import Bible
+    from .types import ParentCog, ParentGroup
 
 
 class ServerPreferencesVersionGroup(
@@ -20,7 +22,7 @@ class ServerPreferencesVersionGroup(
 ):
     localizer: GroupLocalizer
 
-    def initialize_from_parent(self, parent: ServerPreferencesGroup, /) -> None:
+    def initialize_from_parent(self, parent: ParentGroup, /) -> None:
         self.localizer = parent.localizer.for_group(self)
 
     @app_commands.command()
@@ -113,11 +115,15 @@ class ServerPreferencesVersionGroup(
 class ServerPreferencesGroup(
     app_commands.Group, name='serverprefs', description='Server preferences'
 ):
+    bot: Erasmus
     localizer: GroupLocalizer
 
     version_group = ServerPreferencesVersionGroup()
+    daily_bread = DailyBreadPreferencesGroup()
 
-    def initialize_from_parent(self, parent: Bible, /) -> None:
+    def initialize_from_parent(self, parent: ParentCog, /) -> None:
+        self.bot = parent.bot
         self.localizer = parent.localizer.for_group(self)
 
         self.version_group.initialize_from_parent(self)
+        self.daily_bread.initialize_from_parent(self)

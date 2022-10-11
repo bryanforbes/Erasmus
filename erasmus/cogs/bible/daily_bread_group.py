@@ -37,8 +37,8 @@ if TYPE_CHECKING:
     from ...erasmus import Erasmus
     from ...l10n import FormatKwargs, GroupLocalizer, MessageLocalizer
     from ...service_manager import ServiceManager
-    from ...types import Bible as _BibleType
-    from .cog import Bible
+    from ...types import Bible
+    from .types import ParentCog, ParentGroup
 
 _log: Final = logging.getLogger(__name__)
 _invite_re: Final = re.compile('\\(\u2068(https://[^\u2069]+?)\u2069\\)')
@@ -272,7 +272,7 @@ class PassageFetcher:
     service_manager: ServiceManager
     passage_map: dict[int, Passage] = field(init=False, factory=dict)
 
-    async def __call__(self, bible: _BibleType, /) -> Passage:
+    async def __call__(self, bible: Bible, /) -> Passage:
         if bible.id in self.passage_map:
             return self.passage_map[bible.id]
 
@@ -293,7 +293,7 @@ class DailyBreadGroup(
 
     __fetcher: PassageFetcher | None
 
-    def initialize_from_parent(self, parent: Bible, /) -> None:
+    def initialize_from_parent(self, parent: ParentCog, /) -> None:
         self.session = parent.bot.session
         self.service_manager = parent.service_manager
         self.localizer = parent.localizer.for_group(self)
@@ -467,7 +467,7 @@ class DailyBreadPreferencesGroup(
     bot: Erasmus
     localizer: GroupLocalizer
 
-    def initialize_from_parent(self, parent: TestingServerPreferencesGroup, /) -> None:
+    def initialize_from_parent(self, parent: ParentGroup, /) -> None:
         self.bot = parent.bot
         self.localizer = parent.localizer.for_group(self)
 
@@ -631,21 +631,3 @@ class DailyBreadPreferencesGroup(
                 await utils.send_embed(itx, description=localizer.format('not_set'))
 
             await session.commit()
-
-
-@app_commands.default_permissions(administrator=True)
-@app_commands.guild_only()
-@test_guilds_only
-class TestingServerPreferencesGroup(
-    app_commands.Group, name='test-server-prefs', description='Testing group'
-):
-    bot: Erasmus
-    localizer: GroupLocalizer
-
-    daily_bread = DailyBreadPreferencesGroup()
-
-    def initialize_from_parent(self, parent: Bible, /) -> None:
-        self.bot = parent.bot
-        self.localizer = parent.localizer.for_group('serverprefs')
-
-        self.daily_bread.initialize_from_parent(self)

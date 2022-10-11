@@ -14,7 +14,7 @@ if TYPE_CHECKING:
     import discord
 
     from ...l10n import GroupLocalizer
-    from .cog import Bible
+    from .types import ParentCog
 
 
 class VersionGroup(
@@ -22,7 +22,7 @@ class VersionGroup(
 ):
     localizer: GroupLocalizer
 
-    def initialize_from_parent(self, parent: Bible, /) -> None:
+    def initialize_from_parent(self, parent: ParentCog, /) -> None:
         self.localizer = parent.localizer.for_group(self)
 
     @app_commands.command()
