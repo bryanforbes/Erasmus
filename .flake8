@@ -5,9 +5,12 @@ extend-exclude =
     .venv*,
     alembic
 extend-ignore = E203, E266, E501, PT004,
-    PIE791, # Duplicate of B015
-    PIE792, # Duplicate of SIM120
-    PIE797  # Duplicate of SIM210
+    # Duplicate of B015
+    PIE791,
+    # Duplicate of SIM120
+    PIE792,
+    # Duplicate of SIM210
+    PIE797
 per-file-ignores =
     *.pyi: F401, F403, F405, F811, E127, E128, E203, E266, E301, E302, E305, E501, E701, E704, E741, B303, W503, W504, TC
 pytest-fixture-no-parentheses = True
