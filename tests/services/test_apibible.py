@@ -290,8 +290,18 @@ class TestApiBible(ServiceTest):
                     'KJV',
                 ),
             },
+            {
+                'verse': VerseRange.from_string('Matthew 26:39'),
+                'passage': Passage(
+                    '**39.** And he went a little further, and fell on his face, and '
+                    'prayed, saying, O my Father, if it be possible, let this cup pass '
+                    'from me: nevertheless not as I will, but as thou _wilt_.',
+                    VerseRange.from_string('Matthew 26:39'),
+                    'KJV',
+                ),
+            },
         ],
-        ids=['Gal 3:10-11 KJV', 'Mark 5:1 KJV', 'John 3:20-21'],
+        ids=['Gal 3:10-11 KJV', 'Mark 5:1 KJV', 'John 3:20-21', 'Matthew 26:39'],
     )
     def passage_data(self, request: _pytest.fixtures.SubRequest) -> dict[str, Any]:
         return cast('dict[str, Any]', request.param)

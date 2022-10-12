@@ -117,7 +117,7 @@ class ApiBible(BaseService):
                     self.__transform_item(child_item, strings)
             case {'name': 'char' | 'verse', 'attrs': attrs, 'items': items}:
                 if attrs['style'] == 'add':
-                    strings.append(' __ITALIC__')
+                    strings.append('__ITALIC__')
                 elif attrs['style'] == 'v':
                     strings.append(' __BOLD__')
 
@@ -125,7 +125,7 @@ class ApiBible(BaseService):
                     self.__transform_item(child_item, strings)
 
                 if attrs['style'] == 'add':
-                    strings.append('__ITALIC__ ')
+                    strings.append('__ITALIC__')
                 elif attrs['style'] == 'v':
                     strings.append('.__BOLD__ ')
             case _:
