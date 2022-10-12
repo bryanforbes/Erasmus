@@ -5,10 +5,12 @@ Revises: dc5428c022bd
 Create Date: 2019-08-24 17:25:03.893071
 
 """
+from __future__ import annotations
+
 import sqlalchemy as sa
+from alembic import op
 
 import erasmus.db.base
-from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '85d51f96a1cd'

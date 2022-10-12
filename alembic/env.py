@@ -3,18 +3,20 @@ from __future__ import annotations, with_statement
 import asyncio
 from logging.config import fileConfig
 from pathlib import Path
-from typing import Any
+from typing import TYPE_CHECKING, Any
 
+from alembic import context
 from botus_receptus.config import load
 from sqlalchemy import pool
 from sqlalchemy.ext.asyncio import async_engine_from_config  # type: ignore
 from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
 
 import erasmus.json
-from alembic import context
-from alembic.operations.ops import MigrationScript
-from alembic.runtime.migration import MigrationContext
 from erasmus.db.base import _mapper_registry
+
+if TYPE_CHECKING:
+    from alembic.operations.ops import MigrationScript
+    from alembic.runtime.migration import MigrationContext
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

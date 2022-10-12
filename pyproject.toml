@@ -59,7 +59,6 @@ exclude = '''
   | \.mypy_cache
   | \.pytest_cache
   | \.venv
-  | alembic
   | htmlcov
 )/
 '''
@@ -76,9 +75,12 @@ exclude_lines = [
 [tool.isort]
 extra_standard_library = ["typing_extensions", "_typeshed"]
 known_first_party = ["erasmus"]
+known_third_party = ["alembic"]
 virtual_env = ".venv"
 profile = "black"
 combine_as_imports = true
+add_imports = ["from __future__ import annotations"]
+append_only = true
 
 [tool.pyright]
 include = ["erasmus", "tests", "stubs"]

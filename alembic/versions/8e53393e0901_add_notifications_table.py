@@ -5,10 +5,11 @@ Revises: f343a13c8b35
 Create Date: 2022-08-02 09:35:18.810107
 
 """
-import sqlalchemy as sa
-from botus_receptus.sqlalchemy import Snowflake
+from __future__ import annotations
 
+import sqlalchemy as sa
 from alembic import op
+from botus_receptus.sqlalchemy import Snowflake
 
 # revision identifiers, used by Alembic.
 revision = '8e53393e0901'

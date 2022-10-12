@@ -5,12 +5,13 @@ Revises: 830329e85f73
 Create Date: 2022-08-25 09:45:46.450232
 
 """
+from __future__ import annotations
+
 from typing import TypedDict
 
 import sqlalchemy as sa
-from sqlalchemy.dialects import postgresql
-
 from alembic import op
+from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = 'a882aec7c9e4'

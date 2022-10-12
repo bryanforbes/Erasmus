@@ -5,8 +5,9 @@ Revises: cdf53768de2d
 Create Date: 2022-09-09 14:46:04.418800
 
 """
-import sqlalchemy as sa
+from __future__ import annotations
 
+import sqlalchemy as sa
 from alembic import op
 
 # revision identifiers, used by Alembic.

@@ -5,6 +5,8 @@ Revises: 0f780af615ef
 Create Date: 2017-10-15 13:16:36.512159
 
 """
+from __future__ import annotations
+
 from collections import OrderedDict
 from json import load
 from pathlib import Path
@@ -12,9 +14,8 @@ from typing import Any, Dict, List  # noqa
 from typing_extensions import TypedDict
 
 import sqlalchemy as sa  # type: ignore
-from sqlalchemy.sql import column, table  # type: ignore
-
 from alembic import op  # type: ignore
+from sqlalchemy.sql import column, table  # type: ignore
 
 # revision identifiers, used by Alembic.
 revision = 'b00769d6f457'

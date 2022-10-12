@@ -5,9 +5,10 @@ Revises: fafb6b454c85
 Create Date: 2017-10-12 21:56:25.233031
 
 """
-from alembic import op
-import sqlalchemy as sa
+from __future__ import annotations
 
+import sqlalchemy as sa
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = 'ac322afa9c4d'
@@ -17,9 +18,12 @@ depends_on = None
 
 
 def upgrade():
-    op.create_index('confession_paragraphs_text_idx', 'confession_paragraphs',
-                    [sa.text("to_tsvector('english', text)")],
-                    postgresql_using='gin')
+    op.create_index(
+        'confession_paragraphs_text_idx',
+        'confession_paragraphs',
+        [sa.text("to_tsvector('english', text)")],
+        postgresql_using='gin',
+    )
 
 
 def downgrade():

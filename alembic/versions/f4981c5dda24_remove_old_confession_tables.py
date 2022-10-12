@@ -5,12 +5,14 @@ Revises: 1f333584607a
 Create Date: 2022-09-08 17:48:28.827595
 
 """
+from __future__ import annotations
+
 from typing import Any
 
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy.dialects.postgresql import ENUM
 
-from alembic import op
 from erasmus.db.base import TSVector
 from erasmus.db.confession import ConfessionType, NumberingType
 
@@ -106,7 +108,8 @@ def downgrade():
             'search_vector',
             TSVector(),
             sa.Computed(
-                "to_tsvector('english'::regconfig, (((title)::text || ' '::text) || text))",
+                "to_tsvector('english'::regconfig, "
+                "(((title)::text || ' '::text) || text))",
                 persisted=True,
             ),
             autoincrement=False,
@@ -150,7 +153,8 @@ def downgrade():
             'search_vector',
             TSVector(),
             sa.Computed(
-                "to_tsvector('english'::regconfig, ((question_text || ' '::text) || answer_text))",
+                "to_tsvector('english'::regconfig, "
+                "((question_text || ' '::text) || answer_text))",
                 persisted=True,
             ),
             autoincrement=False,

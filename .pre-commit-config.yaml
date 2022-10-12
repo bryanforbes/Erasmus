@@ -1,5 +1,6 @@
 files: >
   (?x)^(
+      alembic/.*\.py$|
       stubs/.*\.pyi$|
       erasmus/.*\.py$|
       tests/.*\.py$
@@ -10,7 +11,7 @@ repos:
     -   id: isort
         name: isort
         language: system
-        entry: poetry run isort --check-only
+        entry: poetry run isort --resolve-all-configs --check-only
     -   id: black
         name: black
         language: system

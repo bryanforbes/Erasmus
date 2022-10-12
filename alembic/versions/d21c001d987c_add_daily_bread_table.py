@@ -5,11 +5,12 @@ Revises: 300fb8300fb7
 Create Date: 2022-09-26 09:09:00.714696
 
 """
+from __future__ import annotations
+
 import sqlalchemy as sa
+from alembic import op
 from botus_receptus.sqlalchemy import Snowflake
 from sqlalchemy.dialects import postgresql
-
-from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = 'd21c001d987c'

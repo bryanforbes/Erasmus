@@ -5,11 +5,13 @@ Revises: a882aec7c9e4
 Create Date: 2022-08-27 09:42:15.737664
 
 """
+from __future__ import annotations
+
 from typing import Any
 
 import sqlalchemy as sa
-
 from alembic import op
+
 from erasmus.db.base import TSVector
 
 # revision identifiers, used by Alembic.

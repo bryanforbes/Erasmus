@@ -5,15 +5,17 @@ Revises: d21c001d987c
 Create Date: 2022-10-06 09:44:43.900613
 
 """
+from __future__ import annotations
+
 from itertools import chain
 from pathlib import Path
 from typing import TypedDict
 
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy.dialects import postgresql
 from tomli import load
 
-from alembic import op
 from erasmus.db.confession import ConfessionType, NumberingType
 
 # revision identifiers, used by Alembic.

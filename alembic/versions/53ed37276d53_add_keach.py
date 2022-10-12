@@ -5,15 +5,16 @@ Revises: cbef96b83a96
 Create Date: 2017-10-21 12:50:07.872595
 
 """
+from __future__ import annotations
+
 from json import load
 from pathlib import Path
 from typing import Any, Dict, List, Tuple  # noqa
 from typing_extensions import TypedDict
 
 import sqlalchemy as sa  # type: ignore
-from sqlalchemy.sql import column, table  # type: ignore
-
 from alembic import op  # type: ignore
+from sqlalchemy.sql import column, table  # type: ignore
 
 # revision identifiers, used by Alembic.
 revision = '53ed37276d53'

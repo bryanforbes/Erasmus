@@ -5,13 +5,15 @@ Revises: 902fb954c12f
 Create Date: 2022-09-28 16:53:12.660808
 
 """
+from __future__ import annotations
+
 from json import load
 from pathlib import Path
 
 import sqlalchemy as sa
+from alembic import op
 from sqlalchemy.dialects import postgresql
 
-from alembic import op
 from erasmus.db.confession import ConfessionType, NumberingType
 
 # revision identifiers, used by Alembic.
