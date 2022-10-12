@@ -17,12 +17,6 @@ need-permission-read-message-history = I need the "Read Message History" permiss
 
 ## Bible Commands
 
--bible-version =
-    { $number ->
-       *[singular] Bible version
-        [plural] Bible versions
-    }
-
 # /serverprefs
 serverprefs = serverprefs
     .description = Server preferences
@@ -33,9 +27,9 @@ serverprefs__version = version
 
 # /serverprefs version set
 serverprefs__version__set = set
-    .description = Set the default { -bible-version } for this server
+    .description = Set the default Bible version for this server
     .PARAM--version--name = version
-    .PARAM--version--description = { -bible-version }
+    .PARAM--version--description = Bible version
     .response = This server's version has been set to `{ $version }`
 
 # /serverprefs version clear
@@ -92,20 +86,20 @@ version = version
 
 # /version set
 version__set = set
-    .description = Set your default { -bible-version }
+    .description = Set your default Bible version
     .PARAM--version--name = version
-    .PARAM--version--description = { -bible-version }
+    .PARAM--version--description = Bible version
     .response = Default version set to `{ $version }`
 
 # /version clear
 version__clear = clear
-    .description = Clear your default { -bible-version }
+    .description = Clear your default Bible version
     .deleted = Default version cleared
     .already-deleted = Default version already cleared
 
 # /version show
 version__show = show
-    .description = Display your default { -bible-version } preferences
+    .description = Display your default Bible version preferences
     .user-not-set = Your default version is not set.
     .user-set = Your default version is set to `{ $version }`.
     .guild-not-set = This server's default version is not set.
@@ -128,7 +122,7 @@ search = search
     .PARAM--terms--name = terms
     .PARAM--terms--description = Terms to search for
     .PARAM--version--name = version
-    .PARAM--version--description = The { -bible-version } to search within
+    .PARAM--version--description = The Bible version to search within
     .title = Search results from { $bible_name }
     .no-results = I found 0 results
     .footer = Page { $current_page }/{ $max_pages } ({ $total } entries)
@@ -144,14 +138,14 @@ search = search
 
 # /bibles
 bibles = bibles
-    .description = List which { -bible-version(number: "plural") } are available for lookup and search
-    .prefix = I support the following { -bible-version(number: "plural") }:
+    .description = List which Bible versions are available for lookup and search
+    .prefix = I support the following Bible versions:
 
 # /bibleinfo
 bibleinfo = bibleinfo
-    .description = Get information about a { -bible-version }
+    .description = Get information about a Bible version
     .PARAM--version--name = version
-    .PARAM--version--description = The { -bible-version } to get information for
+    .PARAM--version--description = The Bible version to get information for
     .abbreviation = Abbreviation
     .books = Books
 

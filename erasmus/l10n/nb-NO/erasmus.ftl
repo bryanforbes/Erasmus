@@ -15,12 +15,6 @@ need-permission-read-message-history = Jeg trenger tillatelsen "Les Meldingshist
 
 ## Bible Commands
 
--bible-version =
-    { $number ->
-       *[singular] Bibel versjon
-        [plural] Bibel versjoner
-    }
-
 # /serverprefs
 serverprefs = serverpreferanse
     .description = Server instillinger
