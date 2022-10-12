@@ -105,7 +105,7 @@ class Flag(_TypeDecorator[_FlagT]):
 
     def process_result_value(self, value: int | None, dialect: object) -> _FlagT | None:
         if value is not None:
-            return self._flag_cls(value)  # type: ignore
+            return self._flag_cls(value)
 
         return value
 

@@ -32,7 +32,7 @@ from ...ui_pages import UIPages
 from ...utils import send_passage
 from .admin_group import BibleAdminGroup
 from .bible_lookup import _BibleOption, bible_lookup
-from .daily_bread_group import DailyBreadGroup
+from .daily_bread import DailyBreadGroup
 from .search_page_source import SearchPageSource
 from .server_preferences_group import ServerPreferencesGroup
 from .version_group import VersionGroup

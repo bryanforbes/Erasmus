@@ -7,7 +7,7 @@ from discord import app_commands
 
 from ...db import BibleVersion, GuildPref, Session
 from .bible_lookup import bible_lookup  # noqa
-from .daily_bread_group import DailyBreadPreferencesGroup
+from .daily_bread import DailyBreadPreferencesGroup
 
 if TYPE_CHECKING:
     import discord
