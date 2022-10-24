@@ -16,9 +16,12 @@ from typing import (
 from typing_extensions import Self, dataclass_transform
 
 import pendulum
+import pendulum.tz
 from botus_receptus.sqlalchemy import async_sessionmaker
-from sqlalchemy import BigInteger, Boolean, Column, TypeDecorator
+from pendulum.tz.timezone import Timezone as _Timezone
+from sqlalchemy import BigInteger, Boolean, Column, String, TypeDecorator
 from sqlalchemy.dialects.postgresql import TIMESTAMP, TSVECTOR
+from sqlalchemy.ext.hybrid import ExprComparator, hybrid_property as _hybrid_property
 from sqlalchemy.orm import (
     Mapped as _SAMapped,
     registry,
@@ -120,12 +123,39 @@ class DateTime(_TypeDecorator[pendulum.DateTime]):
     def process_bind_param(
         self, value: pendulum.DateTime | None, dialect: object
     ) -> datetime | None:
+        if value is None:
+            return None
+
+        if not self.impl.timezone:
+            value = value.naive()
+
         return value
 
     def process_result_value(
         self, value: datetime | None, dialect: object
     ) -> pendulum.DateTime | None:
-        return pendulum.instance(value) if value is not None else value
+        if value is None:
+            return None
+
+        return pendulum.instance(value)
+
+
+class Timezone(_TypeDecorator[_Timezone]):
+    impl = String
+    cache_ok = True
+
+    def process_bind_param(
+        self, value: _Timezone | None, dialect: object
+    ) -> str | None:
+        return None if value is None else value.name
+
+    def process_result_value(
+        self, value: str | None, dialect: object
+    ) -> _Timezone | None:
+        return None if value is None else pendulum.tz.timezone(value)
+
+    def copy(self, /, **kwargs: object) -> Timezone:
+        return Timezone(self.impl.length)
 
 
 @dataclass
@@ -307,3 +337,51 @@ def model_mixin(cls: type[_BaseT], /) -> type[_BaseT]:
 @dataclass_transform(field_specifiers=(_dataclass_field, mapped_column, relationship))
 def model(cls: type[_BaseT], /) -> type[_BaseT]:
     return mapped(dataclass(cls))
+
+
+if TYPE_CHECKING:
+
+    class hybrid_property(_hybrid_property, Generic[_T]):
+        fget: Callable[[Any], _T]
+
+        def __init__(
+            self,
+            fget: Callable[[Any], _T],
+            fset: Any | None = ...,
+            fdel: Any | None = ...,
+            expr: Any | None = ...,
+            custom_comparator: Any | None = ...,
+            update_expr: Any | None = ...,
+        ) -> None:
+            ...
+
+        def getter(self, fget: Callable[[Any], Any]) -> Self:
+            ...
+
+        def setter(self, fset: Callable[[Any, _T], None]) -> Self:
+            ...
+
+        def deleter(self, fdel: Callable[[Any], None]) -> Self:
+            ...
+
+        def expression(self, expr: Callable[[Any], Any]) -> Self:
+            ...
+
+        def update_expression(self, meth: Callable[[Any, _T], Any]) -> Self:
+            ...
+
+        @overload
+        def __get__(
+            self, instance: None, owner: type[object] | None = ...
+        ) -> ExprComparator:
+            ...
+
+        @overload
+        def __get__(self, instance: object, owner: type[object] | None = ...) -> _T:
+            ...
+
+        def __get__(self, instance: Any, owner: Any = None) -> Any:
+            ...
+
+else:
+    hybrid_property = _hybrid_property

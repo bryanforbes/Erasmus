@@ -43,6 +43,9 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             engine_kwargs={
                 'json_serializer': json.serialize,
                 'json_deserializer': json.deserialize,
+                'connect_args': {
+                    'server_settings': {'timezone': 'utc'},
+                },
             },
             help_command=None,
             allowed_mentions=discord.AllowedMentions.none(),

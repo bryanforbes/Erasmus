@@ -5,9 +5,11 @@ from typing import TYPE_CHECKING, Final, cast
 
 import discord
 import pendulum
+import pendulum.tz
 from attrs import define
 from botus_receptus import re, utils
 from discord import app_commands
+from pendulum.tz.timezone import Timezone  # noqa: TC002
 
 from ....data import SectionFlag
 from ....db import BibleVersion, DailyBread, Session
@@ -134,7 +136,7 @@ def _can_manage_channel_webhooks(
 
 class _TimeTransformer(app_commands.Transformer):
     times = [
-        f'{str(12 if hour == 0 else hour):0>2}:{str(minute):0>2} {meridian}'
+        f'{str(12 if hour == 0 else hour)}:{str(minute):0>2} {meridian}'
         for hour, minute, meridian in chain.from_iterable(
             chain.from_iterable(
                 [(hour, minute, meridian) for minute in range(0, 60, 15)]
@@ -203,20 +205,22 @@ class _TimeZoneTransformer(app_commands.Transformer):
     timezones: list[_TimeZoneItem] = [
         _TimeZoneItem.create(zone) for zone in pendulum.tz.timezones
     ]
-    valid_tz_input: set[str] = set(
+    tz_map: dict[str, str] = dict(
         chain.from_iterable(
             [
-                [zone.replace('_', ' ').lower(), zone.lower()]
+                [(zone.replace('_', ' ').lower(), zone), (zone.lower(), zone)]
                 for zone in pendulum.tz.timezones
             ]
         )
     )
 
-    async def transform(self, itx: discord.Interaction, value: str, /) -> str:
-        if value.lower() not in self.valid_tz_input:
+    async def transform(self, itx: discord.Interaction, value: str, /) -> Timezone:
+        value_lower = value.lower()
+
+        if value_lower not in self.tz_map:
             raise InvalidTimeZoneError(value)
 
-        return value
+        return pendulum.tz.timezone(self.tz_map[value_lower])
 
     async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
         self, itx: discord.Interaction, current: str, /
@@ -266,7 +270,7 @@ class DailyBreadPreferencesGroup(
         /,
         channel: discord.TextChannel | discord.Thread,
         time: app_commands.Transform[tuple[int, int], _TimeTransformer],
-        timezone: app_commands.Transform[str, _TimeZoneTransformer],
+        timezone: app_commands.Transform[Timezone, _TimeZoneTransformer],
     ) -> None:
         '''Set or update the automated daily bread post settings for this server'''
 
@@ -311,11 +315,11 @@ class DailyBreadPreferencesGroup(
         await self.__remove_webhooks(itx, itx.guild)
         webhook = await actual_channel.create_webhook(name='Daily Bread from Erasmus')
 
-        now = pendulum.now(tz=timezone)
+        now = pendulum.now(timezone)
         next_scheduled = now.set(hour=time[0], minute=time[1], second=0, microsecond=0)
 
         if next_scheduled <= now:
-            next_scheduled = next_scheduled.add(hours=24)
+            next_scheduled = next_scheduled.add(days=1)
 
         async with Session.begin() as session:
             daily_bread = await DailyBread.for_guild(session, itx.guild)
@@ -332,7 +336,7 @@ class DailyBreadPreferencesGroup(
                 daily_bread.next_scheduled = next_scheduled
             else:
                 updated = False
-                daily_bread = DailyBread(
+                daily_bread = DailyBread.create(
                     guild_id=itx.guild.id,
                     channel_id=actual_channel.id,
                     thread_id=thread_id,

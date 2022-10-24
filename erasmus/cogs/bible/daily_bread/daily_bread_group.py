@@ -10,7 +10,6 @@ import discord
 import pendulum
 from attrs import define, field
 from botus_receptus import re, utils
-from botus_receptus.app_commands import test_guilds_only
 from bs4 import BeautifulSoup, SoupStrainer
 from discord import app_commands
 from discord.ext import tasks
@@ -60,7 +59,6 @@ class PassageFetcher:
 
 
 @app_commands.guild_only()
-@test_guilds_only
 class DailyBreadGroup(
     app_commands.Group, name='daily-bread', description='Daily bread'
 ):
@@ -113,7 +111,11 @@ class DailyBreadGroup(
             fallback = await BibleVersion.get_by_command(session, 'esv')
 
             for daily_bread in result:
-                next_scheduled = daily_bread.next_scheduled.add(hours=24)
+                now = pendulum.now(daily_bread.timezone)
+                next_scheduled = daily_bread.next_scheduled.set(
+                    year=now.year, month=now.month, day=now.day
+                ).add(days=1)
+
                 webhook = discord.Webhook.from_url(
                     f'https://discord.com/api/webhooks/{daily_bread.url}',
                     session=self.session,
