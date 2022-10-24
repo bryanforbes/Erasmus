@@ -94,7 +94,7 @@ test = ["flake8 (>=3.9.2,<3.10.0)", "pycodestyle (>=2.7.0,<2.8.0)", "uvloop (>=0
 
 [[package]]
 name = "asyncpg-stubs"
-version = "0.26.4"
+version = "0.26.5"
 description = "asyncpg stubs"
 category = "dev"
 optional = false
@@ -197,8 +197,8 @@ uvloop = ["uvloop (>=0.17.0,<0.18.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "86ddbd1ad0a88253d324b6b29e74532cb03cb451"
-resolved_reference = "86ddbd1ad0a88253d324b6b29e74532cb03cb451"
+reference = "f863d5a16adcb67e7db934cb828618d61a215fa2"
+resolved_reference = "f863d5a16adcb67e7db934cb828618d61a215fa2"
 
 [[package]]
 name = "brotli"
@@ -1137,7 +1137,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.10"
-content-hash = "db00c2a840f987789bc759530be9996c95f3cffd30b14e0a0a3be1630d5657d1"
+content-hash = "c5c89d7cf4614d927da1bb84d5b0d0a0ba910c000d676c2289056b48de86978b"
 
 [metadata.files]
 aiodns = [
@@ -1282,8 +1282,8 @@ asyncpg = [
     {file = "asyncpg-0.26.0.tar.gz", hash = "sha256:77e684a24fee17ba3e487ca982d0259ed17bae1af68006f4cf284b23ba20ea2c"},
 ]
 asyncpg-stubs = [
-    {file = "asyncpg-stubs-0.26.4.tar.gz", hash = "sha256:f61e4dbeddcc587009e6745504ce6deb6234955e6ab94c05f963723ccb6e4a3a"},
-    {file = "asyncpg_stubs-0.26.4-py3-none-any.whl", hash = "sha256:04be46e33b4d93327b4ea7f9a662831ee35923647fed98934b69cd26ab12cdf4"},
+    {file = "asyncpg_stubs-0.26.5-py3-none-any.whl", hash = "sha256:952f12e958d3484e671822588a5efc0683b59003d3818668d271acde619790cd"},
+    {file = "asyncpg_stubs-0.26.5.tar.gz", hash = "sha256:bf780606f9f89d36293c55df677c56386a62c4ef626cd78e20701d98eee20a33"},
 ]
 attrs = [
     {file = "attrs-22.1.0-py2.py3-none-any.whl", hash = "sha256:86efa402f67bf2df34f51a335487cf46b1ec130d02b8d39fd248abfd30da551c"},
