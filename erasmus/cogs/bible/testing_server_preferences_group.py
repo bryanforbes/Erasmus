@@ -26,6 +26,6 @@ class TestingServerPreferencesGroup(
 
     def initialize_from_parent(self, parent: ParentCog, /) -> None:
         self.bot = parent.bot
-        self.localizer = parent.localizer.for_group(self)
+        self.localizer = parent.localizer.for_group('serverprefs')
 
         self.daily_bread.initialize_from_parent(self)
