@@ -71,6 +71,9 @@ exclude_lines = [
   "^\\s*if TYPE_CHECKING:",
   "^\\s*\\.\\.\\.\\s*$"
 ]
+omit = [
+  "erasmus/cogs/bible/testing_server_preferences_group.py"
+]
 
 [tool.isort]
 extra_standard_library = ["typing_extensions", "_typeshed"]

@@ -10,6 +10,7 @@ import discord
 import pendulum
 from attrs import define, field
 from botus_receptus import re, utils
+from botus_receptus.app_commands import test_guilds_only
 from bs4 import BeautifulSoup, SoupStrainer
 from discord import app_commands
 from discord.ext import tasks
@@ -59,6 +60,7 @@ class PassageFetcher:
 
 
 @app_commands.guild_only()
+@test_guilds_only
 class DailyBreadGroup(
     app_commands.Group, name='daily-bread', description='Daily bread'
 ):

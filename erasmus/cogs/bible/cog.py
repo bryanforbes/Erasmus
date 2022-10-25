@@ -35,6 +35,7 @@ from .bible_lookup import _BibleOption, bible_lookup
 from .daily_bread import DailyBreadGroup
 from .search_page_source import SearchPageSource
 from .server_preferences_group import ServerPreferencesGroup
+from .testing_server_preferences_group import TestingServerPreferencesGroup
 from .version_group import VersionGroup
 
 if TYPE_CHECKING:
@@ -74,8 +75,9 @@ class Bible(Cog['Erasmus']):
 
     admin = BibleAdminGroup()
     version = VersionGroup()
-    server_preferences = ServerPreferencesGroup()
     daily_bread = DailyBreadGroup()
+    server_preferences = ServerPreferencesGroup()
+    testing_server_preferences = TestingServerPreferencesGroup()
 
     __lookup_cooldown: commands.CooldownMapping[discord.Message]
     __daily_bread_task: tasks.Loop[Callable[[], Coroutine[None]]]
@@ -91,8 +93,9 @@ class Bible(Cog['Erasmus']):
 
         self.admin.initialize_from_parent(self)
         self.version.initialize_from_parent(self)
-        self.server_preferences.initialize_from_parent(self)
         self.daily_bread.initialize_from_parent(self)
+        self.server_preferences.initialize_from_parent(self)
+        self.testing_server_preferences.initialize_from_parent(self)
 
     async def refresh(self, session: AsyncSession, /) -> None:
         bible_lookup.clear()

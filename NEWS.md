@@ -1,10 +1,5 @@
 # Version UNRELEASED
 
-* Added Daily Bread commands:
-  * `/daily-bread show`
-  * `/daily-bread status`
-  * `/serverprefs daily-bread set` (Administrator only)
-  * `/serverprefs daily-bread stop` (Administrator only)
 * Added The Second Helvetic Confession
 * Added The Augsburg Confession
 
