@@ -13,7 +13,7 @@ python = "^3.10"
 alembic = "^1.8"
 attrs = "^22.1.0"
 beautifulsoup4 = "^4.11"
-"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "92554dd8bbc34acadf920c1d4ad334ac5be887b8", extras = ["uvloop", "sqlalchemy"]}
+"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "c30b4a58b8b45387678152736794b47fdacee9ee", extras = ["uvloop", "sqlalchemy"]}
 "discord.py" = { version="^2.0.1", extras = ["speed"] }
 more-itertools = "~8.14.0"
 "fluent.runtime" = "^0.3.1"
@@ -25,7 +25,7 @@ black = "^22.10"
 coverage = {version = "^6.5", extras = ["toml"]}
 flake8 = "~5.0"
 flake8-bugbear = ">=22.10.27"
-flake8-comprehensions = "^3.10.0"
+flake8-comprehensions = "^3.10.1"
 flake8-implicit-str-concat = "^0.3.0"
 flake8-pie = "^0.16.0"
 flake8-pyi = "^22.10"
