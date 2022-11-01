@@ -43,6 +43,7 @@ pytest-mock = "^3.10"
 pytest-recording = "^0.12.1"
 pytest-sugar = "^0.9.5"
 pytest-xdist = "^3.0"
+py = "^1.11.0"
 
 [tool.poetry.scripts]
 erasmus = 'erasmus.run:main'
