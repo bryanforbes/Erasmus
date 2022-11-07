@@ -20,7 +20,7 @@ import pendulum.tz
 from botus_receptus.sqlalchemy import async_sessionmaker
 from pendulum.tz.timezone import Timezone as _Timezone
 from sqlalchemy import BigInteger, Boolean, Column, String, TypeDecorator
-from sqlalchemy.dialects.postgresql import TIMESTAMP, TSVECTOR
+from sqlalchemy.dialects.postgresql import TIME, TIMESTAMP, TSVECTOR
 from sqlalchemy.ext.hybrid import ExprComparator, hybrid_property as _hybrid_property
 from sqlalchemy.orm import (
     Mapped as _SAMapped,
@@ -35,7 +35,7 @@ _FlagT = TypeVar('_FlagT', bound=_EnumFlag)
 
 if TYPE_CHECKING:
     from collections.abc import Callable
-    from datetime import datetime
+    from datetime import datetime, time
 
     from sqlalchemy.sql import ClauseElement
     from sqlalchemy.sql.base import SchemaEventTarget
@@ -104,13 +104,16 @@ class Flag(_TypeDecorator[_FlagT]):
         super().__init__(*args, **kwargs)
 
     def process_bind_param(self, value: _FlagT | None, dialect: object) -> int | None:
-        return value.value if value is not None else value
+        if value is None:
+            return None
+
+        return value.value
 
     def process_result_value(self, value: int | None, dialect: object) -> _FlagT | None:
-        if value is not None:
-            return self._flag_cls(value)
+        if value is None:
+            return None
 
-        return value
+        return self._flag_cls(value)
 
 
 class DateTime(_TypeDecorator[pendulum.DateTime]):
@@ -140,6 +143,39 @@ class DateTime(_TypeDecorator[pendulum.DateTime]):
         return pendulum.instance(value)
 
 
+class Time(_TypeDecorator[pendulum.Time]):
+    impl = TIME
+    cache_ok = True
+
+    def __init__(self, timezone: bool = False, precision: int | None = None) -> None:
+        super().__init__(timezone=timezone, precision=precision)
+
+    def process_bind_param(
+        self, value: pendulum.Time | None, dialect: object
+    ) -> time | None:
+        if value is None:
+            return None
+
+        if not self.impl.timezone:
+            value = value.replace(tzinfo=None)
+
+        return value
+
+    def process_result_value(
+        self, value: time | None, dialect: object
+    ) -> pendulum.Time | None:
+        if value is None:
+            return None
+
+        return pendulum.Time(
+            value.hour,
+            value.minute,
+            value.second,
+            value.microsecond,
+            tzinfo=value.tzinfo if self.impl.timezone else None,
+        )
+
+
 class Timezone(_TypeDecorator[_Timezone]):
     impl = String
     cache_ok = True
@@ -147,12 +183,18 @@ class Timezone(_TypeDecorator[_Timezone]):
     def process_bind_param(
         self, value: _Timezone | None, dialect: object
     ) -> str | None:
-        return None if value is None else value.name
+        if value is None:
+            return None
+
+        return value.name
 
     def process_result_value(
         self, value: str | None, dialect: object
     ) -> _Timezone | None:
-        return None if value is None else pendulum.tz.timezone(value)
+        if value is None:
+            return None
+
+        return pendulum.tz.timezone(value)
 
     def copy(self, /, **kwargs: object) -> Timezone:
         return Timezone(self.impl.length)

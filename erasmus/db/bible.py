@@ -25,6 +25,7 @@ from .base import (
     DateTime,
     Flag,
     Mapped,
+    Time,
     Timezone,
     deref_column,
     foreign,
@@ -236,15 +237,6 @@ class GuildPref(_BibleVersionMixin):
         return session.get(GuildPref, guild.id)
 
 
-def _get_datetime_and_timezone(
-    value: pendulum.DateTime, /
-) -> tuple[pendulum.DateTime, _Timezone]:
-    return (
-        value.astimezone(pendulum.tz.UTC),
-        value.tz if value.tz is not None else pendulum.tz.UTC,
-    )
-
-
 @model
 class DailyBread(Base):
     __tablename__ = 'daily_breads'
@@ -256,6 +248,7 @@ class DailyBread(Base):
     next_scheduled_utc: Mapped[pendulum.DateTime] = mapped_column(
         DateTime(timezone=False), nullable=False
     )
+    time: Mapped[pendulum.Time] = mapped_column(Time(timezone=False), nullable=False)
     timezone: Mapped[_Timezone] = mapped_column(Timezone, nullable=False)
 
     prefs: Mapped[GuildPref | None] = relationship(
@@ -265,34 +258,6 @@ class DailyBread(Base):
         viewonly=True,
         primaryjoin=deref_column(guild_id) == foreign(GuildPref.guild_id),
     )
-
-    @property
-    def next_scheduled(self) -> pendulum.DateTime:
-        return self.next_scheduled_utc.astimezone(self.timezone)
-
-    @next_scheduled.setter
-    def next_scheduled(self, value: pendulum.DateTime) -> None:
-        self.next_scheduled_utc, self.timezone = _get_datetime_and_timezone(value)
-
-    @staticmethod
-    def create(
-        *,
-        guild_id: int,
-        channel_id: int,
-        thread_id: int | None,
-        url: str,
-        next_scheduled: pendulum.DateTime,
-    ) -> DailyBread:
-        next_scheduled_utc, timezone = _get_datetime_and_timezone(next_scheduled)
-
-        return DailyBread(
-            guild_id=guild_id,
-            channel_id=channel_id,
-            thread_id=thread_id,
-            url=url,
-            next_scheduled_utc=next_scheduled_utc,
-            timezone=timezone,
-        )
 
     @staticmethod
     def for_guild(

@@ -14,7 +14,7 @@ from pendulum.tz.timezone import Timezone  # noqa: TC002
 from ....data import SectionFlag
 from ....db import BibleVersion, DailyBread, Session
 from ....exceptions import InvalidTimeError, InvalidTimeZoneError
-from .common import TASK_INTERVAL
+from .common import TASK_INTERVAL, get_first_scheduled_time
 
 if TYPE_CHECKING:
     from typing_extensions import Self, Unpack
@@ -146,9 +146,7 @@ class _TimeTransformer(app_commands.Transformer):
         )
     ]
 
-    async def transform(
-        self, itx: discord.Interaction, value: str, /
-    ) -> tuple[int, int]:
+    async def transform(self, itx: discord.Interaction, value: str, /) -> pendulum.Time:
         value = value.strip()
 
         if (match := _time_re.match(value)) is None:
@@ -176,7 +174,7 @@ class _TimeTransformer(app_commands.Transformer):
 
             minutes = 0
 
-        return hours, minutes
+        return pendulum.Time(hours, minutes)
 
     async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
         self, itx: discord.Interaction, current: str, /
@@ -269,7 +267,7 @@ class DailyBreadPreferencesGroup(
         itx: discord.Interaction,
         /,
         channel: discord.TextChannel | discord.Thread,
-        time: app_commands.Transform[tuple[int, int], _TimeTransformer],
+        time: app_commands.Transform[pendulum.Time, _TimeTransformer],
         timezone: app_commands.Transform[Timezone, _TimeZoneTransformer],
     ) -> None:
         '''Set or update the automated daily bread post settings for this server'''
@@ -315,11 +313,7 @@ class DailyBreadPreferencesGroup(
         await self.__remove_webhooks(itx, itx.guild)
         webhook = await actual_channel.create_webhook(name='Daily Bread from Erasmus')
 
-        now = pendulum.now(timezone)
-        next_scheduled = now.set(hour=time[0], minute=time[1], second=0, microsecond=0)
-
-        if next_scheduled <= now:
-            next_scheduled = next_scheduled.add(days=1)
+        next_scheduled = get_first_scheduled_time(time, timezone)
 
         async with Session.begin() as session:
             daily_bread = await DailyBread.for_guild(session, itx.guild)
@@ -333,15 +327,19 @@ class DailyBreadPreferencesGroup(
                 if daily_bread.thread_id != thread_id:
                     daily_bread.thread_id = thread_id
 
-                daily_bread.next_scheduled = next_scheduled
+                daily_bread.time = time
+                daily_bread.timezone = timezone
+                daily_bread.next_scheduled_utc = next_scheduled
             else:
                 updated = False
-                daily_bread = DailyBread.create(
+                daily_bread = DailyBread(
                     guild_id=itx.guild.id,
                     channel_id=actual_channel.id,
                     thread_id=thread_id,
                     url=f'{webhook.id}/{webhook.token}',
-                    next_scheduled=next_scheduled,
+                    next_scheduled_utc=next_scheduled,
+                    time=time,
+                    timezone=timezone,
                 )
                 session.add(daily_bread)
 
@@ -366,7 +364,7 @@ class DailyBreadPreferencesGroup(
                     data={
                         'channel': channel.mention,
                         'next_scheduled': discord.utils.format_dt(
-                            daily_bread.next_scheduled
+                            daily_bread.next_scheduled_utc
                         ),
                         'version': version.name,
                     },

@@ -53,7 +53,7 @@ class Time(FormattableMixin, time):
         minute: int | None = ...,
         second: int | None = ...,
         microsecond: int | None = ...,
-        tzinfo: bool = ...,
+        tzinfo: bool | tzinfo | None = ...,
     ) -> Self: ...
     def __getnewargs__(self) -> tuple[Self]: ...
     def __reduce__(

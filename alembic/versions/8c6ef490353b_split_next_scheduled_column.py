@@ -13,7 +13,7 @@ import sqlalchemy as sa
 from alembic import op
 from botus_receptus.sqlalchemy import Snowflake
 
-from erasmus.db.base import DateTime, Timezone
+from erasmus.db.base import DateTime, Time, Timezone
 
 # revision identifiers, used by Alembic.
 revision = '8c6ef490353b'
@@ -30,6 +30,7 @@ daily_breads_after = sa.table(
     'daily_breads',
     sa.column('guild_id', Snowflake()),
     sa.column('next_scheduled_utc', DateTime(timezone=False)),
+    sa.column('time', Time(timezone=False)),
     sa.column('timezone', Timezone()),
 )
 
@@ -47,15 +48,25 @@ def upgrade():
         new_column_name='next_scheduled_utc',
         type_=DateTime(timezone=False),
     )
+    op.add_column(
+        'daily_breads', sa.Column('time', Time(timezone=False), nullable=True)
+    )
     op.add_column('daily_breads', sa.Column('timezone', Timezone(), nullable=True))
 
     for row in rows:
         op.execute(
             daily_breads_after.update()
             .filter_by(guild_id=row[0])
-            .values({'next_scheduled_utc': row[1], 'timezone': local_tz})
+            .values(
+                {
+                    'next_scheduled_utc': row[1].astimezone(pendulum.tz.UTC),
+                    'time': row[1].astimezone(local_tz).time(),
+                    'timezone': local_tz,
+                }
+            )
         )
 
+    op.alter_column('daily_breads', 'time', nullable=False)
     op.alter_column('daily_breads', 'timezone', nullable=False)
 
 
@@ -66,6 +77,7 @@ def downgrade():
     rows = result.fetchall()
 
     op.drop_column('daily_breads', 'timezone')
+    op.drop_column('daily_breads', 'time')
     op.alter_column(
         'daily_breads',
         'next_scheduled_utc',
@@ -77,5 +89,5 @@ def downgrade():
         op.execute(
             daily_breads_before.update()
             .filter_by(guild_id=row[0])
-            .values({'next_scheduled': row[1].astimezone(row[2])})
+            .values({'next_scheduled': row[1].astimezone(row[3])})
         )

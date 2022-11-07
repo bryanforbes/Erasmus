@@ -25,7 +25,7 @@ from ....exceptions import (
 )
 from ....utils import send_passage
 from ..bible_lookup import bible_lookup  # noqa: TC002
-from .common import TASK_INTERVAL
+from .common import TASK_INTERVAL, get_next_scheduled_time
 
 if TYPE_CHECKING:
     from collections.abc import Callable
@@ -113,10 +113,11 @@ class DailyBreadGroup(
             fallback = await BibleVersion.get_by_command(session, 'esv')
 
             for daily_bread in result:
-                now = pendulum.now(daily_bread.timezone)
-                next_scheduled = daily_bread.next_scheduled.set(
-                    year=now.year, month=now.month, day=now.day
-                ).add(days=1)
+                next_scheduled = get_next_scheduled_time(
+                    daily_bread.next_scheduled_utc,
+                    daily_bread.time,
+                    daily_bread.timezone,
+                )
 
                 webhook = discord.Webhook.from_url(
                     f'https://discord.com/api/webhooks/{daily_bread.url}',
@@ -132,7 +133,7 @@ class DailyBreadGroup(
                     bible = fallback
 
                 if verse_range.book_mask not in bible.books:
-                    daily_bread.next_scheduled = next_scheduled
+                    daily_bread.next_scheduled_utc = next_scheduled
                     continue
 
                 passage = await self.__fetcher(bible)
@@ -146,7 +147,7 @@ class DailyBreadGroup(
                         else discord.utils.MISSING,
                         avatar_url='https://i.imgur.com/XQ8N2vH.png',
                     )
-                    daily_bread.next_scheduled = next_scheduled
+                    daily_bread.next_scheduled_utc = next_scheduled
                 except (discord.DiscordException, ErasmusError) as error:
                     _log.exception(
                         'An error occurred while posting the daily bread to '
@@ -235,7 +236,7 @@ class DailyBreadGroup(
                         {
                             'name': localizer.format('next_scheduled'),
                             'value': discord.utils.format_dt(
-                                daily_bread.next_scheduled
+                                daily_bread.next_scheduled_utc
                             ),
                             'inline': False,
                         },
