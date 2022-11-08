@@ -14,7 +14,7 @@ from alembic import op
 from botus_receptus.sqlalchemy import TSVector
 from sqlalchemy.dialects.postgresql import ENUM
 
-from erasmus.db.confession import ConfessionType, NumberingType
+from erasmus.db.enums import ConfessionType, NumberingType
 
 # revision identifiers, used by Alembic.
 revision = 'f4981c5dda24'

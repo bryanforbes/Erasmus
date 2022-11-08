@@ -5,9 +5,7 @@ from typing import TYPE_CHECKING
 from botus_receptus import utils
 from discord import app_commands
 
-from erasmus.db.bible import GuildPref
-
-from ...db import BibleVersion, Session, UserPref
+from ...db import BibleVersion, GuildPref, Session, UserPref
 from .bible_lookup import bible_lookup  # noqa
 
 if TYPE_CHECKING:

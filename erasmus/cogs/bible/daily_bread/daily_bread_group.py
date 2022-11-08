@@ -15,8 +15,7 @@ from discord import app_commands
 from discord.ext import tasks
 
 from ....data import Passage, VerseRange
-from ....db import DailyBread, Session
-from ....db.bible import BibleVersion
+from ....db import BibleVersion, DailyBread, Session
 from ....exceptions import (
     DailyBreadNotInVersionError,
     DoNotUnderstandError,
@@ -134,7 +133,7 @@ class DailyBreadGroup(
                     daily_bread.next_scheduled = next_scheduled
                     continue
 
-                passage = await self.__fetcher(bible)
+                passage = await self.__fetcher(bible)  # pyright: ignore
 
                 try:
                     await send_passage(
@@ -202,7 +201,7 @@ class DailyBreadGroup(
         if self.__fetcher.verse_range.book_mask not in bible.books:
             raise DailyBreadNotInVersionError(bible.name)
 
-        passage = await self.__fetcher(bible)
+        passage = await self.__fetcher(bible)  # pyright: ignore
 
         await send_passage(itx, passage, ephemeral=only_me)
 

@@ -1,14 +1,12 @@
 from __future__ import annotations
 
-from botus_receptus.sqlalchemy import Snowflake
-from sqlalchemy import Boolean
+from sqlalchemy.orm import Mapped, mapped_column
 
-from .base import Base, Mapped, mapped_column, model
+from .base import Base, Snowflake
 
 
-@model
 class Notification(Base):
     __tablename__ = 'notifications'
 
-    id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
-    application_commands: Mapped[bool] = mapped_column(Boolean, nullable=False)
+    id: Mapped[Snowflake] = mapped_column(primary_key=True, init=True)
+    application_commands: Mapped[bool] = mapped_column()

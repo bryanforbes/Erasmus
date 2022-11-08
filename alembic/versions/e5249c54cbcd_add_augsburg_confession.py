@@ -16,7 +16,7 @@ from alembic import op
 from sqlalchemy.dialects import postgresql
 from tomli import load
 
-from erasmus.db.confession import ConfessionType, NumberingType
+from erasmus.db.enums import ConfessionType, NumberingType
 
 # revision identifiers, used by Alembic.
 revision = 'e5249c54cbcd'

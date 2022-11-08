@@ -101,7 +101,7 @@ class Bible(Cog['Erasmus']):
         bible_lookup.clear()
         bible_lookup.update(
             [
-                _BibleOption.create(version)
+                _BibleOption.create(version)  # pyright: ignore
                 async for version in BibleVersion.get_all(session, ordered=True)
             ]
         )
@@ -142,7 +142,9 @@ class Bible(Cog['Erasmus']):
         if reference.book_mask not in bible.books:
             raise BookNotInVersionError(reference.book.name, bible.name)
 
-        passage = await self.service_manager.get_passage(bible, reference)
+        passage = await self.service_manager.get_passage(
+            bible, reference  # pyright: ignore
+        )
         await send_passage(itx, passage, ephemeral=only_me)
 
     async def cog_app_command_error(  # pyright: ignore [reportIncompatibleMethodOverride]  # noqa: B950
@@ -333,11 +335,16 @@ class Bible(Cog['Erasmus']):
 
         def search(*, per_page: int, page_number: int) -> Coroutine[SearchResults]:
             return self.service_manager.search(
-                bible, terms.split(' '), limit=per_page, offset=page_number
+                bible,  # pyright: ignore
+                terms.split(' '),
+                limit=per_page,
+                offset=page_number,
             )
 
         localizer = self.localizer.for_message('search', itx.locale)
-        source = SearchPageSource(search, per_page=5, bible=bible, localizer=localizer)
+        source = SearchPageSource(
+            search, per_page=5, bible=bible, localizer=localizer  # pyright: ignore
+        )
         view = UIPages(itx, source, localizer=localizer)
         await view.start()
 

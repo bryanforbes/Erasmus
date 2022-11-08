@@ -3,64 +3,41 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pendulum
-from botus_receptus.sqlalchemy import Flag, Snowflake
-from sqlalchemy import (
-    Boolean,
-    Computed,
-    ForeignKey,
-    Index,
-    Integer,
-    String,
-    func,
-    select,
-    text,
-)
-from sqlalchemy.dialects.postgresql import JSONB, insert
+from pendulum.tz.timezone import Timezone  # noqa: TC002
+from sqlalchemy import Computed, ForeignKey, Index, func, select, text
+from sqlalchemy.dialects.postgresql import JSONB, insert  # pyright: ignore
+from sqlalchemy.orm import Mapped, declared_attr, foreign, mapped_column, relationship
 
 from ..data import SectionFlag
 from ..exceptions import InvalidVersionError
-from .base import (
-    Base,
-    Mapped,
-    deref_column,
-    foreign,
-    mapped_column,
-    mixin_column,
-    model,
-    model_mixin,
-    relationship,
-)
-from .types import DateTime, Time, Timezone
+from .base import Base, Snowflake
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator
+    from collections.abc import AsyncIterator, Sequence
 
     import discord
     from botus_receptus.types import Coroutine
-    from pendulum.tz.timezone import Timezone as _Timezone
     from sqlalchemy.ext.asyncio import AsyncSession
 
 
-@model
 class BibleVersion(Base):
     __tablename__ = 'bible_versions'
 
-    id: Mapped[int] = mapped_column(Integer, primary_key=True)
-    command: Mapped[str] = mapped_column(String, unique=True, nullable=False)
-    name: Mapped[str] = mapped_column(String, nullable=False)
-    abbr: Mapped[str] = mapped_column(String, nullable=False)
-    service: Mapped[str] = mapped_column(String, nullable=False)
-    service_version: Mapped[str] = mapped_column(String, nullable=False)
-    rtl: Mapped[bool | None] = mapped_column(Boolean)
-    books: Mapped[SectionFlag] = mapped_column(Flag(SectionFlag), nullable=False)
+    id: Mapped[int] = mapped_column(primary_key=True, init=False)
+    command: Mapped[str] = mapped_column(unique=True)
+    name: Mapped[str] = mapped_column()
+    abbr: Mapped[str]
+    service: Mapped[str]
+    service_version: Mapped[str]
+    rtl: Mapped[bool | None]
+    books: Mapped[SectionFlag]
     book_mapping: Mapped[dict[str, str] | None] = mapped_column(
         JSONB(none_as_null=True)
     )
     sortable_name: Mapped[str] = mapped_column(
-        String,
         Computed(
             func.regexp_replace(
-                deref_column(name),
+                name,
                 text(r"'^(the|an?)\s+(.*)$'"),
                 text(r"'\2, \1'"),
                 text("'i'"),
@@ -72,7 +49,7 @@ class BibleVersion(Base):
     __table_args__ = (
         Index(
             'bible_versions_sortable_name_order_idx',
-            deref_column(sortable_name).asc(),
+            sortable_name.asc(),
         ),
     )
 
@@ -80,7 +57,7 @@ class BibleVersion(Base):
         self, session: AsyncSession, user: discord.User | discord.Member, /
     ) -> None:
         await session.execute(
-            insert(UserPref)
+            insert(UserPref)  # pyright: ignore
             .values(user_id=user.id, bible_id=self.id)
             .on_conflict_do_update(
                 index_elements=['user_id'], set_={'bible_id': self.id}
@@ -91,7 +68,7 @@ class BibleVersion(Base):
         self, session: AsyncSession, guild: discord.Guild, /
     ) -> None:
         await session.execute(
-            insert(GuildPref)
+            insert(GuildPref)  # pyright: ignore
             .values(guild_id=guild.id, bible_id=self.id)
             .on_conflict_do_update(
                 index_elements=['guild_id'], set_={'bible_id': self.id}
@@ -140,7 +117,7 @@ class BibleVersion(Base):
 
         if search_term is not None:
             search_term = search_term.lower()
-            stmt = stmt.filter(
+            stmt = stmt.where(
                 func.lower(BibleVersion.command).startswith(
                     search_term, autoescape=True
                 )
@@ -157,7 +134,7 @@ class BibleVersion(Base):
     async def get_by_command(session: AsyncSession, command: str, /) -> BibleVersion:
         bible: BibleVersion | None = (
             await session.scalars(
-                select(BibleVersion).filter(BibleVersion.command == command)
+                select(BibleVersion).where(BibleVersion.command == command)
             )
         ).first()
 
@@ -170,7 +147,7 @@ class BibleVersion(Base):
     async def get_by_abbr(session: AsyncSession, abbr: str, /) -> BibleVersion | None:
         return (
             await session.scalars(
-                select(BibleVersion).filter(BibleVersion.command.ilike(abbr))
+                select(BibleVersion).where(BibleVersion.command.ilike(abbr))
             )
         ).first()
 
@@ -197,21 +174,20 @@ class BibleVersion(Base):
         return await BibleVersion.get_by_command(session, 'esv')
 
 
-@model_mixin
-class _BibleVersionMixin(Base):
-    bible_id: Mapped[int | None] = mixin_column(
-        lambda: mapped_column(Integer, ForeignKey('bible_versions.id'))
-    )
-    bible_version: Mapped[BibleVersion | None] = relationship(
-        BibleVersion, lazy='joined', uselist=False
-    )
+class _BibleVersionBase(Base):
+    __abstract__ = True
+
+    bible_id: Mapped[int | None] = mapped_column(ForeignKey('bible_versions.id'))
+
+    @declared_attr
+    def bible_version(self) -> Mapped[BibleVersion | None]:
+        return relationship(BibleVersion, lazy='selectin', uselist=False, init=False)
 
 
-@model
-class UserPref(_BibleVersionMixin):
+class UserPref(_BibleVersionBase):
     __tablename__ = 'user_prefs'
 
-    user_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
+    user_id: Mapped[Snowflake] = mapped_column(primary_key=True, init=True)
 
     @staticmethod
     def for_user(
@@ -220,11 +196,10 @@ class UserPref(_BibleVersionMixin):
         return session.get(UserPref, user.id)
 
 
-@model
-class GuildPref(_BibleVersionMixin):
+class GuildPref(_BibleVersionBase):
     __tablename__ = 'guild_prefs'
 
-    guild_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
+    guild_id: Mapped[Snowflake] = mapped_column(primary_key=True, init=True)
 
     @staticmethod
     def for_guild(
@@ -233,26 +208,24 @@ class GuildPref(_BibleVersionMixin):
         return session.get(GuildPref, guild.id)
 
 
-@model
 class DailyBread(Base):
     __tablename__ = 'daily_breads'
 
-    guild_id: Mapped[int] = mapped_column(Snowflake, primary_key=True, init=True)
-    channel_id: Mapped[int] = mapped_column(Snowflake, nullable=False)
-    thread_id: Mapped[int | None] = mapped_column(Snowflake)
-    url: Mapped[str] = mapped_column(String, nullable=False)
-    next_scheduled: Mapped[pendulum.DateTime] = mapped_column(
-        DateTime(timezone=True), nullable=False
-    )
-    time: Mapped[pendulum.Time] = mapped_column(Time, nullable=False)
-    timezone: Mapped[_Timezone] = mapped_column(Timezone, nullable=False)
+    guild_id: Mapped[Snowflake] = mapped_column(primary_key=True)
+    channel_id: Mapped[Snowflake]
+    thread_id: Mapped[Snowflake | None]
+    url: Mapped[str]
+    next_scheduled: Mapped[pendulum.DateTime]
+    time: Mapped[pendulum.Time]
+    timezone: Mapped[Timezone]
 
     prefs: Mapped[GuildPref | None] = relationship(
         GuildPref,
-        lazy='joined',
+        init=False,
+        lazy='selectin',
         uselist=False,
         viewonly=True,
-        primaryjoin=deref_column(guild_id) == foreign(GuildPref.guild_id),
+        primaryjoin=guild_id == foreign(GuildPref.guild_id),
     )
 
     @staticmethod
@@ -262,10 +235,10 @@ class DailyBread(Base):
         return session.get(DailyBread, guild.id)
 
     @staticmethod
-    async def scheduled(session: AsyncSession, /) -> list[DailyBread]:
+    async def scheduled(session: AsyncSession, /) -> Sequence[DailyBread]:
         return (
             await session.scalars(
-                select(DailyBread).filter(
+                select(DailyBread).where(
                     DailyBread.next_scheduled
                     <= pendulum.now(pendulum.UTC).set(second=0, microsecond=0)
                 )

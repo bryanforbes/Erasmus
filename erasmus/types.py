@@ -1,17 +1,11 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Protocol, TypeAlias, runtime_checkable
-
-from sqlalchemy.orm import sessionmaker
+from typing import TYPE_CHECKING, Protocol, runtime_checkable
 
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
     from .data import Passage, SearchResults, VerseRange
-
-    AsyncSessionMaker: TypeAlias = sessionmaker['AsyncSession']
-else:
-    AsyncSessionMaker: TypeAlias = sessionmaker
 
 
 class Bible(Protocol):
