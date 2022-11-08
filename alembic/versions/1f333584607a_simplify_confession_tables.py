@@ -12,7 +12,7 @@ from typing import Any
 import sqlalchemy as sa
 from alembic import op
 
-from erasmus.db.base import TSVector
+from erasmus.db.types import TSVector
 
 # revision identifiers, used by Alembic.
 revision = '1f333584607a'

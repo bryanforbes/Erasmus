@@ -16,7 +16,7 @@ def get_next_scheduled_time(
     timezone: Timezone,
     /,
 ) -> pendulum.DateTime:
-    now = pendulum.now(pendulum.tz.UTC)
+    now = pendulum.now(pendulum.UTC)
 
     next_date_utc = previous_date_utc.replace(
         year=now.year, month=now.month, day=now.day
@@ -35,19 +35,19 @@ def get_next_scheduled_time(
     next_date = next_date_utc.astimezone(timezone)
 
     return next_date.set(hour=time.hour, minute=time.minute, second=0).astimezone(
-        pendulum.tz.UTC
+        pendulum.UTC
     )
 
 
 def get_first_scheduled_time(
     time: pendulum.Time, timezone: Timezone, /
 ) -> pendulum.DateTime:
-    now = pendulum.now(pendulum.tz.UTC)
+    now = pendulum.now(pendulum.UTC)
 
     first_time = (
         now.astimezone(timezone)
         .set(hour=time.hour, minute=time.minute, second=0, microsecond=0)
-        .astimezone(pendulum.tz.UTC)
+        .astimezone(pendulum.UTC)
     )
 
     if first_time > now:

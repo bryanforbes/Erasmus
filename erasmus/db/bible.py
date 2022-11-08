@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pendulum
-import pendulum.tz
 from botus_receptus.sqlalchemy import Snowflake
 from sqlalchemy import (
     Boolean,
@@ -22,11 +21,7 @@ from ..data import SectionFlag
 from ..exceptions import InvalidVersionError
 from .base import (
     Base,
-    DateTime,
-    Flag,
     Mapped,
-    Time,
-    Timezone,
     deref_column,
     foreign,
     mapped_column,
@@ -35,6 +30,7 @@ from .base import (
     model_mixin,
     relationship,
 )
+from .types import DateTime, Flag, Time, Timezone
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
@@ -271,7 +267,7 @@ class DailyBread(Base):
             await session.scalars(
                 select(DailyBread).filter(
                     DailyBread.next_scheduled_utc
-                    <= pendulum.now(pendulum.tz.UTC).set(second=0, microsecond=0)
+                    <= pendulum.now(pendulum.UTC).set(second=0, microsecond=0)
                 )
             )
         ).fetchall()

@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING, Final, cast
 
 import discord
 import pendulum
-import pendulum.tz
 from attrs import define
 from botus_receptus import re, utils
 from discord import app_commands
@@ -201,13 +200,13 @@ class _TimeZoneItem:
 
 class _TimeZoneTransformer(app_commands.Transformer):
     timezones: list[_TimeZoneItem] = [
-        _TimeZoneItem.create(zone) for zone in pendulum.tz.timezones
+        _TimeZoneItem.create(zone) for zone in pendulum.timezones
     ]
     tz_map: dict[str, str] = dict(
         chain.from_iterable(
             [
                 [(zone.replace('_', ' ').lower(), zone), (zone.lower(), zone)]
-                for zone in pendulum.tz.timezones
+                for zone in pendulum.timezones
             ]
         )
     )
@@ -218,7 +217,7 @@ class _TimeZoneTransformer(app_commands.Transformer):
         if value_lower not in self.tz_map:
             raise InvalidTimeZoneError(value)
 
-        return pendulum.tz.timezone(self.tz_map[value_lower])
+        return pendulum.timezone(self.tz_map[value_lower])
 
     async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
         self, itx: discord.Interaction, current: str, /

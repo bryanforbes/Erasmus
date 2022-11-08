@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pendulum
-import pendulum.tz
 import pytest
 
 from erasmus.cogs.bible.daily_bread.common import (
@@ -74,7 +73,7 @@ def test_get_next_scheduled_time(
     time_args: tuple[int, int],
     expected_time: str,
 ) -> None:
-    tzinfo = pendulum.tz.timezone(tz)
+    tzinfo = pendulum.timezone(tz)
 
     now = mocker.patch('pendulum.now')
     now.return_value = pendulum.DateTime.strptime(now_time, '%Y-%m-%dT%H:%M:%S')
@@ -108,9 +107,9 @@ def test_get_next_scheduled_time_month(
 ) -> None:
     now = mocker.patch('pendulum.now')
     actual = pendulum.DateTime.strptime(start_time, '%Y-%m-%dT%H:%M:%S').astimezone(
-        pendulum.tz.UTC
+        pendulum.UTC
     )
-    tz = pendulum.tz.timezone(tz_name)
+    tz = pendulum.timezone(tz_name)
 
     for _ in range(1, 28):
         now.return_value = actual
@@ -185,7 +184,7 @@ def test_get_first_scheduled_time(
     time_args: tuple[int, int],
     expected_time: str,
 ) -> None:
-    tzinfo = pendulum.tz.timezone(tz)
+    tzinfo = pendulum.timezone(tz)
 
     now = mocker.patch('pendulum.now')
     now.return_value = pendulum.DateTime.strptime(now_time, '%Y-%m-%dT%H:%M:%S')

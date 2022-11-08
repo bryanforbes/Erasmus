@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 from dataclasses import MISSING, Field, dataclass, field as _dataclass_field
-from enum import Flag as _EnumFlag
 from typing import (
     TYPE_CHECKING,
     Any,
@@ -15,12 +14,8 @@ from typing import (
 )
 from typing_extensions import Self, dataclass_transform
 
-import pendulum
-import pendulum.tz
 from botus_receptus.sqlalchemy import async_sessionmaker
-from pendulum.tz.timezone import Timezone as _Timezone
-from sqlalchemy import BigInteger, Boolean, Column, String, TypeDecorator
-from sqlalchemy.dialects.postgresql import TIME, TIMESTAMP, TSVECTOR
+from sqlalchemy import Column
 from sqlalchemy.ext.hybrid import ExprComparator, hybrid_property as _hybrid_property
 from sqlalchemy.orm import (
     Mapped as _SAMapped,
@@ -30,182 +25,26 @@ from sqlalchemy.orm import (
 
 from sqlalchemy.orm import foreign as _sa_foreign  # pyright: ignore  # isort: skip
 
-_T = TypeVar('_T')
-_FlagT = TypeVar('_FlagT', bound=_EnumFlag)
-
 if TYPE_CHECKING:
     from collections.abc import Callable
-    from datetime import datetime, time
 
     from sqlalchemy.sql import ClauseElement
     from sqlalchemy.sql.base import SchemaEventTarget
     from sqlalchemy.sql.elements import ColumnElement
     from sqlalchemy.types import TypeEngine
 
-    _ComparatorBase = TypeEngine.Comparator['TSVector']
 
-    class _TypeDecorator(TypeDecorator[_T]):
-        ...
-
-else:
-    _ComparatorBase = TSVECTOR.Comparator
-
-    class _TypeDecorator(TypeDecorator, Generic[_T]):
-        ...
-
+_T = TypeVar('_T')
+_BaseT = TypeVar('_BaseT', bound="Base")
 
 _mapper_registry: Final = registry()
-
 mapped: Final = _mapper_registry.mapped
 Session: Final = async_sessionmaker(expire_on_commit=False)
-
-
-class TSVector(_TypeDecorator[str]):
-    impl = TSVECTOR
-    cache_ok = True
-
-    class Comparator(_ComparatorBase):
-        def match(self, other: object, **kwargs: object) -> ColumnElement[Boolean]:
-            if (
-                'postgresql_regconfig' not in kwargs
-                and 'regconfig' in self.type.options
-            ):
-                kwargs['postgresql_regconfig'] = self.type.options['regconfig']
-            return TSVECTOR.Comparator.match(self, other, **kwargs)
-
-        def __or__(self, other: object) -> ColumnElement[TSVector]:
-            return self.op('||')(other)  # type: ignore
-
-    comparator_factory = Comparator  # type: ignore
-
-    def __init__(self, *args: object, **kwargs: object) -> None:
-        """
-        Initializes new TSVectorType
-
-        :param *args: list of column names
-        :param **kwargs: various other options for this TSVectorType
-        """
-        self.columns = args
-        self.options = kwargs
-
-        super().__init__()
-
-
-class Flag(_TypeDecorator[_FlagT]):
-    impl = BigInteger
-    cache_ok = True
-
-    _flag_cls: type[_FlagT]
-
-    def __init__(
-        self, flag_cls: type[_FlagT], /, *args: object, **kwargs: object
-    ) -> None:
-        self._flag_cls = flag_cls
-        super().__init__(*args, **kwargs)
-
-    def process_bind_param(self, value: _FlagT | None, dialect: object) -> int | None:
-        if value is None:
-            return None
-
-        return value.value
-
-    def process_result_value(self, value: int | None, dialect: object) -> _FlagT | None:
-        if value is None:
-            return None
-
-        return self._flag_cls(value)
-
-
-class DateTime(_TypeDecorator[pendulum.DateTime]):
-    impl = TIMESTAMP
-    cache_ok = True
-
-    def __init__(self, timezone: bool = False, precision: int | None = None) -> None:
-        super().__init__(timezone=timezone, precision=precision)
-
-    def process_bind_param(
-        self, value: pendulum.DateTime | None, dialect: object
-    ) -> datetime | None:
-        if value is None:
-            return None
-
-        if not self.impl.timezone:
-            value = value.naive()
-
-        return value
-
-    def process_result_value(
-        self, value: datetime | None, dialect: object
-    ) -> pendulum.DateTime | None:
-        if value is None:
-            return None
-
-        return pendulum.instance(value)
-
-
-class Time(_TypeDecorator[pendulum.Time]):
-    impl = TIME
-    cache_ok = True
-
-    def __init__(self, timezone: bool = False, precision: int | None = None) -> None:
-        super().__init__(timezone=timezone, precision=precision)
-
-    def process_bind_param(
-        self, value: pendulum.Time | None, dialect: object
-    ) -> time | None:
-        if value is None:
-            return None
-
-        if not self.impl.timezone:
-            value = value.replace(tzinfo=None)
-
-        return value
-
-    def process_result_value(
-        self, value: time | None, dialect: object
-    ) -> pendulum.Time | None:
-        if value is None:
-            return None
-
-        return pendulum.Time(
-            value.hour,
-            value.minute,
-            value.second,
-            value.microsecond,
-            tzinfo=value.tzinfo if self.impl.timezone else None,
-        )
-
-
-class Timezone(_TypeDecorator[_Timezone]):
-    impl = String
-    cache_ok = True
-
-    def process_bind_param(
-        self, value: _Timezone | None, dialect: object
-    ) -> str | None:
-        if value is None:
-            return None
-
-        return value.name
-
-    def process_result_value(
-        self, value: str | None, dialect: object
-    ) -> _Timezone | None:
-        if value is None:
-            return None
-
-        return pendulum.tz.timezone(value)
-
-    def copy(self, /, **kwargs: object) -> Timezone:
-        return Timezone(self.impl.length)
 
 
 @dataclass
 class Base:
     __sa_dataclass_metadata_key__ = 'sa'
-
-
-_BaseT = TypeVar('_BaseT', bound=Base)
 
 
 class Mapped(_SAMapped[_T]):

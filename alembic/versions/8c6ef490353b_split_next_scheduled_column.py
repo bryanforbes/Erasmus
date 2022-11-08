@@ -8,12 +8,11 @@ Create Date: 2022-10-24 16:50:07.223883
 from __future__ import annotations
 
 import pendulum
-import pendulum.tz
 import sqlalchemy as sa
 from alembic import op
 from botus_receptus.sqlalchemy import Snowflake
 
-from erasmus.db.base import DateTime, Time, Timezone
+from erasmus.db.types import DateTime, Time, Timezone
 
 # revision identifiers, used by Alembic.
 revision = '8c6ef490353b'
@@ -38,7 +37,7 @@ daily_breads_after = sa.table(
 def upgrade():
     conn = op.get_bind()
 
-    local_tz = pendulum.tz.local_timezone()
+    local_tz = pendulum.local_timezone()
     result = conn.execute(daily_breads_before.select())
     rows = result.fetchall()
 
@@ -59,7 +58,7 @@ def upgrade():
             .filter_by(guild_id=row[0])
             .values(
                 {
-                    'next_scheduled_utc': row[1].astimezone(pendulum.tz.UTC),
+                    'next_scheduled_utc': row[1].astimezone(pendulum.UTC),
                     'time': row[1].astimezone(local_tz).time(),
                     'timezone': local_tz,
                 }

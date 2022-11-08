@@ -42,15 +42,15 @@ from .parser import parse as parse
 from .period import Period as Period
 from .time import Time as Time
 from .tz import (
-    POST_TRANSITION,
-    PRE_TRANSITION,
-    TRANSITION_ERROR,
-    UTC,
-    local_timezone,
+    POST_TRANSITION as POST_TRANSITION,
+    PRE_TRANSITION as PRE_TRANSITION,
+    TRANSITION_ERROR as TRANSITION_ERROR,
+    UTC as UTC,
+    local_timezone as local_timezone,
     set_local_timezone,
     test_local_timezone,
-    timezone,
-    timezones,
+    timezone as timezone,
+    timezones as timezones,
 )
 from .tz.timezone import Timezone as _Timezone
 

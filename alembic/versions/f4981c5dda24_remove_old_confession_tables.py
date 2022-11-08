@@ -13,8 +13,8 @@ import sqlalchemy as sa
 from alembic import op
 from sqlalchemy.dialects.postgresql import ENUM
 
-from erasmus.db.base import TSVector
 from erasmus.db.confession import ConfessionType, NumberingType
+from erasmus.db.types import TSVector
 
 # revision identifiers, used by Alembic.
 revision = 'f4981c5dda24'

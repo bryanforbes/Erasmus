@@ -10,7 +10,7 @@ from __future__ import annotations
 import sqlalchemy as sa
 from alembic import op
 
-from erasmus.db.base import TSVector
+from erasmus.db.types import TSVector
 
 # revision identifiers, used by Alembic.
 revision = 'f343a13c8b35'

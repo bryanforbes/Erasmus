@@ -18,15 +18,8 @@ from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.orm import selectinload
 
 from ..exceptions import InvalidConfessionError, NoSectionError
-from .base import (
-    Base,
-    Mapped,
-    TSVector,
-    deref_column,
-    mapped_column,
-    model,
-    relationship,
-)
+from .base import Base, Mapped, deref_column, mapped_column, model, relationship
+from .types import TSVector
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Sequence
