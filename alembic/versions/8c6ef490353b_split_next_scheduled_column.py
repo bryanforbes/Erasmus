@@ -29,7 +29,7 @@ daily_breads_after = sa.table(
     'daily_breads',
     sa.column('guild_id', Snowflake()),
     sa.column('next_scheduled_utc', DateTime(timezone=False)),
-    sa.column('time', Time(timezone=False)),
+    sa.column('time', Time()),
     sa.column('timezone', Timezone()),
 )
 
@@ -47,9 +47,7 @@ def upgrade():
         new_column_name='next_scheduled_utc',
         type_=DateTime(timezone=False),
     )
-    op.add_column(
-        'daily_breads', sa.Column('time', Time(timezone=False), nullable=True)
-    )
+    op.add_column('daily_breads', sa.Column('time', Time(), nullable=True))
     op.add_column('daily_breads', sa.Column('timezone', Timezone(), nullable=True))
 
     for row in rows:
