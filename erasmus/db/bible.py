@@ -244,7 +244,7 @@ class DailyBread(Base):
     next_scheduled_utc: Mapped[pendulum.DateTime] = mapped_column(
         DateTime(timezone=False), nullable=False
     )
-    time: Mapped[pendulum.Time] = mapped_column(Time(timezone=False), nullable=False)
+    time: Mapped[pendulum.Time] = mapped_column(Time, nullable=False)
     timezone: Mapped[_Timezone] = mapped_column(Timezone, nullable=False)
 
     prefs: Mapped[GuildPref | None] = relationship(

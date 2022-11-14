@@ -112,15 +112,23 @@ class DateTime(_TypeDecorator[pendulum.DateTime]):
         if value is None:
             return None
 
-        return pendulum.instance(value)
+        if self.impl.timezone:
+            # `asyncpg` always returns `datetime` in UTC for `timestamp with time zone`
+            # columns. However `pendulum` doesn't convert the native UTC constant
+            # to `pendulum.UTC`.
+            tzinfo = pendulum.UTC
+        else:
+            tzinfo = None
+
+        return pendulum.instance(value).replace(tzinfo=tzinfo)
 
 
 class Time(_TypeDecorator[pendulum.Time]):
     impl = TIME
     cache_ok = True
 
-    def __init__(self, timezone: bool = False, precision: int | None = None) -> None:
-        super().__init__(timezone=timezone, precision=precision)
+    def __init__(self, precision: int | None = None) -> None:
+        super().__init__(timezone=False, precision=precision)
 
     def process_bind_param(
         self, value: pendulum.Time | None, dialect: object
@@ -128,10 +136,7 @@ class Time(_TypeDecorator[pendulum.Time]):
         if value is None:
             return None
 
-        if not self.impl.timezone:
-            value = value.replace(tzinfo=None)
-
-        return value
+        return value.replace(tzinfo=None)
 
     def process_result_value(
         self, value: time | None, dialect: object
@@ -140,11 +145,7 @@ class Time(_TypeDecorator[pendulum.Time]):
             return None
 
         return pendulum.Time(
-            value.hour,
-            value.minute,
-            value.second,
-            value.microsecond,
-            tzinfo=value.tzinfo if self.impl.timezone else None,
+            value.hour, value.minute, value.second, value.microsecond, tzinfo=None
         )
 
 
