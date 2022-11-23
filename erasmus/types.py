@@ -9,7 +9,7 @@ if TYPE_CHECKING:
 
     from .data import Passage, SearchResults, VerseRange
 
-    AsyncSessionMaker: TypeAlias = sessionmaker['AsyncSession']  # type: ignore
+    AsyncSessionMaker: TypeAlias = sessionmaker['AsyncSession']
 else:
     AsyncSessionMaker: TypeAlias = sessionmaker
 
