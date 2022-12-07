@@ -61,12 +61,12 @@ interactions:
         89:8\",\"text\":\"O LORD  God of hosts, who  is  a strong  LORD  like unto
         thee? or to thy faithfulness round about thee?\"}]},\"meta\":{\"fums\":\"<script>\\nvar
         _BAPI=_BAPI||{};\\nif(typeof(_BAPI.t)==='undefined'){\\ndocument.write('\\\\x3Cscript
-        src=\\\"'+document.location.protocol+'//cdn.scripture.api.bible/fums/fumsv2.min.js\\\"\\\\x3E\\\\x3C/script\\\\x3E');}\\ndocument.write(\\\"\\\\x3Cscript\\\\x3E_BAPI.t('569edd8f-5c44-4f1e-a80c-888126f3e293');\\\\x3C/script\\\\x3E\\\");\\n</script><noscript><img
-        src=\\\"https://d3a2okcloueqyx.cloudfront.net/nf1?t='569edd8f-5c44-4f1e-a80c-888126f3e293'\\\"
+        src=\\\"'+document.location.protocol+'//cdn.scripture.api.bible/fums/fumsv2.min.js\\\"\\\\x3E\\\\x3C/script\\\\x3E');}\\ndocument.write(\\\"\\\\x3Cscript\\\\x3E_BAPI.t('513cefac-94a2-4d0d-a1e7-cb62fa7408e1');\\\\x3C/script\\\\x3E\\\");\\n</script><noscript><img
+        src=\\\"https://d3a2okcloueqyx.cloudfront.net/nf1?t='513cefac-94a2-4d0d-a1e7-cb62fa7408e1'\\\"
         height=\\\"1\\\" width=\\\"1\\\" border=\\\"0\\\" alt=\\\"\\\" style=\\\"height:
-        0; width: 0;\\\" /></noscript>\",\"fumsId\":\"569edd8f-5c44-4f1e-a80c-888126f3e293\",\"fumsJsInclude\":\"cdn.scripture.api.bible/fums/fumsv2.min.js\",\"fumsJs\":\"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!='undefined'){ _BAPI.t('569edd8f-5c44-4f1e-a80c-888126f3e293');
-        }\",\"fumsNoScript\":\"<img src=\\\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=569edd8f-5c44-4f1e-a80c-888126f3e293\\\"
+        0; width: 0;\\\" /></noscript>\",\"fumsId\":\"513cefac-94a2-4d0d-a1e7-cb62fa7408e1\",\"fumsJsInclude\":\"cdn.scripture.api.bible/fums/fumsv2.min.js\",\"fumsJs\":\"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!='undefined'){ _BAPI.t('513cefac-94a2-4d0d-a1e7-cb62fa7408e1');
+        }\",\"fumsNoScript\":\"<img src=\\\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=513cefac-94a2-4d0d-a1e7-cb62fa7408e1\\\"
         height=\\\"1\\\" width=\\\"1\\\" border=\\\"0\\\" alt=\\\"\\\" style=\\\"height:
         0; width: 0;\\\" />\"}}"
     headers:
@@ -81,7 +81,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sat, 24 Sep 2022 00:58:04 GMT
+      - Wed, 07 Dec 2022 21:55:48 GMT
       Server:
       - nginx/1.16.1
       Transfer-Encoding:
@@ -100,7 +100,7 @@ interactions:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=569edd8f-5c44-4f1e-a80c-888126f3e293
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=513cefac-94a2-4d0d-a1e7-cb62fa7408e1
   response:
     body:
       string: !!binary |
@@ -109,7 +109,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '86180'
+      - '46168'
       Connection:
       - keep-alive
       Content-Length:
@@ -117,7 +117,7 @@ interactions:
       Content-Type:
       - image/gif
       Date:
-      - Fri, 23 Sep 2022 01:01:45 GMT
+      - Wed, 07 Dec 2022 09:06:21 GMT
       Etag:
       - '"28d6814f309ea289f847c69cf91194c6"'
       Last-Modified:
@@ -125,146 +125,9 @@ interactions:
       Server:
       - AmazonS3
       Via:
-      - 1.1 94418fac80669bf6d32cfe3177ed52ea.cloudfront.net (CloudFront)
+      - 1.1 684b7c29b4b69bec2dc5afe5ef9c1c50.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - Op9JpIQtKlN67nSEyiZ8J2iBEI3bnByNKHpxJm7u_aYi1mRCSEJ6DA==
-      X-Amz-Cf-Pop:
-      - ORD53-C2
-      X-Cache:
-      - Hit from cloudfront
-    status:
-      code: 200
-      message: OK
-    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=569edd8f-5c44-4f1e-a80c-888126f3e293
-- request:
-    body: null
-    headers: {}
-    method: GET
-    uri: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/search?query=faith&limit=20&offset=0&sort=canonical
-  response:
-    body:
-      string: "{\"data\":{\"query\":\"faith\",\"limit\":20,\"offset\":0,\"total\":328,\"verseCount\":20,\"verses\":[{\"id\":\"NUM.12.7\",\"orgId\":\"NUM.12.7\",\"bookId\":\"NUM\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"NUM.12\",\"reference\":\"Numbers
-        12:7\",\"text\":\"My servant Moses is  not so, who  is  faithful in all mine
-        house.\"},{\"id\":\"DEU.7.9\",\"orgId\":\"DEU.7.9\",\"bookId\":\"DEU\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"DEU.7\",\"reference\":\"Deuteronomy
-        7:9\",\"text\":\"Know therefore that the LORD  thy God, he  is  God, the faithful
-        God, which keepeth covenant and mercy with them that love him and keep his
-        commandments to a thousand generations;\"},{\"id\":\"DEU.32.20\",\"orgId\":\"DEU.32.20\",\"bookId\":\"DEU\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"DEU.32\",\"reference\":\"Deuteronomy
-        32:20\",\"text\":\"And he said, I will hide my face from them, I will see
-        what their end shall be:  for they  are  a very froward generation, children
-        in whom  is  no faith.\"},{\"id\":\"1SA.2.35\",\"orgId\":\"1SA.2.35\",\"bookId\":\"1SA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"1SA.2\",\"reference\":\"1
-        Samuel 2:35\",\"text\":\"And I will raise me up a faithful priest, that  shall
-        do according to  that  which  is  in mine heart and in my mind: and I will
-        build him a sure house; and he shall walk before mine anointed for ever.\"},{\"id\":\"1SA.22.14\",\"orgId\":\"1SA.22.14\",\"bookId\":\"1SA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"1SA.22\",\"reference\":\"1
-        Samuel 22:14\",\"text\":\"Then Ahimelech answered the king, and said, And
-        who is so  faithful among all thy servants as David, which is the king\u2019s
-        son in law, and goeth at thy bidding, and is honourable in thine house?\"},{\"id\":\"1SA.26.23\",\"orgId\":\"1SA.26.23\",\"bookId\":\"1SA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"1SA.26\",\"reference\":\"1
-        Samuel 26:23\",\"text\":\"The LORD  render to every man his righteousness
-        and his faithfulness: for the  LORD  delivered thee into  my  hand to day,
-        but I would not stretch forth mine hand against the  LORD\u2019s  anointed.\"},{\"id\":\"2SA.20.19\",\"orgId\":\"2SA.20.19\",\"bookId\":\"2SA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"2SA.20\",\"reference\":\"2
-        Samuel 20:19\",\"text\":\"I am one of them that are  peaceable  and  faithful
-        in Israel: thou seekest to destroy a city and a mother in Israel: why wilt
-        thou swallow up the inheritance of the  LORD ?\"},{\"id\":\"NEH.7.2\",\"orgId\":\"NEH.7.2\",\"bookId\":\"NEH\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"NEH.7\",\"reference\":\"Nehemiah
-        7:2\",\"text\":\"That I gave my brother Hanani, and Hananiah the ruler of
-        the palace, charge over Jerusalem: for he was  a faithful man, and feared
-        God above many.\"},{\"id\":\"NEH.9.8\",\"orgId\":\"NEH.9.8\",\"bookId\":\"NEH\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"NEH.9\",\"reference\":\"Nehemiah
-        9:8\",\"text\":\"And foundest his heart faithful before thee, and madest a
-        covenant with him to give the land of the Canaanites, the Hittites, the Amorites,
-        and the Perizzites, and the Jebusites, and the Girgashites, to give it, I
-        say , to his seed, and hast performed thy words; for thou  art  righteous:\"},{\"id\":\"NEH.13.13\",\"orgId\":\"NEH.13.13\",\"bookId\":\"NEH\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"NEH.13\",\"reference\":\"Nehemiah
-        13:13\",\"text\":\"And I made treasurers over the treasuries, Shelemiah the
-        priest, and Zadok the scribe, and of the Levites, Pedaiah: and next to them
-        was  Hanan the son of Zaccur, the son of Mattaniah: for they were counted
-        faithful, and their office  was  to distribute unto their brethren.\"},{\"id\":\"PSA.5.9\",\"orgId\":\"PSA.5.10\",\"bookId\":\"PSA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"PSA.5\",\"reference\":\"Psalms
-        5:9\",\"text\":\"For there is  no faithfulness in their mouth; their inward
-        part  is  very wickedness; their throat  is  an open sepulchre; they flatter
-        with their tongue.\"},{\"id\":\"PSA.12.1\",\"orgId\":\"PSA.12.2\",\"bookId\":\"PSA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"PSA.12\",\"reference\":\"Psalms
-        12:1\",\"text\":\"Help, LORD ; for the godly man ceaseth; for the faithful
-        fail from among the children of men.\"},{\"id\":\"PSA.31.23\",\"orgId\":\"PSA.31.24\",\"bookId\":\"PSA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"PSA.31\",\"reference\":\"Psalms
-        31:23\",\"text\":\"O love the LORD , all ye his saints:  for  the  LORD  preserveth
-        the faithful, and plentifully rewardeth the proud doer.\"},{\"id\":\"PSA.36.5\",\"orgId\":\"PSA.36.6\",\"bookId\":\"PSA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"PSA.36\",\"reference\":\"Psalms
-        36:5\",\"text\":\"Thy mercy, O LORD ,  is  in the heavens;  and  thy faithfulness
-        \ reacheth  unto the clouds.\"},{\"id\":\"PSA.40.10\",\"orgId\":\"PSA.40.11\",\"bookId\":\"PSA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"PSA.40\",\"reference\":\"Psalms
-        40:10\",\"text\":\"I have not hid thy righteousness within my heart; I have
-        declared thy faithfulness and thy salvation: I have not concealed thy lovingkindness
-        and thy truth from the great congregation.\"},{\"id\":\"PSA.88.11\",\"orgId\":\"PSA.88.12\",\"bookId\":\"PSA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"PSA.88\",\"reference\":\"Psalms
-        88:11\",\"text\":\"Shall thy lovingkindness be declared in the grave? or  thy
-        faithfulness in destruction?\"},{\"id\":\"PSA.89.1\",\"orgId\":\"PSA.89.2\",\"bookId\":\"PSA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"PSA.89\",\"reference\":\"Psalms
-        89:1\",\"text\":\"I will sing of the mercies of the LORD  for ever: with my
-        mouth will I make known thy faithfulness to all generations.\"},{\"id\":\"PSA.89.2\",\"orgId\":\"PSA.89.3\",\"bookId\":\"PSA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"PSA.89\",\"reference\":\"Psalms
-        89:2\",\"text\":\"For I have said, Mercy shall be built up for ever: thy faithfulness
-        shalt thou establish in the very heavens.\"},{\"id\":\"PSA.89.5\",\"orgId\":\"PSA.89.6\",\"bookId\":\"PSA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"PSA.89\",\"reference\":\"Psalms
-        89:5\",\"text\":\"And the heavens shall praise thy wonders, O LORD : thy faithfulness
-        also in the congregation of the saints.\"},{\"id\":\"PSA.89.8\",\"orgId\":\"PSA.89.9\",\"bookId\":\"PSA\",\"bibleId\":\"de4e12af7f28f599-02\",\"chapterId\":\"PSA.89\",\"reference\":\"Psalms
-        89:8\",\"text\":\"O LORD  God of hosts, who  is  a strong  LORD  like unto
-        thee? or to thy faithfulness round about thee?\"}]},\"meta\":{\"fums\":\"<script>\\nvar
-        _BAPI=_BAPI||{};\\nif(typeof(_BAPI.t)==='undefined'){\\ndocument.write('\\\\x3Cscript
-        src=\\\"'+document.location.protocol+'//cdn.scripture.api.bible/fums/fumsv2.min.js\\\"\\\\x3E\\\\x3C/script\\\\x3E');}\\ndocument.write(\\\"\\\\x3Cscript\\\\x3E_BAPI.t('51b0c09d-b235-4671-9fad-132e31e22317');\\\\x3C/script\\\\x3E\\\");\\n</script><noscript><img
-        src=\\\"https://d3a2okcloueqyx.cloudfront.net/nf1?t='51b0c09d-b235-4671-9fad-132e31e22317'\\\"
-        height=\\\"1\\\" width=\\\"1\\\" border=\\\"0\\\" alt=\\\"\\\" style=\\\"height:
-        0; width: 0;\\\" /></noscript>\",\"fumsId\":\"51b0c09d-b235-4671-9fad-132e31e22317\",\"fumsJsInclude\":\"cdn.scripture.api.bible/fums/fumsv2.min.js\",\"fumsJs\":\"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!='undefined'){ _BAPI.t('51b0c09d-b235-4671-9fad-132e31e22317');
-        }\",\"fumsNoScript\":\"<img src=\\\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=51b0c09d-b235-4671-9fad-132e31e22317\\\"
-        height=\\\"1\\\" width=\\\"1\\\" border=\\\"0\\\" alt=\\\"\\\" style=\\\"height:
-        0; width: 0;\\\" />\"}}"
-    headers:
-      Access-Control-Expose-Headers:
-      - WWW-Authenticate,Server-Authorization
-      Cache-Control:
-      - no-cache
-      Connection:
-      - keep-alive
-      Content-Encoding:
-      - gzip
-      Content-Type:
-      - application/json; charset=utf-8
-      Date:
-      - Fri, 07 Oct 2022 20:04:36 GMT
-      Server:
-      - nginx/1.16.1
-      Transfer-Encoding:
-      - chunked
-      Vary:
-      - origin,accept-encoding
-      x-request-wants-bypass:
-      - static
-      x-server-allows-bypass:
-      - static
-    status:
-      code: 200
-      message: OK
-    url: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/search?query=faith&limit=20&offset=0&sort=canonical
-- request:
-    body: null
-    headers: {}
-    method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=51b0c09d-b235-4671-9fad-132e31e22317
-  response:
-    body:
-      string: !!binary |
-        R0lGODlhAQABAID/AP///wAAACwAAAAAAQABAAACAkQBADs=
-    headers:
-      Accept-Ranges:
-      - bytes
-      Age:
-      - '26997'
-      Connection:
-      - keep-alive
-      Content-Length:
-      - '35'
-      Content-Type:
-      - image/gif
-      Date:
-      - Fri, 07 Oct 2022 12:34:40 GMT
-      Etag:
-      - '"28d6814f309ea289f847c69cf91194c6"'
-      Last-Modified:
-      - Wed, 10 May 2017 13:35:25 GMT
-      Server:
-      - AmazonS3
-      Via:
-      - 1.1 7bae3892a4b9b7cb601b5d663d98de74.cloudfront.net (CloudFront)
-      X-Amz-Cf-Id:
-      - 5dQpyc56CnW8nESuNOPyK-Dz55_XtFXMOphGrvcWn20IfB-pNOLcdA==
+      - CInmRN9-srmkCVt2fSSaVZEyzs9NmeFpRZOAQHpelIiEx4NQ6k-kvA==
       X-Amz-Cf-Pop:
       - ORD51-C2
       X-Cache:
@@ -272,5 +135,5 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=51b0c09d-b235-4671-9fad-132e31e22317
+    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=513cefac-94a2-4d0d-a1e7-cb62fa7408e1
 version: 1
