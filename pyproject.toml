@@ -24,7 +24,7 @@ sqlalchemy2-stubs = "^0.0.2a29"
 black = "^22.10"
 coverage = {version = "^6.5", extras = ["toml"]}
 flake8 = "~6.0"
-flake8-bugbear = ">=22.10.27"
+flake8-bugbear = ">=22.12.6"
 flake8-comprehensions = "^3.10.1"
 flake8-implicit-str-concat = "^0.3.0"
 flake8-pie = "^0.16.0"
@@ -42,7 +42,7 @@ pytest-cov = "^4.0"
 pytest-mock = "^3.10"
 pytest-recording = "^0.12.1"
 pytest-sugar = "^0.9.6"
-pytest-xdist = "^3.0"
+pytest-xdist = "^3.1"
 
 [tool.poetry.scripts]
 erasmus = 'erasmus.run:main'
