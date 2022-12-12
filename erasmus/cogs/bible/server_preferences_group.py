@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 
 from discord import app_commands
 
+from .daily_bread.daily_bread_preferences_group import DailyBreadPreferencesGroup
 from .version_preferences_group import VersionPreferencesGroup
 
 if TYPE_CHECKING:
@@ -21,10 +22,12 @@ class ServerPreferencesGroup(
     bot: Erasmus
     localizer: GroupLocalizer
 
+    daily_bread = DailyBreadPreferencesGroup()
     version = VersionPreferencesGroup()
 
     def initialize_from_parent(self, parent: ParentCog, /) -> None:
         self.bot = parent.bot
         self.localizer = parent.localizer.for_group(self)
 
+        self.daily_bread.initialize_from_parent(self)
         self.version.initialize_from_parent(self)

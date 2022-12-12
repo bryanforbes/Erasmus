@@ -10,7 +10,6 @@ import discord
 import pendulum
 from attrs import define, field
 from botus_receptus import re, utils
-from botus_receptus.app_commands import test_guilds_only
 from bs4 import BeautifulSoup, SoupStrainer
 from discord import app_commands
 from discord.ext import tasks
@@ -60,7 +59,6 @@ class PassageFetcher:
 
 
 @app_commands.guild_only()
-@test_guilds_only
 class DailyBreadGroup(
     app_commands.Group, name='daily-bread', description='Daily bread'
 ):
@@ -114,7 +112,7 @@ class DailyBreadGroup(
 
             for daily_bread in result:
                 next_scheduled = get_next_scheduled_time(
-                    daily_bread.next_scheduled_utc,
+                    daily_bread.next_scheduled,
                     daily_bread.time,
                     daily_bread.timezone,
                 )
@@ -133,7 +131,7 @@ class DailyBreadGroup(
                     bible = fallback
 
                 if verse_range.book_mask not in bible.books:
-                    daily_bread.next_scheduled_utc = next_scheduled
+                    daily_bread.next_scheduled = next_scheduled
                     continue
 
                 passage = await self.__fetcher(bible)
@@ -147,7 +145,7 @@ class DailyBreadGroup(
                         else discord.utils.MISSING,
                         avatar_url='https://i.imgur.com/XQ8N2vH.png',
                     )
-                    daily_bread.next_scheduled_utc = next_scheduled
+                    daily_bread.next_scheduled = next_scheduled
                 except (discord.DiscordException, ErasmusError) as error:
                     _log.exception(
                         'An error occurred while posting the daily bread to '
@@ -236,7 +234,7 @@ class DailyBreadGroup(
                         {
                             'name': localizer.format('next_scheduled'),
                             'value': discord.utils.format_dt(
-                                daily_bread.next_scheduled_utc
+                                daily_bread.next_scheduled
                             ),
                             'inline': False,
                         },

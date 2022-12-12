@@ -28,7 +28,7 @@ daily_breads_before = sa.table(
 daily_breads_after = sa.table(
     'daily_breads',
     sa.column('guild_id', Snowflake()),
-    sa.column('next_scheduled_utc', DateTime(timezone=False)),
+    sa.column('next_scheduled', DateTime(timezone=False)),
     sa.column('time', Time()),
     sa.column('timezone', Timezone()),
 )
@@ -44,7 +44,6 @@ def upgrade():
     op.alter_column(
         'daily_breads',
         'next_scheduled',
-        new_column_name='next_scheduled_utc',
         type_=DateTime(timezone=False),
     )
     op.add_column('daily_breads', sa.Column('time', Time(), nullable=True))
@@ -56,7 +55,7 @@ def upgrade():
             .filter_by(guild_id=row[0])
             .values(
                 {
-                    'next_scheduled_utc': row[1].astimezone(pendulum.UTC),
+                    'next_scheduled': row[1].astimezone(pendulum.UTC),
                     'time': row[1].astimezone(local_tz).time(),
                     'timezone': local_tz,
                 }
@@ -77,8 +76,7 @@ def downgrade():
     op.drop_column('daily_breads', 'time')
     op.alter_column(
         'daily_breads',
-        'next_scheduled_utc',
-        new_column_name='next_scheduled',
+        'next_scheduled',
         type_=DateTime(timezone=True),
     )
 

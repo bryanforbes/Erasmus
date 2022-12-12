@@ -241,7 +241,7 @@ class DailyBread(Base):
     channel_id: Mapped[int] = mapped_column(Snowflake, nullable=False)
     thread_id: Mapped[int | None] = mapped_column(Snowflake)
     url: Mapped[str] = mapped_column(String, nullable=False)
-    next_scheduled_utc: Mapped[pendulum.DateTime] = mapped_column(
+    next_scheduled: Mapped[pendulum.DateTime] = mapped_column(
         DateTime(timezone=False), nullable=False
     )
     time: Mapped[pendulum.Time] = mapped_column(Time, nullable=False)
@@ -266,7 +266,7 @@ class DailyBread(Base):
         return (
             await session.scalars(
                 select(DailyBread).filter(
-                    DailyBread.next_scheduled_utc
+                    DailyBread.next_scheduled
                     <= pendulum.now(pendulum.UTC).set(second=0, microsecond=0)
                 )
             )

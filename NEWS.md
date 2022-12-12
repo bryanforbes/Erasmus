@@ -1,5 +1,11 @@
 # Version UNRELEASED
 
+* Added Daily Bread functionality:
+  * `/daily-bread show`
+  * `/daily-bread status`
+  * `/serverprefs daily-bread set` (Administrator only)
+  * `/serverprefs daily-bread stop` (Administrator only)
+
 
 # Version 22.11.1
 

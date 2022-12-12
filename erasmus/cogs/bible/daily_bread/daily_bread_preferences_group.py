@@ -328,7 +328,7 @@ class DailyBreadPreferencesGroup(
 
                 daily_bread.time = time
                 daily_bread.timezone = timezone
-                daily_bread.next_scheduled_utc = next_scheduled
+                daily_bread.next_scheduled = next_scheduled
             else:
                 updated = False
                 daily_bread = DailyBread(
@@ -336,7 +336,7 @@ class DailyBreadPreferencesGroup(
                     channel_id=actual_channel.id,
                     thread_id=thread_id,
                     url=f'{webhook.id}/{webhook.token}',
-                    next_scheduled_utc=next_scheduled,
+                    next_scheduled=next_scheduled,
                     time=time,
                     timezone=timezone,
                 )
@@ -363,7 +363,7 @@ class DailyBreadPreferencesGroup(
                     data={
                         'channel': channel.mention,
                         'next_scheduled': discord.utils.format_dt(
-                            daily_bread.next_scheduled_utc
+                            daily_bread.next_scheduled
                         ),
                         'version': version.name,
                     },
