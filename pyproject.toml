@@ -13,7 +13,7 @@ python = "^3.10"
 alembic = "^1.8"
 attrs = "^22.1.0"
 beautifulsoup4 = "^4.11"
-"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "52c284101b65d1367fe8bcb90a48c48d6613a2d3", extras = ["uvloop", "sqlalchemy"]}
+"botus_receptus" = {git = "https://github.com/bryanforbes/botus_receptus.git", rev = "d8749684ec91dd6305ac25a0a89b662477f2fb4c", extras = ["uvloop", "sqlalchemy"]}
 "discord.py" = { version="^2.1.0", extras = ["speed"] }
 more-itertools = "~8.14.0"
 "fluent.runtime" = "^0.3.1"
@@ -21,7 +21,7 @@ more-itertools = "~8.14.0"
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "~0.27.0"
 sqlalchemy2-stubs = "^0.0.2a29"
-black = "^22.10"
+black = "^22.12"
 coverage = {version = "^6.5", extras = ["toml"]}
 flake8 = "~6.0"
 flake8-bugbear = ">=22.12.6"
@@ -36,7 +36,7 @@ isort = "^5.10"
 mypy = ">=0.991"
 pre-commit = "^2.20"
 pytest = "^7.2"
-pytest-asyncio = "^0.20.2"
+pytest-asyncio = "^0.20.3"
 pytest-clarity = "^1.0.1"
 pytest-cov = "^4.0"
 pytest-mock = "^3.10"
