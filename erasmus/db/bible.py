@@ -3,7 +3,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pendulum
-from botus_receptus.sqlalchemy import Snowflake
+from botus_receptus.sqlalchemy import Flag, Snowflake
 from sqlalchemy import (
     Boolean,
     Computed,
@@ -30,7 +30,7 @@ from .base import (
     model_mixin,
     relationship,
 )
-from .types import DateTime, Flag, Time, Timezone
+from .types import DateTime, Time, Timezone
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator

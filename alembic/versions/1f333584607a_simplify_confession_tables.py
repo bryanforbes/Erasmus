@@ -11,8 +11,7 @@ from typing import Any
 
 import sqlalchemy as sa
 from alembic import op
-
-from erasmus.db.types import TSVector
+from botus_receptus.sqlalchemy import TSVector
 
 # revision identifiers, used by Alembic.
 revision = '1f333584607a'

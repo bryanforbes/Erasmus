@@ -1,63 +1,13 @@
 from __future__ import annotations
 
 from datetime import datetime, time, timezone
-from enum import Flag as _EnumFlag, auto
 
 import pendulum
 import pytest
-from sqlalchemy import BigInteger, String
+from sqlalchemy import String
 from sqlalchemy.dialects.postgresql import TIME, TIMESTAMP
 
-from erasmus.db.types import DateTime, Flag, Time, Timezone
-
-
-class MyFlag(_EnumFlag):
-    One = auto()
-    Two = auto()
-    Four = auto()
-    Eight = auto()
-
-
-class TestFlag:
-    def test_init(self) -> None:
-        flag = Flag(MyFlag)
-
-        assert flag._flag_cls is MyFlag
-        assert isinstance(flag.impl, BigInteger)
-
-    @pytest.mark.parametrize(
-        'bind_param,expected',
-        [
-            (MyFlag.One, 1),
-            (MyFlag.Two, 2),
-            (MyFlag.Four, 4),
-            (MyFlag.Eight, 8),
-            (None, None),
-        ],
-    )
-    def test_process_bind_param(
-        self, bind_param: MyFlag | None, expected: int | None
-    ) -> None:
-        flag = Flag(MyFlag)
-
-        assert flag.process_bind_param(bind_param, object()) == expected
-
-    @pytest.mark.parametrize(
-        'result_value,expected',
-        [
-            (1, MyFlag.One),
-            (2, MyFlag.Two),
-            (4, MyFlag.Four),
-            (8, MyFlag.Eight),
-            (None, None),
-        ],
-    )
-    def test_process_result_value(
-        self, result_value: int | None, expected: MyFlag | None
-    ) -> None:
-        flag = Flag(MyFlag)
-
-        assert flag.process_result_value(result_value, object()) is expected
+from erasmus.db.types import DateTime, Time, Timezone
 
 
 class TestDateTime:

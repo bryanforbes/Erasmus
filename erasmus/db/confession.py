@@ -3,6 +3,7 @@ from __future__ import annotations
 from enum import Enum
 from typing import TYPE_CHECKING
 
+from botus_receptus.sqlalchemy import TSVector
 from sqlalchemy import (
     Computed,
     ForeignKey,
@@ -19,7 +20,6 @@ from sqlalchemy.orm import selectinload
 
 from ..exceptions import InvalidConfessionError, NoSectionError
 from .base import Base, Mapped, deref_column, mapped_column, model, relationship
-from .types import TSVector
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Sequence
