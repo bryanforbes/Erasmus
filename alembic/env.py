@@ -15,7 +15,7 @@ import erasmus.json
 from erasmus.db.base import _mapper_registry
 
 if TYPE_CHECKING:
-    from alembic.operations.ops import MigrationScript
+    from alembic.operations import MigrateOperation
     from alembic.runtime.migration import MigrationContext
 
 # this is the Alembic Config object, which provides
@@ -55,7 +55,7 @@ def run_migrations_offline() -> None:
     """
     url = bot_config.get('db_url', '')
 
-    context.configure(  # type: ignore
+    context.configure(
         url=url,
         target_metadata=target_metadata,
         literal_binds=True,
@@ -63,14 +63,18 @@ def run_migrations_offline() -> None:
     )
 
     with context.begin_transaction():  # type: ignore
-        context.run_migrations()  # type: ignore
+        context.run_migrations()
 
 
 def _do_run_migrations(connection: AsyncConnection) -> None:
     def process_revision_directives(
-        context: MigrationContext, revision: Any, directives: list[MigrationScript]
+        context: MigrationContext, revision: Any, directives: list[MigrateOperation]
     ):
-        if config.cmd_opts is not None and config.cmd_opts.autogenerate:
+        if (
+            config.cmd_opts is not None
+            and 'autogenerate' in config.cmd_opts
+            and config.cmd_opts.autogenerate
+        ):
             script = directives[0]
             if (
                 script.upgrade_ops is not None  # type: ignore
@@ -78,14 +82,14 @@ def _do_run_migrations(connection: AsyncConnection) -> None:
             ):
                 directives[:] = []
 
-    context.configure(  # type: ignore
+    context.configure(
         connection=connection,  # type: ignore
         target_metadata=target_metadata,
         process_revision_directives=process_revision_directives,
     )
 
     with context.begin_transaction():  # type: ignore
-        context.run_migrations()  # type: ignore
+        context.run_migrations()
 
 
 async def run_migrations_online() -> None:
