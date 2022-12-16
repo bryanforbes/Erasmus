@@ -7,7 +7,7 @@ from .period import Period
 from .time import Time
 from .tz.timezone import Timezone
 
-class DateTime(datetime, Date):  # type: ignore
+class DateTime(datetime, Date):
     EPOCH: DateTime = ...
     @classmethod
     def now(cls, tz: str | Timezone | None = ...) -> DateTime: ...
