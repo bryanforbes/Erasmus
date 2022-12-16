@@ -350,7 +350,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "botus-receptus"
-version = "22.12.0"
+version = "22.12.1"
 description = ""
 category = "main"
 optional = false
@@ -381,8 +381,8 @@ uvloop = ["uvloop (>=0.17.0,<0.18.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "d8749684ec91dd6305ac25a0a89b662477f2fb4c"
-resolved_reference = "d8749684ec91dd6305ac25a0a89b662477f2fb4c"
+reference = "cc3fba083fb282e91cad5b40a86960285c46f3d3"
+resolved_reference = "cc3fba083fb282e91cad5b40a86960285c46f3d3"
 
 [[package]]
 name = "brotli"
@@ -1107,14 +1107,14 @@ test = ["faulthandler", "objgraph", "psutil"]
 
 [[package]]
 name = "identify"
-version = "2.5.9"
+version = "2.5.10"
 description = "File identification library for Python"
 category = "dev"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "identify-2.5.9-py2.py3-none-any.whl", hash = "sha256:a390fb696e164dbddb047a0db26e57972ae52fbd037ae68797e5ae2f4492485d"},
-    {file = "identify-2.5.9.tar.gz", hash = "sha256:906036344ca769539610436e40a684e170c3648b552194980bb7b617a8daeb9f"},
+    {file = "identify-2.5.10-py2.py3-none-any.whl", hash = "sha256:fb7c2feaeca6976a3ffa31ec3236a6911fbc51aec9acc111de2aed99f244ade2"},
+    {file = "identify-2.5.10.tar.gz", hash = "sha256:dce9e31fee7dbc45fea36a9e855c316b8fbf807e65a862f160840bb5a2bf5dfd"},
 ]
 
 [package.extras]
@@ -2397,4 +2397,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "ff62907227d3cc5127405013fe1bf85ab2598e272503fd09b862f770b1d45416"
+content-hash = "99fa6e78b8df767479e2d37658a95a6efc0ca21638a408314d753fdb9e422aae"
