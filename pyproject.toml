@@ -18,7 +18,7 @@ more-itertools = "~8.14.0"
 
 [tool.poetry.dependencies.botus_receptus]
 git = "https://github.com/bryanforbes/botus_receptus.git"
-rev = "641ef47d431b3a185181f65d304c1748b129a76c"
+rev = "197d6b4fbbd084423e138050fda998f5e0b26488"
 extras = ["uvloop", "sqlalchemy"]
 
 [tool.poetry.dependencies.discord-py]
@@ -41,7 +41,7 @@ flake8-simplify = "^0.19.3"
 flake8-type-checking = "^2.3.0"
 isort = "^5.11"
 mypy = ">=0.991"
-pre-commit = "^2.20"
+pre-commit = "^2.21"
 pytest = "^7.2"
 pytest-asyncio = "^0.20.3"
 pytest-clarity = "^1.0.1"

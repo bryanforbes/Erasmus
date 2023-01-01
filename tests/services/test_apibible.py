@@ -7,7 +7,7 @@ import _pytest
 import _pytest.fixtures
 import aiohttp
 import pytest
-import toml
+import tomli
 
 from erasmus.data import Passage, Verse, VerseRange
 from erasmus.services.apibible import ApiBible
@@ -309,10 +309,11 @@ class TestApiBible(ServiceTest):
     @pytest.fixture(scope="class")
     def config(self) -> dict[str, str]:
         try:
-            config = toml.load(
-                str(Path(__file__).resolve().parent.parent.parent / 'config.toml')
-            )
-            return cast('dict[str, str]', config['bot']['services']['ApiBible'])
+            with (Path(__file__).resolve().parent.parent.parent / 'config.toml').open(
+                'rb'
+            ) as f:
+                config = tomli.load(f)
+                return cast('dict[str, str]', config['bot']['services']['ApiBible'])
         except FileNotFoundError:
             return {'api_key': ''}
 
