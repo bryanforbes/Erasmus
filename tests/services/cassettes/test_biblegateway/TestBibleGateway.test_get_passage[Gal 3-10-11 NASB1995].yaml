@@ -11,9 +11,8 @@ interactions:
         />\n<meta content='width=device-width, initial-scale=1' name='viewport'>\n<title>Galatians
         3:10-11 NASB1995 - For as many as are of the works of the - Bible Gateway</title>\n<link
         rel=\"canonical\" href=\"https://www.biblegateway.com/passage/?search=Galatians%203%3A10-11&amp;version=NASB1995\"
-        />\n<link rel=\"amphtml\" href=\"https://www.biblegateway.com/passage/?search=Galatians%203%3A10-11&amp;version=NASB1995&amp;interface=amp\">\n<meta
-        property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?bd78c37b\"/>\n<meta
-        property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?bd78c37b\"/>\n<meta
+        />\n<meta property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?16d8677c\"/>\n<meta
+        property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?16d8677c\"/>\n<meta
         property=\"og:image:type\" content=\"image/png\"/>\n<meta property=\"og:image:width\"
         content=\"200\"/>\n<meta property=\"og:image:height\" content=\"200\"/>\n<meta
         property=\"og:title\" content=\"Bible Gateway passage: Galatians 3:10-11 -
@@ -37,16 +36,16 @@ interactions:
         />\n<meta property=\"al:ios:url\" content=\"biblegateway://bible/Gal.3.10/NASB1995\"
         />\n<meta property=\"al:ios:app_store_id\" content=\"506512797\" />\n<meta
         property=\"al:ios:app_name\" content=\"Bible Gateway\" />\n<link rel=\"favorite
-        icon\" href=\"/favicon.ico?bd78c37b\" type=\"image/x-icon\" />\n<link rel=\"search\"
-        type=\"application/opensearchdescription+xml\" title=\"Bible Gateway\" href=\"/resources/opensearch/bgsearch.xml?bd78c37b\">\n\n<link
+        icon\" href=\"/favicon.ico?16d8677c\" type=\"image/x-icon\" />\n<link rel=\"search\"
+        type=\"application/opensearchdescription+xml\" title=\"Bible Gateway\" href=\"/resources/opensearch/bgsearch.xml?16d8677c\">\n\n<link
         rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"/assets/images/ios/touch-icon-ipad.png\">\n<link
         rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"/assets/images/ios/touch-icon-iphone-retina.png\">\n<link
         rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"/assets/images/ios/touch-icon-ipad-retina.png\">\n<script
         type=\"text/javascript\">\n(function() {\n  var apis = [window.fetch, Object.assign,
         Array.prototype.includes, NodeList.prototype.forEach, Array.from];\n  apis.every(function(api)
-        {return api}) || document.write('<script src=\"/assets/js/lib/polyfills.min.js?bd78c37b\"><\\/script>');\n
-        \ window.assetsVersion = \"bd78c37b\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?bd78c37b\"
-        type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\":\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"plus_info\":{\"amount\":499,\"amount_string\":\"$4.99\",\"yearly_amount\":4999,\"yearly_amount_string\":\"$49.99\"},\"assets_version\":\"bd78c37b\",\"locale\":\"en\",\"cdn_host\":\"\",\"version0\":{\"version_id\":\"NASB1995\"},\"il_versions\":[],\"il_option\":false,\"books\":{\"NASB1995\":[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"chapters\":null,\"intro\":false},{\"display\":\"Exodus\",\"osis\":\"Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"chapters\":null,\"intro\":false},{\"display\":\"Leviticus\",\"osis\":\"Lev\",\"testament\":\"OT\",\"num_chapters\":27,\"chapters\":null,\"intro\":false},{\"display\":\"Numbers\",\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null,\"intro\":false},{\"display\":\"Deuteronomy\",\"osis\":\"Deut\",\"testament\":\"OT\",\"num_chapters\":34,\"chapters\":null,\"intro\":false},{\"display\":\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null,\"intro\":false},{\"display\":\"Judges\",\"osis\":\"Judg\",\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null,\"intro\":false},{\"display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\",\"num_chapters\":4,\"chapters\":null,\"intro\":false},{\"display\":\"1
+        {return api}) || document.write('<script src=\"/assets/js/lib/polyfills.min.js?16d8677c\"><\\/script>');\n
+        \ window.assetsVersion = \"16d8677c\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?16d8677c\"
+        type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\":\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"plus_info\":{\"amount\":399,\"amount_string\":\"$3.99\",\"yearly_amount\":3999,\"yearly_amount_string\":\"$39.99\"},\"assets_version\":\"16d8677c\",\"locale\":\"en\",\"cdn_host\":\"\",\"version0\":{\"version_id\":\"NASB1995\"},\"il_versions\":[],\"il_option\":false,\"books\":{\"NASB1995\":[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"chapters\":null,\"intro\":false},{\"display\":\"Exodus\",\"osis\":\"Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"chapters\":null,\"intro\":false},{\"display\":\"Leviticus\",\"osis\":\"Lev\",\"testament\":\"OT\",\"num_chapters\":27,\"chapters\":null,\"intro\":false},{\"display\":\"Numbers\",\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null,\"intro\":false},{\"display\":\"Deuteronomy\",\"osis\":\"Deut\",\"testament\":\"OT\",\"num_chapters\":34,\"chapters\":null,\"intro\":false},{\"display\":\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null,\"intro\":false},{\"display\":\"Judges\",\"osis\":\"Judg\",\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null,\"intro\":false},{\"display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\",\"num_chapters\":4,\"chapters\":null,\"intro\":false},{\"display\":\"1
         Samuel\",\"osis\":\"1Sam\",\"testament\":\"OT\",\"num_chapters\":31,\"chapters\":null,\"intro\":false},{\"display\":\"2
         Samuel\",\"osis\":\"2Sam\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null,\"intro\":false},{\"display\":\"1
         Kings\",\"osis\":\"1Kgs\",\"testament\":\"OT\",\"num_chapters\":22,\"chapters\":null,\"intro\":false},{\"display\":\"2
@@ -117,10 +116,10 @@ interactions:
         \     var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';\n
         \     j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);\n
         \   })(window,document,'script','dataLayer','GTM-KVZQFF');\n  });\n</script>\n<!--
-        End Google Tag Manager -->\n\n<link href=\"/assets/css/passage.min.css?bd78c37b\"
-        media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/passage.min.css?bd78c37b\"
-        media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?bd78c37b\"
-        media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?bd78c37b\"
+        End Google Tag Manager -->\n\n<link href=\"/assets/css/passage.min.css?16d8677c\"
+        media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/passage.min.css?16d8677c\"
+        media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?16d8677c\"
+        media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?16d8677c\"
         media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n</head>\n\n<body
         class=\" s-footnotes s-versenums s-headings hide-resources page-passage no-eu
         us\">\n    <svg xmlns=\"http://www.w3.org/2000/svg\" style=\"display: none;\"><symbol
@@ -352,7 +351,8 @@ interactions:
         0-12 5.4-12 12v98h-98c-6.6 0-12 5.4-12 12v12c0 6.6 5.4 12 12 12h98v98c0 6.6
         5.4 12 12 12h12c6.6 0 12-5.4 12-12v-98h98c6.6 0 12-5.4 12-12v-12c0-6.6-5.4-12-12-12z\"></path></svg></div>\n
         \                               <span class=\"text\">Bible Gateway</br>Plus</span>\n
-        \                           </div>\n                        </a>\n                    </li>\n\n
+        \                           </div>\n                            <div class=\"promo\"><span>Save
+        20%!</span></div>\n                        </a>\n                    </li>\n\n
         \                   <li class=\"store top-menu\">\n                        <div
         class=\"menu-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0
         0 28 28\" width=\"28\" height=\"28\"><title>store</title><use xlink:href=\"#icon-store\"></use></svg>\n</div>\n
@@ -372,8 +372,8 @@ interactions:
         aria-label=\"user notice\" class='sys-announce '>\n                <div class=\"wrapper
         mobile\">\n                  <div class=\"sys-announce-content\">\n                    <div
         class='sys-announce-body'>\n                        <div class='sys-announce-body-inner'>\n
-        \                             <a href=\"https://www.biblegateway.com/plus?utm_source=bg&utm_medium=alert_mobile&utm_campaign=bgplus_alert_value1010\">BEST
-        VALUE in digital Bible study. Start for FREE. </a>                        </div>\n
+        \                             <a href=\"https://www.biblegateway.com/plus?utm_source=bg&utm_medium=alert_mobile&utm_campaign=bgplus_alert_nyvalue20221221\">BEST
+        VALUE in digital Bible study. Save 20% - Limited time!</a>                        </div>\n
         \                   </div>\n                    <div class='close'><svg xmlns=\"http://www.w3.org/2000/svg\"
         viewBox=\"0 0 11.5 11.5\" width=\"11.5\" height=\"11.5\"><title>close</title><use
         xlink:href=\"#icon-close\"></use></svg>\n</div>\n                  </div>\n
@@ -385,34 +385,33 @@ interactions:
         role=\"alert\" aria-label=\"user notice\" class='sys-announce'>\n                <div
         class=\"wrapper\">\n                  <div class=\"sys-announce-content\">\n
         \                   <div class='sys-announce-body'>\n                        <div
-        class='sys-announce-body-inner'>\n                              <a href=\"https://www.biblegateway.com/plus?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_gettoknow1027\">For
-        less than $5/mo. get to know the Bible better! Try Bible Gateway Plus free
-        today!</a>                        </div>\n                    </div>\n                    <div
-        class='close'><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5
-        11.5\" width=\"11.5\" height=\"11.5\"><title>close</title><use xlink:href=\"#icon-close\"></use></svg>\n</div>\n
-        \                 </div>\n                </div>\n                <div class=\"login\">\n
-        \                 <span class=\"user-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\"
-        viewBox=\"0 0 28 28\" width=\"28\" height=\"28\"><title>account</title><use
-        xlink:href=\"#icon-account\"></use></svg>\n</span>\n                  <a href=\"/login/\"
-        class=\"login-text\">Log In/Sign Up</a>\n                  <span class=\"user-name\"></span>\n
-        \                 <span class=\"user-menu-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\"
-        viewBox=\"0 0 11.5 6.5\" width=\"11.5\" height=\"6.5\"><title>show menu</title><path
-        d=\"M11.28.22a.75.75 0 0 0-1.06 0L5.75 4.69 1.28.22A.75.75 0 0 0 .22 1.28l5
-        5a.73.73 0 0 0 .53.22.74.74 0 0 0 .53-.22l5-5a.75.75 0 0 0 0-1.06z\"/></svg>\n</span>\n
-        \               </div>\n              </section>\n              <script>\n
-        \                 BG.UserInfo.updateFullname();\n              </script>\n
-        \           </div><!-- user and search -->\n            <section class=\"content\">\n
-        \               <div role=\"banner\" class=\"float-header\">\n                    <div
-        class=\"search-form-nav\">\n                      <form class=\"search-form\"
-        role=\"search\" action=\"/quicksearch/\">\n                        <div class=\"search-and-submit\">\n
-        \                           <div class=\"search-bar\">\n                                <input
-        aria-label=\"Quick Search\" name=\"quicksearch\" class=\"quick-search\" type=\"text\"
-        placeholder=\"Enter passage, keyword, or topic\" value=\"Galatians 3:10-11\"
-        autocomplete=\"off\" />\n                                    <span class=\"autocomplete\"></span>\n
-        \                                                               <div id=\"resultspp\"></div>\n
-        \                           </div>\n                            <div class=\"search-submit-small\">\n
-        \                               <button class=\"search-submit\" type=\"submit\"
-        aria-label=\"Search\" value=\"Search\"> <svg xmlns=\"http://www.w3.org/2000/svg\"
+        class='sys-announce-body-inner'>\n                              <a href=\"https://www.biblegateway.com/plus?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_nyvaluesave20221221\">Save
+        20% on the BEST VALUE in digital Bible study! Act now! </a>                        </div>\n
+        \                   </div>\n                    <div class='close'><svg xmlns=\"http://www.w3.org/2000/svg\"
+        viewBox=\"0 0 11.5 11.5\" width=\"11.5\" height=\"11.5\"><title>close</title><use
+        xlink:href=\"#icon-close\"></use></svg>\n</div>\n                  </div>\n
+        \               </div>\n                <div class=\"login\">\n                  <span
+        class=\"user-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0
+        0 28 28\" width=\"28\" height=\"28\"><title>account</title><use xlink:href=\"#icon-account\"></use></svg>\n</span>\n
+        \                 <a href=\"/login/\" class=\"login-text\">Log In/Sign Up</a>\n
+        \                 <span class=\"user-name\"></span>\n                  <span
+        class=\"user-menu-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0
+        0 11.5 6.5\" width=\"11.5\" height=\"6.5\"><title>show menu</title><path d=\"M11.28.22a.75.75
+        0 0 0-1.06 0L5.75 4.69 1.28.22A.75.75 0 0 0 .22 1.28l5 5a.73.73 0 0 0 .53.22.74.74
+        0 0 0 .53-.22l5-5a.75.75 0 0 0 0-1.06z\"/></svg>\n</span>\n                </div>\n
+        \             </section>\n              <script>\n                  BG.UserInfo.updateFullname();\n
+        \             </script>\n            </div><!-- user and search -->\n            <section
+        class=\"content\">\n                <div role=\"banner\" class=\"float-header\">\n
+        \                   <div class=\"search-form-nav\">\n                      <form
+        class=\"search-form\" role=\"search\" action=\"/quicksearch/\">\n                        <div
+        class=\"search-and-submit\">\n                            <div class=\"search-bar\">\n
+        \                               <input aria-label=\"Quick Search\" name=\"quicksearch\"
+        class=\"quick-search\" type=\"text\" placeholder=\"Enter passage, keyword,
+        or topic\" value=\"Galatians 3:10-11\" autocomplete=\"off\" />\n                                    <span
+        class=\"autocomplete\"></span>\n                                                                <div
+        id=\"resultspp\"></div>\n                            </div>\n                            <div
+        class=\"search-submit-small\">\n                                <button class=\"search-submit\"
+        type=\"submit\" aria-label=\"Search\" value=\"Search\"> <svg xmlns=\"http://www.w3.org/2000/svg\"
         viewBox=\"0 0 512 512\" width=\"20\" height=\"20\"><title>BibleGateway</title><path
         d=\"M345 298c15-24 23-52 23-82 0-84-68-152-152-152S64 132 64 216s68 153 152
         153c31 0 59-9 83-25l7-5 108 109 34-34-108-109zm-44-167c23 23 36 53 36 85s-13
@@ -1089,9 +1088,9 @@ interactions:
         (TL)&mdash;</option>\n<option value=\"FSV\" >Ang Bagong Tipan: Filipino Standard
         Version (FSV)</option>\n<option value=\"ABTAG1978\" >Ang Biblia (1978) (ABTAG1978)</option>\n<option
         value=\"ABTAG2001\" >Ang Biblia, 2001 (ABTAG2001)</option>\n<option value=\"ADB1905\"
-        >Ang Dating Biblia (1905) (ADB1905)</option>\n<option value=\"SND\" >Ang Salita
-        ng Diyos (SND)</option>\n<option value=\"ASND\" >Ang Salita ng Dios (Tagalog
-        Contemporary Bible) (ASND)</option>\n<option value=\"MBBTAG\" >Magandang Balita
+        >Ang Dating Biblia (1905) (ADB1905)</option>\n<option value=\"ASND\" >Ang
+        Salita ng Dios (Tagalog Contemporary Bible) (ASND)</option>\n<option value=\"SND\"
+        >Ang Salita ng Diyos (SND)</option>\n<option value=\"MBBTAG\" >Magandang Balita
         Biblia (MBBTAG)</option>\n<option value=\"MBBTAG-DC\" >Magandang Balita Biblia
         (with Deuterocanon) (MBBTAG-DC)</option>\n<option class=\"spacer\" value=\"MBBTAG-DC\">&nbsp;</option>\n<option
         class=\"lang\" value=\"NA-TWI\">&mdash;Twi (TWI)&mdash;</option>\n<option
@@ -1313,7 +1312,7 @@ interactions:
         class=\"lang\" value=\"FSV\">&mdash;TL&mdash;</option>\n<option value=\"FSV\"
         >FSV</option>\n<option value=\"ABTAG1978\" >ABTAG1978</option>\n<option value=\"ABTAG2001\"
         >ABTAG2001</option>\n<option value=\"ADB1905\" >ADB1905</option>\n<option
-        value=\"SND\" >SND</option>\n<option value=\"ASND\" >ASND</option>\n<option
+        value=\"ASND\" >ASND</option>\n<option value=\"SND\" >SND</option>\n<option
         value=\"MBBTAG\" >MBBTAG</option>\n<option value=\"MBBTAG-DC\" >MBBTAG-DC</option>\n<option
         class=\"spacer\" value=\"MBBTAG-DC\">&nbsp;</option>\n<option class=\"lang\"
         value=\"NA-TWI\">&mdash;TWI&mdash;</option>\n<option value=\"NA-TWI\" >NA-TWI</option>\n<option
@@ -1410,8 +1409,8 @@ interactions:
         Bible 1995</a> (NASB1995)</strong> <p><p>New American Standard Bible\xAE,
         Copyright \xA9 1960, 1971, 1977, 1995 by <a href=\"http://www.lockman.org/\">The
         Lockman Foundation</a>. All rights reserved.</p></p><div class=\"bga-copyright-multi\"><a
-        href=\"https://www.lockman.org/\"><img alt=\"New American Standard Bible is
-        made available by The Lockman Foundation\" src=\"https://staticu.bgcdn.com/pub-bug-images/bug_lockman.png\"
+        href=\"https://www.lockman.org/\"><img loading=\"lazy\" alt=\"New American
+        Standard Bible is made available by The Lockman Foundation\" src=\"https://staticu.bgcdn.com/pub-bug-images/bug_lockman.png\"
         /></a></div><!-- .bga-copyright --></div>\n    </div>\n  </div>\n    </section>
         <!-- passage-box -->\n    <div class=\"resources flex-5\">\n      <div class=\"sticky-resources\">\n
         \       <div class=\"sidebar-box\">\n        </div>\n      </div>\n    </div>\n
@@ -1504,7 +1503,7 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Wed, 07 Dec 2022 21:55:48 GMT
+      - Sun, 01 Jan 2023 19:54:10 GMT
       Server:
       - Tengine
       Strict-Transport-Security:
@@ -1514,11 +1513,11 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 37ac50a9ed7166fe7903ba25cd672400.cloudfront.net (CloudFront)
+      - 1.1 24948856b0f7ba2a78f73187b329c3d6.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - E0rTus2X1hhg2SYZCK-DF-n_eR_6OqZKlXZ27-zQ5NXSgaIcLI4yvw==
+      - kjZi6wWoXHsRyjrsLjjBFEhRTV8Cp828AT0t04nuWAAhXM6qCmtbaQ==
       X-Amz-Cf-Pop:
-      - ORD51-C4
+      - MCI50-P2
       X-Cache:
       - Miss from cloudfront
     status:
