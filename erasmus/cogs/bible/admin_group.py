@@ -150,7 +150,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         else:
             await utils.send_embed(
                 itx,
-                description=f'Added `{command}` as "{name}"',
+                description=f'Added `{command}` as {name!r}',
                 color=discord.Colour.green(),
             )
 
