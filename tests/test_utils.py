@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, cast
 
+import discord
 import pytest
 import pytest_mock
 from attr import define
@@ -86,7 +87,9 @@ async def test_send_passage(
     kwargs: dict[str, Any],
     expected_kwargs: dict[str, object],
 ) -> None:
-    result = await utils.send_passage(mocker.sentinel.ctx_or_intx, passage, **kwargs)
+    result: discord.Message = await utils.send_passage(
+        mocker.sentinel.ctx_or_intx, passage, **kwargs  # type: ignore
+    )
 
     assert result is mocker.sentinel.send_embed_return
     mock_send_embed.assert_awaited_once_with(
