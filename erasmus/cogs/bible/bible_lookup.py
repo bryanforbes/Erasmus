@@ -2,10 +2,9 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from attrs import define
 from discord import app_commands
 
-from ...utils import AutoCompleter
+from ...utils import AutoCompleter, frozen
 
 if TYPE_CHECKING:
     from typing_extensions import Self
@@ -13,7 +12,7 @@ if TYPE_CHECKING:
     from ...types import Bible
 
 
-@define(frozen=True)
+@frozen
 class _BibleOption:
     name: str
     name_lower: str

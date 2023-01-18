@@ -9,6 +9,7 @@ from discord import app_commands
 from discord.ext import commands
 from fluent.runtime import FluentResourceLoader
 
+from ..utils import frozen
 from .fluent import Localization
 
 if TYPE_CHECKING:
@@ -171,7 +172,7 @@ class Localizer:
         )
 
 
-@define(frozen=True)
+@frozen
 class GroupLocalizer:
     localizer: Localizer
     group_prefix: str
@@ -226,7 +227,7 @@ class GroupLocalizer:
         )
 
 
-@define(frozen=True)
+@frozen
 class LocaleLocalizer:
     localizer: Localizer | GroupLocalizer
     locale: discord.Locale
@@ -258,7 +259,7 @@ class LocaleLocalizer:
         return self.localizer.format(message_id, locale=self.locale, **kwargs)
 
 
-@define(frozen=True)
+@frozen
 class MessageLocalizer:
     localizer: LocaleLocalizer | GroupLocalizer
     message_id: str

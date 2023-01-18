@@ -8,7 +8,7 @@ import aiohttp
 import async_timeout
 import discord
 import pendulum
-from attrs import define, field
+from attrs import field
 from botus_receptus import re, utils
 from bs4 import BeautifulSoup, SoupStrainer
 from discord import app_commands
@@ -22,7 +22,7 @@ from ....exceptions import (
     DoNotUnderstandError,
     ErasmusError,
 )
-from ....utils import send_passage
+from ....utils import frozen, send_passage
 from ..bible_lookup import bible_lookup  # noqa: TC002
 from .common import TASK_INTERVAL, get_next_scheduled_time
 
@@ -42,7 +42,7 @@ _shared_cooldown: Final = app_commands.checks.cooldown(
 )
 
 
-@define(frozen=True)
+@frozen
 class PassageFetcher:
     verse_range: VerseRange
     service_manager: ServiceManager

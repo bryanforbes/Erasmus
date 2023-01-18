@@ -3,13 +3,14 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Final
 
-from attrs import define, field
+from attrs import field
 from botus_receptus import re
 from bs4 import BeautifulSoup, NavigableString, SoupStrainer, Tag
 from yarl import URL
 
 from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import DoNotUnderstandError
+from ..utils import frozen
 from .base_service import BaseService
 
 if TYPE_CHECKING:
@@ -20,7 +21,7 @@ _total_re: Final = re.compile(
 )
 
 
-@define(frozen=True)
+@frozen
 class BibleGateway(BaseService):
     _passage_url: URL = field(
         init=False, factory=lambda: URL('https://www.biblegateway.com/passage/')

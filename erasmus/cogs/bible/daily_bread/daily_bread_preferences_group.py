@@ -5,7 +5,6 @@ from typing import TYPE_CHECKING, Final, cast
 
 import discord
 import pendulum
-from attrs import define
 from botus_receptus import re, utils
 from discord import app_commands
 from pendulum.tz.timezone import Timezone  # noqa: TC002
@@ -13,6 +12,7 @@ from pendulum.tz.timezone import Timezone  # noqa: TC002
 from ....data import SectionFlag
 from ....db import BibleVersion, DailyBread, Session
 from ....exceptions import InvalidTimeError, InvalidTimeZoneError
+from ....utils import frozen
 from .common import TASK_INTERVAL, get_first_scheduled_time
 
 if TYPE_CHECKING:
@@ -186,7 +186,7 @@ class _TimeTransformer(app_commands.Transformer):
         ][:25]
 
 
-@define(frozen=True)
+@frozen
 class _TimeZoneItem:
     name: str
     name_lower: str

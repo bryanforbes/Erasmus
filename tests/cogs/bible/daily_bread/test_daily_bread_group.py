@@ -3,11 +3,11 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pytest
-from attrs import define
 
 from erasmus.cogs.bible.daily_bread.daily_bread_group import PassageFetcher
 from erasmus.data import VerseRange
 from erasmus.service_manager import ServiceManager
+from erasmus.utils import frozen
 
 if TYPE_CHECKING:
     from unittest.mock import Mock
@@ -17,7 +17,7 @@ if TYPE_CHECKING:
     from erasmus.types import Bible
 
 
-@define(frozen=True)
+@frozen
 class MockBible:
     id: int
     command: str

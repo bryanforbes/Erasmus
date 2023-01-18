@@ -5,7 +5,7 @@ import logging
 from typing import TYPE_CHECKING, Any, Final, TypeGuard
 
 import async_timeout
-from attrs import define, field
+from attrs import field
 
 from . import services
 from .exceptions import (
@@ -13,6 +13,7 @@ from .exceptions import (
     ServiceNotSupportedError,
     ServiceSearchTimeout,
 )
+from .utils import frozen
 
 if TYPE_CHECKING:
     import aiohttp
@@ -29,7 +30,7 @@ def _is_service_cls(obj: Any, /) -> TypeGuard[type[BaseService]]:
     return hasattr(obj, 'from_config') and callable(obj.from_config)
 
 
-@define(frozen=True)
+@frozen
 class ServiceManager:
     service_map: dict[str, Service] = field(factory=dict)
     timeout: float = 10

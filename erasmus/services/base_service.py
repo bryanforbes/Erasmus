@@ -4,8 +4,9 @@ import logging
 from abc import abstractmethod
 from typing import TYPE_CHECKING, Final
 
-from attrs import define
 from botus_receptus import re
+
+from ..utils import frozen
 
 if TYPE_CHECKING:
     from typing_extensions import Self
@@ -30,7 +31,7 @@ _number_re: Final = re.compile(
 )
 
 
-@define(frozen=True)
+@frozen
 class BaseService:
     session: aiohttp.ClientSession
     config: ServiceConfig | None

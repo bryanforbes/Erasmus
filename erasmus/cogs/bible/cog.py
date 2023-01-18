@@ -4,7 +4,7 @@ import logging
 from typing import TYPE_CHECKING, Callable, Final, cast
 
 import discord
-from attrs import define, field
+from attrs import field
 from botus_receptus import Cog, formatting, utils
 from discord import app_commands
 from discord.ext import commands, tasks
@@ -29,7 +29,7 @@ from ...exceptions import (
 )
 from ...service_manager import ServiceManager
 from ...ui_pages import UIPages
-from ...utils import send_passage
+from ...utils import frozen, send_passage
 from .admin_group import BibleAdminGroup
 from .bible_lookup import _BibleOption, bible_lookup
 from .daily_bread import DailyBreadGroup
@@ -53,7 +53,7 @@ _shared_cooldown = app_commands.checks.cooldown(
 )
 
 
-@define(frozen=True)
+@frozen
 class PassageFetcher:
     verse_range: VerseRange
     service_manager: ServiceManager

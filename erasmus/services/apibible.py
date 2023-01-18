@@ -5,13 +5,14 @@ import contextlib
 from typing import TYPE_CHECKING, Final, Literal, TypedDict
 
 import orjson
-from attrs import define, field
+from attrs import field
 from botus_receptus import re
 from yarl import URL
 
 from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import BookNotInVersionError, DoNotUnderstandError
 from ..json import get
+from ..utils import frozen
 from .base_service import BaseService
 
 if TYPE_CHECKING:
@@ -71,7 +72,7 @@ class _Response(TypedDict):
     meta: _Meta | None
 
 
-@define(frozen=True)
+@frozen
 class ApiBible(BaseService):
     headers: dict[str, str]
     _passage_url: URL = field(

@@ -5,7 +5,7 @@ from pathlib import Path
 from typing import TYPE_CHECKING, Final, TypedDict
 
 import orjson
-from attrs import define, evolve
+from attrs import evolve
 from botus_receptus import re
 from more_itertools import unique_everseen
 
@@ -14,6 +14,7 @@ from .exceptions import (
     BookNotUnderstoodError,
     ReferenceNotUnderstoodError,
 )
+from .utils import frozen
 
 if TYPE_CHECKING:
     from collections.abc import Iterator
@@ -99,7 +100,7 @@ class _RawBookDict(TypedDict):
     alt: list[str]
 
 
-@define(frozen=True)
+@frozen
 class Book:
     name: str
     osis: str
@@ -164,7 +165,7 @@ _osis_map: Final
 _book_mask_map: Final
 
 
-@define(frozen=True)
+@frozen
 class Verse:
     chapter: int
     verse: int
@@ -254,7 +255,7 @@ _search_reference_with_version_re: Final = re.compile(
 )
 
 
-@define(frozen=True)
+@frozen
 class VerseRange:
     book: Book
     start: Verse
@@ -385,7 +386,7 @@ class VerseRange:
         return cls.from_string_with_version(value)
 
 
-@define(frozen=True)
+@frozen
 class Passage:
     text: str
     range: VerseRange
@@ -402,7 +403,7 @@ class Passage:
         return f'{self.text}\n\n{self.citation}'
 
 
-@define(frozen=True)
+@frozen
 class SearchResults:
     verses: list[Passage]
     total: int

@@ -3,7 +3,6 @@ from __future__ import annotations
 from itertools import pairwise
 from typing import TYPE_CHECKING, Final, NamedTuple, cast
 
-from attrs import define
 from botus_receptus import re, utils
 from botus_receptus.cog import GroupCog
 from botus_receptus.formatting import EmbedPaginator, bold, escape, underline
@@ -20,7 +19,7 @@ from ..exceptions import InvalidConfessionError, NoSectionError
 from ..format import alpha_to_int, int_to_alpha, int_to_roman, roman_to_int
 from ..page_source import EmbedPageSource, ListPageSource
 from ..ui_pages import UIPages
-from ..utils import AutoCompleter
+from ..utils import AutoCompleter, frozen
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
@@ -176,7 +175,7 @@ class _SectionInfo(NamedTuple):
     choice_value: str
 
 
-@define(frozen=True)
+@frozen
 class _ConfessionOption:
     command: str
     command_lower: str
@@ -230,7 +229,7 @@ class _ConfessionOption:
         )
 
 
-@define(eq=False, frozen=True)
+@frozen(eq=False)
 class SectionAutoCompleter(app_commands.Transformer):
     confession_lookup: AutoCompleter[_ConfessionOption]
 
