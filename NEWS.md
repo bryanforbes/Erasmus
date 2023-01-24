@@ -1,5 +1,6 @@
 # Version UNRELEASED
 
+* Fixed `/daily-bread status` showing the wrong time
 
 # Version 23.1.0
 
@@ -8,7 +9,6 @@
   * `/daily-bread status`
   * `/serverprefs daily-bread set` (Administrator only)
   * `/serverprefs daily-bread stop` (Administrator only)
-
 
 # Version 22.11.1
 
