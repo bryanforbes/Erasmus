@@ -5,6 +5,10 @@ on:
     branches: [master]
   pull_request:
     branches: [master]
+    paths:
+      - 'erasmus/**'
+      - 'tests/**'
+      - 'alembic/**'
   schedule:
     - cron: '0 19 * * 2'
 
