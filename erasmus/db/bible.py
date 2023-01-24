@@ -242,7 +242,7 @@ class DailyBread(Base):
     thread_id: Mapped[int | None] = mapped_column(Snowflake)
     url: Mapped[str] = mapped_column(String, nullable=False)
     next_scheduled: Mapped[pendulum.DateTime] = mapped_column(
-        DateTime(timezone=False), nullable=False
+        DateTime(timezone=True), nullable=False
     )
     time: Mapped[pendulum.Time] = mapped_column(Time, nullable=False)
     timezone: Mapped[_Timezone] = mapped_column(Timezone, nullable=False)
