@@ -3,9 +3,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pendulum
-from botus_receptus.sqlalchemy import TypeDecorator
 from pendulum.tz.timezone import Timezone as _Timezone
-from sqlalchemy import String
+from sqlalchemy import String, TypeDecorator
 from sqlalchemy.dialects.postgresql import TIME, TIMESTAMP
 
 if TYPE_CHECKING:
@@ -13,7 +12,7 @@ if TYPE_CHECKING:
 
 
 class DateTime(TypeDecorator[pendulum.DateTime]):
-    impl = TIMESTAMP
+    impl: TIMESTAMP = TIMESTAMP  # pyright: ignore
     cache_ok = True
 
     def __init__(self, timezone: bool = False, precision: int | None = None) -> None:
@@ -48,7 +47,7 @@ class DateTime(TypeDecorator[pendulum.DateTime]):
 
 
 class Time(TypeDecorator[pendulum.Time]):
-    impl = TIME
+    impl: TIME = TIME  # pyright: ignore
     cache_ok = True
 
     def __init__(self, precision: int | None = None) -> None:
@@ -74,7 +73,7 @@ class Time(TypeDecorator[pendulum.Time]):
 
 
 class Timezone(TypeDecorator[_Timezone]):
-    impl = String
+    impl: String = String  # pyright: ignore
     cache_ok = True
 
     def process_bind_param(

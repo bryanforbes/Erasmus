@@ -8,11 +8,14 @@ from typing import TYPE_CHECKING, Any
 from alembic import context
 from botus_receptus.config import load
 from sqlalchemy import pool
-from sqlalchemy.ext.asyncio import async_engine_from_config  # type: ignore
-from sqlalchemy.ext.asyncio import AsyncConnection, AsyncEngine
+from sqlalchemy.ext.asyncio import (
+    AsyncConnection,
+    AsyncEngine,
+    async_engine_from_config,
+)
 
 import erasmus.json
-from erasmus.db.base import _mapper_registry
+from erasmus.db.base import Base
 
 if TYPE_CHECKING:
     from alembic.operations import MigrateOperation
@@ -31,7 +34,7 @@ if config.config_file_name is not None:
 # for 'autogenerate' support
 # from myapp import mymodel
 # target_metadata = mymodel.Base.metadata
-target_metadata = _mapper_registry.metadata
+target_metadata = Base.registry.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
@@ -76,10 +79,7 @@ def _do_run_migrations(connection: AsyncConnection) -> None:
             and config.cmd_opts.autogenerate
         ):
             script = directives[0]
-            if (
-                script.upgrade_ops is not None  # type: ignore
-                and script.upgrade_ops.is_empty()  # type: ignore
-            ):
+            if script.upgrade_ops is not None and script.upgrade_ops.is_empty():
                 directives[:] = []
 
     context.configure(

@@ -18,7 +18,7 @@ more-itertools = "~8.14.0"
 
 [tool.poetry.dependencies.botus_receptus]
 git = "https://github.com/bryanforbes/botus_receptus.git"
-rev = "197d6b4fbbd084423e138050fda998f5e0b26488"
+rev = "2382ce38cdeb2d2bc2efc6b4fb52c260cdfebc72"
 extras = ["uvloop", "sqlalchemy"]
 
 [tool.poetry.dependencies.discord-py]
@@ -27,7 +27,6 @@ extras = ["speed"]
 
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "~0.27.0"
-sqlalchemy2-stubs = "^0.0.2a32"
 black = "^22.12"
 coverage = {version = "^7.1", extras = ["toml"]}
 flake8 = "~6.0"
