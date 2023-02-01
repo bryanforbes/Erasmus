@@ -132,7 +132,7 @@ class BibleGateway(BaseService):
             verse_nodes = soup.select('.search-result-list .bible-item')
             total_node = soup.select_one('.showing-results')
 
-            if verse_nodes is None or total_node is None:
+            if not verse_nodes or total_node is None:
                 return SearchResults([], 0)
 
             if (match := _total_re.match(total_node.get_text(' ', strip=True))) is None:

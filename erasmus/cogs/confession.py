@@ -248,8 +248,8 @@ class SectionAutoCompleter(app_commands.Transformer):
             or (group_options := options[0].get('options')) is None
             or len(group_options) == 0
             or group_options[0].get('name') != 'source'
-            or (source := group_options[0].get('value')) is None  # type: ignore
-            or (item := self.confession_lookup.get(source)) is None  # type: ignore
+            or (source := group_options[0].get('value')) is None
+            or (item := self.confession_lookup.get(source)) is None
         ):
             return []
 
