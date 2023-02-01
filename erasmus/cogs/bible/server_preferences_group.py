@@ -8,7 +8,6 @@ from .daily_bread.daily_bread_preferences_group import DailyBreadPreferencesGrou
 from .version_preferences_group import VersionPreferencesGroup
 
 if TYPE_CHECKING:
-
     from ...erasmus import Erasmus
     from ...l10n import GroupLocalizer
     from .types import ParentCog

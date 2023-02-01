@@ -50,7 +50,6 @@ class PagesModal(discord.ui.Modal, Generic[T], title='Skip to page…'):
         await self.pages.show_checked_page(itx, int(self.page_number.value) - 1)
 
     async def on_error(self, itx: discord.Interaction, error: Exception, /) -> None:
-
         if isinstance(error, ValueError):
             message = error.args[0]
         else:
