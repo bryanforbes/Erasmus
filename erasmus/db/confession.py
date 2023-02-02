@@ -2,15 +2,24 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from sqlalchemy import Computed, ForeignKey, Index, func, select, text as _sa_text
-from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
+from sqlalchemy import (
+    Computed,
+    ForeignKey,
+    Index,
+    Text as _sa_Text,
+    cast,
+    func,
+    select,
+    text as _sa_text,
+)
+from sqlalchemy.orm import Mapped, aliased, mapped_column, relationship, selectinload
 
 from ..exceptions import InvalidConfessionError, NoSectionError
 from .base import Base, Text, TSVector
 from .enums import ConfessionType, NumberingType  # noqa: TC002
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Sequence
+    from collections.abc import AsyncIterator
 
     from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -24,12 +33,33 @@ class Section(Base):
     subsection_number: Mapped[int | None]
     title: Mapped[Text | None] = mapped_column()
     text: Mapped[Text] = mapped_column()
+    text_stripped: Mapped[Text] = mapped_column(
+        Computed(
+            func.regexp_replace(
+                text,
+                _sa_text(r"'\[(.*?)\]\(.*?\)'"),
+                _sa_text(r"'\1'"),
+                _sa_text("'g'"),
+            )
+        ),
+        init=False,
+    )
     search_vector: Mapped[TSVector] = mapped_column(
         Computed(
             func.to_tsvector(
                 _sa_text("'english'"),
                 func.trim(
-                    func.coalesce(title, _sa_text("''")) + _sa_text("' '") + text,
+                    cast(func.coalesce(title, _sa_text("''")), _sa_Text)
+                    + _sa_text("' '")
+                    + cast(
+                        func.regexp_replace(
+                            text,
+                            _sa_text(r"'\[(.*?)\]\(.*?\)'"),
+                            _sa_text(r"'\1'"),
+                            _sa_text("'g'"),
+                        ),
+                        _sa_Text,
+                    ),
                     _sa_text("' '"),
                 ),
             ),
@@ -75,22 +105,48 @@ class Confession(Base):
             Section.subsection_number.asc().nulls_first(),
         ],
         lazy='raise',
+        init=False,
     )
 
     @property
     def subsection_numbering(self) -> NumberingType:
         return self._subsection_numbering or self.numbering
 
-    async def search(
-        self, session: AsyncSession, terms: Sequence[str], /
-    ) -> list[Section]:
-        result = await session.scalars(
+    async def search(self, session: AsyncSession, terms: str, /) -> list[Section]:
+        tsquery = func.plainto_tsquery(_sa_text("'english'"), terms)
+        section_query = (
             select(Section)
             .where(Section.confession_id == self.id)
-            .where(Section.search_vector.match(' & '.join(terms)))
+            .where(Section.search_vector.bool_op('@@')(tsquery))
             .order_by(
                 Section.number.asc(), Section.subsection_number.asc().nulls_first()
             )
+            .subquery()
+        )
+
+        headline_query = select(
+            section_query.c.id,
+            section_query.c.confession_id,
+            section_query.c.number,
+            section_query.c.subsection_number,
+            section_query.c.text,
+            func.ts_headline(
+                _sa_text("'english'"),
+                section_query.c.title,
+                tsquery,
+                _sa_text("'HighlightAll=true, StartSel=*, StopSel=*'"),
+            ).label('title'),
+            func.ts_headline(
+                _sa_text("'english'"),
+                section_query.c.text_stripped,
+                tsquery,
+                _sa_text("'StartSel=**, StopSel=**'"),
+            ).label('text_stripped'),
+            section_query.c.search_vector,
+        ).subquery()
+
+        result = await session.scalars(
+            select(aliased(Section, headline_query, adapt_on_names=True))
         )
 
         return list(result)

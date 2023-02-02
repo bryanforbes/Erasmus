@@ -17,12 +17,12 @@ from ..db import (
 )
 from ..exceptions import InvalidConfessionError, NoSectionError
 from ..format import alpha_to_int, int_to_alpha, int_to_roman, roman_to_int
-from ..page_source import EmbedPageSource, ListPageSource
+from ..page_source import FieldPageSource, ListPageSource, Pages
 from ..ui_pages import UIPages
 from ..utils import AutoCompleter, frozen
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Sequence
+    from collections.abc import Callable, Iterable, Sequence
     from re import Match
     from typing_extensions import Self
 
@@ -127,7 +127,7 @@ async def _get_output(
 
 
 class ConfessionSearchSource(
-    EmbedPageSource['Sequence[Section]'], ListPageSource[Section]
+    FieldPageSource['Sequence[Section]'], ListPageSource[Section]
 ):
     confession: ConfessionRecord
     localizer: MessageLocalizer
@@ -146,25 +146,40 @@ class ConfessionSearchSource(
         self.confession = confession
         self.localizer = localizer
 
-    async def set_page_text(self, entries: Sequence[Section] | None, /) -> None:
-        if entries is None:
+    def get_field_values(
+        self, entries: Sequence[Section], /
+    ) -> Iterable[tuple[str, str]]:
+        for entry in entries:
+            section_number = _format_section_number(self.confession, entry)
+            title = (
+                section_number
+                if entry.title is None
+                else f'{section_number}. {entry.title}'
+            )
+            yield title, entry.text_stripped
+
+    def format_footer_text(
+        self, pages: Pages[Sequence[Section]], max_pages: int
+    ) -> str:
+        return self.localizer.format(
+            'footer',
+            data={
+                'current_page': pages.current_page + 1,
+                'max_pages': max_pages,
+                'total': self.get_total(),
+            },
+        )
+
+    async def set_page_text(self, page: Sequence[Section] | None, /) -> None:
+        self.embed.title = self.localizer.format(
+            'title', data={'confession_name': self.confession.name}
+        )
+
+        if page is None:
             self.embed.description = self.localizer.format('no-results')
             return
 
-        lines: list[str] = []
-
-        for entry in entries:
-            section_number = _format_section_number(self.confession, entry)
-            lines.append(
-                f'**{section_number}**. '
-                + (
-                    entry.title
-                    if entry.title is not None
-                    else _ellipsize(entry.text, max_length=50)[1]
-                )
-            )
-
-        self.embed.description = '\n'.join(lines)
+        await super().set_page_text(page)
 
 
 class _SectionInfo(NamedTuple):
@@ -206,7 +221,8 @@ class _ConfessionOption:
                 section_value += f'.{section.subsection_number}'
 
             text, choice_name = _ellipsize(
-                f'{section_str}. {section.title or section.text}', max_length=100
+                f'{section_str}. {section.title or section.text_stripped}',
+                max_length=100,
             )
 
             section_info.append(
@@ -360,12 +376,12 @@ class Confession(
 
         async with Session() as session:
             confession = await ConfessionRecord.get_by_command(session, source)
-            results = await confession.search(session, terms.split(' '))
+            results = await confession.search(session, terms)
 
         localizer = self.localizer.for_message('search', itx.locale)
         search_source = ConfessionSearchSource(
             results,
-            per_page=20,
+            per_page=5,
             confession=confession,
             localizer=localizer,
         )
