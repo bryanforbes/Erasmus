@@ -198,7 +198,7 @@ files = [
 name = "asyncpg"
 version = "0.27.0"
 description = "An asyncio PostgreSQL driver"
-category = "main"
+category = "dev"
 optional = false
 python-versions = ">=3.7.0"
 files = [
@@ -376,16 +376,12 @@ develop = false
 [package.dependencies]
 aioitertools = "^0.11.0"
 async-timeout = "~4.0.0"
-asyncpg = {version = "~0.27.0", optional = true}
 attrs = ">=22.2.0"
 click = ">=8.0"
 "discord.py" = "^2.1.0"
-greenlet = {version = "^2.0.2", optional = true}
 pendulum = "~2.1.2"
-sqlalchemy = {version = "~2.0.1", optional = true}
 tomli = "^2.0.1"
 typing_extensions = "~4.4.0"
-uvloop = {version = "~0.17.0", optional = true}
 
 [package.extras]
 all = ["asyncpg (>=0.27.0,<0.28.0)", "greenlet (>=2.0.2,<3.0.0)", "sqlalchemy (>=2.0.1,<2.1.0)", "uvloop (>=0.17.0,<0.18.0)"]
@@ -1651,14 +1647,14 @@ files = [
 
 [[package]]
 name = "pre-commit"
-version = "3.0.3"
+version = "3.0.4"
 description = "A framework for managing and maintaining multi-language pre-commit hooks."
 category = "dev"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "pre_commit-3.0.3-py2.py3-none-any.whl", hash = "sha256:83e2e8cc5cbb3691cff9474494816918d865120768aa36c9eda6185126667d21"},
-    {file = "pre_commit-3.0.3.tar.gz", hash = "sha256:4187e74fda38f0f700256fb2f757774385503b04292047d0899fc913207f314b"},
+    {file = "pre_commit-3.0.4-py2.py3-none-any.whl", hash = "sha256:9e3255edb0c9e7fe9b4f328cb3dc86069f8fdc38026f1bf521018a05eaf4d67b"},
+    {file = "pre_commit-3.0.4.tar.gz", hash = "sha256:bc4687478d55578c4ac37272fe96df66f73d9b5cf81be6f28627d4e712e752d5"},
 ]
 
 [package.dependencies]
@@ -2097,30 +2093,40 @@ python-versions = ">=3.7"
 files = [
     {file = "SQLAlchemy-2.0.1-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:3997238968fa495fac4b17fa18b36616c41a6e6759f323dfb3f83cbcf1d3b1bb"},
     {file = "SQLAlchemy-2.0.1-cp310-cp310-macosx_11_0_arm64.whl", hash = "sha256:d1588f6ba25dbb2d6eb1531e56f419e02cdc9ec06d9f082195877c5148f6f6ab"},
+    {file = "SQLAlchemy-2.0.1-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:01704ec4a6877b74608264992a87979a27a8927cefd14ccdc0d478acacc1ed85"},
     {file = "SQLAlchemy-2.0.1-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e60bec8fdd753212aa8cec012bbb3060e9c2227496fa935ca8918744a34c864d"},
+    {file = "SQLAlchemy-2.0.1-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:eff376cc201363634b5b60a828b3998b088a71e16f7a43da26fc0e2201e25a05"},
     {file = "SQLAlchemy-2.0.1-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:20b9e36f0219285c580dc5e98cadb59b751e259f3829460bc58d45e7a770dd36"},
     {file = "SQLAlchemy-2.0.1-cp310-cp310-win32.whl", hash = "sha256:0186b970fd4561def531b582a86819d8f8af65c8b1a78cf015ee47e526f4cfb6"},
     {file = "SQLAlchemy-2.0.1-cp310-cp310-win_amd64.whl", hash = "sha256:664a21613d7eff895de9ef731632575cfca773ddbac9b7f7adad288ab971bcbd"},
     {file = "SQLAlchemy-2.0.1-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:1f504779e6e68d0cb7043825958125abd7742c7c73ce9c6b652d20c6b5f17022"},
     {file = "SQLAlchemy-2.0.1-cp311-cp311-macosx_11_0_arm64.whl", hash = "sha256:8f9085bedb9e2f2bf714cfd86be6deaa7050f998843a3a0e595ec3eb0d25c743"},
+    {file = "SQLAlchemy-2.0.1-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0fcc9b2f5b334fdaf278459dfc0fb86d3a0317ae8ce813a7a3ef8639b44b6e4a"},
     {file = "SQLAlchemy-2.0.1-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:a97c4b5527ea563867ccbee031af93932d9699c6c73f1ea70adcbc935c80379e"},
+    {file = "SQLAlchemy-2.0.1-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:f707729cc35dbd1d672b11037f5464b8a42c1e89772d7fc60648da215fa72fc6"},
     {file = "SQLAlchemy-2.0.1-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:3846d36c1ca113a7fa078abb5e69a8c3d1c7642baf12267dcd9a0d660cf1bdeb"},
     {file = "SQLAlchemy-2.0.1-cp311-cp311-win32.whl", hash = "sha256:aeb49e1436d6558d31c006b385a5071e802be6db257ce36940e66cefce92aa72"},
     {file = "SQLAlchemy-2.0.1-cp311-cp311-win_amd64.whl", hash = "sha256:9efb27e899cf7d43cf42c0852ef772a8b568c39dc7b55768a5a80c67bb64dfc2"},
     {file = "SQLAlchemy-2.0.1-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:7e23205506a437476dce8193357ce47254cce7c94018b1b4856476ad2e74f1ae"},
+    {file = "SQLAlchemy-2.0.1-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:67c35b33a0828b4f5ac6e76a1b6a54b27d693599c93ea7a4c8e53ff52796378f"},
     {file = "SQLAlchemy-2.0.1-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ca2ce5f3125cb6e043c90dd901446b74878f35eb6660e0e58d7ef02832f7d332"},
+    {file = "SQLAlchemy-2.0.1-cp37-cp37m-musllinux_1_1_aarch64.whl", hash = "sha256:eeec87ebe90018bc871b84b03e4bff5dbdc722e28b8f5a6e9a94486eb0cb4902"},
     {file = "SQLAlchemy-2.0.1-cp37-cp37m-musllinux_1_1_x86_64.whl", hash = "sha256:476bd377f430b1871f058332696ef61c42dfa8ad242ebb8bcf212c3d4127ea8a"},
     {file = "SQLAlchemy-2.0.1-cp37-cp37m-win32.whl", hash = "sha256:101df3fa8f207ade1124d7729f6c9eab28a2560baa31b3e131e76a599d884b33"},
     {file = "SQLAlchemy-2.0.1-cp37-cp37m-win_amd64.whl", hash = "sha256:05b81afdc25d1ce43cb59647c9992559dc7487b1670ccab0426fc8b8f859e933"},
     {file = "SQLAlchemy-2.0.1-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:7b07b83789997cf83ce9a5e7156a2b9a6cb54a4137add8ad95eff32f6746279b"},
     {file = "SQLAlchemy-2.0.1-cp38-cp38-macosx_11_0_arm64.whl", hash = "sha256:e49e9aefffe9c598a6ccf8d2dbb4556f4d93d0ae346b9d199b3712d24af0ce75"},
+    {file = "SQLAlchemy-2.0.1-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:34a4e134eac68354cce40b35ccdbc91ff67ce0c791ea4aa81e021f2ee14bfefb"},
     {file = "SQLAlchemy-2.0.1-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:db3e4db26c1a771d7b23a1031eaf351cfcaaa96d463ae900bb56c6a6f0585fbf"},
+    {file = "SQLAlchemy-2.0.1-cp38-cp38-musllinux_1_1_aarch64.whl", hash = "sha256:54b24a20cca275ada37ba40aa87dd257fda6e7da7f448d3282b6124d940f64d5"},
     {file = "SQLAlchemy-2.0.1-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:664ec164bc01ab66dfd19062ca7982a9ea12274596e17732908eb78621adc147"},
     {file = "SQLAlchemy-2.0.1-cp38-cp38-win32.whl", hash = "sha256:6dd8405bd1ffcbf11fda0e6b172e7e90044610de16325295efe92367551f666d"},
     {file = "SQLAlchemy-2.0.1-cp38-cp38-win_amd64.whl", hash = "sha256:5bc451ee18776dcb6b2ac8c154db0536f75a2535f5da055179734f5e7f2e7b72"},
     {file = "SQLAlchemy-2.0.1-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:655e93fabd11bf53e6af44cee152b608d49ece4b4d9cc29328dd476faaa47c0c"},
     {file = "SQLAlchemy-2.0.1-cp39-cp39-macosx_11_0_arm64.whl", hash = "sha256:a5e1826a1ebbbbc26285a0304d7cafff4ec63cdae83fde89d5f2ec67f4444a44"},
+    {file = "SQLAlchemy-2.0.1-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:8770318683c8e08976633cec2c9711eb4279553ecbad1ca97f82c5b9174e0e76"},
     {file = "SQLAlchemy-2.0.1-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:08c9169692722df8a2ef6c6ff1055e11563c990e9c74df9af62139a0c6397b8c"},
+    {file = "SQLAlchemy-2.0.1-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:c34c6b7975cb9e4848d4366d54a634bbced7b491a36029642c7e738a44b595a3"},
     {file = "SQLAlchemy-2.0.1-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:31d019c60f4817b24c484d3110c7754cd2b8f7070057eddef5822994bf16da5a"},
     {file = "SQLAlchemy-2.0.1-cp39-cp39-win32.whl", hash = "sha256:c681d0f59c8ed12fd3f68d08d423354b1cc501220ddabc7a20b9ca8ed52b8f70"},
     {file = "SQLAlchemy-2.0.1-cp39-cp39-win_amd64.whl", hash = "sha256:619784c399f5c4240b002e4dba30cfba15696274614da77846b69b2c9a74066b"},
@@ -2193,51 +2199,6 @@ files = [
     {file = "typing_extensions-4.4.0-py3-none-any.whl", hash = "sha256:16fa4864408f655d35ec496218b85f79b3437c829e93320c7c9215ccfd92489e"},
     {file = "typing_extensions-4.4.0.tar.gz", hash = "sha256:1511434bb92bf8dd198c12b1cc812e800d4181cfcb867674e0f8279cc93087aa"},
 ]
-
-[[package]]
-name = "uvloop"
-version = "0.17.0"
-description = "Fast implementation of asyncio event loop on top of libuv"
-category = "main"
-optional = false
-python-versions = ">=3.7"
-files = [
-    {file = "uvloop-0.17.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:ce9f61938d7155f79d3cb2ffa663147d4a76d16e08f65e2c66b77bd41b356718"},
-    {file = "uvloop-0.17.0-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:68532f4349fd3900b839f588972b3392ee56042e440dd5873dfbbcd2cc67617c"},
-    {file = "uvloop-0.17.0-cp310-cp310-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:0949caf774b9fcefc7c5756bacbbbd3fc4c05a6b7eebc7c7ad6f825b23998d6d"},
-    {file = "uvloop-0.17.0-cp310-cp310-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:ff3d00b70ce95adce264462c930fbaecb29718ba6563db354608f37e49e09024"},
-    {file = "uvloop-0.17.0-cp310-cp310-musllinux_1_1_aarch64.whl", hash = "sha256:a5abddb3558d3f0a78949c750644a67be31e47936042d4f6c888dd6f3c95f4aa"},
-    {file = "uvloop-0.17.0-cp310-cp310-musllinux_1_1_x86_64.whl", hash = "sha256:8efcadc5a0003d3a6e887ccc1fb44dec25594f117a94e3127954c05cf144d811"},
-    {file = "uvloop-0.17.0-cp311-cp311-macosx_10_9_universal2.whl", hash = "sha256:3378eb62c63bf336ae2070599e49089005771cc651c8769aaad72d1bd9385a7c"},
-    {file = "uvloop-0.17.0-cp311-cp311-macosx_10_9_x86_64.whl", hash = "sha256:6aafa5a78b9e62493539456f8b646f85abc7093dd997f4976bb105537cf2635e"},
-    {file = "uvloop-0.17.0-cp311-cp311-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:c686a47d57ca910a2572fddfe9912819880b8765e2f01dc0dd12a9bf8573e539"},
-    {file = "uvloop-0.17.0-cp311-cp311-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:864e1197139d651a76c81757db5eb199db8866e13acb0dfe96e6fc5d1cf45fc4"},
-    {file = "uvloop-0.17.0-cp311-cp311-musllinux_1_1_aarch64.whl", hash = "sha256:2a6149e1defac0faf505406259561bc14b034cdf1d4711a3ddcdfbaa8d825a05"},
-    {file = "uvloop-0.17.0-cp311-cp311-musllinux_1_1_x86_64.whl", hash = "sha256:6708f30db9117f115eadc4f125c2a10c1a50d711461699a0cbfaa45b9a78e376"},
-    {file = "uvloop-0.17.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:23609ca361a7fc587031429fa25ad2ed7242941adec948f9d10c045bfecab06b"},
-    {file = "uvloop-0.17.0-cp37-cp37m-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:2deae0b0fb00a6af41fe60a675cec079615b01d68beb4cc7b722424406b126a8"},
-    {file = "uvloop-0.17.0-cp37-cp37m-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:45cea33b208971e87a31c17622e4b440cac231766ec11e5d22c76fab3bf9df62"},
-    {file = "uvloop-0.17.0-cp37-cp37m-musllinux_1_1_aarch64.whl", hash = "sha256:9b09e0f0ac29eee0451d71798878eae5a4e6a91aa275e114037b27f7db72702d"},
-    {file = "uvloop-0.17.0-cp37-cp37m-musllinux_1_1_x86_64.whl", hash = "sha256:dbbaf9da2ee98ee2531e0c780455f2841e4675ff580ecf93fe5c48fe733b5667"},
-    {file = "uvloop-0.17.0-cp38-cp38-macosx_10_9_universal2.whl", hash = "sha256:a4aee22ece20958888eedbad20e4dbb03c37533e010fb824161b4f05e641f738"},
-    {file = "uvloop-0.17.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:307958f9fc5c8bb01fad752d1345168c0abc5d62c1b72a4a8c6c06f042b45b20"},
-    {file = "uvloop-0.17.0-cp38-cp38-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3ebeeec6a6641d0adb2ea71dcfb76017602ee2bfd8213e3fcc18d8f699c5104f"},
-    {file = "uvloop-0.17.0-cp38-cp38-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:1436c8673c1563422213ac6907789ecb2b070f5939b9cbff9ef7113f2b531595"},
-    {file = "uvloop-0.17.0-cp38-cp38-musllinux_1_1_aarch64.whl", hash = "sha256:8887d675a64cfc59f4ecd34382e5b4f0ef4ae1da37ed665adba0c2badf0d6578"},
-    {file = "uvloop-0.17.0-cp38-cp38-musllinux_1_1_x86_64.whl", hash = "sha256:3db8de10ed684995a7f34a001f15b374c230f7655ae840964d51496e2f8a8474"},
-    {file = "uvloop-0.17.0-cp39-cp39-macosx_10_9_universal2.whl", hash = "sha256:7d37dccc7ae63e61f7b96ee2e19c40f153ba6ce730d8ba4d3b4e9738c1dccc1b"},
-    {file = "uvloop-0.17.0-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:cbbe908fda687e39afd6ea2a2f14c2c3e43f2ca88e3a11964b297822358d0e6c"},
-    {file = "uvloop-0.17.0-cp39-cp39-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:3d97672dc709fa4447ab83276f344a165075fd9f366a97b712bdd3fee05efae8"},
-    {file = "uvloop-0.17.0-cp39-cp39-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:f1e507c9ee39c61bfddd79714e4f85900656db1aec4d40c6de55648e85c2799c"},
-    {file = "uvloop-0.17.0-cp39-cp39-musllinux_1_1_aarch64.whl", hash = "sha256:c092a2c1e736086d59ac8e41f9c98f26bbf9b9222a76f21af9dfe949b99b2eb9"},
-    {file = "uvloop-0.17.0-cp39-cp39-musllinux_1_1_x86_64.whl", hash = "sha256:30babd84706115626ea78ea5dbc7dd8d0d01a2e9f9b306d24ca4ed5796c66ded"},
-    {file = "uvloop-0.17.0.tar.gz", hash = "sha256:0ddf6baf9cf11a1a22c71487f39f15b2cf78eb5bde7e5b45fbb99e8a9d91b9e1"},
-]
-
-[package.extras]
-dev = ["Cython (>=0.29.32,<0.30.0)", "Sphinx (>=4.1.2,<4.2.0)", "aiohttp", "flake8 (>=3.9.2,<3.10.0)", "mypy (>=0.800)", "psutil", "pyOpenSSL (>=22.0.0,<22.1.0)", "pycodestyle (>=2.7.0,<2.8.0)", "pytest (>=3.6.0)", "sphinx-rtd-theme (>=0.5.2,<0.6.0)", "sphinxcontrib-asyncio (>=0.3.0,<0.4.0)"]
-docs = ["Sphinx (>=4.1.2,<4.2.0)", "sphinx-rtd-theme (>=0.5.2,<0.6.0)", "sphinxcontrib-asyncio (>=0.3.0,<0.4.0)"]
-test = ["Cython (>=0.29.32,<0.30.0)", "aiohttp", "flake8 (>=3.9.2,<3.10.0)", "mypy (>=0.800)", "psutil", "pyOpenSSL (>=22.0.0,<22.1.0)", "pycodestyle (>=2.7.0,<2.8.0)"]
 
 [[package]]
 name = "vcrpy"
