@@ -186,11 +186,12 @@ class Confession(Base):
         order_by_name: bool = False,
         load_sections: bool = False,
     ) -> AsyncIterator[Confession]:
-        stmt = select(Confession).order_by(
-            Confession.sortable_name.asc()
-            if order_by_name
-            else Confession.command.asc()
-        )
+        stmt = select(Confession)
+
+        if order_by_name:
+            stmt = stmt.order_by(Confession.sortable_name.asc())
+        else:
+            stmt = stmt.order_by(Confession.command.asc())
 
         if load_sections:
             stmt = stmt.options(selectinload(Confession.sections))

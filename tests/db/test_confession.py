@@ -1,18 +1,29 @@
 from __future__ import annotations
 
+from collections.abc import AsyncIterator
 from typing import TYPE_CHECKING
 
 import pytest
-from sqlalchemy.dialects import postgresql
+from aioitertools.builtins import list as _alist
+from sqlalchemy.dialects.postgresql import asyncpg
+from sqlalchemy.orm.strategy_options import Load
+from sqlalchemy.sql.selectable import Select
 
 from erasmus.db.confession import Confession
 from erasmus.db.enums import ConfessionType, NumberingType
-from erasmus.exceptions import NoSectionError
+from erasmus.exceptions import InvalidConfessionError, NoSectionError
 
 if TYPE_CHECKING:
     from unittest.mock import NonCallableMagicMock, NonCallableMock
 
     from pytest_mock import MockerFixture
+    from sqlalchemy.sql.compiler import Compiled
+
+
+def _compile_sql(mock: NonCallableMock) -> Compiled:
+    return mock.call_args.args[0].compile(
+        dialect=asyncpg.dialect(), compile_kwargs={'literal_binds': True}
+    )
 
 
 class TestConfession:
@@ -64,11 +75,10 @@ class TestConfession:
             mocker.sentinel.scalar_result_one,
             mocker.sentinel.scalar_result_two,
         ]
-        assert str(
-            mock_session.scalars.call_args.args[0].compile(  # pyright: ignore
-                dialect=postgresql.dialect(), compile_kwargs={'literal_binds': True}
-            )
-        ) == (
+
+        compiled = _compile_sql(mock_session.scalars)  # pyright: ignore
+
+        assert str(compiled) == (
             "SELECT anon_1.id, anon_1.confession_id, anon_1.number, "
             "anon_1.subsection_number, anon_1.title, anon_1.text, "
             "anon_1.text_stripped, anon_1.search_vector \n"
@@ -142,14 +152,9 @@ class TestConfession:
         assert (
             await confession.get_section(mock_session, number, subsection_number)
         ) == mocker.sentinel.first_scalar_result
-        assert (
-            str(
-                mock_session.scalars.call_args.args[0].compile(  # pyright: ignore
-                    dialect=postgresql.dialect(), compile_kwargs={'literal_binds': True}
-                )
-            )
-            == expected
-        )
+
+        compiled = _compile_sql(mock_session.scalars)  # pyright: ignore
+        assert str(compiled) == expected
 
     @pytest.mark.parametrize(
         'number,subsection_number,confession_type,expected_section,expected_type',
@@ -178,3 +183,114 @@ class TestConfession:
         assert exc_info.value.confession == 'A Confession'
         assert exc_info.value.section == expected_section
         assert exc_info.value.section_type == expected_type
+
+    @pytest.mark.parametrize(
+        'kwargs,expected_sql',
+        [
+            (
+                {},
+                'SELECT confessions.id, confessions.command, confessions.name, '
+                'confessions.type, confessions.numbering, '
+                'confessions.subsection_numbering, confessions.sortable_name \n'
+                'FROM confessions ORDER BY confessions.command ASC',
+            ),
+            (
+                {'order_by_name': True},
+                'SELECT confessions.id, confessions.command, confessions.name, '
+                'confessions.type, confessions.numbering, '
+                'confessions.subsection_numbering, confessions.sortable_name \n'
+                'FROM confessions ORDER BY confessions.sortable_name ASC',
+            ),
+            (
+                {'load_sections': True},
+                'SELECT confessions.id, confessions.command, confessions.name, '
+                'confessions.type, confessions.numbering, '
+                'confessions.subsection_numbering, confessions.sortable_name \n'
+                'FROM confessions ORDER BY confessions.command ASC',
+            ),
+        ],
+        ids=['no kwargs', 'order_by_name=True', 'load_sections=True'],
+    )
+    async def test_get_all(
+        self,
+        mocker: MockerFixture,
+        mock_session: NonCallableMock,
+        kwargs: dict[str, object],
+        expected_sql: str,
+    ) -> None:
+        async_iterator = Confession.get_all(mock_session, **kwargs)
+        assert isinstance(async_iterator, AsyncIterator)
+        results = await _alist(async_iterator)
+        assert results == [
+            mocker.sentinel.scalar_result_one,
+            mocker.sentinel.scalar_result_two,
+        ]
+
+        compiled = _compile_sql(mock_session.scalars)  # pyright: ignore
+        assert str(compiled) == expected_sql
+
+        if kwargs.get('load_sections'):
+            assert isinstance(compiled.statement, Select)
+            assert isinstance(compiled.statement._with_options[0], Load)
+            assert compiled.statement._with_options[0].context[0].strategy == (
+                ('lazy', 'selectin'),
+            )
+
+    @pytest.mark.parametrize(
+        'command,kwargs,expected_sql',
+        [
+            (
+                'COMMAND',
+                {},
+                'SELECT confessions.id, confessions.command, confessions.name, '
+                'confessions.type, confessions.numbering, '
+                'confessions.subsection_numbering, confessions.sortable_name \n'
+                'FROM confessions \n'
+                "WHERE confessions.command = 'command' \n"
+                ' LIMIT 1',
+            ),
+            (
+                'CoMmAnD',
+                {'load_sections': True},
+                'SELECT confessions.id, confessions.command, confessions.name, '
+                'confessions.type, confessions.numbering, '
+                'confessions.subsection_numbering, confessions.sortable_name \n'
+                'FROM confessions \n'
+                "WHERE confessions.command = 'command' \n"
+                ' LIMIT 1',
+            ),
+        ],
+        ids=['no kwargs', 'load_sections=True'],
+    )
+    async def test_get_by_command(
+        self,
+        mocker: MockerFixture,
+        mock_session: NonCallableMock,
+        command: str,
+        kwargs: dict[str, object],
+        expected_sql: str,
+    ) -> None:
+        confession = await Confession.get_by_command(mock_session, command, **kwargs)
+        assert confession == mocker.sentinel.first_scalar_result
+
+        compiled = _compile_sql(mock_session.scalars)  # pyright: ignore
+        assert str(compiled) == expected_sql
+
+        if kwargs.get('load_sections'):
+            assert isinstance(compiled.statement, Select)
+            assert isinstance(compiled.statement._with_options[0], Load)
+            assert compiled.statement._with_options[0].context[0].strategy == (
+                ('lazy', 'selectin'),
+            )
+
+    async def test_get_by_command_no_result_raises(
+        self,
+        mock_session: NonCallableMock,
+        mock_scalar_result: NonCallableMagicMock,
+    ) -> None:
+        mock_scalar_result.first.return_value = None  # pyright: ignore
+
+        with pytest.raises(InvalidConfessionError) as exc_info:
+            await Confession.get_by_command(mock_session, 'MyCommand')
+
+        assert exc_info.value.confession == 'MyCommand'
