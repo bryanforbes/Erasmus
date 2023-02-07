@@ -3,6 +3,7 @@ from __future__ import annotations
 from itertools import pairwise
 from typing import TYPE_CHECKING, Final, NamedTuple, cast
 
+import discord
 from botus_receptus import re, utils
 from botus_receptus.cog import GroupCog
 from botus_receptus.formatting import EmbedPaginator, bold, escape, underline
@@ -26,7 +27,6 @@ if TYPE_CHECKING:
     from re import Match
     from typing_extensions import Self
 
-    import discord
     from sqlalchemy.ext.asyncio import AsyncSession
 
     from ..erasmus import Erasmus
@@ -129,6 +129,7 @@ async def _get_output(
 class ConfessionSearchSource(
     FieldPageSource['Sequence[Section]'], ListPageSource[Section]
 ):
+    terms: str
     confession: ConfessionRecord
     localizer: MessageLocalizer
 
@@ -137,12 +138,14 @@ class ConfessionSearchSource(
         entries: list[Section],
         /,
         *,
+        terms: str,
         per_page: int,
         confession: ConfessionRecord,
         localizer: MessageLocalizer,
     ) -> None:
         super().__init__(entries, per_page=per_page)
 
+        self.terms = terms
         self.confession = confession
         self.localizer = localizer
 
@@ -176,8 +179,14 @@ class ConfessionSearchSource(
         )
 
         if page is None:
-            self.embed.description = self.localizer.format('no-results')
+            self.embed.description = self.localizer.format(
+                'no-results', data={'terms': self.terms}
+            )
             return
+
+        self.embed.description = self.localizer.format(
+            'terms', data={'terms': self.terms}
+        )
 
         await super().set_page_text(page)
 
@@ -381,6 +390,7 @@ class Confession(
         localizer = self.localizer.for_message('search', itx.locale)
         search_source = ConfessionSearchSource(
             results,
+            terms=discord.utils.escape_markdown(terms),
             per_page=5,
             confession=confession,
             localizer=localizer,
