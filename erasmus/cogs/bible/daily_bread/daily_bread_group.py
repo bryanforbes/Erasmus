@@ -135,14 +135,17 @@ class DailyBreadGroup(
 
                 try:
                     passage = await self.__fetcher(bible)  # pyright: ignore
-                except ErasmusError as error:
-                    _log.error(
-                        'An error occurred fetching %s from %r',
+                except Exception as error:  # noqa: PIE786
+                    _log.exception(
+                        'An error occurred fetching %s from %r for guild %r. '
+                        'Postponing until tomorrow.',
                         self.__fetcher.verse_range,
-                        bible,
+                        bible.name,
+                        daily_bread.guild_id,
                         exc_info=error,
                         stack_info=True,
                     )
+                    daily_bread.next_scheduled = next_scheduled
                     continue
 
                 try:
@@ -155,6 +158,22 @@ class DailyBreadGroup(
                         avatar_url='https://i.imgur.com/XQ8N2vH.png',
                     )
                     daily_bread.next_scheduled = next_scheduled
+                except discord.NotFound as error:
+                    if error.code == 10015:
+                        _log.exception(
+                            'Webhook missing for guild ID %s. '
+                            'Postponing until tomorrow.',
+                            daily_bread.guild_id,
+                        )
+                        daily_bread.next_scheduled = next_scheduled
+                    else:
+                        _log.exception(
+                            'An error occurred while posting the daily bread to '
+                            'guild ID %s',
+                            daily_bread.guild_id,
+                            exc_info=error,
+                            stack_info=True,
+                        )
                 except (discord.DiscordException, ErasmusError) as error:
                     _log.exception(
                         'An error occurred while posting the daily bread to '
