@@ -13,12 +13,12 @@ python = "^3.10"
 alembic = "^1.9"
 attrs = "^22.2.0"
 beautifulsoup4 = "^4.11"
-more-itertools = "~8.14.0"
+more-itertools = "~9.0.0"
 "fluent.runtime" = "^0.3.1"
 
 [tool.poetry.dependencies.botus_receptus]
 git = "https://github.com/bryanforbes/botus_receptus.git"
-rev = "7e28f60894981cfab2598d5fcb19f80ae27f545c"
+rev = "e7b55b6ce8f244d7747f46cf71fca1b61ae94fed"
 extras = ["uvloop", "sqlalchemy"]
 
 [tool.poetry.dependencies.discord-py]
@@ -32,7 +32,7 @@ coverage = {version = "^7.1", extras = ["toml"]}
 flake8 = "~6.0"
 flake8-bugbear = ">=23.1.14"
 flake8-comprehensions = "^3.10.1"
-flake8-implicit-str-concat = "^0.3.0"
+flake8-implicit-str-concat = "^0.4.0"
 flake8-pie = "^0.16.0"
 flake8-pyi = "^23.1"
 flake8-pytest-style = "^1.6.0"
