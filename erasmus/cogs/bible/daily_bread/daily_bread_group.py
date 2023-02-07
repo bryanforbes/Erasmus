@@ -133,7 +133,17 @@ class DailyBreadGroup(
                     daily_bread.next_scheduled = next_scheduled
                     continue
 
-                passage = await self.__fetcher(bible)  # pyright: ignore
+                try:
+                    passage = await self.__fetcher(bible)  # pyright: ignore
+                except ErasmusError as error:
+                    _log.error(
+                        'An error occurred fetching %s from %r',
+                        self.__fetcher.verse_range,
+                        bible,
+                        exc_info=error,
+                        stack_info=True,
+                    )
+                    continue
 
                 try:
                     await send_passage(

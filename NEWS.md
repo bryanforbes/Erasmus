@@ -1,5 +1,6 @@
 # Version UNRELEASED
 
+* Fixed bug in Daily Bread fetching
 
 # Version 23.1.1
 
