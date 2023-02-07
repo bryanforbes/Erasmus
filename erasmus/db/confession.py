@@ -12,7 +12,7 @@ from sqlalchemy import (
     select,
     text as _sa_text,
 )
-from sqlalchemy.orm import Mapped, aliased, mapped_column, relationship, selectinload
+from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 
 from ..exceptions import InvalidConfessionError, NoSectionError
 from .base import Base, Text, TSVector
@@ -143,11 +143,9 @@ class Confession(Base):
                 _sa_text("'StartSel=**, StopSel=**'"),
             ).label('text_stripped'),
             section_query.c.search_vector,
-        ).subquery()
-
-        result = await session.scalars(
-            select(aliased(Section, headline_query, adapt_on_names=True))
         )
+
+        result = await session.scalars(select(Section).from_statement(headline_query))
 
         return list(result)
 
