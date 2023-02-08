@@ -60,7 +60,10 @@ class ServiceManager:
         self, bible: Bible, terms: list[str], /, *, limit: int = 20, offset: int = 0
     ) -> SearchResults:
         service = self.service_map.get(bible.service)
-        assert service is not None
+
+        if service is None:
+            raise ServiceNotSupportedError(bible)
+
         try:
             async with async_timeout.timeout(self.timeout):
                 return await service.search(bible, terms, limit=limit, offset=offset)

@@ -242,3 +242,11 @@ class TestServiceManager:
 
         assert exc_info.value.bible == bible1
         assert exc_info.value.terms == ['one', 'two', 'three']
+
+    async def test_search_raises(
+        self, service_one: MockService, service_two: MockService, bible3: MockBible
+    ) -> None:
+        manager = ServiceManager({'ServiceOne': service_one, 'ServiceTwo': service_two})
+
+        with pytest.raises(ServiceNotSupportedError):
+            await manager.search(bible3, ['one', 'two'])

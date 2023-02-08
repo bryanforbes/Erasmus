@@ -146,7 +146,7 @@ class ApiBible(BaseService):
 
     async def __process_response(self, response: aiohttp.ClientResponse, /) -> _Data:
         if response.status != 200:
-            raise DoNotUnderstandError()
+            raise DoNotUnderstandError
 
         json: _Response = await response.json(loads=orjson.loads, content_type=None)
 
