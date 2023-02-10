@@ -1,15 +1,18 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any
 
 import aiohttp
 import pytest
-import pytest_mock
 from attrs import define
+
+from .utils import create_async_context_manager
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
-    from unittest.mock import MagicMock
+    from unittest.mock import MagicMock, Mock
+
+    from pytest_mock import MockerFixture
 
 
 @pytest.fixture(scope='session', autouse=True)
@@ -34,23 +37,31 @@ def fixture_MockBible() -> type[MockBible]:
 
 
 @pytest.fixture
-def mock_response(mocker: pytest_mock.MockerFixture) -> MagicMock:
-    response = mocker.MagicMock()
-    cast('Any', response).__aenter__.return_value = response
+def mock_get_response(mocker: MockerFixture) -> Mock:
+    return mocker.Mock(
+        text=mocker.AsyncMock(return_value=mocker.sentinel.get_response_text)
+    )
 
-    return response
+
+@pytest.fixture
+def mock_post_response(mocker: MockerFixture) -> Mock:
+    return mocker.Mock(
+        text=mocker.AsyncMock(return_value=mocker.sentinel.post_response_text)
+    )
 
 
 @pytest.fixture
 def mock_client_session(
-    mocker: pytest_mock.MockerFixture, mock_response: Any
+    mocker: MockerFixture, mock_get_response: Mock, mock_post_response: Mock
 ) -> MagicMock:
-    session: MagicMock = mocker.MagicMock()
-    cast('Any', session).__aenter__.return_value = session
-    session.get = mocker.Mock(return_value=mock_response)
-    session.post = mocker.Mock(return_value=mock_response)
-
-    return session
+    return mocker.MagicMock(
+        **{
+            'get.return_value': create_async_context_manager(mocker, mock_get_response),
+            'post.return_value': create_async_context_manager(
+                mocker, mock_post_response
+            ),
+        }
+    )
 
 
 @pytest.fixture
@@ -62,9 +73,7 @@ async def aiohttp_client_session(
 
 
 @pytest.fixture
-def mock_aiohttp(
-    mocker: pytest_mock.MockerFixture, mock_client_session: MagicMock
-) -> None:
+def mock_aiohttp(mocker: MockerFixture, mock_client_session: MagicMock) -> None:
     ClientSession = mocker.Mock()
     ClientSession.return_value = mock_client_session
     mocker.patch('aiohttp.ClientSession', return_value=ClientSession)

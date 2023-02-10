@@ -117,12 +117,15 @@ class DailyBreadGroup(
         try:
             passage = await passage_fetcher(bible)  # pyright: ignore
 
+            if daily_bread.thread_id is None:
+                thread = discord.utils.MISSING
+            else:
+                thread = discord.Object(daily_bread.thread_id)
+
             await send_passage(
                 webhook,
                 passage,
-                thread=discord.Object(daily_bread.thread_id)
-                if daily_bread.thread_id is not None
-                else discord.utils.MISSING,
+                thread=thread,
                 avatar_url='https://i.imgur.com/XQ8N2vH.png',
             )
 

@@ -3,9 +3,7 @@ from __future__ import annotations
 import asyncio
 from typing import TYPE_CHECKING, Any, cast
 
-import aiohttp
 import pytest
-import pytest_mock
 
 from erasmus.data import Passage, SearchResults, SectionFlag, VerseRange
 from erasmus.exceptions import (
@@ -16,13 +14,17 @@ from erasmus.exceptions import (
 from erasmus.service_manager import ServiceManager
 
 if TYPE_CHECKING:
+    from unittest.mock import MagicMock
+
+    from pytest_mock import MockerFixture
+
     from erasmus.types import Bible, Service
 
 
 class MockService:
     __slots__ = 'get_passage', 'search'
 
-    def __init__(self, mocker: pytest_mock.MockerFixture) -> None:
+    def __init__(self, mocker: MockerFixture) -> None:
         self.get_passage = mocker.AsyncMock()
         self.search = mocker.AsyncMock()
 
@@ -64,7 +66,7 @@ class MockBible:
 
 class TestServiceManager:
     @pytest.fixture(autouse=True)
-    def services(self, mocker: pytest_mock.MockerFixture) -> dict[str, Any]:
+    def services(self, mocker: MockerFixture) -> dict[str, Any]:
         services = {
             '__all__': ['ServiceOne', 'ServiceTwo'],
             'ServiceOne': mocker.Mock(
@@ -82,11 +84,11 @@ class TestServiceManager:
         return services
 
     @pytest.fixture
-    def service_one(self, mocker: pytest_mock.MockerFixture) -> Service:
+    def service_one(self, mocker: MockerFixture) -> Service:
         return MockService(mocker)
 
     @pytest.fixture
-    def service_two(self, mocker: pytest_mock.MockerFixture) -> Service:
+    def service_two(self, mocker: MockerFixture) -> Service:
         return MockService(mocker)
 
     @pytest.fixture
@@ -128,10 +130,10 @@ class TestServiceManager:
 
     def test_from_config(
         self,
-        mocker: pytest_mock.MockerFixture,
+        mocker: MockerFixture,
         services: dict[str, Any],
         config: Any,
-        mock_client_session: aiohttp.ClientSession,
+        mock_client_session: MagicMock,
     ) -> None:
         manager = ServiceManager.from_config(config, mock_client_session)
 
@@ -145,7 +147,7 @@ class TestServiceManager:
         assert manager.service_map['ServiceTwo'] == mocker.sentinel.SERVICE_TWO
 
     def test_container_methods(
-        self, config: Any, mock_client_session: aiohttp.ClientSession
+        self, config: Any, mock_client_session: MagicMock
     ) -> None:
         manager = ServiceManager.from_config(config, mock_client_session)
 

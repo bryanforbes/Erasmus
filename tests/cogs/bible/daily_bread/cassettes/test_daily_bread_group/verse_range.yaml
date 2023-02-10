@@ -25,12 +25,16 @@ interactions:
         Array.prototype.includes, NodeList.prototype.forEach, Array.from];\n  apis.every(function(api)
         {return api}) || document.write('<script src=\"/assets/js/lib/polyfills.min.js?63b483b7\"><\\/script>');\n
         \ window.assetsVersion = \"63b483b7\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?63b483b7\"
-        type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\":\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"plus_info\":{\"amount\":499,\"amount_string\":\"$4.99\",\"yearly_amount\":4999,\"yearly_amount_string\":\"$49.99\"},\"assets_version\":\"63b483b7\",\"locale\":\"en\",\"cdn_host\":\"\",\"plan\":\"verse-of-the-day\",\"day_no\":39,\"twitter_text\":\"I\\u2019m
+        type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\":\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"plus_info\":{\"amount\":499,\"amount_string\":\"$4.99\",\"yearly_amount\":4999,\"yearly_amount_string\":\"$49.99\"},\"assets_version\":\"63b483b7\",\"locale\":\"en\",\"cdn_host\":\"\",\"plan\":\"verse-of-the-day\",\"day_no\":40,\"twitter_text\":\"I\\u2019m
         enjoying @BibleGateway\\u2019s Verse of the Day #Bible #ReadingPlan for today.
-        You can too:\",\"twitter_url\":\"https:\\/\\/www.biblegateway.com\\/reading-plans\\/verse-of-the-day\\/next\",\"reading_date\":\"2023-02-09\",\"rp_type\":\"reading-plans\",\"app_share_text\":\"We
-        ought always to thank God for you, brothers and sisters, and rightly so, because
-        your faith is growing more and more, and the love all of you have for one
-        another is\",\"version_id\":\"NIV\",\"ref_display\":\"2 Thessalonians 1:3\",\"version0\":{\"version_id\":\"NIV\"},\"books\":{\"NIV\":[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"chapters\":null,\"intro\":false},{\"display\":\"Exodus\",\"osis\":\"Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"chapters\":null,\"intro\":false},{\"display\":\"Leviticus\",\"osis\":\"Lev\",\"testament\":\"OT\",\"num_chapters\":27,\"chapters\":null,\"intro\":false},{\"display\":\"Numbers\",\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null,\"intro\":false},{\"display\":\"Deuteronomy\",\"osis\":\"Deut\",\"testament\":\"OT\",\"num_chapters\":34,\"chapters\":null,\"intro\":false},{\"display\":\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null,\"intro\":false},{\"display\":\"Judges\",\"osis\":\"Judg\",\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null,\"intro\":false},{\"display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\",\"num_chapters\":4,\"chapters\":null,\"intro\":false},{\"display\":\"1
+        You can too:\",\"twitter_url\":\"https:\\/\\/www.biblegateway.com\\/reading-plans\\/verse-of-the-day\\/next\",\"reading_date\":\"2023-02-10\",\"rp_type\":\"reading-plans\",\"app_share_text\":\"If
+        I speak in the tongues of men or of angels, but do not have love, I am only
+        a resounding gong or a clanging cymbal.If I have the gift of prophecy and
+        can fathom all mysteries and all knowledge, and if I have a faith that can
+        move mountains, but do not have love, I am nothing.If I give all I possess
+        to the poor and give over my body to hardship that I may boast, but do not
+        have love, I gain\",\"version_id\":\"NIV\",\"ref_display\":\"1 Corinthians
+        13:1\\u20133\",\"version0\":{\"version_id\":\"NIV\"},\"books\":{\"NIV\":[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"chapters\":null,\"intro\":false},{\"display\":\"Exodus\",\"osis\":\"Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"chapters\":null,\"intro\":false},{\"display\":\"Leviticus\",\"osis\":\"Lev\",\"testament\":\"OT\",\"num_chapters\":27,\"chapters\":null,\"intro\":false},{\"display\":\"Numbers\",\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null,\"intro\":false},{\"display\":\"Deuteronomy\",\"osis\":\"Deut\",\"testament\":\"OT\",\"num_chapters\":34,\"chapters\":null,\"intro\":false},{\"display\":\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null,\"intro\":false},{\"display\":\"Judges\",\"osis\":\"Judg\",\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null,\"intro\":false},{\"display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\",\"num_chapters\":4,\"chapters\":null,\"intro\":false},{\"display\":\"1
         Samuel\",\"osis\":\"1Sam\",\"testament\":\"OT\",\"num_chapters\":31,\"chapters\":null,\"intro\":false},{\"display\":\"2
         Samuel\",\"osis\":\"2Sam\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null,\"intro\":false},{\"display\":\"1
         Kings\",\"osis\":\"1Kgs\",\"testament\":\"OT\",\"num_chapters\":22,\"chapters\":null,\"intro\":false},{\"display\":\"2
@@ -327,9 +331,8 @@ interactions:
         role=\"alert\" aria-label=\"user notice\" class='sys-announce'>\n                <div
         class=\"wrapper\">\n                  <div class=\"sys-announce-content\">\n
         \                   <div class='sys-announce-body'>\n                        <div
-        class='sys-announce-body-inner'>\n                              <a href=https://www.biblegateway.com/plus/?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_gainayearat30>Gain
-        one year of access to 50+ premium resources at 30% off. Enhance your study
-        of Scripture with Bible Gateway Plus!</a>                        </div>\n
+        class='sys-announce-body-inner'>\n                              <a href=https://www.biblegateway.com/plus/?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_savenowwith30>Save
+        30% your first year with Bible Gateway Plus. Try it FREE now!</a>                        </div>\n
         \                   </div>\n                    <div class='close'><svg xmlns=\"http://www.w3.org/2000/svg\"
         viewBox=\"0 0 11.5 11.5\" width=\"11.5\" height=\"11.5\"><title>close</title><use
         xlink:href=\"#icon-close\"></use></svg>\n</div>\n                  </div>\n
@@ -713,7 +716,7 @@ interactions:
         \               <div role=\"main\">\n                  <div class=\"reading-plans\">\n
         \     <div class=\"long-heading\"><span class=\"bread-crumb\"><a\n                    href=\"/reading-plans/\">&#9664;
         All Reading Plans</a> / </span><a\n                href=\"/reading-plans/#verse-of-the-day\">Verse
-        of the Day</a> / <a href=#rp-passage-0>2 Thessalonians 1:3</a> (<a href=\"/versions/New-International-Version-NIV-Bible\">New
+        of the Day</a> / <a href=#rp-passage-0>1 Corinthians 13:1\u20133</a> (<a href=\"/versions/New-International-Version-NIV-Bible\">New
         International Version</a>)</div>\n\n      <div class=\"passage-tools\">\n
         \         <span class=\"share\">\n             <svg xmlns=\"http://www.w3.org/2000/svg\"
         viewBox=\"0 0 15.72 19.76\" width=\"15.72\" height=\"19.76\"><title>Share</title><use
@@ -725,12 +728,12 @@ interactions:
         xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 18.95 19.53\" width=\"18.95\"
         height=\"19.53\"><title>Page Options</title><use xlink:href=\"#icon-settings\"></use></svg>\n
         \         </span>\n                    <span class=\"audio\">\n             <a
-        \ class=\"audio-link\" href=\"/audio/mclean/niv/2Thess.1\" title=\"Listen
-        to 2 Thessalonians 1:3\" ><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0
-        0 22.89 16.73\" width=\"22.89\" height=\"16.73\"><title>Listen to 2 Thessalonians
-        1:3</title><path d=\"M16.49 3.53a.75.75 0 0 0-.74 1.31 4 4 0 0 1 2 3.52 4
-        4 0 0 1-2 3.53.74.74 0 0 0-.28 1 .73.73 0 0 0 .65.39.82.82 0 0 0 .37-.1 5.49
-        5.49 0 0 0 2.79-4.84 5.47 5.47 0 0 0-2.79-4.81z\"/><path d=\"M20.09 1.78A.75.75
+        \ class=\"audio-link\" href=\"/audio/mclean/niv/1Cor.13\" title=\"Listen to
+        1 Corinthians 13:1\u20133\" ><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0
+        0 22.89 16.73\" width=\"22.89\" height=\"16.73\"><title>Listen to 1 Corinthians
+        13:1\u20133</title><path d=\"M16.49 3.53a.75.75 0 0 0-.74 1.31 4 4 0 0 1 2
+        3.52 4 4 0 0 1-2 3.53.74.74 0 0 0-.28 1 .73.73 0 0 0 .65.39.82.82 0 0 0 .37-.1
+        5.49 5.49 0 0 0 2.79-4.84 5.47 5.47 0 0 0-2.79-4.81z\"/><path d=\"M20.09 1.78A.75.75
         0 0 0 19.17 3a6.76 6.76 0 0 1 2.22 5.4 6.75 6.75 0 0 1-2.22 5.39.74.74 0 0
         0-.17 1.02.72.72 0 0 0 .59.29.79.79 0 0 0 .46-.15 8.27 8.27 0 0 0 2.8-6.58
         8.28 8.28 0 0 0-2.76-6.59zM12.53.09l-7 3.75H2.07A2 2 0 0 0 0 5.82v5.08a2 2
@@ -741,7 +744,7 @@ interactions:
         0 0-.59-1.11L8.1 5.67a.62.62 0 0 0-.25.84z\"/></svg>\n</a>          </span>\n
         \               </div>\n\n    <div class=\"reading-day\">\n        <div class=\"plan-content
         container\">\n            <div class=\"content-section\">\n                <div
-        class=\"reading-plans-scroller\">\n                    <a href=\"/reading-plans/verse-of-the-day/2023/02/08?version=NIV\"
+        class=\"reading-plans-scroller\">\n                    <a href=\"/reading-plans/verse-of-the-day/2023/02/09?version=NIV\"
         class=\"prev-link\"\n                       title=\"Prev Day\"><svg xmlns=\"http://www.w3.org/2000/svg\"
         viewBox=\"0 0 11.5 21.5\" width=\"11.5\" height=\"21.5\"><title>Previous</title><path
         d=\"M10.75 0a.74.74 0 0 1 .53.22.75.75 0 0 1 0 1.06l-9.47 9.47 9.47 9.47a.75.75
@@ -756,7 +759,7 @@ interactions:
         6.248-6.248 16.379 0 22.627l104 104c6.249 6.25 16.379 6.25 22.628.001z\"/></svg></span>\n
         \                           <span> Reading Completed </span>\n                            <span
         class=\"divider\">|</span>\n                        </span>\n                        <span
-        class=\"rp-date\">February 9, 2023                             <span class=\"dropdown-icon\"><svg
+        class=\"rp-date\">February 10, 2023                             <span class=\"dropdown-icon\"><svg
         xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5 6.5\" width=\"11.5\"
         height=\"6.5\"><title>Use the calendar to view readings from this plan.</title><path
         d=\"M11.28.22a.75.75 0 0 0-1.06 0L5.75 4.69 1.28.22A.75.75 0 0 0 .22 1.28l5
@@ -764,7 +767,7 @@ interactions:
         \                            <span class=\"close-icon hidden\"><svg xmlns=\"http://www.w3.org/2000/svg\"
         viewBox=\"0 0 11.5 11.5\" width=\"11.5\" height=\"11.5\"><title>close</title><use
         xlink:href=\"#icon-close\"></use></svg>\n</span>\n                        </span>\n
-        \                   </div>\n\n                    <a href=\"/reading-plans/verse-of-the-day/2023/02/10?version=NIV\"
+        \                   </div>\n\n                    <a href=\"/reading-plans/verse-of-the-day/2023/02/11?version=NIV\"
         class=\"next-link\"\n                       title=\"Next Day\">Next Day<svg
         xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5 21.5\" width=\"11.5\"
         height=\"21.5\"><title>Next</title><path d=\"M.75 21.5a.74.74 0 0 1-.53-.22.75.75
@@ -811,10 +814,11 @@ interactions:
         data-day_no=\"37\" data-cal_day=\"07\" href=\"/reading-plans/verse-of-the-day/2023/02/07?version=NIV\">7</a></td>\n<td
         class=\"\"><a class=\"day\" data-ref_display=\"Matthew 5:43\u201345\" data-osis=\"Matt.5.43-Matt.5.45\"
         data-day_no=\"38\" data-cal_day=\"08\" href=\"/reading-plans/verse-of-the-day/2023/02/08?version=NIV\">8</a></td>\n<td
-        class=\"highlight today viewing\"><a class=\"day\" data-ref_display=\"2 Thessalonians
-        1:3\" data-osis=\"2Thess.1.3\" data-day_no=\"39\" data-cal_day=\"09\" href=\"/reading-plans/verse-of-the-day/2023/02/09?version=NIV\">9</a></td>\n<td
-        class=\"\"><a class=\"day\" data-ref_display=\"1 Corinthians 13:1\u20133\"
-        data-osis=\"1Cor.13.1-1Cor.13.3\" data-day_no=\"40\" data-cal_day=\"10\" href=\"/reading-plans/verse-of-the-day/2023/02/10?version=NIV\">10</a></td>\n<td
+        class=\"\"><a class=\"day\" data-ref_display=\"2 Thessalonians 1:3\" data-osis=\"2Thess.1.3\"
+        data-day_no=\"39\" data-cal_day=\"09\" href=\"/reading-plans/verse-of-the-day/2023/02/09?version=NIV\">9</a></td>\n<td
+        class=\"highlight today viewing\"><a class=\"day\" data-ref_display=\"1 Corinthians
+        13:1\u20133\" data-osis=\"1Cor.13.1-1Cor.13.3\" data-day_no=\"40\" data-cal_day=\"10\"
+        href=\"/reading-plans/verse-of-the-day/2023/02/10?version=NIV\">10</a></td>\n<td
         class=\"\"><a class=\"day\" data-ref_display=\"1 Corinthians 13:4\u20135\"
         data-osis=\"1Cor.13.4-1Cor.13.5\" data-day_no=\"41\" data-cal_day=\"11\" href=\"/reading-plans/verse-of-the-day/2023/02/11?version=NIV\">11</a></td>\n</tr>\n<tr>\n<td
         class=\"\"><a class=\"day\" data-ref_display=\"1 Corinthians 13: 6\u20137\"
@@ -1194,35 +1198,79 @@ interactions:
         \           <div class=\"container rp-content\">\n                  <div class=\"row\">\n
         \                   <div class=\"col-xs-12\"><div id=\"rp-passage-0\" class=\"rp-passage\"><div
         class=\"rp-passage-display-wrapper\"><span class=\"icon-expand expand\"></span><span
-        class=\"icon-collapse expand\"></span><div class=\"rp-passage-display\">2
-        Thessalonians 1:3</div></div><div class=\"rp-passage-text text-html\"> <h3><span
-        id=\"rp-passage-0-29653\" class=\"text 2Thess-1-3\">Thanksgiving and Prayer</span></h3><p><span
-        class=\"text 2Thess-1-3\"><sup class=\"versenum\">3\_</sup>We ought always
-        to thank God for you,<sup class='crossreference' data-cr='#crp-passage-0-29653A'
-        \ data-link='(&lt;a href=&quot;#crp-passage-0-29653A&quot; title=&quot;See
-        cross-reference A&quot;&gt;A&lt;/a&gt;)'>(<a href=\"#crp-passage-0-29653A\"
-        title=\"See cross-reference A\">A</a>)</sup> brothers and sisters,<sup data-fn='#frp-passage-0-29653a'
-        class='footnote' data-link='[&lt;a href=&quot;#frp-passage-0-29653a&quot;
-        title=&quot;See footnote a&quot;&gt;a&lt;/a&gt;]'>[<a href=\"#frp-passage-0-29653a\"
-        title=\"See footnote a\">a</a>]</sup> and rightly so, because your faith is
-        growing more and more, and the love all of you have for one another is increasing.<sup
-        class='crossreference' data-cr='#crp-passage-0-29653B'  data-link='(&lt;a
-        href=&quot;#crp-passage-0-29653B&quot; title=&quot;See cross-reference B&quot;&gt;B&lt;/a&gt;)'>(<a
-        href=\"#crp-passage-0-29653B\" title=\"See cross-reference B\">B</a>)</sup></span>
-        </p><div class=\"footnotes hidden\">\n<h4>Footnotes</h4><ol><li id=\"frp-passage-0-29653a\"><a
-        href=\"#rp-passage-0-29653\" title=\"Go to 2 Thessalonians 1:3\">2 Thessalonians
-        1:3</a> <span class='footnote-text'>The Greek word for <i>brothers and sisters</i>
-        (<i>adelphoi</i>) refers here to believers, both men and women, as part of
-        God\u2019s family; also in 2:1, 13, 15; 3:1, 6, 13.</span></li>\n\n</ol></div>
-        <!--end of footnotes-->\n<div class=\"crossrefs hidden\">\n<h4>Cross references</h4><ol><li
-        id=\"crp-passage-0-29653A\"><a href=\"#rp-passage-0-29653\" title=\"Go to
-        2 Thessalonians 1:3\">2 Thessalonians 1:3</a> : <a class=\"crossref-link\"
-        href=\"/passage/?search=Romans%201%3A8%2CEphesians%205%3A20&version=NIV\"
-        data-bibleref=\"Romans 1:8, Ephesians 5:20\">S Ro 1:8; Eph 5:20</a></li>\n\n<li
-        id=\"crp-passage-0-29653B\"><a href=\"#rp-passage-0-29653\" title=\"Go to
-        2 Thessalonians 1:3\">2 Thessalonians 1:3</a> : <a class=\"crossref-link\"
-        href=\"/passage/?search=1%20Thessalonians%203%3A12&version=NIV\" data-bibleref=\"1
-        Thessalonians 3:12\">S 1Th 3:12</a></li>\n\n</ol></div> <!--end of crossrefs-->\n<div
+        class=\"icon-collapse expand\"></span><div class=\"rp-passage-display\">1
+        Corinthians 13:1-3</div></div><div class=\"rp-passage-text text-html\"> <p
+        class=\"chapter-2\"><span id=\"rp-passage-0-28667\" class=\"text 1Cor-13-1\"><span
+        class=\"chapternum\">13\_</span>If I speak in the tongues<sup data-fn='#frp-passage-0-28667a'
+        class='footnote' data-link='[&lt;a href=&quot;#frp-passage-0-28667a&quot;
+        title=&quot;See footnote a&quot;&gt;a&lt;/a&gt;]'>[<a href=\"#frp-passage-0-28667a\"
+        title=\"See footnote a\">a</a>]</sup><sup class='crossreference' data-cr='#crp-passage-0-28667A'
+        \ data-link='(&lt;a href=&quot;#crp-passage-0-28667A&quot; title=&quot;See
+        cross-reference A&quot;&gt;A&lt;/a&gt;)'>(<a href=\"#crp-passage-0-28667A\"
+        title=\"See cross-reference A\">A</a>)</sup> of men or of angels, but do not
+        have love, I am only a resounding gong or a clanging cymbal.</span> <span
+        id=\"rp-passage-0-28668\" class=\"text 1Cor-13-2\"><sup class=\"versenum\">2\_</sup>If
+        I have the gift of prophecy<sup class='crossreference' data-cr='#crp-passage-0-28668B'
+        \ data-link='(&lt;a href=&quot;#crp-passage-0-28668B&quot; title=&quot;See
+        cross-reference B&quot;&gt;B&lt;/a&gt;)'>(<a href=\"#crp-passage-0-28668B\"
+        title=\"See cross-reference B\">B</a>)</sup> and can fathom all mysteries<sup
+        class='crossreference' data-cr='#crp-passage-0-28668C'  data-link='(&lt;a
+        href=&quot;#crp-passage-0-28668C&quot; title=&quot;See cross-reference C&quot;&gt;C&lt;/a&gt;)'>(<a
+        href=\"#crp-passage-0-28668C\" title=\"See cross-reference C\">C</a>)</sup>
+        and all knowledge,<sup class='crossreference' data-cr='#crp-passage-0-28668D'
+        \ data-link='(&lt;a href=&quot;#crp-passage-0-28668D&quot; title=&quot;See
+        cross-reference D&quot;&gt;D&lt;/a&gt;)'>(<a href=\"#crp-passage-0-28668D\"
+        title=\"See cross-reference D\">D</a>)</sup> and if I have a faith<sup class='crossreference'
+        data-cr='#crp-passage-0-28668E'  data-link='(&lt;a href=&quot;#crp-passage-0-28668E&quot;
+        title=&quot;See cross-reference E&quot;&gt;E&lt;/a&gt;)'>(<a href=\"#crp-passage-0-28668E\"
+        title=\"See cross-reference E\">E</a>)</sup> that can move mountains,<sup
+        class='crossreference' data-cr='#crp-passage-0-28668F'  data-link='(&lt;a
+        href=&quot;#crp-passage-0-28668F&quot; title=&quot;See cross-reference F&quot;&gt;F&lt;/a&gt;)'>(<a
+        href=\"#crp-passage-0-28668F\" title=\"See cross-reference F\">F</a>)</sup>
+        but do not have love, I am nothing.</span> <span id=\"rp-passage-0-28669\"
+        class=\"text 1Cor-13-3\"><sup class=\"versenum\">3\_</sup>If I give all I
+        possess to the poor<sup class='crossreference' data-cr='#crp-passage-0-28669G'
+        \ data-link='(&lt;a href=&quot;#crp-passage-0-28669G&quot; title=&quot;See
+        cross-reference G&quot;&gt;G&lt;/a&gt;)'>(<a href=\"#crp-passage-0-28669G\"
+        title=\"See cross-reference G\">G</a>)</sup> and give over my body to hardship
+        that I may boast,<sup data-fn='#frp-passage-0-28669b' class='footnote' data-link='[&lt;a
+        href=&quot;#frp-passage-0-28669b&quot; title=&quot;See footnote b&quot;&gt;b&lt;/a&gt;]'>[<a
+        href=\"#frp-passage-0-28669b\" title=\"See footnote b\">b</a>]</sup><sup class='crossreference'
+        data-cr='#crp-passage-0-28669H'  data-link='(&lt;a href=&quot;#crp-passage-0-28669H&quot;
+        title=&quot;See cross-reference H&quot;&gt;H&lt;/a&gt;)'>(<a href=\"#crp-passage-0-28669H\"
+        title=\"See cross-reference H\">H</a>)</sup> but do not have love, I gain
+        nothing.</span></p> <div class=\"footnotes hidden\">\n<h4>Footnotes</h4><ol><li
+        id=\"frp-passage-0-28667a\"><a href=\"#rp-passage-0-28667\" title=\"Go to
+        1 Corinthians 13:1\">1 Corinthians 13:1</a> <span class='footnote-text'>Or
+        <i>languages</i></span></li>\n\n<li id=\"frp-passage-0-28669b\"><a href=\"#rp-passage-0-28669\"
+        title=\"Go to 1 Corinthians 13:3\">1 Corinthians 13:3</a> <span class='footnote-text'>Some
+        manuscripts <i>body to the flames</i></span></li>\n\n</ol></div> <!--end of
+        footnotes-->\n<div class=\"crossrefs hidden\">\n<h4>Cross references</h4><ol><li
+        id=\"crp-passage-0-28667A\"><a href=\"#rp-passage-0-28667\" title=\"Go to
+        1 Corinthians 13:1\">1 Corinthians 13:1</a> : <a class=\"crossref-link\" href=\"/passage/?search=1%20Corinthians%2013%3A8%2CMark%2016%3A17&version=NIV\"
+        data-bibleref=\"1 Corinthians 13:8, Mark 16:17\">ver 8; S Mk 16:17</a></li>\n\n<li
+        id=\"crp-passage-0-28668B\"><a href=\"#rp-passage-0-28668\" title=\"Go to
+        1 Corinthians 13:2\">1 Corinthians 13:2</a> : <a class=\"crossref-link\" href=\"/passage/?search=1%20Corinthians%2013%3A8%2CEphesians%204%3A11%2CActs%2011%3A27&version=NIV\"
+        data-bibleref=\"1 Corinthians 13:8, Ephesians 4:11, Acts 11:27\">ver 8; S
+        Eph 4:11; S Ac 11:27</a></li>\n\n<li id=\"crp-passage-0-28668C\"><a href=\"#rp-passage-0-28668\"
+        title=\"Go to 1 Corinthians 13:2\">1 Corinthians 13:2</a> : <a class=\"crossref-link\"
+        href=\"/passage/?search=1%20Corinthians%2014%3A2&version=NIV\" data-bibleref=\"1
+        Corinthians 14:2\">1Co 14:2</a></li>\n\n<li id=\"crp-passage-0-28668D\"><a
+        href=\"#rp-passage-0-28668\" title=\"Go to 1 Corinthians 13:2\">1 Corinthians
+        13:2</a> : <a class=\"crossref-link\" href=\"/passage/?search=2%20Corinthians%208%3A7&version=NIV\"
+        data-bibleref=\"2 Corinthians 8:7\">S 2Co 8:7</a></li>\n\n<li id=\"crp-passage-0-28668E\"><a
+        href=\"#rp-passage-0-28668\" title=\"Go to 1 Corinthians 13:2\">1 Corinthians
+        13:2</a> : <a class=\"crossref-link\" href=\"/passage/?search=1%20Corinthians%2012%3A9&version=NIV\"
+        data-bibleref=\"1 Corinthians 12:9\">1Co 12:9</a></li>\n\n<li id=\"crp-passage-0-28668F\"><a
+        href=\"#rp-passage-0-28668\" title=\"Go to 1 Corinthians 13:2\">1 Corinthians
+        13:2</a> : <a class=\"crossref-link\" href=\"/passage/?search=Matthew%2017%3A20%2CMatthew%2021%3A21&version=NIV\"
+        data-bibleref=\"Matthew 17:20, Matthew 21:21\">Mt 17:20; 21:21</a></li>\n\n<li
+        id=\"crp-passage-0-28669G\"><a href=\"#rp-passage-0-28669\" title=\"Go to
+        1 Corinthians 13:3\">1 Corinthians 13:3</a> : <a class=\"crossref-link\" href=\"/passage/?search=Luke%2019%3A8%2CActs%202%3A45&version=NIV\"
+        data-bibleref=\"Luke 19:8, Acts 2:45\">Lk 19:8; S Ac 2:45</a></li>\n\n<li
+        id=\"crp-passage-0-28669H\"><a href=\"#rp-passage-0-28669\" title=\"Go to
+        1 Corinthians 13:3\">1 Corinthians 13:3</a> : <a class=\"crossref-link\" href=\"/passage/?search=Daniel%203%3A28&version=NIV\"
+        data-bibleref=\"Daniel 3:28\">Da 3:28</a></li>\n\n</ol></div> <!--end of crossrefs-->\n<div
         class=\"rp-passage-mask\"></div></div></div>      </div>\n                    </div>\n
         \                 </div><div class=\"publisher-info-bottom\"><strong><a href=\"/versions/New-International-Version-NIV-Bible/\">New
         International Version</a> (NIV)</strong> <p>Holy Bible, New International
@@ -1231,7 +1279,7 @@ interactions:
         \                 <div class=\"rp-bottom-btn btn-wrapper\" data-completed=\"false\">\n
         \                                                         </div>\n                              <div
         class=\"reading-plans-scroller\">\n                                        <a
-        href=\"/reading-plans/verse-of-the-day/2023/02/08?version=NIV\" class=\"prev-link\"
+        href=\"/reading-plans/verse-of-the-day/2023/02/09?version=NIV\" class=\"prev-link\"
         title=\"Prev Day\">\n            <span class=\"icon-passage-previous\"><svg
         xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5 21.5\" width=\"11.5\"
         height=\"21.5\"><title>Prev Day</title><path d=\"M10.75 0a.74.74 0 0 1 .53.22.75.75
@@ -1239,7 +1287,7 @@ interactions:
         1 0-1.06l10-10a.73.73 0 0 1 .53-.22z\"/></svg>\n</span>\n                          <span
         class=\"heading\">Prev Day</span>\n                      </a>\n                                      <div
         class=\"top-link-wrapper\">\n                        <div class=\"top-link\">Top</div>\n
-        \                   </div>\n                                        <a href=\"/reading-plans/verse-of-the-day/2023/02/10?version=NIV\"
+        \                   </div>\n                                        <a href=\"/reading-plans/verse-of-the-day/2023/02/11?version=NIV\"
         class=\"next-link\" title=\"Next Day\">\n            <span class=\"heading\">Next
         Day</span>\n                          <span class=\"icon-passage-next\"><svg
         xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 11.5 21.5\" width=\"11.5\"
@@ -1317,7 +1365,7 @@ interactions:
         class=\"bg-modal-root\"></div>\n<div class=\"bg-popup-root\"></div>\n<div
         class=\"bg-tooltip-root\"></div>\n<div class=\"default-tooltip\" aria-label=\"tooltip\"
         role=\"complementary\"></div>\n\n<script type=\"text/javascript\">\nrequire(['./main.min'],
-        function() {\n  bgLogger.logPageview(\"/reading/verse-of-the-day/2023-02-09/\",\n
+        function() {\n  bgLogger.logPageview(\"/reading/verse-of-the-day/2023-02-10/\",\n
         \   \"G026\",\n    {},\n    null,\n    \"\", 'p');\n});\n</script>\n<!-- Begin
         comScore Tag -->\n<script>\n  var _comscore = _comscore || [];\n  _comscore.push(\n
         \ { c1: \"2\", c2: \"7735391\" }\n  );\n  BG.Consents.onConsent(4).then(function(){var
@@ -1332,9 +1380,9 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Thu, 09 Feb 2023 22:24:32 GMT
+      - Fri, 10 Feb 2023 20:21:03 GMT
       Server:
-      - nginx
+      - Tengine
       Strict-Transport-Security:
       - max-age=2592000
       Transfer-Encoding:
@@ -1342,11 +1390,11 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 a13060c205f8087b37af35128bfef19c.cloudfront.net (CloudFront)
+      - 1.1 9fdb94d31cea383ee9cfa1b9714dc610.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - t1PCxZB6McGLmuMfWDi53b9HKid7Pnx8nbgwn91umCGHzqd6Udq6mw==
+      - 7-or3i1-SnuEsaEEmWd-HwEZF8a_0TwB32rHMIilwaGaTlNppv8Y7Q==
       X-Amz-Cf-Pop:
-      - ORD51-C4
+      - ORD52-C1
       X-Cache:
       - Miss from cloudfront
     status:
