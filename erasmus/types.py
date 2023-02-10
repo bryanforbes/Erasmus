@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Protocol, runtime_checkable
 if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
-    from .data import Passage, SearchResults, VerseRange
+    from .data import Passage, SearchResults, SectionFlag, VerseRange
 
 
 class Bible(Protocol):
@@ -38,7 +38,7 @@ class Bible(Protocol):
         ...
 
     @property
-    def books(self) -> int:
+    def books(self) -> SectionFlag:
         ...
 
     @property

@@ -1,5 +1,6 @@
 # Version UNRELEASED
 
+* Improved Daily Bread resiliency
 
 # Version 23.2.0
 

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import asyncio
 import logging
 from itertools import chain
 from typing import TYPE_CHECKING, Final
@@ -17,9 +18,10 @@ from discord.ext import tasks
 from ....data import Passage, VerseRange
 from ....db import BibleVersion, DailyBread, Session
 from ....exceptions import (
+    BookNotInVersionError,
     DailyBreadNotInVersionError,
     DoNotUnderstandError,
-    ErasmusError,
+    ServiceNotSupportedError,
 )
 from ....utils import frozen, send_passage
 from ..bible_lookup import bible_lookup  # noqa: TC002
@@ -47,6 +49,9 @@ class PassageFetcher:
     service_manager: ServiceManager
     passage_map: dict[int, Passage] = field(init=False, factory=dict)
 
+    def verse_range_in_bible(self, bible: Bible, /) -> bool:
+        return self.verse_range.book_mask in bible.books
+
     async def __call__(self, bible: Bible, /) -> Passage:
         if bible.id in self.passage_map:
             return self.passage_map[bible.id]
@@ -65,16 +70,16 @@ class DailyBreadGroup(
     service_manager: ServiceManager
     localizer: GroupLocalizer
 
-    __fetcher: PassageFetcher | None
+    _fetcher: PassageFetcher | None
 
     def initialize_from_parent(self, parent: ParentCog, /) -> None:
         self.session = parent.bot.session
         self.service_manager = parent.service_manager
         self.localizer = parent.localizer.for_group(self)
 
-        self.__fetcher = None
+        self._fetcher = None
 
-    async def __get_verse_range(self) -> VerseRange:
+    async def _get_verse_range(self) -> VerseRange:
         async with async_timeout.timeout(10), self.session.get(
             'https://www.biblegateway.com/reading-plans/verse-of-the-day'
             '/next?interface=print'
@@ -95,18 +100,95 @@ class DailyBreadGroup(
 
             return VerseRange.from_string(passage_node.get_text(''))
 
-    async def __check_and_post(self) -> None:
+    def _get_fetcher(self, verse_range: VerseRange, /) -> PassageFetcher:
+        if self._fetcher is None or self._fetcher.verse_range != verse_range:
+            self._fetcher = PassageFetcher(verse_range, self.service_manager)
+
+        return self._fetcher
+
+    async def _fetch_and_post(
+        self,
+        passage_fetcher: PassageFetcher,
+        daily_bread: DailyBread,
+        bible: BibleVersion,
+        webhook: discord.Webhook,
+        /,
+    ) -> bool:
+        try:
+            passage = await passage_fetcher(bible)  # pyright: ignore
+
+            await send_passage(
+                webhook,
+                passage,
+                thread=discord.Object(daily_bread.thread_id)
+                if daily_bread.thread_id is not None
+                else discord.utils.MISSING,
+                avatar_url='https://i.imgur.com/XQ8N2vH.png',
+            )
+
+            return True
+        except (
+            DoNotUnderstandError,
+            BookNotInVersionError,
+            ServiceNotSupportedError,
+        ) as error:
+            _log.exception(
+                'An error occurred fetching %s from %r for guild %r. '
+                'Postponing until tomorrow.',
+                passage_fetcher.verse_range,
+                bible.name,
+                daily_bread.guild_id,
+                exc_info=error,
+                stack_info=True,
+            )
+            return True
+        except discord.NotFound as error:
+            if error.code == 10015:
+                _log.error(
+                    'Webhook missing for guild ID %s. Postponing until tomorrow.',
+                    daily_bread.guild_id,
+                )
+                return True
+            else:
+                _log.exception(
+                    'An error occurred while posting the daily bread to guild ID %s',
+                    daily_bread.guild_id,
+                    exc_info=error,
+                    stack_info=True,
+                )
+                return False
+        except Exception as error:  # noqa: PIE786
+            _log.exception(
+                'An error occurred while posting the daily bread to guild ID %s',
+                daily_bread.guild_id,
+                exc_info=error,
+                stack_info=True,
+            )
+            return False
+
+    async def _check_and_post(self) -> None:
         async with Session.begin() as session:
             result = await DailyBread.scheduled(session)
 
             if not result:
                 return
 
-            verse_range = await self.__get_verse_range()
+            try:
+                verse_range = await self._get_verse_range()
+            except asyncio.TimeoutError:
+                _log.error(
+                    'There was an error getting the daily verse range from '
+                    'BibleGateway: The request timed out.'
+                )
+                return
+            except DoNotUnderstandError:
+                _log.error(
+                    'There was an error getting the daily verse range from '
+                    'BibleGateway: The expected HTML elements were not found.'
+                )
+                return
 
-            if self.__fetcher is None or self.__fetcher.verse_range != verse_range:
-                self.__fetcher = PassageFetcher(verse_range, self.service_manager)
-
+            passage_fetcher = self._get_fetcher(verse_range)
             fallback = await BibleVersion.get_by_command(session, 'esv')
 
             for daily_bread in result:
@@ -129,59 +211,16 @@ class DailyBreadGroup(
                 else:
                     bible = fallback
 
-                if verse_range.book_mask not in bible.books:
+                if not passage_fetcher.verse_range_in_bible(bible):  # pyright: ignore
                     daily_bread.next_scheduled = next_scheduled
                     continue
 
-                try:
-                    passage = await self.__fetcher(bible)  # pyright: ignore
-                except Exception as error:  # noqa: PIE786
-                    _log.exception(
-                        'An error occurred fetching %s from %r for guild %r. '
-                        'Postponing until tomorrow.',
-                        self.__fetcher.verse_range,
-                        bible.name,
-                        daily_bread.guild_id,
-                        exc_info=error,
-                        stack_info=True,
-                    )
-                    daily_bread.next_scheduled = next_scheduled
-                    continue
+                set_next_scheduled = await self._fetch_and_post(
+                    passage_fetcher, daily_bread, bible, webhook
+                )
 
-                try:
-                    await send_passage(
-                        webhook,
-                        passage,
-                        thread=discord.Object(daily_bread.thread_id)
-                        if daily_bread.thread_id is not None
-                        else discord.utils.MISSING,
-                        avatar_url='https://i.imgur.com/XQ8N2vH.png',
-                    )
+                if set_next_scheduled:
                     daily_bread.next_scheduled = next_scheduled
-                except discord.NotFound as error:
-                    if error.code == 10015:
-                        _log.exception(
-                            'Webhook missing for guild ID %s. '
-                            'Postponing until tomorrow.',
-                            daily_bread.guild_id,
-                        )
-                        daily_bread.next_scheduled = next_scheduled
-                    else:
-                        _log.exception(
-                            'An error occurred while posting the daily bread to '
-                            'guild ID %s',
-                            daily_bread.guild_id,
-                            exc_info=error,
-                            stack_info=True,
-                        )
-                except (discord.DiscordException, ErasmusError) as error:
-                    _log.exception(
-                        'An error occurred while posting the daily bread to '
-                        'guild ID %s',
-                        daily_bread.guild_id,
-                        exc_info=error,
-                        stack_info=True,
-                    )
 
             await session.commit()
 
@@ -194,7 +233,7 @@ class DailyBreadGroup(
                     for hour in range(24)
                 )
             ],
-        )(self.__check_and_post)
+        )(self._check_and_post)
 
     @app_commands.command()
     @_shared_cooldown
@@ -222,15 +261,12 @@ class DailyBreadGroup(
                     session, user=itx.user, guild=itx.guild
                 )
 
-        if self.__fetcher is None:
-            self.__fetcher = PassageFetcher(
-                await self.__get_verse_range(), self.service_manager
-            )
+        passage_fetcher = self._get_fetcher(await self._get_verse_range())
 
-        if self.__fetcher.verse_range.book_mask not in bible.books:
+        if not passage_fetcher.verse_range_in_bible(bible):  # pyright: ignore
             raise DailyBreadNotInVersionError(bible.name)
 
-        passage = await self.__fetcher(bible)  # pyright: ignore
+        passage = await passage_fetcher(bible)  # pyright: ignore
 
         await send_passage(itx, passage, ephemeral=only_me)
 

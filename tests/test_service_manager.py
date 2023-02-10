@@ -7,7 +7,7 @@ import aiohttp
 import pytest
 import pytest_mock
 
-from erasmus.data import Passage, SearchResults, VerseRange
+from erasmus.data import Passage, SearchResults, SectionFlag, VerseRange
 from erasmus.exceptions import (
     ServiceLookupTimeout,
     ServiceNotSupportedError,
@@ -58,7 +58,7 @@ class MockBible:
         self.service = service
         self.service_version = service_version
         self.rtl = rtl
-        self.books = 1
+        self.books = SectionFlag.OT
         self.book_mapping = None
 
 
