@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pytest
-import pytest_mock
 
 from erasmus.cogs.admin import Admin
 from erasmus.erasmus import Erasmus
@@ -12,10 +11,12 @@ from erasmus.types import Refreshable
 if TYPE_CHECKING:
     from unittest.mock import Mock
 
+    from ..types import MockerFixture
+
 
 class TestAdmin:
     @pytest.fixture
-    def mock_bot(self, mocker: pytest_mock.MockerFixture) -> Mock:
+    def mock_bot(self, mocker: MockerFixture) -> Mock:
         return mocker.Mock(spec=Erasmus, config={})
 
     def test_instantiate(self, mock_bot: Mock) -> None:

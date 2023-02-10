@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Any
 if TYPE_CHECKING:
     from unittest.mock import NonCallableMock
 
-    from pytest_mock import MockerFixture
+    from .types import MockerFixture
 
 
 def create_context_manager(

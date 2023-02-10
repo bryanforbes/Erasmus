@@ -16,7 +16,7 @@ from erasmus.exceptions import (
 )
 
 if TYPE_CHECKING:
-    from pytest_mock import MockFixture
+    from .types import MockerFixture
 
 
 class _RawBookDict(TypedDict):
@@ -160,7 +160,7 @@ class TestVerseRange:
         [(book['osis'], book['name']) for book in _book_data],
     )
     def test_for_bible_permutations(
-        self, osis: str, book_name: str, mocker: MockFixture
+        self, osis: str, book_name: str, mocker: MockerFixture
     ) -> None:
         osis_to_map = 'Exod' if osis == 'Gen' else 'Gen'
         expected_name = 'Exodus' if osis == 'Gen' else 'Genesis'
@@ -172,7 +172,7 @@ class TestVerseRange:
 
         assert verse_range.for_bible(mock_bible).book.name == expected_name
 
-    def test_for_bible(self, mocker: MockFixture) -> None:
+    def test_for_bible(self, mocker: MockerFixture) -> None:
         mock_bible = mocker.Mock()
         mock_bible.book_mapping = None
 
@@ -191,7 +191,7 @@ class TestVerseRange:
         assert mapped_verse_range is not verse_range
         assert mapped_verse_range.book.osis == 'DanGr'
 
-    def test_for_bible_raises(self, mocker: MockFixture) -> None:
+    def test_for_bible_raises(self, mocker: MockerFixture) -> None:
         mock_bible = mocker.Mock()
         mock_bible.book_mapping = {'John': 'HPotter'}
 

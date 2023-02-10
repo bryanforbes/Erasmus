@@ -25,9 +25,10 @@ if TYPE_CHECKING:
     from unittest.mock import AsyncMock, MagicMock, Mock, NonCallableMock
 
     import aiohttp
-    from pytest_mock import MockerFixture
 
     from erasmus.types import Bible
+
+    from ....types import MockerFixture
 
 
 @frozen
@@ -601,7 +602,7 @@ class TestDailyBreadGroup:
 
         mock_daily_bread_scheduled.assert_awaited_once_with(mock_db_session)
         mock_get_next_scheduled_time.assert_has_calls(
-            [  # pyright: ignore
+            [
                 mocker.call(
                     mocker.sentinel.daily_bread_next_scheduled,
                     mocker.sentinel.daily_bread_time,
@@ -615,7 +616,7 @@ class TestDailyBreadGroup:
             ]
         )
         mock_webhook_from_url.assert_has_calls(
-            [  # pyright: ignore
+            [
                 mocker.call(
                     'https://discord.com/api/webhooks/daily_bread_url',
                     session=daily_bread_group.session,
@@ -630,7 +631,7 @@ class TestDailyBreadGroup:
             bible1, VerseRange.from_string('1 Corinthians 13:1-3')
         )
         mock_send_passage.assert_has_awaits(
-            [  # pyright: ignore
+            [
                 mocker.call(
                     mocker.sentinel.webhook_1,
                     mocker.sentinel.get_passage_return_1,
@@ -688,13 +689,13 @@ class TestDailyBreadGroup:
         await daily_bread_group._check_and_post()
 
         mock_daily_bread_scheduled.assert_has_awaits(
-            [  # pyright: ignore
+            [
                 mocker.call(mock_db_session),
                 mocker.call(mock_db_session),
             ]
         )
         mock_get_next_scheduled_time.assert_has_calls(
-            [  # pyright: ignore
+            [
                 mocker.call(
                     mocker.sentinel.daily_bread_next_scheduled,
                     mocker.sentinel.daily_bread_time,
@@ -708,7 +709,7 @@ class TestDailyBreadGroup:
             ]
         )
         mock_webhook_from_url.assert_has_calls(
-            [  # pyright: ignore
+            [
                 mocker.call(
                     'https://discord.com/api/webhooks/daily_bread_url',
                     session=daily_bread_group.session,
@@ -723,7 +724,7 @@ class TestDailyBreadGroup:
             bible1, VerseRange.from_string('1 Corinthians 13:1-3')
         )
         mock_send_passage.assert_has_awaits(
-            [  # pyright: ignore
+            [
                 mocker.call(
                     mocker.sentinel.webhook_1,
                     mocker.sentinel.get_passage_return_1,
@@ -784,7 +785,7 @@ class TestDailyBreadGroup:
 
         mock_daily_bread_scheduled.assert_awaited_once_with(mock_db_session)
         mock_get_next_scheduled_time.assert_has_calls(
-            [  # pyright: ignore
+            [
                 mocker.call(
                     mocker.sentinel.daily_bread_next_scheduled,
                     mocker.sentinel.daily_bread_time,
@@ -798,7 +799,7 @@ class TestDailyBreadGroup:
             ]
         )
         mock_webhook_from_url.assert_has_calls(
-            [  # pyright: ignore
+            [
                 mocker.call(
                     'https://discord.com/api/webhooks/daily_bread_url',
                     session=daily_bread_group.session,
@@ -816,7 +817,7 @@ class TestDailyBreadGroup:
             ]
         )
         mock_send_passage.assert_has_awaits(
-            [  # pyright: ignore
+            [
                 mocker.call(
                     mocker.sentinel.webhook_1,
                     mocker.sentinel.get_passage_return_1,
@@ -875,13 +876,13 @@ class TestDailyBreadGroup:
         await daily_bread_group._check_and_post()
 
         mock_daily_bread_scheduled.assert_has_awaits(
-            [  # pyright: ignore
+            [
                 mocker.call(mock_db_session),
                 mocker.call(mock_db_session),
             ]
         )
         mock_get_next_scheduled_time.assert_has_calls(
-            [  # pyright: ignore
+            [
                 mocker.call(
                     mocker.sentinel.daily_bread_next_scheduled,
                     mocker.sentinel.daily_bread_time,
@@ -895,7 +896,7 @@ class TestDailyBreadGroup:
             ]
         )
         mock_webhook_from_url.assert_has_calls(
-            [  # pyright: ignore
+            [
                 mocker.call(
                     'https://discord.com/api/webhooks/daily_bread_url',
                     session=daily_bread_group.session,
@@ -913,7 +914,7 @@ class TestDailyBreadGroup:
             ]
         )
         mock_send_passage.assert_has_awaits(
-            [  # pyright: ignore
+            [
                 mocker.call(
                     mocker.sentinel.webhook_1,
                     mocker.sentinel.get_passage_return_1,

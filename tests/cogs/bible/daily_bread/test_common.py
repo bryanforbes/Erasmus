@@ -11,7 +11,7 @@ from erasmus.cogs.bible.daily_bread.common import (
 )
 
 if TYPE_CHECKING:
-    from pytest_mock import MockerFixture
+    from ....types import MockerFixture
 
 
 @pytest.mark.parametrize(

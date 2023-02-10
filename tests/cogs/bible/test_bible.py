@@ -10,9 +10,9 @@ from erasmus.types import Refreshable
 if TYPE_CHECKING:
     from unittest.mock import Mock
 
-    from pytest_mock import MockerFixture
-
     from erasmus.erasmus import Erasmus
+
+    from ...types import MockerFixture
 
 
 class TestBible:

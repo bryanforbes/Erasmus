@@ -7,7 +7,6 @@ from unittest.mock import Mock
 
 import discord
 import pytest
-import pytest_mock
 from discord import app_commands
 from discord.ext import commands
 
@@ -16,6 +15,8 @@ from erasmus.l10n import GroupLocalizer, LocaleLocalizer, Localizer, MessageLoca
 if TYPE_CHECKING:
     from collections.abc import Callable, Sequence
 
+    from .types import MockerFixture
+
 
 class LocalizationMock(Mock):
     format: Mock
@@ -23,19 +24,19 @@ class LocalizationMock(Mock):
 
 class TestLocalizer:
     @pytest.fixture
-    def fluent_resource_loader_class(self, mocker: pytest_mock.MockerFixture) -> Mock:
+    def fluent_resource_loader_class(self, mocker: MockerFixture) -> Mock:
         return mocker.patch('erasmus.l10n.FluentResourceLoader')
 
     @pytest.fixture
     def fluent_resource_loader(
-        self, fluent_resource_loader_class: Mock, mocker: pytest_mock.MockerFixture
+        self, fluent_resource_loader_class: Mock, mocker: MockerFixture
     ) -> Mock:
         mock = mocker.Mock()
         fluent_resource_loader_class.return_value = mock
         return mock
 
     @pytest.fixture
-    def en_localization(self, mocker: pytest_mock.MockerFixture) -> LocalizationMock:
+    def en_localization(self, mocker: MockerFixture) -> LocalizationMock:
         mock = mocker.Mock()
         mock.configure_mock(
             **{'format.return_value': mocker.sentinel.en_localization_format_return}
@@ -43,7 +44,7 @@ class TestLocalizer:
         return mock
 
     @pytest.fixture
-    def no_localization(self, mocker: pytest_mock.MockerFixture) -> LocalizationMock:
+    def no_localization(self, mocker: MockerFixture) -> LocalizationMock:
         mock = mocker.Mock()
         mock.configure_mock(
             **{'format.return_value': mocker.sentinel.no_localization_format_return}
@@ -51,7 +52,7 @@ class TestLocalizer:
         return mock
 
     @pytest.fixture
-    def no_localization_2(self, mocker: pytest_mock.MockerFixture) -> LocalizationMock:
+    def no_localization_2(self, mocker: MockerFixture) -> LocalizationMock:
         mock = mocker.Mock()
         mock.configure_mock(
             **{'format.return_value': mocker.sentinel.no_localization_2_format_return}
@@ -59,7 +60,7 @@ class TestLocalizer:
         return mock
 
     @pytest.fixture
-    def hi_localization(self, mocker: pytest_mock.MockerFixture) -> LocalizationMock:
+    def hi_localization(self, mocker: MockerFixture) -> LocalizationMock:
         mock = mocker.Mock()
         mock.configure_mock(
             **{'format.return_value': mocker.sentinel.hi_localization_format_return}
@@ -69,7 +70,7 @@ class TestLocalizer:
     @pytest.fixture
     def localization_class(
         self,
-        mocker: pytest_mock.MockerFixture,
+        mocker: MockerFixture,
         en_localization: LocalizationMock,
         no_localization: LocalizationMock,
         hi_localization: LocalizationMock,
@@ -108,7 +109,7 @@ class TestLocalizer:
         return side_effect
 
     @pytest.fixture
-    def localizer_format(self, mocker: pytest_mock.MockerFixture) -> Mock:
+    def localizer_format(self, mocker: MockerFixture) -> Mock:
         return mocker.patch('erasmus.l10n.Localizer.format')
 
     def test_init(
@@ -142,7 +143,7 @@ class TestLocalizer:
 
     def test_format_locale(
         self,
-        mocker: pytest_mock.MockerFixture,
+        mocker: MockerFixture,
         localization_class: Mock,
         en_localization: LocalizationMock,
         no_localization: LocalizationMock,
@@ -169,7 +170,7 @@ class TestLocalizer:
         )
 
         localization_class.assert_has_calls(
-            [  # type: ignore
+            [
                 mocker.call(
                     ['nb-NO', 'en-US'],
                     ['erasmus.ftl'],
@@ -189,25 +190,23 @@ class TestLocalizer:
         )
         no_localization.format.assert_has_calls(
             [
-                mocker.call('generic-error', None, use_fallbacks=True),  # type: ignore
+                mocker.call('generic-error', None, use_fallbacks=True),
             ]
         )
         en_localization.format.assert_has_calls(
             [
-                mocker.call('generic-error', None, use_fallbacks=True),  # type: ignore
+                mocker.call('generic-error', None, use_fallbacks=True),
             ]
         )
         hi_localization.format.assert_has_calls(
             [
-                mocker.call(
-                    'no-private-message', {}, use_fallbacks=False
-                ),  # type: ignore
+                mocker.call('no-private-message', {}, use_fallbacks=False),
             ]
         )
 
     def test_begin_reload(
         self,
-        mocker: pytest_mock.MockerFixture,
+        mocker: MockerFixture,
         localization_class: Mock,
         localization_class_side_effect: Callable[..., Any],
     ) -> None:
@@ -225,7 +224,7 @@ class TestLocalizer:
 
     def test_begin_reload_raises(
         self,
-        mocker: pytest_mock.MockerFixture,
+        mocker: MockerFixture,
         localization_class: Mock,
         localization_class_side_effect: Callable[..., Any],
     ) -> None:
@@ -246,9 +245,7 @@ class TestLocalizer:
             == mocker.sentinel.no_localization_format_return
         )
 
-    def test_for_locale(
-        self, mocker: pytest_mock.MockerFixture, localizer_format: Mock
-    ) -> None:
+    def test_for_locale(self, mocker: MockerFixture, localizer_format: Mock) -> None:
         localizer = Localizer(discord.Locale.american_english)
         locale_localizer = localizer.for_locale(discord.Locale.norwegian)
 
@@ -260,7 +257,7 @@ class TestLocalizer:
         locale_localizer.format('no-private-message', data={}, use_fallbacks=False)
 
         localizer_format.assert_has_calls(
-            [  # type: ignore
+            [
                 mocker.call(
                     'generic-error',
                     locale=discord.Locale.norwegian,
@@ -274,9 +271,7 @@ class TestLocalizer:
             ]
         )
 
-    def test_for_message(
-        self, mocker: pytest_mock.MockerFixture, localizer_format: Mock
-    ) -> None:
+    def test_for_message(self, mocker: MockerFixture, localizer_format: Mock) -> None:
         localizer = Localizer(discord.Locale.american_english)
         en_message_localizer = localizer.for_message('serverprefs')
         no_message_localizer = localizer.for_message(
@@ -300,7 +295,7 @@ class TestLocalizer:
         no_message_localizer.format('description', data={}, use_fallbacks=False)
 
         localizer_format.assert_has_calls(
-            [  # type: ignore
+            [
                 mocker.call(
                     'serverprefs',
                     locale=discord.Locale.american_english,
@@ -344,9 +339,7 @@ class TestLocalizer:
             ]
         )
 
-    def test_for_group(
-        self, mocker: pytest_mock.MockerFixture, localizer_format: Mock
-    ) -> None:
+    def test_for_group(self, mocker: MockerFixture, localizer_format: Mock) -> None:
         app_group_mock: Mock = mocker.Mock(
             spec=app_commands.Group, __discord_app_commands_group_name__='app-group'
         )
@@ -402,7 +395,7 @@ class TestLocalizer:
         group_de_message_localizer.format('description', data={}, use_fallbacks=False)
 
         localizer_format.assert_has_calls(
-            [  # type: ignore
+            [
                 mocker.call('foo__generic-error', locale=discord.Locale.norwegian),
                 mocker.call('foo__no-private-message', data={}, use_fallbacks=False),
                 mocker.call('foo__bar__generic-error', locale=discord.Locale.norwegian),

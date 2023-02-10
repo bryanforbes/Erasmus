@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING, Any, cast
 
 import discord
 import pytest
-import pytest_mock
 from attr import define
 from discord import app_commands
 
@@ -14,9 +13,11 @@ from erasmus.data import Passage, VerseRange
 if TYPE_CHECKING:
     from unittest.mock import AsyncMock
 
+    from .types import MockerFixture
+
 
 @pytest.fixture
-def mock_send_embed(mocker: pytest_mock.MockerFixture) -> AsyncMock:
+def mock_send_embed(mocker: MockerFixture) -> AsyncMock:
     return mocker.patch(
         'botus_receptus.utils.send_embed',
         return_value=mocker.sentinel.send_embed_return,
@@ -81,14 +82,14 @@ def mock_send_embed(mocker: pytest_mock.MockerFixture) -> AsyncMock:
     ],
 )
 async def test_send_passage(
-    mocker: pytest_mock.MockerFixture,
+    mocker: MockerFixture,
     mock_send_embed: AsyncMock,
     passage: Passage,
     kwargs: dict[str, Any],
     expected_kwargs: dict[str, object],
 ) -> None:
     result: discord.Message = await utils.send_passage(
-        mocker.sentinel.ctx_or_intx, passage, **kwargs  # type: ignore
+        mocker.sentinel.ctx_or_intx, passage, **kwargs
     )
 
     assert result is mocker.sentinel.send_embed_return

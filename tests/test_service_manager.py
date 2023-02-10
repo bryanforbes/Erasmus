@@ -16,9 +16,9 @@ from erasmus.service_manager import ServiceManager
 if TYPE_CHECKING:
     from unittest.mock import MagicMock
 
-    from pytest_mock import MockerFixture
-
     from erasmus.types import Bible, Service
+
+    from .types import MockerFixture
 
 
 class MockService:

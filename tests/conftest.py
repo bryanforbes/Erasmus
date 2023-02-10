@@ -12,7 +12,7 @@ if TYPE_CHECKING:
     from collections.abc import AsyncIterator
     from unittest.mock import MagicMock, Mock
 
-    from pytest_mock import MockerFixture
+    from .types import MockerFixture
 
 
 @pytest.fixture(scope='session', autouse=True)
