@@ -1,9 +1,10 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Protocol, TypeVar, overload
+from typing import TYPE_CHECKING, Any, Generic, Literal, Protocol, TypeVar, overload
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable, Mapping
+    from typing_extensions import LiteralString
     from unittest import mock
 
 _T = TypeVar('_T')
@@ -180,15 +181,18 @@ class _Patcher(Protocol):
         ...
 
 
-class _SentinelObject(Any):
-    name: Any
+_SentinelNameT = TypeVar('_SentinelNameT', bound='LiteralString')
 
-    def __init__(self, name: Any) -> None:
+
+class _SentinelObject(Any, Generic[_SentinelNameT]):
+    name: _SentinelNameT
+
+    def __init__(self, name: _SentinelNameT) -> None:
         ...
 
 
 class _Sentinel:
-    def __getattr__(self, name: str) -> _SentinelObject:
+    def __getattr__(self, name: _SentinelNameT) -> _SentinelObject[_SentinelNameT]:
         ...
 
 
@@ -202,7 +206,7 @@ class MockerFixture(Protocol):
     AsyncMock: type[mock.AsyncMock]
     call: mock._Call
     ANY: Any
-    DEFAULT: _SentinelObject
+    DEFAULT: _SentinelObject[Literal['DEFAULT']]
     sentinel: _Sentinel
 
     def create_autospec(
