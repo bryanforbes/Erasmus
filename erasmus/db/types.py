@@ -9,6 +9,7 @@ from sqlalchemy.dialects.postgresql import TIME, TIMESTAMP
 
 if TYPE_CHECKING:
     from datetime import datetime, time
+    from typing_extensions import Self
 
 
 class DateTime(TypeDecorator[pendulum.DateTime]):
@@ -92,5 +93,5 @@ class Timezone(TypeDecorator[_Timezone]):
 
         return pendulum.timezone(value)
 
-    def copy(self, /, **kwargs: object) -> Timezone:
+    def copy(self, /, **kwargs: object) -> Self:
         return Timezone(self.impl.length)
