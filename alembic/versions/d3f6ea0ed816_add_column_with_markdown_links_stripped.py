@@ -25,7 +25,7 @@ def upgrade():
             'text_stripped',
             sa.Text(),
             sa.Computed(
-                "regexp_replace(text, '\\[(.*?)\\]\\(.*?\\)', '\\1', 'g')",
+                r"regexp_replace(text, '\[(.*?)\]\(.*?\)', '\1', 'g')",
             ),
             nullable=False,
         ),
@@ -38,7 +38,7 @@ def upgrade():
             postgresql.TSVECTOR(),
             sa.Computed(
                 "to_tsvector('english', trim(CAST(coalesce(title, '') AS TEXT) || "
-                "' ' || CAST(regexp_replace(text, '\\[(.*?)\\]\\(.*?\\)', '\\1', 'g')"
+                r"' ' || CAST(regexp_replace(text, '\[(.*?)\]\(.*?\)', '\1', 'g')"
                 "AS TEXT), ' '))",
             ),
             nullable=False,

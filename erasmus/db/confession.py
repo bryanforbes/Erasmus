@@ -5,7 +5,9 @@ from typing import TYPE_CHECKING
 from sqlalchemy import (
     Computed,
     ForeignKey,
+    Function,
     Index,
+    SQLColumnExpression,
     Text as _sa_Text,
     cast,
     func,
@@ -24,6 +26,15 @@ if TYPE_CHECKING:
     from sqlalchemy.ext.asyncio import AsyncSession
 
 
+def _remove_markdown_links(column: SQLColumnExpression[str]) -> Function[str]:
+    return func.regexp_replace(
+        column,
+        _sa_text(r"'\[(.*?)\]\(.*?\)'"),
+        _sa_text(r"'\1'"),
+        _sa_text("'g'"),
+    )
+
+
 class Section(Base):
     __tablename__ = 'confession_sections'
 
@@ -34,14 +45,7 @@ class Section(Base):
     title: Mapped[Text | None] = mapped_column()
     text: Mapped[Text] = mapped_column()
     text_stripped: Mapped[Text] = mapped_column(
-        Computed(
-            func.regexp_replace(
-                text,
-                _sa_text(r"'\[(.*?)\]\(.*?\)'"),
-                _sa_text(r"'\1'"),
-                _sa_text("'g'"),
-            )
-        ),
+        Computed(_remove_markdown_links(text)),
         init=False,
     )
     search_vector: Mapped[TSVector] = mapped_column(
@@ -52,12 +56,7 @@ class Section(Base):
                     cast(func.coalesce(title, _sa_text("''")), _sa_Text)
                     + _sa_text("' '")
                     + cast(
-                        func.regexp_replace(
-                            text,
-                            _sa_text(r"'\[(.*?)\]\(.*?\)'"),
-                            _sa_text(r"'\1'"),
-                            _sa_text("'g'"),
-                        ),
+                        _remove_markdown_links(text),
                         _sa_Text,
                     ),
                     _sa_text("' '"),
