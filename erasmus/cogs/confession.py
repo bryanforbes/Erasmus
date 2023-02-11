@@ -3,6 +3,7 @@ from __future__ import annotations
 from itertools import pairwise
 from typing import TYPE_CHECKING, Final, NamedTuple, cast
 
+import discord
 from botus_receptus import re, utils
 from botus_receptus.cog import GroupCog
 from botus_receptus.formatting import EmbedPaginator, bold, escape, underline
@@ -17,16 +18,15 @@ from ..db import (
 )
 from ..exceptions import InvalidConfessionError, NoSectionError
 from ..format import alpha_to_int, int_to_alpha, int_to_roman, roman_to_int
-from ..page_source import EmbedPageSource, ListPageSource
+from ..page_source import FieldPageSource, ListPageSource, Pages
 from ..ui_pages import UIPages
 from ..utils import AutoCompleter, frozen
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Sequence
+    from collections.abc import Callable, Iterable, Sequence
     from re import Match
     from typing_extensions import Self
 
-    import discord
     from sqlalchemy.ext.asyncio import AsyncSession
 
     from ..erasmus import Erasmus
@@ -127,8 +127,9 @@ async def _get_output(
 
 
 class ConfessionSearchSource(
-    EmbedPageSource['Sequence[Section]'], ListPageSource[Section]
+    FieldPageSource['Sequence[Section]'], ListPageSource[Section]
 ):
+    terms: str
     confession: ConfessionRecord
     localizer: MessageLocalizer
 
@@ -137,34 +138,57 @@ class ConfessionSearchSource(
         entries: list[Section],
         /,
         *,
+        terms: str,
         per_page: int,
         confession: ConfessionRecord,
         localizer: MessageLocalizer,
     ) -> None:
         super().__init__(entries, per_page=per_page)
 
+        self.terms = terms
         self.confession = confession
         self.localizer = localizer
 
-    async def set_page_text(self, entries: Sequence[Section] | None, /) -> None:
-        if entries is None:
-            self.embed.description = self.localizer.format('no-results')
-            return
-
-        lines: list[str] = []
-
+    def get_field_values(
+        self, entries: Sequence[Section], /
+    ) -> Iterable[tuple[str, str]]:
         for entry in entries:
             section_number = _format_section_number(self.confession, entry)
-            lines.append(
-                f'**{section_number}**. '
-                + (
-                    entry.title
-                    if entry.title is not None
-                    else _ellipsize(entry.text, max_length=50)[1]
-                )
+            title = (
+                section_number
+                if entry.title is None
+                else f'{section_number}. {entry.title}'
             )
+            yield title, entry.text_stripped
 
-        self.embed.description = '\n'.join(lines)
+    def format_footer_text(
+        self, pages: Pages[Sequence[Section]], max_pages: int
+    ) -> str:
+        return self.localizer.format(
+            'footer',
+            data={
+                'current_page': pages.current_page + 1,
+                'max_pages': max_pages,
+                'total': self.get_total(),
+            },
+        )
+
+    async def set_page_text(self, page: Sequence[Section] | None, /) -> None:
+        self.embed.title = self.localizer.format(
+            'title', data={'confession_name': self.confession.name}
+        )
+
+        if page is None:
+            self.embed.description = self.localizer.format(
+                'no-results', data={'terms': self.terms}
+            )
+            return
+
+        self.embed.description = self.localizer.format(
+            'terms', data={'terms': self.terms}
+        )
+
+        await super().set_page_text(page)
 
 
 class _SectionInfo(NamedTuple):
@@ -206,7 +230,8 @@ class _ConfessionOption:
                 section_value += f'.{section.subsection_number}'
 
             text, choice_name = _ellipsize(
-                f'{section_str}. {section.title or section.text}', max_length=100
+                f'{section_str}. {section.title or section.text_stripped}',
+                max_length=100,
             )
 
             section_info.append(
@@ -360,12 +385,13 @@ class Confession(
 
         async with Session() as session:
             confession = await ConfessionRecord.get_by_command(session, source)
-            results = await confession.search(session, terms.split(' '))
+            results = await confession.search(session, terms)
 
         localizer = self.localizer.for_message('search', itx.locale)
         search_source = ConfessionSearchSource(
             results,
-            per_page=20,
+            terms=discord.utils.escape_markdown(terms),
+            per_page=5,
             confession=confession,
             localizer=localizer,
         )

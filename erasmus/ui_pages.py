@@ -67,6 +67,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
     compact: bool
     message: discord.Message | None
     localizer: MessageLocalizer
+    allowed_mentions: discord.AllowedMentions
 
     def __init__(
         self,
@@ -78,6 +79,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         check_embeds: bool = True,
         compact: bool = False,
         timeout: float | None = 180.0,
+        allowed_mentions: discord.AllowedMentions = _MISSING,
     ) -> None:
         super().__init__(timeout=timeout)
         BasePages.__init__(self, source)  # type: ignore
@@ -87,6 +89,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         self.message = None
         self.compact = compact
         self.localizer = localizer
+        self.allowed_mentions = allowed_mentions
         self.clear_items()
 
     @discord.utils.cached_property
@@ -116,7 +119,6 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         files: Sequence[discord.File] = _MISSING,
         delete_after: float = _MISSING,
         nonce: int = _MISSING,
-        allowed_mentions: discord.AllowedMentions = _MISSING,
         view: discord.ui.View = _MISSING,
     ) -> Coroutine[discord.Message]:
         return utils.send(
@@ -127,7 +129,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
             embeds=embeds,
             files=files,
             view=view,
-            allowed_mentions=allowed_mentions,
+            allowed_mentions=self.allowed_mentions,
             nonce=nonce,
             delete_after=delete_after,
         )
@@ -160,9 +162,13 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         if kwargs:
             if itx.response.is_done():
                 if self.message:
-                    await self.message.edit(**kwargs, view=self)
+                    await self.message.edit(
+                        **kwargs, view=self, allowed_mentions=self.allowed_mentions
+                    )
             else:
-                await itx.response.edit_message(**kwargs, view=self)
+                await itx.response.edit_message(
+                    **kwargs, view=self, allowed_mentions=self.allowed_mentions
+                )
 
     def _update_labels(self, page_number: int, /) -> None:
         self.go_to_first_page.disabled = page_number == 0
