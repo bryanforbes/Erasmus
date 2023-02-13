@@ -1,4 +1,4 @@
-# Version UNRELEASED
+# Version 23.2.1
 
 * Improved Daily Bread resiliency
 * Improve output of `/confess search`
