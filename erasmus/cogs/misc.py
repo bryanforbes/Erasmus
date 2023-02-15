@@ -1,9 +1,10 @@
 from __future__ import annotations
 
+import logging
 from collections import OrderedDict
 from importlib import metadata
 from pathlib import Path
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Final
 
 import discord
 from botus_receptus import Cog, Embed, formatting, re, utils
@@ -12,6 +13,9 @@ from discord import app_commands
 if TYPE_CHECKING:
     from ..erasmus import Erasmus
     from ..l10n import Localizer, MessageLocalizer
+
+
+_logger: Final = logging.getLogger(__name__)
 
 
 class InviteView(discord.ui.View):
@@ -175,12 +179,28 @@ class Misc(Cog['Erasmus']):
 
         localizer = self.localizer.for_message('news', locale=itx.locale)
 
-        await utils.send_embed(
+        message = await utils.send_embed(
             itx,
             title=localizer.format('news-for-version', data={'version': version}),
             description='\n'.join(self.version_map[version]),
             color=discord.Color.blue(),
         )
+
+        if (
+            await self.bot.is_owner(itx.user)
+            and message.channel.type == discord.ChannelType.news
+            and message.guild is not None
+            # Erasmus Help
+            and message.guild.id == 571086756636786718
+        ):
+            try:
+                await message.publish()
+            except Exception as error:  # noqa: PIE786
+                _logger.exception(
+                    'An error occurred trying to publish the news',
+                    exc_info=error,
+                    stack_info=True,
+                )
 
     @app_commands.command()
     @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda itx: itx.channel_id)
