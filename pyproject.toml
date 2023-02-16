@@ -46,7 +46,7 @@ pytest-asyncio = "^0.20.3"
 pytest-clarity = "^1.0.1"
 pytest-cov = "^4.0"
 pytest-mock = "^3.10"
-pytest-recording = "^0.12.1"
+pytest-recording = "^0.12.2"
 pytest-sugar = "^0.9.6"
 pytest-xdist = "^3.2"
 
