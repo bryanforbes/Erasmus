@@ -18,7 +18,7 @@ more-itertools = "~9.0.0"
 
 [tool.poetry.dependencies.botus_receptus]
 git = "https://github.com/bryanforbes/botus_receptus.git"
-rev = "d00772654d328e3e5b8601c343bdc885e4530150"
+tag = "v23.2.6"
 extras = ["uvloop", "sqlalchemy"]
 
 [tool.poetry.dependencies.discord-py]
