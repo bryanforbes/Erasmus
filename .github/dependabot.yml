@@ -4,6 +4,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+      time: "06:00"
+      timezone: "America/Chicago"
     open-pull-requests-limit: 10
     assignees:
       - bryanforbes
@@ -11,6 +13,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+      time: "06:00"
+      timezone: "America/Chicago"
     open-pull-requests-limit: 10
     assignees:
       - bryanforbes
