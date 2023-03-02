@@ -28,7 +28,7 @@ extras = ["speed"]
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "~0.27.0"
 black = "^23.1"
-coverage = {version = "^7.1", extras = ["toml"]}
+coverage = {version = "^7.2", extras = ["toml"]}
 flake8 = "~6.0"
 flake8-bugbear = ">=23.1.14"
 flake8-comprehensions = "^3.10.1"
