@@ -365,7 +365,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "botus-receptus"
-version = "23.3.0"
+version = "23.3.1"
 description = ""
 category = "main"
 optional = false
@@ -379,7 +379,7 @@ async-timeout = "~4.0.0"
 asyncpg = {version = "~0.27.0", optional = true}
 attrs = ">=22.2.0"
 click = ">=8.0"
-"discord.py" = "^2.2.0"
+"discord.py" = "^2.2.2"
 greenlet = {version = "^2.0.2", optional = true}
 pendulum = "~2.1.2"
 sqlalchemy = {version = "~2.0.4", optional = true}
@@ -396,8 +396,8 @@ uvloop = ["uvloop (>=0.17.0,<0.18.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "v23.3.0"
-resolved_reference = "c7975ff96ec73458c4ba6ecd8e25288113ed93d5"
+reference = "v23.3.1"
+resolved_reference = "7f9f7d8dbf97e4b6462f3c9dcb24ee1e5da5e4af"
 
 [[package]]
 name = "brotli"
@@ -786,14 +786,14 @@ toml = ["tomli"]
 
 [[package]]
 name = "discord-py"
-version = "2.2.0"
+version = "2.2.2"
 description = "A Python wrapper for the Discord API"
 category = "main"
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "discord.py-2.2.0-py3-none-any.whl", hash = "sha256:012e98571af6847467e81f9501bbe4c6ebfe292c842f5ef8e951908839ee1cd0"},
-    {file = "discord.py-2.2.0.tar.gz", hash = "sha256:a92d69ab6f982998693d0c371ea19235fa0f9900b50068fc461086d02c33e6bb"},
+    {file = "discord.py-2.2.2-py3-none-any.whl", hash = "sha256:38fc52a784727b8e5e5749267089400035b187a009028eddfabeb182abcc6d52"},
+    {file = "discord.py-2.2.2.tar.gz", hash = "sha256:b9944056bcb5711b2d04088848fd004466cf117c15c84fa798bf55470f28275f"},
 ]
 
 [package.dependencies]
@@ -2528,4 +2528,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "208ed2cd735dac0ea8b16bca4987753cdc43c5ad642a026ff5226f4d7ad23af1"
+content-hash = "679d5e4ed82f87b3ea5432e81df7c8a4ecb108d6f8313ed028518cd790348157"
