@@ -9,7 +9,7 @@ from __future__ import annotations
 
 from json import load
 from pathlib import Path
-from typing import Any, Dict, List, Tuple  # noqa
+from typing import Any, Dict, List
 from typing_extensions import TypedDict
 
 import sqlalchemy as sa  # type: ignore

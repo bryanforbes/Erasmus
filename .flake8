@@ -1,6 +1,6 @@
 [flake8]
 max-line-length = 80
-extend-select = B,C,T4,B9,Y0,TC1,SIM9
+extend-select = B,C,T4,B9,Y0,TC1,SIM9,NQA1
 extend-exclude =
     .venv*,
     alembic
@@ -16,3 +16,4 @@ per-file-ignores =
 pytest-fixture-no-parentheses = True
 pytest-mark-no-parentheses = True
 pytest-parametrize-names-type = csv
+noqa-require-code = True

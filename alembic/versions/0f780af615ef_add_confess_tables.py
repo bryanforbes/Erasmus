@@ -10,7 +10,7 @@ from __future__ import annotations
 from collections import OrderedDict
 from json import load
 from pathlib import Path
-from typing import Any, Dict, List, Tuple  # noqa
+from typing import Any, Dict, List, Tuple
 from typing_extensions import TypedDict
 
 import sqlalchemy as sa  # type: ignore

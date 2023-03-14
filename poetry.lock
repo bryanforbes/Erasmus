@@ -931,6 +931,26 @@ files = [
 ]
 
 [[package]]
+name = "flake8-noqa"
+version = "1.3.1"
+description = "Flake8 noqa comment validation"
+category = "dev"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "flake8-noqa-1.3.1.tar.gz", hash = "sha256:284972bd197ad43d9714a0e579925950c946f1816e65ee87f9fbb4b212a128cb"},
+    {file = "flake8_noqa-1.3.1-py3-none-any.whl", hash = "sha256:2b495c28dd4ee449c36d28fee3ad23759a59d77626b4e0550e6cabf57577d851"},
+]
+
+[package.dependencies]
+flake8 = ">=3.8.0,<7.0"
+typing-extensions = ">=3.7.4.2"
+
+[package.extras]
+dev = ["flake8 (>=3.8.0,<6.0.0)", "flake8-annotations", "flake8-bandit", "flake8-bugbear", "flake8-commas", "flake8-comprehensions", "flake8-continuation", "flake8-datetimez", "flake8-docstrings", "flake8-import-order", "flake8-literal", "flake8-modern-annotations", "flake8-noqa", "flake8-polyfill", "flake8-pyproject", "flake8-requirements", "flake8-typechecking-import", "flake8-use-fstring", "mypy", "pep8-naming"]
+test = ["flake8-docstrings"]
+
+[[package]]
 name = "flake8-pie"
 version = "0.16.0"
 description = "A flake8 extension that implements misc. lints"
@@ -2529,4 +2549,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "19ba6674651cda99a49d4f6e5262cc31795bc63afb96ff6632bad256e6690dcb"
+content-hash = "6cf68f146f83df3f55992bf15c2497ed2ea221a870633d82b2e9680e714bb681"

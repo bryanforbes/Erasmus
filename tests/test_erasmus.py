@@ -1,10 +1,10 @@
 from __future__ import annotations
 
-import pytest  # noqa
+import pytest  # noqa: F401
 
-from erasmus.data import Passage, SearchResults  # noqa
-from erasmus.erasmus import Erasmus  # noqa
-from erasmus.exceptions import BibleNotSupportedError  # noqa
+from erasmus.data import Passage, SearchResults  # noqa: F401
+from erasmus.erasmus import Erasmus  # noqa: F401
+from erasmus.exceptions import BibleNotSupportedError  # noqa: F401
 
 
 class MockUser:
@@ -59,12 +59,12 @@ class MockContext:
 #     @pytest.fixture
 #     def mock_send_to_author(self, mocker):
 #         return mocker.patch(
-#             'erasmus.erasmus.Context.send_to_author', new_callable=mocker.AsyncMock  # noqa
+#             'erasmus.erasmus.Context.send_to_author', new_callable=mocker.AsyncMock  # noqa: B950
 #         )
 #
 #     @pytest.fixture(autouse=True)
 #     def mock_load(self, mocker):
-#         mock = mocker.mock_open(read_data='{ "foo": { "bar": "baz" }, "spam": "ham" }')  # noqa
+#         mock = mocker.mock_open(read_data='{ "foo": { "bar": "baz" }, "spam": "ham" }')  # noqa: B950
 #         mocker.patch('erasmus.erasmus.open', mock)
 #         return mocker.patch('erasmus.erasmus.load')
 #
