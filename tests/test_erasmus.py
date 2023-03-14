@@ -59,7 +59,7 @@ class MockContext:
 #     @pytest.fixture
 #     def mock_send_to_author(self, mocker):
 #         return mocker.patch(
-#             'erasmus.erasmus.Context.send_to_author', new_callable=mocker.AsyncMock  # noqa: B950
+#             'erasmus.erasmus.Context.send_to_author', new_callable=mocker.AsyncMock
 #         )
 #
 #     @pytest.fixture(autouse=True)
