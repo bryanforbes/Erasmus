@@ -5,9 +5,8 @@ from typing import TYPE_CHECKING, ClassVar, Literal, get_args
 
 from attrs import define, field, validators
 from babel.dates import format_timedelta
-from fluent.runtime import FluentBundle
-from fluent.runtime.fallback import AbstractResourceLoader, FluentLocalization
-from fluent.runtime.types import FluentType, merge_options
+from fluent.runtime import AbstractResourceLoader, FluentBundle, FluentLocalization
+from fluent.runtime.types import FluentNone, FluentType, merge_options
 from pendulum.period import Period
 
 if TYPE_CHECKING:
@@ -15,7 +14,7 @@ if TYPE_CHECKING:
     from collections.abc import Iterable, Sequence
     from typing_extensions import Self
 
-    from fluent.runtime.errors import FluentFormatError
+    from babel import Locale
     from fluent.runtime.resolver import Pattern, TextElement
 
 
@@ -36,8 +35,10 @@ class FluentPeriod(FluentType, Period):
 
     def _init_options(self, period: Period, **kwargs: object) -> None:
         self.options = merge_options(
-            PeriodFormatOptions,
-            getattr(period, 'options', self.default_period_format_options),
+            PeriodFormatOptions,  # pyright: ignore
+            getattr(
+                period, 'options', self.default_period_format_options
+            ),  # pyright: ignore
             kwargs,
         )
 
@@ -47,7 +48,7 @@ class FluentPeriod(FluentType, Period):
         obj._init_options(period, **kwargs)
         return obj
 
-    def format(self, locale: str) -> str:
+    def format(self, locale: Locale | str) -> str:
         periods = [
             ('hour', self.hours),
             ('minute', self.minutes),
@@ -97,9 +98,9 @@ def native_to_fluent(val: object) -> object:
 class Bundle(FluentBundle):
     def format_pattern(
         self,
-        pattern: Pattern | TextElement,
+        pattern: Pattern,
         args: SupportsItems[str, object] | None = ...,
-    ) -> tuple[str, list[FluentFormatError]]:
+    ) -> tuple[str | FluentNone, list[Exception]]:
         if args is not None:
             fluent_args = {
                 argname: native_to_fluent(argval) for argname, argval in args.items()
@@ -118,13 +119,13 @@ class Localization(FluentLocalization):
         locales: Sequence[str],
         resource_ids: Iterable[str],
         resource_loader: AbstractResourceLoader,
-        use_isolating: bool = ...,
+        use_isolating: bool = True,
     ) -> None:
         self.fallback_locale = locales[-1] if len(locales) > 1 else None
 
         super().__init__(
-            locales,
-            resource_ids,
+            locales,  # pyright: ignore
+            resource_ids,  # pyright: ignore
             resource_loader,
             use_isolating,
             bundle_class=Bundle,
@@ -166,8 +167,8 @@ class Localization(FluentLocalization):
 
                 pattern = message.value
 
-            value, _ = bundle.format_pattern(pattern, args)
-            return value
+            value, _ = bundle.format_pattern(pattern, args)  # pyright: ignore
+            return value if isinstance(value, str) else None
 
         if use_fallbacks:
             if attribute_id:

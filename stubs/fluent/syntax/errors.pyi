@@ -1,6 +1,0 @@
-from typing import Any
-
-class ParseError(Exception):
-    def __init__(self, code: str, *args: Any) -> None: ...
-
-def get_error_message(code: str, args: list[Any]) -> str: ...
