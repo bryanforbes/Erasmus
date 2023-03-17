@@ -1029,34 +1029,37 @@ flake8 = "*"
 
 [[package]]
 name = "fluent-runtime"
-version = "0.3.1"
+version = "0.4.0"
 description = "Localization library for expressive translations."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "fluent.runtime-0.3.1-py2.py3-none-any.whl", hash = "sha256:1da9bf779e6b8cbfb5a71dd59cd7e193f8dc8da318bda7163bc41e9ae15f8574"},
-    {file = "fluent.runtime-0.3.1.tar.gz", hash = "sha256:f3a879b9d0a2129b3f8e8755f0291c445f272f3d0d26a408c7b76f608acf3409"},
+    {file = "fluent.runtime-0.4.0-py2.py3-none-any.whl", hash = "sha256:51fd02582c2363e1106d7051642967a1b7f406dd9c317bd4600a73ede40c5146"},
+    {file = "fluent.runtime-0.4.0.tar.gz", hash = "sha256:cb5ef96a58a3f67acaaca046d1201d202a1ebf2823e5e664370f359bae20574d"},
 ]
 
 [package.dependencies]
 attrs = "*"
 babel = "*"
-"fluent.syntax" = ">=0.17,<0.19"
+"fluent.syntax" = ">=0.17,<0.20"
 pytz = "*"
-six = "*"
+typing-extensions = ">=3.7,<5"
 
 [[package]]
 name = "fluent-syntax"
-version = "0.18.1"
+version = "0.19.0"
 description = "Localization library for expressive translations."
 category = "main"
 optional = false
 python-versions = "*"
 files = [
-    {file = "fluent.syntax-0.18.1-py2.py3-none-any.whl", hash = "sha256:0e63679fa4f1b3042565220a5127b4bab842424f07d6a13c12299e3b3835486a"},
-    {file = "fluent.syntax-0.18.1.tar.gz", hash = "sha256:3a55f5e605d1b029a65cc8b6492c86ec4608e15447e73db1495de11fd46c104f"},
+    {file = "fluent.syntax-0.19.0-py2.py3-none-any.whl", hash = "sha256:b352b3475fac6c6ed5f06527921f432aac073d764445508ee5218aeccc7cc5c4"},
+    {file = "fluent.syntax-0.19.0.tar.gz", hash = "sha256:920326d7f46864b9758f0044e9968e3112198bc826acee16ddd8f11d359004fd"},
 ]
+
+[package.dependencies]
+typing-extensions = ">=3.7,<5"
 
 [[package]]
 name = "frozenlist"
@@ -2544,4 +2547,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "6cf6cdee0fd89041c6b01493498b82663c3a478e9d785f007c44d036dc96403c"
+content-hash = "5f054b7df6e19e491fe5ba67449ab49662ab90256257da67f70c4326e416a4d2"
