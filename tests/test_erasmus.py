@@ -1,50 +1,37 @@
 from __future__ import annotations
 
+from typing import Any
+
 import pytest  # noqa: F401
+from attrs import define, field
 
 from erasmus.data import Passage, SearchResults  # noqa: F401
 from erasmus.erasmus import Erasmus  # noqa: F401
 from erasmus.exceptions import BibleNotSupportedError  # noqa: F401
 
 
+@define
 class MockUser:
-    __slots__ = 'bot', 'id', 'mention'
-
-    def __init__(
-        self,
-        *,
-        bot: bool | None = None,
-        id: int | None = None,
-        mention: str | None = None,
-    ) -> None:
-        self.bot = bot
-        self.id = id
-        self.mention = mention
+    bot: bool | None = field(default=None)
+    id: int | None = field(default=None)
+    mention: str | None = field(default=None)
 
 
+@define
 class MockMessage:
-    __slots__ = 'author', 'content', '_state'
-
-    def __init__(
-        self, *, author: MockUser | None = None, content: str | None = None
-    ) -> None:
-        self.author = author
-        self.content = content
-        self._state = None
+    author: MockUser | None = field(default=None)
+    content: str | None = field(default=None)
+    _state: Any = field(default=None)
 
 
+@define
 class MockCommand:
-    __slots__ = ('name',)
-
-    def __init__(self, name: str) -> None:
-        self.name = name
+    name: str
 
 
+@define
 class MockContext:
-    __slots__ = ('command',)
-
-    def __init__(self, command: MockCommand) -> None:
-        self.command = command
+    command: MockCommand
 
 
 # class TestErasmus:

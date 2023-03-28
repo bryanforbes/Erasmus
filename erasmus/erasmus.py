@@ -5,6 +5,7 @@ import sys
 from functools import cached_property
 from importlib import metadata
 from typing import TYPE_CHECKING, Final, cast
+from typing_extensions import override
 
 import discord
 import discord.http
@@ -33,6 +34,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     config: Config
     localizer: Localizer
 
+    @override
     def __init__(self, config: Config, /, *args: object, **kwargs: object) -> None:
         self.localizer = Localizer(discord.Locale.american_english)
 
@@ -74,6 +76,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     def bible_cog(self) -> Bible:
         return self.cogs['Bible']  # type: ignore
 
+    @override
     async def setup_hook(self) -> None:
         await super().setup_hook()
 
@@ -94,12 +97,14 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         for guild_id, _commands in self.tree._guild_commands.items():  # type: ignore
             _log.info(f'Commands for {guild_id}: {list(_commands)!r}')  # type: ignore
 
+    @override
     async def on_message(self, message: discord.Message, /) -> None:
         if message.author.bot or not message.content:
             return
 
         await self.bible_cog.lookup_from_message(message)
 
+    @override
     async def on_ready(self, /) -> None:
         user = self.user
         assert user is not None
@@ -124,6 +129,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     async def on_shard_resumed(self, shard_id: int, /) -> None:
         _log.info(f'Shard {shard_id + 1} resumed')
 
+    @override
     async def on_error(
         self, event_method: str, /, *args: object, **kwargs: object
     ) -> None:

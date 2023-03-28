@@ -1,10 +1,11 @@
 from __future__ import annotations
 
 import unittest.mock
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING, Any, cast
 
 import discord
 import pytest
+from attrs import define, field
 from botus_receptus import Embed
 from discord.ext.commands.view import StringView  # type: ignore
 
@@ -15,32 +16,19 @@ if TYPE_CHECKING:
     from .types import MockerFixture
 
 
+@define
 class MockUser:
-    __slots__ = ('bot', 'id', 'mention')
-
-    def __init__(
-        self,
-        *,
-        bot: bool | None = None,
-        id: int | None = None,
-        mention: str | None = None,
-    ) -> None:
-        self.bot = bot
-        self.id = id
-        self.mention = mention
+    bot: bool | None = field(default=None)
+    id: int | None = field(default=None)
+    mention: str | None = field(default=None)
 
 
+@define
 class MockMessage:
-    __slots__ = ('author', 'content', 'channel', '_state')
-    channel: discord.abc.GuildChannel | None
-
-    def __init__(
-        self, *, author: MockUser | None = None, content: str | None = None
-    ) -> None:
-        self.author = author
-        self.content = content
-        self.channel = None
-        self._state = None
+    author: MockUser | None = field(default=None)
+    content: str | None = field(default=None)
+    channel: discord.abc.GuildChannel | None = field(default=None)
+    _state: Any = field(default=None)
 
 
 class TestContext:

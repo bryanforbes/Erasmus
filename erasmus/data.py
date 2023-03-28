@@ -3,6 +3,7 @@ from __future__ import annotations
 from enum import Flag, auto
 from pathlib import Path
 from typing import TYPE_CHECKING, Final, TypedDict
+from typing_extensions import Self, override
 
 import orjson
 from attrs import evolve
@@ -19,7 +20,6 @@ from .utils import frozen
 if TYPE_CHECKING:
     from collections.abc import Iterator
     from re import Match, Pattern
-    from typing_extensions import Self
 
     import discord
 
@@ -108,6 +108,7 @@ class Book:
     alt: frozenset[str]
     section: SectionFlag
 
+    @override
     def __str__(self) -> str:
         return self.name
 
@@ -170,6 +171,7 @@ class Verse:
     chapter: int
     verse: int
 
+    @override
     def __str__(self, /) -> str:
         return f'{self.chapter}:{self.verse}'
 
@@ -301,6 +303,7 @@ class VerseRange:
     def with_version(self, version: str | None, /) -> Self:
         return evolve(self, version=version)
 
+    @override
     def __str__(self, /) -> str:
         return f'{self.book} {self.verses}'
 
@@ -399,6 +402,7 @@ class Passage:
         else:
             return str(self.range)
 
+    @override
     def __str__(self, /) -> str:
         return f'{self.text}\n\n{self.citation}'
 

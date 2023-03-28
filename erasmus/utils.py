@@ -11,7 +11,7 @@ from typing import (
     TypeVar,
     overload,
 )
-from typing_extensions import dataclass_transform
+from typing_extensions import NotRequired, Unpack, dataclass_transform, override
 
 from attr import attrib
 from attrs import field, frozen as _attrs_frozen
@@ -20,7 +20,6 @@ from discord import app_commands
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable
-    from typing_extensions import NotRequired, Unpack
 
     import discord
     from attr import _FieldTransformer, _OnSetAttrArgType
@@ -239,6 +238,7 @@ class AutoCompleter(app_commands.Transformer, Generic[_OptionT]):
             if not current or option.matches(current)
         ][:25]
 
+    @override
     async def transform(self, itx: discord.Interaction, value: str, /) -> str:
         return value
 

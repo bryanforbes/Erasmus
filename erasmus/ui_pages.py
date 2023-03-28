@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import contextlib
 from typing import TYPE_CHECKING, Final, Generic, TypeVar, cast
+from typing_extensions import Self, override
 
 import discord
 from botus_receptus import utils
@@ -10,7 +11,6 @@ from .page_source import BasePages, PageSource
 
 if TYPE_CHECKING:
     from collections.abc import Sequence
-    from typing_extensions import Self
 
     from botus_receptus.types import Coroutine
 
@@ -26,6 +26,7 @@ _MISSING: Final = discord.utils.MISSING
 class PagesModal(discord.ui.Modal, Generic[T], title='Skip to page…'):
     pages: UIPages[T]
 
+    @override
     def __init__(self, pages: UIPages[T], *, timeout: float | None = None) -> None:
         super().__init__(timeout=timeout)
 
@@ -41,6 +42,7 @@ class PagesModal(discord.ui.Modal, Generic[T], title='Skip to page…'):
         label='Page', placeholder='Page number here…'
     )
 
+    @override
     async def on_submit(self, itx: discord.Interaction, /) -> None:
         assert self.page_number.value is not None
 
@@ -49,6 +51,7 @@ class PagesModal(discord.ui.Modal, Generic[T], title='Skip to page…'):
 
         await self.pages.show_checked_page(itx, int(self.page_number.value) - 1)
 
+    @override
     async def on_error(self, itx: discord.Interaction, error: Exception, /) -> None:
         if isinstance(error, ValueError):
             message = error.args[0]
@@ -69,6 +72,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
     localizer: MessageLocalizer
     allowed_mentions: discord.AllowedMentions
 
+    @override
     def __init__(
         self,
         itx: discord.Interaction,
@@ -205,6 +209,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
                 # If it doesn't give maximum pages, it cannot be checked
                 await self.show_page(itx, page_number)
 
+    @override
     async def interaction_check(self, itx: discord.Interaction, /) -> bool:
         if await self.is_same_user(itx):
             return True
@@ -216,10 +221,12 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
 
         return False
 
+    @override
     async def on_timeout(self) -> None:
         if self.message:
             await self.message.edit(view=None)
 
+    @override
     async def on_error(
         self, itx: discord.Interaction, error: Exception, item: discord.ui.Item[Self], /
     ) -> None:

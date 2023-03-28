@@ -4,6 +4,7 @@ import asyncio
 from typing import TYPE_CHECKING, Any, cast
 
 import pytest
+from attrs import define, field
 
 from erasmus.data import Passage, SearchResults, SectionFlag, VerseRange
 from erasmus.exceptions import (
@@ -14,54 +15,35 @@ from erasmus.exceptions import (
 from erasmus.service_manager import ServiceManager
 
 if TYPE_CHECKING:
-    from unittest.mock import MagicMock
+    from typing_extensions import Self
+    from unittest.mock import AsyncMock, MagicMock
 
     from erasmus.types import Bible, Service
 
     from .types import MockerFixture
 
 
+@define
 class MockService:
-    __slots__ = 'get_passage', 'search'
+    get_passage: AsyncMock
+    search: AsyncMock
 
-    def __init__(self, mocker: MockerFixture) -> None:
-        self.get_passage = mocker.AsyncMock()
-        self.search = mocker.AsyncMock()
+    @classmethod
+    def create(cls, mocker: MockerFixture) -> Self:
+        return cls(get_passage=mocker.AsyncMock(), search=mocker.AsyncMock())
 
 
+@define
 class MockBible:
-    __slots__ = (
-        'id',
-        'command',
-        'name',
-        'abbr',
-        'service',
-        'service_version',
-        'rtl',
-        'books',
-        'book_mapping',
-    )
-
-    def __init__(
-        self,
-        *,
-        id: int,
-        command: str,
-        name: str,
-        abbr: str,
-        service: str,
-        service_version: str,
-        rtl: bool | None = False,
-    ) -> None:
-        self.id = id
-        self.command = command
-        self.name = name
-        self.abbr = abbr
-        self.service = service
-        self.service_version = service_version
-        self.rtl = rtl
-        self.books = SectionFlag.OT
-        self.book_mapping = None
+    id: int
+    command: str
+    name: str
+    abbr: str
+    service: str
+    service_version: str
+    rtl: bool | None = field(default=False)
+    books: SectionFlag = field(default=SectionFlag.OT)
+    book_mapping: dict[str, str] | None = field(default=None)
 
 
 class TestServiceManager:
@@ -85,11 +67,11 @@ class TestServiceManager:
 
     @pytest.fixture
     def service_one(self, mocker: MockerFixture) -> Service:
-        return MockService(mocker)
+        return MockService.create(mocker)
 
     @pytest.fixture
     def service_two(self, mocker: MockerFixture) -> Service:
-        return MockService(mocker)
+        return MockService.create(mocker)
 
     @pytest.fixture
     def config(self) -> Any:

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from enum import Enum
+from typing_extensions import override
 
 
 class ConfessionType(Enum):
@@ -9,6 +10,7 @@ class ConfessionType(Enum):
     QA = 'QA'
     SECTIONS = 'SECTIONS'
 
+    @override
     def __repr__(self, /) -> str:
         return '<%s.%s>' % (self.__class__.__name__, self.name)
 
@@ -18,5 +20,6 @@ class NumberingType(Enum):
     ROMAN = 'ROMAN'
     ALPHA = 'ALPHA'
 
+    @override
     def __repr__(self, /) -> str:
         return '<%s.%s>' % (self.__class__.__name__, self.name)

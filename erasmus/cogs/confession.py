@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from itertools import pairwise
 from typing import TYPE_CHECKING, Final, NamedTuple, cast
+from typing_extensions import Self, override
 
 import discord
 from botus_receptus import re, utils
@@ -25,7 +26,6 @@ from ..utils import AutoCompleter, frozen
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable, Sequence
     from re import Match
-    from typing_extensions import Self
 
     from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -133,6 +133,7 @@ class ConfessionSearchSource(
     confession: ConfessionRecord
     localizer: MessageLocalizer
 
+    @override
     def __init__(
         self,
         entries: list[Section],
@@ -149,6 +150,7 @@ class ConfessionSearchSource(
         self.confession = confession
         self.localizer = localizer
 
+    @override
     def get_field_values(
         self, entries: Sequence[Section], /
     ) -> Iterable[tuple[str, str]]:
@@ -161,6 +163,7 @@ class ConfessionSearchSource(
             )
             yield title, entry.text_stripped
 
+    @override
     def format_footer_text(
         self, pages: Pages[Sequence[Section]], max_pages: int
     ) -> str:
@@ -173,6 +176,7 @@ class ConfessionSearchSource(
             },
         )
 
+    @override
     async def set_page_text(self, page: Sequence[Section] | None, /) -> None:
         self.embed.title = self.localizer.format(
             'title', data={'confession_name': self.confession.name}
@@ -258,9 +262,11 @@ class _ConfessionOption:
 class SectionAutoCompleter(app_commands.Transformer):
     confession_lookup: AutoCompleter[_ConfessionOption]
 
+    @override
     async def transform(self, itx: discord.Interaction, value: str, /) -> str:
         return value
 
+    @override
     async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
         self, itx: discord.Interaction, value: str, /
     ) -> list[app_commands.Choice[str]]:
@@ -301,6 +307,7 @@ class Confession(
     base_localizer: Localizer
     localizer: GroupLocalizer
 
+    @override
     def __init__(self, bot: Erasmus, /) -> None:
         self.base_localizer = bot.localizer
         self.localizer = bot.localizer.for_group(self)
@@ -318,13 +325,16 @@ class Confession(
             ]
         )
 
+    @override
     async def cog_load(self) -> None:
         async with Session() as session:
             await self.refresh(session)
 
+    @override
     async def cog_unload(self) -> None:
         _confession_lookup.clear()
 
+    @override
     async def cog_app_command_error(  # pyright: ignore [reportIncompatibleMethodOverride]  # noqa: B950
         self, itx: discord.Interaction, error: Exception, /
     ) -> None:

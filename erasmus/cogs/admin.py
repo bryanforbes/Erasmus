@@ -5,6 +5,7 @@ import textwrap
 import traceback
 from contextlib import asynccontextmanager, redirect_stdout
 from typing import TYPE_CHECKING, Any, Final
+from typing_extensions import Self, override
 
 import discord
 from botus_receptus import GroupCog, utils
@@ -18,7 +19,6 @@ from ..types import Refreshable
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator, Iterator
-    from typing_extensions import Self
 
 _available_extensions: Final = {f'erasmus.cogs.{name}' for name in _extension_names}
 
@@ -31,6 +31,7 @@ class _RunError(Exception):
     value: str
     formatted: str
 
+    @override
     def __init__(self, value: str, formatted: str) -> None:
         super().__init__()
         self.value = value
@@ -44,6 +45,7 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
         label='Code', placeholder='Code here…', style=discord.TextStyle.paragraph
     )
 
+    @override
     def __init__(self, admin: Admin, *, timeout: float | None = None) -> None:
         super().__init__(timeout=timeout)
 
@@ -58,6 +60,7 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
         # remove `foo`
         return content.strip('` \n')
 
+    @override
     async def on_submit(self, itx: discord.Interaction, /) -> None:
         assert self.code.value is not None
 
@@ -100,6 +103,7 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
                 self._admin._last_result = ret
                 await utils.send(itx, content=f'```py\n{value}{ret}\n```')
 
+    @override
     async def on_error(self, itx: discord.Interaction, error: Exception, /) -> None:
         if error.__cause__ is not None and isinstance(error, _EvalError):
             await utils.send(
@@ -135,6 +139,7 @@ async def operation_guard(
 class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin commands'):
     _last_result: object
 
+    @override
     def __init__(self, bot: Erasmus, /) -> None:
         if bot.config.get('enable_eval', False):
             self._eval = app_commands.command(name='eval')(self.__eval)
@@ -143,6 +148,7 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
 
         super().__init__(bot)
 
+    @override
     async def cog_load(self) -> None:
         self._last_result = None
 

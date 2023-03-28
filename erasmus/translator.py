@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from typing_extensions import override
 
 from discord import app_commands
 
@@ -13,9 +14,11 @@ if TYPE_CHECKING:
 class Translator(app_commands.Translator):
     localizer: Localizer
 
+    @override
     def __init__(self, localizer: Localizer, /) -> None:
         self.localizer = localizer
 
+    @override
     async def translate(
         self,
         string: app_commands.locale_str,

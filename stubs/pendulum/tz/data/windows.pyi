@@ -1,3 +1,3 @@
 from typing import Final
 
-windows_timezones: Final[dict[str, str]] = ...
+windows_timezones: Final[dict[str, str]]

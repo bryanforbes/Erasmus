@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from typing_extensions import override
 
 import discord
 import orjson
@@ -31,9 +32,11 @@ def _decode_book_mapping(book_mapping: str | None) -> dict[str, str] | None:
 class ServiceAutoCompleter(app_commands.Transformer):
     service_manager: ServiceManager
 
+    @override
     async def transform(self, itx: discord.Interaction, value: str, /) -> str:
         return value
 
+    @override
     async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
         self, itx: discord.Interaction, value: str, /
     ) -> list[app_commands.Choice[str]]:

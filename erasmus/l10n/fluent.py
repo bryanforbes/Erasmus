@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from datetime import timedelta
 from typing import TYPE_CHECKING, ClassVar, Literal, get_args
+from typing_extensions import Self, override
 
 from attrs import define, field, validators
 from babel.dates import format_timedelta
@@ -12,7 +13,6 @@ from pendulum.period import Period
 if TYPE_CHECKING:
     from _typeshed import SupportsItems
     from collections.abc import Iterable, Sequence
-    from typing_extensions import Self
 
     from babel import Locale
     from fluent.runtime.resolver import Pattern, TextElement
@@ -48,6 +48,7 @@ class FluentPeriod(FluentType, Period):
         obj._init_options(period, **kwargs)
         return obj
 
+    @override
     def format(self, locale: Locale | str) -> str:
         periods = [
             ('hour', self.hours),
@@ -96,6 +97,7 @@ def native_to_fluent(val: object) -> object:
 
 
 class Bundle(FluentBundle):
+    @override
     def format_pattern(
         self,
         pattern: Pattern,
@@ -114,6 +116,7 @@ class Bundle(FluentBundle):
 class Localization(FluentLocalization):
     fallback_locale: str | None
 
+    @override
     def __init__(
         self,
         locales: Sequence[str],

@@ -5,6 +5,7 @@ from collections import OrderedDict
 from importlib import metadata
 from pathlib import Path
 from typing import TYPE_CHECKING, Final
+from typing_extensions import override
 
 import discord
 from botus_receptus import Cog, Embed, formatting, re, utils
@@ -19,6 +20,7 @@ _logger: Final = logging.getLogger(__name__)
 
 
 class InviteView(discord.ui.View):
+    @override
     def __init__(
         self,
         invite_url: str,
@@ -35,6 +37,7 @@ class InviteView(discord.ui.View):
 
 
 class AboutView(InviteView):
+    @override
     def __init__(
         self,
         invite_url: str,
@@ -71,6 +74,7 @@ class Misc(Cog['Erasmus']):
     localizer: Localizer
     version_map: OrderedDict[str, list[str]]
 
+    @override
     def __init__(self, bot: Erasmus, /) -> None:
         super().__init__(bot)
 
@@ -92,6 +96,7 @@ class Misc(Cog['Erasmus']):
 
         self.version_map = version_map
 
+    @override
     async def cog_load(self) -> None:
         await self.refresh()
 

@@ -3,6 +3,7 @@ from __future__ import annotations
 import asyncio
 import contextlib
 from typing import TYPE_CHECKING, Final, Literal, TypedDict
+from typing_extensions import Self, override
 
 import orjson
 from attrs import field
@@ -16,8 +17,6 @@ from ..utils import frozen
 from .base_service import BaseService
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
-
     import aiohttp
 
     from ..config import ServiceConfig
@@ -159,6 +158,7 @@ class ApiBible(BaseService):
 
         return json['data']
 
+    @override
     async def get_passage(self, bible: Bible, verses: VerseRange, /) -> Passage:
         async with self.session.get(
             self._passage_url.with_path(
@@ -181,6 +181,7 @@ class ApiBible(BaseService):
 
             return self.__transform_verse(bible, verses, data['content'])
 
+    @override
     async def search(
         self,
         bible: Bible,
@@ -218,6 +219,7 @@ class ApiBible(BaseService):
 
             return SearchResults(passages, total)
 
+    @override
     @classmethod
     def from_config(
         cls, config: ServiceConfig | None, session: aiohttp.ClientSession, /

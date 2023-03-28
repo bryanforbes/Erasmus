@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from typing_extensions import Self, override
 
 import pendulum
 from pendulum.tz.timezone import Timezone as _Timezone
@@ -9,16 +10,17 @@ from sqlalchemy.dialects.postgresql import TIME, TIMESTAMP
 
 if TYPE_CHECKING:
     from datetime import datetime, time
-    from typing_extensions import Self
 
 
 class DateTime(TypeDecorator[pendulum.DateTime]):
     impl: TIMESTAMP = TIMESTAMP  # pyright: ignore
     cache_ok = True
 
+    @override
     def __init__(self, timezone: bool = False, precision: int | None = None) -> None:
         super().__init__(timezone=timezone, precision=precision)
 
+    @override
     def process_bind_param(
         self, value: pendulum.DateTime | None, dialect: object
     ) -> datetime | None:
@@ -30,6 +32,7 @@ class DateTime(TypeDecorator[pendulum.DateTime]):
 
         return value
 
+    @override
     def process_result_value(
         self, value: datetime | None, dialect: object
     ) -> pendulum.DateTime | None:
@@ -51,9 +54,11 @@ class Time(TypeDecorator[pendulum.Time]):
     impl: TIME = TIME  # pyright: ignore
     cache_ok = True
 
+    @override
     def __init__(self, precision: int | None = None) -> None:
         super().__init__(timezone=False, precision=precision)
 
+    @override
     def process_bind_param(
         self, value: pendulum.Time | None, dialect: object
     ) -> time | None:
@@ -62,6 +67,7 @@ class Time(TypeDecorator[pendulum.Time]):
 
         return value.replace(tzinfo=None)
 
+    @override
     def process_result_value(
         self, value: time | None, dialect: object
     ) -> pendulum.Time | None:
@@ -77,6 +83,7 @@ class Timezone(TypeDecorator[_Timezone]):
     impl: String = String  # pyright: ignore
     cache_ok = True
 
+    @override
     def process_bind_param(
         self, value: _Timezone | None, dialect: object
     ) -> str | None:
@@ -85,6 +92,7 @@ class Timezone(TypeDecorator[_Timezone]):
 
         return value.name
 
+    @override
     def process_result_value(
         self, value: str | None, dialect: object
     ) -> _Timezone | None:
@@ -93,5 +101,6 @@ class Timezone(TypeDecorator[_Timezone]):
 
         return pendulum.timezone(value)
 
+    @override
     def copy(self, /, **kwargs: object) -> Self:
         return Timezone(self.impl.length)

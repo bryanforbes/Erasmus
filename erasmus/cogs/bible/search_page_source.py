@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from typing_extensions import override
 
 from ...data import Passage
 from ...page_source import AsyncCallback, AsyncPageSource, FieldPageSource, Pages
@@ -16,6 +17,7 @@ class SearchPageSource(FieldPageSource['Sequence[Passage]'], AsyncPageSource[Pas
     bible: Bible
     localizer: MessageLocalizer
 
+    @override
     def __init__(
         self,
         callback: AsyncCallback[Passage],
@@ -30,6 +32,7 @@ class SearchPageSource(FieldPageSource['Sequence[Passage]'], AsyncPageSource[Pas
         self.bible = bible
         self.localizer = localizer
 
+    @override
     def get_field_values(
         self, entries: Sequence[Passage], /
     ) -> Iterable[tuple[str, str]]:
@@ -38,6 +41,7 @@ class SearchPageSource(FieldPageSource['Sequence[Passage]'], AsyncPageSource[Pas
                 entry.text if len(entry.text) < 1024 else f'{entry.text[:1023]}\u2026'
             )
 
+    @override
     def format_footer_text(
         self, pages: Pages[Sequence[Passage]], max_pages: int
     ) -> str:
@@ -50,6 +54,7 @@ class SearchPageSource(FieldPageSource['Sequence[Passage]'], AsyncPageSource[Pas
             },
         )
 
+    @override
     async def set_page_text(self, page: Sequence[Passage] | None, /) -> None:
         self.embed.title = self.localizer.format(
             'title', data={'bible_name': self.bible.name}

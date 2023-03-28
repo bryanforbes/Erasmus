@@ -2,9 +2,9 @@ from _typeshed import StrOrBytesPath
 from datetime import datetime, timedelta, tzinfo
 from typing import Final, Literal, TypeVar, overload
 
-POST_TRANSITION: Final[Literal['post']] = ...
-PRE_TRANSITION: Final[Literal['pre']] = ...
-TRANSITION_ERROR: Final[Literal['error']] = ...
+POST_TRANSITION: Final[Literal['post']]
+PRE_TRANSITION: Final[Literal['pre']]
+TRANSITION_ERROR: Final[Literal['error']]
 _datetime = datetime
 _D = TypeVar("_D", bound=datetime)
 
@@ -53,4 +53,4 @@ class FixedTimezone(Timezone):
 class TimezoneFile(Timezone):
     def __init__(self, path: StrOrBytesPath | int) -> None: ...
 
-UTC: Final[FixedTimezone] = ...
+UTC: Final[FixedTimezone]

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
+from typing_extensions import override
 
 if TYPE_CHECKING:
     from enum import Enum
@@ -20,6 +21,7 @@ class DoNotUnderstandError(ErasmusError):
 class BibleNotSupportedError(ErasmusError):
     version: str
 
+    @override
     def __init__(self, version: str, /) -> None:
         self.version = version
 
@@ -27,6 +29,7 @@ class BibleNotSupportedError(ErasmusError):
 class BookNotUnderstoodError(ErasmusError):
     book: str
 
+    @override
     def __init__(self, book: str, /) -> None:
         self.book = book
 
@@ -35,6 +38,7 @@ class BookNotInVersionError(ErasmusError):
     book: str
     version: str
 
+    @override
     def __init__(self, book: str, version: str, /) -> None:
         self.book = book
         self.version = version
@@ -45,6 +49,7 @@ class BookMappingInvalid(ErasmusError):
     from_book: Book
     to_osis: str
 
+    @override
     def __init__(self, version: str, from_book: Book, to_osis: str, /) -> None:
         self.version = version
         self.from_book = from_book
@@ -54,6 +59,7 @@ class BookMappingInvalid(ErasmusError):
 class ReferenceNotUnderstoodError(ErasmusError):
     reference: str
 
+    @override
     def __init__(self, reference: str, /) -> None:
         self.reference = reference
 
@@ -61,6 +67,7 @@ class ReferenceNotUnderstoodError(ErasmusError):
 class ServiceNotSupportedError(ErasmusError):
     bible: Bible
 
+    @override
     def __init__(self, bible: Bible, /) -> None:
         self.bible = bible
 
@@ -68,6 +75,7 @@ class ServiceNotSupportedError(ErasmusError):
 class ServiceTimeout(ErasmusError):
     bible: Bible
 
+    @override
     def __init__(self, bible: Bible, /) -> None:
         self.bible = bible
 
@@ -75,6 +83,7 @@ class ServiceTimeout(ErasmusError):
 class ServiceLookupTimeout(ServiceTimeout):
     verses: VerseRange
 
+    @override
     def __init__(self, bible: Bible, verses: VerseRange, /) -> None:
         super().__init__(bible)
         self.verses = verses
@@ -83,6 +92,7 @@ class ServiceLookupTimeout(ServiceTimeout):
 class ServiceSearchTimeout(ServiceTimeout):
     terms: list[str]
 
+    @override
     def __init__(self, bible: Bible, terms: list[str], /) -> None:
         super().__init__(bible)
         self.terms = terms
@@ -95,6 +105,7 @@ class NoUserVersionError(ErasmusError):
 class InvalidVersionError(ErasmusError):
     version: str
 
+    @override
     def __init__(self, version: str, /) -> None:
         self.version = version
 
@@ -102,6 +113,7 @@ class InvalidVersionError(ErasmusError):
 class InvalidTimeError(ErasmusError):
     time: str
 
+    @override
     def __init__(self, time: str, /) -> None:
         self.time = time
 
@@ -109,6 +121,7 @@ class InvalidTimeError(ErasmusError):
 class InvalidTimeZoneError(ErasmusError):
     timezone: str
 
+    @override
     def __init__(self, timezone: str, /) -> None:
         self.timezone = timezone
 
@@ -116,6 +129,7 @@ class InvalidTimeZoneError(ErasmusError):
 class DailyBreadNotInVersionError(ErasmusError):
     version: str
 
+    @override
     def __init__(self, version: str, /) -> None:
         self.version = version
 
@@ -123,6 +137,7 @@ class DailyBreadNotInVersionError(ErasmusError):
 class InvalidConfessionError(ErasmusError):
     confession: str
 
+    @override
     def __init__(self, confession: str, /) -> None:
         self.confession = confession
 
@@ -132,6 +147,7 @@ class NoSectionError(ErasmusError):
     section: str
     section_type: str
 
+    @override
     def __init__(self, confession: str, section: str, section_type: Enum, /) -> None:
         self.confession = confession
         self.section = section

@@ -1,10 +1,10 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, Generic, Literal, Protocol, TypeVar, overload
+from typing_extensions import LiteralString, override
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable, Mapping
-    from typing_extensions import LiteralString
     from unittest import mock
 
 _T = TypeVar('_T')
@@ -187,6 +187,7 @@ _SentinelNameT = TypeVar('_SentinelNameT', bound='LiteralString')
 class _SentinelObject(Any, Generic[_SentinelNameT]):
     name: _SentinelNameT
 
+    @override
     def __init__(self, name: _SentinelNameT) -> None:
         ...
 

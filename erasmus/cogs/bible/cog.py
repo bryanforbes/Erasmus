@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 from typing import TYPE_CHECKING, Callable, Final, cast
+from typing_extensions import override
 
 import discord
 from attrs import field
@@ -82,6 +83,7 @@ class Bible(Cog['Erasmus']):
     __lookup_cooldown: commands.CooldownMapping[discord.Message]
     __daily_bread_task: tasks.Loop[Callable[[], Coroutine[None]]]
 
+    @override
     def __init__(self, bot: Erasmus, /) -> None:
         self.service_manager = ServiceManager.from_config(bot.config, bot.session)
         self.localizer = bot.localizer
@@ -106,6 +108,7 @@ class Bible(Cog['Erasmus']):
             ]
         )
 
+    @override
     async def cog_load(self) -> None:
         self.__daily_bread_task = self.daily_bread.get_task()
         self.__daily_bread_task.start()
@@ -114,6 +117,7 @@ class Bible(Cog['Erasmus']):
         async with Session() as session:
             await self.refresh(session)
 
+    @override
     async def cog_unload(self) -> None:
         bible_lookup.clear()
 
@@ -147,6 +151,7 @@ class Bible(Cog['Erasmus']):
         )
         await send_passage(itx, passage, ephemeral=only_me)
 
+    @override
     async def cog_app_command_error(  # pyright: ignore [reportIncompatibleMethodOverride]  # noqa: B950
         self,
         itx: discord.Interaction | discord.Message,

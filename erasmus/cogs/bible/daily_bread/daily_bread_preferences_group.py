@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from itertools import chain
 from typing import TYPE_CHECKING, Final, cast
+from typing_extensions import Self, Unpack, override
 
 import discord
 import pendulum
@@ -16,8 +17,6 @@ from ....utils import frozen
 from .common import TASK_INTERVAL, get_first_scheduled_time
 
 if TYPE_CHECKING:
-    from typing_extensions import Self, Unpack
-
     from ....erasmus import Erasmus
     from ....l10n import FormatKwargs, GroupLocalizer, MessageLocalizer
     from ..types import ParentGroup
@@ -145,6 +144,7 @@ class _TimeTransformer(app_commands.Transformer):
         )
     ]
 
+    @override
     async def transform(self, itx: discord.Interaction, value: str, /) -> pendulum.Time:
         value = value.strip()
 
@@ -175,6 +175,7 @@ class _TimeTransformer(app_commands.Transformer):
 
         return pendulum.Time(hours, minutes)
 
+    @override
     async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
         self, itx: discord.Interaction, current: str, /
     ) -> list[app_commands.Choice[str]]:
@@ -211,6 +212,7 @@ class _TimeZoneTransformer(app_commands.Transformer):
         )
     )
 
+    @override
     async def transform(self, itx: discord.Interaction, value: str, /) -> Timezone:
         value_lower = value.lower()
 
@@ -219,6 +221,7 @@ class _TimeZoneTransformer(app_commands.Transformer):
 
         return pendulum.timezone(self.tz_map[value_lower])
 
+    @override
     async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
         self, itx: discord.Interaction, current: str, /
     ) -> list[app_commands.Choice[str]]:

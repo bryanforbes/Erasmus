@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from typing import TYPE_CHECKING, Final
+from typing_extensions import override
 
 from attrs import field
 from botus_receptus import re
@@ -76,6 +77,7 @@ class BibleGateway(BaseService):
 
         return Passage(text=text, range=verses, version=bible.abbr)
 
+    @override
     async def get_passage(self, bible: Bible, verses: VerseRange, /) -> Passage:
         async with self.session.get(
             self._passage_url.with_query(
@@ -105,6 +107,7 @@ class BibleGateway(BaseService):
 
             return self.__transform_verse_node(bible, verses, verse_block)
 
+    @override
     async def search(
         self,
         bible: Bible,

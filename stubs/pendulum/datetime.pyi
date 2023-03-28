@@ -1,5 +1,5 @@
 from datetime import date, datetime, time, timedelta, tzinfo
-from typing import Literal
+from typing import ClassVar, Literal
 from typing_extensions import Self
 
 from .date import Date
@@ -8,7 +8,9 @@ from .time import Time
 from .tz.timezone import Timezone
 
 class DateTime(datetime, Date):
-    EPOCH: DateTime = ...
+    min: ClassVar[DateTime]
+    max: ClassVar[DateTime]
+    EPOCH: ClassVar[DateTime]
     @classmethod
     def now(cls, tz: str | Timezone | None = ...) -> DateTime: ...
     @classmethod

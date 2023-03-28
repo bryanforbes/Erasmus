@@ -3,20 +3,10 @@ from __future__ import annotations
 import inspect
 from abc import abstractmethod
 from collections.abc import AsyncIterable, Awaitable, Callable, Iterable, Sequence
-from typing import (
-    TYPE_CHECKING,
-    ParamSpec,
-    Protocol,
-    TypeAlias,
-    TypedDict,
-    TypeVar,
-    runtime_checkable,
-)
+from typing import ParamSpec, Protocol, TypeAlias, TypedDict, TypeVar, runtime_checkable
+from typing_extensions import NotRequired, override
 
 import discord
-
-if TYPE_CHECKING:
-    from typing_extensions import NotRequired
 
 T = TypeVar('T')
 T_co = TypeVar('T_co', covariant=True)
@@ -48,6 +38,7 @@ class BasePages(Pages[T]):
     source: PageSource[T]
     current_page: int
 
+    @override
     def __init__(self, source: PageSource[T], /) -> None:
         self.source = source
         self.current_page = 0
@@ -114,6 +105,7 @@ class ListPageSource(PageSourceBase[Sequence[T]]):
     _total: int
     _max_pages: int
 
+    @override
     def __init__(self, entries: Sequence[T], /, *, per_page: int) -> None:
         self.entries = entries
         self.per_page = per_page
@@ -129,12 +121,15 @@ class ListPageSource(PageSourceBase[Sequence[T]]):
     def needs_pagination(self) -> bool:
         return len(self.entries) > self.per_page
 
+    @override
     def get_max_pages(self) -> int | None:
         return self._max_pages
 
+    @override
     def get_total(self) -> int:
         return self._total
 
+    @override
     async def get_page(self, page_number: int, /) -> Sequence[T]:
         base = page_number * self.per_page
         return self.entries[base : base + self.per_page]
@@ -171,11 +166,13 @@ class AsyncPageSource(PageSourceBase[Sequence[T]]):
     _callback: AsyncCallback[T]
     _cache: dict[int, Sequence[T]]
 
+    @override
     def __init__(self, callback: AsyncCallback[T], /, *, per_page: int) -> None:
         self._callback = callback
         self.per_page = per_page
         self._cache = {}
 
+    @override
     async def prepare(self, /) -> None:
         await super().prepare()
 
@@ -203,12 +200,15 @@ class AsyncPageSource(PageSourceBase[Sequence[T]]):
     def needs_pagination(self, /) -> bool:
         return self._total > self.per_page
 
+    @override
     def get_max_pages(self, /) -> int | None:
         return self._max_pages
 
+    @override
     def get_total(self, /) -> int:
         return self._total
 
+    @override
     async def get_page(self, page_number: int, /) -> Sequence[T]:
         if page_number in self._cache:
             return self._cache[page_number]
@@ -227,11 +227,13 @@ class AsyncPageSource(PageSourceBase[Sequence[T]]):
 class EmbedPageSource(PageSourceBase[T]):
     embed: discord.Embed
 
+    @override
     async def prepare(self, /) -> None:
         await super().prepare()
 
         self.embed = discord.Embed()
 
+    @override
     async def format_page(
         self, pages: Pages[T], page: T | None, /
     ) -> str | discord.Embed | Kwargs:
@@ -261,6 +263,7 @@ class FieldPageSource(EmbedPageSource[T]):
     def get_field_values(self, page: T, /) -> Iterable[tuple[str, str]]:
         raise NotImplementedError
 
+    @override
     async def set_page_text(self, page: T | None, /) -> None:
         if page is None:
             self.embed.description = 'I found 0 results'

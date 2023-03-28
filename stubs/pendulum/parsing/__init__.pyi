@@ -5,8 +5,8 @@ from typing import Any, Final
 from .exceptions import ParserError as ParserError
 from .iso8601 import parse_iso8601 as parse_iso8601
 
-COMMON: Final[Pattern[str]] = ...
-DEFAULT_OPTIONS: Final[dict[str, Any]] = ...
+COMMON: Final[Pattern[str]]
+DEFAULT_OPTIONS: Final[dict[str, Any]]
 
 def parse(
     text: str,
