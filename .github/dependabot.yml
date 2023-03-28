@@ -7,8 +7,15 @@ updates:
       time: "06:00"
       timezone: "America/Chicago"
     allow:
-      - dependency-name: "orjson"
-      - dependency-name: "pytz"
+      - dependency-type: "direct"
+      - dependency-name: "discord.py"
+        dependency-type: "all"
+      - dependency-name: "fluent.runtime"
+        dependency-type: "all"
+      - dependency-name: "botus_receptus"
+        dependency-type: "all"
+      - dependency-name: "beautifulsoup4"
+        dependency-type: "all"
     open-pull-requests-limit: 10
     assignees:
       - bryanforbes
