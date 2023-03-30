@@ -7,7 +7,6 @@ updates:
       time: "06:00"
       timezone: "America/Chicago"
     allow:
-      - dependency-type: "direct"
       - dependency-name: "discord.py"
         dependency-type: "all"
       - dependency-name: "fluent.runtime"
