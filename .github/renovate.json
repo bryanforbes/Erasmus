@@ -5,5 +5,8 @@
     "schedule:daily"
   ],
   "assignees": ["bryanforbes"],
-  "timezone": "America/Chicago"
+  "timezone": "America/Chicago",
+  "lockFileMaintenance": {
+    "enabled": true
+  }
 }
