@@ -9,9 +9,9 @@ updates:
     allow:
       - dependency-name: "discord.py"
         dependency-type: "all"
-      - dependency-name: "fluent.runtime"
+      - dependency-name: "fluent-runtime"
         dependency-type: "all"
-      - dependency-name: "botus_receptus"
+      - dependency-name: "botus-receptus"
         dependency-type: "all"
       - dependency-name: "beautifulsoup4"
         dependency-type: "all"
