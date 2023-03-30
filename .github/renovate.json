@@ -16,6 +16,13 @@
       "groupName": "dev dependencies (non-major)"
     }
   ],
+  "regexManagers": [
+    {
+      "fileMatch": ["^pyproject.toml$"],
+      "matchStrings": ["\\[tool\\.poetry\\.dependencies\\..*?\\]\\ngit = \"https://github.com/(?<depName>.*?)\\.git\"\\ntag = \"(?<currentValue>.*?)\""],
+      "datasourceTemplate": "github-tags"
+    }
+  ],
   "lockFileMaintenance": {
     "enabled": true,
     "extends": [
