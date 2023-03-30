@@ -6,6 +6,14 @@
   ],
   "assignees": ["bryanforbes"],
   "timezone": "America/Chicago",
+  "rangeStrategy": "bump",
+  "packageRules": [
+    {
+      "matchDepTypes": ["dev-dependencies"],
+      "matchUpdateTypes": ["minor", "patch"],
+      "groupName": "dev dependencies (non-major)"
+    }
+  ],
   "lockFileMaintenance": {
     "enabled": true
   }
