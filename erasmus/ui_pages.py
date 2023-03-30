@@ -104,7 +104,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
         return {
             author_id,
             cast('int', client.owner_id),
-            cast('discord.ClientUser', client.user).id,
+            client.user.id,
         }
 
     async def is_same_user(self, itx: discord.Interaction, /) -> bool:
