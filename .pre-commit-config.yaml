@@ -6,29 +6,22 @@ files: >
       tests/.*\.py$
   )$
 repos:
--   repo: local
+  - repo: local
     hooks:
-    -   id: isort
-        name: isort
-        language: system
-        entry: poetry run isort --resolve-all-configs --check-only
-    -   id: black
-        name: black
-        language: system
-        entry: poetry run black --check
-    -   id: flake8
-        name: flake8
-        language: system
-        entry: poetry run flake8
-    # -   id: mypy
-    #     name: mypy
-    #     language: system
-    #     entry: poetry run mypy
-    #     exclude: \.pyi$
-    -   id: pyright
-        name: pyright
-        entry: pyright
-        language: node
-        pass_filenames: false
-        types_or: [python, pyi]
-        additional_dependencies: ['pyright@1.1.300']
+    - id: isort
+      name: isort
+      language: system
+      entry: poetry run isort --resolve-all-configs --check-only
+    - id: black
+      name: black
+      language: system
+      entry: poetry run black --check
+    - id: flake8
+      name: flake8
+      language: system
+      entry: poetry run flake8
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.300
+    hooks:
+    - id: pyright
+      exclude: '^alembic/.*\.py$'
