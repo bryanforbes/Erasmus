@@ -110,7 +110,7 @@ def upgrade():
                 'confession_id': bfm2k['id'],
                 'title': section['title'],
                 'number': section['number'],
-                'subsection_number': section.get('subsection_number', None),
+                'subsection_number': section.get('subsection_number'),
                 'text': section['text'],
             }
             for section in data['sections']
