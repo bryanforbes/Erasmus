@@ -1,24 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:base",
-    "schedule:daily",
-    ":enablePreCommit",
-    ":assignee(bryanforbes)",
-    ":timezone(America/Chicago)",
-    ":combinePatchMinorReleases"
-  ],
-  "rangeStrategy": "pin",
-  "packageRules": [
-    {
-      "matchDepTypes": ["dev-dependencies"],
-      "groupName": "dev dependencies (non-major)"
-    }
-  ],
-  "lockFileMaintenance": {
-    "enabled": true,
-    "extends": [
-      "schedule:daily"
-    ]
-  }
+    "github>bryanforbes/python-workflows:app"
+  ]
 }
