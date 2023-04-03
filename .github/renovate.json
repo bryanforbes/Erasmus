@@ -8,7 +8,7 @@
     ":timezone(America/Chicago)",
     ":combinePatchMinorReleases"
   ],
-  "rangeStrategy": "bump",
+  "rangeStrategy": "pin",
   "packageRules": [
     {
       "matchDepTypes": ["dev-dependencies"],
