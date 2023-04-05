@@ -83,7 +83,6 @@ class Bible(Cog['Erasmus']):
     __lookup_cooldown: commands.CooldownMapping[discord.Message]
     __daily_bread_task: tasks.Loop[Callable[[], Coroutine[None]]]
 
-    @override
     def __init__(self, bot: Erasmus, /) -> None:
         self.service_manager = ServiceManager.from_config(bot.config, bot.session)
         self.localizer = bot.localizer

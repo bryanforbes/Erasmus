@@ -133,7 +133,6 @@ class ConfessionSearchSource(
     confession: ConfessionRecord
     localizer: MessageLocalizer
 
-    @override
     def __init__(
         self,
         entries: list[Section],
@@ -307,7 +306,6 @@ class Confession(
     base_localizer: Localizer
     localizer: GroupLocalizer
 
-    @override
     def __init__(self, bot: Erasmus, /) -> None:
         self.base_localizer = bot.localizer
         self.localizer = bot.localizer.for_group(self)

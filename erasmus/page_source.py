@@ -38,7 +38,6 @@ class BasePages(Pages[T]):
     source: PageSource[T]
     current_page: int
 
-    @override
     def __init__(self, source: PageSource[T], /) -> None:
         self.source = source
         self.current_page = 0
@@ -105,7 +104,6 @@ class ListPageSource(PageSourceBase[Sequence[T]]):
     _total: int
     _max_pages: int
 
-    @override
     def __init__(self, entries: Sequence[T], /, *, per_page: int) -> None:
         self.entries = entries
         self.per_page = per_page
@@ -118,6 +116,7 @@ class ListPageSource(PageSourceBase[Sequence[T]]):
         self._max_pages = pages
 
     @property
+    @override
     def needs_pagination(self) -> bool:
         return len(self.entries) > self.per_page
 
@@ -166,7 +165,6 @@ class AsyncPageSource(PageSourceBase[Sequence[T]]):
     _callback: AsyncCallback[T]
     _cache: dict[int, Sequence[T]]
 
-    @override
     def __init__(self, callback: AsyncCallback[T], /, *, per_page: int) -> None:
         self._callback = callback
         self.per_page = per_page
@@ -197,6 +195,7 @@ class AsyncPageSource(PageSourceBase[Sequence[T]]):
             self._cache[0] = items
 
     @property
+    @override
     def needs_pagination(self, /) -> bool:
         return self._total > self.per_page
 

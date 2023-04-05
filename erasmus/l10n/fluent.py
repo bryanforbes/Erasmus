@@ -116,7 +116,6 @@ class Bundle(FluentBundle):
 class Localization(FluentLocalization):
     fallback_locale: str | None
 
-    @override
     def __init__(
         self,
         locales: Sequence[str],

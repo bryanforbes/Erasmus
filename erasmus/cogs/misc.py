@@ -20,7 +20,6 @@ _logger: Final = logging.getLogger(__name__)
 
 
 class InviteView(discord.ui.View):
-    @override
     def __init__(
         self,
         invite_url: str,
@@ -37,7 +36,6 @@ class InviteView(discord.ui.View):
 
 
 class AboutView(InviteView):
-    @override
     def __init__(
         self,
         invite_url: str,
@@ -74,7 +72,6 @@ class Misc(Cog['Erasmus']):
     localizer: Localizer
     version_map: OrderedDict[str, list[str]]
 
-    @override
     def __init__(self, bot: Erasmus, /) -> None:
         super().__init__(bot)
 

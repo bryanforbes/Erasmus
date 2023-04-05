@@ -16,7 +16,6 @@ class DateTime(TypeDecorator[pendulum.DateTime]):
     impl: TIMESTAMP = TIMESTAMP  # pyright: ignore
     cache_ok = True
 
-    @override
     def __init__(self, timezone: bool = False, precision: int | None = None) -> None:
         super().__init__(timezone=timezone, precision=precision)
 
@@ -54,7 +53,6 @@ class Time(TypeDecorator[pendulum.Time]):
     impl: TIME = TIME  # pyright: ignore
     cache_ok = True
 
-    @override
     def __init__(self, precision: int | None = None) -> None:
         super().__init__(timezone=False, precision=precision)
 

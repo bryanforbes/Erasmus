@@ -14,7 +14,6 @@ if TYPE_CHECKING:
 class Translator(app_commands.Translator):
     localizer: Localizer
 
-    @override
     def __init__(self, localizer: Localizer, /) -> None:
         self.localizer = localizer
 

@@ -31,7 +31,6 @@ class _RunError(Exception):
     value: str
     formatted: str
 
-    @override
     def __init__(self, value: str, formatted: str) -> None:
         super().__init__()
         self.value = value
@@ -45,7 +44,6 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
         label='Code', placeholder='Code here…', style=discord.TextStyle.paragraph
     )
 
-    @override
     def __init__(self, admin: Admin, *, timeout: float | None = None) -> None:
         super().__init__(timeout=timeout)
 
@@ -139,7 +137,6 @@ async def operation_guard(
 class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin commands'):
     _last_result: object
 
-    @override
     def __init__(self, bot: Erasmus, /) -> None:
         if bot.config.get('enable_eval', False):
             self._eval = app_commands.command(name='eval')(self.__eval)

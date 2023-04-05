@@ -34,7 +34,6 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     config: Config
     localizer: Localizer
 
-    @override
     def __init__(self, config: Config, /, *args: object, **kwargs: object) -> None:
         self.localizer = Localizer(discord.Locale.american_english)
 

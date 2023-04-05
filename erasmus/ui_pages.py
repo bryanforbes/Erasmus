@@ -26,7 +26,6 @@ _MISSING: Final = discord.utils.MISSING
 class PagesModal(discord.ui.Modal, Generic[T], title='Skip to page…'):
     pages: UIPages[T]
 
-    @override
     def __init__(self, pages: UIPages[T], *, timeout: float | None = None) -> None:
         super().__init__(timeout=timeout)
 
@@ -72,7 +71,6 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
     localizer: MessageLocalizer
     allowed_mentions: discord.AllowedMentions
 
-    @override
     def __init__(
         self,
         itx: discord.Interaction,

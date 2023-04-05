@@ -17,7 +17,6 @@ class SearchPageSource(FieldPageSource['Sequence[Passage]'], AsyncPageSource[Pas
     bible: Bible
     localizer: MessageLocalizer
 
-    @override
     def __init__(
         self,
         callback: AsyncCallback[Passage],
