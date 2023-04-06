@@ -1,0 +1,7 @@
+{
+  "flake8.importStrategy": "fromEnvironment",
+  "isort.importStrategy": "fromEnvironment",
+  "python.formatting.provider": "black",
+  "python.linting.flake8Enabled": true,
+  "python.testing.pytestEnabled": true
+}
