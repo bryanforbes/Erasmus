@@ -48,7 +48,7 @@ pytest-clarity = "1.0.1"
 pytest-cov = "4.0.0"
 pytest-mock = "3.10.0"
 pytest-recording = "0.12.2"
-pytest-sugar = "0.9.6"
+pytest-sugar = "0.9.7"
 pytest-xdist = "3.2.1"
 
 [tool.poetry.scripts]
