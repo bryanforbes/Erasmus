@@ -17,8 +17,8 @@ from .datetime import DateTime
 from .locales.locale import Locale
 from .period import Period
 
-_DT = TypeVar("_DT", bound=datetime, infer_variance=True)
-_D = TypeVar("_D", bound=date, infer_variance=True)
+_DT = TypeVar('_DT', bound=datetime, infer_variance=True)
+_D = TypeVar('_D', bound=date, infer_variance=True)
 
 @overload
 def add_duration(

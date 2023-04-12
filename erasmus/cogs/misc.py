@@ -81,7 +81,7 @@ class Misc(Cog['Erasmus']):
         version_map: OrderedDict[str, list[str]] = OrderedDict()
         current_items: list[str] = []
 
-        with open(Path(__file__).resolve().parent.parent.parent / 'NEWS.md', 'r') as f:
+        with (Path(__file__).resolve().parent.parent.parent / 'NEWS.md').open() as f:
             for line in f.readlines():
                 if line.startswith('# Version '):
                     current_items = []
@@ -100,7 +100,7 @@ class Misc(Cog['Erasmus']):
     @app_commands.command()
     @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda itx: itx.channel_id)
     async def invite(self, itx: discord.Interaction, /) -> None:
-        '''Get a link to invite Erasmus to your server'''
+        """Get a link to invite Erasmus to your server"""
 
         localizer = self.localizer.for_message('about', locale=itx.locale)
 
@@ -109,7 +109,7 @@ class Misc(Cog['Erasmus']):
     @app_commands.command()
     @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda itx: itx.user.id)
     async def about(self, itx: discord.Interaction, /) -> None:
-        '''Get info about Erasmus'''
+        """Get info about Erasmus"""
 
         localizer = self.localizer.for_message('about', locale=itx.locale)
         channel_count = 0
@@ -174,7 +174,7 @@ class Misc(Cog['Erasmus']):
     async def news(
         self, itx: discord.Interaction, /, version: str | None = None
     ) -> None:
-        '''Display news from the latest release'''
+        """Display news from the latest release"""
 
         if version is None or version not in self.version_map:
             version = next(iter(self.version_map))
@@ -197,7 +197,7 @@ class Misc(Cog['Erasmus']):
         ):
             try:
                 await message.publish()
-            except Exception as error:  # noqa: PIE786
+            except Exception as error:
                 _logger.exception(
                     'An error occurred trying to publish the news',
                     exc_info=error,
@@ -207,13 +207,13 @@ class Misc(Cog['Erasmus']):
     @app_commands.command()
     @app_commands.checks.cooldown(rate=2, per=30.0, key=lambda itx: itx.channel_id)
     async def notice(self, itx: discord.Interaction, /) -> None:
-        '''Display text-command deprecation notice'''
+        """Display text-command deprecation notice"""
 
         await utils.send_embed(
             itx,
             title='Notice of future changes',
             description=(
-                f'{formatting.underline(formatting.bold("Users"))}\n'
+                f'{formatting.underline(formatting.bold("Users"))}\n'  # noqa: S608
                 'Beginning <t:1661972400:D>, Erasmus will no longer respond to '
                 'text-based commands (`$confess` and others). At that time, Discord '
                 'will require all bots to use slash commands. Because of this '

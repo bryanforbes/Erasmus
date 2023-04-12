@@ -2,12 +2,12 @@ from __future__ import annotations
 
 from typing import Any
 
-import pytest  # noqa: F401
+# import pytest
 from attrs import define, field
 
-from erasmus.data import Passage, SearchResults  # noqa: F401
-from erasmus.erasmus import Erasmus  # noqa: F401
-from erasmus.exceptions import BibleNotSupportedError  # noqa: F401
+# from erasmus.data import Passage, SearchResults
+# from erasmus.erasmus import Erasmus
+# from erasmus.exceptions import BibleNotSupportedError
 
 
 @define
@@ -51,7 +51,7 @@ class MockContext:
 #
 #     @pytest.fixture(autouse=True)
 #     def mock_load(self, mocker):
-#         mock = mocker.mock_open(read_data='{ "foo": { "bar": "baz" }, "spam": "ham" }')  # noqa: B950
+#         mock = mocker.mock_open(read_data='{ "foo": { "bar": "baz" }, "spam": "ham" }')  # noqa: E501
 #         mocker.patch('erasmus.erasmus.open', mock)
 #         return mocker.patch('erasmus.erasmus.load')
 #

@@ -13,10 +13,14 @@ if TYPE_CHECKING:
 
 
 class DateTime(TypeDecorator[pendulum.DateTime]):
-    impl: TIMESTAMP = TIMESTAMP  # pyright: ignore
+    impl: TIMESTAMP = TIMESTAMP  # pyright: ignore[reportGeneralTypeIssues]
     cache_ok = True
 
-    def __init__(self, timezone: bool = False, precision: int | None = None) -> None:
+    def __init__(
+        self,
+        timezone: bool = False,  # noqa: FBT001, FBT002
+        precision: int | None = None,
+    ) -> None:
         super().__init__(timezone=timezone, precision=precision)
 
     @override
@@ -27,7 +31,7 @@ class DateTime(TypeDecorator[pendulum.DateTime]):
             return None
 
         if not self.impl.timezone:
-            value = value.naive()
+            return value.naive()
 
         return value
 
@@ -38,7 +42,7 @@ class DateTime(TypeDecorator[pendulum.DateTime]):
         if value is None:
             return None
 
-        if self.impl.timezone:
+        if self.impl.timezone:  # noqa: SIM108
             # `asyncpg` always returns `datetime` in UTC for `timestamp with time zone`
             # columns. However `pendulum` doesn't convert the native UTC constant
             # to `pendulum.UTC`.
@@ -50,7 +54,7 @@ class DateTime(TypeDecorator[pendulum.DateTime]):
 
 
 class Time(TypeDecorator[pendulum.Time]):
-    impl: TIME = TIME  # pyright: ignore
+    impl: TIME = TIME  # pyright: ignore[reportGeneralTypeIssues]
     cache_ok = True
 
     def __init__(self, precision: int | None = None) -> None:
@@ -78,7 +82,7 @@ class Time(TypeDecorator[pendulum.Time]):
 
 
 class Timezone(TypeDecorator[_Timezone]):
-    impl: String = String  # pyright: ignore
+    impl: String = String  # pyright: ignore[reportGeneralTypeIssues]
     cache_ok = True
 
     @override

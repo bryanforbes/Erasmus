@@ -1,4 +1,4 @@
-from __future__ import annotations, with_statement
+from __future__ import annotations
 
 import asyncio
 from logging.config import fileConfig
@@ -65,7 +65,7 @@ def run_migrations_offline() -> None:
         dialect_opts={'paramstyle': 'named'},
     )
 
-    with context.begin_transaction():  # type: ignore
+    with context.begin_transaction():
         context.run_migrations()
 
 
@@ -88,7 +88,7 @@ def _do_run_migrations(connection: AsyncConnection) -> None:
         process_revision_directives=process_revision_directives,
     )
 
-    with context.begin_transaction():  # type: ignore
+    with context.begin_transaction():
         context.run_migrations()
 
 

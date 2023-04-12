@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Callable, Final, cast
+from typing import TYPE_CHECKING, Final, cast
 from typing_extensions import override
 
 import discord
@@ -40,6 +40,8 @@ from .testing_server_preferences_group import TestingServerPreferencesGroup
 from .version_group import VersionGroup
 
 if TYPE_CHECKING:
+    from collections.abc import Callable
+
     from botus_receptus.types import Coroutine
     from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -102,7 +104,7 @@ class Bible(Cog['Erasmus']):
         bible_lookup.clear()
         bible_lookup.update(
             [
-                _BibleOption.create(version)  # pyright: ignore
+                _BibleOption.create(version)  # pyright: ignore[reportGeneralTypeIssues]
                 async for version in BibleVersion.get_all(session, ordered=True)
             ]
         )
@@ -125,7 +127,8 @@ class Bible(Cog['Erasmus']):
     def __get_cooldown_bucket(self, message: discord.Message, /) -> commands.Cooldown:
         bucket = self.__lookup_cooldown.get_bucket(message)
 
-        assert bucket is not None
+        if TYPE_CHECKING:
+            assert bucket is not None
 
         retry_after = bucket.update_rate_limit(message.created_at.timestamp())
 
@@ -146,12 +149,12 @@ class Bible(Cog['Erasmus']):
             raise BookNotInVersionError(reference.book.name, bible.name)
 
         passage = await self.service_manager.get_passage(
-            bible, reference  # pyright: ignore
+            bible, reference  # pyright: ignore[reportGeneralTypeIssues]
         )
         await send_passage(itx, passage, ephemeral=only_me)
 
     @override
-    async def cog_app_command_error(  # pyright: ignore [reportIncompatibleMethodOverride]  # noqa: B950
+    async def cog_app_command_error(  # pyright: ignore[reportIncompatibleMethodOverride]  # noqa: E501
         self,
         itx: discord.Interaction | discord.Message,
         error: Exception,
@@ -159,14 +162,11 @@ class Bible(Cog['Erasmus']):
         if (
             isinstance(
                 error,
-                (
-                    app_commands.CommandInvokeError,
-                    app_commands.TransformerError,
-                ),
+                app_commands.CommandInvokeError | app_commands.TransformerError,
             )
             and error.__cause__ is not None
         ):
-            error = cast('Exception', error.__cause__)
+            error = cast(Exception, error.__cause__)
 
         data: dict[str, object] | None = None
 
@@ -243,7 +243,8 @@ class Bible(Cog['Erasmus']):
         try:
             verse_ranges = VerseRange.get_all_from_string(
                 message.content,
-                only_bracketed=self.bot.user not in message.mentions,  # pyright: ignore
+                only_bracketed=self.bot.user
+                not in message.mentions,  # pyright: ignore[reportUnnecessaryContains]  # noqa: E501
             )
 
             if not verse_ranges:
@@ -263,7 +264,7 @@ class Bible(Cog['Erasmus']):
                     bible: BibleVersion | None = None
 
                     if isinstance(verse_range, Exception):
-                        raise verse_range
+                        raise verse_range  # noqa: TRY301
 
                     if verse_range.version is not None:
                         bible = await BibleVersion.get_by_abbr(
@@ -274,7 +275,7 @@ class Bible(Cog['Erasmus']):
                         bible = user_bible
 
                     await self.__lookup(message, bible, verse_range)
-        except Exception as exc:  # noqa: PIE786
+        except Exception as exc:  # noqa: BLE001
             await self.cog_app_command_error(message, exc)
             await self.bot.on_app_command_error(message, exc)
 
@@ -293,7 +294,7 @@ class Bible(Cog['Erasmus']):
         version: app_commands.Transform[str | None, bible_lookup] = None,
         only_me: bool = False,
     ) -> None:
-        '''Look up a verse'''
+        """Look up a verse"""
 
         bible: BibleVersion | None = None
 
@@ -324,7 +325,7 @@ class Bible(Cog['Erasmus']):
         terms: str,
         version: app_commands.Transform[str | None, bible_lookup] = None,
     ) -> None:
-        '''Search in the Bible'''
+        """Search in the Bible"""
 
         bible: BibleVersion | None = None
 
@@ -339,7 +340,7 @@ class Bible(Cog['Erasmus']):
 
         def search(*, per_page: int, page_number: int) -> Coroutine[SearchResults]:
             return self.service_manager.search(
-                bible,  # pyright: ignore
+                bible,  # pyright: ignore[reportGeneralTypeIssues]
                 terms.split(' '),
                 limit=per_page,
                 offset=page_number,
@@ -347,7 +348,10 @@ class Bible(Cog['Erasmus']):
 
         localizer = self.localizer.for_message('search', itx.locale)
         source = SearchPageSource(
-            search, per_page=5, bible=bible, localizer=localizer  # pyright: ignore
+            search,
+            per_page=5,
+            bible=bible,  # pyright: ignore[reportGeneralTypeIssues]
+            localizer=localizer,
         )
         view = UIPages(itx, source, localizer=localizer)
         await view.start()
@@ -357,7 +361,7 @@ class Bible(Cog['Erasmus']):
         rate=2, per=30.0, key=lambda i: (i.guild_id, i.user.id)
     )
     async def bibles(self, itx: discord.Interaction, /) -> None:
-        '''List which Bible versions are available for lookup and search'''
+        """List which Bible versions are available for lookup and search"""
 
         async with Session() as session:
             lines = [self.localizer.format('bibles.prefix', locale=itx.locale), ''] + [
@@ -377,7 +381,7 @@ class Bible(Cog['Erasmus']):
         /,
         version: app_commands.Transform[str, bible_lookup],
     ) -> None:
-        '''Get information about a Bible version'''
+        """Get information about a Bible version"""
 
         async with Session() as session:
             existing = await BibleVersion.get_by_command(session, version)

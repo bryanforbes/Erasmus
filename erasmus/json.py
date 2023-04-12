@@ -8,7 +8,9 @@ if TYPE_CHECKING:
     from collections.abc import Mapping
 
 
-def get(obj: Mapping[str, object], key: str, fallback: object = None, /) -> Any:
+def get(
+    obj: Mapping[str, object], key: str, fallback: object = None, /
+) -> Any:  # noqa: ANN401
     result: Any = obj
 
     for part in key.split('.'):

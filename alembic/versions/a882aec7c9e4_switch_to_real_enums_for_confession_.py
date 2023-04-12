@@ -216,5 +216,5 @@ def downgrade():
     op.drop_column('confessions', 'numbering')
     op.drop_column('confessions', 'type')
 
-    op.execute("DROP TYPE confession_numbering_type")
-    op.execute("DROP TYPE confession_type")
+    op.execute('DROP TYPE confession_numbering_type')
+    op.execute('DROP TYPE confession_type')

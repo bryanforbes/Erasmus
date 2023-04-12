@@ -106,29 +106,29 @@ class TestConfession:
             (
                 2,
                 None,
-                "SELECT confession_sections.id, confession_sections.confession_id, "
-                "confession_sections.number, confession_sections.subsection_number, "
-                "confession_sections.title, confession_sections.text, "
-                "confession_sections.text_stripped, "
-                "confession_sections.search_vector \n"
-                "FROM confession_sections \n"
-                "WHERE confession_sections.confession_id = 42 AND "
-                "confession_sections.number = 2 \n"
-                " LIMIT 1",
+                'SELECT confession_sections.id, confession_sections.confession_id, '
+                'confession_sections.number, confession_sections.subsection_number, '
+                'confession_sections.title, confession_sections.text, '
+                'confession_sections.text_stripped, '
+                'confession_sections.search_vector \n'
+                'FROM confession_sections \n'
+                'WHERE confession_sections.confession_id = 42 AND '
+                'confession_sections.number = 2 \n'
+                ' LIMIT 1',
             ),
             (
                 4,
                 10,
-                "SELECT confession_sections.id, confession_sections.confession_id, "
-                "confession_sections.number, confession_sections.subsection_number, "
-                "confession_sections.title, confession_sections.text, "
-                "confession_sections.text_stripped, "
-                "confession_sections.search_vector \n"
-                "FROM confession_sections \n"
-                "WHERE confession_sections.confession_id = 42 AND "
-                "confession_sections.number = 4 AND "
-                "confession_sections.subsection_number = 10 \n"
-                " LIMIT 1",
+                'SELECT confession_sections.id, confession_sections.confession_id, '
+                'confession_sections.number, confession_sections.subsection_number, '
+                'confession_sections.title, confession_sections.text, '
+                'confession_sections.text_stripped, '
+                'confession_sections.search_vector \n'
+                'FROM confession_sections \n'
+                'WHERE confession_sections.confession_id = 42 AND '
+                'confession_sections.number = 4 AND '
+                'confession_sections.subsection_number = 10 \n'
+                ' LIMIT 1',
             ),
         ],
         ids=['number only', 'with subsection number'],

@@ -3,9 +3,6 @@ from __future__ import annotations
 from pathlib import Path
 from typing import TYPE_CHECKING, Any, cast
 
-import _pytest
-import _pytest.fixtures
-import aiohttp
 import pytest
 import tomli
 
@@ -15,6 +12,10 @@ from erasmus.services.apibible import ApiBible
 from . import ServiceTest
 
 if TYPE_CHECKING:
+    import _pytest
+    import _pytest.fixtures
+    import aiohttp
+
     from erasmus.types import Bible, Service
 
 
@@ -306,7 +307,7 @@ class TestApiBible(ServiceTest):
     def passage_data(self, request: _pytest.fixtures.SubRequest) -> dict[str, Any]:
         return cast('dict[str, Any]', request.param)
 
-    @pytest.fixture(scope="class")
+    @pytest.fixture(scope='class')
     def config(self) -> dict[str, str]:
         try:
             with (Path(__file__).resolve().parent.parent.parent / 'config.toml').open(
@@ -337,14 +338,14 @@ class TestApiBible(ServiceTest):
         [
             (
                 {'Dan': 'DanGr'},
-                '**1.** ἘΝ ἔτει τρίτῳ τῆς βασιλείας Ἰωακεὶμ βασιλέως Ἰούδα, ἦλθε '
-                'Ναβουχοδονόσορ ὁ βασιλεὺς Βαβυλῶνος εἰς Ἱερουσαλὴμ, καὶ ἐπολιόρκει '
-                'αὐτήν.',
+                '**1.** ἘΝ ἔτει τρίτῳ τῆς βασιλείας Ἰωακεὶμ βασιλέως '  # noqa: RUF001
+                'Ἰούδα, ἦλθε Ναβουχοδονόσορ ὁ βασιλεὺς Βαβυλῶνος εἰς '  # noqa: RUF001
+                'Ἱερουσαλὴμ, καὶ ἐπολιόρκει αὐτήν.',  # noqa: RUF001
                 'Daniel',
             ),
             (
                 {'Esth': 'EsthGr'},
-                '**1.** ΤΟ λῆμμα ὃ εἶδεν Ἀμβακοὺμ ὁ προφήτης.',
+                '**1.** ΤΟ λῆμμα ὃ εἶδεν Ἀμβακοὺμ ὁ προφήτης.',  # noqa: RUF001
                 'Esther',
             ),
         ],

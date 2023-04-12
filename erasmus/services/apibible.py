@@ -223,9 +223,6 @@ class ApiBible(BaseService):
     def from_config(
         cls, config: ServiceConfig | None, session: aiohttp.ClientSession, /
     ) -> Self:
-        if config:
-            headers = {'api-key': config.get('api_key', '')}
-        else:
-            headers = {}
+        headers = {'api-key': config.get('api_key', '')} if config else {}
 
         return cls(session, config, headers)

@@ -1,18 +1,21 @@
 from __future__ import annotations
 
-import unittest.mock
 from typing import TYPE_CHECKING, Any, cast
 
-import discord
 import pytest
 from attrs import define, field
 from botus_receptus import Embed
 from discord.ext.commands.view import StringView  # type: ignore
 
 from erasmus.context import Context
-from erasmus.erasmus import Erasmus
 
 if TYPE_CHECKING:
+    import unittest.mock
+
+    import discord
+
+    from erasmus.erasmus import Erasmus
+
     from .types import MockerFixture
 
 

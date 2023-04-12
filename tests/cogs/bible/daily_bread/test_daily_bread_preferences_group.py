@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-import discord
+from typing import TYPE_CHECKING
+
 import pendulum
 import pytest
 
@@ -8,6 +9,9 @@ from erasmus.cogs.bible.daily_bread.daily_bread_preferences_group import (
     _TimeTransformer,
 )
 from erasmus.exceptions import InvalidTimeError
+
+if TYPE_CHECKING:
+    import discord
 
 
 class TestTimeTransformer:

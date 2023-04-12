@@ -35,10 +35,10 @@ class FluentPeriod(FluentType, Period):
 
     def _init_options(self, period: Period, **kwargs: object) -> None:
         self.options = merge_options(
-            PeriodFormatOptions,  # pyright: ignore
+            PeriodFormatOptions,  # pyright: ignore[reportGeneralTypeIssues]
             getattr(
                 period, 'options', self.default_period_format_options
-            ),  # pyright: ignore
+            ),  # pyright: ignore[reportGeneralTypeIssues]
             kwargs,
         )
 
@@ -83,9 +83,7 @@ def fluent_period(delta: object, **kwargs: object) -> FluentPeriod:
         return FluentPeriod.from_period(delta, **kwargs)
 
     raise TypeError(
-        "Can't use fluent_period with object {0} for type {1}".format(
-            delta, type(delta)
-        )
+        f"Can't use fluent_period with object {delta} for type {type(delta)}"
     )
 
 
@@ -121,13 +119,14 @@ class Localization(FluentLocalization):
         locales: Sequence[str],
         resource_ids: Iterable[str],
         resource_loader: AbstractResourceLoader,
+        *,
         use_isolating: bool = True,
     ) -> None:
         self.fallback_locale = locales[-1] if len(locales) > 1 else None
 
         super().__init__(
-            locales,  # pyright: ignore
-            resource_ids,  # pyright: ignore
+            locales,  # pyright: ignore[reportGeneralTypeIssues]
+            resource_ids,  # pyright: ignore[reportGeneralTypeIssues]
             resource_loader,
             use_isolating,
             bundle_class=Bundle,
@@ -169,13 +168,15 @@ class Localization(FluentLocalization):
 
                 pattern = message.value
 
-            value, _ = bundle.format_pattern(pattern, args)  # pyright: ignore
+            value, _ = bundle.format_pattern(
+                pattern, args  # pyright: ignore[reportGeneralTypeIssues]
+            )
             return value if isinstance(value, str) else None
 
         if use_fallbacks:
             if attribute_id:
                 return f'{message_id}.{attribute_id}'
-            else:
-                return message_id
+
+            return message_id
 
         return None

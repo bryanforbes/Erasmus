@@ -75,18 +75,27 @@ class SectionFlag(Flag):
                     case _:
                         yield book.name
 
+    @staticmethod
+    def _sanitize_book_name(book_name: str, /) -> str:
+        book_name = book_name.strip()
+
+        if book_name == 'OT':
+            return 'Genesis'
+
+        if book_name == 'NT':
+            return 'Matthew'
+
+        return book_name
+
     @classmethod
     def from_book_names(cls, book_names: str, /) -> Self:
         book_mask = SectionFlag.NONE
 
         if book_names:
-            for book_name in book_names.split(','):
-                book_name = book_name.strip()
-                if book_name == 'OT':
-                    book_name = 'Genesis'
-                elif book_name == 'NT':
-                    book_name = 'Matthew'
-
+            for book_name in (
+                cls._sanitize_book_name(book_name)
+                for book_name in book_names.split(',')
+            ):
                 book_mask = book_mask | Book.from_name(book_name).section
 
         return book_mask
@@ -376,7 +385,7 @@ class VerseRange:
             while match:
                 try:
                     ranges.append(cls.from_match(match))
-                except Exception as exc:  # noqa: PIE786
+                except Exception as exc:  # noqa: BLE001
                     ranges.append(exc)
 
                 match = lookup_pattern.search(string, match.end())
@@ -398,8 +407,8 @@ class Passage:
     def citation(self, /) -> str:
         if self.version is not None:
             return f'{self.range} ({self.version})'
-        else:
-            return str(self.range)
+
+        return str(self.range)
 
     @override
     def __str__(self, /) -> str:

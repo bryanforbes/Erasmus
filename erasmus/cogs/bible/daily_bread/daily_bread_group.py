@@ -5,7 +5,6 @@ import logging
 from itertools import chain
 from typing import TYPE_CHECKING, Final
 
-import aiohttp
 import async_timeout
 import discord
 import pendulum
@@ -24,12 +23,13 @@ from ....exceptions import (
     ServiceNotSupportedError,
 )
 from ....utils import send_passage
-from ..bible_lookup import bible_lookup  # noqa: TC002
+from ..bible_lookup import bible_lookup  # noqa: TCH001
 from .common import TASK_INTERVAL, get_next_scheduled_time
 
 if TYPE_CHECKING:
     from collections.abc import Callable
 
+    import aiohttp
     from botus_receptus.types import Coroutine
 
     from ....l10n import GroupLocalizer
@@ -115,7 +115,9 @@ class DailyBreadGroup(
         /,
     ) -> bool:
         try:
-            passage = await passage_fetcher(bible)  # pyright: ignore
+            passage = await passage_fetcher(
+                bible  # pyright: ignore[reportGeneralTypeIssues]
+            )
 
             if daily_bread.thread_id is None:
                 thread = discord.utils.MISSING
@@ -128,8 +130,6 @@ class DailyBreadGroup(
                 thread=thread,
                 avatar_url='https://i.imgur.com/XQ8N2vH.png',
             )
-
-            return True
         except (
             DoNotUnderstandError,
             BookNotInVersionError,
@@ -152,15 +152,7 @@ class DailyBreadGroup(
                     daily_bread.guild_id,
                 )
                 return True
-            else:
-                _log.exception(
-                    'An error occurred while posting the daily bread to guild ID %s',
-                    daily_bread.guild_id,
-                    exc_info=error,
-                    stack_info=True,
-                )
-                return False
-        except Exception as error:  # noqa: PIE786
+
             _log.exception(
                 'An error occurred while posting the daily bread to guild ID %s',
                 daily_bread.guild_id,
@@ -168,6 +160,16 @@ class DailyBreadGroup(
                 stack_info=True,
             )
             return False
+        except Exception as error:  # noqa: BLE001
+            _log.exception(
+                'An error occurred while posting the daily bread to guild ID %s',
+                daily_bread.guild_id,
+                exc_info=error,
+                stack_info=True,
+            )
+            return False
+        else:
+            return True
 
     async def _check_and_post(self) -> None:
         async with Session.begin() as session:
@@ -214,7 +216,9 @@ class DailyBreadGroup(
                 else:
                     bible = fallback
 
-                if not passage_fetcher.verse_range_in_bible(bible):  # pyright: ignore
+                if not passage_fetcher.verse_range_in_bible(
+                    bible  # pyright: ignore[reportGeneralTypeIssues]
+                ):
                     daily_bread.next_scheduled = next_scheduled
                     continue
 
@@ -251,7 +255,7 @@ class DailyBreadGroup(
         version: app_commands.Transform[str | None, bible_lookup] = None,
         only_me: bool = False,
     ) -> None:
-        '''Display today's daily bread'''
+        """Display today's daily bread"""
 
         bible: BibleVersion | None = None
 
@@ -266,19 +270,24 @@ class DailyBreadGroup(
 
         passage_fetcher = self._get_fetcher(await self._get_verse_range())
 
-        if not passage_fetcher.verse_range_in_bible(bible):  # pyright: ignore
+        if not passage_fetcher.verse_range_in_bible(
+            bible  # pyright: ignore[reportGeneralTypeIssues]
+        ):
             raise DailyBreadNotInVersionError(bible.name)
 
-        passage = await passage_fetcher(bible)  # pyright: ignore
+        passage = await passage_fetcher(
+            bible  # pyright: ignore[reportGeneralTypeIssues]
+        )
 
         await send_passage(itx, passage, ephemeral=only_me)
 
     @app_commands.command()
     @_shared_cooldown
     async def status(self, itx: discord.Interaction, /) -> None:
-        '''Display the status of automated daily bread posts for this server'''
+        """Display the status of automated daily bread posts for this server"""
 
-        assert itx.guild is not None
+        if TYPE_CHECKING:
+            assert itx.guild is not None
 
         localizer = self.localizer.for_message('status', locale=itx.locale)
 

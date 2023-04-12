@@ -12,7 +12,7 @@ class ConfessionType(Enum):
 
     @override
     def __repr__(self, /) -> str:
-        return '<%s.%s>' % (self.__class__.__name__, self.name)
+        return f'<{self.__class__.__name__}.{self.name}>'
 
 
 class NumberingType(Enum):
@@ -22,4 +22,4 @@ class NumberingType(Enum):
 
     @override
     def __repr__(self, /) -> str:
-        return '<%s.%s>' % (self.__class__.__name__, self.name)
+        return f'<{self.__class__.__name__}.{self.name}>'
