@@ -1,7 +1,8 @@
 from collections.abc import Iterator
 from contextlib import contextmanager
 from datetime import date, datetime
-from typing import TypeVar, overload
+from typing import overload
+from typing_extensions import TypeVar
 
 from ._extensions.helpers import (
     days_in_year as days_in_year,
@@ -16,8 +17,8 @@ from .datetime import DateTime
 from .locales.locale import Locale
 from .period import Period
 
-_DT = TypeVar("_DT", bound=datetime)
-_D = TypeVar("_D", bound=date)
+_DT = TypeVar("_DT", bound=datetime, infer_variance=True)
+_D = TypeVar("_D", bound=date, infer_variance=True)
 
 @overload
 def add_duration(

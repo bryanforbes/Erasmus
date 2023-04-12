@@ -1,6 +1,7 @@
-from typing import Any, TypeVar, overload
+from typing import Any, overload
+from typing_extensions import TypeVar
 
-_L = TypeVar('_L', bound=Locale)
+_L = TypeVar('_L', bound=Locale, infer_variance=True)
 
 class Locale:
     def __init__(self, locale: str, data: Any) -> None: ...

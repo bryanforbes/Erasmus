@@ -1,12 +1,13 @@
 from _typeshed import StrOrBytesPath
 from datetime import datetime, timedelta, tzinfo
-from typing import Final, Literal, TypeVar, overload
+from typing import Final, Literal, overload
+from typing_extensions import TypeVar
 
 POST_TRANSITION: Final[Literal['post']]
 PRE_TRANSITION: Final[Literal['pre']]
 TRANSITION_ERROR: Final[Literal['error']]
 _datetime = datetime
-_D = TypeVar("_D", bound=datetime)
+_D = TypeVar("_D", bound=datetime, infer_variance=True)
 
 class Timezone(tzinfo):
     def __init__(self, name: str, extended: bool = ...) -> None: ...

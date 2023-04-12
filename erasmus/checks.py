@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, TypeVar, cast
+from typing import TYPE_CHECKING, cast
+from typing_extensions import TypeVar
 
 from discord import app_commands
 
@@ -11,7 +12,7 @@ if TYPE_CHECKING:
     from botus_receptus.types import Coroutine
     from discord.ext import commands
 
-_T = TypeVar('_T')
+_T = TypeVar('_T', infer_variance=True)
 
 
 def is_owner() -> Callable[[_T], _T]:

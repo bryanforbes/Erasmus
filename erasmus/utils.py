@@ -1,17 +1,14 @@
 from __future__ import annotations
 
 from collections import OrderedDict
-from typing import (
-    TYPE_CHECKING,
-    Any,
-    Final,
-    Generic,
-    Protocol,
-    TypedDict,
+from typing import TYPE_CHECKING, Any, Final, Generic, Protocol, TypedDict, overload
+from typing_extensions import (
+    NotRequired,
     TypeVar,
-    overload,
+    Unpack,
+    dataclass_transform,
+    override,
 )
-from typing_extensions import NotRequired, Unpack, dataclass_transform, override
 
 from attr import attrib
 from attrs import field, frozen as _attrs_frozen
@@ -27,8 +24,8 @@ if TYPE_CHECKING:
 
     from .data import Passage
 
-_OptionT = TypeVar('_OptionT', bound='Option')
-_C = TypeVar('_C', bound=type[Any])
+_OptionT = TypeVar('_OptionT', bound='Option', infer_variance=True)
+_C = TypeVar('_C', bound=type[Any], infer_variance=True)
 
 
 if TYPE_CHECKING:

@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import contextlib
-from typing import TYPE_CHECKING, Final, Generic, TypeVar, cast
-from typing_extensions import Self, override
+from typing import TYPE_CHECKING, Final, Generic, cast
+from typing_extensions import Self, TypeVar, override
 
 import discord
 from botus_receptus import utils
@@ -17,16 +17,16 @@ if TYPE_CHECKING:
     from .erasmus import Erasmus
     from .l10n import MessageLocalizer
 
-T = TypeVar('T')
+_T = TypeVar('_T', infer_variance=True)
 
 
 _MISSING: Final = discord.utils.MISSING
 
 
-class PagesModal(discord.ui.Modal, Generic[T], title='Skip to page…'):
-    pages: UIPages[T]
+class PagesModal(discord.ui.Modal, Generic[_T], title='Skip to page…'):
+    pages: UIPages[_T]
 
-    def __init__(self, pages: UIPages[T], *, timeout: float | None = None) -> None:
+    def __init__(self, pages: UIPages[_T], *, timeout: float | None = None) -> None:
         super().__init__(timeout=timeout)
 
         self.pages = pages
@@ -63,7 +63,7 @@ class PagesModal(discord.ui.Modal, Generic[T], title='Skip to page…'):
         )
 
 
-class UIPages(discord.ui.View, BasePages[T], Generic[T]):
+class UIPages(discord.ui.View, BasePages[_T], Generic[_T]):
     itx: discord.Interaction
     check_embeds: bool
     compact: bool
@@ -74,7 +74,7 @@ class UIPages(discord.ui.View, BasePages[T], Generic[T]):
     def __init__(
         self,
         itx: discord.Interaction,
-        source: PageSource[T],
+        source: PageSource[_T],
         /,
         *,
         localizer: MessageLocalizer,

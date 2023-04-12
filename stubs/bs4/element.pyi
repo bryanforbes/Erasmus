@@ -9,11 +9,10 @@ from typing import (
     NewType,
     Protocol,
     TypeAlias,
-    TypeVar,
     overload,
     type_check_only,
 )
-from typing_extensions import Self
+from typing_extensions import Self, TypeVar
 
 from . import BeautifulSoup
 from .builder import TreeBuilder
@@ -25,16 +24,15 @@ nonwhitespace_re: Final[Pattern[Any]]
 whitespace_re: Final[Pattern[Any]]
 PYTHON_SPECIFIC_ENCODINGS: Final[set[str]]
 
-_F = TypeVar('_F', bound=Formatter)
-_PE = TypeVar('_PE', bound=PageElement)
-_T = TypeVar('_T')
-_U = TypeVar('_U')
-_T_contra = TypeVar('_T_contra', contravariant=True)
+_F = TypeVar('_F', bound=Formatter, infer_variance=True)
+_PE = TypeVar('_PE', bound=PageElement, infer_variance=True)
+_T = TypeVar('_T', infer_variance=True)
+_U = TypeVar('_U', infer_variance=True)
 _Never = NewType('_Never', object)
 
 @type_check_only
-class _StrainerCallable(Protocol[_T_contra]):
-    def __call__(self, markup: _T_contra, /) -> bool: ...
+class _StrainerCallable(Protocol[_T]):
+    def __call__(self, markup: _T, /) -> bool: ...
 
 _FilterBaseType: TypeAlias = str | _StrainerCallable[_T] | Pattern[Any] | _U
 _FilterIterableType: TypeAlias = Iterable[None | _T | Iterable[Any]]
