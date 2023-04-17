@@ -5,6 +5,7 @@ from typing import TYPE_CHECKING, Final, NamedTuple, cast
 from typing_extensions import Self, override
 
 import discord
+from attrs import frozen
 from botus_receptus import re, utils
 from botus_receptus.cog import GroupCog
 from botus_receptus.formatting import EmbedPaginator, bold, escape, underline
@@ -21,7 +22,7 @@ from ..exceptions import InvalidConfessionError, NoSectionError
 from ..format import alpha_to_int, int_to_alpha, int_to_roman, roman_to_int
 from ..page_source import FieldPageSource, ListPageSource, Pages
 from ..ui_pages import UIPages
-from ..utils import AutoCompleter, frozen
+from ..utils import AutoCompleter
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable, Sequence

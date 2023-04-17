@@ -4,9 +4,8 @@ import logging
 from abc import abstractmethod
 from typing import TYPE_CHECKING, Final
 
+from attrs import frozen
 from botus_receptus import re
-
-from ..utils import frozen
 
 if TYPE_CHECKING:
     from typing_extensions import Self

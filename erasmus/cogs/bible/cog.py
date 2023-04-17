@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING, Callable, Final, cast
 from typing_extensions import override
 
 import discord
-from attrs import field
+from attrs import field, frozen
 from botus_receptus import Cog, formatting, utils
 from discord import app_commands
 from discord.ext import commands, tasks
@@ -30,7 +30,7 @@ from ...exceptions import (
 )
 from ...service_manager import ServiceManager
 from ...ui_pages import UIPages
-from ...utils import frozen, send_passage
+from ...utils import send_passage
 from .admin_group import BibleAdminGroup
 from .bible_lookup import _BibleOption, bible_lookup
 from .daily_bread import DailyBreadGroup

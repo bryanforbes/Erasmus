@@ -6,7 +6,7 @@ from typing import TYPE_CHECKING, Final, TypedDict
 from typing_extensions import Self, override
 
 import orjson
-from attrs import evolve
+from attrs import evolve, frozen
 from botus_receptus import re
 from more_itertools import unique_everseen
 
@@ -15,7 +15,6 @@ from .exceptions import (
     BookNotUnderstoodError,
     ReferenceNotUnderstoodError,
 )
-from .utils import frozen
 
 if TYPE_CHECKING:
     from collections.abc import Iterator

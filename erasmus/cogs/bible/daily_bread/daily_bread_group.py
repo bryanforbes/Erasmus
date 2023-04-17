@@ -9,7 +9,7 @@ import aiohttp
 import async_timeout
 import discord
 import pendulum
-from attrs import field
+from attrs import field, frozen
 from botus_receptus import re, utils
 from bs4 import BeautifulSoup, SoupStrainer
 from discord import app_commands
@@ -23,7 +23,7 @@ from ....exceptions import (
     DoNotUnderstandError,
     ServiceNotSupportedError,
 )
-from ....utils import frozen, send_passage
+from ....utils import send_passage
 from ..bible_lookup import bible_lookup  # noqa: TC002
 from .common import TASK_INTERVAL, get_next_scheduled_time
 

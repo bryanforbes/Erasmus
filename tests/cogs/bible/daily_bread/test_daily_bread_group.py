@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 
 import discord
 import pytest
-from attrs import evolve
+from attrs import evolve, frozen
 
 from erasmus.cogs.bible.daily_bread.daily_bread_group import (
     DailyBreadGroup,
@@ -17,7 +17,6 @@ from erasmus.exceptions import (
     DoNotUnderstandError,
     ServiceNotSupportedError,
 )
-from erasmus.utils import frozen
 
 from ....utils import create_async_context_manager
 

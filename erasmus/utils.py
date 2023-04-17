@@ -1,96 +1,22 @@
 from __future__ import annotations
 
 from collections import OrderedDict
-from typing import TYPE_CHECKING, Any, Final, Generic, Protocol, TypedDict, overload
-from typing_extensions import (
-    NotRequired,
-    TypeVar,
-    Unpack,
-    dataclass_transform,
-    override,
-)
+from typing import TYPE_CHECKING, Final, Generic, Protocol, TypedDict, overload
+from typing_extensions import NotRequired, TypeVar, Unpack, override
 
-from attr import attrib
-from attrs import field, frozen as _attrs_frozen
+from attrs import field, frozen
 from botus_receptus import utils
 from discord import app_commands
 
 if TYPE_CHECKING:
-    from collections.abc import Callable, Iterable
+    from collections.abc import Iterable
 
     import discord
-    from attr import _FieldTransformer, _OnSetAttrArgType
     from botus_receptus.types import Coroutine
 
     from .data import Passage
 
 _OptionT = TypeVar('_OptionT', bound='Option', infer_variance=True)
-_C = TypeVar('_C', bound=type[Any], infer_variance=True)
-
-
-if TYPE_CHECKING:
-
-    @overload
-    @dataclass_transform(frozen_default=True, field_descriptors=(attrib, field))
-    def frozen(
-        maybe_cls: _C,
-        *,
-        these: dict[str, Any] | None = ...,
-        repr: bool = ...,
-        unsafe_hash: bool | None = ...,
-        hash: bool | None = ...,
-        init: bool = ...,
-        slots: bool = ...,
-        frozen: bool = ...,
-        weakref_slot: bool = ...,
-        str: bool = ...,
-        auto_attribs: bool = ...,
-        kw_only: bool = ...,
-        cache_hash: bool = ...,
-        auto_exc: bool = ...,
-        eq: bool | None = ...,
-        order: bool | None = ...,
-        auto_detect: bool = ...,
-        getstate_setstate: bool | None = ...,
-        on_setattr: _OnSetAttrArgType | None = ...,
-        field_transformer: _FieldTransformer | None = ...,
-        match_args: bool = ...,
-    ) -> _C:
-        ...
-
-    @overload
-    @dataclass_transform(frozen_default=True, field_descriptors=(attrib, field))
-    def frozen(
-        maybe_cls: None = ...,
-        *,
-        these: dict[str, Any] | None = ...,
-        repr: bool = ...,
-        unsafe_hash: bool | None = ...,
-        hash: bool | None = ...,
-        init: bool = ...,
-        slots: bool = ...,
-        frozen: bool = ...,
-        weakref_slot: bool = ...,
-        str: bool = ...,
-        auto_attribs: bool = ...,
-        kw_only: bool = ...,
-        cache_hash: bool = ...,
-        auto_exc: bool = ...,
-        eq: bool | None = ...,
-        order: bool | None = ...,
-        auto_detect: bool = ...,
-        getstate_setstate: bool | None = ...,
-        on_setattr: _OnSetAttrArgType | None = ...,
-        field_transformer: _FieldTransformer | None = ...,
-        match_args: bool = ...,
-    ) -> Callable[[_C], _C]:
-        ...
-
-    def frozen(*args: Any, **kwargs: Any) -> Any:
-        ...
-
-else:
-    frozen = _attrs_frozen
 
 
 _truncation_warning: Final = '**The passage was too long and has been truncated:**\n\n'

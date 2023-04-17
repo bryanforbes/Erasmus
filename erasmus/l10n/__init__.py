@@ -4,12 +4,11 @@ from contextlib import contextmanager
 from pathlib import Path
 from typing import TYPE_CHECKING, Literal, TypedDict, overload
 
-from attrs import define, field
+from attrs import define, field, frozen
 from discord import app_commands
 from discord.ext import commands
 from fluent.runtime import FluentResourceLoader
 
-from ..utils import frozen
 from .fluent import Localization
 
 if TYPE_CHECKING:

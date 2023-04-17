@@ -6,6 +6,7 @@ from typing_extensions import Self, Unpack, override
 
 import discord
 import pendulum
+from attrs import frozen
 from botus_receptus import re, utils
 from discord import app_commands
 from pendulum.tz.timezone import Timezone  # noqa: TC002
@@ -13,7 +14,6 @@ from pendulum.tz.timezone import Timezone  # noqa: TC002
 from ....data import SectionFlag
 from ....db import BibleVersion, DailyBread, Session
 from ....exceptions import InvalidTimeError, InvalidTimeZoneError
-from ....utils import frozen
 from .common import TASK_INTERVAL, get_first_scheduled_time
 
 if TYPE_CHECKING:

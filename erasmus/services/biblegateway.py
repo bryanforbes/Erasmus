@@ -4,14 +4,13 @@ from __future__ import annotations
 from typing import TYPE_CHECKING, Final
 from typing_extensions import override
 
-from attrs import field
+from attrs import field, frozen
 from botus_receptus import re
 from bs4 import BeautifulSoup, NavigableString, SoupStrainer, Tag
 from yarl import URL
 
 from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import DoNotUnderstandError
-from ..utils import frozen
 from .base_service import BaseService
 
 if TYPE_CHECKING:

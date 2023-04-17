@@ -6,14 +6,13 @@ from typing import TYPE_CHECKING, Final, Literal, TypedDict
 from typing_extensions import Self, override
 
 import orjson
-from attrs import field
+from attrs import field, frozen
 from botus_receptus import re
 from yarl import URL
 
 from ..data import Passage, SearchResults, VerseRange
 from ..exceptions import BookNotInVersionError, DoNotUnderstandError
 from ..json import get
-from ..utils import frozen
 from .base_service import BaseService
 
 if TYPE_CHECKING:

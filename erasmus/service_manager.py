@@ -5,7 +5,7 @@ import logging
 from typing import TYPE_CHECKING, Any, Final, TypeGuard
 
 import async_timeout
-from attrs import field
+from attrs import field, frozen
 
 from . import services
 from .exceptions import (
@@ -13,7 +13,6 @@ from .exceptions import (
     ServiceNotSupportedError,
     ServiceSearchTimeout,
 )
-from .utils import frozen
 
 if TYPE_CHECKING:
     import aiohttp
