@@ -37,12 +37,12 @@ class ServiceAutoCompleter(app_commands.Transformer):
         return value
 
     @override
-    async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
+    async def autocomplete(  # pyright: ignore[reportIncompatibleMethodOverride]
         self, itx: discord.Interaction, value: str, /
     ) -> list[app_commands.Choice[str]]:
         return [
             app_commands.Choice(name=service_name, value=service_name)
-            for service_name in self.service_manager.service_map.keys()
+            for service_name in self.service_manager.service_map
             if value.lower() in service_name.lower()
         ][:25]
 
@@ -68,7 +68,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         /,
         version: app_commands.Transform[str, bible_lookup],
     ) -> None:
-        '''Get information for a Bible version'''
+        """Get information for a Bible version"""
 
         async with Session() as session:
             existing = await BibleVersion.get_by_command(session, version)
@@ -113,7 +113,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         rtl: bool = False,
         book_mapping: str | None = None,
     ) -> None:
-        '''Add a Bible version'''
+        """Add a Bible version"""
 
         if service not in self.service_manager:
             await utils.send_embed_error(
@@ -165,7 +165,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         /,
         version: app_commands.Transform[str, bible_lookup],
     ) -> None:
-        '''Delete a Bible'''
+        """Delete a Bible"""
 
         async with Session.begin() as session:
             existing = await BibleVersion.get_by_command(session, version)
@@ -196,7 +196,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         books: str | None = None,
         book_mapping: str | None = None,
     ) -> None:
-        '''Update a Bible'''
+        """Update a Bible"""
 
         if service is not None and service not in self.service_manager:
             await utils.send_embed_error(
@@ -241,7 +241,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
             )
         except ErasmusError:
             raise
-        except Exception:  # noqa: PIE786
+        except Exception:  # noqa: BLE001
             await utils.send_embed_error(itx, description=f'Error updating `{version}`')
         else:
             await utils.send_embed(itx, description=f'Updated `{version}`')

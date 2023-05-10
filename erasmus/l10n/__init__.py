@@ -31,8 +31,8 @@ def _get_fluent_locale(locale: discord.Locale) -> str:
     result = str(locale)
     if result in _fluent_locale_map:
         return _fluent_locale_map[result]
-    else:
-        return str(locale)
+
+    return str(locale)
 
 
 class FormatKwargs(TypedDict):
@@ -106,9 +106,9 @@ class Localizer:
         if locale in self._l10n_map:
             return self._l10n_map[locale]
 
-        l10n = self._l10n_map[locale] = self._create_l10n(locale)
+        self._l10n_map[locale] = self._create_l10n(locale)
 
-        return l10n
+        return self._l10n_map[locale]
 
     @overload
     def format(

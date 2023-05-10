@@ -2,7 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, cast
 
-import discord
 import pytest
 from attr import define
 from discord import app_commands
@@ -12,6 +11,8 @@ from erasmus.data import Passage, VerseRange
 
 if TYPE_CHECKING:
     from unittest.mock import AsyncMock
+
+    import discord
 
     from .types import MockerFixture
 

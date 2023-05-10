@@ -6,7 +6,7 @@ from botus_receptus import utils
 from discord import app_commands
 
 from ...db import BibleVersion, GuildPref, Session, UserPref
-from .bible_lookup import bible_lookup  # noqa: TC002
+from .bible_lookup import bible_lookup  # noqa: TCH001
 
 if TYPE_CHECKING:
     import discord
@@ -32,7 +32,7 @@ class VersionGroup(
         /,
         version: app_commands.Transform[str, bible_lookup],
     ) -> None:
-        '''Set your default Bible version'''
+        """Set your default Bible version"""
         version = version.lower()
 
         async with Session.begin() as session:
@@ -52,7 +52,7 @@ class VersionGroup(
     @app_commands.command()
     @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
     async def clear(self, itx: discord.Interaction, /) -> None:
-        '''Clear your default Bible version'''
+        """Clear your default Bible version"""
 
         async with Session.begin() as session:
             user_prefs = await UserPref.for_user(session, itx.user)
@@ -74,7 +74,7 @@ class VersionGroup(
     @app_commands.command()
     @app_commands.checks.cooldown(rate=2, per=60.0, key=lambda i: i.user.id)
     async def show(self, itx: discord.Interaction, /) -> None:
-        '''Display your default Bible version preferences'''
+        """Display your default Bible version preferences"""
 
         localizer = self.localizer.for_message('show', locale=itx.locale)
 
@@ -109,7 +109,7 @@ class VersionGroup(
                 display_version = await BibleVersion.get_for(session)
 
             output = f'{output}\n\n' + localizer.format(
-                "display-version", data={"version": display_version.name}
+                'display-version', data={'version': display_version.name}
             )
 
         await utils.send_embed(itx, description=output, ephemeral=True)

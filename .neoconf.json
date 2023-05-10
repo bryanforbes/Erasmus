@@ -1,6 +1,5 @@
 {
   "lspconfig": {
-    "jedi_language_server": false,
     "pyright": {
       "pyright.disableOrganizeImports": true
     }

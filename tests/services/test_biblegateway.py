@@ -2,9 +2,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING, Any, cast
 
-import _pytest
-import _pytest.fixtures
-import aiohttp
 import pytest
 
 from erasmus.data import Passage, VerseRange
@@ -13,6 +10,10 @@ from erasmus.services.biblegateway import BibleGateway
 from . import Galatians_3_10_11, Mark_5_1, ServiceTest
 
 if TYPE_CHECKING:
+    import _pytest
+    import _pytest.fixtures
+    import aiohttp
+
     from erasmus.types import Service
 
 Psalm_53_1_ESV = (

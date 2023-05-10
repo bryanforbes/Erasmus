@@ -10,11 +10,11 @@ from __future__ import annotations
 from collections import OrderedDict
 from json import load
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
+from typing import Any
 from typing_extensions import TypedDict
 
-import sqlalchemy as sa  # type: ignore
-from alembic import op  # type: ignore
+import sqlalchemy as sa
+from alembic import op
 
 # revision identifiers, used by Alembic.
 revision = '0f780af615ef'
@@ -25,24 +25,24 @@ depends_on = None
 
 class ChapterJSON(TypedDict):
     title: str
-    paragraphs: Dict[str, str]
+    paragraphs: dict[str, str]
 
 
 class ConfessionJSON(TypedDict):
     title: str
-    chapters: Dict[str, ChapterJSON]
+    chapters: dict[str, ChapterJSON]
 
 
 class QAJSON(TypedDict):
     title: str
-    questions: List[List[str]]
+    questions: list[list[str]]
 
 
 def _get_paragraph_records(
     id: str, data: ConfessionJSON
-) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
-    chapters = []  # type: List[Dict[str, Any]]
-    paragraphs = []  # type: List[Dict[str, Any]]
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]]]:
+    chapters: list[dict[str, Any]] = []
+    paragraphs: list[dict[str, Any]] = []
 
     for chapter_str, chapter in data['chapters'].items():
         chapter_number = int(chapter_str)
@@ -67,8 +67,8 @@ def _get_paragraph_records(
     return (chapters, paragraphs)
 
 
-def _get_qa_records(id: str, data: QAJSON) -> List[Dict[str, Any]]:
-    qas = []  # type: List[Dict[str, Any]]
+def _get_qa_records(id: str, data: QAJSON) -> list[dict[str, Any]]:
+    qas: list[dict[str, Any]] = []
 
     for index in range(len(data['questions'])):
         question, answer = data['questions'][index]

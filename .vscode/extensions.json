@@ -1,8 +1,7 @@
 {
   "recommendations": [
     "editorconfig.editorconfig",
-    "ms-python.flake8",
-    "ms-python.isort",
-    "ms-python.python"
+    "ms-python.python",
+    "charliermarsh.ruff"
   ]
 }

@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import TYPE_CHECKING, Any, Final, TypeGuard
+from typing import TYPE_CHECKING, Any, Final, TypeGuard, cast
 
 import async_timeout
 from attrs import field, frozen
@@ -25,8 +25,8 @@ if TYPE_CHECKING:
 _log: Final = logging.getLogger(__name__)
 
 
-def _is_service_cls(obj: Any, /) -> TypeGuard[type[BaseService]]:
-    return hasattr(obj, 'from_config') and callable(obj.from_config)
+def _is_service_cls(obj: object, /) -> TypeGuard[type[BaseService]]:
+    return hasattr(obj, 'from_config') and callable(cast(Any, obj).from_config)
 
 
 @frozen

@@ -19,7 +19,7 @@ class CreedDict(TypedDict):
 
 _apostles_creed: Final[CreedDict] = {
     'title': "The Apostles' Creed",
-    'description': '''
+    'description': """
 I believe in God, the Father Almighty,
     the Maker of heaven and earth,
     and in Jesus Christ, His only Son, our Lord:
@@ -45,7 +45,7 @@ I believe in the Holy Ghost;
     and the life everlasting.
 
 Amen.
-''',
+""",
 }
 
 _athanasian_creed: Final[CreedDict] = {
@@ -226,42 +226,42 @@ class Creeds(
     @app_commands.command()
     @_shared_cooldown
     async def apostles(self, itx: discord.Interaction, /) -> None:
-        '''The Apostles' Creed'''
+        """The Apostles' Creed"""
 
         await utils.send_embed(itx, **_apostles_creed)
 
     @app_commands.command()
     @_shared_cooldown
     async def athanasian(self, itx: discord.Interaction, /) -> None:
-        '''The Athanasian Creed'''
+        """The Athanasian Creed"""
 
         await utils.send_embed(itx, **_athanasian_creed)
 
     @app_commands.command()
     @_shared_cooldown
     async def chalcedon(self, itx: discord.Interaction, /) -> None:
-        '''The Chalcedonian Definition'''
+        """The Chalcedonian Definition"""
 
         await utils.send_embed(itx, **_chalcedon)
 
     @app_commands.command()
     @_shared_cooldown
     async def nicene(self, itx: discord.Interaction, /) -> None:
-        '''The Nicene Creed'''
+        """The Nicene Creed"""
 
         await utils.send_embed(itx, **_nicene_381_filioque)
 
     @app_commands.command()
     @_shared_cooldown
     async def nicene325(self, itx: discord.Interaction, /) -> None:
-        '''The Nicene Creed (325 AD)'''
+        """The Nicene Creed (325 AD)"""
 
         await utils.send_embed(itx, **_nicene_325)
 
     @app_commands.command()
     @_shared_cooldown
     async def nicene381(self, itx: discord.Interaction, /) -> None:
-        '''The Nicene Creed (381 AD)'''
+        """The Nicene Creed (381 AD)"""
 
         await utils.send_embed(itx, **_nicene_381)
 

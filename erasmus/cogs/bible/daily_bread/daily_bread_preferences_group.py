@@ -9,7 +9,7 @@ import pendulum
 from attrs import frozen
 from botus_receptus import re, utils
 from discord import app_commands
-from pendulum.tz.timezone import Timezone  # noqa: TC002
+from pendulum.tz.timezone import Timezone  # noqa: TCH002
 
 from ....data import SectionFlag
 from ....db import BibleVersion, DailyBread, Session
@@ -176,7 +176,7 @@ class _TimeTransformer(app_commands.Transformer):
         return pendulum.Time(hours, minutes)
 
     @override
-    async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
+    async def autocomplete(  # pyright: ignore[reportIncompatibleMethodOverride]
         self, itx: discord.Interaction, current: str, /
     ) -> list[app_commands.Choice[str]]:
         current = current.strip().lower()
@@ -222,7 +222,7 @@ class _TimeZoneTransformer(app_commands.Transformer):
         return pendulum.timezone(self.tz_map[value_lower])
 
     @override
-    async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
+    async def autocomplete(  # pyright: ignore[reportIncompatibleMethodOverride]
         self, itx: discord.Interaction, current: str, /
     ) -> list[app_commands.Choice[str]]:
         current = current.strip().lower()
@@ -272,9 +272,10 @@ class DailyBreadPreferencesGroup(
         time: app_commands.Transform[pendulum.Time, _TimeTransformer],
         timezone: app_commands.Transform[Timezone, _TimeZoneTransformer],
     ) -> None:
-        '''Set or update the automated daily bread post settings for this server'''
+        """Set or update the automated daily bread post settings for this server"""
 
-        assert itx.guild is not None
+        if TYPE_CHECKING:
+            assert itx.guild is not None
 
         if isinstance(channel, discord.Thread):
             thread_id = channel.id
@@ -377,9 +378,10 @@ class DailyBreadPreferencesGroup(
     @app_commands.command()
     @_shared_cooldown
     async def stop(self, itx: discord.Interaction, /) -> None:
-        '''Stop the automated daily bread posts for this server'''
+        """Stop the automated daily bread posts for this server"""
 
-        assert itx.guild is not None
+        if TYPE_CHECKING:
+            assert itx.guild is not None
 
         localizer = self.localizer.for_message('stop', locale=itx.locale)
 

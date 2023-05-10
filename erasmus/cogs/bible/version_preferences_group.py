@@ -6,7 +6,7 @@ from botus_receptus import utils
 from discord import app_commands
 
 from ...db import BibleVersion, GuildPref, Session
-from .bible_lookup import bible_lookup  # noqa: TC002
+from .bible_lookup import bible_lookup  # noqa: TCH001
 
 if TYPE_CHECKING:
     import discord
@@ -34,9 +34,10 @@ class VersionPreferencesGroup(
         /,
         version: app_commands.Transform[str, bible_lookup],
     ) -> None:
-        '''Set the default version for this server'''
+        """Set the default version for this server"""
 
-        assert itx.guild is not None
+        if TYPE_CHECKING:
+            assert itx.guild is not None
 
         version = version.lower()
 
@@ -59,9 +60,10 @@ class VersionPreferencesGroup(
         rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
     )
     async def clear(self, itx: discord.Interaction, /) -> None:
-        '''Clear the default version for this server'''
+        """Clear the default version for this server"""
 
-        assert itx.guild is not None
+        if TYPE_CHECKING:
+            assert itx.guild is not None
 
         async with Session.begin() as session:
             if (
@@ -85,9 +87,10 @@ class VersionPreferencesGroup(
         rate=2, per=60.0, key=lambda i: (i.guild_id, i.user.id)
     )
     async def show(self, itx: discord.Interaction, /) -> None:
-        '''Display the default version for this server'''
+        """Display the default version for this server"""
 
-        assert itx.guild is not None
+        if TYPE_CHECKING:
+            assert itx.guild is not None
 
         async with Session() as session:
             guild_prefs = await GuildPref.for_guild(session, itx.guild)

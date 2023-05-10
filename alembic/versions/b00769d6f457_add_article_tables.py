@@ -10,12 +10,12 @@ from __future__ import annotations
 from collections import OrderedDict
 from json import load
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 from typing_extensions import TypedDict
 
-import sqlalchemy as sa  # type: ignore
-from alembic import op  # type: ignore
-from sqlalchemy.sql import column, table  # type: ignore
+import sqlalchemy as sa
+from alembic import op
+from sqlalchemy.sql import column, table
 
 # revision identifiers, used by Alembic.
 revision = 'b00769d6f457'
@@ -35,11 +35,11 @@ confesses = table(
 
 class ArticlesJSON(TypedDict):
     title: str
-    articles: List[List[str]]
+    articles: list[list[str]]
 
 
-def _get_article_records(id: str, data: ArticlesJSON) -> List[Dict[str, Any]]:
-    articles = []  # type: List[Dict[str, Any]]
+def _get_article_records(id: str, data: ArticlesJSON) -> list[dict[str, Any]]:
+    articles: list[dict[str, Any]] = []
 
     for index in range(len(data['articles'])):
         title, text = data['articles'][index]
@@ -92,7 +92,7 @@ def upgrade():
         ),
     )
 
-    op.execute('''UPDATE confesses set numbering_id = 1;''')
+    op.execute('UPDATE confesses set numbering_id = 1;')
 
     op.alter_column('confesses', 'numbering_id', nullable=False)
 

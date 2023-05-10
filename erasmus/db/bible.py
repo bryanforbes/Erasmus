@@ -3,9 +3,12 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pendulum
-from pendulum.tz.timezone import Timezone  # noqa: TC002
+from pendulum.tz.timezone import Timezone  # noqa: TCH002
 from sqlalchemy import Computed, ForeignKey, Index, func, select, text
-from sqlalchemy.dialects.postgresql import JSONB, insert  # pyright: ignore
+from sqlalchemy.dialects.postgresql import (
+    JSONB,
+    insert,  # pyright: ignore[reportUnknownVariableType]
+)
 from sqlalchemy.orm import Mapped, declared_attr, foreign, mapped_column, relationship
 
 from ..data import SectionFlag
@@ -57,7 +60,7 @@ class BibleVersion(Base):
         self, session: AsyncSession, user: discord.User | discord.Member, /
     ) -> None:
         await session.execute(
-            insert(UserPref)  # pyright: ignore
+            insert(UserPref)  # pyright: ignore[reportUnknownMemberType]
             .values(user_id=user.id, bible_id=self.id)
             .on_conflict_do_update(
                 index_elements=['user_id'], set_={'bible_id': self.id}
@@ -68,7 +71,7 @@ class BibleVersion(Base):
         self, session: AsyncSession, guild: discord.Guild, /
     ) -> None:
         await session.execute(
-            insert(GuildPref)  # pyright: ignore
+            insert(GuildPref)  # pyright: ignore[reportUnknownMemberType]
             .values(guild_id=guild.id, bible_id=self.id)
             .on_conflict_do_update(
                 index_elements=['guild_id'], set_={'bible_id': self.id}

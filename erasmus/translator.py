@@ -25,7 +25,6 @@ class Translator(app_commands.Translator):
         context: app_commands.TranslationContextTypes,
     ) -> str | None:
         message_id: str = ''
-        translation: str | None = None
         command: object = None
 
         if (
@@ -62,15 +61,13 @@ class Translator(app_commands.Translator):
         ):
             message_id = f'{message_id}.description'
 
-        if isinstance(command, (app_commands.Command, app_commands.Group)):
+        if isinstance(command, app_commands.Command | app_commands.Group):
             if command.parent:
                 message_id = f'{command.parent.name}__{message_id}'
 
                 if command.parent.parent:
                     message_id = f'{command.parent.parent.name}__{message_id}'
 
-            translation = self.localizer.format(
-                message_id, locale=locale, use_fallbacks=False
-            )
+            return self.localizer.format(message_id, locale=locale, use_fallbacks=False)
 
-        return translation
+        return None

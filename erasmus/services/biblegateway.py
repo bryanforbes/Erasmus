@@ -35,8 +35,9 @@ class BibleGateway(BaseService):
         bible: Bible,
         verses: VerseRange,
         verse_node: Tag,
-        for_search: bool = False,
         /,
+        *,
+        for_search: bool = False,
     ) -> Passage:
         for node in verse_node.select(
             f'h1, {"h3, " if not for_search else ""}.footnotes, .footnote, .crossrefs, '
@@ -153,7 +154,9 @@ class BibleGateway(BaseService):
 
                 verse = VerseRange.from_string(verse_reference_node.string.strip())
 
-                return self.__transform_verse_node(bible, verse, verse_text_node, True)
+                return self.__transform_verse_node(
+                    bible, verse, verse_text_node, for_search=True
+                )
 
             passages = list(map(mapper, verse_nodes))
 

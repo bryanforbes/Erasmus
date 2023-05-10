@@ -18,7 +18,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 
 from ..exceptions import InvalidConfessionError, NoSectionError
 from .base import Base, Text, TSVector
-from .enums import ConfessionType, NumberingType  # noqa: TC002
+from .enums import ConfessionType, NumberingType  # noqa: TCH001
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
@@ -180,6 +180,7 @@ class Confession(Base):
     async def get_all(
         session: AsyncSession,
         /,
+        *,
         order_by_name: bool = False,
         load_sections: bool = False,
     ) -> AsyncIterator[Confession]:
@@ -200,7 +201,7 @@ class Confession(Base):
 
     @staticmethod
     async def get_by_command(
-        session: AsyncSession, command: str, /, load_sections: bool = False
+        session: AsyncSession, command: str, /, *, load_sections: bool = False
     ) -> Confession:
         stmt = select(Confession).where(Confession.command == command.lower())
 

@@ -445,11 +445,7 @@ class TestVerseRange:
         )
         assert passages is not None
 
-        index: int
-        if only_bracketed:
-            index = 1
-        else:
-            index = 0
+        index = 1 if only_bracketed else 0
 
         assert passages == expected[index]
 

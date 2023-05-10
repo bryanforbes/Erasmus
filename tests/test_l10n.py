@@ -80,10 +80,13 @@ class TestLocalizer:
         ) -> LocalizationMock | None:
             if locales[0] == 'nb-NO':
                 return no_localization
-            elif locales[0] == 'hi-IN':
+
+            if locales[0] == 'hi-IN':
                 return hi_localization
-            elif locales[0] == 'en-US':
+
+            if locales[0] == 'en-US':
                 return en_localization
+
             return None
 
         return mocker.patch('erasmus.l10n.Localization', side_effect=side_effect)
@@ -100,10 +103,13 @@ class TestLocalizer:
         ) -> LocalizationMock | None:
             if locales[0] == 'nb-NO':
                 return no_localization_2
-            elif locales[0] == 'hi-IN':
+
+            if locales[0] == 'hi-IN':
                 return hi_localization
-            elif locales[0] == 'en-US':
+
+            if locales[0] == 'en-US':
                 return en_localization
+
             return None
 
         return side_effect

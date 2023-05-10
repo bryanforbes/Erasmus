@@ -60,8 +60,6 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
 
     @override
     async def on_submit(self, itx: discord.Interaction, /) -> None:
-        assert self.code.value is not None
-
         env: dict[str, Any] = {
             'bot': itx.client,
             'interaction': itx,
@@ -80,8 +78,8 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
         to_compile = f'async def func():\n{textwrap.indent(body, "  ")}'
 
         try:
-            exec(to_compile, env)
-        except Exception as e:
+            exec(to_compile, env)  # noqa: S102
+        except Exception as e:  # noqa: BLE001
             raise _EvalError from e
 
         func = env['func']
@@ -89,7 +87,7 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
         try:
             with redirect_stdout(stdout):
                 ret = await func()
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001
             raise _RunError(stdout.getvalue(), traceback.format_exc()) from e
         else:
             value = stdout.getvalue()
@@ -123,7 +121,7 @@ async def operation_guard(
     try:
         await itx.response.defer()
         yield
-    except Exception as e:  # noqa: PIE786
+    except Exception as e:  # noqa: BLE001
         await utils.send_embed_error(itx, description=f'{e.__class__.__name__}: {e}')
     else:
         await utils.send_embed(
@@ -141,7 +139,9 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
         if bot.config.get('enable_eval', False):
             self._eval = app_commands.command(name='eval')(self.__eval)
 
-            self.__cog_app_commands_group__.add_command(self._eval)  # type: ignore
+            self.__cog_app_commands_group__.add_command(  # pyright: ignore[reportOptionalMemberAccess]  # noqa: 501
+                self._eval
+            )
 
         super().__init__(bot)
 
@@ -151,7 +151,7 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
 
     @checks.is_owner()
     async def __eval(self, itx: discord.Interaction, /) -> None:
-        '''Evaluates code'''
+        """Evaluates code"""
 
         await itx.response.send_modal(_EvalModal(self))
 
@@ -171,7 +171,7 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
     @app_commands.describe(module='The module to load')
     @app_commands.autocomplete(module=__unloaded_modules_autocomplete)
     async def load(self, itx: discord.Interaction, /, module: str) -> None:
-        '''Loads an extension module'''
+        """Loads an extension module"""
 
         async with operation_guard(itx, f'`{module}` loaded'):
             await self.bot.load_extension(module)
@@ -198,7 +198,7 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
     @app_commands.describe(module='The module to reload')
     @app_commands.autocomplete(module=__loaded_modules_autocomplete)
     async def reload(self, itx: discord.Interaction, /, module: str) -> None:
-        '''Reloads an extension module'''
+        """Reloads an extension module"""
 
         async with operation_guard(itx, f'`{module}` reloaded'):
             await self.bot.reload_extension(module)
@@ -218,7 +218,7 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
     @app_commands.describe(module='The module to unload')
     @app_commands.autocomplete(module=__loaded_modules_without_admin_autocomplete)
     async def unload(self, itx: discord.Interaction, /, module: str) -> None:
-        '''Unloads an extension module'''
+        """Unloads an extension module"""
 
         async with operation_guard(itx, f'`{module}` unloaded'):
             await self.bot.unload_extension(module)
@@ -226,7 +226,7 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
     @app_commands.command()
     @checks.is_owner()
     async def sync(self, itx: discord.Interaction, /) -> None:
-        '''Syncs command tree to Discord'''
+        """Syncs command tree to Discord"""
 
         async with operation_guard(itx, 'Commands synced'):
             await self.bot.sync_app_commands()
@@ -234,7 +234,7 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
     @app_commands.command(name='refresh-data')
     @checks.is_owner()
     async def refresh_data(self, itx: discord.Interaction, /) -> None:
-        '''Refresh cached data from the database'''
+        """Refresh cached data from the database"""
 
         async with operation_guard(itx, 'Data refreshed'):
             async with Session() as session:
@@ -245,7 +245,7 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
     @app_commands.command(name='reload-translations')
     @checks.is_owner()
     async def reload_translations(self, itx: discord.Interaction, /) -> None:
-        '''Reload translations and sync'''
+        """Reload translations and sync"""
 
         async with operation_guard(itx, 'Translations reloaded'):
             with self.bot.localizer.begin_reload():

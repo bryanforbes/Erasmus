@@ -73,7 +73,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
 
     @property
     def bible_cog(self) -> Bible:
-        return self.cogs['Bible']  # type: ignore
+        return self.cogs['Bible']  # pyright: ignore[reportGeneralTypeIssues]
 
     @override
     async def setup_hook(self) -> None:
@@ -90,11 +90,18 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
 
         _log.info(
             'Global commands: '
-            f'{list(self.tree._global_commands.keys())!r}'  # type: ignore
+            f'{list(self.tree._global_commands.keys())!r}'  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]  # noqa: E501
         )
 
-        for guild_id, _commands in self.tree._guild_commands.items():  # type: ignore
-            _log.info(f'Commands for {guild_id}: {list(_commands)!r}')  # type: ignore
+        for (
+            guild_id,
+            _commands,  # pyright: ignore[reportUnknownVariableType]
+        ) in (
+            self.tree._guild_commands.items()  # pyright: ignore[reportUnknownMemberType]  # noqa: E501
+        ):
+            _log.info(
+                f'Commands for {guild_id}: {list(_commands)!r}'  # pyright: ignore[reportUnknownArgumentType]  # noqa: E501
+            )
 
     @override
     async def on_message(self, message: discord.Message, /) -> None:
@@ -106,7 +113,6 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
     @override
     async def on_ready(self, /) -> None:
         user = self.user
-        assert user is not None
         _log.info('Erasmus ready. Logged in as %s %s', user.name, user.id)
 
         await super().on_ready()
@@ -149,14 +155,11 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         if (
             isinstance(
                 error,
-                (
-                    app_commands.CommandInvokeError,
-                    app_commands.TransformerError,
-                ),
+                app_commands.CommandInvokeError | app_commands.TransformerError,
             )
             and error.__cause__ is not None
         ):
-            error = cast('Exception', error.__cause__)
+            error = cast(Exception, error.__cause__)
 
         if isinstance(error, ErasmusError):
             # All of these are handled in their respective cogs

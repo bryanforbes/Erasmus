@@ -18,7 +18,6 @@ if TYPE_CHECKING:
 
 _OptionT = TypeVar('_OptionT', bound='Option', infer_variance=True)
 
-
 _truncation_warning: Final = '**The passage was too long and has been truncated:**\n\n'
 _description_max_length: Final = 4096
 _max_length: Final = _description_max_length - (len(_truncation_warning) + 1)
@@ -165,7 +164,8 @@ class AutoCompleter(app_commands.Transformer, Generic[_OptionT]):
     async def transform(self, itx: discord.Interaction, value: str, /) -> str:
         return value
 
-    async def autocomplete(  # type: ignore
+    @override
+    async def autocomplete(  # pyright: ignore[reportIncompatibleMethodOverride]
         self, itx: discord.Interaction, value: str, /
     ) -> list[app_commands.Choice[str]]:
         value = value.lower().strip()

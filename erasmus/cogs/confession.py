@@ -123,8 +123,8 @@ async def _get_output(
 
     if section.title is not None:
         return f'{formatted_section_number}. {section.title}', section.text
-    else:
-        return None, f'{bold(formatted_section_number)}. {section.text}'
+
+    return None, f'{bold(formatted_section_number)}. {section.text}'
 
 
 class ConfessionSearchSource(
@@ -267,7 +267,7 @@ class SectionAutoCompleter(app_commands.Transformer):
         return value
 
     @override
-    async def autocomplete(  # pyright: ignore [reportIncompatibleMethodOverride]
+    async def autocomplete(  # pyright: ignore[reportIncompatibleMethodOverride]
         self, itx: discord.Interaction, value: str, /
     ) -> list[app_commands.Choice[str]]:
         value = value.lower().strip()
@@ -334,20 +334,17 @@ class Confession(
         _confession_lookup.clear()
 
     @override
-    async def cog_app_command_error(  # pyright: ignore [reportIncompatibleMethodOverride]  # noqa: B950
+    async def cog_app_command_error(  # pyright: ignore[reportIncompatibleMethodOverride]  # noqa: E501
         self, itx: discord.Interaction, error: Exception, /
     ) -> None:
         if (
             isinstance(
                 error,
-                (
-                    app_commands.CommandInvokeError,
-                    app_commands.TransformerError,
-                ),
+                app_commands.CommandInvokeError | app_commands.TransformerError,
             )
             and error.__cause__ is not None
         ):
-            error = cast('Exception', error.__cause__)
+            error = cast(Exception, error.__cause__)
 
         match error:
             case InvalidConfessionError():
@@ -390,7 +387,7 @@ class Confession(
         source: app_commands.Transform[str, _confession_lookup],
         terms: str,
     ) -> None:
-        '''Search for terms in a confession or catechism'''
+        """Search for terms in a confession or catechism"""
 
         async with Session() as session:
             confession = await ConfessionRecord.get_by_command(session, source)
@@ -421,7 +418,7 @@ class Confession(
         source: app_commands.Transform[str, _confession_lookup],
         section: app_commands.Transform[str, _section_lookup],
     ) -> None:
-        '''Cite a section from a confession or catechism'''
+        """Cite a section from a confession or catechism"""
 
         async with Session() as session:
             confession = await ConfessionRecord.get_by_command(session, source)

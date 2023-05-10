@@ -9,12 +9,12 @@ from __future__ import annotations
 
 from json import load
 from pathlib import Path
-from typing import Any, Dict, List
+from typing import Any
 from typing_extensions import TypedDict
 
-import sqlalchemy as sa  # type: ignore
-from alembic import op  # type: ignore
-from sqlalchemy.sql import column, table  # type: ignore
+import sqlalchemy as sa
+from alembic import op
+from sqlalchemy.sql import column, table
 
 # revision identifiers, used by Alembic.
 revision = '53ed37276d53'
@@ -28,11 +28,11 @@ with (Path(__file__).resolve().parent / f'{revision}_keach.json').open() as f:
 
 class QAJSON(TypedDict):
     title: str
-    questions: List[List[str]]
+    questions: list[list[str]]
 
 
-def _get_qa_records(id: str, data: QAJSON) -> List[Dict[str, Any]]:
-    qas = []  # type: List[Dict[str, Any]]
+def _get_qa_records(id: str, data: QAJSON) -> list[dict[str, Any]]:
+    qas: list[dict[str, Any]] = []
 
     for index in range(len(data['questions'])):
         question, answer = data['questions'][index]
@@ -76,7 +76,7 @@ def upgrade():
                 'command': 'keach',
                 'type_id': 3,
                 'numbering_id': 1,
-                'name': 'Keach\'s Catechism',
+                'name': "Keach's Catechism",
             }
         ],
     )
