@@ -134,7 +134,7 @@ def _can_manage_channel_webhooks(
 
 class _TimeTransformer(app_commands.Transformer):
     times = [
-        f'{str(12 if hour == 0 else hour)}:{str(minute):0>2} {meridian}'
+        f'{12 if hour == 0 else hour!s}:{minute!s:0>2} {meridian}'
         for hour, minute, meridian in chain.from_iterable(
             chain.from_iterable(
                 [(hour, minute, meridian) for minute in range(0, 60, 15)]
