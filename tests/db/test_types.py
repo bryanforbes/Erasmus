@@ -19,10 +19,10 @@ class TestDateTime:
         assert isinstance(dt_tz.impl, TIMESTAMP)
 
         assert not dt.impl.timezone
-        assert dt.impl.precision is None  # pyright: ignore
+        assert dt.impl.precision is None
 
         assert dt_tz.impl.timezone
-        assert dt_tz.impl.precision == 4  # pyright: ignore
+        assert dt_tz.impl.precision == 4
 
     @pytest.mark.parametrize(
         'timezone,bind_param,expected',
@@ -111,8 +111,8 @@ class TestTime:
         assert not tm.impl.timezone
         assert not tm_precision.impl.timezone
 
-        assert tm.impl.precision is None  # pyright: ignore
-        assert tm_precision.impl.precision == 4  # pyright: ignore
+        assert tm.impl.precision is None
+        assert tm_precision.impl.precision == 4
 
     @pytest.mark.parametrize(
         'bind_param,expected',

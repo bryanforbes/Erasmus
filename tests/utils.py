@@ -12,7 +12,10 @@ def create_context_manager(
     mocker: MockerFixture, context_value: Any, /, exit_value: bool = False
 ) -> NonCallableMock:
     return mocker.NonCallableMock(
-        **{'__enter__.return_value': context_value, '__exit__.return_value': exit_value}
+        **{  #  pyright: ignore[reportGeneralTypeIssues]
+            '__enter__.return_value': context_value,
+            '__exit__.return_value': exit_value,
+        }
     )
 
 

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from collections.abc import AsyncIterator
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Any
 
 import pytest
 from aioitertools.builtins import list as _alist
@@ -208,7 +208,7 @@ class TestConfession:
         self,
         mocker: MockerFixture,
         mock_session: NonCallableMock,
-        kwargs: dict[str, object],
+        kwargs: dict[str, Any],
         expected_sql: str,
     ) -> None:
         async_iterator = Confession.get_all(mock_session, **kwargs)
@@ -260,7 +260,7 @@ class TestConfession:
         mocker: MockerFixture,
         mock_session: NonCallableMock,
         command: str,
-        kwargs: dict[str, object],
+        kwargs: dict[str, Any],
         expected_sql: str,
     ) -> None:
         confession = await Confession.get_by_command(mock_session, command, **kwargs)
