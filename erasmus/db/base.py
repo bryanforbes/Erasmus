@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Annotated, Final
+from typing import Annotated, Any, ClassVar, Final
 
 import pendulum
 from botus_receptus.sqlalchemy import (
@@ -27,7 +27,7 @@ TSVector = Annotated[str, mapped_column(_TSVector)]
 
 
 class Base(MappedAsDataclass, DeclarativeBase):
-    type_annotation_map = {
+    type_annotation_map: ClassVar[dict[Any, Any]] = {
         pendulum.DateTime: DateTime(timezone=True),
         pendulum.Time: Time,
         _Timezone: Timezone,

@@ -291,7 +291,9 @@ class Bible(Cog['Erasmus']):
         itx: discord.Interaction,
         /,
         reference: VerseRange,
-        version: app_commands.Transform[str | None, bible_lookup] = None,
+        version: app_commands.Transform[  # noqa: RUF013
+            str | None, bible_lookup
+        ] = None,
         only_me: bool = False,
     ) -> None:
         """Look up a verse"""
@@ -323,7 +325,9 @@ class Bible(Cog['Erasmus']):
         itx: discord.Interaction,
         /,
         terms: str,
-        version: app_commands.Transform[str | None, bible_lookup] = None,
+        version: app_commands.Transform[  # noqa: RUF013
+            str | None, bible_lookup
+        ] = None,
     ) -> None:
         """Search in the Bible"""
 

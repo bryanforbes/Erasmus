@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from itertools import chain
-from typing import TYPE_CHECKING, Final, cast
+from typing import TYPE_CHECKING, ClassVar, Final, cast
 from typing_extensions import Self, Unpack, override
 
 import discord
@@ -133,7 +133,7 @@ def _can_manage_channel_webhooks(
 
 
 class _TimeTransformer(app_commands.Transformer):
-    times = [
+    times: ClassVar[list[str]] = [
         f'{12 if hour == 0 else hour!s}:{minute!s:0>2} {meridian}'
         for hour, minute, meridian in chain.from_iterable(
             chain.from_iterable(
@@ -200,10 +200,10 @@ class _TimeZoneItem:
 
 
 class _TimeZoneTransformer(app_commands.Transformer):
-    timezones: list[_TimeZoneItem] = [
+    timezones: ClassVar[list[_TimeZoneItem]] = [
         _TimeZoneItem.create(zone) for zone in pendulum.timezones
     ]
-    tz_map: dict[str, str] = dict(
+    tz_map: ClassVar[dict[str, str]] = dict(
         chain.from_iterable(
             [
                 [(zone.replace('_', ' ').lower(), zone), (zone.lower(), zone)]

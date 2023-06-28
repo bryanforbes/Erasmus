@@ -236,11 +236,10 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
     async def refresh_data(self, itx: discord.Interaction, /) -> None:
         """Refresh cached data from the database"""
 
-        async with operation_guard(itx, 'Data refreshed'):
-            async with Session() as session:
-                for cog in self.bot.cogs.values():
-                    if isinstance(cog, Refreshable):
-                        await cog.refresh(session)
+        async with operation_guard(itx, 'Data refreshed'), Session() as session:
+            for cog in self.bot.cogs.values():
+                if isinstance(cog, Refreshable):
+                    await cog.refresh(session)
 
     @app_commands.command(name='reload-translations')
     @checks.is_owner()
