@@ -1426,13 +1426,13 @@ pytzdata = ">=2020.1"
 
 [[package]]
 name = "platformdirs"
-version = "3.7.0"
+version = "3.8.0"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "platformdirs-3.7.0-py3-none-any.whl", hash = "sha256:cfd065ba43133ff103ab3bd10aecb095c2a0035fcd1f07217c9376900d94ba07"},
-    {file = "platformdirs-3.7.0.tar.gz", hash = "sha256:87fbf6473e87c078d536980ba970a472422e94f17b752cfad17024c18876d481"},
+    {file = "platformdirs-3.8.0-py3-none-any.whl", hash = "sha256:ca9ed98ce73076ba72e092b23d3c93ea6c4e186b3f1c3dad6edd98ff6ffcca2e"},
+    {file = "platformdirs-3.8.0.tar.gz", hash = "sha256:b0cabcb11063d21a0b261d557acb0a9d2126350e63b70cdf7db6347baea456dc"},
 ]
 
 [package.extras]
@@ -2047,13 +2047,13 @@ test = ["Cython (>=0.29.32,<0.30.0)", "aiohttp", "flake8 (>=3.9.2,<3.10.0)", "my
 
 [[package]]
 name = "vcrpy"
-version = "4.3.1"
+version = "5.0.0"
 description = "Automatically mock your HTTP interactions to simplify and speed up testing"
 optional = false
-python-versions = ">=3.7"
+python-versions = ">=3.8"
 files = [
-    {file = "vcrpy-4.3.1-py2.py3-none-any.whl", hash = "sha256:35398f1b373f32340f39d735ea45f40d679ace316f3dddf8cbcbc2f120e6d1d0"},
-    {file = "vcrpy-4.3.1.tar.gz", hash = "sha256:24e2d450bf1c2f9f9b4246ee91beb7d58f862a9f2f030514b14783b83c5146ec"},
+    {file = "vcrpy-5.0.0-py2.py3-none-any.whl", hash = "sha256:28b66c87be7678896e9e78fee4f6695e3fb153d5d7e5f635416a33658452bb44"},
+    {file = "vcrpy-5.0.0.tar.gz", hash = "sha256:1ef3ddea819a26eda10b560c70bd74c41855241d431745712e31a5b2de2d05a8"},
 ]
 
 [package.dependencies]
