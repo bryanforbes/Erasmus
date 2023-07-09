@@ -39,7 +39,7 @@ pytest-mock = "3.11.1"
 pytest-recording = "0.12.2"
 pytest-sugar = "0.9.7"
 pytest-xdist = "3.3.1"
-ruff = "0.0.275"
+ruff = "0.0.277"
 
 [tool.poetry.scripts]
 erasmus = 'erasmus.run:main'
