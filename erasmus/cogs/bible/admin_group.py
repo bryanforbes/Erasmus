@@ -190,9 +190,7 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
         version: app_commands.Transform[str, bible_lookup],
         name: str | None = None,
         abbreviation: str | None = None,
-        service: app_commands.Transform[  # noqa: RUF013
-            str | None, _service_lookup
-        ] = None,
+        service: app_commands.Transform[str | None, _service_lookup] = None,
         service_version: str | None = None,
         rtl: bool | None = None,
         books: str | None = None,

@@ -252,9 +252,7 @@ class DailyBreadGroup(
         self,
         itx: discord.Interaction,
         /,
-        version: app_commands.Transform[  # noqa: RUF013
-            str | None, bible_lookup
-        ] = None,
+        version: app_commands.Transform[str | None, bible_lookup] = None,
         only_me: bool = False,
     ) -> None:
         """Display today's daily bread"""
