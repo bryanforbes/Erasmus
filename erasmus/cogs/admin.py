@@ -139,7 +139,7 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
         if bot.config.get('enable_eval', False):
             self._eval = app_commands.command(name='eval')(self.__eval)
 
-            self.__cog_app_commands_group__.add_command(  # pyright: ignore[reportOptionalMemberAccess]  # noqa: 501
+            self.__cog_app_commands_group__.add_command(  # pyright: ignore[reportOptionalMemberAccess]  # noqa: E501
                 self._eval
             )
 
