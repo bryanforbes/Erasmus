@@ -32,14 +32,14 @@ coverage = {version = "7.2.7", extras = ["toml"]}
 mypy = "1.4.1"
 pre-commit = "3.3.3"
 pytest = "7.4.0"
-pytest-asyncio = "0.21.0"
+pytest-asyncio = "0.21.1"
 pytest-clarity = "1.0.1"
 pytest-cov = "4.1.0"
 pytest-mock = "3.11.1"
 pytest-recording = "0.12.2"
 pytest-sugar = "0.9.7"
 pytest-xdist = "3.3.1"
-ruff = "0.0.277"
+ruff = "0.0.278"
 
 [tool.poetry.scripts]
 erasmus = 'erasmus.run:main'
