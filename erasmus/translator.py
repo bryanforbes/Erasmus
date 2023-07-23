@@ -28,7 +28,8 @@ class Translator(app_commands.Translator):
         command: object = None
 
         if (
-            context.location == app_commands.TranslationContextLocation.command_name
+            context.location  # noqa: PLR1714
+            == app_commands.TranslationContextLocation.command_name
             or context.location
             == app_commands.TranslationContextLocation.command_description
             or context.location == app_commands.TranslationContextLocation.group_name
@@ -38,7 +39,8 @@ class Translator(app_commands.Translator):
             command = context.data
             message_id = command.name
         elif (
-            context.location == app_commands.TranslationContextLocation.parameter_name
+            context.location  # noqa: PLR1714
+            == app_commands.TranslationContextLocation.parameter_name
             or context.location
             == app_commands.TranslationContextLocation.parameter_description
         ):
