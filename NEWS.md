@@ -1,5 +1,6 @@
 # Version UNRELEASED
 
+* Fix naming of Westminster catechisms
 
 # Version 23.7.0
 
