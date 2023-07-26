@@ -36,8 +36,9 @@ class Translator(app_commands.Translator):
             or context.location
             == app_commands.TranslationContextLocation.group_description
         ):
-            command = context.data
-            message_id = command.name
+            cmd = context.data
+            command = cmd
+            message_id = cmd.name
         elif (
             context.location  # noqa: PLR1714
             == app_commands.TranslationContextLocation.parameter_name
