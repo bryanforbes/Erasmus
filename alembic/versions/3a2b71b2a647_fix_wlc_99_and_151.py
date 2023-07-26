@@ -35,7 +35,7 @@ def upgrade():
 
     confession = conn.execute(
         sa.select(confessions).filter(confessions.c.command == 'wlc')
-    ).first()
+    ).fetchone()
 
     op.execute(
         confession_sections.update()

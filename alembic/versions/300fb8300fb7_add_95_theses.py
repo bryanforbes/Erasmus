@@ -72,7 +72,7 @@ def upgrade():
         confession_sections,
         [
             {
-                'confession_id': confession['id'],
+                'confession_id': confession.id,
                 'number': index,
                 'text': text,
             }
@@ -90,7 +90,7 @@ def downgrade():
 
     op.execute(
         confession_sections.delete().filter(
-            confession_sections.c.confession_id == confession['id']
+            confession_sections.c.confession_id == confession.id
         )
     )
     op.execute(confessions.delete().filter(confessions.c.command == '95t'))

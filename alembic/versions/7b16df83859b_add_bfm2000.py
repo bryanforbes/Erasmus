@@ -107,7 +107,7 @@ def upgrade():
         sections,
         [
             {
-                'confession_id': bfm2k['id'],
+                'confession_id': bfm2k.id,
                 'title': section['title'],
                 'number': section['number'],
                 'subsection_number': section.get('subsection_number'),
@@ -125,7 +125,7 @@ def downgrade():
         sa.select(confessions).filter(confessions.c.command == 'bfm2k')
     ).fetchone()
 
-    op.execute(sections.delete().filter(sections.c.confession_id == bfm2k['id']))
+    op.execute(sections.delete().filter(sections.c.confession_id == bfm2k.id))
     op.execute(confessions.delete().filter(confessions.c.command == 'bfm2k'))
     op.drop_column('confessions', 'subsection_numbering')
 

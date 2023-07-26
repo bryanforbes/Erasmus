@@ -61,15 +61,15 @@ def upgrade():
 
     conn.execute(
         confession_paragraphs.delete().where(
-            confession_paragraphs.c.confession_id == row['id']
+            confession_paragraphs.c.confession_id == row.id
         )
     )
     conn.execute(
         confession_chapters.delete().where(
-            confession_chapters.c.confession_id == row['id']
+            confession_chapters.c.confession_id == row.id
         )
     )
-    conn.execute(confessions.delete().where(confessions.c.id == row['id']))
+    conn.execute(confessions.delete().where(confessions.c.id == row.id))
 
     result.close()
 

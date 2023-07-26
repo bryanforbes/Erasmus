@@ -83,7 +83,7 @@ def upgrade() -> None:
     op.bulk_insert(
         sections,
         [
-            {'confession_id': lbcf['id'], 'number': index, 'text': section}
+            {'confession_id': lbcf.id, 'number': index, 'text': section}
             for index, section in enumerate(lbcf_data['sections'], 1)
         ],
     )
@@ -95,5 +95,5 @@ def downgrade() -> None:
     lbcf = conn.execute(
         sa.select(confessions).filter(confessions.c.command == 'lbcf46')
     ).fetchone()
-    op.execute(sections.delete().filter(sections.c.confession_id == lbcf['id']))
+    op.execute(sections.delete().filter(sections.c.confession_id == lbcf.id))
     op.execute(confessions.delete().filter(confessions.c.command == 'lbcf46'))

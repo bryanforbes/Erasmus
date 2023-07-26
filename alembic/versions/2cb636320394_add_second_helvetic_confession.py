@@ -102,7 +102,7 @@ def upgrade():
             chain.from_iterable(
                 [
                     {
-                        'confession_id': confession['id'],
+                        'confession_id': confession.id,
                         'title': section['title'],
                         'number': section['number'],
                         'subsection_number': subsection['subsection_number'],
@@ -125,7 +125,7 @@ def downgrade():
 
     op.execute(
         confession_sections.delete().filter(
-            confession_sections.c.confession_id == confession['id']
+            confession_sections.c.confession_id == confession.id
         )
     )
-    op.execute(confessions.delete().filter(confessions.c.id == confession['id']))
+    op.execute(confessions.delete().filter(confessions.c.id == confession.id))
