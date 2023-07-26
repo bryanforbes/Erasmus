@@ -1,4 +1,4 @@
-# Version UNRELEASED
+# Version 23.7.2
 
 * Fix Westminster Larger Catechism 99 and 151
 
