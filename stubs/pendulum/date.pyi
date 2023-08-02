@@ -1,5 +1,5 @@
 from datetime import date, timedelta
-from typing import Literal, overload
+from typing import Literal, SupportsIndex, overload
 from typing_extensions import Self
 
 from .datetime import DateTime
@@ -72,9 +72,12 @@ class Date(FormattableMixin, date):
     @classmethod
     def today(cls) -> DateTime: ...
     @classmethod
-    def fromtimestamp(cls, t: float) -> Self: ...
+    def fromtimestamp(cls, __t: float) -> Self: ...
     @classmethod
     def fromordinal(cls, n: int) -> Self: ...
     def replace(
-        self, year: int | None = ..., month: int | None = ..., day: int | None = ...
+        self,
+        year: SupportsIndex = ...,
+        month: SupportsIndex = ...,
+        day: SupportsIndex = ...,
     ) -> Self: ...

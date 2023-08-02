@@ -1,5 +1,5 @@
 from datetime import date, datetime, time, timedelta, tzinfo
-from typing import ClassVar, Literal
+from typing import ClassVar, Literal, SupportsIndex
 from typing_extensions import Self
 
 from .date import Date
@@ -170,15 +170,15 @@ class DateTime(datetime, Date):
     def astimezone(self, tz: tzinfo | None = ...) -> DateTime: ...
     def replace(
         self,
-        year: int | None = ...,
-        month: int | None = ...,
-        day: int | None = ...,
-        hour: int | None = ...,
-        minute: int | None = ...,
-        second: int | None = ...,
-        microsecond: int | None = ...,
+        year: SupportsIndex = ...,
+        month: SupportsIndex = ...,
+        day: SupportsIndex = ...,
+        hour: SupportsIndex = ...,
+        minute: SupportsIndex = ...,
+        second: SupportsIndex = ...,
+        microsecond: SupportsIndex = ...,
         tzinfo: tzinfo | None = ...,
-        fold: int | None = ...,
+        fold: int = ...,
     ) -> DateTime: ...
     def __getnewargs__(self) -> tuple[Self]: ...
     def __reduce__(
