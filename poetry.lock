@@ -1413,18 +1413,18 @@ pytzdata = ">=2020.1"
 
 [[package]]
 name = "platformdirs"
-version = "3.9.1"
+version = "3.10.0"
 description = "A small Python package for determining appropriate platform-specific dirs, e.g. a \"user data dir\"."
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "platformdirs-3.9.1-py3-none-any.whl", hash = "sha256:ad8291ae0ae5072f66c16945166cb11c63394c7a3ad1b1bc9828ca3162da8c2f"},
-    {file = "platformdirs-3.9.1.tar.gz", hash = "sha256:1b42b450ad933e981d56e59f1b97495428c9bd60698baab9f3eb3d00d5822421"},
+    {file = "platformdirs-3.10.0-py3-none-any.whl", hash = "sha256:d7c24979f292f916dc9cbf8648319032f551ea8c49a4c9bf2fb556a02070ec1d"},
+    {file = "platformdirs-3.10.0.tar.gz", hash = "sha256:b45696dab2d7cc691a3226759c0d3b00c47c8b6e293d96f6436f733303f77f6d"},
 ]
 
 [package.extras]
-docs = ["furo (>=2023.5.20)", "proselint (>=0.13)", "sphinx (>=7.0.1)", "sphinx-autodoc-typehints (>=1.23,!=1.23.4)"]
-test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.3.1)", "pytest-cov (>=4.1)", "pytest-mock (>=3.10)"]
+docs = ["furo (>=2023.7.26)", "proselint (>=0.13)", "sphinx (>=7.1.1)", "sphinx-autodoc-typehints (>=1.24)"]
+test = ["appdirs (==1.4.4)", "covdefaults (>=2.3)", "pytest (>=7.4)", "pytest-cov (>=4.1)", "pytest-mock (>=3.11.1)"]
 
 [[package]]
 name = "pluggy"
@@ -1797,13 +1797,13 @@ files = [
 
 [[package]]
 name = "rich"
-version = "13.4.2"
+version = "13.5.2"
 description = "Render rich text, tables, progress bars, syntax highlighting, markdown and more to the terminal"
 optional = false
 python-versions = ">=3.7.0"
 files = [
-    {file = "rich-13.4.2-py3-none-any.whl", hash = "sha256:8f87bc7ee54675732fa66a05ebfe489e27264caeeff3728c945d25971b6485ec"},
-    {file = "rich-13.4.2.tar.gz", hash = "sha256:d653d6bccede5844304c605d5aac802c7cf9621efd700b46c7ec2b51ea914898"},
+    {file = "rich-13.5.2-py3-none-any.whl", hash = "sha256:146a90b3b6b47cac4a73c12866a499e9817426423f57c5a66949c086191a8808"},
+    {file = "rich-13.5.2.tar.gz", hash = "sha256:fb9d6c0a0f643c99eed3875b5377a184132ba9be4d61516a55273d3554d75a39"},
 ]
 
 [package.dependencies]
@@ -2037,18 +2037,17 @@ test = ["Cython (>=0.29.32,<0.30.0)", "aiohttp", "flake8 (>=3.9.2,<3.10.0)", "my
 
 [[package]]
 name = "vcrpy"
-version = "5.0.0"
+version = "5.1.0"
 description = "Automatically mock your HTTP interactions to simplify and speed up testing"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "vcrpy-5.0.0-py2.py3-none-any.whl", hash = "sha256:28b66c87be7678896e9e78fee4f6695e3fb153d5d7e5f635416a33658452bb44"},
-    {file = "vcrpy-5.0.0.tar.gz", hash = "sha256:1ef3ddea819a26eda10b560c70bd74c41855241d431745712e31a5b2de2d05a8"},
+    {file = "vcrpy-5.1.0-py2.py3-none-any.whl", hash = "sha256:605e7b7a63dcd940db1df3ab2697ca7faf0e835c0852882142bafb19649d599e"},
+    {file = "vcrpy-5.1.0.tar.gz", hash = "sha256:bbf1532f2618a04f11bce2a99af3a9647a32c880957293ff91e0a5f187b6b3d2"},
 ]
 
 [package.dependencies]
 PyYAML = "*"
-six = ">=1.5"
 wrapt = "*"
 yarl = "*"
 
