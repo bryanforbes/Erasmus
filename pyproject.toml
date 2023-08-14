@@ -22,7 +22,7 @@ tag = "v23.7.2"
 extras = ["uvloop", "sqlalchemy"]
 
 [tool.poetry.dependencies.discord-py]
-version = "2.3.1"
+version = "2.3.2"
 extras = ["speed"]
 
 [tool.poetry.group.dev.dependencies]
