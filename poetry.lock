@@ -168,13 +168,13 @@ tz = ["python-dateutil"]
 
 [[package]]
 name = "async-timeout"
-version = "4.0.2"
+version = "4.0.3"
 description = "Timeout context manager for asyncio programs"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 files = [
-    {file = "async-timeout-4.0.2.tar.gz", hash = "sha256:2163e1640ddb52b7a8c80d0a67a08587e5d245cc9c553a74a847056bc2976b15"},
-    {file = "async_timeout-4.0.2-py3-none-any.whl", hash = "sha256:8ca1e4fcf50d07413d66d1a5e416e42cfdf5851c981d679a09851a6853383b3c"},
+    {file = "async-timeout-4.0.3.tar.gz", hash = "sha256:4640d96be84d82d02ed59ea2b7105a0f7b33abe8703703cd0ab0bf87c427522f"},
+    {file = "async_timeout-4.0.3-py3-none-any.whl", hash = "sha256:7405140ff1230c310e51dc27b3145b9092d659ce68ff733fb0cefe3ee42be028"},
 ]
 
 [[package]]
@@ -339,7 +339,7 @@ uvloop = ["uvloop (>=0.15.2)"]
 
 [[package]]
 name = "botus-receptus"
-version = "23.7.2"
+version = "23.8.0"
 description = ""
 optional = false
 python-versions = "^3.10"
@@ -348,11 +348,11 @@ develop = false
 
 [package.dependencies]
 aioitertools = "^0.11.0"
-async-timeout = "~4.0.2"
+async-timeout = "~4.0.3"
 asyncpg = {version = "~0.28.0", optional = true}
 attrs = "^23.1.0"
 click = "^8.1.6"
-"discord.py" = "^2.3.1"
+"discord.py" = "^2.3.2"
 greenlet = {version = "^2.0.2", optional = true}
 pendulum = "~2.1.2"
 sqlalchemy = {version = "~2.0.19", optional = true}
@@ -369,8 +369,8 @@ uvloop = ["uvloop (>=0.17.0,<0.18.0)"]
 [package.source]
 type = "git"
 url = "https://github.com/bryanforbes/botus_receptus.git"
-reference = "v23.7.2"
-resolved_reference = "75e8bed0db1bee72bbce82f2f16494e39db0f0de"
+reference = "v23.8.0"
+resolved_reference = "8bdf6eb18f0c9f1516515c91bd81ba2705b6ad14"
 
 [[package]]
 name = "brotli"
@@ -728,13 +728,13 @@ toml = ["tomli"]
 
 [[package]]
 name = "discord-py"
-version = "2.3.1"
+version = "2.3.2"
 description = "A Python wrapper for the Discord API"
 optional = false
 python-versions = ">=3.8.0"
 files = [
-    {file = "discord.py-2.3.1-py3-none-any.whl", hash = "sha256:149652f24da299706270bf8c03c2fcf80cf1caf3a480744c61d5b001688b380d"},
-    {file = "discord.py-2.3.1.tar.gz", hash = "sha256:8eb4fe66b5d503da6de3a8425e23012711dc2fbcd7a782107a92beac15ee3459"},
+    {file = "discord.py-2.3.2-py3-none-any.whl", hash = "sha256:9da4679fc3cb10c64b388284700dc998663e0e57328283bbfcfc2525ec5960a6"},
+    {file = "discord.py-2.3.2.tar.gz", hash = "sha256:4560f70f2eddba7e83370ecebd237ac09fbb4980dc66507482b0c0e5b8f76b9c"},
 ]
 
 [package.dependencies]
@@ -2242,4 +2242,4 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "4a243079203d3415856e7d6143fd52ab28b21007ca2591145cd20950ca6dd110"
+content-hash = "32370e76ea561ae3d66248633e4acb1a2fdbb2356759bf89259ef57ba0887215"
