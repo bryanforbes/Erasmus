@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from itertools import pairwise
-from typing import TYPE_CHECKING, Final, NamedTuple, cast
-from typing_extensions import Self, override
+from typing import TYPE_CHECKING, Final, NamedTuple, Self, cast
+from typing_extensions import override
 
 import discord
 from attrs import frozen

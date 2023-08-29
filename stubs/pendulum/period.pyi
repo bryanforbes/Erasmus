@@ -1,7 +1,6 @@
 from collections.abc import Iterator
 from datetime import date, timedelta
-from typing import overload
-from typing_extensions import Self
+from typing import Self, overload
 
 from .duration import Duration
 

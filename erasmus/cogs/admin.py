@@ -4,8 +4,8 @@ import io
 import textwrap
 import traceback
 from contextlib import asynccontextmanager, redirect_stdout
-from typing import TYPE_CHECKING, Any, Final
-from typing_extensions import Self, override
+from typing import TYPE_CHECKING, Any, Final, Self
+from typing_extensions import override
 
 import discord
 from botus_receptus import GroupCog, utils

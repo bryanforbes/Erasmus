@@ -1,6 +1,5 @@
 from datetime import date, datetime, time, timedelta, tzinfo
-from typing import ClassVar, Literal, SupportsIndex
-from typing_extensions import Self
+from typing import ClassVar, Literal, Self, SupportsIndex
 
 from .date import Date
 from .period import Period

@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, time, timezone
+from datetime import UTC, datetime, time
 
 import pendulum
 import pytest
@@ -67,7 +67,7 @@ class TestDateTime:
         [
             (
                 True,
-                datetime(2020, 6, 26, 5, tzinfo=timezone.utc),
+                datetime(2020, 6, 26, 5, tzinfo=UTC),
                 pendulum.datetime(2020, 6, 26, 5, tz=pendulum.UTC),
             ),
             (
@@ -144,7 +144,7 @@ class TestTime:
         'result_value,expected',
         [
             (
-                time(5, 30, 1, 2, tzinfo=timezone.utc),
+                time(5, 30, 1, 2, tzinfo=UTC),
                 pendulum.Time(5, 30, 1, 2, tzinfo=None),
             ),
             (None, None),

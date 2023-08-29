@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Self
 
 from attrs import frozen
 from discord import app_commands
@@ -8,8 +8,6 @@ from discord import app_commands
 from ...utils import AutoCompleter
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
-
     from ...types import Bible
 
 

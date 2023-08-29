@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 import contextlib
-from typing import TYPE_CHECKING, Final, Generic, cast
-from typing_extensions import Self, TypeVar, override
+from typing import TYPE_CHECKING, Final, Generic, Self, cast
+from typing_extensions import TypeVar, override
 
 import discord
 from botus_receptus import utils

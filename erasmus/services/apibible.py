@@ -2,8 +2,8 @@ from __future__ import annotations
 
 import asyncio
 import contextlib
-from typing import TYPE_CHECKING, Final, Literal, TypedDict
-from typing_extensions import Self, override
+from typing import TYPE_CHECKING, Final, Literal, Self, TypedDict
+from typing_extensions import override
 
 import orjson
 from attrs import field, frozen

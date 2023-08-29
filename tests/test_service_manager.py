@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import asyncio
-from typing import TYPE_CHECKING, Any, cast
+from typing import TYPE_CHECKING, Any, Self, cast
 
 import pytest
 from attrs import define, field
@@ -15,7 +15,6 @@ from erasmus.exceptions import (
 from erasmus.service_manager import ServiceManager
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
     from unittest.mock import AsyncMock, MagicMock
 
     from erasmus.types import Bible, Service

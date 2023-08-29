@@ -2,8 +2,8 @@ from __future__ import annotations
 
 from enum import Flag, auto
 from pathlib import Path
-from typing import TYPE_CHECKING, Final, TypedDict
-from typing_extensions import Self, override
+from typing import TYPE_CHECKING, Final, Self, TypedDict
+from typing_extensions import override
 
 import orjson
 from attrs import evolve, frozen

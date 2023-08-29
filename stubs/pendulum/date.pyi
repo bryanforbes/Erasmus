@@ -1,6 +1,5 @@
 from datetime import date, timedelta
-from typing import Literal, SupportsIndex, overload
-from typing_extensions import Self
+from typing import Literal, Self, SupportsIndex, overload
 
 from .datetime import DateTime
 from .mixins.default import FormattableMixin

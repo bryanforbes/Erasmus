@@ -48,7 +48,7 @@ def upgrade():
         op.execute(
             daily_breads_after.update()
             .filter_by(guild_id=row[0])
-            .values({'next_scheduled': row[1].replace(tzinfo=datetime.timezone.utc)})
+            .values({'next_scheduled': row[1].replace(tzinfo=datetime.UTC)})
         )
 
 

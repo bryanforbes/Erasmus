@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-from typing_extensions import Self, override
+from typing import TYPE_CHECKING, Self
+from typing_extensions import override
 
 import pendulum
 from pendulum.tz.timezone import Timezone as _Timezone

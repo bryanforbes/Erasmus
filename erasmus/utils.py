@@ -1,8 +1,17 @@
 from __future__ import annotations
 
 from collections import OrderedDict
-from typing import TYPE_CHECKING, Final, Generic, Protocol, TypedDict, overload
-from typing_extensions import NotRequired, TypeVar, Unpack, override
+from typing import (
+    TYPE_CHECKING,
+    Final,
+    Generic,
+    NotRequired,
+    Protocol,
+    TypedDict,
+    Unpack,
+    overload,
+)
+from typing_extensions import TypeVar, override
 
 from attrs import field, frozen
 from botus_receptus import utils

@@ -1,11 +1,18 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Generic, Literal, Protocol, overload
+from typing import (
+    TYPE_CHECKING,
+    Any,
+    Generic,
+    Literal,
+    LiteralString,
+    Protocol,
+    overload,
+)
 from typing_extensions import TypeVar
 
 if TYPE_CHECKING:
     from collections.abc import Callable, Iterable, Mapping
-    from typing_extensions import LiteralString
     from unittest import mock
 
 _T = TypeVar('_T', infer_variance=True)

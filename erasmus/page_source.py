@@ -4,13 +4,14 @@ import inspect
 from abc import abstractmethod
 from collections.abc import AsyncIterable, Awaitable, Callable, Iterable, Sequence
 from typing import (
+    NotRequired,
     ParamSpec,
     Protocol,
     TypeAlias,
     TypedDict,
     runtime_checkable,
 )
-from typing_extensions import NotRequired, TypeVar, override
+from typing_extensions import TypeVar, override
 
 import discord
 

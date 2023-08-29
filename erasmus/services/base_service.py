@@ -2,14 +2,12 @@ from __future__ import annotations
 
 import logging
 from abc import abstractmethod
-from typing import TYPE_CHECKING, Final
+from typing import TYPE_CHECKING, Final, Self
 
 from attrs import frozen
 from botus_receptus import re
 
 if TYPE_CHECKING:
-    from typing_extensions import Self
-
     import aiohttp
 
     from ..config import ServiceConfig

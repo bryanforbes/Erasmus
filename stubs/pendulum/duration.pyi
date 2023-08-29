@@ -1,6 +1,5 @@
 from datetime import timedelta
-from typing import overload
-from typing_extensions import Self
+from typing import Self, overload
 
 class Duration(timedelta):
     def __new__(

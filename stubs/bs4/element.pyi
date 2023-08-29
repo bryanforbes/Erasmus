@@ -8,11 +8,12 @@ from typing import (
     Literal,
     NewType,
     Protocol,
+    Self,
     TypeAlias,
     overload,
     type_check_only,
 )
-from typing_extensions import Self, TypeVar
+from typing_extensions import TypeVar
 
 from . import BeautifulSoup
 from .builder import TreeBuilder

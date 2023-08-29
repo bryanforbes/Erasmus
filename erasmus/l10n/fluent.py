@@ -1,8 +1,8 @@
 from __future__ import annotations
 
 from datetime import timedelta
-from typing import TYPE_CHECKING, ClassVar, Literal, get_args
-from typing_extensions import Self, override
+from typing import TYPE_CHECKING, ClassVar, Literal, Self, get_args
+from typing_extensions import override
 
 from attrs import define, field, validators
 from babel.dates import format_timedelta

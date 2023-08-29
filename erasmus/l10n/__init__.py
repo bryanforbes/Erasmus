@@ -2,7 +2,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from pathlib import Path
-from typing import TYPE_CHECKING, Literal, TypedDict, overload
+from typing import TYPE_CHECKING, Literal, NotRequired, TypedDict, Unpack, overload
 
 from attrs import define, field, frozen
 from discord import app_commands
@@ -14,7 +14,6 @@ from .fluent import Localization
 if TYPE_CHECKING:
     from _typeshed import SupportsItems
     from collections.abc import Iterator
-    from typing_extensions import NotRequired, Unpack
 
     import discord
 
