@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "erasmus"
-version = "23.8.0"
+version = "23.8.1.dev0"
 description = ""
 authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
 license = "BSD-3-Clause"
