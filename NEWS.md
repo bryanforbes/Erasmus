@@ -1,5 +1,6 @@
 # Version UNRELEASED
 
+* Maintenance release
 
 # Version 23.7.2
 
