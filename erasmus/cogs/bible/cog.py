@@ -154,7 +154,7 @@ class Bible(Cog['Erasmus']):
         await send_passage(itx, passage, ephemeral=only_me)
 
     @override
-    async def cog_app_command_error(  # pyright: ignore[reportIncompatibleMethodOverride]  # noqa: E501
+    async def cog_app_command_error(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
         itx: discord.Interaction | discord.Message,
         error: Exception,
@@ -244,7 +244,7 @@ class Bible(Cog['Erasmus']):
             verse_ranges = VerseRange.get_all_from_string(
                 message.content,
                 only_bracketed=self.bot.user
-                not in message.mentions,  # pyright: ignore[reportUnnecessaryContains]  # noqa: E501
+                not in message.mentions,  # pyright: ignore[reportUnnecessaryContains]
             )
 
             if not verse_ranges:

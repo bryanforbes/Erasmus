@@ -90,17 +90,17 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
 
         _log.info(
             'Global commands: '
-            f'{list(self.tree._global_commands.keys())!r}'  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]  # noqa: E501
+            f'{list(self.tree._global_commands.keys())!r}'  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
         )
 
         for (
             guild_id,
             _commands,  # pyright: ignore[reportUnknownVariableType]
         ) in (
-            self.tree._guild_commands.items()  # pyright: ignore[reportUnknownMemberType]  # noqa: E501
+            self.tree._guild_commands.items()  # pyright: ignore[reportUnknownMemberType]
         ):
             _log.info(
-                f'Commands for {guild_id}: {list(_commands)!r}'  # pyright: ignore[reportUnknownArgumentType]  # noqa: E501
+                f'Commands for {guild_id}: {list(_commands)!r}'  # pyright: ignore[reportUnknownArgumentType]
             )
 
     @override

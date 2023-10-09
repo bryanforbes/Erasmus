@@ -334,7 +334,7 @@ class Confession(
         _confession_lookup.clear()
 
     @override
-    async def cog_app_command_error(  # pyright: ignore[reportIncompatibleMethodOverride]  # noqa: E501
+    async def cog_app_command_error(  # pyright: ignore[reportIncompatibleMethodOverride]
         self, itx: discord.Interaction, error: Exception, /
     ) -> None:
         if (
