@@ -99,7 +99,7 @@ class Bundle(FluentBundle):
     def format_pattern(
         self,
         pattern: Pattern,
-        args: SupportsItems[str, object] | None = ...,
+        args: SupportsItems[str, object] | None = None,
     ) -> tuple[str | FluentNone, list[Exception]]:
         if args is not None:
             fluent_args = {

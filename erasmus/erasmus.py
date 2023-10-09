@@ -31,7 +31,7 @@ _version: Final = metadata.version('erasmus')
 
 
 class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
-    config: Config
+    config: Config  # pyright: ignore[reportIncompatibleVariableOverride]
     localizer: Localizer
 
     def __init__(self, config: Config, /, *args: object, **kwargs: object) -> None:
