@@ -2,5 +2,6 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "github>bryanforbes/python-workflows:app"
-  ]
+  ],
+  "ignoreDeps": ["python"]
 }
