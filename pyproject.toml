@@ -28,7 +28,7 @@ extras = ["speed"]
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "0.28.0"
 black = "23.9.1"
-coverage = {version = "7.3.1", extras = ["toml"]}
+coverage = {version = "7.3.2", extras = ["toml"]}
 mypy = "1.5.1"
 pre-commit = "3.4.0"
 pytest = "7.4.2"
@@ -39,7 +39,7 @@ pytest-mock = "3.11.1"
 pytest-recording = "0.13.0"
 pytest-sugar = "0.9.7"
 pytest-xdist = "3.3.1"
-ruff = "0.0.291"
+ruff = "0.0.292"
 
 [tool.poetry.scripts]
 erasmus = 'erasmus.run:main'
