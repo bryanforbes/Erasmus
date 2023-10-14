@@ -4,7 +4,6 @@ import asyncio
 import logging
 from typing import TYPE_CHECKING, Any, Final, TypeGuard, cast
 
-import async_timeout
 from attrs import field, frozen
 
 from . import services
@@ -48,7 +47,7 @@ class ServiceManager:
 
         try:
             _log.debug(f'Getting passage {verses} ({bible.abbr})')
-            async with async_timeout.timeout(self.timeout):
+            async with asyncio.timeout(self.timeout):
                 passage = await service.get_passage(bible, verses)
                 _log.debug(f'Got passage {passage.citation}')
                 return passage
@@ -64,7 +63,7 @@ class ServiceManager:
             raise ServiceNotSupportedError(bible)
 
         try:
-            async with async_timeout.timeout(self.timeout):
+            async with asyncio.timeout(self.timeout):
                 return await service.search(bible, terms, limit=limit, offset=offset)
         except asyncio.TimeoutError as e:
             raise ServiceSearchTimeout(bible, terms) from e

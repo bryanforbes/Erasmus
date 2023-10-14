@@ -8,7 +8,6 @@ from botus_receptus.sqlalchemy import (
     Snowflake as _Snowflake,
     TSVector as _TSVector,
 )
-from pendulum.tz.timezone import Timezone as _Timezone
 from sqlalchemy import Text as _Text
 from sqlalchemy.dialects.postgresql import ENUM
 from sqlalchemy.ext.asyncio import async_sessionmaker
@@ -30,7 +29,7 @@ class Base(MappedAsDataclass, DeclarativeBase):
     type_annotation_map: ClassVar[dict[Any, Any]] = {
         pendulum.DateTime: DateTime(timezone=True),
         pendulum.Time: Time,
-        _Timezone: Timezone,
+        pendulum.Timezone: Timezone,
         SectionFlag: Flag(SectionFlag),
         ConfessionType: ENUM(ConfessionType, name='confession_type'),
         NumberingType: ENUM(NumberingType, name='confession_numbering_type'),

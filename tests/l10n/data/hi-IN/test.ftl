@@ -1,3 +1,3 @@
 message = This is a message in Hindi
 
-period-message = There are { PERIOD($period) } left in Hindi
+interval-message = There are { INTERVAL($interval) } left in Hindi

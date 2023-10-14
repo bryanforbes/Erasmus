@@ -205,74 +205,74 @@ class TestLocalization:
         [
             (
                 ['en-US'],
-                'period-message',
+                'interval-message',
                 9010,
                 'There are \u20682 hours 30 minutes 9 seconds\u2069 left',
             ),
             (
                 ['en-US'],
-                'period-message',
+                'interval-message',
                 90,
                 'There are \u20681 minute 29 seconds\u2069 left',
             ),
             (
                 ['hi-IN', 'en-US'],
-                'period-message',
+                'interval-message',
                 9010,
                 'There are \u20682 घंटे 30 मिनट 9 सेकंड\u2069 left in Hindi',
             ),
             (
                 ['nb-NO', 'en-US'],
-                'period-message',
+                'interval-message',
                 9010,
                 'There are \u20682 timer 30 minutter 9 sekunder\u2069 left '
                 'in Norwegian',
             ),
             (
                 ['nb-NO', 'en-US'],
-                'period-message',
+                'interval-message',
                 90,
                 'There are \u20681 minutt 29 sekunder\u2069 left in Norwegian',
             ),
             (
                 ['en-US'],
-                'period-message-implicit',
+                'interval-message-implicit',
                 90,
                 'There are \u20681 minute 29 seconds\u2069 left',
             ),
             (
                 ['en-US'],
-                'period-message-format-short',
+                'interval-message-format-short',
                 90,
                 'There are \u20681 min 29 sec\u2069 left',
             ),
             (
                 ['nb-NO', 'en-US'],
-                'period-message-format-short',
+                'interval-message-format-short',
                 90,
                 'There are \u20681 min 29 sek\u2069 left in Norwegian',
             ),
             (
                 ['en-US'],
-                'period-message-format-narrow',
+                'interval-message-format-narrow',
                 90,
                 'There are \u20681m 29s\u2069 left',
             ),
             (
                 ['nb-NO', 'en-US'],
-                'period-message-format-narrow',
+                'interval-message-format-narrow',
                 90,
                 'There are \u20681m 29s\u2069 left in Norwegian',
             ),
             (
                 ['en-US'],
-                'period-message-separator',
+                'interval-message-separator',
                 90,
                 'There are \u20681 minute, 29 seconds\u2069 left',
             ),
         ],
     )
-    def test_format_period(
+    def test_format_interval(
         self,
         loader: FluentResourceLoader,
         locales: list[str],
@@ -281,13 +281,13 @@ class TestLocalization:
         expected: str,
     ) -> None:
         l10n = Localization(locales, ['test.ftl'], loader)
-        period = pendulum.now().add(seconds=seconds).diff()
-        assert l10n.format(message_id, {'period': period}) == expected
+        interval = pendulum.now().add(seconds=seconds).diff()
+        assert l10n.format(message_id, {'interval': interval}) == expected
 
-    def test_format_period_invalid(self, loader: FluentResourceLoader) -> None:
+    def test_format_interval_invalid(self, loader: FluentResourceLoader) -> None:
         l10n = Localization(['en-US'], ['test.ftl'], loader)
 
         assert (
-            l10n.format('period-message', {'period': 1})
-            == 'There are \u2068PERIOD()\u2069 left'
+            l10n.format('interval-message', {'interval': 1})
+            == 'There are \u2068INTERVAL()\u2069 left'
         )

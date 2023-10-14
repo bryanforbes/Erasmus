@@ -9,7 +9,6 @@ import pendulum
 from attrs import frozen
 from botus_receptus import re, utils
 from discord import app_commands
-from pendulum.tz.timezone import Timezone  # noqa: TCH002
 
 from ....data import SectionFlag
 from ....db import BibleVersion, DailyBread, Session
@@ -201,19 +200,21 @@ class _TimeZoneItem:
 
 class _TimeZoneTransformer(app_commands.Transformer):
     timezones: ClassVar[list[_TimeZoneItem]] = [
-        _TimeZoneItem.create(zone) for zone in pendulum.timezones
+        _TimeZoneItem.create(zone) for zone in pendulum.timezones()
     ]
     tz_map: ClassVar[dict[str, str]] = dict(
         chain.from_iterable(
             [
                 [(zone.replace('_', ' ').lower(), zone), (zone.lower(), zone)]
-                for zone in pendulum.timezones
+                for zone in pendulum.timezones()
             ]
         )
     )
 
     @override
-    async def transform(self, itx: discord.Interaction, value: str, /) -> Timezone:
+    async def transform(
+        self, itx: discord.Interaction, value: str, /
+    ) -> pendulum.Timezone:
         value_lower = value.lower()
 
         if value_lower not in self.tz_map:
@@ -270,7 +271,7 @@ class DailyBreadPreferencesGroup(
         /,
         channel: discord.TextChannel | discord.Thread,
         time: app_commands.Transform[pendulum.Time, _TimeTransformer],
-        timezone: app_commands.Transform[Timezone, _TimeZoneTransformer],
+        timezone: app_commands.Transform[pendulum.Timezone, _TimeZoneTransformer],
     ) -> None:
         """Set or update the automated daily bread post settings for this server"""
 

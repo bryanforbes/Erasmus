@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING, Self
 from typing_extensions import override
 
 import pendulum
-from pendulum.tz.timezone import Timezone as _Timezone
 from sqlalchemy import String, TypeDecorator
 from sqlalchemy.dialects.postgresql import TIME, TIMESTAMP
 
@@ -81,14 +80,14 @@ class Time(TypeDecorator[pendulum.Time]):
         )
 
 
-class Timezone(TypeDecorator[_Timezone]):
+class Timezone(TypeDecorator[pendulum.Timezone]):
     impl: String = String  # pyright: ignore[reportGeneralTypeIssues, reportIncompatibleVariableOverride]
 
     cache_ok = True
 
     @override
     def process_bind_param(
-        self, value: _Timezone | None, dialect: object
+        self, value: pendulum.Timezone | None, dialect: object
     ) -> str | None:
         if value is None:
             return None
@@ -98,7 +97,7 @@ class Timezone(TypeDecorator[_Timezone]):
     @override
     def process_result_value(
         self, value: str | None, dialect: object
-    ) -> _Timezone | None:
+    ) -> pendulum.Timezone | None:
         if value is None:
             return None
 

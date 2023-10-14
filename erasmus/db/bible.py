@@ -3,7 +3,6 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 
 import pendulum
-from pendulum.tz.timezone import Timezone  # noqa: TCH002
 from sqlalchemy import Computed, ForeignKey, Index, func, select, text
 from sqlalchemy.dialects.postgresql import JSONB, insert
 from sqlalchemy.orm import Mapped, declared_attr, foreign, mapped_column, relationship
@@ -217,7 +216,7 @@ class DailyBread(Base):
     url: Mapped[str]
     next_scheduled: Mapped[pendulum.DateTime]
     time: Mapped[pendulum.Time]
-    timezone: Mapped[Timezone]
+    timezone: Mapped[pendulum.Timezone]
 
     prefs: Mapped[GuildPref | None] = relationship(
         GuildPref,

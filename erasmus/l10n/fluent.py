@@ -4,11 +4,11 @@ from datetime import timedelta
 from typing import TYPE_CHECKING, ClassVar, Literal, Self, get_args
 from typing_extensions import override
 
+import pendulum
 from attrs import define, field, validators
 from babel.dates import format_timedelta
 from fluent.runtime import AbstractResourceLoader, FluentBundle, FluentLocalization
 from fluent.runtime.types import FluentNone, FluentType, merge_options
-from pendulum.period import Period
 
 if TYPE_CHECKING:
     from _typeshed import SupportsItems
@@ -22,35 +22,35 @@ FormatType = Literal['narrow', 'short', 'long']
 
 
 @define(slots=False)
-class PeriodFormatOptions:
+class IntervalFormatOptions:
     format: FormatType = field(
         default='long', validator=validators.in_(get_args(FormatType))
     )
     separator: str = field(default=' ')
 
 
-class FluentPeriod(FluentType, Period):
-    default_period_format_options: ClassVar = PeriodFormatOptions()
-    options: PeriodFormatOptions
+class FluentInterval(FluentType, pendulum.Interval):
+    default_interval_format_options: ClassVar = IntervalFormatOptions()
+    options: IntervalFormatOptions
 
-    def _init_options(self, period: Period, **kwargs: object) -> None:
+    def _init_options(self, interval: pendulum.Interval, **kwargs: object) -> None:
         self.options = merge_options(
-            PeriodFormatOptions,  # pyright: ignore[reportGeneralTypeIssues]
+            IntervalFormatOptions,  # pyright: ignore[reportGeneralTypeIssues]
             getattr(
-                period, 'options', self.default_period_format_options
+                interval, 'options', self.default_interval_format_options
             ),  # pyright: ignore[reportGeneralTypeIssues]
             kwargs,
         )
 
     @classmethod
-    def from_period(cls, period: Period, **kwargs: object) -> Self:
-        obj = cls(period.start, period.end)
-        obj._init_options(period, **kwargs)
+    def from_interval(cls, interval: pendulum.Interval, **kwargs: object) -> Self:
+        obj = cls(interval.start, interval.end)
+        obj._init_options(interval, **kwargs)
         return obj
 
     @override
     def format(self, locale: Locale | str) -> str:
-        periods = [
+        intervals = [
             ('hour', self.hours),
             ('minute', self.minutes),
             ('second', self.remaining_seconds),
@@ -58,8 +58,8 @@ class FluentPeriod(FluentType, Period):
 
         parts: list[str] = []
 
-        for period in periods:
-            unit, count = period
+        for interval in intervals:
+            unit, count = interval
 
             if abs(count) > 0:
                 parts.append(
@@ -75,21 +75,21 @@ class FluentPeriod(FluentType, Period):
         return self.options.separator.join(parts)
 
 
-def fluent_period(delta: object, **kwargs: object) -> FluentPeriod:
-    if isinstance(delta, FluentPeriod) and not kwargs:
+def fluent_interval(delta: object, **kwargs: object) -> FluentInterval:
+    if isinstance(delta, FluentInterval) and not kwargs:
         return delta
 
-    if isinstance(delta, Period):
-        return FluentPeriod.from_period(delta, **kwargs)
+    if isinstance(delta, pendulum.Interval):
+        return FluentInterval.from_interval(delta, **kwargs)
 
     raise TypeError(
-        f"Can't use fluent_period with object {delta} for type {type(delta)}"
+        f"Can't use fluent_interval with object {delta} for type {type(delta)}"
     )
 
 
 def native_to_fluent(val: object) -> object:
-    if isinstance(val, Period):
-        return FluentPeriod.from_period(val)
+    if isinstance(val, pendulum.Interval):
+        return FluentInterval.from_interval(val)
 
     return val
 
@@ -130,7 +130,7 @@ class Localization(FluentLocalization):
             resource_loader,
             use_isolating,
             bundle_class=Bundle,
-            functions={'PERIOD': fluent_period},
+            functions={'INTERVAL': fluent_interval},
         )
 
     def format(

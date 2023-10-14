@@ -4,8 +4,8 @@ message = This is a message
 
 another-message = This is another message with { $something }
 
-period-message = There are { PERIOD($period) } left
-period-message-implicit = There are { $period } left
-period-message-format-short = There are { PERIOD($period, format: "short") } left
-period-message-format-narrow = There are { PERIOD($period, format: "narrow") } left
-period-message-separator = There are { PERIOD($period, separator: ", ") } left
+interval-message = There are { INTERVAL($interval) } left
+interval-message-implicit = There are { $interval } left
+interval-message-format-short = There are { INTERVAL($interval, format: "short") } left
+interval-message-format-narrow = There are { INTERVAL($interval, format: "narrow") } left
+interval-message-separator = There are { INTERVAL($interval, separator: ", ") } left

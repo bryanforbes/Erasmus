@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-
 import pendulum
 import pytest
 
@@ -9,9 +7,6 @@ from erasmus.cogs.bible.daily_bread.common import (
     get_first_scheduled_time,
     get_next_scheduled_time,
 )
-
-if TYPE_CHECKING:
-    from ....types import MockerFixture
 
 
 @pytest.mark.parametrize(
@@ -66,7 +61,6 @@ if TYPE_CHECKING:
     ],
 )
 def test_get_next_scheduled_time(
-    mocker: MockerFixture,
     tz: str,
     now_time: str,
     start_time: str,
@@ -75,14 +69,14 @@ def test_get_next_scheduled_time(
 ) -> None:
     tzinfo = pendulum.timezone(tz)
 
-    now = mocker.patch('pendulum.now')
-    now.return_value = pendulum.DateTime.strptime(now_time, '%Y-%m-%dT%H:%M:%S')
-
-    assert get_next_scheduled_time(
-        pendulum.DateTime.strptime(start_time, '%Y-%m-%dT%H:%M:%S'),
-        pendulum.Time(time_args[0], time_args[1]),
-        tzinfo,
-    ) == pendulum.DateTime.strptime(expected_time, '%Y-%m-%dT%H:%M:%S')
+    with pendulum.travel_to(
+        pendulum.DateTime.strptime(now_time, '%Y-%m-%dT%H:%M:%S'), freeze=True
+    ):
+        assert get_next_scheduled_time(
+            pendulum.DateTime.strptime(start_time, '%Y-%m-%dT%H:%M:%S'),
+            pendulum.Time(time_args[0], time_args[1]),
+            tzinfo,
+        ) == pendulum.DateTime.strptime(expected_time, '%Y-%m-%dT%H:%M:%S')
 
 
 @pytest.mark.parametrize(
@@ -99,21 +93,20 @@ def test_get_next_scheduled_time(
     ],
 )
 def test_get_next_scheduled_time_month(
-    mocker: MockerFixture,
     start_time: str,
     time_args: tuple[int, int],
     tz_name: str,
     expected_time: str,
 ) -> None:
-    now = mocker.patch('pendulum.now')
     actual = pendulum.DateTime.strptime(start_time, '%Y-%m-%dT%H:%M:%S').astimezone(
         pendulum.UTC
     )
     tz = pendulum.timezone(tz_name)
 
-    for _ in range(1, 28):
-        now.return_value = actual
-        actual = get_next_scheduled_time(actual, pendulum.Time(*time_args), tz)
+    with pendulum.travel_to(actual, freeze=True):
+        for _ in range(1, 28):
+            pendulum.travel_to(actual)
+            actual = get_next_scheduled_time(actual, pendulum.Time(*time_args), tz)
 
     assert actual == pendulum.DateTime.strptime(expected_time, '%Y-%m-%dT%H:%M:%S')
 
@@ -178,7 +171,6 @@ def test_get_next_scheduled_time_month(
     ],
 )
 def test_get_first_scheduled_time(
-    mocker: MockerFixture,
     tz: str,
     now_time: str,
     time_args: tuple[int, int],
@@ -186,10 +178,10 @@ def test_get_first_scheduled_time(
 ) -> None:
     tzinfo = pendulum.timezone(tz)
 
-    now = mocker.patch('pendulum.now')
-    now.return_value = pendulum.DateTime.strptime(now_time, '%Y-%m-%dT%H:%M:%S')
-
-    assert get_first_scheduled_time(
-        pendulum.Time(time_args[0], time_args[1]),
-        tzinfo,
-    ) == pendulum.DateTime.strptime(expected_time, '%Y-%m-%dT%H:%M:%S')
+    with pendulum.travel_to(
+        pendulum.DateTime.strptime(now_time, '%Y-%m-%dT%H:%M:%S'), freeze=True
+    ):
+        assert get_first_scheduled_time(
+            pendulum.Time(time_args[0], time_args[1]),
+            tzinfo,
+        ) == pendulum.DateTime.strptime(expected_time, '%Y-%m-%dT%H:%M:%S')

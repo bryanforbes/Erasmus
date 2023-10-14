@@ -5,7 +5,6 @@ import logging
 from itertools import chain
 from typing import TYPE_CHECKING, Final
 
-import async_timeout
 import discord
 import pendulum
 from attrs import field, frozen
@@ -80,7 +79,7 @@ class DailyBreadGroup(
         self._fetcher = None
 
     async def _get_verse_range(self) -> VerseRange:
-        async with async_timeout.timeout(10), self.session.get(
+        async with asyncio.timeout(10), self.session.get(
             'https://www.biblegateway.com/reading-plans/verse-of-the-day'
             '/next?interface=print'
         ) as response:

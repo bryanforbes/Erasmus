@@ -4,11 +4,11 @@ generic-error = An error occurred
 no-private-message = This command is not available in private messages
 only-private-message = This command is only available in private messages
 missing-required-argument = The required argument `{ $name }` is missing
-cooldown-error = You can retry again in { PERIOD($period) }.
+cooldown-error = You can retry again in { INTERVAL($interval) }.
 user-on-cooldown =
-    You have used this command too many times. You can retry again in { PERIOD($period) }.
+    You have used this command too many times. You can retry again in { INTERVAL($interval) }.
 command-on-cooldown =
-    This command has been used too many times in this channel. You can retry again in { PERIOD($period) }.
+    This command has been used too many times in this channel. You can retry again in { INTERVAL($interval) }.
 missing-permissions = You do not have the correct permissions to run this command
 need-permission-embed-links = I need the "Embed Links" permission
 need-permission-send-messages = I need the "Send Messages" permission

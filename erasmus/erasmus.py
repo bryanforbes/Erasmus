@@ -172,10 +172,12 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             case commands.NoPrivateMessage():
                 message_id = 'no-private-message'
             case app_commands.CommandOnCooldown():
-                retry_period = pendulum.now().add(seconds=int(error.retry_after)).diff()
+                retry_interval = (
+                    pendulum.now().add(seconds=int(error.retry_after)).diff()
+                )
 
                 message_id = 'user-on-cooldown'
-                data = {'period': retry_period}
+                data = {'interval': retry_interval}
             case app_commands.MissingPermissions():
                 message_id = 'missing-permissions'
             case CannotPaginate():

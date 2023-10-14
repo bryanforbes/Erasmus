@@ -1,6 +1,6 @@
 message = This is a message in Norwegian
     .attribute = This is an attribute in Norwegian
 
-period-message = There are { PERIOD($period) } left in Norwegian
-period-message-format-short = There are { PERIOD($period, format: "short") } left in Norwegian
-period-message-format-narrow = There are { PERIOD($period, format: "narrow") } left in Norwegian
+interval-message = There are { INTERVAL($interval) } left in Norwegian
+interval-message-format-short = There are { INTERVAL($interval, format: "short") } left in Norwegian
+interval-message-format-narrow = There are { INTERVAL($interval, format: "narrow") } left in Norwegian
