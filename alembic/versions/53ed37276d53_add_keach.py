@@ -9,8 +9,7 @@ from __future__ import annotations
 
 from json import load
 from pathlib import Path
-from typing import Any
-from typing_extensions import TypedDict
+from typing import Any, TypedDict
 
 import sqlalchemy as sa
 from alembic import op

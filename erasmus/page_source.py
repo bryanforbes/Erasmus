@@ -3,28 +3,16 @@ from __future__ import annotations
 import inspect
 from abc import abstractmethod
 from collections.abc import AsyncIterable, Awaitable, Callable, Iterable, Sequence
-from typing import (
-    NotRequired,
-    ParamSpec,
-    Protocol,
-    TypeAlias,
-    TypedDict,
-    runtime_checkable,
-)
-from typing_extensions import TypeVar, override
+from typing import NotRequired, Protocol, TypedDict, override, runtime_checkable
 
 import discord
 
-_T = TypeVar('_T', infer_variance=True)
-_P = ParamSpec('_P')
+type MaybeAwaitable[**P, T] = Callable[P, T | Awaitable[T]]
 
 
-MaybeAwaitable: TypeAlias = 'Callable[_P, _T | Awaitable[_T]]'
-
-
-async def _maybe_await(
-    f: MaybeAwaitable[_P, _T], *args: _P.args, **kwargs: _P.kwargs
-) -> _T:
+async def _maybe_await[
+    **P, T
+](f: MaybeAwaitable[P, T], *args: P.args, **kwargs: P.kwargs) -> T:
     value = f(*args, **kwargs)
     if inspect.isawaitable(value):
         return await value
@@ -37,20 +25,20 @@ class Kwargs(TypedDict):
     embeds: NotRequired[Sequence[discord.Embed]]
 
 
-class Pages(Protocol[_T]):
-    source: PageSource[_T]
+class Pages[T](Protocol):
+    source: PageSource[T]
     current_page: int
 
 
-class BasePages(Pages[_T]):
-    source: PageSource[_T]
+class BasePages[T](Pages[T]):
+    source: PageSource[T]
     current_page: int
 
-    def __init__(self, source: PageSource[_T], /) -> None:
+    def __init__(self, source: PageSource[T], /) -> None:
         self.source = source
         self.current_page = 0
 
-    async def _get_kwargs_from_page(self, page: _T | None, /) -> Kwargs:
+    async def _get_kwargs_from_page(self, page: T | None, /) -> Kwargs:
         value = await self.source.format_page(self, page)
         if isinstance(value, discord.Embed):
             return {'embeds': [value]}
@@ -61,7 +49,7 @@ class BasePages(Pages[_T]):
         return value
 
 
-class PageSource(Protocol[_T]):
+class PageSource[T](Protocol):
     _prepared: bool
 
     async def _prepare_once(self, /) -> None:
@@ -93,27 +81,27 @@ class PageSource(Protocol[_T]):
         raise NotImplementedError
 
     @abstractmethod
-    async def get_page(self, page_number: int, /) -> _T:
+    async def get_page(self, page_number: int, /) -> T:
         raise NotImplementedError
 
     @abstractmethod
     async def format_page(
-        self, pages: Pages[_T], page: _T | None, /
+        self, pages: Pages[T], page: T | None, /
     ) -> str | discord.Embed | Kwargs:
         raise NotImplementedError
 
 
-class PageSourceBase(PageSource[_T]):
+class PageSourceBase[T](PageSource[T]):
     _prepared: bool
 
 
-class ListPageSource(PageSourceBase[Sequence[_T]]):
-    entries: Sequence[_T]
+class ListPageSource[T](PageSourceBase[Sequence[T]]):
+    entries: Sequence[T]
     per_page: int
     _total: int
     _max_pages: int
 
-    def __init__(self, entries: Sequence[_T], /, *, per_page: int) -> None:
+    def __init__(self, entries: Sequence[T], /, *, per_page: int) -> None:
         self.entries = entries
         self.per_page = per_page
         self._total = len(entries)
@@ -138,43 +126,43 @@ class ListPageSource(PageSourceBase[Sequence[_T]]):
         return self._total
 
     @override
-    async def get_page(self, page_number: int, /) -> Sequence[_T]:
+    async def get_page(self, page_number: int, /) -> Sequence[T]:
         base = page_number * self.per_page
         return self.entries[base : base + self.per_page]
 
 
 @runtime_checkable
-class Page(Iterable[_T], Protocol[_T]):
+class Page[T](Iterable[T], Protocol):
     total: int
 
 
 @runtime_checkable
-class AsyncPage(AsyncIterable[_T], Protocol[_T]):
+class AsyncPage[T](AsyncIterable[T], Protocol):
     total: int
 
 
-async def _iterable_to_list(page: Iterable[_T] | AsyncIterable[_T]) -> list[_T]:
+async def _iterable_to_list[T](page: Iterable[T] | AsyncIterable[T]) -> list[T]:
     if isinstance(page, AsyncIterable):
         return [item async for item in page]
 
     return list(page)
 
 
-class AsyncCallback(Protocol[_T]):
+class AsyncCallback[T](Protocol):
     def __call__(
         self, /, *, per_page: int, page_number: int
-    ) -> Awaitable[Page[_T]] | AsyncPage[_T]:
+    ) -> Awaitable[Page[T]] | AsyncPage[T]:
         ...
 
 
-class AsyncPageSource(PageSourceBase[Sequence[_T]]):
+class AsyncPageSource[T](PageSourceBase[Sequence[T]]):
     per_page: int
     _total: int
     _max_pages: int
-    _callback: AsyncCallback[_T]
-    _cache: dict[int, Sequence[_T]]
+    _callback: AsyncCallback[T]
+    _cache: dict[int, Sequence[T]]
 
-    def __init__(self, callback: AsyncCallback[_T], /, *, per_page: int) -> None:
+    def __init__(self, callback: AsyncCallback[T], /, *, per_page: int) -> None:
         self._callback = callback
         self.per_page = per_page
         self._cache = {}
@@ -217,7 +205,7 @@ class AsyncPageSource(PageSourceBase[Sequence[_T]]):
         return self._total
 
     @override
-    async def get_page(self, page_number: int, /) -> Sequence[_T]:
+    async def get_page(self, page_number: int, /) -> Sequence[T]:
         if page_number in self._cache:
             return self._cache[page_number]
 
@@ -232,7 +220,7 @@ class AsyncPageSource(PageSourceBase[Sequence[_T]]):
         return self._cache[page_number]
 
 
-class EmbedPageSource(PageSourceBase[_T]):
+class EmbedPageSource[T](PageSourceBase[T]):
     embed: discord.Embed
 
     @override
@@ -243,7 +231,7 @@ class EmbedPageSource(PageSourceBase[_T]):
 
     @override
     async def format_page(
-        self, pages: Pages[_T], page: _T | None, /
+        self, pages: Pages[T], page: T | None, /
     ) -> str | discord.Embed | Kwargs:
         self.embed.clear_fields()
         self.embed.description = None
@@ -258,21 +246,21 @@ class EmbedPageSource(PageSourceBase[_T]):
 
         return self.embed
 
-    def format_footer_text(self, pages: Pages[_T], max_pages: int) -> str:
+    def format_footer_text(self, pages: Pages[T], max_pages: int) -> str:
         return f'Page {pages.current_page + 1}/{max_pages} ({self.get_total()} entries)'
 
     @abstractmethod
-    async def set_page_text(self, page: _T | None, /) -> None:
+    async def set_page_text(self, page: T | None, /) -> None:
         raise NotImplementedError
 
 
-class FieldPageSource(EmbedPageSource[_T]):
+class FieldPageSource[T](EmbedPageSource[T]):
     @abstractmethod
-    def get_field_values(self, page: _T, /) -> Iterable[tuple[str, str]]:
+    def get_field_values(self, page: T, /) -> Iterable[tuple[str, str]]:
         raise NotImplementedError
 
     @override
-    async def set_page_text(self, page: _T | None, /) -> None:
+    async def set_page_text(self, page: T | None, /) -> None:
         if page is None:
             self.embed.description = 'I found 0 results'
             return

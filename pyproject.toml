@@ -9,7 +9,7 @@ packages = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.12"
 alembic = "1.12.0"
 attrs = "23.1.0"
 beautifulsoup4 = "4.12.2"
@@ -46,7 +46,7 @@ erasmus = 'erasmus.run:main'
 
 [tool.black]
 line-length = 88
-target-version = ["py311"]
+target-version = ["py312"]
 skip-string-normalization = true
 include = '\.pyi?$'
 exclude = '''
@@ -82,7 +82,7 @@ select = [
 ignore = ["ANN101", "ANN102", "PLR0913", "PLR2004", "PT004", "TRY003"]
 extend-exclude = [".venv*"]
 line-length = 88
-target-version = "py311"
+target-version = "py312"
 
 [tool.ruff.per-file-ignores]
 "*.pyi" = ["ANN401", "E501", "E701", "E741", "F401", "F403", "F405", "F811", "FBT001", "FBT002", "PGH003"]
@@ -118,7 +118,7 @@ stubPath = "./stubs"
 venvPath = "."
 venv = ".venv"
 
-pythonVersion = "3.11"
+pythonVersion = "3.12"
 reportUnnecessaryTypeIgnoreComment = "warning"
 typeCheckingMode = "strict"
 reportPrivateUsage = "none"

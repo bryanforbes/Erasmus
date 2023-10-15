@@ -4,14 +4,13 @@ from collections import OrderedDict
 from typing import (
     TYPE_CHECKING,
     Final,
-    Generic,
     NotRequired,
     Protocol,
     TypedDict,
     Unpack,
     overload,
+    override,
 )
-from typing_extensions import TypeVar, override
 
 from attrs import field, frozen
 from botus_receptus import utils
@@ -24,8 +23,6 @@ if TYPE_CHECKING:
     from botus_receptus.types import Coroutine
 
     from .data import Passage
-
-_OptionT = TypeVar('_OptionT', bound='Option', infer_variance=True)
 
 _truncation_warning: Final = '**The passage was too long and has been truncated:**\n\n'
 _description_max_length: Final = 4096
@@ -132,15 +129,15 @@ class Option(Protocol):
 
 
 @frozen(eq=False)
-class AutoCompleter(app_commands.Transformer, Generic[_OptionT]):
-    _storage: OrderedDict[str, _OptionT] = field(
-        init=False, factory=lambda: OrderedDict[str, _OptionT]()
+class AutoCompleter[OptionT: Option](app_commands.Transformer):
+    _storage: OrderedDict[str, OptionT] = field(
+        init=False, factory=lambda: OrderedDict[str, OptionT]()
     )
 
-    def add(self, option: _OptionT, /) -> None:
+    def add(self, option: OptionT, /) -> None:
         self._storage[option.key] = option
 
-    def update(self, options: Iterable[_OptionT], /) -> None:
+    def update(self, options: Iterable[OptionT], /) -> None:
         for option in options:
             self.add(option)
 
@@ -157,7 +154,7 @@ class AutoCompleter(app_commands.Transformer, Generic[_OptionT]):
 
         self.discard(key)
 
-    def get(self, key: str, /) -> _OptionT | None:
+    def get(self, key: str, /) -> OptionT | None:
         return self._storage.get(key)
 
     def generate_choices(self, current: str, /) -> list[app_commands.Choice[str]]:

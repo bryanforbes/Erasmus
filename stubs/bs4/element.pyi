@@ -9,11 +9,9 @@ from typing import (
     NewType,
     Protocol,
     Self,
-    TypeAlias,
     overload,
     type_check_only,
 )
-from typing_extensions import TypeVar
 
 from . import BeautifulSoup
 from .builder import TreeBuilder
@@ -25,29 +23,25 @@ nonwhitespace_re: Final[Pattern[Any]]
 whitespace_re: Final[Pattern[Any]]
 PYTHON_SPECIFIC_ENCODINGS: Final[set[str]]
 
-_F = TypeVar('_F', bound=Formatter, infer_variance=True)
-_PE = TypeVar('_PE', bound=PageElement, infer_variance=True)
-_T = TypeVar('_T', infer_variance=True)
-_U = TypeVar('_U', infer_variance=True)
 _Never = NewType('_Never', object)
 
 @type_check_only
-class _StrainerCallable(Protocol[_T]):
-    def __call__(self, markup: _T, /) -> bool: ...
+class _StrainerCallable[T](Protocol):
+    def __call__(self, markup: T, /) -> bool: ...
 
-_FilterBaseType: TypeAlias = str | _StrainerCallable[_T] | Pattern[Any] | _U
-_FilterIterableType: TypeAlias = Iterable[None | _T | Iterable[Any]]
-_StrainerAttrType: TypeAlias = (
-    _FilterBaseType[_T, bool] | _FilterIterableType[_FilterBaseType[_T, bool]]
+type _FilterBaseType[T, U] = str | _StrainerCallable[T] | Pattern[Any] | U
+type _FilterIterableType[T] = Iterable[None | T | Iterable[Any]]
+type _StrainerAttrType[T] = (
+    _FilterBaseType[T, bool] | _FilterIterableType[_FilterBaseType[T, bool]]
 )
-_FilterItemType: TypeAlias = bytes | _FilterBaseType[_T, _U]
-_FilterType: TypeAlias = (
-    _FilterItemType[_T, _U] | _FilterIterableType[_FilterItemType[_T, _U]]
+type _FilterItemType[T, U] = bytes | _FilterBaseType[T, U]
+type _FilterType[T, U] = (
+    _FilterItemType[T, U] | _FilterIterableType[_FilterItemType[T, U]]
 )
-_StringFilterType: TypeAlias = _FilterType[NavigableString, Literal[True]]
-_TagStringFilterType: TypeAlias = _FilterType[NavigableString | None, bool]
-_TagAttrFilterType: TypeAlias = _FilterType[str | None, bool]
-_TagFilterType: TypeAlias = _FilterType[Tag, bool]
+type _StringFilterType = _FilterType[NavigableString, Literal[True]]  # noqa: F821
+type _TagStringFilterType = _FilterType[NavigableString | None, bool]  # noqa: F821
+type _TagAttrFilterType = _FilterType[str | None, bool]
+type _TagFilterType = _FilterType[Tag, bool]  # noqa: F821
 
 @type_check_only
 class _FindOneMethod(Protocol):
@@ -193,7 +187,7 @@ class PageElement:
     ) -> None: ...
     def format_string(self, s: str, formatter: Formatter | None) -> str: ...
     @overload
-    def formatter_for_name(self, formatter: _F) -> _F: ...
+    def formatter_for_name[F: Formatter](self, formatter: F) -> F: ...
     @overload
     def formatter_for_name(
         self, formatter: _EntitySubstitutionCallback
@@ -205,7 +199,7 @@ class PageElement:
     def unwrap(self) -> Self: ...
     replace_with_children = unwrap
     replaceWithChildren = unwrap
-    def wrap(self, wrap_inside: _PE) -> _PE: ...
+    def wrap[P: PageElement](self, wrap_inside: P) -> P: ...
     def extract(self, _self_index: int | None = ...) -> Self: ...
     def insert(self, position: int, new_child: PageElement) -> None: ...
     def append(self, tag: PageElement) -> None: ...
@@ -376,11 +370,11 @@ class Tag(PageElement):
     @overload
     def get(self, key: str) -> str | list[str] | None: ...
     @overload
-    def get(self, key: str, default: _T) -> str | list[str] | _T: ...
+    def get[T](self, key: str, default: T) -> str | list[str] | T: ...
     @overload
     def get_attribute_list(self, key: str) -> list[str | None]: ...
     @overload
-    def get_attribute_list(self, key: str, default: _T) -> list[str | _T]: ...
+    def get_attribute_list[T](self, key: str, default: T) -> list[str | T]: ...
     def has_attr(self, key: str) -> bool: ...
     def __hash__(self) -> int: ...
     def __getitem__(self, key: str) -> str | list[str]: ...
@@ -595,10 +589,10 @@ class SoupStrainer:
         markup: str | Tag | Iterable[str | Tag],
     ) -> Tag | NavigableString | None: ...
 
-class ResultSet(list[_T]):
+class ResultSet[T](list[T]):
     source: SoupStrainer
     @overload
     def __init__(self, source: SoupStrainer) -> None: ...
     @overload
-    def __init__(self, source: SoupStrainer, result: Iterable[_T]) -> None: ...
+    def __init__(self, source: SoupStrainer, result: Iterable[T]) -> None: ...
     def __getattr__(self, key: Any) -> None: ...
