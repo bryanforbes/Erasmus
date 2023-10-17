@@ -38,10 +38,10 @@ type _FilterItemType[T, U] = bytes | _FilterBaseType[T, U]
 type _FilterType[T, U] = (
     _FilterItemType[T, U] | _FilterIterableType[_FilterItemType[T, U]]
 )
-type _StringFilterType = _FilterType[NavigableString, Literal[True]]  # noqa: F821
-type _TagStringFilterType = _FilterType[NavigableString | None, bool]  # noqa: F821
+type _StringFilterType = _FilterType[NavigableString, Literal[True]]
+type _TagStringFilterType = _FilterType[NavigableString | None, bool]
 type _TagAttrFilterType = _FilterType[str | None, bool]
-type _TagFilterType = _FilterType[Tag, bool]  # noqa: F821
+type _TagFilterType = _FilterType[Tag, bool]
 
 @type_check_only
 class _FindOneMethod(Protocol):
