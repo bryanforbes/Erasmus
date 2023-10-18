@@ -9,6 +9,7 @@ on:
       - 'erasmus/**'
       - 'tests/**'
       - 'alembic/**'
+      - 'poetry.lock'
   schedule:
     - cron: '0 19 * * 2'
 
