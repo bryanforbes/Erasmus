@@ -1,7 +1,7 @@
 from _typeshed import SupportsRead
 from collections import Counter
 from collections.abc import Mapping
-from typing import Any, ClassVar
+from typing import Any, ClassVar, override
 
 from .builder import (
     ParserRejectedMarkup as ParserRejectedMarkup,
@@ -36,7 +36,7 @@ class BeautifulSoup(Tag):
     ASCII_SPACES: ClassVar[str]
     NO_PARSER_SPECIFIED_WARNING: ClassVar[str]
     element_classes: Mapping[type[Any], type[Any]]
-    builder: TreeBuilder
+    builder: TreeBuilder  # pyright: ignore[reportIncompatibleVariableOverride]
     is_xml: bool
     known_xml: bool
     parse_only: SoupStrainer | None
@@ -90,7 +90,8 @@ class BeautifulSoup(Tag):
     ) -> Tag | None: ...
     def handle_endtag(self, name: str, nsprefix: str | None = ...) -> None: ...
     def handle_data(self, data: Any) -> None: ...
-    def decode(
+    @override
+    def decode(  # pyright: ignore[reportIncompatibleMethodOverride]
         self,
         pretty_print: bool = ...,
         eventual_encoding: str | None = ...,

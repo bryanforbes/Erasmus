@@ -104,7 +104,7 @@ class TestPassageFetcher:
         assert (await fetcher(bible2)) is mocker.sentinel.get_passage_return_1
         assert (await fetcher(bible1)) is mocker.sentinel.get_passage_return_2
 
-        mock_service_manager.get_passage.assert_has_awaits(  # type: ignore
+        mock_service_manager.get_passage.assert_has_awaits(
             [
                 mocker.call(bible2, VerseRange.from_string('Genesis 1:2')),
                 mocker.call(bible1, VerseRange.from_string('Genesis 1:2')),
@@ -127,7 +127,7 @@ class TestPassageFetcher:
         assert (await fetcher(bible2)) is mocker.sentinel.get_passage_return_1
         assert (await fetcher(bible1)) is mocker.sentinel.get_passage_return_2
 
-        mock_service_manager.get_passage.assert_has_awaits(  # type: ignore
+        mock_service_manager.get_passage.assert_has_awaits(
             [
                 mocker.call(bible2, VerseRange.from_string('Genesis 1:2')),
                 mocker.call(bible1, VerseRange.from_string('Genesis 1:2')),
@@ -272,7 +272,7 @@ class TestDailyBreadGroup:
             'https://discord.com/api/webhooks/daily_bread_url',
             session=daily_bread_group.session,
         )
-        mock_service_manager.get_passage.assert_awaited_once_with(  # pyright: ignore
+        mock_service_manager.get_passage.assert_awaited_once_with(
             bible1, VerseRange.from_string('1 Corinthians 13:1-3')
         )
         mock_send_passage.assert_awaited_once_with(
@@ -281,11 +281,8 @@ class TestDailyBreadGroup:
             thread=discord.Object(84),
             avatar_url='https://i.imgur.com/XQ8N2vH.png',
         )
-        assert (
-            mock_daily_bread.next_scheduled  # pyright: ignore
-            is mocker.sentinel.next_scheduled_time_1
-        )
-        mock_db_session.commit.assert_awaited_once_with()  # pyright: ignore
+        assert mock_daily_bread.next_scheduled is mocker.sentinel.next_scheduled_time_1
+        mock_db_session.commit.assert_awaited_once_with()
 
     async def test_check_and_post_no_results(
         self,
@@ -304,9 +301,9 @@ class TestDailyBreadGroup:
         mock_daily_bread_scheduled.assert_awaited_once_with(mock_db_session)
         mock_get_next_scheduled_time.assert_not_called()
         mock_webhook_from_url.assert_not_called()
-        mock_service_manager.get_passage.assert_not_awaited()  # pyright: ignore
+        mock_service_manager.get_passage.assert_not_awaited()
         mock_send_passage.assert_not_awaited()
-        mock_db_session.commit.assert_not_awaited()  # pyright: ignore
+        mock_db_session.commit.assert_not_awaited()
 
     async def test_check_and_post_verse_range_times_out(
         self,
@@ -322,20 +319,20 @@ class TestDailyBreadGroup:
         mock_daily_bread: NonCallableMock,
     ) -> None:
         daily_bread_group.session = mock_client_session
-        mock_client_session.get.side_effect = asyncio.TimeoutError  # pyright: ignore
+        mock_client_session.get.side_effect = asyncio.TimeoutError
 
         await daily_bread_group._check_and_post()
 
         mock_daily_bread_scheduled.assert_awaited_once_with(mock_db_session)
         mock_get_next_scheduled_time.assert_not_called()
         mock_webhook_from_url.assert_not_called()
-        mock_service_manager.get_passage.assert_not_awaited()  # pyright: ignore
+        mock_service_manager.get_passage.assert_not_awaited()
         mock_send_passage.assert_not_awaited()
         assert (
-            mock_daily_bread.next_scheduled  # pyright: ignore
+            mock_daily_bread.next_scheduled
             is mocker.sentinel.daily_bread_next_scheduled
         )
-        mock_db_session.commit.assert_not_awaited()  # pyright: ignore
+        mock_db_session.commit.assert_not_awaited()
 
     async def test_check_and_post_verse_range_invalid(
         self,
@@ -352,20 +349,20 @@ class TestDailyBreadGroup:
         mock_daily_bread: NonCallableMock,
     ) -> None:
         daily_bread_group.session = mock_client_session
-        mock_get_response.text.return_value = '<html></html>'  # pyright: ignore
+        mock_get_response.text.return_value = '<html></html>'
 
         await daily_bread_group._check_and_post()
 
         mock_daily_bread_scheduled.assert_awaited_once_with(mock_db_session)
         mock_get_next_scheduled_time.assert_not_called()
         mock_webhook_from_url.assert_not_called()
-        mock_service_manager.get_passage.assert_not_awaited()  # pyright: ignore
+        mock_service_manager.get_passage.assert_not_awaited()
         mock_send_passage.assert_not_awaited()
         assert (
-            mock_daily_bread.next_scheduled  # pyright: ignore
+            mock_daily_bread.next_scheduled
             is mocker.sentinel.daily_bread_next_scheduled
         )
-        mock_db_session.commit.assert_not_awaited()  # pyright: ignore
+        mock_db_session.commit.assert_not_awaited()
 
     @pytest.mark.default_cassette('verse_range.yaml')
     @pytest.mark.vcr
@@ -396,7 +393,7 @@ class TestDailyBreadGroup:
             'https://discord.com/api/webhooks/daily_bread_url',
             session=daily_bread_group.session,
         )
-        mock_service_manager.get_passage.assert_awaited_once_with(  # pyright: ignore
+        mock_service_manager.get_passage.assert_awaited_once_with(
             bible2, VerseRange.from_string('1 Corinthians 13:1-3')
         )
         mock_send_passage.assert_awaited_once_with(
@@ -405,11 +402,8 @@ class TestDailyBreadGroup:
             thread=discord.Object(84),
             avatar_url='https://i.imgur.com/XQ8N2vH.png',
         )
-        assert (
-            mock_daily_bread.next_scheduled  # pyright: ignore
-            is mocker.sentinel.next_scheduled_time_1
-        )
-        mock_db_session.commit.assert_awaited_once_with()  # pyright: ignore
+        assert mock_daily_bread.next_scheduled is mocker.sentinel.next_scheduled_time_1
+        mock_db_session.commit.assert_awaited_once_with()
 
     @pytest.mark.default_cassette('verse_range.yaml')
     @pytest.mark.vcr
@@ -441,13 +435,10 @@ class TestDailyBreadGroup:
             'https://discord.com/api/webhooks/daily_bread_url',
             session=daily_bread_group.session,
         )
-        mock_service_manager.get_passage.assert_not_awaited()  # pyright: ignore
+        mock_service_manager.get_passage.assert_not_awaited()
         mock_send_passage.assert_not_awaited()
-        assert (
-            mock_daily_bread.next_scheduled  # pyright: ignore
-            is mocker.sentinel.next_scheduled_time_1
-        )
-        mock_db_session.commit.assert_awaited_once_with()  # pyright: ignore
+        assert mock_daily_bread.next_scheduled is mocker.sentinel.next_scheduled_time_1
+        mock_db_session.commit.assert_awaited_once_with()
 
     @pytest.mark.parametrize(
         'exception_class',
@@ -482,9 +473,7 @@ class TestDailyBreadGroup:
         mock_send_passage: AsyncMock,
         mock_daily_bread: NonCallableMock,
     ) -> None:
-        mock_service_manager.get_passage.side_effect = (  # pyright: ignore
-            exception_class
-        )
+        mock_service_manager.get_passage.side_effect = exception_class
 
         await daily_bread_group._check_and_post()
 
@@ -498,15 +487,12 @@ class TestDailyBreadGroup:
             'https://discord.com/api/webhooks/daily_bread_url',
             session=daily_bread_group.session,
         )
-        mock_service_manager.get_passage.assert_awaited_once_with(  # pyright: ignore
+        mock_service_manager.get_passage.assert_awaited_once_with(
             bible1, VerseRange.from_string('1 Corinthians 13:1-3')
         )
         mock_send_passage.assert_not_awaited()
-        assert (
-            mock_daily_bread.next_scheduled  # pyright: ignore
-            is mocker.sentinel.next_scheduled_time_1
-        )
-        mock_db_session.commit.assert_awaited_once_with()  # pyright: ignore
+        assert mock_daily_bread.next_scheduled is mocker.sentinel.next_scheduled_time_1
+        mock_db_session.commit.assert_awaited_once_with()
 
     @pytest.mark.parametrize(
         'exception_class,code,expected_to_set',
@@ -552,7 +538,7 @@ class TestDailyBreadGroup:
             'https://discord.com/api/webhooks/daily_bread_url',
             session=daily_bread_group.session,
         )
-        mock_service_manager.get_passage.assert_awaited_once_with(  # pyright: ignore
+        mock_service_manager.get_passage.assert_awaited_once_with(
             bible1, VerseRange.from_string('1 Corinthians 13:1-3')
         )
         mock_send_passage.assert_awaited_once_with(
@@ -561,12 +547,12 @@ class TestDailyBreadGroup:
             thread=discord.Object(84),
             avatar_url='https://i.imgur.com/XQ8N2vH.png',
         )
-        assert mock_daily_bread.next_scheduled is (  # pyright: ignore
+        assert mock_daily_bread.next_scheduled is (
             mocker.sentinel.next_scheduled_time_1
             if expected_to_set
             else mocker.sentinel.daily_bread_next_scheduled
         )
-        mock_db_session.commit.assert_awaited_once_with()  # pyright: ignore
+        mock_db_session.commit.assert_awaited_once_with()
 
     @pytest.mark.default_cassette('verse_range.yaml')
     @pytest.mark.vcr
@@ -626,7 +612,7 @@ class TestDailyBreadGroup:
                 ),
             ]
         )
-        mock_service_manager.get_passage.assert_awaited_once_with(  # pyright: ignore
+        mock_service_manager.get_passage.assert_awaited_once_with(
             bible1, VerseRange.from_string('1 Corinthians 13:1-3')
         )
         mock_send_passage.assert_has_awaits(
@@ -645,15 +631,11 @@ class TestDailyBreadGroup:
                 ),
             ]
         )
+        assert mock_daily_bread.next_scheduled is mocker.sentinel.next_scheduled_time_1
         assert (
-            mock_daily_bread.next_scheduled  # pyright: ignore
-            is mocker.sentinel.next_scheduled_time_1
+            mock_daily_bread_2.next_scheduled is mocker.sentinel.next_scheduled_time_2
         )
-        assert (
-            mock_daily_bread_2.next_scheduled  # pyright: ignore
-            is mocker.sentinel.next_scheduled_time_2
-        )
-        mock_db_session.commit.assert_awaited_once_with()  # pyright: ignore
+        mock_db_session.commit.assert_awaited_once_with()
 
     @pytest.mark.default_cassette('verse_range_twice.yaml')
     @pytest.mark.vcr
@@ -719,7 +701,7 @@ class TestDailyBreadGroup:
                 ),
             ]
         )
-        mock_service_manager.get_passage.assert_awaited_once_with(  # pyright: ignore
+        mock_service_manager.get_passage.assert_awaited_once_with(
             bible1, VerseRange.from_string('1 Corinthians 13:1-3')
         )
         mock_send_passage.assert_has_awaits(
@@ -738,17 +720,11 @@ class TestDailyBreadGroup:
                 ),
             ]
         )
+        assert mock_daily_bread.next_scheduled is mocker.sentinel.next_scheduled_time_1
         assert (
-            mock_daily_bread.next_scheduled  # pyright: ignore
-            is mocker.sentinel.next_scheduled_time_1
+            mock_daily_bread_2.next_scheduled is mocker.sentinel.next_scheduled_time_2
         )
-        assert (
-            mock_daily_bread_2.next_scheduled  # pyright: ignore
-            is mocker.sentinel.next_scheduled_time_2
-        )
-        mock_db_session.commit.assert_has_awaits(  # pyright: ignore
-            [mocker.call(), mocker.call()]
-        )
+        mock_db_session.commit.assert_has_awaits([mocker.call(), mocker.call()])
 
     @pytest.mark.default_cassette('verse_range.yaml')
     @pytest.mark.vcr
@@ -809,7 +785,7 @@ class TestDailyBreadGroup:
                 ),
             ]
         )
-        mock_service_manager.get_passage.assert_has_awaits(  # pyright: ignore
+        mock_service_manager.get_passage.assert_has_awaits(
             [
                 mocker.call(bible1, VerseRange.from_string('1 Corinthians 13:1-3')),
                 mocker.call(bible2, VerseRange.from_string('1 Corinthians 13:1-3')),
@@ -831,15 +807,11 @@ class TestDailyBreadGroup:
                 ),
             ]
         )
+        assert mock_daily_bread.next_scheduled is mocker.sentinel.next_scheduled_time_1
         assert (
-            mock_daily_bread.next_scheduled  # pyright: ignore
-            is mocker.sentinel.next_scheduled_time_1
+            mock_daily_bread_2.next_scheduled is mocker.sentinel.next_scheduled_time_2
         )
-        assert (
-            mock_daily_bread_2.next_scheduled  # pyright: ignore
-            is mocker.sentinel.next_scheduled_time_2
-        )
-        mock_db_session.commit.assert_awaited_once_with()  # pyright: ignore
+        mock_db_session.commit.assert_awaited_once_with()
 
     @pytest.mark.default_cassette('verse_range_twice.yaml')
     @pytest.mark.vcr
@@ -906,7 +878,7 @@ class TestDailyBreadGroup:
                 ),
             ]
         )
-        mock_service_manager.get_passage.assert_has_awaits(  # pyright: ignore
+        mock_service_manager.get_passage.assert_has_awaits(
             [
                 mocker.call(bible1, VerseRange.from_string('1 Corinthians 13:1-3')),
                 mocker.call(bible2, VerseRange.from_string('1 Corinthians 13:1-3')),
@@ -928,14 +900,8 @@ class TestDailyBreadGroup:
                 ),
             ]
         )
+        assert mock_daily_bread.next_scheduled is mocker.sentinel.next_scheduled_time_1
         assert (
-            mock_daily_bread.next_scheduled  # pyright: ignore
-            is mocker.sentinel.next_scheduled_time_1
+            mock_daily_bread_2.next_scheduled is mocker.sentinel.next_scheduled_time_2
         )
-        assert (
-            mock_daily_bread_2.next_scheduled  # pyright: ignore
-            is mocker.sentinel.next_scheduled_time_2
-        )
-        mock_db_session.commit.assert_has_awaits(  # pyright: ignore
-            [mocker.call(), mocker.call()]
-        )
+        mock_db_session.commit.assert_has_awaits([mocker.call(), mocker.call()])

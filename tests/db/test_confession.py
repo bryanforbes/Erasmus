@@ -42,10 +42,8 @@ class TestConfession:
     @pytest.fixture
     def mock_scalar_result(self, mocker: MockerFixture) -> NonCallableMagicMock:
         scalar_result = mocker.NonCallableMagicMock()
-        scalar_result.first.return_value = (  # pyright: ignore
-            mocker.sentinel.first_scalar_result
-        )
-        scalar_result.__iter__.side_effect = lambda: iter(  # pyright: ignore
+        scalar_result.first.return_value = mocker.sentinel.first_scalar_result
+        scalar_result.__iter__.side_effect = lambda: iter(
             [mocker.sentinel.scalar_result_one, mocker.sentinel.scalar_result_two]
         )
         return scalar_result
@@ -76,7 +74,7 @@ class TestConfession:
             mocker.sentinel.scalar_result_two,
         ]
 
-        compiled = _compile_sql(mock_session.scalars)  # pyright: ignore
+        compiled = _compile_sql(mock_session.scalars)
 
         assert str(compiled) == (
             "SELECT anon_1.id, anon_1.confession_id, anon_1.number, "
@@ -146,7 +144,7 @@ class TestConfession:
             await confession.get_section(mock_session, number, subsection_number)
         ) == mocker.sentinel.first_scalar_result
 
-        compiled = _compile_sql(mock_session.scalars)  # pyright: ignore
+        compiled = _compile_sql(mock_session.scalars)
         assert str(compiled) == expected
 
     @pytest.mark.parametrize(
@@ -168,7 +166,7 @@ class TestConfession:
         expected_type: str,
     ) -> None:
         confession.type = confession_type
-        mock_scalar_result.first.return_value = None  # pyright: ignore
+        mock_scalar_result.first.return_value = None
 
         with pytest.raises(NoSectionError) as exc_info:
             await confession.get_section(mock_session, number, subsection_number)
@@ -219,7 +217,7 @@ class TestConfession:
             mocker.sentinel.scalar_result_two,
         ]
 
-        compiled = _compile_sql(mock_session.scalars)  # pyright: ignore
+        compiled = _compile_sql(mock_session.scalars)
         assert str(compiled) == expected_sql
 
         if kwargs.get('load_sections'):
@@ -266,7 +264,7 @@ class TestConfession:
         confession = await Confession.get_by_command(mock_session, command, **kwargs)
         assert confession == mocker.sentinel.first_scalar_result
 
-        compiled = _compile_sql(mock_session.scalars)  # pyright: ignore
+        compiled = _compile_sql(mock_session.scalars)
         assert str(compiled) == expected_sql
 
         if kwargs.get('load_sections'):
@@ -281,7 +279,7 @@ class TestConfession:
         mock_session: NonCallableMock,
         mock_scalar_result: NonCallableMagicMock,
     ) -> None:
-        mock_scalar_result.first.return_value = None  # pyright: ignore
+        mock_scalar_result.first.return_value = None
 
         with pytest.raises(InvalidConfessionError) as exc_info:
             await Confession.get_by_command(mock_session, 'MyCommand')

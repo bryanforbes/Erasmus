@@ -1,5 +1,5 @@
 from collections.abc import Container, Iterator
-from typing import Any, ClassVar, Final, NewType
+from typing import Any, ClassVar, Final, NewType, override
 
 from .. import BeautifulSoup
 from ..element import Tag
@@ -71,6 +71,7 @@ class HTMLTreeBuilder(TreeBuilder):
     DEFAULT_STRING_CONTAINERS: ClassVar[dict[str, type[Any]]]
     DEFAULT_CDATA_LIST_ATTRIBUTES: ClassVar[dict[str, Container[str]]]
     DEFAULT_PRESERVE_WHITESPACE_TAGS: ClassVar[Container[str]]
+    @override
     def set_up_substitutions(self, tag: Tag) -> bool: ...
 
 class ParserRejectedMarkup(Exception): ...
