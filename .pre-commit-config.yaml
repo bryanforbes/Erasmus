@@ -17,7 +17,7 @@ repos:
       language: system
       entry: poetry run black --check
   - repo: https://github.com/RobertCraigie/pyright-python
-    rev: v1.1.333
+    rev: v1.1.334
     hooks:
     - id: pyright
       exclude: '^alembic/.*\.py$'
