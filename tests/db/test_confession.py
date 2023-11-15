@@ -222,8 +222,17 @@ class TestConfession:
 
         if kwargs.get('load_sections'):
             assert isinstance(compiled.statement, Select)
-            assert isinstance(compiled.statement._with_options[0], Load)
-            assert compiled.statement._with_options[0].context[0].strategy == (
+            assert isinstance(
+                compiled.statement._with_options[  # pyright: ignore[reportUnknownMemberType]
+                    0
+                ],
+                Load,
+            )
+            assert compiled.statement._with_options[  # pyright: ignore[reportUnknownMemberType]
+                0
+            ].context[
+                0
+            ].strategy == (
                 ('lazy', 'selectin'),
             )
 
@@ -269,8 +278,17 @@ class TestConfession:
 
         if kwargs.get('load_sections'):
             assert isinstance(compiled.statement, Select)
-            assert isinstance(compiled.statement._with_options[0], Load)
-            assert compiled.statement._with_options[0].context[0].strategy == (
+            assert isinstance(
+                compiled.statement._with_options[  # pyright: ignore[reportUnknownMemberType]
+                    0
+                ],
+                Load,
+            )
+            assert compiled.statement._with_options[  # pyright: ignore[reportUnknownMemberType]
+                0
+            ].context[
+                0
+            ].strategy == (
                 ('lazy', 'selectin'),
             )
 

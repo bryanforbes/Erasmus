@@ -134,13 +134,9 @@ def _can_manage_channel_webhooks(
 class _TimeTransformer(app_commands.Transformer):
     times: ClassVar[list[str]] = [
         f'{12 if hour == 0 else hour!s}:{minute!s:0>2} {meridian}'
-        for hour, minute, meridian in chain.from_iterable(
-            chain.from_iterable(
-                [(hour, minute, meridian) for minute in range(0, 60, 15)]
-                for hour in range(12)
-            )
-            for meridian in ('am', 'pm')
-        )
+        for meridian in ('am', 'pm')
+        for hour in range(12)
+        for minute in range(0, 60, 15)
     ]
 
     @override
@@ -195,7 +191,7 @@ class _TimeZoneItem:
     @classmethod
     def create(cls, value: str) -> Self:
         name = value.replace('_', ' ')
-        return _TimeZoneItem(name=name, name_lower=name.lower(), value=value)
+        return cls(name=name, name_lower=name.lower(), value=value)
 
 
 class _TimeZoneTransformer(app_commands.Transformer):

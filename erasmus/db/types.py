@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Self
+from typing import TYPE_CHECKING
 from typing_extensions import override
 
 import pendulum
@@ -104,5 +104,5 @@ class Timezone(TypeDecorator[pendulum.Timezone]):
         return pendulum.timezone(value)
 
     @override
-    def copy(self, /, **kwargs: object) -> Self:
+    def copy(self, /, **kwargs: object) -> Timezone:
         return Timezone(self.impl.length)

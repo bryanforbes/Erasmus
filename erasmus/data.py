@@ -88,7 +88,7 @@ class SectionFlag(Flag):
         return book_name
 
     @classmethod
-    def from_book_names(cls, book_names: str, /) -> Self:
+    def from_book_names(cls, book_names: str, /) -> SectionFlag:
         book_mask = SectionFlag.NONE
 
         if book_names:
@@ -121,7 +121,7 @@ class Book:
         return self.name
 
     @classmethod
-    def from_name(cls, name_or_abbr: str, /) -> Self:
+    def from_name(cls, name_or_abbr: str, /) -> Book:
         book = _book_map.get(name_or_abbr.lower())
 
         if book is None:
@@ -372,7 +372,7 @@ class VerseRange:
     @classmethod
     def get_all_from_string(
         cls, string: str, /, *, only_bracketed: bool = False
-    ) -> list[Self | Exception]:
+    ) -> list[VerseRange | Exception]:
         ranges: list[VerseRange | Exception] = []
         lookup_pattern: Pattern[str]
 
