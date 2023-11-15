@@ -8,12 +8,12 @@ interactions:
     body:
       string: '{"data":{"query":"antidisestablishmentarianism","limit":20,"offset":0,"total":0,"verseCount":0,"verses":[]},"meta":{"fums":"<script>\nvar
         _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''ef9a4e06-db00-4c2e-aa29-82bc250eafa2'');\\x3C/script\\x3E\");\n</script><noscript><img
-        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''ef9a4e06-db00-4c2e-aa29-82bc250eafa2''\"
+        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''70e73953-5dea-454b-8f22-953bf78c20d3'');\\x3C/script\\x3E\");\n</script><noscript><img
+        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''70e73953-5dea-454b-8f22-953bf78c20d3''\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        /></noscript>","fumsId":"ef9a4e06-db00-4c2e-aa29-82bc250eafa2","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''ef9a4e06-db00-4c2e-aa29-82bc250eafa2'');
-        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=ef9a4e06-db00-4c2e-aa29-82bc250eafa2\"
+        /></noscript>","fumsId":"70e73953-5dea-454b-8f22-953bf78c20d3","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''70e73953-5dea-454b-8f22-953bf78c20d3'');
+        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=70e73953-5dea-454b-8f22-953bf78c20d3\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
         />"}}'
     headers:
@@ -28,7 +28,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 01 Jan 2023 19:54:10 GMT
+      - Wed, 15 Nov 2023 23:17:53 GMT
       Server:
       - nginx/1.16.1
       Transfer-Encoding:
@@ -42,12 +42,11 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/search?query=antidisestablishmentarianism&limit=20&offset=0&sort=canonical
 - request:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=ef9a4e06-db00-4c2e-aa29-82bc250eafa2
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=70e73953-5dea-454b-8f22-953bf78c20d3
   response:
     body:
       string: !!binary |
@@ -56,7 +55,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '54102'
+      - '39167'
       Connection:
       - keep-alive
       Content-Length:
@@ -64,7 +63,7 @@ interactions:
       Content-Type:
       - image/gif
       Date:
-      - Sun, 01 Jan 2023 04:52:29 GMT
+      - Wed, 15 Nov 2023 12:26:59 GMT
       Etag:
       - '"28d6814f309ea289f847c69cf91194c6"'
       Last-Modified:
@@ -72,15 +71,14 @@ interactions:
       Server:
       - AmazonS3
       Via:
-      - 1.1 a77d03a5ac5c10371179d15c7ac8ad24.cloudfront.net (CloudFront)
+      - 1.1 9f453aa625f8fca7ca79ca9f2de01aae.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - EOdIBR_raR51hvvHOT-GIAOAGJFss4BdXLHlAC5IZnrEh68sSMTMrQ==
+      - DngjaQf7zZdoSRS83PNcNd7S78ya9s0AQSfl9YYrcp2chHnLOENBFw==
       X-Amz-Cf-Pop:
-      - MCI50-P1
+      - ORD51-C2
       X-Cache:
       - Hit from cloudfront
     status:
       code: 200
       message: OK
-    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=ef9a4e06-db00-4c2e-aa29-82bc250eafa2
 version: 1

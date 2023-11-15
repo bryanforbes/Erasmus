@@ -11,8 +11,8 @@ interactions:
         />\n<meta content='width=device-width, initial-scale=1' name='viewport'>\n<title>Galatians
         3:10-11 NASB1995 - For as many as are of the works of the - Bible Gateway</title>\n<link
         rel=\"canonical\" href=\"https://www.biblegateway.com/passage/?search=Galatians%203%3A10-11&amp;version=NASB1995\"
-        />\n<meta property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?16d8677c\"/>\n<meta
-        property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?16d8677c\"/>\n<meta
+        />\n<meta property=\"og:image\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?834351bc\"/>\n<meta
+        property=\"og:image:secure_url\" content=\"https://www.biblegateway.com/assets/images/logos/logo_bg-sharing.png?834351bc\"/>\n<meta
         property=\"og:image:type\" content=\"image/png\"/>\n<meta property=\"og:image:width\"
         content=\"200\"/>\n<meta property=\"og:image:height\" content=\"200\"/>\n<meta
         property=\"og:title\" content=\"Bible Gateway passage: Galatians 3:10-11 -
@@ -36,16 +36,16 @@ interactions:
         />\n<meta property=\"al:ios:url\" content=\"biblegateway://bible/Gal.3.10/NASB1995\"
         />\n<meta property=\"al:ios:app_store_id\" content=\"506512797\" />\n<meta
         property=\"al:ios:app_name\" content=\"Bible Gateway\" />\n<link rel=\"favorite
-        icon\" href=\"/favicon.ico?16d8677c\" type=\"image/x-icon\" />\n<link rel=\"search\"
-        type=\"application/opensearchdescription+xml\" title=\"Bible Gateway\" href=\"/resources/opensearch/bgsearch.xml?16d8677c\">\n\n<link
+        icon\" href=\"/favicon.ico?834351bc\" type=\"image/x-icon\" />\n<link rel=\"search\"
+        type=\"application/opensearchdescription+xml\" title=\"Bible Gateway\" href=\"/resources/opensearch/bgsearch.xml?834351bc\">\n\n<link
         rel=\"apple-touch-icon\" sizes=\"76x76\" href=\"/assets/images/ios/touch-icon-ipad.png\">\n<link
         rel=\"apple-touch-icon\" sizes=\"120x120\" href=\"/assets/images/ios/touch-icon-iphone-retina.png\">\n<link
         rel=\"apple-touch-icon\" sizes=\"152x152\" href=\"/assets/images/ios/touch-icon-ipad-retina.png\">\n<script
         type=\"text/javascript\">\n(function() {\n  var apis = [window.fetch, Object.assign,
         Array.prototype.includes, NodeList.prototype.forEach, Array.from];\n  apis.every(function(api)
-        {return api}) || document.write('<script src=\"/assets/js/lib/polyfills.min.js?16d8677c\"><\\/script>');\n
-        \ window.assetsVersion = \"16d8677c\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?16d8677c\"
-        type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\":\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"plus_info\":{\"amount\":399,\"amount_string\":\"$3.99\",\"yearly_amount\":3999,\"yearly_amount_string\":\"$39.99\"},\"assets_version\":\"16d8677c\",\"locale\":\"en\",\"cdn_host\":\"\",\"version0\":{\"version_id\":\"NASB1995\"},\"il_versions\":[],\"il_option\":false,\"books\":{\"NASB1995\":[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"chapters\":null,\"intro\":false},{\"display\":\"Exodus\",\"osis\":\"Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"chapters\":null,\"intro\":false},{\"display\":\"Leviticus\",\"osis\":\"Lev\",\"testament\":\"OT\",\"num_chapters\":27,\"chapters\":null,\"intro\":false},{\"display\":\"Numbers\",\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null,\"intro\":false},{\"display\":\"Deuteronomy\",\"osis\":\"Deut\",\"testament\":\"OT\",\"num_chapters\":34,\"chapters\":null,\"intro\":false},{\"display\":\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null,\"intro\":false},{\"display\":\"Judges\",\"osis\":\"Judg\",\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null,\"intro\":false},{\"display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\",\"num_chapters\":4,\"chapters\":null,\"intro\":false},{\"display\":\"1
+        {return api}) || document.write('<script src=\"/assets/js/lib/polyfills.min.js?834351bc\"><\\/script>');\n
+        \ window.assetsVersion = \"834351bc\";\n})();\n</script>\n<script src=\"/assets/js/init.min.js?834351bc\"
+        type=\"text/javascript\"></script>\n<script>BG.appData({\"recaptcha_key\":\"6LdMkEkUAAAAAGd5aGH1cwku1OFyHwKYW_QUDZxm\",\"plus_info\":{\"amount\":499,\"amount_string\":\"$4.99\",\"yearly_amount\":4999,\"yearly_amount_string\":\"$49.99\",\"sale_yearly_amount\":4000},\"assets_version\":\"834351bc\",\"locale\":\"en\",\"cdn_host\":\"\",\"version0\":{\"version_id\":\"NASB1995\"},\"il_versions\":[],\"il_option\":false,\"books\":{\"NASB1995\":[{\"display\":\"Genesis\",\"osis\":\"Gen\",\"testament\":\"OT\",\"num_chapters\":50,\"chapters\":null,\"intro\":false},{\"display\":\"Exodus\",\"osis\":\"Exod\",\"testament\":\"OT\",\"num_chapters\":40,\"chapters\":null,\"intro\":false},{\"display\":\"Leviticus\",\"osis\":\"Lev\",\"testament\":\"OT\",\"num_chapters\":27,\"chapters\":null,\"intro\":false},{\"display\":\"Numbers\",\"osis\":\"Num\",\"testament\":\"OT\",\"num_chapters\":36,\"chapters\":null,\"intro\":false},{\"display\":\"Deuteronomy\",\"osis\":\"Deut\",\"testament\":\"OT\",\"num_chapters\":34,\"chapters\":null,\"intro\":false},{\"display\":\"Joshua\",\"osis\":\"Josh\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null,\"intro\":false},{\"display\":\"Judges\",\"osis\":\"Judg\",\"testament\":\"OT\",\"num_chapters\":21,\"chapters\":null,\"intro\":false},{\"display\":\"Ruth\",\"osis\":\"Ruth\",\"testament\":\"OT\",\"num_chapters\":4,\"chapters\":null,\"intro\":false},{\"display\":\"1
         Samuel\",\"osis\":\"1Sam\",\"testament\":\"OT\",\"num_chapters\":31,\"chapters\":null,\"intro\":false},{\"display\":\"2
         Samuel\",\"osis\":\"2Sam\",\"testament\":\"OT\",\"num_chapters\":24,\"chapters\":null,\"intro\":false},{\"display\":\"1
         Kings\",\"osis\":\"1Kgs\",\"testament\":\"OT\",\"num_chapters\":22,\"chapters\":null,\"intro\":false},{\"display\":\"2
@@ -70,32 +70,14 @@ interactions:
         John\",\"osis\":\"1John\",\"testament\":\"NT\",\"num_chapters\":5,\"chapters\":null,\"intro\":false},{\"display\":\"2
         John\",\"osis\":\"2John\",\"testament\":\"NT\",\"num_chapters\":1,\"chapters\":null,\"intro\":false},{\"display\":\"3
         John\",\"osis\":\"3John\",\"testament\":\"NT\",\"num_chapters\":1,\"chapters\":null,\"intro\":false},{\"display\":\"Jude\",\"osis\":\"Jude\",\"testament\":\"NT\",\"num_chapters\":1,\"chapters\":null,\"intro\":false},{\"display\":\"Revelation\",\"osis\":\"Rev\",\"testament\":\"NT\",\"num_chapters\":22,\"chapters\":null,\"intro\":false}]},\"passage_displays\":[\"Galatians
-        3:10-11\"],\"featured_resources\":[\"niv-study-bible\",\"ebc-abridged-ot\",\"ebc-abridged-nt\",\"mounce-expository-dictionary\"],\"translations\":[\"NASB1995\"],\"osis\":\"Gal.3.10-Gal.3.11\\/nasb1995\",\"osis_w_verse\":\"Gal.3.10-Gal.3.11\\/nasb1995\",\"ad_data\":{\"anchor\":\"hide-ba\"}});</script>\n<script
-        type=\"text/javascript\" src=\"/user/consents.js\"></script>\n<!-- Google
-        Analytics -->\n<script>\n(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
+        3:10-11\"],\"featured_resources\":[\"niv-study-bible\",\"ebc-abridged-ot\",\"ebc-abridged-nt\",\"mounce-expository-dictionary\"],\"translations\":[\"NASB1995\"],\"osis\":\"Gal.3.10-Gal.3.11\\/nasb1995\",\"osis_w_verse\":\"Gal.3.10-Gal.3.11\\/nasb1995\"});</script>\n<script
+        type=\"text/javascript\" src=\"/user/consents.js\"></script>\n<script>\n(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new
         Date();a=s.createElement(o),\nm=s.getElementsByTagName(o)[0];a.async=1;a.src=g;\nBG.Consents.onConsent(2).then(function()
         {m.parentNode.insertBefore(a,m)});\n})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');\n\nga('create',
-        'UA-3008784-8', 'auto');\nga('send', 'pageview');\n</script>\n<!-- End Google
-        Analytics -->\n<script type=\"text/javascript\">\n  var googletag = googletag
-        || {};\n  googletag.cmd = googletag.cmd || [];\n\n  googletag.cmd.push(function()
-        {\n    googletag.pubads().disableInitialLoad();\n    googletag.pubads().enableSingleRequest();\n
-        \   googletag.pubads().setTargeting(\"version\", \"NASB1995\");\n    googletag.pubads().setTargeting(\"versionlang\",
-        \"en\");\n    googletag.pubads().setTargeting(\"biblebook\", \"Gal\");\n        googletag.pubads().setTargeting(\"interface\",
-        \"www\");\n    googletag.pubads().setTargeting(\"lang\", \"en\");\n    googletag.enableServices();\n
-        \ });\n\n  BG.Consents.onConsent(2).then(function() {\n    var gads = document.createElement('script');\n
-        \   gads.async = true;\n    gads.type = 'text/javascript';\n    var useSSL
-        = 'https:' == document.location.protocol;\n    gads.src = (useSSL ? 'https:'
-        : 'http:') +\n      '//securepubads.g.doubleclick.net/tag/js/gpt.js';\n    var
-        node = document.getElementsByTagName('script')[0];\n    node.parentNode.insertBefore(gads,
-        node);\n  });\n\nrequire(['./main.min'], function() {\n  BG.registerBGA('sidetall');\nBG.registerBGA('anchor');\nBG.registerBGA('bottom');\nBG.registerBGA('sponsor1');\n
-        \   BG.BGAInit('/6177/slm.bg7/bible', true);\n  });\n</script><script>\n  ga('create',
-        'UA-40541058-9',\n    {'sampleRate':100,'cookieDomain':'biblegateway.com',
+        'UA-3008784-8', 'auto');\nga('send', 'pageview');\n</script>\n\n<script>\n
+        \ ga('create', 'UA-40541058-9',\n    {'sampleRate':100,'cookieDomain':'biblegateway.com',
         'name':'pubTracker'}\n  );\n  ga('pubTracker.set', 'referrer', '');\n  ga('pubTracker.set',
-        'title', '');\n  ga('pubTracker.send', {'hitType':'pageview','page':'/www/nasb1995'});\n</script>\n<script
-        type='text/javascript'>\nBG.Consents.onConsent(2).then(function() {\n !function(a9,a,p,s,t,A,g){if(a[a9])return;function
-        q(c,r){a[a9]._Q.push([c,r])}a[a9]={init:function(){q(\"i\",arguments)},fetchBids:function(){q(\"f\",arguments)},setDisplayBids:function(){},_Q:[]};A=p.createElement(s);A.async=!0;A.src=t;g=p.getElementsByTagName(s)[0];g.parentNode.insertBefore(A,g)}(\"apstag\",window,document,\"script\",\"//c.amazon-adsystem.com/aax2/apstag.js\");\n
-        apstag.init({\n   pubID: '3281',\n   adServer: 'googletag',\n   deals: true\n
-        });\n});\n\n</script>\n<script>\n!function(n,e,i){if(!n){n=n||{},window.permutive=n,n.q=[],n.config=i||{},n.config.apiKey=e,n.config.environment=n.config.environment||\"production\";for(var
+        'title', '');\n  ga('pubTracker.send', {'hitType':'pageview','page':'/www/nasb1995'});\n</script>\n\n<script>\n!function(n,e,i){if(!n){n=n||{},window.permutive=n,n.q=[],n.config=i||{},n.config.apiKey=e,n.config.environment=n.config.environment||\"production\";for(var
         o=[\"addon\",\"identify\",\"track\",\"trigger\",\"query\",\"segment\",\"segments\",\"ready\",\"on\",\"once\",\"user\",\"consent\"],r=0;r<o.length;r++){var
         t=o[r];n[t]=function(e){return function(){var i=Array.prototype.slice.call(arguments,0);n.q.push({functionName:e,arguments:i})}}(t)}}}(window.permutive,\"f110745e-bc69-452f-a6f4-7d4633cc4300\",{});\nwindow.googletag=window.googletag||{},window.googletag.cmd=window.googletag.cmd||[],window.googletag.cmd.push(function(){if(0===window.googletag.pubads().getTargeting(\"permutive\").length){var
         g=window.localStorage.getItem(\"_pdfps\");window.googletag.pubads().setTargeting(\"permutive\",g?JSON.parse(g):[]);var
@@ -105,21 +87,13 @@ interactions:
         {\n  window.permutive.identify([\n    { id: newsId, tag: 'domain_id', priority:
         1}\n  ]);\n}\npermutive.addon('web', {\n  page: {}\n});\n</script>\n<script>\nBG.Consents.onConsent(4).then(function()
         {\nvar scriptTag = document.createElement(\"script\");\nscriptTag.src = \"https://0cf17917-395b-4f25-91cc-db3bdd6044b0.edge.permutive.app/0cf17917-395b-4f25-91cc-db3bdd6044b0-web.js\";\nscriptTag.setAttribute(\"async\",
-        \"async\");\ndocument.head.appendChild(scriptTag);\n});\n</script>\n\n<!--
-        Google Tag Manager -->\n<script>\n  window.dataLayer = window.dataLayer ||
-        [];\n  // add testGroup value (0 or 1) using bg session id before gtm.js event\n
-        \ // in order to activate crazyegg only for testgroup \"1\" -- plus page 50%
-        exposure rule\n  window.dataLayer.push({\n    testGroup: parseInt(window.bg_id.substr(0,
-        4), 16) % 2,\n    event: \"test-group-determined\"\n  });\n</script>\n<script>\n
-        \ BG.Consents.onConsent(2).then(function() {\n    (function(w,d,s,l,i){\n
-        \     w[l]=w[l]||[];\n      w[l].push({'gtm.start': new Date().getTime(),event:'gtm.js'});\n
-        \     var f=d.getElementsByTagName(s)[0], j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';\n
-        \     j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);\n
-        \   })(window,document,'script','dataLayer','GTM-KVZQFF');\n  });\n</script>\n<!--
-        End Google Tag Manager -->\n\n<link href=\"/assets/css/passage.min.css?16d8677c\"
-        media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/passage.min.css?16d8677c\"
-        media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?16d8677c\"
-        media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?16d8677c\"
+        \"async\");\ndocument.head.appendChild(scriptTag);\n});\n</script>\n\n<script>\nwindow.dataLayer
+        = window.dataLayer || [];\n!function(){window.dataLayer.push({testGroup:parseInt(window.bg_id.substr(0,4),16)%2,event:\"test-group-determined\"});var
+        o=\"www.biblegateway.com\"==window.location.host?\"bg_login\":\"bg_login_dev\",e=window.Cookies?window.Cookies.get(o):null,i=e?e.split(\"%\")[0]:null;i&&window.dataLayer.push({userId:i})}();\n</script>\n\n<link
+        href=\"/assets/css/passage.min.css?834351bc\" media=\"screen\" rel=\"stylesheet\"
+        type=\"text/css\" />\n<link href=\"/assets/css/passage.min.css?834351bc\"
+        media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?834351bc\"
+        media=\"screen\" rel=\"stylesheet\" type=\"text/css\" />\n<link href=\"/assets/css/printer.min.css?834351bc\"
         media=\"print\" rel=\"stylesheet\" type=\"text/css\" />\n</head>\n\n<body
         class=\" s-footnotes s-versenums s-headings hide-resources page-passage no-eu
         us\">\n    <svg xmlns=\"http://www.w3.org/2000/svg\" style=\"display: none;\"><symbol
@@ -327,9 +301,24 @@ interactions:
         \                           <li>\n                                <a href=\"/resources/scripture-engagement/\">Scripture
         Engagement</a>\n                            </li>\n                            <li><a
         href=\"/resources/\">More Resources</a></li>\n                        </ul>\n
-        \                   </li>\n                    <li class=\"explore top-menu\">\n
-        \                       <div class=\"menu-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\"
-        viewBox=\"0 0 33.5 28.14\" width=\"33.5\" height=\"28.14\"><title>explore</title><use
+        \                   </li>\n                    <li class=\"bg-plus top-menu\">\n
+        \                       <a onclick=\"ga('send', 'event', 'Plus Nav Link',
+        'click', 'bgplus');\" class=\"plus-item\" href=\"/plus/?utm_source=bg&amp;utm_medium=topnav&amp;utm_campaign=bgplus\">\n
+        \                           <div class=\"plus-link\">\n                                <div
+        class=\"menu-icon\"><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<!-- Generator:
+        Adobe Illustrator 27.7.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)
+        \ -->\n<svg version=\"1.1\" id=\"Layer_1\" aria-hidden=\"true\" focusable=\"false\"
+        data-prefix=\"fal\" data-icon=\"plus-square\" class=\"svg-inline--fa fa-plus-square
+        fa-w-14\" role=\"img\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\"\n\t
+        x=\"0px\" y=\"0px\" viewBox=\"0 0 448 512\" style=\"enable-background:new
+        0 0 448 512;\" xml:space=\"preserve\"><title>plus</title>\n<path class=\"st0\"
+        d=\"M400,32H48C21.5,32,0,53.5,0,80v352c0,26.5,21.5,48,48,48h352c26.5,0,48-21.5,48-48V80\n\tC448,53.5,426.5,32,400,32z
+        M385.6,297.3c-93.2-20.7-141-24.2-141-24.2l-73,140.4l-53.3,5.5c45.4-83.2,55.1-93.8,78.8-147.2\n\tc-57,0-82.6-0.5-93.8-0.8c-1.8,0-9.1,0.1-21.5-1.6c-2.3-0.5-7.1-1.7-8.8-2.4c-30.1-12.1-12.1-28.1-0.4-32.4\n\tc3.5-1.3,10.1-1.5,10.1-1.5c24.6-1.9,58.8-1,130.9-0.2C253.4,154.1,278.3,97,278.3,97c41.5,10.1,27.7,47.6,27.7,47.6\n\tc-12.8,22.6-23.9,49.3-37.2,75.7c-1.8,3.5-7.9,16.2-7.9,16.2c-0.1,0.2,2.5,0.8,75.7,12.6c14.3,2.8,30.5,5.9,33.2,6.5\n\tc1.4,0.4,12.3,0.9,19.2,14.1C396.1,283.3,386.4,296.2,385.6,297.3z\"/>\n</svg>\n</div>\n
+        \                               <span class=\"text\">Bible Gateway</br>Plus</span>\n
+        \                           </div>\n                        </a>\n                    </li>\n
+        \                   <li class=\"explore top-menu\">\n                        <div
+        class=\"menu-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0
+        0 33.5 28.14\" width=\"33.5\" height=\"28.14\"><title>explore</title><use
         xlink:href=\"#icon-explore\"></use></svg>\n</div>\n                        <span
         class=\"text\">Explore<br /> More</span>\n                    </li>\n                    <li
         class=\"explore sub-menu\">\n                        <ul>\n                            <li><a
@@ -338,29 +327,14 @@ interactions:
         href=\"/app/\">Bible Gateway App</a></li>\n                            <li><a
         href=\"/bible-audio-app/\">Bible Audio App</a></li>\n                            <li><a
         href=\"//biblegateway.com/blog/\">Bible Gateway Blog</a></li>\n                        </ul>\n
-        \                   </li>\n\n                    <li class=\"bg-plus top-menu\">\n
-        \                       <a onclick=\"ga('send', 'event', 'Plus Nav Link',
-        'click', 'bgplus');\" class=\"plus-item\" href=\"/plus/?utm_source=bg&amp;utm_medium=topnav&amp;utm_campaign=bgplus\">\n
-        \                           <div class=\"plus-link\">\n                                <div
-        class=\"menu-icon\"><svg aria-hidden=\"true\" focusable=\"false\" data-prefix=\"fal\"
-        data-icon=\"plus-square\" class=\"svg-inline--fa fa-plus-square fa-w-14\"
-        role=\"img\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 448 512\"><title>plus</title><path
-        fill=\"currentColor\" d=\"M400 64c8.8 0 16 7.2 16 16v352c0 8.8-7.2 16-16 16H48c-8.8
-        0-16-7.2-16-16V80c0-8.8 7.2-16 16-16h352m0-32H48C21.5 32 0 53.5 0 80v352c0
-        26.5 21.5 48 48 48h352c26.5 0 48-21.5 48-48V80c0-26.5-21.5-48-48-48zm-60 206h-98v-98c0-6.6-5.4-12-12-12h-12c-6.6
-        0-12 5.4-12 12v98h-98c-6.6 0-12 5.4-12 12v12c0 6.6 5.4 12 12 12h98v98c0 6.6
-        5.4 12 12 12h12c6.6 0 12-5.4 12-12v-98h98c6.6 0 12-5.4 12-12v-12c0-6.6-5.4-12-12-12z\"></path></svg></div>\n
-        \                               <span class=\"text\">Bible Gateway</br>Plus</span>\n
-        \                           </div>\n                            <div class=\"promo\"><span>Save
-        20%!</span></div>\n                        </a>\n                    </li>\n\n
-        \                   <li class=\"store top-menu\">\n                        <div
-        class=\"menu-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0
-        0 28 28\" width=\"28\" height=\"28\"><title>store</title><use xlink:href=\"#icon-store\"></use></svg>\n</div>\n
-        \                       <span class=\"text\">Store</span>\n                    </li>\n
-        \                   <li class=\"store sub-menu\">\n                        <ul>\n
-        \                           <li class=\"dropdown-item\">\n                                <a
-        onclick=\"ga('send', 'event', 'CBD Nav Link', 'click', 'printbibles');\" href=\"
-        https://faithgateway.com/pages/bibles?utm_source=bg&utm_medium=referral&utm_campaign=nav_bibles\">Bibles</a>\n
+        \                   </li>\n                    <li class=\"store top-menu\">\n
+        \                       <div class=\"menu-icon\"><svg xmlns=\"http://www.w3.org/2000/svg\"
+        viewBox=\"0 0 28 28\" width=\"28\" height=\"28\"><title>store</title><use
+        xlink:href=\"#icon-store\"></use></svg>\n</div>\n                        <span
+        class=\"text\">Store</span>\n                    </li>\n                    <li
+        class=\"store sub-menu\">\n                        <ul>\n                            <li
+        class=\"dropdown-item\">\n                                <a onclick=\"ga('send',
+        'event', 'CBD Nav Link', 'click', 'printbibles');\" href=\" https://faithgateway.com/pages/bibles?utm_source=bg&utm_medium=referral&utm_campaign=nav_bibles\">Bibles</a>\n
         \                           </li>\n                            <li class=\"dropdown-item\">\n
         \                               <a onclick=\"ga('send', 'event', 'CBD Nav
         Link', 'click', 'dealoftheday');\" href=\"https://faithgateway.com/collections/biblegateway-special-deals?utm_source=bg&utm_medium=referral&utm_campaign=nav_deals\">Deals</a>\n
@@ -372,21 +346,20 @@ interactions:
         aria-label=\"user notice\" class='sys-announce '>\n                <div class=\"wrapper
         mobile\">\n                  <div class=\"sys-announce-content\">\n                    <div
         class='sys-announce-body'>\n                        <div class='sys-announce-body-inner'>\n
-        \                             <a href=\"https://www.biblegateway.com/plus?utm_source=bg&utm_medium=alert_mobile&utm_campaign=bgplus_alert_nyvalue20221221\">BEST
-        VALUE in digital Bible study. Save 20% - Limited time!</a>                        </div>\n
+        \                             <a href=\"https://www.biblegateway.com/plus/?utm_source=bg&utm_medium=alert_mobile&utm_campaign=bgplus_alert_value1010\">BEST
+        VALUE in digital Bible study. Start for FREE. </a>                        </div>\n
         \                   </div>\n                    <div class='close'><svg xmlns=\"http://www.w3.org/2000/svg\"
         viewBox=\"0 0 11.5 11.5\" width=\"11.5\" height=\"11.5\"><title>close</title><use
         xlink:href=\"#icon-close\"></use></svg>\n</div>\n                  </div>\n
-        \               </div>\n            </div>\n            <div class=\"sidebar-tall-ad\">\n
-        \               <div class=\"bga\" id=\"bga-gt-sidetall\">\n<script type=\"text/javascript\">\nrequire(['./main.min'],
-        function() {\nBG.renderBGA('sidetall');\n});\n</script>\n</div>            </div>\n
-        \       </nav>\n        <div class=\"page-col\">\n          <div class=\"top-wrapper\"
-        role=\"complementary\" aria-label=\"user and search\">\n            <section
-        role=\"alert\" aria-label=\"user notice\" class='sys-announce'>\n                <div
-        class=\"wrapper\">\n                  <div class=\"sys-announce-content\">\n
-        \                   <div class='sys-announce-body'>\n                        <div
-        class='sys-announce-body-inner'>\n                              <a href=\"https://www.biblegateway.com/plus?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_nyvaluesave20221221\">Save
-        20% on the BEST VALUE in digital Bible study! Act now! </a>                        </div>\n
+        \               </div>\n            </div>\n                    </nav>\n        <div
+        class=\"page-col\">\n          <div class=\"top-wrapper\" role=\"complementary\"
+        aria-label=\"user and search\">\n            <section role=\"alert\" aria-label=\"user
+        notice\" class='sys-announce'>\n                <div class=\"wrapper\">\n
+        \                 <div class=\"sys-announce-content\">\n                    <div
+        class='sys-announce-body'>\n                        <div class='sys-announce-body-inner'>\n
+        \                             <a href=\"https://www.biblegateway.com/plus/?utm_source=bg&utm_medium=alert&utm_campaign=bgplus_alert_acccess2500anywhere1016\">Access
+        $2,500+ in premium Bible study resources with BibleGateway+ anytime and anywhere.
+        Less than $5/mo. Start your free trial today!</a>                        </div>\n
         \                   </div>\n                    <div class='close'><svg xmlns=\"http://www.w3.org/2000/svg\"
         viewBox=\"0 0 11.5 11.5\" width=\"11.5\" height=\"11.5\"><title>close</title><use
         xlink:href=\"#icon-close\"></use></svg>\n</div>\n                  </div>\n
@@ -487,13 +460,14 @@ interactions:
         (ISV)</option>\n<option value=\"PHILLIPS\" >J.B. Phillips New Testament (PHILLIPS)</option>\n<option
         value=\"JUB\" >Jubilee Bible 2000 (JUB)</option>\n<option value=\"KJV\" >King
         James Version (KJV)</option>\n<option value=\"AKJV\" >Authorized (King James)
-        Version (AKJV)</option>\n<option value=\"LEB\" >Lexham English Bible (LEB)</option>\n<option
-        value=\"TLB\" >Living Bible (TLB)</option>\n<option value=\"MSG\" >The Message
-        (MSG)</option>\n<option value=\"MEV\" >Modern English Version (MEV)</option>\n<option
-        value=\"MOUNCE\" >Mounce Reverse Interlinear New Testament (MOUNCE)</option>\n<option
-        value=\"NOG\" >Names of God Bible (NOG)</option>\n<option value=\"NABRE\"
-        >New American Bible (Revised Edition) (NABRE)</option>\n<option value=\"NASB\"
-        >New American Standard Bible (NASB)</option>\n<option value=\"NASB1995\"  selected=\"selected\"
+        Version (AKJV)</option>\n<option value=\"LSB\" >Legacy Standard Bible (LSB)</option>\n<option
+        value=\"LEB\" >Lexham English Bible (LEB)</option>\n<option value=\"TLB\"
+        >Living Bible (TLB)</option>\n<option value=\"MSG\" >The Message (MSG)</option>\n<option
+        value=\"MEV\" >Modern English Version (MEV)</option>\n<option value=\"MOUNCE\"
+        >Mounce Reverse Interlinear New Testament (MOUNCE)</option>\n<option value=\"NOG\"
+        >Names of God Bible (NOG)</option>\n<option value=\"NABRE\" >New American
+        Bible (Revised Edition) (NABRE)</option>\n<option value=\"NASB\" >New American
+        Standard Bible (NASB)</option>\n<option value=\"NASB1995\"  selected=\"selected\"
         >New American Standard Bible 1995 (NASB1995)</option>\n<option value=\"NCB\"
         >New Catholic Bible (NCB)</option>\n<option value=\"NCV\" >New Century Version
         (NCV)</option>\n<option value=\"NET\" >New English Translation (NET)</option>\n<option
@@ -507,7 +481,7 @@ interactions:
         >New Revised Standard Version, Anglicised Catholic Edition (NRSVACE)</option>\n<option
         value=\"NRSVCE\" >New Revised Standard Version Catholic Edition (NRSVCE)</option>\n<option
         value=\"NRSVUE\" >New Revised Standard Version Updated Edition (NRSVUE)</option>\n<option
-        value=\"NTE\" >New Testament for Everyone (NTE)</option>\n<option value=\"OJB\"
+        value=\"NTFE\" >New Testament for Everyone (NTFE)</option>\n<option value=\"OJB\"
         >Orthodox Jewish Bible (OJB)</option>\n<option value=\"RGT\" >Revised Geneva
         Translation (RGT)</option>\n<option value=\"RSV\" >Revised Standard Version
         (RSV)</option>\n<option value=\"RSVCE\" >Revised Standard Version Catholic
@@ -690,9 +664,9 @@ interactions:
         (TL)---</option>\n<option value=\"FSV\" >Ang Bagong Tipan: Filipino Standard
         Version (FSV)</option>\n<option value=\"ABTAG1978\" >Ang Biblia (1978) (ABTAG1978)</option>\n<option
         value=\"ABTAG2001\" >Ang Biblia, 2001 (ABTAG2001)</option>\n<option value=\"ADB1905\"
-        >Ang Dating Biblia (1905) (ADB1905)</option>\n<option value=\"ASND\" >Ang
-        Salita ng Dios (Tagalog Contemporary Bible) (ASND)</option>\n<option value=\"SND\"
-        >Ang Salita ng Diyos (SND)</option>\n<option value=\"MBBTAG\" >Magandang Balita
+        >Ang Dating Biblia (1905) (ADB1905)</option>\n<option value=\"SND\" >Ang Salita
+        ng Diyos (SND)</option>\n<option value=\"ASND\" >Ang Salita ng Dios (Tagalog
+        Contemporary Bible) (ASND)</option>\n<option value=\"MBBTAG\" >Magandang Balita
         Biblia (MBBTAG)</option>\n<option value=\"MBBTAG-DC\" >Magandang Balita Biblia
         (with Deuterocanon) (MBBTAG-DC)</option>\n<option class=\"spacer\" value=\"MBBTAG-DC\">&nbsp;</option>\n<option
         class=\"lang\" value=\"NA-TWI\">---Twi (TWI)---</option>\n<option value=\"NA-TWI\"
@@ -789,7 +763,7 @@ interactions:
         parallel</title><use xlink:href=\"#icon-compare\"></use></svg>\n</a><span
         class=\"share\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 15.72
         19.76\" width=\"15.72\" height=\"19.76\"><title>Share</title><use xlink:href=\"#icon-external\"></use></svg>\n</span>
-        <a href=\"/passage/?search=Galatians+3:10-11&amp;version=NASB1995&amp;interface=print\"
+        <a rel=\"nofollow\" href=\"/passage/?search=Galatians+3:10-11&amp;version=NASB1995&amp;interface=print\"
         class=\"print\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 18.52
         18.91\" width=\"18.52\" height=\"18.91\"><title>Print</title><use xlink:href=\"#icon-print\"></use></svg>\n</a>
         <span class=\"settings\"><svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0
@@ -882,53 +856,54 @@ interactions:
         >International Standard Version (ISV)</option>\n<option value=\"PHILLIPS\"
         >J.B. Phillips New Testament (PHILLIPS)</option>\n<option value=\"JUB\" >Jubilee
         Bible 2000 (JUB)</option>\n<option value=\"KJV\" >King James Version (KJV)</option>\n<option
-        value=\"AKJV\" >Authorized (King James) Version (AKJV)</option>\n<option value=\"LEB\"
-        >Lexham English Bible (LEB)</option>\n<option value=\"TLB\" >Living Bible
-        (TLB)</option>\n<option value=\"MSG\" >The Message (MSG)</option>\n<option
-        value=\"MEV\" >Modern English Version (MEV)</option>\n<option value=\"MOUNCE\"
-        >Mounce Reverse Interlinear New Testament (MOUNCE)</option>\n<option value=\"NOG\"
-        >Names of God Bible (NOG)</option>\n<option value=\"NABRE\" >New American
-        Bible (Revised Edition) (NABRE)</option>\n<option value=\"NASB\" >New American
-        Standard Bible (NASB)</option>\n<option value=\"NASB1995\"  selected=\"selected\"
-        >New American Standard Bible 1995 (NASB1995)</option>\n<option value=\"NCB\"
-        >New Catholic Bible (NCB)</option>\n<option value=\"NCV\" >New Century Version
-        (NCV)</option>\n<option value=\"NET\" >New English Translation (NET Bible)</option>\n<option
-        value=\"NIRV\" >New International Reader&#039;s Version (NIRV)</option>\n<option
-        value=\"NIV\" >New International Version (NIV)</option>\n<option value=\"NIVUK\"
-        >New International Version - UK (NIVUK)</option>\n<option value=\"NKJV\" >New
-        King James Version (NKJV)</option>\n<option value=\"NLV\" >New Life Version
-        (NLV)</option>\n<option value=\"NLT\" >New Living Translation (NLT)</option>\n<option
-        value=\"NMB\" >New Matthew Bible (NMB)</option>\n<option value=\"NRSVA\" >New
-        Revised Standard Version, Anglicised (NRSVA)</option>\n<option value=\"NRSVACE\"
-        >New Revised Standard Version, Anglicised Catholic Edition (NRSVACE)</option>\n<option
-        value=\"NRSVCE\" >New Revised Standard Version Catholic Edition (NRSVCE)</option>\n<option
-        value=\"NRSVUE\" >New Revised Standard Version Updated Edition (NRSVUE)</option>\n<option
-        value=\"NTE\" >New Testament for Everyone (NTE)</option>\n<option value=\"OJB\"
-        >Orthodox Jewish Bible (OJB)</option>\n<option value=\"RGT\" >Revised Geneva
-        Translation (RGT)</option>\n<option value=\"RSV\" >Revised Standard Version
-        (RSV)</option>\n<option value=\"RSVCE\" >Revised Standard Version Catholic
-        Edition (RSVCE)</option>\n<option value=\"TLV\" >Tree of Life Version (TLV)</option>\n<option
-        value=\"VOICE\" >The Voice (VOICE)</option>\n<option value=\"WEB\" >World
-        English Bible (WEB)</option>\n<option value=\"WE\" >Worldwide English (New
-        Testament) (WE)</option>\n<option value=\"WYC\" >Wycliffe Bible (WYC)</option>\n<option
-        value=\"YLT\" >Young&#039;s Literal Translation (YLT)</option>\n<option class=\"spacer\"
-        value=\"YLT\">&nbsp;</option>\n<option class=\"lang\" value=\"LBLA\">&mdash;Espa\xF1ol
-        (ES)&mdash;</option>\n<option value=\"LBLA\" >La Biblia de las Am\xE9ricas
-        (LBLA)</option>\n<option value=\"JBS\" >Biblia del Jubileo (JBS)</option>\n<option
-        value=\"DHH\" >Dios Habla Hoy (DHH)</option>\n<option value=\"NBLA\" >Nueva
-        Biblia de las Am\xE9ricas (NBLA)</option>\n<option value=\"NBV\" >Nueva Biblia
-        Viva (NBV)</option>\n<option value=\"NTV\" >Nueva Traducci\xF3n Viviente (NTV)</option>\n<option
-        value=\"NVI\" >Nueva Versi\xF3n Internacional (NVI)</option>\n<option value=\"CST\"
-        >Nueva Versi\xF3n Internacional (Castilian) (CST)</option>\n<option value=\"PDT\"
-        >Palabra de Dios para Todos (PDT)</option>\n<option value=\"BLP\" >La Palabra
-        (Espa\xF1a) (BLP)</option>\n<option value=\"BLPH\" >La Palabra (Hispanoam\xE9rica)
-        (BLPH)</option>\n<option value=\"RVA-2015\" >Reina Valera Actualizada (RVA-2015)</option>\n<option
-        value=\"RVC\" >Reina Valera Contempor\xE1nea (RVC)</option>\n<option value=\"RVR1960\"
-        >Reina-Valera 1960 (RVR1960)</option>\n<option value=\"RVR1977\" >Reina Valera
-        Revisada (RVR1977)</option>\n<option value=\"RVR1995\" >Reina-Valera 1995
-        (RVR1995)</option>\n<option value=\"RVA\" >Reina-Valera Antigua (RVA)</option>\n<option
-        value=\"SRV-BRG\" >Spanish Blue Red and Gold Letter Edition (SRV-BRG)</option>\n<option
-        value=\"TLA\" >Traducci\xF3n en lenguaje actual (TLA)</option>\n<option class=\"spacer\"
+        value=\"AKJV\" >Authorized (King James) Version (AKJV)</option>\n<option value=\"LSB\"
+        >Legacy Standard Bible (LSB)</option>\n<option value=\"LEB\" >Lexham English
+        Bible (LEB)</option>\n<option value=\"TLB\" >Living Bible (TLB)</option>\n<option
+        value=\"MSG\" >The Message (MSG)</option>\n<option value=\"MEV\" >Modern English
+        Version (MEV)</option>\n<option value=\"MOUNCE\" >Mounce Reverse Interlinear
+        New Testament (MOUNCE)</option>\n<option value=\"NOG\" >Names of God Bible
+        (NOG)</option>\n<option value=\"NABRE\" >New American Bible (Revised Edition)
+        (NABRE)</option>\n<option value=\"NASB\" >New American Standard Bible (NASB)</option>\n<option
+        value=\"NASB1995\"  selected=\"selected\" >New American Standard Bible 1995
+        (NASB1995)</option>\n<option value=\"NCB\" >New Catholic Bible (NCB)</option>\n<option
+        value=\"NCV\" >New Century Version (NCV)</option>\n<option value=\"NET\" >New
+        English Translation (NET Bible)</option>\n<option value=\"NIRV\" >New International
+        Reader&#039;s Version (NIRV)</option>\n<option value=\"NIV\" >New International
+        Version (NIV)</option>\n<option value=\"NIVUK\" >New International Version
+        - UK (NIVUK)</option>\n<option value=\"NKJV\" >New King James Version (NKJV)</option>\n<option
+        value=\"NLV\" >New Life Version (NLV)</option>\n<option value=\"NLT\" >New
+        Living Translation (NLT)</option>\n<option value=\"NMB\" >New Matthew Bible
+        (NMB)</option>\n<option value=\"NRSVA\" >New Revised Standard Version, Anglicised
+        (NRSVA)</option>\n<option value=\"NRSVACE\" >New Revised Standard Version,
+        Anglicised Catholic Edition (NRSVACE)</option>\n<option value=\"NRSVCE\" >New
+        Revised Standard Version Catholic Edition (NRSVCE)</option>\n<option value=\"NRSVUE\"
+        >New Revised Standard Version Updated Edition (NRSVUE)</option>\n<option value=\"NTFE\"
+        >New Testament for Everyone (NTFE)</option>\n<option value=\"OJB\" >Orthodox
+        Jewish Bible (OJB)</option>\n<option value=\"RGT\" >Revised Geneva Translation
+        (RGT)</option>\n<option value=\"RSV\" >Revised Standard Version (RSV)</option>\n<option
+        value=\"RSVCE\" >Revised Standard Version Catholic Edition (RSVCE)</option>\n<option
+        value=\"TLV\" >Tree of Life Version (TLV)</option>\n<option value=\"VOICE\"
+        >The Voice (VOICE)</option>\n<option value=\"WEB\" >World English Bible (WEB)</option>\n<option
+        value=\"WE\" >Worldwide English (New Testament) (WE)</option>\n<option value=\"WYC\"
+        >Wycliffe Bible (WYC)</option>\n<option value=\"YLT\" >Young&#039;s Literal
+        Translation (YLT)</option>\n<option class=\"spacer\" value=\"YLT\">&nbsp;</option>\n<option
+        class=\"lang\" value=\"LBLA\">&mdash;Espa\xF1ol (ES)&mdash;</option>\n<option
+        value=\"LBLA\" >La Biblia de las Am\xE9ricas (LBLA)</option>\n<option value=\"JBS\"
+        >Biblia del Jubileo (JBS)</option>\n<option value=\"DHH\" >Dios Habla Hoy
+        (DHH)</option>\n<option value=\"NBLA\" >Nueva Biblia de las Am\xE9ricas (NBLA)</option>\n<option
+        value=\"NBV\" >Nueva Biblia Viva (NBV)</option>\n<option value=\"NTV\" >Nueva
+        Traducci\xF3n Viviente (NTV)</option>\n<option value=\"NVI\" >Nueva Versi\xF3n
+        Internacional (NVI)</option>\n<option value=\"CST\" >Nueva Versi\xF3n Internacional
+        (Castilian) (CST)</option>\n<option value=\"PDT\" >Palabra de Dios para Todos
+        (PDT)</option>\n<option value=\"BLP\" >La Palabra (Espa\xF1a) (BLP)</option>\n<option
+        value=\"BLPH\" >La Palabra (Hispanoam\xE9rica) (BLPH)</option>\n<option value=\"RVA-2015\"
+        >Reina Valera Actualizada (RVA-2015)</option>\n<option value=\"RVC\" >Reina
+        Valera Contempor\xE1nea (RVC)</option>\n<option value=\"RVR1960\" >Reina-Valera
+        1960 (RVR1960)</option>\n<option value=\"RVR1977\" >Reina Valera Revisada
+        (RVR1977)</option>\n<option value=\"RVR1995\" >Reina-Valera 1995 (RVR1995)</option>\n<option
+        value=\"RVA\" >Reina-Valera Antigua (RVA)</option>\n<option value=\"SRV-BRG\"
+        >Spanish Blue Red and Gold Letter Edition (SRV-BRG)</option>\n<option value=\"TLA\"
+        >Traducci\xF3n en lenguaje actual (TLA)</option>\n<option class=\"spacer\"
         value=\"TLA\">&nbsp;</option>\n<option class=\"lang\" value=\"R1933\">&mdash;Suomi
         (FI)&mdash;</option>\n<option value=\"R1933\" >Raamattu 1933/38 (R1933)</option>\n<option
         class=\"spacer\" value=\"R1933\">&nbsp;</option>\n<option class=\"lang\" value=\"BDS\">&mdash;Fran\xE7ais
@@ -1088,9 +1063,9 @@ interactions:
         (TL)&mdash;</option>\n<option value=\"FSV\" >Ang Bagong Tipan: Filipino Standard
         Version (FSV)</option>\n<option value=\"ABTAG1978\" >Ang Biblia (1978) (ABTAG1978)</option>\n<option
         value=\"ABTAG2001\" >Ang Biblia, 2001 (ABTAG2001)</option>\n<option value=\"ADB1905\"
-        >Ang Dating Biblia (1905) (ADB1905)</option>\n<option value=\"ASND\" >Ang
-        Salita ng Dios (Tagalog Contemporary Bible) (ASND)</option>\n<option value=\"SND\"
-        >Ang Salita ng Diyos (SND)</option>\n<option value=\"MBBTAG\" >Magandang Balita
+        >Ang Dating Biblia (1905) (ADB1905)</option>\n<option value=\"SND\" >Ang Salita
+        ng Diyos (SND)</option>\n<option value=\"ASND\" >Ang Salita ng Dios (Tagalog
+        Contemporary Bible) (ASND)</option>\n<option value=\"MBBTAG\" >Magandang Balita
         Biblia (MBBTAG)</option>\n<option value=\"MBBTAG-DC\" >Magandang Balita Biblia
         (with Deuterocanon) (MBBTAG-DC)</option>\n<option class=\"spacer\" value=\"MBBTAG-DC\">&nbsp;</option>\n<option
         class=\"lang\" value=\"NA-TWI\">&mdash;Twi (TWI)&mdash;</option>\n<option
@@ -1170,34 +1145,35 @@ interactions:
         value=\"ICB\" >ICB</option>\n<option value=\"ISV\" >ISV</option>\n<option
         value=\"PHILLIPS\" >PHILLIPS</option>\n<option value=\"JUB\" >JUB</option>\n<option
         value=\"KJV\" >KJV</option>\n<option value=\"AKJV\" >AKJV</option>\n<option
-        value=\"LEB\" >LEB</option>\n<option value=\"TLB\" >TLB</option>\n<option
-        value=\"MSG\" >MSG</option>\n<option value=\"MEV\" >MEV</option>\n<option
-        value=\"MOUNCE\" >MOUNCE</option>\n<option value=\"NOG\" >NOG</option>\n<option
-        value=\"NABRE\" >NABRE</option>\n<option value=\"NASB\" >NASB</option>\n<option
-        value=\"NASB1995\"  selected=\"selected\" >NASB1995</option>\n<option value=\"NCB\"
-        >NCB</option>\n<option value=\"NCV\" >NCV</option>\n<option value=\"NET\"
-        >NET</option>\n<option value=\"NIRV\" >NIRV</option>\n<option value=\"NIV\"
-        >NIV</option>\n<option value=\"NIVUK\" >NIVUK</option>\n<option value=\"NKJV\"
-        >NKJV</option>\n<option value=\"NLV\" >NLV</option>\n<option value=\"NLT\"
-        >NLT</option>\n<option value=\"NMB\" >NMB</option>\n<option value=\"NRSVA\"
-        >NRSVA</option>\n<option value=\"NRSVACE\" >NRSVACE</option>\n<option value=\"NRSVCE\"
-        >NRSVCE</option>\n<option value=\"NRSVUE\" >NRSVUE</option>\n<option value=\"NTE\"
-        >NTE</option>\n<option value=\"OJB\" >OJB</option>\n<option value=\"RGT\"
-        >RGT</option>\n<option value=\"RSV\" >RSV</option>\n<option value=\"RSVCE\"
-        >RSVCE</option>\n<option value=\"TLV\" >TLV</option>\n<option value=\"VOICE\"
-        >VOICE</option>\n<option value=\"WEB\" >WEB</option>\n<option value=\"WE\"
-        >WE</option>\n<option value=\"WYC\" >WYC</option>\n<option value=\"YLT\" >YLT</option>\n<option
-        class=\"spacer\" value=\"YLT\">&nbsp;</option>\n<option class=\"lang\" value=\"LBLA\">&mdash;ES&mdash;</option>\n<option
-        value=\"LBLA\" >LBLA</option>\n<option value=\"JBS\" >JBS</option>\n<option
-        value=\"DHH\" >DHH</option>\n<option value=\"NBLA\" >NBLA</option>\n<option
-        value=\"NBV\" >NBV</option>\n<option value=\"NTV\" >NTV</option>\n<option
-        value=\"NVI\" >NVI</option>\n<option value=\"CST\" >CST</option>\n<option
-        value=\"PDT\" >PDT</option>\n<option value=\"BLP\" >BLP</option>\n<option
-        value=\"BLPH\" >BLPH</option>\n<option value=\"RVA-2015\" >RVA-2015</option>\n<option
-        value=\"RVC\" >RVC</option>\n<option value=\"RVR1960\" >RVR1960</option>\n<option
-        value=\"RVR1977\" >RVR1977</option>\n<option value=\"RVR1995\" >RVR1995</option>\n<option
-        value=\"RVA\" >RVA</option>\n<option value=\"SRV-BRG\" >SRV-BRG</option>\n<option
-        value=\"TLA\" >TLA</option>\n<option class=\"spacer\" value=\"TLA\">&nbsp;</option>\n<option
+        value=\"LSB\" >LSB</option>\n<option value=\"LEB\" >LEB</option>\n<option
+        value=\"TLB\" >TLB</option>\n<option value=\"MSG\" >MSG</option>\n<option
+        value=\"MEV\" >MEV</option>\n<option value=\"MOUNCE\" >MOUNCE</option>\n<option
+        value=\"NOG\" >NOG</option>\n<option value=\"NABRE\" >NABRE</option>\n<option
+        value=\"NASB\" >NASB</option>\n<option value=\"NASB1995\"  selected=\"selected\"
+        >NASB1995</option>\n<option value=\"NCB\" >NCB</option>\n<option value=\"NCV\"
+        >NCV</option>\n<option value=\"NET\" >NET</option>\n<option value=\"NIRV\"
+        >NIRV</option>\n<option value=\"NIV\" >NIV</option>\n<option value=\"NIVUK\"
+        >NIVUK</option>\n<option value=\"NKJV\" >NKJV</option>\n<option value=\"NLV\"
+        >NLV</option>\n<option value=\"NLT\" >NLT</option>\n<option value=\"NMB\"
+        >NMB</option>\n<option value=\"NRSVA\" >NRSVA</option>\n<option value=\"NRSVACE\"
+        >NRSVACE</option>\n<option value=\"NRSVCE\" >NRSVCE</option>\n<option value=\"NRSVUE\"
+        >NRSVUE</option>\n<option value=\"NTFE\" >NTFE</option>\n<option value=\"OJB\"
+        >OJB</option>\n<option value=\"RGT\" >RGT</option>\n<option value=\"RSV\"
+        >RSV</option>\n<option value=\"RSVCE\" >RSVCE</option>\n<option value=\"TLV\"
+        >TLV</option>\n<option value=\"VOICE\" >VOICE</option>\n<option value=\"WEB\"
+        >WEB</option>\n<option value=\"WE\" >WE</option>\n<option value=\"WYC\" >WYC</option>\n<option
+        value=\"YLT\" >YLT</option>\n<option class=\"spacer\" value=\"YLT\">&nbsp;</option>\n<option
+        class=\"lang\" value=\"LBLA\">&mdash;ES&mdash;</option>\n<option value=\"LBLA\"
+        >LBLA</option>\n<option value=\"JBS\" >JBS</option>\n<option value=\"DHH\"
+        >DHH</option>\n<option value=\"NBLA\" >NBLA</option>\n<option value=\"NBV\"
+        >NBV</option>\n<option value=\"NTV\" >NTV</option>\n<option value=\"NVI\"
+        >NVI</option>\n<option value=\"CST\" >CST</option>\n<option value=\"PDT\"
+        >PDT</option>\n<option value=\"BLP\" >BLP</option>\n<option value=\"BLPH\"
+        >BLPH</option>\n<option value=\"RVA-2015\" >RVA-2015</option>\n<option value=\"RVC\"
+        >RVC</option>\n<option value=\"RVR1960\" >RVR1960</option>\n<option value=\"RVR1977\"
+        >RVR1977</option>\n<option value=\"RVR1995\" >RVR1995</option>\n<option value=\"RVA\"
+        >RVA</option>\n<option value=\"SRV-BRG\" >SRV-BRG</option>\n<option value=\"TLA\"
+        >TLA</option>\n<option class=\"spacer\" value=\"TLA\">&nbsp;</option>\n<option
         class=\"lang\" value=\"R1933\">&mdash;FI&mdash;</option>\n<option value=\"R1933\"
         >R1933</option>\n<option class=\"spacer\" value=\"R1933\">&nbsp;</option>\n<option
         class=\"lang\" value=\"BDS\">&mdash;FR&mdash;</option>\n<option value=\"BDS\"
@@ -1312,7 +1288,7 @@ interactions:
         class=\"lang\" value=\"FSV\">&mdash;TL&mdash;</option>\n<option value=\"FSV\"
         >FSV</option>\n<option value=\"ABTAG1978\" >ABTAG1978</option>\n<option value=\"ABTAG2001\"
         >ABTAG2001</option>\n<option value=\"ADB1905\" >ADB1905</option>\n<option
-        value=\"ASND\" >ASND</option>\n<option value=\"SND\" >SND</option>\n<option
+        value=\"SND\" >SND</option>\n<option value=\"ASND\" >ASND</option>\n<option
         value=\"MBBTAG\" >MBBTAG</option>\n<option value=\"MBBTAG-DC\" >MBBTAG-DC</option>\n<option
         class=\"spacer\" value=\"MBBTAG-DC\">&nbsp;</option>\n<option class=\"lang\"
         value=\"NA-TWI\">&mdash;TWI&mdash;</option>\n<option value=\"NA-TWI\" >NA-TWI</option>\n<option
@@ -1414,80 +1390,111 @@ interactions:
         /></a></div><!-- .bga-copyright --></div>\n    </div>\n  </div>\n    </section>
         <!-- passage-box -->\n    <div class=\"resources flex-5\">\n      <div class=\"sticky-resources\">\n
         \       <div class=\"sidebar-box\">\n        </div>\n      </div>\n    </div>\n
-        \ </div>\n</div>\n\n<section class=\"other-resources\">\n  <div class=\"sponsor-ad\">\n
-        \   <div class=\"bga\" id=\"bga-gt-sponsor1\">\n<script type=\"text/javascript\">\nrequire(['./main.min'],
-        function() {\nBG.renderBGA('sponsor1');\n});\n</script>\n</div>  </div>\n</section>\n<section
-        class=\"passage-bottom-ad\">\n  <div class=\"bga\" id=\"bga-gt-bottom\">\n<script
-        type=\"text/javascript\">\nrequire(['./main.min'], function() {\nBG.renderBGA('bottom');\n});\n</script>\n</div></section>\n
-        \               </div>\n            </section>\n            <footer class=\"footer-flex-row\">\n
-        \               <div class=\"footer-wrapper\">\n  <div class=\"footer-menu\">\n
-        \   <h3>About</h3>\n    <ul>\n      <li><a href=\"/about/\">About</a></li>\n
-        \     <li><a href=\"/about/faith/\">Statement of Faith</a></li>\n      <li><a
-        href=\"/app/\">Mobile App</a></li>\n      <li><a href=\"https://faithgateway.com/?utm_source=bg&amp;utm_medium=referral&amp;utm_campaign=bgnav_footer\">Store</a></li>\n
-        \     <li><a href=\"https://www.biblegateway.com/blog/\">Blog</a></li>\n      <li><a
-        href=\"/newsroom/\">Newsroom</a></li>\n      <li><a href=\"/supporting-biblegateway/\">Support
-        Us</a></li>\n    </ul>\n  </div>\n  <div class=\"footer-menu\">\n    <h3>Help</h3>\n
-        \   <ul>\n      <li><a href=\"//support.biblegateway.com/hc/en-us\">FAQs</a></li>\n
-        \     <li><a href=\"/help/tutorial/\">Tutorials</a></li>\n      <li><a href=\"/usage/\">Use
-        Bible Gateway on Your Site</a></li>\n      <li>\n        <a href=\"//www.salemoffers.com/campaign/advertise-with-us/\"\n
-        \         >Advertise with us</a\n        >\n      </li>\n      <li><a href=\"/feedback/\">Contact
-        us</a></li>\n      <li>\n        <strong><a href=\"/legal/privacy/\">Privacy
-        policy</a></strong>\n      </li>\n      <li class=\"us-only\">\n        <strong\n
-        \         ><a href=\"/legal/california/\">California Privacy Rights</a></strong\n
-        \       >\n      </li>\n      <li class=\"us-only\">\n        <strong\n          ><a
-        href=\"/legal/consent/\"\n            >Do Not Sell My Personal Information</a\n
-        \         ></strong\n        >\n      </li>\n    <li><a href=\"/legal/terms/\"
-        title=\"Site: Terms of use\">Site: Terms of use</a></li>\n    <li><a href=\"/legal/widget-terms/\"
-        title=\"Widget: Terms of use\"\n        >Widget: Terms of use</a></li>\n    </ul>\n
-        \ </div>\n  <div class=\"footer-menu\">\n    <h3>Our Network</h3>\n    <ul>\n
-        \     <li><a href=\"//www.faithgateway.com\" rel=\"noopener noreferrer\" target=\"_blank\"
+        \ </div>\n</div>\n\n<section class=\"other-resources\">\n            <div
+        class=\"sponsor-ad\" align=\"center\" data-freestar-ad=\"__320x250 __970x250\"
+        id=\"biblegateway_btf_sponsored\">\n            <script data-cfasync=\"false\"
+        type=\"text/javascript\">\n          freestar.config.enabled_slots.push({
+        placementName: \"biblegateway_btf_sponsored\", slotId: \"biblegateway_btf_sponsored\"
+        });\n        </script>\n      </div>\n</section>\n    <section class=\"passage-bottom-ad\">\n
+        \         <div align=\"center\" data-freestar-ad=\"__336x280 __970x250\" id=\"biblegateway_btf_leaderboard\">\n
+        \           <script data-cfasync=\"false\" type=\"text/javascript\">\n          freestar.config.enabled_slots.push({
+        placementName: \"biblegateway_btf_leaderboard\", slotId: \"biblegateway_btf_leaderboard\"
+        });\n        </script>\n      </div>\n  </section>\n                </div>\n
+        \           </section>\n            <footer class=\"footer-flex-row\">\n                <div
+        class=\"footer-wrapper\">\n  <div class=\"footer-menu-chunk\">\n    <div class=\"footer-menu\">\n
+        \     <h3>About</h3>\n      <ul>\n        <li><a href=\"/about/\">About</a></li>\n
+        \       <li><a href=\"/learn/\">Learn About the Bible</a></li>\n        <li><a
+        href=\"/about/faith/\">Statement of Faith</a></li>\n        <li><a href=\"/app/\">Mobile
+        App</a></li>\n        <li><a href=\"https://faithgateway.com/?utm_source=bg&amp;utm_medium=referral&amp;utm_campaign=bgnav_footer\">Store</a></li>\n
+        \       <li><a href=\"https://www.biblegateway.com/blog/\">Blog</a></li>\n
+        \       <li><a href=\"/newsroom/\">Newsroom</a></li>\n        <li><a href=\"/supporting-biblegateway/\">Support
+        Us</a></li>\n      </ul>\n    </div>\n    <div class=\"footer-menu\">\n      <h3>Help</h3>\n
+        \     <ul>\n        <li><a href=\"//support.biblegateway.com/hc/en-us\">FAQs</a></li>\n
+        \       <li><a href=\"/help/tutorial/\">Tutorials</a></li>\n        <li><a
+        href=\"/usage/\">Use Bible Gateway on Your Site</a></li>\n        <li>\n          <a
+        href=\"https://www.infinitemedia.network/bible-gateway/\"\n            >Advertise
+        with us</a\n          >\n        </li>\n        <li><a href=\"/feedback/\"
+        rel=\"nofollow\">Contact us</a></li>\n        <li>\n          <strong><a href=\"/legal/privacy/\">Privacy
+        policy</a></strong>\n        </li>\n        <li class=\"us-only\">\n          <strong\n
+        \           ><a href=\"/legal/california/\">California Privacy Rights</a></strong\n
+        \         >\n        </li>\n        <li class=\"us-only\">\n          <strong\n
+        \           ><a href=\"/legal/consent/\"\n              >Do Not Sell My Personal
+        Information</a\n            ></strong\n          >\n        </li>\n      <li><a
+        href=\"/legal/terms/\" title=\"Site: Terms of use\">Site: Terms of use</a></li>\n
+        \     <li><a href=\"/legal/widget-terms/\" title=\"Widget: Terms of use\"\n
+        \         >Widget: Terms of use</a></li>\n      </ul>\n    </div>\n    <div
+        class=\"footer-menu\">\n      <h3>Our Network</h3>\n      <ul>\n        <li><a
+        href=\"//www.faithgateway.com\" rel=\"noopener noreferrer\" target=\"_blank\"
         aria-label=\"FaithGateway (opens in new window)\">FaithGateway</a></li>\n
-        \     <li><a href=\"//www.studygateway.com\" rel=\"noopener noreferrer\" target=\"_blank\"
-        aria-label=\"StudyGateway (opens in new window)\">StudyGateway</a></li>\n
-        \     <li><a href=\"//www.churchsource.com\" rel=\"noopener noreferrer\" target=\"_blank\"
-        aria-label=\"ChurchSource (opens in new window)\">ChurchSource</a></li>\n
-        \     <li><a href=\"//www.harpercollinschristian.com/\" rel=\"noopener noreferrer\"
+        \       <li><a href=\"//www.studygateway.com\" rel=\"noopener noreferrer\"
+        target=\"_blank\" aria-label=\"StudyGateway (opens in new window)\">StudyGateway</a></li>\n
+        \       <li><a href=\"//www.churchsource.com\" rel=\"noopener noreferrer\"
+        target=\"_blank\" aria-label=\"ChurchSource (opens in new window)\">ChurchSource</a></li>\n
+        \       <li><a href=\"//www.harpercollinschristian.com/\" rel=\"noopener noreferrer\"
         target=\"_blank\" aria-label=\"HarperCollins Christian Publishing (opens in
-        new window)\">HarperCollins Christian Publishing</a></li>\n      <li><a href=\"//www.editorialhccp.com/gruponelson/\"
-        rel=\"noopener noreferrer\" target=\"_blank\" aria-label=\"Grupo Nelson (opens
-        in new window)\">Grupo Nelson</a></li>\n      <li><a href=\"//www.editorialhccp.com/vida/\"
-        rel=\"noopener noreferrer\" target=\"_blank\" aria-label=\"Editorial Vida
-        (opens in new window)\">Editorial Vida</a></li>\n      <li><a href=\"//www.thomasnelson.com/\"
-        rel=\"noopener noreferrer\" target=\"_blank\" aria-label=\"Thomas Nelson (opens
-        in new window)\">Thomas Nelson</a></li>\n      <li><a href=\"//guide.westbowpress.com/guidetosuccess/?Cat=Partner&LS=Referral&SRC=HCCPBibleGatewayFooter052019\"
+        new window)\">HarperCollins Christian Publishing</a></li>\n        <li><a
+        href=\"//www.editorialhccp.com/gruponelson/\" rel=\"noopener noreferrer\"
+        target=\"_blank\" aria-label=\"Grupo Nelson (opens in new window)\">Grupo
+        Nelson</a></li>\n        <li><a href=\"//www.editorialhccp.com/vida/\" rel=\"noopener
+        noreferrer\" target=\"_blank\" aria-label=\"Editorial Vida (opens in new window)\">Editorial
+        Vida</a></li>\n        <li><a href=\"//www.thomasnelson.com/\" rel=\"noopener
+        noreferrer\" target=\"_blank\" aria-label=\"Thomas Nelson (opens in new window)\">Thomas
+        Nelson</a></li>\n        <li><a href=\"//guide.westbowpress.com/guidetosuccess/?Cat=Partner&LS=Referral&SRC=HCCPBibleGatewayFooter052019\"
         rel=\"noopener noreferrer\" target=\"_blank\" aria-label=\"WestBow Press (opens
-        in new window)\">WestBow Press</a></li>\n      <li><a href=\"//www.zondervan.com/\"
+        in new window)\">WestBow Press</a></li>\n        <li><a href=\"//www.zondervan.com/\"
         rel=\"noopener noreferrer\" target=\"_blank\" aria-label=\"Zondervan (opens
-        in new window)\">Zondervan</a></li>\n<li><a href=\"//masterlectures.zondervanacademic.com/?utm_source=bg\"
+        in new window)\">Zondervan</a></li>\n  <li><a href=\"//masterlectures.zondervanacademic.com/?utm_source=bg\"
         rel=\"noopener noreferrer\" target=\"_blank\" aria-label=\"MasterLectures
-        (opens in new window)\">MasterLectures</a></li>\n    </ul>\n  </div>\n  <div
-        class=\"footer-menu\">\n    <h3>Social</h3>\n    <ul>\n      <li><a href=\"//www.facebook.com/BibleGateway/\"
-        rel=\"noopener noreferrer nofollow\" target=\"_blank\" aria-label=\"Facebook
-        (opens in new window)\">Facebook</a></li>\n     <li><a href=\"//www.instagram.com/BibleGateway/\"
-        rel=\"noopener noreferrer nofollow\" target=\"_blank\" aria-label=\"Instagram
-        (opens in new window)\">Instagram</a></li> \n      <li><a href=\"//www.pinterest.com/biblegateway/\"
-        rel=\"noopener noreferrer nofollow\" target=\"_blank\" aria-label=\"Pinterest
-        (opens in new window)\">Pinterest</a></li>\n      <li><a href=\"//www.tiktok.com/@biblegatewayofficial/\"
+        (opens in new window)\">MasterLectures</a></li>\n      </ul>\n    </div>\n
+        \   <div class=\"footer-menu social\">\n      <h3>Social</h3>\n      <ul>\n
+        \       <li><a href=\"//www.facebook.com/BibleGateway/\" rel=\"noopener noreferrer
+        nofollow\" target=\"_blank\" aria-label=\"Facebook (opens in new window)\">Facebook</a></li>\n
+        \       <li><a href=\"//www.instagram.com/BibleGateway/\" rel=\"noopener noreferrer
+        nofollow\" target=\"_blank\" aria-label=\"Instagram (opens in new window)\">Instagram</a></li>
+        \n        <li><a href=\"//www.pinterest.com/biblegateway/\" rel=\"noopener
+        noreferrer nofollow\" target=\"_blank\" aria-label=\"Pinterest (opens in new
+        window)\">Pinterest</a></li>\n        <li><a href=\"//www.tiktok.com/@biblegatewayofficial/\"
         rel=\"noopener noreferrer nofollow\" target=\"_blank\" aria-label=\"TikTok
-        (opens in new window)\">TikTok</a></li>\n      <li><a href=\"//twitter.com/biblegateway/\"
+        (opens in new window)\">TikTok</a></li>\n        <li><a href=\"//twitter.com/biblegateway/\"
         rel=\"noopener noreferrer nofollow\" target=\"_blank\" aria-label=\"Twitter
-        (opens in new window)\">Twitter</a></li>\n      <li><a href=\"//www.youtube.com/user/BibleGatewayVideos/\"
+        (opens in new window)\">Twitter</a></li>\n        <li><a href=\"//www.youtube.com/user/BibleGatewayVideos/\"
         rel=\"noopener noreferrer nofollow\" target=\"_blank\" aria-label=\"YouTube
-        (opens in new window)\">YouTube</a></li>\n  \n    </ul>\n  </div>\n  <div
-        class=\"footer-menu prefences\">\n    <h3>Preferences</h3>\n    <ul>\n      <li>\n
-        \       <a href=\"/languages/update/?language=es&amp;url=%2F\" lang=\"en\"\n
-        \         >Versi\xF3n en espa\xF1ol\n        </a>\n      </li>\n      <li>\n
-        \       <a\n          title=\"Set your preferences for BibleGateway.com\"\n
-        \         href=\"/preferences/\"\n          >Preferences\n        </a>\n      </li>\n
-        \   </ul>\n  </div>\n</div>\n            </footer>\n        </div>\n    </div>\n
-        \   <div class=\"bottom-ad\" role=\"alert\" aria-label=\"advertisement\">\n
-        \       <div class=\"bga\" id=\"bga-gt-anchor\">\n<script type=\"text/javascript\">\nrequire(['./main.min'],
-        function() {\nBG.renderBGA('anchor');\n});\n</script>\n</div>        <button
-        type=\"button\" class=\"close\" aria-label=\"Close\">\n            <span aria-hidden=\"true\"
-        class=\"icon\">\xD7</span>\n        </button>\n    </div>\n    <div class=\"bg-components\"></div>\n<div
-        class=\"bg-modal-root\"></div>\n<div class=\"bg-tooltip-root\"></div>\n<div
-        class=\"default-tooltip\" aria-label=\"tooltip\" role=\"complementary\"></div>\n\n<script
-        type=\"text/javascript\">\nrequire(['./main.min'], function() {\n  bgLogger.logPageview(\"/bible/Gal.3.10-Gal.3.11/nasb1995\",\n
+        (opens in new window)\">YouTube</a></li>\n      </ul>\n      <div class=\"w-signup\">\n
+        \     <h3>Preferences</h3>\n      <ul class=\"preferences\">\n        <li>\n
+        \         <a rel=\"nofollow\" href=\"/languages/update/?language=es&amp;url=%2F\"
+        lang=\"en\"\n            >Versi\xF3n en espa\xF1ol\n          </a>\n        </li>\n
+        \       <li>\n          <a\n            title=\"Set your preferences for BibleGateway.com\"\n
+        \           href=\"/preferences/\"\n            >Preferences\n          </a>\n
+        \       </li>\n      </ul>\n    </div>\n    </div>\n  </div>\n  <div class=\"footer-menu-chunk
+        signup\">\n    <div class=\"footer-menu signup w-signup\"><div class=\"header
+        text\">Sign Up For Weekly Updates</div>\n<div class=\"main text\">\n  <div
+        class=\"description\">Sign up now for the latest news and deals from Bible
+        Gateway!</div>     \n  <form action=\"/newsletters/subscribe/\" method=\"post\">\n<input
+        type='hidden' name='form_name' value='footer_signup_form' /><input type='hidden'
+        name='form_code' value='bg7-footer_signup_form-en-d-a57cacfb2c' /><input type='hidden'
+        name='g-recaptcha-response' />\n    <input name=\"weekly_updates\" type=\"hidden\"
+        value=\"Yes\" /><input name=\"Email Type\" type=\"hidden\" value=\"HTML\"
+        /><input autocomplete=\"OFF\" class=\"email\" name=\"Email\" placeholder=\"Your
+        Email Address\" type=\"text\" /> <input class=\"btn subscribe-btn\" onclick=\"ga('send',
+        'event', 'footer', 'signup');\" type=\"submit\" value=\"Sign Up\" />\n  </form>
+        \n</div>\n<p class=\"terms\">\n  By submitting your email address, you understand
+        that you will receive email communications from Bible Gateway, a division
+        of The Zondervan Corporation, 3900 Sparks Drive SE, Grand Rapids, MI 49546
+        USA, including commercial communications and messages from partners of Bible
+        Gateway. You may unsubscribe from Bible Gateway&rsquo;s emails at any time.
+        If you have any questions, please review our <a href=\"/legal/privacy/\">Privacy
+        Policy</a> or email us at <a href=\"mailto:privacy@biblegateway.com\">privacy@biblegateway.com</a>.\n</p></div>\n
+        \   <div class=\"footer-menu preferences wo-signup\">\n      <h3>Preferences</h3>\n
+        \     <ul>\n        <li>\n          <a rel=\"nofollow\" href=\"/languages/update/?language=es&amp;url=%2F\"
+        lang=\"en\"\n            >Versi\xF3n en espa\xF1ol\n          </a>\n        </li>\n
+        \       <li>\n          <a\n            title=\"Set your preferences for BibleGateway.com\"\n
+        \           href=\"/preferences/\"\n            >Preferences\n          </a>\n
+        \       </li>\n      </ul>\n    </div>\n  </div>\n</div>            </footer>\n
+        \       </div>\n    </div>\n    <div class=\"bg-components\"></div>\n<div
+        class=\"bg-modal-root\"></div>\n<div class=\"bg-popup-root\"></div>\n<div
+        class=\"bg-tooltip-root\"></div>\n<div class=\"default-tooltip\" aria-label=\"tooltip\"
+        role=\"complementary\"></div>\n\n<script type=\"text/javascript\">\nrequire(['./main.min'],
+        function() {\n  bgLogger.logPageview(\"/bible/Gal.3.10-Gal.3.11/nasb1995\",\n
         \   \"G003\",\n    {},\n    null,\n    \"\", 'p');\n});\n</script>\n<!-- Begin
         comScore Tag -->\n<script>\n  var _comscore = _comscore || [];\n  _comscore.push(\n
         \ { c1: \"2\", c2: \"7735391\" }\n  );\n  BG.Consents.onConsent(4).then(function(){var
@@ -1496,6 +1503,10 @@ interactions:
         \ 'passage');\nrequire(['./main.min'], function() {\n  bgLogger.logCE('passage',
         null,\n    \"Gal.3.10-Gal.3.11/nasb1995\");\n});\n</script>\n\n\n</body>\n\n</html>\n"
     headers:
+      Age:
+      - '465'
+      Alt-Svc:
+      - h3=":443"; ma=86400
       Connection:
       - keep-alive
       Content-Encoding:
@@ -1503,9 +1514,9 @@ interactions:
       Content-Type:
       - text/html; charset=UTF-8
       Date:
-      - Sun, 01 Jan 2023 19:54:10 GMT
+      - Wed, 15 Nov 2023 23:10:08 GMT
       Server:
-      - Tengine
+      - nginx
       Strict-Transport-Security:
       - max-age=2592000
       Transfer-Encoding:
@@ -1513,15 +1524,14 @@ interactions:
       Vary:
       - Accept-Encoding
       Via:
-      - 1.1 24948856b0f7ba2a78f73187b329c3d6.cloudfront.net (CloudFront)
+      - 1.1 ff70d2ed51497e957e0d0413c2211f6a.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - kjZi6wWoXHsRyjrsLjjBFEhRTV8Cp828AT0t04nuWAAhXM6qCmtbaQ==
+      - _YALT88N6FQYQlnQGCekFTRW-wxs-trDwfwv82P2gj89Ciheos7b7g==
       X-Amz-Cf-Pop:
-      - MCI50-P2
+      - ORD56-P2
       X-Cache:
-      - Miss from cloudfront
+      - Hit from cloudfront
     status:
       code: 200
       message: OK
-    url: https://www.biblegateway.com/passage/?search=Galatians+3:10-11&version=NASB1995&interface=print
 version: 1

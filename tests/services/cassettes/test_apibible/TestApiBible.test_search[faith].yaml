@@ -61,12 +61,12 @@ interactions:
         89:8\",\"text\":\"O LORD  God of hosts, who  is  a strong  LORD  like unto
         thee? or to thy faithfulness round about thee?\"}]},\"meta\":{\"fums\":\"<script>\\nvar
         _BAPI=_BAPI||{};\\nif(typeof(_BAPI.t)==='undefined'){\\ndocument.write('\\\\x3Cscript
-        src=\\\"'+document.location.protocol+'//cdn.scripture.api.bible/fums/fumsv2.min.js\\\"\\\\x3E\\\\x3C/script\\\\x3E');}\\ndocument.write(\\\"\\\\x3Cscript\\\\x3E_BAPI.t('c976e227-6755-4868-99c5-e5eadfed5489');\\\\x3C/script\\\\x3E\\\");\\n</script><noscript><img
-        src=\\\"https://d3a2okcloueqyx.cloudfront.net/nf1?t='c976e227-6755-4868-99c5-e5eadfed5489'\\\"
+        src=\\\"'+document.location.protocol+'//cdn.scripture.api.bible/fums/fumsv2.min.js\\\"\\\\x3E\\\\x3C/script\\\\x3E');}\\ndocument.write(\\\"\\\\x3Cscript\\\\x3E_BAPI.t('0b2638cf-8208-4501-808c-189bc07c69ca');\\\\x3C/script\\\\x3E\\\");\\n</script><noscript><img
+        src=\\\"https://d3a2okcloueqyx.cloudfront.net/nf1?t='0b2638cf-8208-4501-808c-189bc07c69ca'\\\"
         height=\\\"1\\\" width=\\\"1\\\" border=\\\"0\\\" alt=\\\"\\\" style=\\\"height:
-        0; width: 0;\\\" /></noscript>\",\"fumsId\":\"c976e227-6755-4868-99c5-e5eadfed5489\",\"fumsJsInclude\":\"cdn.scripture.api.bible/fums/fumsv2.min.js\",\"fumsJs\":\"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!='undefined'){ _BAPI.t('c976e227-6755-4868-99c5-e5eadfed5489');
-        }\",\"fumsNoScript\":\"<img src=\\\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=c976e227-6755-4868-99c5-e5eadfed5489\\\"
+        0; width: 0;\\\" /></noscript>\",\"fumsId\":\"0b2638cf-8208-4501-808c-189bc07c69ca\",\"fumsJsInclude\":\"cdn.scripture.api.bible/fums/fumsv2.min.js\",\"fumsJs\":\"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!='undefined'){ _BAPI.t('0b2638cf-8208-4501-808c-189bc07c69ca');
+        }\",\"fumsNoScript\":\"<img src=\\\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=0b2638cf-8208-4501-808c-189bc07c69ca\\\"
         height=\\\"1\\\" width=\\\"1\\\" border=\\\"0\\\" alt=\\\"\\\" style=\\\"height:
         0; width: 0;\\\" />\"}}"
     headers:
@@ -81,7 +81,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 01 Jan 2023 19:54:09 GMT
+      - Wed, 15 Nov 2023 23:17:53 GMT
       Server:
       - nginx/1.16.1
       Transfer-Encoding:
@@ -95,12 +95,11 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/search?query=faith&limit=20&offset=0&sort=canonical
 - request:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=c976e227-6755-4868-99c5-e5eadfed5489
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=0b2638cf-8208-4501-808c-189bc07c69ca
   response:
     body:
       string: !!binary |
@@ -109,7 +108,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '54102'
+      - '39167'
       Connection:
       - keep-alive
       Content-Length:
@@ -117,7 +116,7 @@ interactions:
       Content-Type:
       - image/gif
       Date:
-      - Sun, 01 Jan 2023 04:52:29 GMT
+      - Wed, 15 Nov 2023 12:26:59 GMT
       Etag:
       - '"28d6814f309ea289f847c69cf91194c6"'
       Last-Modified:
@@ -125,15 +124,14 @@ interactions:
       Server:
       - AmazonS3
       Via:
-      - 1.1 a204176092d05bded77f4d517d5968aa.cloudfront.net (CloudFront)
+      - 1.1 083683fc4606b82cffcaa87e04058f56.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - jvH24IyLLlJBnQv199V8yd5F2RSZvEQxK235KbIHuopijMaWZ8tBog==
+      - fC8cOujihR_9aarh9FpjksQbxpf0fl97eWqML6LsHwtY7l7Pb0_hww==
       X-Amz-Cf-Pop:
-      - MCI50-P1
+      - ORD51-C2
       X-Cache:
       - Hit from cloudfront
     status:
       code: 200
       message: OK
-    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=c976e227-6755-4868-99c5-e5eadfed5489
 version: 1

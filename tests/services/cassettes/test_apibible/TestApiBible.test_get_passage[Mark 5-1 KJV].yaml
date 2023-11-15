@@ -13,12 +13,12 @@ interactions:
         DOMAIN except in the United Kingdom, where a Crown Copyright applies to printing
         the KJV. See http://www.cambridge.org/about-us/who-we-are/queens-printers-patent"},"meta":{"fums":"<script>\nvar
         _BAPI=_BAPI||{};\nif(typeof(_BAPI.t)===''undefined''){\ndocument.write(''\\x3Cscript
-        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''ada2ffde-6ade-4635-b027-e9e7c9939ee7'');\\x3C/script\\x3E\");\n</script><noscript><img
-        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''ada2ffde-6ade-4635-b027-e9e7c9939ee7''\"
+        src=\"''+document.location.protocol+''//cdn.scripture.api.bible/fums/fumsv2.min.js\"\\x3E\\x3C/script\\x3E'');}\ndocument.write(\"\\x3Cscript\\x3E_BAPI.t(''c3696567-b55e-420f-a149-7b427fce87b3'');\\x3C/script\\x3E\");\n</script><noscript><img
+        src=\"https://d3a2okcloueqyx.cloudfront.net/nf1?t=''c3696567-b55e-420f-a149-7b427fce87b3''\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
-        /></noscript>","fumsId":"ada2ffde-6ade-4635-b027-e9e7c9939ee7","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''ada2ffde-6ade-4635-b027-e9e7c9939ee7'');
-        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=ada2ffde-6ade-4635-b027-e9e7c9939ee7\"
+        /></noscript>","fumsId":"c3696567-b55e-420f-a149-7b427fce87b3","fumsJsInclude":"cdn.scripture.api.bible/fums/fumsv2.min.js","fumsJs":"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!=''undefined''){ _BAPI.t(''c3696567-b55e-420f-a149-7b427fce87b3'');
+        }","fumsNoScript":"<img src=\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=c3696567-b55e-420f-a149-7b427fce87b3\"
         height=\"1\" width=\"1\" border=\"0\" alt=\"\" style=\"height: 0; width: 0;\"
         />"}}'
     headers:
@@ -33,7 +33,7 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Sun, 01 Jan 2023 19:54:11 GMT
+      - Wed, 15 Nov 2023 23:17:54 GMT
       Server:
       - nginx/1.16.1
       Transfer-Encoding:
@@ -47,12 +47,11 @@ interactions:
     status:
       code: 200
       message: OK
-    url: https://api.scripture.api.bible/v1/bibles/de4e12af7f28f599-02/passages/MRK.5.1?content-type=json&include-notes=false&include-titles=false&include-chapter-numbers=false&include-verse-numbers=true
 - request:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=ada2ffde-6ade-4635-b027-e9e7c9939ee7
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=c3696567-b55e-420f-a149-7b427fce87b3
   response:
     body:
       string: !!binary |
@@ -61,7 +60,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '54103'
+      - '39168'
       Connection:
       - keep-alive
       Content-Length:
@@ -69,7 +68,7 @@ interactions:
       Content-Type:
       - image/gif
       Date:
-      - Sun, 01 Jan 2023 04:52:29 GMT
+      - Wed, 15 Nov 2023 12:26:59 GMT
       Etag:
       - '"28d6814f309ea289f847c69cf91194c6"'
       Last-Modified:
@@ -77,15 +76,14 @@ interactions:
       Server:
       - AmazonS3
       Via:
-      - 1.1 a204176092d05bded77f4d517d5968aa.cloudfront.net (CloudFront)
+      - 1.1 807adc5f317528439570900eb8e6c384.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - uwjn41QrZCamLjoEvy8rZQSVT-1Xucj85vprZT5YoAD4GgkNA0nmVg==
+      - ghwXNy97oyP-Bq9sy2oaZhrwP0FWvHxithuc0ZzJ-h9ZaYvUg5gk5A==
       X-Amz-Cf-Pop:
-      - MCI50-P1
+      - ORD51-C2
       X-Cache:
       - Hit from cloudfront
     status:
       code: 200
       message: OK
-    url: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=ada2ffde-6ade-4635-b027-e9e7c9939ee7
 version: 1
