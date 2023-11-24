@@ -6,6 +6,7 @@ on:
   pull_request:
     branches: [master]
     paths:
+      - '.github/workflows/codeql-analysis.yml'
       - 'erasmus/**'
       - 'tests/**'
       - 'alembic/**'
@@ -16,3 +17,5 @@ on:
 jobs:
   analzye:
     uses: bryanforbes/python-workflows/.github/workflows/reusable-codeql-analysis.yml@master
+    with:
+      python_versions: '["3.12"]'
