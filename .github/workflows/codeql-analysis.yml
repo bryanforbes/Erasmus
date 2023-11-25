@@ -15,7 +15,7 @@ on:
     - cron: '0 19 * * 2'
 
 jobs:
-  analzye:
+  analyze:
     uses: bryanforbes/python-workflows/.github/workflows/reusable-codeql-analysis-new.yml@master
     with:
       python_version: '3.12'

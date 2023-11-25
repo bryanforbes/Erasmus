@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  test:
     uses: bryanforbes/python-workflows/.github/workflows/reusable-unit-tests-new.yml@master
     with:
       python_version: '3.12'
