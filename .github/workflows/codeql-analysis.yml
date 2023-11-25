@@ -16,6 +16,6 @@ on:
 
 jobs:
   analzye:
-    uses: bryanforbes/python-workflows/.github/workflows/reusable-codeql-analysis.yml@master
+    uses: bryanforbes/python-workflows/.github/workflows/reusable-codeql-analysis-new.yml@master
     with:
-      python_versions: '["3.12"]'
+      python_version: '3.12'
