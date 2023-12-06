@@ -2,7 +2,6 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from itertools import chain
 from typing import TYPE_CHECKING, Final
 
 import discord
@@ -236,11 +235,9 @@ class DailyBreadGroup(
     def get_task(self) -> tasks.Loop[Callable[[], Coroutine[None]]]:
         return tasks.loop(
             time=[
-                pendulum.time(*args)
-                for args in chain.from_iterable(
-                    [(hour, minute) for minute in range(0, 60, TASK_INTERVAL)]
-                    for hour in range(24)
-                )
+                pendulum.time(hour, minute)
+                for hour in range(12)
+                for minute in range(0, 60, TASK_INTERVAL)
             ],
         )(self._check_and_post)
 
