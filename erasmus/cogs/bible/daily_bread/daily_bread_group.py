@@ -108,11 +108,12 @@ class DailyBreadGroup(
     async def _fetch_and_post(
         self,
         passage_fetcher: PassageFetcher,
+        next_scheduled: pendulum.DateTime,
         daily_bread: DailyBread,
         bible: BibleVersion,
         webhook: discord.Webhook,
         /,
-    ) -> bool:
+    ) -> None:
         try:
             passage = await passage_fetcher(
                 bible  # pyright: ignore[reportGeneralTypeIssues]
@@ -143,22 +144,22 @@ class DailyBreadGroup(
                 exc_info=error,
                 stack_info=True,
             )
-            return True
         except discord.NotFound as error:
             if error.code == 10015:
                 _log.error(
                     'Webhook missing for guild ID %s. Postponing until tomorrow.',
                     daily_bread.guild_id,
                 )
-                return True
 
-            _log.exception(
-                'An error occurred while posting the daily bread to guild ID %s',
-                daily_bread.guild_id,
-                exc_info=error,
-                stack_info=True,
-            )
-            return False
+            else:
+                _log.exception(
+                    'An error occurred while posting the daily bread to guild ID %s',
+                    daily_bread.guild_id,
+                    exc_info=error,
+                    stack_info=True,
+                )
+                return
+
         except Exception as error:  # noqa: BLE001
             _log.exception(
                 'An error occurred while posting the daily bread to guild ID %s',
@@ -166,9 +167,10 @@ class DailyBreadGroup(
                 exc_info=error,
                 stack_info=True,
             )
-            return False
-        else:
-            return True
+
+            return
+
+        daily_bread.next_scheduled = next_scheduled
 
     async def _check_and_post(self) -> None:
         async with Session.begin() as session:
@@ -221,12 +223,13 @@ class DailyBreadGroup(
                     daily_bread.next_scheduled = next_scheduled
                     continue
 
-                set_next_scheduled = await self._fetch_and_post(
-                    passage_fetcher, daily_bread, bible, webhook
+                await self._fetch_and_post(
+                    passage_fetcher,
+                    next_scheduled,
+                    daily_bread,
+                    bible,
+                    webhook,
                 )
-
-                if set_next_scheduled:
-                    daily_bread.next_scheduled = next_scheduled
 
             await session.commit()
 
