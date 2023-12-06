@@ -272,16 +272,24 @@ class SectionAutoCompleter(app_commands.Transformer):
     ) -> list[app_commands.Choice[str]]:
         value = value.lower().strip()
 
-        if (
-            itx.data is None
-            or (options := itx.data.get('options')) is None
-            or len(options) != 1
-            or (group_options := options[0].get('options')) is None
-            or len(group_options) == 0
-            or group_options[0].get('name') != 'source'
-            or (source := group_options[0].get('value')) is None
-            or (item := self.confession_lookup.get(source)) is None
-        ):
+        match itx.data:
+            case {
+                'type': 1,
+                'options': [
+                    {
+                        'type': 1,
+                        'options': [
+                            {'type': 3, 'name': 'source', 'value': source},
+                            *_,
+                        ],
+                    }
+                ],
+            }:
+                item = self.confession_lookup.get(source)
+            case _:
+                item = None
+
+        if item is None:
             return []
 
         return [
