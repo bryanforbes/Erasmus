@@ -42,7 +42,7 @@ pytest-xdist = "3.5.0"
 ruff = "0.1.9"
 
 [tool.poetry.group.dev.dependencies.pendulum]
-version = "~3.0.0"
+version = "3.0.0"
 extras = ["test"]
 
 [tool.poetry.scripts]
