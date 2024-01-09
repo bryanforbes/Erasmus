@@ -13,7 +13,7 @@ python = "^3.12"
 alembic = "1.13.1"
 attrs = "23.2.0"
 beautifulsoup4 = "4.12.2"
-more-itertools = "10.1.0"
+more-itertools = "10.2.0"
 "fluent.runtime" = "0.4.0"
 
 [tool.poetry.dependencies.botus_receptus]
