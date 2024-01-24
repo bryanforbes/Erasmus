@@ -4,8 +4,7 @@ import logging
 import sys
 from functools import cached_property
 from importlib import metadata
-from typing import TYPE_CHECKING, Final, cast
-from typing_extensions import override
+from typing import TYPE_CHECKING, Final, cast, override
 
 import discord
 import discord.http
@@ -73,7 +72,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
 
     @property
     def bible_cog(self) -> Bible:
-        return self.cogs['Bible']  # pyright: ignore[reportGeneralTypeIssues]
+        return self.cogs['Bible']  # pyright: ignore[reportReturnType]
 
     @override
     async def setup_hook(self) -> None:

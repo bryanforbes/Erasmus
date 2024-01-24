@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 import logging
-from typing import TYPE_CHECKING, Final, cast
-from typing_extensions import override
+from typing import TYPE_CHECKING, Final, cast, override
 
 import discord
 from attrs import field, frozen
@@ -104,7 +103,7 @@ class Bible(Cog['Erasmus']):
         bible_lookup.clear()
         bible_lookup.update(
             [
-                _BibleOption.create(version)  # pyright: ignore[reportGeneralTypeIssues]
+                _BibleOption.create(version)  # pyright: ignore[reportArgumentType]
                 async for version in BibleVersion.get_all(session, ordered=True)
             ]
         )
@@ -149,7 +148,7 @@ class Bible(Cog['Erasmus']):
             raise BookNotInVersionError(reference.book.name, bible.name)
 
         passage = await self.service_manager.get_passage(
-            bible, reference  # pyright: ignore[reportGeneralTypeIssues]
+            bible, reference  # pyright: ignore[reportArgumentType]
         )
         await send_passage(itx, passage, ephemeral=only_me)
 
@@ -340,7 +339,7 @@ class Bible(Cog['Erasmus']):
 
         def search(*, per_page: int, page_number: int) -> Coroutine[SearchResults]:
             return self.service_manager.search(
-                bible,  # pyright: ignore[reportGeneralTypeIssues]
+                bible,  # pyright: ignore[reportArgumentType]
                 terms.split(' '),
                 limit=per_page,
                 offset=page_number,
@@ -350,7 +349,7 @@ class Bible(Cog['Erasmus']):
         source = SearchPageSource(
             search,
             per_page=5,
-            bible=bible,  # pyright: ignore[reportGeneralTypeIssues]
+            bible=bible,  # pyright: ignore[reportArgumentType]
             localizer=localizer,
         )
         view = UIPages(itx, source, localizer=localizer)

@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 from datetime import timedelta
-from typing import TYPE_CHECKING, ClassVar, Literal, Self, get_args
-from typing_extensions import override
+from typing import TYPE_CHECKING, ClassVar, Literal, Self, get_args, override
 
 import pendulum
 from attrs import define, field, validators
@@ -35,10 +34,10 @@ class FluentInterval(FluentType, pendulum.Interval):
 
     def _init_options(self, interval: pendulum.Interval, **kwargs: object) -> None:
         self.options = merge_options(
-            IntervalFormatOptions,  # pyright: ignore[reportGeneralTypeIssues]
+            IntervalFormatOptions,  # pyright: ignore[reportArgumentType]
             getattr(
                 interval, 'options', self.default_interval_format_options
-            ),  # pyright: ignore[reportGeneralTypeIssues]
+            ),  # pyright: ignore[reportArgumentType]
             kwargs,
         )
 
@@ -125,8 +124,8 @@ class Localization(FluentLocalization):
         self.fallback_locale = locales[-1] if len(locales) > 1 else None
 
         super().__init__(
-            locales,  # pyright: ignore[reportGeneralTypeIssues]
-            resource_ids,  # pyright: ignore[reportGeneralTypeIssues]
+            locales,  # pyright: ignore[reportArgumentType]
+            resource_ids,  # pyright: ignore[reportArgumentType]
             resource_loader,
             use_isolating,
             bundle_class=Bundle,
@@ -169,7 +168,7 @@ class Localization(FluentLocalization):
                 pattern = message.value
 
             value, _ = bundle.format_pattern(
-                pattern, args  # pyright: ignore[reportGeneralTypeIssues]
+                pattern, args  # pyright: ignore[reportArgumentType]
             )
             return value if isinstance(value, str) else None
 

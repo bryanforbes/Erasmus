@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-from typing_extensions import override
+from typing import TYPE_CHECKING, override
 
 from ...data import Passage
 from ...page_source import AsyncCallback, AsyncPageSource, FieldPageSource, Pages

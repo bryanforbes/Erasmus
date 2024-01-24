@@ -1,8 +1,7 @@
 # Service for querying biblegateway.com
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Final
-from typing_extensions import override
+from typing import TYPE_CHECKING, Final, override
 
 from attrs import field, frozen
 from botus_receptus import re

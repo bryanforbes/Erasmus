@@ -115,7 +115,7 @@ class DailyBreadGroup(
     ) -> None:
         try:
             passage = await passage_fetcher(
-                bible  # pyright: ignore[reportGeneralTypeIssues]
+                bible  # pyright: ignore[reportArgumentType]
             )
 
             if daily_bread.thread_id is None:
@@ -217,7 +217,7 @@ class DailyBreadGroup(
                     bible = fallback
 
                 if not passage_fetcher.verse_range_in_bible(
-                    bible  # pyright: ignore[reportGeneralTypeIssues]
+                    bible  # pyright: ignore[reportArgumentType]
                 ):
                     daily_bread.next_scheduled = next_scheduled
                     continue
@@ -270,13 +270,11 @@ class DailyBreadGroup(
         passage_fetcher = self._get_fetcher(await self._get_verse_range())
 
         if not passage_fetcher.verse_range_in_bible(
-            bible  # pyright: ignore[reportGeneralTypeIssues]
+            bible  # pyright: ignore[reportArgumentType]
         ):
             raise DailyBreadNotInVersionError(bible.name)
 
-        passage = await passage_fetcher(
-            bible  # pyright: ignore[reportGeneralTypeIssues]
-        )
+        passage = await passage_fetcher(bible)  # pyright: ignore[reportArgumentType]
 
         await send_passage(itx, passage, ephemeral=only_me)
 

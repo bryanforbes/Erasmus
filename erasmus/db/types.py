@@ -1,7 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING
-from typing_extensions import override
+from typing import TYPE_CHECKING, override
 
 import pendulum
 from sqlalchemy import String, TypeDecorator
@@ -12,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class DateTime(TypeDecorator[pendulum.DateTime]):
-    impl: TIMESTAMP = TIMESTAMP  # pyright: ignore[reportGeneralTypeIssues, reportIncompatibleVariableOverride]
+    impl: TIMESTAMP = TIMESTAMP  # pyright: ignore[reportAssignmentType, reportIncompatibleVariableOverride]
     cache_ok = True
 
     def __init__(
@@ -53,7 +52,7 @@ class DateTime(TypeDecorator[pendulum.DateTime]):
 
 
 class Time(TypeDecorator[pendulum.Time]):
-    impl: TIME = TIME  # pyright: ignore[reportGeneralTypeIssues, reportIncompatibleVariableOverride]
+    impl: TIME = TIME  # pyright: ignore[reportAssignmentType, reportIncompatibleVariableOverride]
     cache_ok = True
 
     def __init__(self, precision: int | None = None) -> None:
@@ -81,7 +80,7 @@ class Time(TypeDecorator[pendulum.Time]):
 
 
 class Timezone(TypeDecorator[pendulum.Timezone]):
-    impl: String = String  # pyright: ignore[reportGeneralTypeIssues, reportIncompatibleVariableOverride]
+    impl: String = String  # pyright: ignore[reportAssignmentType, reportIncompatibleVariableOverride]
 
     cache_ok = True
 

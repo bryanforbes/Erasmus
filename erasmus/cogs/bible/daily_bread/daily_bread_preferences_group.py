@@ -1,8 +1,7 @@
 from __future__ import annotations
 
 from itertools import chain
-from typing import TYPE_CHECKING, ClassVar, Final, Self, Unpack, cast
-from typing_extensions import override
+from typing import TYPE_CHECKING, ClassVar, Final, Self, Unpack, cast, override
 
 import discord
 import pendulum

@@ -4,8 +4,7 @@ import logging
 from collections import OrderedDict
 from importlib import metadata
 from pathlib import Path
-from typing import TYPE_CHECKING, Final
-from typing_extensions import override
+from typing import TYPE_CHECKING, Final, override
 
 import discord
 from botus_receptus import Cog, Embed, formatting, re, utils
