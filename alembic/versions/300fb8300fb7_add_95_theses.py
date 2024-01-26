@@ -5,6 +5,7 @@ Revises: 902fb954c12f
 Create Date: 2022-09-28 16:53:12.660808
 
 """
+
 from __future__ import annotations
 
 from json import load

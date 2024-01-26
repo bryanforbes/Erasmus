@@ -5,6 +5,7 @@ Revises: 3a2b71b2a647
 Create Date: 2023-07-26 17:11:15.382582
 
 """
+
 from __future__ import annotations
 
 from alembic import op

@@ -52,9 +52,11 @@ class TestSectionFlag:
             (
                 book['name'].upper(),
                 SectionFlag[
-                    book['osis']
-                    if not book['osis'][0].isdecimal()
-                    else f'{book["osis"][1:]}_{book["osis"][0]}'
+                    (
+                        book['osis']
+                        if not book['osis'][0].isdecimal()
+                        else f'{book["osis"][1:]}_{book["osis"][0]}'
+                    )
                 ],
             )
             for book in _book_data

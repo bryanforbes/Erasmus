@@ -66,9 +66,9 @@ class _FindOneMethod(Protocol):
     def __call__(
         self,
         name: _TagFilterType | None,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         text: _TagStringFilterType | None = ...,
         *,
         string: _TagStringFilterType | None = ...,
@@ -78,9 +78,9 @@ class _FindOneMethod(Protocol):
     def __call__(
         self,
         *,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         text: _TagStringFilterType | None = ...,
         string: _TagStringFilterType | None = ...,
         **kwargs: _TagAttrFilterType | None,
@@ -89,9 +89,9 @@ class _FindOneMethod(Protocol):
     def __call__(
         self,
         name: SoupStrainer | _TagFilterType | None = ...,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         text: _TagStringFilterType | None = ...,
         *,
         string: _TagStringFilterType | None = ...,
@@ -122,9 +122,9 @@ class _FindAllMethod(Protocol):
     def __call__(
         self,
         name: _TagFilterType | None,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         text: _TagStringFilterType | None = ...,
         limit: int | None = ...,
         *,
@@ -135,9 +135,9 @@ class _FindAllMethod(Protocol):
     def __call__(
         self,
         *,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         text: _TagStringFilterType | None = ...,
         limit: int | None = ...,
         string: _TagStringFilterType | None = ...,
@@ -147,9 +147,9 @@ class _FindAllMethod(Protocol):
     def __call__(
         self,
         name: SoupStrainer | _TagFilterType | None = ...,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         text: _TagStringFilterType | None = ...,
         limit: int | None = ...,
         *,
@@ -229,18 +229,18 @@ class PageElement:
     def find_parent(
         self,
         name: SoupStrainer | _TagFilterType | None = ...,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         **kwargs: _TagAttrFilterType,
     ) -> Tag | None: ...
     findParent = find_parent
     def find_parents(
         self,
         name: SoupStrainer | _TagFilterType | None = ...,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         limit: int | None = ...,
         **kwargs: _TagAttrFilterType,
     ) -> ResultSet[Tag]: ...
@@ -452,9 +452,9 @@ class Tag(PageElement):
     def find(
         self,
         name: _TagFilterType | None,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         recursive: bool = ...,
         text: _TagStringFilterType | None = ...,
         *,
@@ -465,9 +465,9 @@ class Tag(PageElement):
     def find(
         self,
         *,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         recursive: bool = ...,
         text: _TagStringFilterType | None = ...,
         string: _TagStringFilterType | None = ...,
@@ -477,9 +477,9 @@ class Tag(PageElement):
     def find(
         self,
         name: SoupStrainer | _TagFilterType | None = ...,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         recursive: bool = ...,
         text: _TagStringFilterType | None = ...,
         *,
@@ -509,9 +509,9 @@ class Tag(PageElement):
     def find_all(
         self,
         name: _TagFilterType | None,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         recursive: bool = ...,
         text: _TagStringFilterType | None = ...,
         limit: int | None = ...,
@@ -523,9 +523,9 @@ class Tag(PageElement):
     def find_all(
         self,
         *,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         recursive: bool = ...,
         text: _TagStringFilterType | None = ...,
         limit: int | None = ...,
@@ -536,9 +536,9 @@ class Tag(PageElement):
     def find_all(
         self,
         name: SoupStrainer | _TagFilterType | None = ...,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         recursive: bool = ...,
         text: _TagStringFilterType | None = ...,
         limit: int | None = ...,
@@ -577,9 +577,9 @@ class SoupStrainer:
     def __init__(
         self,
         name: _TagFilterType | None = ...,
-        attrs: _TagAttrFilterType
-        | Mapping[str, _TagAttrFilterType | None]
-        | None = ...,
+        attrs: (
+            _TagAttrFilterType | Mapping[str, _TagAttrFilterType | None] | None
+        ) = ...,
         text: _TagStringFilterType | None = ...,
         **kwargs: _TagAttrFilterType | None,
     ) -> None: ...

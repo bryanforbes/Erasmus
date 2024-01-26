@@ -58,8 +58,7 @@ async def send_passage(
     passage: Passage,
     /,
     **kwargs: Unpack[SendPassageBaseKwargs],
-) -> discord.Message:
-    ...
+) -> discord.Message: ...
 
 
 @overload
@@ -68,8 +67,7 @@ async def send_passage(
     passage: Passage,
     /,
     **kwargs: Unpack[SendPassageWebhookKwargs],
-) -> discord.WebhookMessage:
-    ...
+) -> discord.WebhookMessage: ...
 
 
 @overload
@@ -78,28 +76,30 @@ async def send_passage(
     passage: Passage,
     /,
     **kwargs: Unpack[SendPassageInteractionKwargs],
-) -> discord.Message:
-    ...
+) -> discord.Message: ...
 
 
 @overload
 async def send_passage(
-    itx: discord.abc.Messageable
-    | discord.Message
-    | discord.Webhook
-    | discord.Interaction,
+    itx: (
+        discord.abc.Messageable
+        | discord.Message
+        | discord.Webhook
+        | discord.Interaction
+    ),
     passage: Passage,
     /,
     **kwargs: Unpack[SendPassageWebhookKwargs],
-) -> discord.Message:
-    ...
+) -> discord.Message: ...
 
 
 def send_passage(
-    msg_or_itx: discord.abc.Messageable
-    | discord.Message
-    | discord.Webhook
-    | discord.Interaction,
+    msg_or_itx: (
+        discord.abc.Messageable
+        | discord.Message
+        | discord.Webhook
+        | discord.Interaction
+    ),
     passage: Passage,
     /,
     **kwargs: Unpack[SendPassageWebhookKwargs],
@@ -114,18 +114,14 @@ def send_passage(
 
 class Option(Protocol):
     @property
-    def key(self) -> str:
-        ...
+    def key(self) -> str: ...
 
     @property
-    def name(self) -> str:
-        ...
+    def name(self) -> str: ...
 
-    def matches(self, text: str, /) -> bool:
-        ...
+    def matches(self, text: str, /) -> bool: ...
 
-    def choice(self) -> app_commands.Choice[str]:
-        ...
+    def choice(self) -> app_commands.Choice[str]: ...
 
 
 @frozen(eq=False)

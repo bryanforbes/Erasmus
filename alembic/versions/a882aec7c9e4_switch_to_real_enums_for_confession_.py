@@ -5,6 +5,7 @@ Revises: 830329e85f73
 Create Date: 2022-08-25 09:45:46.450232
 
 """
+
 from __future__ import annotations
 
 from typing import TypedDict

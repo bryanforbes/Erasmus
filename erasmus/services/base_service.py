@@ -34,14 +34,12 @@ class BaseService:
     config: ServiceConfig | None
 
     @abstractmethod
-    async def get_passage(self, bible: Bible, verses: VerseRange, /) -> Passage:
-        ...
+    async def get_passage(self, bible: Bible, verses: VerseRange, /) -> Passage: ...
 
     @abstractmethod
     async def search(
         self, bible: Bible, terms: list[str], /, *, limit: int = 20, offset: int = 0
-    ) -> SearchResults:
-        ...
+    ) -> SearchResults: ...
 
     def replace_special_escapes(self, bible: Bible, text: str, /) -> str:
         text = _whitespace_re.sub(' ', text.strip())

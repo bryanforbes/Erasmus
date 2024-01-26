@@ -11,7 +11,7 @@ if TYPE_CHECKING:
 
 
 class DateTime(TypeDecorator[pendulum.DateTime]):
-    impl: TIMESTAMP = TIMESTAMP  # pyright: ignore[reportAssignmentType, reportIncompatibleVariableOverride]
+    impl: TIMESTAMP = TIMESTAMP  # pyright: ignore[reportAssignmentType, reportIncompatibleVariableOverride]  # fmt: skip
     cache_ok = True
 
     def __init__(
@@ -52,7 +52,7 @@ class DateTime(TypeDecorator[pendulum.DateTime]):
 
 
 class Time(TypeDecorator[pendulum.Time]):
-    impl: TIME = TIME  # pyright: ignore[reportAssignmentType, reportIncompatibleVariableOverride]
+    impl: TIME = TIME  # pyright: ignore[reportAssignmentType, reportIncompatibleVariableOverride]  # fmt: skip
     cache_ok = True
 
     def __init__(self, precision: int | None = None) -> None:
@@ -80,7 +80,7 @@ class Time(TypeDecorator[pendulum.Time]):
 
 
 class Timezone(TypeDecorator[pendulum.Timezone]):
-    impl: String = String  # pyright: ignore[reportAssignmentType, reportIncompatibleVariableOverride]
+    impl: String = String  # pyright: ignore[reportAssignmentType, reportIncompatibleVariableOverride]  # fmt: skip
 
     cache_ok = True
 

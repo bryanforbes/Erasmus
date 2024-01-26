@@ -5,6 +5,7 @@ Revises: d21c001d987c
 Create Date: 2022-10-06 09:44:43.900613
 
 """
+
 from __future__ import annotations
 
 from itertools import chain
