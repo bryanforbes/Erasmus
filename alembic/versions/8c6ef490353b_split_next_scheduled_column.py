@@ -5,6 +5,7 @@ Revises: e5249c54cbcd
 Create Date: 2022-10-24 16:50:07.223883
 
 """
+
 from __future__ import annotations
 
 import pendulum

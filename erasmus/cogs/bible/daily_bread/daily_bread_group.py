@@ -78,10 +78,13 @@ class DailyBreadGroup(
         self._fetcher = None
 
     async def _get_verse_range(self) -> VerseRange:
-        async with asyncio.timeout(10), self.session.get(
-            'https://www.biblegateway.com/reading-plans/verse-of-the-day'
-            '/next?interface=print'
-        ) as response:
+        async with (
+            asyncio.timeout(10),
+            self.session.get(
+                'https://www.biblegateway.com/reading-plans/verse-of-the-day'
+                '/next?interface=print'
+            ) as response,
+        ):
             text = await response.text(errors='replace')
             strainer = SoupStrainer(
                 class_=re.compile(

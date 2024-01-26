@@ -10,8 +10,7 @@ if TYPE_CHECKING:
     from erasmus.erasmus import Erasmus
 
 
-class MockBot:
-    ...
+class MockBot: ...
 
 
 class TestCreeds:

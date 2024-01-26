@@ -134,15 +134,13 @@ class ListPageSource[T](PageSourceBase[Sequence[T]]):
 @runtime_checkable
 class Page[T](Iterable[T], Protocol):
     @property
-    def total(self) -> int:
-        ...
+    def total(self) -> int: ...
 
 
 @runtime_checkable
 class AsyncPage[T](AsyncIterable[T], Protocol):
     @property
-    def total(self) -> int:
-        ...
+    def total(self) -> int: ...
 
 
 async def _iterable_to_list[T](page: Iterable[T] | AsyncIterable[T]) -> list[T]:
@@ -155,8 +153,7 @@ async def _iterable_to_list[T](page: Iterable[T] | AsyncIterable[T]) -> list[T]:
 class AsyncCallback[T](Protocol):
     def __call__(
         self, /, *, per_page: int, page_number: int
-    ) -> Awaitable[Page[T]] | AsyncPage[T]:
-        ...
+    ) -> Awaitable[Page[T]] | AsyncPage[T]: ...
 
 
 class AsyncPageSource[T](PageSourceBase[Sequence[T]]):

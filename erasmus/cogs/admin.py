@@ -22,8 +22,7 @@ if TYPE_CHECKING:
 _available_extensions: Final = {f'erasmus.cogs.{name}' for name in _extension_names}
 
 
-class _EvalError(Exception):
-    ...
+class _EvalError(Exception): ...
 
 
 class _RunError(Exception):

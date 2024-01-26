@@ -54,14 +54,12 @@ class LocalizerFormatKwargs(FormatKwargs):
     locale: NotRequired[discord.Locale | None]
 
 
-class LocalizerFormatFallbackKwargs(LocalizerFormatKwargs, FormatFallbackKwargs):
-    ...
+class LocalizerFormatFallbackKwargs(LocalizerFormatKwargs, FormatFallbackKwargs): ...
 
 
 class LocalizerFormatFallbackTrueKwargs(
     LocalizerFormatKwargs, FormatFallbackTrueKwargs
-):
-    ...
+): ...
 
 
 class LocalizerFormatAnyKwargs(LocalizerFormatKwargs):
@@ -115,8 +113,7 @@ class Localizer:
         message_id: str | app_commands.locale_str,
         /,
         **kwargs: Unpack[LocalizerFormatFallbackKwargs],
-    ) -> str | None:
-        ...
+    ) -> str | None: ...
 
     @overload
     def format(
@@ -124,8 +121,7 @@ class Localizer:
         message_id: str | app_commands.locale_str,
         /,
         **kwargs: Unpack[LocalizerFormatFallbackTrueKwargs],
-    ) -> str:
-        ...
+    ) -> str: ...
 
     def format(
         self,
@@ -181,8 +177,7 @@ class GroupLocalizer:
         message_id: str | app_commands.locale_str,
         /,
         **kwargs: Unpack[LocalizerFormatFallbackKwargs],
-    ) -> str | None:
-        ...
+    ) -> str | None: ...
 
     @overload
     def format(
@@ -190,8 +185,7 @@ class GroupLocalizer:
         message_id: str | app_commands.locale_str,
         /,
         **kwargs: Unpack[LocalizerFormatFallbackTrueKwargs],
-    ) -> str:
-        ...
+    ) -> str: ...
 
     def format(
         self,
@@ -236,8 +230,7 @@ class LocaleLocalizer:
         message_id: str | app_commands.locale_str,
         /,
         **kwargs: Unpack[FormatFallbackKwargs],
-    ) -> str | None:
-        ...
+    ) -> str | None: ...
 
     @overload
     def format(
@@ -245,8 +238,7 @@ class LocaleLocalizer:
         message_id: str | app_commands.locale_str,
         /,
         **kwargs: Unpack[FormatFallbackTrueKwargs],
-    ) -> str:
-        ...
+    ) -> str: ...
 
     def format(
         self,
@@ -268,8 +260,7 @@ class MessageLocalizer:
         attribute_id: str | None = None,
         /,
         **kwargs: Unpack[FormatFallbackKwargs],
-    ) -> str | None:
-        ...
+    ) -> str | None: ...
 
     @overload
     def format(
@@ -277,8 +268,7 @@ class MessageLocalizer:
         attribute_id: str | None = None,
         /,
         **kwargs: Unpack[FormatFallbackTrueKwargs],
-    ) -> str:
-        ...
+    ) -> str: ...
 
     def format(
         self,

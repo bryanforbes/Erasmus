@@ -5,6 +5,7 @@ Revises: 1f333584607a
 Create Date: 2022-09-08 17:48:28.827595
 
 """
+
 from __future__ import annotations
 
 from typing import Any
