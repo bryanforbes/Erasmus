@@ -3,5 +3,15 @@
   "extends": [
     "github>bryanforbes/python-workflows:app"
   ],
-  "ignoreDeps": ["python"]
+  "ignoreDeps": [
+    "python"
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "pytest"
+      ],
+      "allowedVersions": "<8"
+    }
+  ]
 }
