@@ -39,7 +39,7 @@ pytest-mock = "3.12.0"
 pytest-recording = "0.13.1"
 pytest-sugar = "0.9.7"
 pytest-xdist = "3.5.0"
-ruff = "0.1.15"
+ruff = "0.2.0"
 
 [tool.poetry.group.dev.dependencies.pendulum]
 version = "3.0.0"
