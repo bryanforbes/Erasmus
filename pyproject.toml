@@ -78,41 +78,43 @@ omit = [
 ]
 
 [tool.ruff]
+extend-exclude = [".venv*"]
+line-length = 88
+target-version = "py312"
+
+[tool.ruff.lint]
 select = [
   "ANN", "B", "B9", "BLE", "C", "C4", "C9", "E", "EXE", "F", "FBT", "G",
   "I", "I002", "ISC", "INP", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "Q", "RET",
   "RSE", "S", "SIM", "T10", "T20", "TCH", "TID251", "TRY", "UP", "W", "RUF"
 ]
 ignore = ["ANN101", "ANN102", "PLR0913", "PLR2004", "PT004", "TRY003"]
-extend-exclude = [".venv*"]
-line-length = 88
-target-version = "py312"
 
-[tool.ruff.per-file-ignores]
+[tool.ruff.lint.per-file-ignores]
 "*.pyi" = ["ANN401", "E501", "E701", "E741", "F401", "F403", "F405", "F811", "FBT001", "FBT002", "PGH003"]
 "erasmus/cogs/*.py" = ["FBT"]
 "tests/*.py" = ["ANN401", "FBT001", "FBT002", "PGH003", "PLR0912", "S101"]
 "alembic/*.py" = ["ANN20", "ANN401", "INP", "PGH003"]
 
-[tool.ruff.isort]
+[tool.ruff.lint.isort]
 extra-standard-library = ["typing_extensions", "_typeshed"]
 known-first-party = ["erasmus"]
 known-third-party = ["alembic"]
 combine-as-imports = true
 required-imports = ["from __future__ import annotations"]
 
-[tool.ruff.mccabe]
+[tool.ruff.lint.mccabe]
 max-complexity = 15
 
-[tool.ruff.flake8-pytest-style]
+[tool.ruff.lint.flake8-pytest-style]
 fixture-parentheses = false
 mark-parentheses = false
 parametrize-names-type = "csv"
 
-[tool.ruff.flake8-quotes]
+[tool.ruff.lint.flake8-quotes]
 inline-quotes = "single"
 
-[tool.ruff.flake8-tidy-imports.banned-api]
+[tool.ruff.lint.flake8-tidy-imports.banned-api]
 "typing.TypeVar".msg = "Use `typing_extensions.TypeVar` instead."
 
 
