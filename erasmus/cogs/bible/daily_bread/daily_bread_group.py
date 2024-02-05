@@ -183,7 +183,7 @@ class DailyBreadGroup(
 
             try:
                 verse_range = await self._get_verse_range()
-            except asyncio.TimeoutError:
+            except TimeoutError:
                 _log.error(
                     'There was an error getting the daily verse range from '
                     'BibleGateway: The request timed out.'
