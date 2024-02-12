@@ -5,13 +5,5 @@
   ],
   "ignoreDeps": [
     "python"
-  ],
-  "packageRules": [
-    {
-      "matchPackageNames": [
-        "pytest"
-      ],
-      "allowedVersions": "<8"
-    }
   ]
 }
