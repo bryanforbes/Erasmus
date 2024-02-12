@@ -1,6 +1,7 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any
+import asyncio
+from typing import TYPE_CHECKING
 
 import aiohttp
 import pytest
@@ -65,10 +66,8 @@ def mock_client_session(
 
 
 @pytest.fixture
-async def aiohttp_client_session(
-    event_loop: Any,
-) -> AsyncIterator[aiohttp.ClientSession]:
-    async with aiohttp.ClientSession(loop=event_loop) as session:
+async def aiohttp_client_session() -> AsyncIterator[aiohttp.ClientSession]:
+    async with aiohttp.ClientSession(loop=asyncio.get_running_loop()) as session:
         yield session
 
 
