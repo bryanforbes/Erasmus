@@ -1,4 +1,4 @@
-# Version UNRELEASED
+# Version 24.3.0
 
 * Maintenance release
 
