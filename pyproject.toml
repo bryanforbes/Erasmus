@@ -29,10 +29,10 @@ extras = ["speed"]
 asyncpg-stubs = "0.29.1"
 black = "24.2.0"
 coverage = {version = "7.4.3", extras = ["toml"]}
-mypy = "1.8.0"
+mypy = "1.9.0"
 pre-commit = "3.6.2"
 pytest = "8.1.0"
-pytest-asyncio = "0.23.5"
+pytest-asyncio = "0.23.5.post1"
 pytest-clarity = "1.0.1"
 pytest-cov = "4.1.0"
 pytest-mock = "3.12.0"
