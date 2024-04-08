@@ -87,9 +87,9 @@ class Bible(Cog['Erasmus']):
     def __init__(self, bot: Erasmus, /) -> None:
         self.service_manager = ServiceManager.from_config(bot.config, bot.session)
         self.localizer = bot.localizer
-        self.__lookup_cooldown = commands.CooldownMapping.from_cooldown(
-            rate=8, per=60.0, type=commands.BucketType.user
-        )
+        self.__lookup_cooldown = commands.CooldownMapping[
+            discord.Message
+        ].from_cooldown(rate=8, per=60.0, type=commands.BucketType.user)
 
         super().__init__(bot)
 
