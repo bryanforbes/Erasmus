@@ -135,10 +135,12 @@ class Admin(GroupCog[Erasmus], group_name='admin', group_description='Admin comm
 
     def __init__(self, bot: Erasmus, /) -> None:
         if bot.config.get('enable_eval', False):
-            self._eval = app_commands.command(name='eval')(self.__eval)
+            self._eval = (  # pyright: ignore[reportUnknownMemberType]
+                app_commands.command(name='eval')(self.__eval)
+            )
 
             self.__cog_app_commands_group__.add_command(  # pyright: ignore[reportOptionalMemberAccess]
-                self._eval
+                self._eval  # pyright: ignore[reportUnknownArgumentType, reportUnknownMemberType]
             )
 
         super().__init__(bot)
