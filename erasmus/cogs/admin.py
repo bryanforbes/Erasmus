@@ -77,7 +77,7 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
 
         try:
             exec(to_compile, env)  # noqa: S102
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             raise _EvalError from e
 
         func = env['func']
@@ -85,7 +85,7 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
         try:
             with redirect_stdout(stdout):
                 ret = await func()
-        except Exception as e:  # noqa: BLE001
+        except Exception as e:
             raise _RunError(stdout.getvalue(), traceback.format_exc()) from e
         else:
             value = stdout.getvalue()
