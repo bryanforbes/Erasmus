@@ -176,6 +176,39 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
             description=f'Removed `{existing.command}`',
         )
 
+    def __update_bible_version(
+        self,
+        bible: BibleVersion,
+        /,
+        name: str | None = None,
+        abbreviation: str | None = None,
+        service: str | None = None,
+        service_version: str | None = None,
+        rtl: bool | None = None,
+        books: str | None = None,
+        book_mapping: str | None = None,
+    ) -> None:
+        if name is not None:
+            bible.name = name
+
+        if abbreviation is not None:
+            bible.abbr = abbreviation
+
+        if service is not None:
+            bible.service = service
+
+        if service_version is not None:
+            bible.service_version = service_version
+
+        if rtl is not None:
+            bible.rtl = rtl
+
+        if books is not None:
+            bible.books = SectionFlag.from_book_names(books)
+
+        if book_mapping is not None:
+            bible.book_mapping = _decode_book_mapping(book_mapping)
+
     @app_commands.command()
     @app_commands.describe(
         version='The version to update',
@@ -208,26 +241,16 @@ class BibleAdminGroup(app_commands.Group, name='bibleadmin'):
             async with Session.begin() as session:
                 bible = await BibleVersion.get_by_command(session, version)
 
-                if name is not None:
-                    bible.name = name
-
-                if abbreviation is not None:
-                    bible.abbr = abbreviation
-
-                if service is not None:
-                    bible.service = service
-
-                if service_version is not None:
-                    bible.service_version = service_version
-
-                if rtl is not None:
-                    bible.rtl = rtl
-
-                if books is not None:
-                    bible.books = SectionFlag.from_book_names(books)
-
-                if book_mapping is not None:
-                    bible.book_mapping = _decode_book_mapping(book_mapping)
+                self.__update_bible_version(
+                    bible,
+                    name=name,
+                    abbreviation=abbreviation,
+                    service=service,
+                    service_version=service_version,
+                    rtl=rtl,
+                    books=books,
+                    book_mapping=book_mapping,
+                )
 
                 await session.commit()
 
