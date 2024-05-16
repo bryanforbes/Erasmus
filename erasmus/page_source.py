@@ -17,7 +17,7 @@ async def _maybe_await[
     if inspect.isawaitable(value):
         return await value
 
-    return value  # pyright: ignore[reportReturnType]
+    return value
 
 
 class Kwargs(TypedDict):
