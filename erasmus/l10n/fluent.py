@@ -49,7 +49,7 @@ class FluentInterval(FluentType, pendulum.Interval):
 
     @override
     def format(self, locale: Locale | str) -> str:
-        intervals = [
+        intervals: list[tuple[Literal['hour', 'minute', 'second'], int]] = [
             ('hour', self.hours),
             ('minute', self.minutes),
             ('second', self.remaining_seconds),
