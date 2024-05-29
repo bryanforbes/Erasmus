@@ -153,7 +153,7 @@ class Bible(Cog['Erasmus']):
         await send_passage(itx, passage, ephemeral=only_me)
 
     @override
-    async def cog_app_command_error(  # pyright: ignore[reportIncompatibleMethodOverride]
+    async def cog_app_command_error(  # pyright: ignore[reportIncompatibleMethodOverride]  # noqa: PLR0912, C901
         self,
         itx: discord.Interaction | discord.Message,
         error: Exception,
@@ -205,9 +205,8 @@ class Bible(Cog['Erasmus']):
                 message_id = 'invalid-version'
                 data = {'version': error.version}
             case ServiceNotSupportedError():
-                version_text = f'{error.bible.name}'
                 message_id = 'service-not-supported'
-                data = {'name': version_text}
+                data = {'name': f'{error.bible.name}'}
             case ServiceLookupTimeout():
                 message_id = 'service-lookup-timeout'
                 data = {'name': error.bible.name, 'verses': str(error.verses)}

@@ -148,7 +148,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             stack_info=True,
         )
 
-    async def on_app_command_error(
+    async def on_app_command_error(  # noqa: PLR0912
         self, itx: discord.Interaction | discord.Message, error: Exception, /
     ) -> None:
         if (
