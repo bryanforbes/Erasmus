@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import TYPE_CHECKING, Any, Final, TypeGuard, cast
+from typing import TYPE_CHECKING, Any, Final, cast
 
 from attrs import field, frozen
 
@@ -14,6 +14,8 @@ from .exceptions import (
 )
 
 if TYPE_CHECKING:
+    from typing_extensions import TypeIs
+
     import aiohttp
 
     from .config import Config
@@ -24,7 +26,7 @@ if TYPE_CHECKING:
 _log: Final = logging.getLogger(__name__)
 
 
-def _is_service_cls(obj: object, /) -> TypeGuard[type[BaseService]]:
+def _is_service_cls(obj: object, /) -> TypeIs[type[BaseService]]:
     return hasattr(obj, 'from_config') and callable(cast(Any, obj).from_config)
 
 
