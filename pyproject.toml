@@ -27,9 +27,9 @@ extras = ["speed"]
 
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "0.29.1"
-black = "24.4.2"
-coverage = {version = "7.6.0", extras = ["toml"]}
-mypy = "1.11.0"
+black = "24.8.0"
+coverage = {version = "7.6.1", extras = ["toml"]}
+mypy = "1.11.1"
 pre-commit = "3.8.0"
 pytest = "8.3.2"
 pytest-asyncio = "0.23.8"
@@ -39,7 +39,7 @@ pytest-mock = "3.14.0"
 pytest-recording = "0.13.2"
 pytest-sugar = "1.0.0"
 pytest-xdist = "3.6.1"
-ruff = "0.5.5"
+ruff = "0.5.7"
 
 [tool.poetry.group.dev.dependencies.pendulum]
 version = "3.0.0"
