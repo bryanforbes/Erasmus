@@ -139,6 +139,7 @@ minversion = "6.0"
 addopts = "--cov=erasmus --cov-branch --cov-report=term -nauto --dist=loadscope"
 testpaths = ["tests"]
 asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
 
 [build-system]
 requires = ["poetry_core==1.9.0"]
