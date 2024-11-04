@@ -5,5 +5,14 @@
   ],
   "ignoreDeps": [
     "python"
+  ],
+  "packageRules": [
+    {
+      "groupName": "botus_receptus packages",
+      "matchPackageNames": [
+        "botus_receptus",
+        "asyncpg-stubs"
+      ]
+    }
   ]
 }
