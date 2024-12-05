@@ -2,14 +2,12 @@
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
     "github>bryanforbes/python-workflows:app",
-    ":semanticCommitTypeAll(chore)"
+    ":semanticCommitTypeAll(chore)",
+    ":enableVulnerabilityAlerts"
   ],
   "ignoreDeps": [
     "python"
   ],
-  "vulnerabilityAlerts": {
-    "enabled": true
-  },
   "packageRules": [
     {
       "groupName": "botus_receptus packages",
