@@ -21,7 +21,7 @@ from ....exceptions import (
     ServiceNotSupportedError,
 )
 from ....utils import send_passage
-from ..bible_lookup import bible_lookup  # noqa: TCH001
+from ..bible_lookup import bible_lookup  # noqa: TC001
 from .common import TASK_INTERVAL, get_next_scheduled_time
 
 if TYPE_CHECKING:

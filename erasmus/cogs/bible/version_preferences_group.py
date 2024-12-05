@@ -6,7 +6,7 @@ from botus_receptus import utils
 from discord import app_commands
 
 from ...db import BibleVersion, GuildPref, Session
-from .bible_lookup import bible_lookup  # noqa: TCH001
+from .bible_lookup import bible_lookup  # noqa: TC001
 
 if TYPE_CHECKING:
     import discord
