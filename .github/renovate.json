@@ -7,6 +7,9 @@
   "ignoreDeps": [
     "python"
   ],
+  "vulnerabilityAlerts": {
+    "enabled": true
+  },
   "packageRules": [
     {
       "groupName": "botus_receptus packages",
