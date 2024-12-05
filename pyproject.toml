@@ -18,7 +18,7 @@ more-itertools = "10.5.0"
 
 [tool.poetry.dependencies.botus_receptus]
 git = "https://github.com/bryanforbes/botus_receptus.git"
-tag = "v24.9.0"
+tag = "v24.12.0"
 extras = ["uvloop", "sqlalchemy"]
 
 [tool.poetry.dependencies.discord-py]
@@ -26,7 +26,7 @@ version = "2.4.0"
 extras = ["speed"]
 
 [tool.poetry.group.dev.dependencies]
-asyncpg-stubs = "0.29.1"
+asyncpg-stubs = "0.30.0"
 black = "24.10.0"
 coverage = {version = "7.6.4", extras = ["toml"]}
 mypy = "1.13.0"
