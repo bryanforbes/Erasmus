@@ -10,7 +10,7 @@ packages = [
 
 [tool.poetry.dependencies]
 python = "^3.12"
-alembic = "1.13.3"
+alembic = "1.14.0"
 attrs = "24.2.0"
 beautifulsoup4 = "4.12.3"
 more-itertools = "10.5.0"
