@@ -7,14 +7,14 @@ from .enums import ConfessionType, NumberingType
 from .misc import Notification
 
 __all__ = (
-    'Session',
     'BibleVersion',
+    'Confession',
+    'ConfessionType',
     'DailyBread',
     'GuildPref',
-    'UserPref',
-    'ConfessionType',
-    'NumberingType',
-    'Confession',
-    'Section',
     'Notification',
+    'NumberingType',
+    'Section',
+    'Session',
+    'UserPref',
 )
