@@ -1,7 +1,8 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>bryanforbes/python-workflows:app"
+    "github>bryanforbes/python-workflows:app",
+    ":semanticCommitTypeAll(chore)"
   ],
   "ignoreDeps": [
     "python"
