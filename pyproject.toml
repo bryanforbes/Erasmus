@@ -1,29 +1,21 @@
-[tool.poetry]
+[project]
 name = "erasmus"
 version = "24.5.1.dev0"
 description = ""
-authors = ["Bryan Forbes <bryan@reigndropsfall.net>"]
-license = "BSD-3-Clause"
-packages = [
-  { include = "erasmus" }
+authors = [
+  {name = "Bryan Forbes", email = "bryan@reigndropsfall.net"}
 ]
-
-[tool.poetry.dependencies]
-python = "^3.12"
-alembic = "1.14.0"
-attrs = "24.3.0"
-beautifulsoup4 = "4.12.3"
-more-itertools = "10.5.0"
-"fluent.runtime" = "0.4.0"
-
-[tool.poetry.dependencies.botus_receptus]
-git = "https://github.com/bryanforbes/botus_receptus.git"
-tag = "v24.12.1"
-extras = ["uvloop", "sqlalchemy"]
-
-[tool.poetry.dependencies.discord-py]
-version = "2.4.0"
-extras = ["speed"]
+license = "BSD-3-Clause"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+  "botus_receptus[uvloop,sqlalchemy] @ git+https://github.com/bryanforbes/botus_receptus.git@v24.12.1",
+  "discord.py[speed]==2.4.0",
+  "alembic==1.14.0",
+  "attrs==24.3.0",
+  "beautifulsoup4==4.12.3",
+  "more-itertools==10.5.0",
+  "fluent.runtime==0.4.0",
+]
 
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "0.30.0"
@@ -45,8 +37,13 @@ ruff = "0.9.1"
 version = "3.0.0"
 extras = ["test"]
 
-[tool.poetry.scripts]
+[project.scripts]
 erasmus = 'erasmus.run:main'
+
+[tool.poetry]
+packages = [
+  { include = "erasmus" }
+]
 
 [tool.black]
 line-length = 88
@@ -142,5 +139,5 @@ asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 
 [build-system]
-requires = ["poetry_core==1.9.1"]
+requires = ["poetry_core==2.0.1"]
 build-backend = "poetry.core.masonry.api"
