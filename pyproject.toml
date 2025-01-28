@@ -19,14 +19,14 @@ packages = [
 
 [tool.poetry.dependencies]
 alembic = "1.14.1"
-attrs = "24.3.0"
+attrs = "25.1.0"
 beautifulsoup4 = "4.12.3"
 more-itertools = "10.6.0"
 "fluent.runtime" = "0.4.0"
 
 [tool.poetry.dependencies.botus_receptus]
 git = "https://github.com/bryanforbes/botus_receptus.git"
-tag = "v24.12.1"
+tag = "v25.1.0"
 extras = ["uvloop", "sqlalchemy"]
 
 [tool.poetry.dependencies.discord-py]
