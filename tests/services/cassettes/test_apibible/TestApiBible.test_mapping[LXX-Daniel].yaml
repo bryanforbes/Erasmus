@@ -19,12 +19,12 @@ interactions:
         \u03B1\u1F50\u03C4\u03AE\u03BD. \",\"type\":\"text\",\"attrs\":{\"verseId\":\"DAG.1.1\",\"verseOrgIds\":[\"DAN.1.1\"]}}]}],\"verseCount\":1,\"copyright\":\"This
         work is in the PUBLIC DOMAIN. It is not copyrighted. You may not claim a copyright
         on this work.\"},\"meta\":{\"fums\":\"<script>\\nvar _BAPI=_BAPI||{};\\nif(typeof(_BAPI.t)==='undefined'){\\ndocument.write('\\\\x3Cscript
-        src=\\\"'+document.location.protocol+'//cdn.scripture.api.bible/fums/fumsv2.min.js\\\"\\\\x3E\\\\x3C/script\\\\x3E');}\\ndocument.write(\\\"\\\\x3Cscript\\\\x3E_BAPI.t('c3fbac62-af26-4b04-be14-1259f1b579ad');\\\\x3C/script\\\\x3E\\\");\\n</script><noscript><img
-        src=\\\"https://d3a2okcloueqyx.cloudfront.net/nf1?t='c3fbac62-af26-4b04-be14-1259f1b579ad'\\\"
+        src=\\\"'+document.location.protocol+'//cdn.scripture.api.bible/fums/fumsv2.min.js\\\"\\\\x3E\\\\x3C/script\\\\x3E');}\\ndocument.write(\\\"\\\\x3Cscript\\\\x3E_BAPI.t('21c66f1a-dc9d-4b98-a8a2-f45bdf42bc8a');\\\\x3C/script\\\\x3E\\\");\\n</script><noscript><img
+        src=\\\"https://d3a2okcloueqyx.cloudfront.net/nf1?t='21c66f1a-dc9d-4b98-a8a2-f45bdf42bc8a'\\\"
         height=\\\"1\\\" width=\\\"1\\\" border=\\\"0\\\" alt=\\\"\\\" style=\\\"height:
-        0; width: 0;\\\" /></noscript>\",\"fumsId\":\"c3fbac62-af26-4b04-be14-1259f1b579ad\",\"fumsJsInclude\":\"cdn.scripture.api.bible/fums/fumsv2.min.js\",\"fumsJs\":\"var
-        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!='undefined'){ _BAPI.t('c3fbac62-af26-4b04-be14-1259f1b579ad');
-        }\",\"fumsNoScript\":\"<img src=\\\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=c3fbac62-af26-4b04-be14-1259f1b579ad\\\"
+        0; width: 0;\\\" /></noscript>\",\"fumsId\":\"21c66f1a-dc9d-4b98-a8a2-f45bdf42bc8a\",\"fumsJsInclude\":\"cdn.scripture.api.bible/fums/fumsv2.min.js\",\"fumsJs\":\"var
+        _BAPI=_BAPI||{};if(typeof(_BAPI.t)!='undefined'){ _BAPI.t('21c66f1a-dc9d-4b98-a8a2-f45bdf42bc8a');
+        }\",\"fumsNoScript\":\"<img src=\\\"https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=21c66f1a-dc9d-4b98-a8a2-f45bdf42bc8a\\\"
         height=\\\"1\\\" width=\\\"1\\\" border=\\\"0\\\" alt=\\\"\\\" style=\\\"height:
         0; width: 0;\\\" />\"}}"
     headers:
@@ -39,13 +39,19 @@ interactions:
       Content-Type:
       - application/json; charset=utf-8
       Date:
-      - Wed, 15 Nov 2023 23:17:55 GMT
+      - Tue, 04 Feb 2025 20:48:51 GMT
       Server:
-      - nginx/1.16.1
+      - nginx
       Transfer-Encoding:
       - chunked
       Vary:
       - origin,accept-encoding
+      x-rate-limit-limit:
+      - '100'
+      x-rate-limit-remaining:
+      - '96'
+      x-rate-limit-reset:
+      - '1738702131'
       x-request-wants-bypass:
       - static
       x-server-allows-bypass:
@@ -57,7 +63,7 @@ interactions:
     body: null
     headers: {}
     method: GET
-    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=c3fbac62-af26-4b04-be14-1259f1b579ad
+    uri: https://d3btgtzu3ctdwx.cloudfront.net/nf1?t=21c66f1a-dc9d-4b98-a8a2-f45bdf42bc8a
   response:
     body:
       string: !!binary |
@@ -66,7 +72,7 @@ interactions:
       Accept-Ranges:
       - bytes
       Age:
-      - '39169'
+      - '50160'
       Connection:
       - keep-alive
       Content-Length:
@@ -74,7 +80,7 @@ interactions:
       Content-Type:
       - image/gif
       Date:
-      - Wed, 15 Nov 2023 12:26:59 GMT
+      - Tue, 04 Feb 2025 06:52:52 GMT
       Etag:
       - '"28d6814f309ea289f847c69cf91194c6"'
       Last-Modified:
@@ -82,11 +88,11 @@ interactions:
       Server:
       - AmazonS3
       Via:
-      - 1.1 a73dfd8796f52fd513da3ff6c72edfd4.cloudfront.net (CloudFront)
+      - 1.1 5b819722bdc87faf08c0415ffce844c6.cloudfront.net (CloudFront)
       X-Amz-Cf-Id:
-      - Ntkqtz2boTiYGcM2ZGTPfQs1YYM36de9d26qVK8j1z1e9UR_zdEklA==
+      - kn33opg1l8l77QqA3RgF-HKaEm9shx-nf5SRiWD-pkt3n1SwQyVOTA==
       X-Amz-Cf-Pop:
-      - ORD51-C2
+      - MSP50-C1
       X-Cache:
       - Hit from cloudfront
     status:

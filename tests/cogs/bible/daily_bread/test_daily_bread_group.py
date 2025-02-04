@@ -76,7 +76,7 @@ def bible2() -> Bible:
         abbr='BIB2',
         service='ServiceTwo',
         service_version='service-BIB2',
-        books=SectionFlag.NT,
+        books=SectionFlag.OT,
     )
 
 
@@ -273,7 +273,7 @@ class TestDailyBreadGroup:
             session=daily_bread_group.session,
         )
         mock_service_manager.get_passage.assert_awaited_once_with(
-            bible1, VerseRange.from_string('1 Corinthians 13:1-3')
+            bible1, VerseRange.from_string('Psalm 18:1-2')
         )
         mock_send_passage.assert_awaited_once_with(
             mocker.sentinel.webhook_1,
@@ -394,7 +394,7 @@ class TestDailyBreadGroup:
             session=daily_bread_group.session,
         )
         mock_service_manager.get_passage.assert_awaited_once_with(
-            bible2, VerseRange.from_string('1 Corinthians 13:1-3')
+            bible2, VerseRange.from_string('Psalm 18:1-2')
         )
         mock_send_passage.assert_awaited_once_with(
             mocker.sentinel.webhook_1,
@@ -421,7 +421,7 @@ class TestDailyBreadGroup:
         mock_daily_bread: NonCallableMock,
     ) -> None:
         mock_daily_bread.prefs = mocker.Mock(
-            bible_version=evolve(bible2, books=SectionFlag.OT)
+            bible_version=evolve(bible2, books=SectionFlag.NT)
         )
         await daily_bread_group._check_and_post()
 
@@ -488,7 +488,7 @@ class TestDailyBreadGroup:
             session=daily_bread_group.session,
         )
         mock_service_manager.get_passage.assert_awaited_once_with(
-            bible1, VerseRange.from_string('1 Corinthians 13:1-3')
+            bible1, VerseRange.from_string('Psalm 18:1-2')
         )
         mock_send_passage.assert_not_awaited()
         assert mock_daily_bread.next_scheduled is mocker.sentinel.next_scheduled_time_1
@@ -539,7 +539,7 @@ class TestDailyBreadGroup:
             session=daily_bread_group.session,
         )
         mock_service_manager.get_passage.assert_awaited_once_with(
-            bible1, VerseRange.from_string('1 Corinthians 13:1-3')
+            bible1, VerseRange.from_string('Psalm 18:1-2')
         )
         mock_send_passage.assert_awaited_once_with(
             mocker.sentinel.webhook_1,
@@ -613,7 +613,7 @@ class TestDailyBreadGroup:
             ]
         )
         mock_service_manager.get_passage.assert_awaited_once_with(
-            bible1, VerseRange.from_string('1 Corinthians 13:1-3')
+            bible1, VerseRange.from_string('Psalm 18:1-2')
         )
         mock_send_passage.assert_has_awaits(
             [
@@ -702,7 +702,7 @@ class TestDailyBreadGroup:
             ]
         )
         mock_service_manager.get_passage.assert_awaited_once_with(
-            bible1, VerseRange.from_string('1 Corinthians 13:1-3')
+            bible1, VerseRange.from_string('Psalm 18:1-2')
         )
         mock_send_passage.assert_has_awaits(
             [
@@ -787,8 +787,8 @@ class TestDailyBreadGroup:
         )
         mock_service_manager.get_passage.assert_has_awaits(
             [
-                mocker.call(bible1, VerseRange.from_string('1 Corinthians 13:1-3')),
-                mocker.call(bible2, VerseRange.from_string('1 Corinthians 13:1-3')),
+                mocker.call(bible1, VerseRange.from_string('Psalm 18:1-2')),
+                mocker.call(bible2, VerseRange.from_string('Psalm 18:1-2')),
             ]
         )
         mock_send_passage.assert_has_awaits(
@@ -880,8 +880,8 @@ class TestDailyBreadGroup:
         )
         mock_service_manager.get_passage.assert_has_awaits(
             [
-                mocker.call(bible1, VerseRange.from_string('1 Corinthians 13:1-3')),
-                mocker.call(bible2, VerseRange.from_string('1 Corinthians 13:1-3')),
+                mocker.call(bible1, VerseRange.from_string('Psalm 18:1-2')),
+                mocker.call(bible2, VerseRange.from_string('Psalm 18:1-2')),
             ]
         )
         mock_send_passage.assert_has_awaits(
