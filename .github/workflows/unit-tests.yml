@@ -10,7 +10,7 @@ jobs:
   test:
     uses: bryanforbes/python-workflows/.github/workflows/reusable-unit-tests-new.yml@master
     with:
-      python_version: '3.12'
+      python_version: '3.13'
       coverage: true
       pytest_args: '--block-network --record-mode=none -p no:sugar'
     secrets:

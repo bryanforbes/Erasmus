@@ -18,4 +18,4 @@ jobs:
   analyze:
     uses: bryanforbes/python-workflows/.github/workflows/reusable-codeql-analysis-new.yml@master
     with:
-      python_version: '3.12'
+      python_version: '3.13'
