@@ -8,7 +8,8 @@ import discord
 import pendulum
 from attrs import field, frozen
 from botus_receptus import re, utils
-from bs4 import BeautifulSoup, SoupStrainer
+from bs4 import BeautifulSoup
+from bs4.filter import SoupStrainer
 from discord import app_commands
 from discord.ext import tasks
 

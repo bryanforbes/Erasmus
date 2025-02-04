@@ -5,7 +5,9 @@ from typing import TYPE_CHECKING, Final, override
 
 from attrs import field, frozen
 from botus_receptus import re
-from bs4 import BeautifulSoup, NavigableString, SoupStrainer, Tag
+from bs4 import BeautifulSoup, Tag
+from bs4.element import NavigableString
+from bs4.filter import SoupStrainer
 from yarl import URL
 
 from ..data import Passage, SearchResults, VerseRange
@@ -53,7 +55,9 @@ class BibleGateway(BaseService):
         for small_caps in verse_node.select('.small-caps'):
             for descendant in list(small_caps.descendants):
                 if isinstance(descendant, NavigableString):
-                    descendant.replace_with(descendant.string.upper())
+                    descendant.replace_with(
+                        descendant.string.upper()  # pyright: ignore[reportArgumentType]
+                    )
             small_caps.unwrap()
         for bold in verse_node.select('b, h4'):
             bold.insert_before('__BOLD__')
@@ -63,10 +67,10 @@ class BibleGateway(BaseService):
             # Add a period after verse numbers
             number.insert_before('__BOLD__')
             number.insert_after('__BOLD__ ')
-            number.string = f'{number.string.strip()}.'
+            number.string = f'{number.string.strip()}.'  # pyright: ignore[reportOptionalMemberAccess]
             number.unwrap()
         for br in verse_node.select('br'):
-            br.replace_with('\n')
+            br.replace_with('\n')  # pyright: ignore[reportArgumentType]
         for italic in verse_node.select('.selah, i, h3'):
             italic.insert_before('__ITALIC__')
             italic.insert_after('__ITALIC__')
@@ -151,7 +155,9 @@ class BibleGateway(BaseService):
                 if verse_text_node is None or verse_reference_node is None:
                     raise DoNotUnderstandError
 
-                verse = VerseRange.from_string(verse_reference_node.string.strip())
+                verse = VerseRange.from_string(
+                    verse_reference_node.string.strip()  # pyright: ignore[reportOptionalMemberAccess]
+                )
 
                 return self.__transform_verse_node(
                     bible, verse, verse_text_node, for_search=True
