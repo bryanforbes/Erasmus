@@ -2,6 +2,7 @@
   "lspconfig": {
     "pyright": {
       "pyright.disableOrganizeImports": true
-    }
+    },
+    "basedpyright": false
   }
 }

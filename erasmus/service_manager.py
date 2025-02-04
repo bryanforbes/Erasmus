@@ -2,7 +2,7 @@ from __future__ import annotations
 
 import asyncio
 import logging
-from typing import TYPE_CHECKING, Any, Final, cast
+from typing import TYPE_CHECKING, Any, Final, TypeIs, cast
 
 from attrs import field, frozen
 
@@ -14,8 +14,6 @@ from .exceptions import (
 )
 
 if TYPE_CHECKING:
-    from typing_extensions import TypeIs
-
     import aiohttp
 
     from .config import Config
