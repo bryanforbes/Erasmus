@@ -10,9 +10,9 @@ import discord
 type MaybeAwaitable[**P, T] = Callable[P, T | Awaitable[T]]
 
 
-async def _maybe_await[
-    **P, T
-](f: MaybeAwaitable[P, T], *args: P.args, **kwargs: P.kwargs) -> T:
+async def _maybe_await[**P, T](
+    f: MaybeAwaitable[P, T], *args: P.args, **kwargs: P.kwargs
+) -> T:
     value = f(*args, **kwargs)
     if inspect.isawaitable(value):
         return await value

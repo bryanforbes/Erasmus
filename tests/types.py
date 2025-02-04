@@ -30,9 +30,7 @@ class _Patcher(Protocol):
     ) -> mock.MagicMock | mock.AsyncMock: ...
 
     @overload
-    def object[
-        T
-    ](
+    def object[T](
         self,
         target: object,
         attribute: str,
@@ -46,9 +44,7 @@ class _Patcher(Protocol):
     ) -> T: ...
 
     @overload
-    def object[
-        T
-    ](
+    def object[T](
         self,
         target: object,
         attribute: str,
@@ -76,9 +72,7 @@ class _Patcher(Protocol):
     ) -> mock.MagicMock | mock.AsyncMock: ...
 
     @overload
-    def context_manager[
-        T
-    ](
+    def context_manager[T](
         self,
         target: object,
         attribute: str,
@@ -92,9 +86,7 @@ class _Patcher(Protocol):
     ) -> T: ...
 
     @overload
-    def context_manager[
-        T
-    ](
+    def context_manager[T](
         self,
         target: object,
         attribute: str,
@@ -120,9 +112,7 @@ class _Patcher(Protocol):
     ) -> dict[str, mock.MagicMock | mock.AsyncMock]: ...
 
     @overload
-    def multiple[
-        T
-    ](
+    def multiple[T](
         self,
         target: object,
         spec: object | None = None,
@@ -156,9 +146,7 @@ class _Patcher(Protocol):
     ) -> mock.MagicMock | mock.AsyncMock: ...
 
     @overload
-    def __call__[
-        T
-    ](
+    def __call__[T](
         self,
         target: str,
         new: T,
@@ -171,9 +159,7 @@ class _Patcher(Protocol):
     ) -> T: ...
 
     @overload
-    def __call__[
-        T
-    ](
+    def __call__[T](
         self,
         target: str,
         new: None = ...,

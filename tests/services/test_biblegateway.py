@@ -37,15 +37,15 @@ class TestBibleGateway(ServiceTest):
                     ),
                     Passage(
                         text='The LORD has sworn and will not change His mind, '
-                        '\u201CYou are a priest forever According to the order of '
-                        '**Melchizedek**.\u201D',
+                        '\u201cYou are a priest forever According to the order of '
+                        '**Melchizedek**.\u201d',
                         range=VerseRange.from_string('Psalm 110:4'),
                         version='NASB1995',
                     ),
                     Passage(
-                        text='just as He says also in another _passage_, \u201CYOU ARE '
+                        text='just as He says also in another _passage_, \u201cYOU ARE '
                         'A PRIEST FOREVER ACCORDING TO THE ORDER OF **MELCHIZEDEK**.'
-                        '\u201D',
+                        '\u201d',
                         range=VerseRange.from_string('Hebrews 5:6'),
                         version='NASB1995',
                     ),
@@ -92,8 +92,8 @@ class TestBibleGateway(ServiceTest):
                         version='NASB1995',
                     ),
                     Passage(
-                        text='For it is attested _of Him_, \u201CYOU ARE A PRIEST '
-                        'FOREVER ACCORDING TO THE ORDER OF **MELCHIZEDEK**.\u201D',
+                        text='For it is attested _of Him_, \u201cYOU ARE A PRIEST '
+                        'FOREVER ACCORDING TO THE ORDER OF **MELCHIZEDEK**.\u201d',
                         range=VerseRange.from_string('Hebrews 7:17'),
                         version='NASB1995',
                     ),
@@ -113,7 +113,7 @@ class TestBibleGateway(ServiceTest):
                     ),
                     Passage(
                         text='When the time for Israel to die drew near, he called his '
-                        'son Joseph and said to him, \u201CPlease, if I have found '
+                        'son Joseph and said to him, \u201cPlease, if I have found '
                         'favor in your sight, place now your hand under my thigh and '
                         'deal with me in kindness and **faith**fulness. Please do not '
                         'bury me in Egypt,',
@@ -121,7 +121,7 @@ class TestBibleGateway(ServiceTest):
                         version='NASB1995',
                     ),
                     Passage(
-                        text='\u201CNot so, with My servant Moses, He is **faith**'
+                        text='\u201cNot so, with My servant Moses, He is **faith**'
                         'ful in all My household;',
                         range=VerseRange.from_string('Numbers 12:7'),
                         version='NASB1995',
@@ -135,14 +135,14 @@ class TestBibleGateway(ServiceTest):
                         version='NASB1995',
                     ),
                     Passage(
-                        text='\u201CThe Rock! His work is perfect, For all His ways '
+                        text='\u201cThe Rock! His work is perfect, For all His ways '
                         'are just; A God of **faith**fulness and without injustice, '
                         'Righteous and upright is He.',
                         range=VerseRange.from_string('Deuteronomy 32:4'),
                         version='NASB1995',
                     ),
                     Passage(
-                        text='\u201CThen He said, \u2018I will hide My face from them, '
+                        text='\u201cThen He said, \u2018I will hide My face from them, '
                         'I will see what their end _shall be_; For they are a perverse '
                         'generation, Sons in whom is no **faith**fulness.',
                         range=VerseRange.from_string('Deuteronomy 32:20'),
@@ -157,10 +157,10 @@ class TestBibleGateway(ServiceTest):
                         version='NASB1995',
                     ),
                     Passage(
-                        text='So the men said to her, \u201COur life for yours if you '
+                        text='So the men said to her, \u201cOur life for yours if you '
                         'do not tell this business of ours; and it shall come about '
                         'when the LORD gives us the land that we will deal kindly and '
-                        '**faith**fully with you.\u201D',
+                        '**faith**fully with you.\u201d',
                         range=VerseRange.from_string('Joshua 2:14'),
                         version='NASB1995',
                     ),
@@ -173,7 +173,7 @@ class TestBibleGateway(ServiceTest):
                         version='NASB1995',
                     ),
                     Passage(
-                        text='Then Ahimelech answered the king and said, \u201CAnd who '
+                        text='Then Ahimelech answered the king and said, \u201cAnd who '
                         'among all your servants is as **faith**ful as David, even the '
                         'king\u2019s son-in-law, who is captain over your guard, and '
                         'is honored in your house?',
@@ -192,7 +192,7 @@ class TestBibleGateway(ServiceTest):
                         text='I am of those who are peaceable _and_ **faith**ful in '
                         'Israel. You are seeking to destroy a city, even a mother in '
                         'Israel. Why would you swallow up the inheritance of the '
-                        'LORD?\u201D',
+                        'LORD?\u201d',
                         range=VerseRange.from_string('2 Samuel 20:19'),
                         version='NASB1995',
                     ),
@@ -206,12 +206,12 @@ class TestBibleGateway(ServiceTest):
                     Passage(
                         text='Only no accounting shall be made with them for the money '
                         'delivered into their hands, for they deal **faith**fully.'
-                        '\u201D',
+                        '\u201d',
                         range=VerseRange.from_string('2 Kings 22:7'),
                         version='NASB1995',
                     ),
                     Passage(
-                        text='Then he charged them saying, \u201CThus you shall do in '
+                        text='Then he charged them saying, \u201cThus you shall do in '
                         'the fear of the LORD, **faith**fully and wholeheartedly.',
                         range=VerseRange.from_string('2 Chronicles 19:9'),
                         version='NASB1995',
