@@ -2,7 +2,8 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from pathlib import Path
-from typing import TYPE_CHECKING, Literal, NotRequired, TypedDict, Unpack, overload
+from typing import TYPE_CHECKING, Literal, NotRequired, Unpack, overload
+from typing_extensions import TypedDict
 
 from attrs import define, field, frozen
 from discord import app_commands
@@ -54,11 +55,13 @@ class LocalizerFormatKwargs(FormatKwargs):
     locale: NotRequired[discord.Locale | None]
 
 
-class LocalizerFormatFallbackKwargs(LocalizerFormatKwargs, FormatFallbackKwargs): ...
+class LocalizerFormatFallbackKwargs(
+    LocalizerFormatKwargs, FormatFallbackKwargs, closed=True
+): ...
 
 
 class LocalizerFormatFallbackTrueKwargs(
-    LocalizerFormatKwargs, FormatFallbackTrueKwargs
+    LocalizerFormatKwargs, FormatFallbackTrueKwargs, closed=True
 ): ...
 
 

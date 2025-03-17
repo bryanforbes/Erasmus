@@ -241,8 +241,7 @@ class Bible(Cog['Erasmus']):
         try:
             verse_ranges = VerseRange.get_all_from_string(
                 message.content,
-                only_bracketed=self.bot.user
-                not in message.mentions,  # pyright: ignore[reportUnnecessaryContains]
+                only_bracketed=self.bot.user not in message.mentions,
             )
 
             if not verse_ranges:
