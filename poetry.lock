@@ -248,14 +248,14 @@ test = ["distro (>=1.9.0,<1.10.0)", "flake8 (>=6.1,<7.0)", "flake8-pyi (>=24.1.0
 
 [[package]]
 name = "asyncpg-stubs"
-version = "0.30.0"
+version = "0.30.1"
 description = "asyncpg stubs"
 optional = false
 python-versions = "<4.0,>=3.8"
 groups = ["dev"]
 files = [
-    {file = "asyncpg_stubs-0.30.0-py3-none-any.whl", hash = "sha256:1eac258c10fc45a781729913a2fcfba775888bed160ae47f55fe0964d639e9cd"},
-    {file = "asyncpg_stubs-0.30.0.tar.gz", hash = "sha256:8bfe20f1b1e24a19674152ec9abbcc2df72c01e78af696f44fc275d56fe335ba"},
+    {file = "asyncpg_stubs-0.30.1-py3-none-any.whl", hash = "sha256:a9d2ed3e53964da6aa6057b46b767b335532b85fa2a0b0ed124922f06d844ae9"},
+    {file = "asyncpg_stubs-0.30.1.tar.gz", hash = "sha256:236b88fca49d0d181939ed35c21f79c9c404bc3cca51f8493f6d55210ecfcaf3"},
 ]
 
 [package.dependencies]
@@ -2915,4 +2915,4 @@ cffi = ["cffi (>=1.11)"]
 [metadata]
 lock-version = "2.1"
 python-versions = ">=3.13,<3.14"
-content-hash = "07663079bc1de6e8b3d3c9100e1c41ad46e8d1d1325d14f39d17e94c00cd102f"
+content-hash = "d3e034b40c5f40baefe5a7ce378f4975fb0600a2576d4840d18deb6138f223d1"

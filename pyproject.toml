@@ -34,7 +34,7 @@ version = "2.5.2"
 extras = ["speed"]
 
 [tool.poetry.group.dev.dependencies]
-asyncpg-stubs = "0.30.0"
+asyncpg-stubs = "0.30.1"
 black = "25.1.0"
 coverage = {version = "7.6.12", extras = ["toml"]}
 mypy = "1.15.0"
