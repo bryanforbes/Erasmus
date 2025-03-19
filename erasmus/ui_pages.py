@@ -96,7 +96,7 @@ class UIPages[T](discord.ui.View, BasePages[T]):
 
         return {
             author_id,
-            cast(int, client.owner_id),
+            cast('int', client.owner_id),
             client.user.id,
         }
 

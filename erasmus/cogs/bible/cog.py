@@ -165,7 +165,7 @@ class Bible(Cog['Erasmus']):
             )
             and error.__cause__ is not None
         ):
-            error = cast(Exception, error.__cause__)
+            error = cast('Exception', error.__cause__)
 
         data: dict[str, object] | None = None
 

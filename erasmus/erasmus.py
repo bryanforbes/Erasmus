@@ -158,7 +158,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
             )
             and error.__cause__ is not None
         ):
-            error = cast(Exception, error.__cause__)
+            error = cast('Exception', error.__cause__)
 
         if isinstance(error, ErasmusError):
             # All of these are handled in their respective cogs

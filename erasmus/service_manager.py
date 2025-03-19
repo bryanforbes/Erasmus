@@ -25,7 +25,7 @@ _log: Final = logging.getLogger(__name__)
 
 
 def _is_service_cls(obj: object, /) -> TypeIs[type[BaseService]]:
-    return hasattr(obj, 'from_config') and callable(cast(Any, obj).from_config)
+    return hasattr(obj, 'from_config') and callable(cast('Any', obj).from_config)
 
 
 @frozen

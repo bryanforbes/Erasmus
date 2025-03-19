@@ -351,7 +351,7 @@ class Confession(
             )
             and error.__cause__ is not None
         ):
-            error = cast(Exception, error.__cause__)
+            error = cast('Exception', error.__cause__)
 
         match error:
             case InvalidConfessionError():
