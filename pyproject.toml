@@ -20,7 +20,7 @@ packages = [
 [tool.poetry.dependencies]
 alembic = "1.15.2"
 attrs = "25.3.0"
-beautifulsoup4 = "4.13.3"
+beautifulsoup4 = "4.13.4"
 more-itertools = "10.6.0"
 "fluent.runtime" = "0.4.0"
 
