@@ -26,7 +26,7 @@ more-itertools = "10.6.0"
 
 [tool.poetry.dependencies.botus_receptus]
 git = "https://github.com/bryanforbes/botus_receptus.git"
-tag = "v25.3.0"
+tag = "v25.5.0"
 extras = ["uvloop", "sqlalchemy"]
 
 [tool.poetry.dependencies.discord-py]
@@ -50,7 +50,7 @@ pytest-xdist = "3.6.1"
 ruff = "0.11.0"
 
 [tool.poetry.group.dev.dependencies.pendulum]
-version = "3.0.0"
+version = "3.1.0"
 extras = ["test"]
 
 [tool.black]
