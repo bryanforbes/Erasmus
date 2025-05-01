@@ -30,7 +30,7 @@ def _is_service_cls(obj: object, /) -> TypeIs[type[BaseService]]:
 
 @frozen
 class ServiceManager:
-    service_map: dict[str, Service] = field(factory=dict)
+    service_map: dict[str, Service] = field(factory=dict[str, 'Service'])
     timeout: float = 10
 
     def __contains__(self, key: str, /) -> bool:

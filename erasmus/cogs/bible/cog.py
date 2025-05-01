@@ -59,7 +59,7 @@ _shared_cooldown = app_commands.checks.cooldown(
 class PassageFetcher:
     verse_range: VerseRange
     service_manager: ServiceManager
-    passage_map: dict[int, Passage] = field(init=False, factory=dict)
+    passage_map: dict[int, Passage] = field(init=False, factory=dict[int, Passage])
 
     async def __call__(self, bible: _BibleType, /) -> Passage:
         if bible.id in self.passage_map:
