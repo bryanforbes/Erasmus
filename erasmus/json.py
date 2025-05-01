@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Final
+from typing import TYPE_CHECKING, Any, Final, cast
 
 import orjson
 
@@ -16,9 +16,9 @@ def get(
     for part in key.split('.'):
         try:
             if isinstance(result, list):
-                result = result[int(part)]
+                result = cast('Any', result[int(part)])
             elif isinstance(result, dict):
-                result = result[part]
+                result = cast('Any', result[part])
             else:
                 return fallback
         except (KeyError, TypeError, IndexError):

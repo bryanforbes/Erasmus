@@ -46,7 +46,7 @@ _shared_cooldown: Final = app_commands.checks.cooldown(
 class PassageFetcher:
     verse_range: VerseRange
     service_manager: ServiceManager
-    passage_map: dict[int, Passage] = field(init=False, factory=dict)
+    passage_map: dict[int, Passage] = field(init=False, factory=dict[int, Passage])
 
     def verse_range_in_bible(self, bible: Bible, /) -> bool:
         return self.verse_range.book_mask in bible.books
