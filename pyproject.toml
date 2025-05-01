@@ -21,7 +21,7 @@ packages = [
 alembic = "1.15.2"
 attrs = "25.3.0"
 beautifulsoup4 = "4.13.4"
-more-itertools = "10.6.0"
+more-itertools = "10.7.0"
 "fluent.runtime" = "0.4.0"
 
 [tool.poetry.dependencies.botus_receptus]
