@@ -1,7 +1,7 @@
 from __future__ import annotations
 
-from datetime import timedelta
-from typing import TYPE_CHECKING, ClassVar, Literal, Self, get_args, override
+from datetime import date, timedelta
+from typing import TYPE_CHECKING, Any, ClassVar, Literal, get_args, override
 
 import pendulum
 from attrs import define, field, validators
@@ -28,11 +28,11 @@ class IntervalFormatOptions:
     separator: str = field(default=' ')
 
 
-class FluentInterval(FluentType, pendulum.Interval):
+class FluentInterval[T: date](FluentType, pendulum.Interval[T]):
     default_interval_format_options: ClassVar = IntervalFormatOptions()
     options: IntervalFormatOptions
 
-    def _init_options(self, interval: pendulum.Interval, **kwargs: object) -> None:
+    def _init_options(self, interval: pendulum.Interval[T], **kwargs: object) -> None:
         self.options = merge_options(
             IntervalFormatOptions,  # pyright: ignore[reportArgumentType]
             getattr(
@@ -41,9 +41,11 @@ class FluentInterval(FluentType, pendulum.Interval):
             kwargs,
         )
 
-    @classmethod
-    def from_interval(cls, interval: pendulum.Interval, **kwargs: object) -> Self:
-        obj = cls(interval.start, interval.end)
+    @staticmethod
+    def from_interval[U: date](
+        interval: pendulum.Interval[U], **kwargs: object
+    ) -> FluentInterval[U]:
+        obj = FluentInterval(interval.start, interval.end)
         obj._init_options(interval, **kwargs)
         return obj
 
@@ -74,12 +76,14 @@ class FluentInterval(FluentType, pendulum.Interval):
         return self.options.separator.join(parts)
 
 
-def fluent_interval(delta: object, **kwargs: object) -> FluentInterval:
+def fluent_interval(delta: object, **kwargs: object) -> FluentInterval[Any]:
     if isinstance(delta, FluentInterval) and not kwargs:
-        return delta
+        return delta  # pyright: ignore[reportUnknownVariableType]
 
     if isinstance(delta, pendulum.Interval):
-        return FluentInterval.from_interval(delta, **kwargs)
+        return FluentInterval.from_interval(
+            delta, **kwargs  # pyright: ignore[reportUnknownArgumentType]
+        )
 
     raise TypeError(
         f"Can't use fluent_interval with object {delta} for type {type(delta)}"
@@ -88,7 +92,9 @@ def fluent_interval(delta: object, **kwargs: object) -> FluentInterval:
 
 def native_to_fluent(val: object) -> object:
     if isinstance(val, pendulum.Interval):
-        return FluentInterval.from_interval(val)
+        return FluentInterval.from_interval(
+            val  # pyright: ignore[reportUnknownArgumentType, reportUnknownVariableType]
+        )
 
     return val
 
