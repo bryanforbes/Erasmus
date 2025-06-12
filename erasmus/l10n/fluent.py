@@ -35,9 +35,7 @@ class FluentInterval[T: date](FluentType, pendulum.Interval[T]):
     def _init_options(self, interval: pendulum.Interval[T], **kwargs: object) -> None:
         self.options = merge_options(
             IntervalFormatOptions,  # pyright: ignore[reportArgumentType]
-            getattr(
-                interval, 'options', self.default_interval_format_options
-            ),  # pyright: ignore[reportArgumentType]
+            getattr(interval, 'options', self.default_interval_format_options),  # pyright: ignore[reportArgumentType]
             kwargs,
         )
 
@@ -82,7 +80,8 @@ def fluent_interval(delta: object, **kwargs: object) -> FluentInterval[Any]:
 
     if isinstance(delta, pendulum.Interval):
         return FluentInterval.from_interval(
-            delta, **kwargs  # pyright: ignore[reportUnknownArgumentType]
+            delta,  # pyright: ignore[reportUnknownArgumentType]
+            **kwargs,
         )
 
     raise TypeError(
@@ -174,7 +173,8 @@ class Localization(FluentLocalization):
                 pattern = message.value
 
             value, _ = bundle.format_pattern(
-                pattern, args  # pyright: ignore[reportArgumentType]
+                pattern,
+                args,  # pyright: ignore[reportArgumentType]
             )
             return value if isinstance(value, str) else None
 

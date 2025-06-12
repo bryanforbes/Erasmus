@@ -35,8 +35,13 @@ class SearchPageSource(FieldPageSource['Sequence[Passage]'], AsyncPageSource[Pas
         self, entries: Sequence[Passage], /
     ) -> Iterable[tuple[str, str]]:
         for entry in entries:
-            yield str(entry.range), (
-                entry.text if len(entry.text) < 1024 else f'{entry.text[:1023]}\u2026'
+            yield (
+                str(entry.range),
+                (
+                    entry.text
+                    if len(entry.text) < 1024
+                    else f'{entry.text[:1023]}\u2026'
+                ),
             )
 
     @override

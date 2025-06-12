@@ -129,9 +129,9 @@ class Book:
         return book
 
 
-def __populate_maps() -> (
-    tuple[dict[str, Book], dict[str, Book], dict[SectionFlag, Book]]
-):
+def __populate_maps() -> tuple[
+    dict[str, Book], dict[str, Book], dict[SectionFlag, Book]
+]:
     book_map: Final[dict[str, Book]] = {}
     osis_map: Final[dict[str, Book]] = {}
     book_mask_map: Final[dict[SectionFlag, Book]] = {}

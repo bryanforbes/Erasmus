@@ -88,8 +88,7 @@ class Erasmus(sa.AutoShardedBot, topgg.AutoShardedBot):
         await self.sync_app_commands()
 
         _log.info(
-            'Global commands: '
-            f'{list(self.tree._global_commands.keys())!r}'  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
+            f'Global commands: {list(self.tree._global_commands.keys())!r}'  # pyright: ignore[reportUnknownMemberType, reportUnknownArgumentType]
         )
 
         for (

@@ -77,25 +77,25 @@ class TestConfession:
         compiled = _compile_sql(mock_session.scalars)
 
         assert str(compiled) == (
-            "SELECT anon_1.id, anon_1.confession_id, anon_1.number, "
-            "anon_1.subsection_number, anon_1.text, "
+            'SELECT anon_1.id, anon_1.confession_id, anon_1.number, '
+            'anon_1.subsection_number, anon_1.text, '
             "ts_headline('english', anon_1.title, plainto_tsquery('english', "
             "'light of nature'), 'HighlightAll=true, StartSel=*, StopSel=*') "
             "AS title, ts_headline('english', anon_1.text_stripped, "
             "plainto_tsquery('english', 'light of nature'), 'StartSel=**, "
             "StopSel=**') AS text_stripped, anon_1.search_vector \n"
-            "FROM (SELECT confession_sections.id AS id, "
-            "confession_sections.confession_id AS confession_id, "
-            "confession_sections.number AS number, "
-            "confession_sections.subsection_number AS subsection_number, "
-            "confession_sections.title AS title, confession_sections.text AS text, "
-            "confession_sections.text_stripped AS text_stripped, "
-            "confession_sections.search_vector AS search_vector \n"
-            "FROM confession_sections \n"
-            "WHERE confession_sections.confession_id = 42 AND "
+            'FROM (SELECT confession_sections.id AS id, '
+            'confession_sections.confession_id AS confession_id, '
+            'confession_sections.number AS number, '
+            'confession_sections.subsection_number AS subsection_number, '
+            'confession_sections.title AS title, confession_sections.text AS text, '
+            'confession_sections.text_stripped AS text_stripped, '
+            'confession_sections.search_vector AS search_vector \n'
+            'FROM confession_sections \n'
+            'WHERE confession_sections.confession_id = 42 AND '
             "(confession_sections.search_vector @@ plainto_tsquery('english', "
             "'light of nature')) ORDER BY confession_sections.number ASC, "
-            "confession_sections.subsection_number ASC NULLS FIRST) AS anon_1"
+            'confession_sections.subsection_number ASC NULLS FIRST) AS anon_1'
         )
 
     @pytest.mark.parametrize(
@@ -230,11 +230,7 @@ class TestConfession:
             )
             assert compiled.statement._with_options[  # pyright: ignore[reportUnknownMemberType]
                 0
-            ].context[
-                0
-            ].strategy == (
-                ('lazy', 'selectin'),
-            )
+            ].context[0].strategy == (('lazy', 'selectin'),)
 
     @pytest.mark.parametrize(
         'command,kwargs,expected_sql',
@@ -286,11 +282,7 @@ class TestConfession:
             )
             assert compiled.statement._with_options[  # pyright: ignore[reportUnknownMemberType]
                 0
-            ].context[
-                0
-            ].strategy == (
-                ('lazy', 'selectin'),
-            )
+            ].context[0].strategy == (('lazy', 'selectin'),)
 
     async def test_get_by_command_no_result_raises(
         self,

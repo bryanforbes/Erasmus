@@ -12,10 +12,10 @@ repos:
       name: ruff
       language: system
       entry: poetry run ruff check --force-exclude
-    - id: black
-      name: black
+    - id: ruff_format
+      name: ruff format
       language: system
-      entry: poetry run black --check
+      entry: poetry run ruff format --force-exclude --check
     - id: basedpyright
       name: basedpyright
       language: system

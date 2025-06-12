@@ -68,13 +68,11 @@ class CalVer:
 
 
 @overload
-def run(*args: str, dry_run: Literal[True] = True) -> str:
-    ...
+def run(*args: str, dry_run: Literal[True] = True) -> str: ...
 
 
 @overload
-def run(*args: str, dry_run: bool) -> str | None:
-    ...
+def run(*args: str, dry_run: bool) -> str | None: ...
 
 
 def run(*args: str, dry_run: bool = False) -> str | None:

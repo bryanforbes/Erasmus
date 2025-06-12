@@ -64,8 +64,8 @@ def upgrade():
     with op.get_context().autocommit_block():
         op.execute(
             "SELECT setval('confessions_id_seq', ("
-            "SELECT MAX(confessions.id) from confessions"
-            "))"
+            'SELECT MAX(confessions.id) from confessions'
+            '))'
         )
 
         op.execute("ALTER TYPE confession_type ADD VALUE IF NOT EXISTS 'SECTIONS'")
@@ -150,6 +150,6 @@ def downgrade():
 
     op.execute(
         "SELECT setval('confessions_id_seq', ("
-        "SELECT MAX(confessions.id) from confessions"
-        "))"
+        'SELECT MAX(confessions.id) from confessions'
+        '))'
     )

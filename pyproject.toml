@@ -36,7 +36,6 @@ extras = ["speed"]
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "0.30.1"
 basedpyright = "1.29.4"
-black = "25.1.0"
 coverage = {version = "7.9.0", extras = ["toml"]}
 mypy = "1.16.0"
 pre-commit = "4.2.0"
@@ -54,23 +53,6 @@ ruff = "0.11.13"
 version = "3.1.0"
 extras = ["test"]
 
-[tool.black]
-line-length = 88
-target-version = ["py313"]
-skip-string-normalization = true
-include = '\.pyi?$'
-exclude = '''
-/(
-    \.git
-  | \.hg
-  | \.mypy_cache
-  | \.pytest_cache
-  | \.ruff_cache
-  | \.venv
-  | htmlcov
-)/
-'''
-
 [tool.coverage.report]
 exclude_lines = [
   "pragma: no cover",
@@ -87,6 +69,9 @@ omit = [
 extend-exclude = [".venv*"]
 line-length = 88
 target-version = "py313"
+
+[tool.ruff.format]
+quote-style = "single"
 
 [tool.ruff.lint]
 select = [

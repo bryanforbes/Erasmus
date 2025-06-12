@@ -148,7 +148,8 @@ class Bible(Cog['Erasmus']):
             raise BookNotInVersionError(reference.book.name, bible.name)
 
         passage = await self.service_manager.get_passage(
-            bible, reference  # pyright: ignore[reportArgumentType]
+            bible,  # pyright: ignore[reportArgumentType]
+            reference,
         )
         await send_passage(itx, passage, ephemeral=only_me)
 
