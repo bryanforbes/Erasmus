@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import inspect
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from collections.abc import AsyncIterable, Awaitable, Callable, Iterable, Sequence
 from typing import NotRequired, Protocol, TypedDict, override, runtime_checkable
 
@@ -69,33 +69,37 @@ class PageSource[T](Protocol):
 
     @property
     @abstractmethod
-    def needs_pagination(self, /) -> bool:
+    def needs_pagination(  # pyright: ignore[reportInvalidAbstractMethod]
+        self, /
+    ) -> bool:
         raise NotImplementedError
 
     @abstractmethod
-    def get_max_pages(self, /) -> int:
+    def get_max_pages(self, /) -> int:  # pyright: ignore[reportInvalidAbstractMethod]
         raise NotImplementedError
 
     @abstractmethod
-    def get_total(self, /) -> int:
+    def get_total(self, /) -> int:  # pyright: ignore[reportInvalidAbstractMethod]
         raise NotImplementedError
 
     @abstractmethod
-    async def get_page(self, page_number: int, /) -> T:
+    async def get_page(  # pyright: ignore[reportInvalidAbstractMethod]
+        self, page_number: int, /
+    ) -> T:
         raise NotImplementedError
 
     @abstractmethod
-    async def format_page(
+    async def format_page(  # pyright: ignore[reportInvalidAbstractMethod]
         self, pages: Pages[T], page: T | None, /
     ) -> str | discord.Embed | Kwargs:
         raise NotImplementedError
 
 
-class PageSourceBase[T](PageSource[T]):
+class PageSourceBase[T](PageSource[T], ABC):
     _prepared: bool
 
 
-class ListPageSource[T](PageSourceBase[Sequence[T]]):
+class ListPageSource[T](PageSourceBase[Sequence[T]], ABC):
     entries: Sequence[T]
     per_page: int
     _total: int
@@ -156,7 +160,7 @@ class AsyncCallback[T](Protocol):
     ) -> Awaitable[Page[T]] | AsyncPage[T]: ...
 
 
-class AsyncPageSource[T](PageSourceBase[Sequence[T]]):
+class AsyncPageSource[T](PageSourceBase[Sequence[T]], ABC):
     per_page: int
     _total: int
     _max_pages: int
@@ -221,7 +225,7 @@ class AsyncPageSource[T](PageSourceBase[Sequence[T]]):
         return self._cache[page_number]
 
 
-class EmbedPageSource[T](PageSourceBase[T]):
+class EmbedPageSource[T](PageSourceBase[T], ABC):
     embed: discord.Embed
 
     @override
@@ -255,7 +259,7 @@ class EmbedPageSource[T](PageSourceBase[T]):
         raise NotImplementedError
 
 
-class FieldPageSource[T](EmbedPageSource[T]):
+class FieldPageSource[T](EmbedPageSource[T], ABC):
     @abstractmethod
     def get_field_values(self, page: T, /) -> Iterable[tuple[str, str]]:
         raise NotImplementedError

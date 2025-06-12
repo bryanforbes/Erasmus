@@ -1,8 +1,11 @@
 {
   "lspconfig": {
-    "pyright": {
+    "pyright": false /*{
       "pyright.disableOrganizeImports": true
-    },
-    "basedpyright": false
+    }*/,
+    "basedpyright": {
+      "basedpyright.disableOrganizeImports": true,
+      "basedpyright.analysis.diagnosticMode": "workspace"
+    }
   }
 }

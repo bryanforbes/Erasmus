@@ -5,7 +5,9 @@ from typing import TYPE_CHECKING, Any, cast
 import pytest
 from attrs import define, field
 from botus_receptus import Embed
-from discord.ext.commands.view import StringView  # type: ignore
+from discord.ext.commands.view import (  # pyright: ignore[reportMissingTypeStubs]
+    StringView,
+)
 
 from erasmus.context import Context
 

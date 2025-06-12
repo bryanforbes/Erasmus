@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import logging
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from typing import TYPE_CHECKING, Final, Self
 
 from attrs import frozen
@@ -29,7 +29,7 @@ _number_re: Final = re.compile(
 
 
 @frozen
-class BaseService:
+class BaseService(ABC):
     session: aiohttp.ClientSession
     config: ServiceConfig | None
 
