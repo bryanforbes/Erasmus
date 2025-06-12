@@ -123,6 +123,7 @@ inline-quotes = "single"
 
 [tool.pyright]
 include = ["erasmus", "tests"]
+exclude = ["alembic"]
 venvPath = "."
 venv = ".venv"
 
