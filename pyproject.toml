@@ -36,7 +36,7 @@ extras = ["speed"]
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "0.30.2"
 basedpyright = "1.31.0"
-coverage = {version = "7.9.2", extras = ["toml"]}
+coverage = {version = "7.10.1", extras = ["toml"]}
 mypy = "1.17.0"
 pre-commit = "4.2.0"
 pytest = "8.4.1"
