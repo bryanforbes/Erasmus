@@ -7,7 +7,15 @@ authors = [
 ]
 license = "BSD-3-Clause"
 requires-python = ">=3.13,<3.14"
-dynamic = ["dependencies"]
+dependencies = [
+  'alembic ==1.16.4',
+  'attrs ==25.3.0',
+  'beautifulsoup4 ==4.13.4',
+  'botus_receptus[uvloop,sqlalchemy] @ git+https://github.com/bryanforbes/botus_receptus.git@v25.6.1',
+  'discord.py[speed] ==2.6.0',
+  'fluent.runtime ==0.4.0',
+  'more-itertools ==10.7.0',
+]
 
 [project.scripts]
 erasmus = 'erasmus.run:main'
@@ -16,22 +24,6 @@ erasmus = 'erasmus.run:main'
 packages = [
   { include = "erasmus" }
 ]
-
-[tool.poetry.dependencies]
-alembic = "1.16.4"
-attrs = "25.3.0"
-beautifulsoup4 = "4.13.4"
-more-itertools = "10.7.0"
-"fluent.runtime" = "0.4.0"
-
-[tool.poetry.dependencies.botus_receptus]
-git = "https://github.com/bryanforbes/botus_receptus.git"
-tag = "v25.6.1"
-extras = ["uvloop", "sqlalchemy"]
-
-[tool.poetry.dependencies.discord-py]
-version = "2.6.0"
-extras = ["speed"]
 
 [tool.poetry.group.dev.dependencies]
 asyncpg-stubs = "0.30.2"
