@@ -1,16 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "github>bryanforbes/python-workflows:app.json5",
-    ":semanticCommitTypeAll(chore)",
-    ":enableVulnerabilityAlerts"
-  ],
-  "ignoreDeps": [
-    "python"
+    "github>bryanforbes/renovate-presets:python-app.json5"
   ],
   "packageRules": [
     {
       "groupName": "botus_receptus packages",
+      "groupSlug": "botus-receptus",
       "matchPackageNames": [
         "botus_receptus",
         "asyncpg-stubs"
