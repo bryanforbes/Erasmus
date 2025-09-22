@@ -85,6 +85,7 @@ known-first-party = ["erasmus"]
 known-third-party = ["alembic"]
 combine-as-imports = true
 required-imports = ["from __future__ import annotations"]
+split-on-trailing-comma = false
 
 [tool.ruff.lint.mccabe]
 max-complexity = 15
@@ -97,6 +98,9 @@ parametrize-names-type = "csv"
 [tool.ruff.lint.flake8-quotes]
 inline-quotes = "single"
 
+[tool.ruff.lint.flake8-type-checking]
+runtime-evaluated-base-classes = ["sqlalchemy.orm.DeclarativeBase", "erasmus.db.base.Base"]
+
 
 [tool.pyright]
 include = ["erasmus", "tests"]
@@ -105,6 +109,10 @@ venvPath = "."
 venv = ".venv"
 
 pythonVersion = "3.13"
+strictListInference = true
+strictDictionaryInference = true
+strictSetInference = true
+
 reportUnnecessaryTypeIgnoreComment = "warning"
 typeCheckingMode = "strict"
 reportPrivateUsage = "none"

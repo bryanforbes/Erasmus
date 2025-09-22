@@ -18,7 +18,7 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship, selectinload
 
 from ..exceptions import InvalidConfessionError, NoSectionError
 from .base import Base, Text, TSVector
-from .enums import ConfessionType, NumberingType  # noqa: TC001
+from .enums import ConfessionType, NumberingType
 
 if TYPE_CHECKING:
     from collections.abc import AsyncIterator
