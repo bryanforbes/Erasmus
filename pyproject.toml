@@ -31,7 +31,7 @@ basedpyright = "1.31.6"
 coverage = {version = "7.10.7", extras = ["toml"]}
 mypy = "1.18.2"
 pre-commit = "4.3.0"
-pytest = "8.4.2"
+pytest = "9.0.1"
 pytest-asyncio = "1.2.0"
 pytest-clarity = "1.0.1"
 pytest-cov = "7.0.0"
