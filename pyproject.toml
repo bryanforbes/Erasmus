@@ -12,7 +12,7 @@ dependencies = [
   'attrs ==25.3.0',
   'beautifulsoup4 ==4.14.2',
   'botus_receptus[uvloop,sqlalchemy] @ git+https://github.com/bryanforbes/botus_receptus.git@v25.6.1',
-  'discord.py[speed] ==2.6.3',
+  'discord.py[speed] ==2.6.4',
   'fluent.runtime ==0.4.0',
   'more-itertools ==10.8.0',
 ]
