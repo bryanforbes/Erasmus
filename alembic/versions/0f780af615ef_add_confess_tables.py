@@ -193,19 +193,19 @@ def upgrade():
     )
 
     with (Path(__file__).resolve().parent / '69e765223549_1689.json').open() as f:
-        lbcf_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
+        lbcf_data = load(f, object_pairs_hook=OrderedDict)
 
     with (Path(__file__).resolve().parent / 'a1dbd23261c3_wcf.json').open() as f:
-        wcf_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
+        wcf_data = load(f, object_pairs_hook=OrderedDict)
 
     with (Path(__file__).resolve().parent / f'{revision}_wsc.json').open() as f:
-        wsc_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
+        wsc_data = load(f, object_pairs_hook=OrderedDict)
 
     with (Path(__file__).resolve().parent / f'{revision}_wlc.json').open() as f:
-        wlc_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
+        wlc_data = load(f, object_pairs_hook=OrderedDict)
 
     with (Path(__file__).resolve().parent / f'{revision}_hc.json').open() as f:
-        hc_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
+        hc_data = load(f, object_pairs_hook=OrderedDict)
 
     lbcf_chapters, lbcf_paragraphs = _get_paragraph_records(1, lbcf_data)
     wcf_chapters, wcf_paragraphs = _get_paragraph_records(2, wcf_data)

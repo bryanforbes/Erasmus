@@ -117,10 +117,10 @@ def upgrade():
     )
 
     with (Path(__file__).resolve().parent / f'{revision}_bcf.json').open() as f:
-        bcf_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
+        bcf_data = load(f, object_pairs_hook=OrderedDict)
 
     with (Path(__file__).resolve().parent / f'{revision}_articles.json').open() as f:
-        thirty_nine_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
+        thirty_nine_data = load(f, object_pairs_hook=OrderedDict)
 
     op.bulk_insert(
         confess_articles,

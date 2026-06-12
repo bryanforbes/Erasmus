@@ -14,7 +14,7 @@ from .fluent import Localization
 
 if TYPE_CHECKING:
     from _typeshed import SupportsItems
-    from collections.abc import Iterator
+    from collections.abc import Generator
 
     import discord
 
@@ -140,7 +140,7 @@ class Localizer:
         )
 
     @contextmanager
-    def begin_reload(self) -> Iterator[None]:
+    def begin_reload(self) -> Generator[None]:
         old_map = self._l10n_map
         try:
             self._l10n_map = {}

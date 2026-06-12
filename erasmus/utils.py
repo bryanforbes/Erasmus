@@ -127,7 +127,7 @@ class Option(Protocol):
 @frozen(eq=False)
 class AutoCompleter[OptionT: Option](app_commands.Transformer):
     _storage: OrderedDict[str, OptionT] = field(
-        init=False, factory=lambda: OrderedDict[str, OptionT]()
+        init=False, factory=OrderedDict[str, OptionT]
     )
 
     def add(self, option: OptionT, /) -> None:

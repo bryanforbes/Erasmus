@@ -55,9 +55,7 @@ class BibleGateway(BaseService):
         for small_caps in verse_node.select('.small-caps'):
             for descendant in list(small_caps.descendants):
                 if isinstance(descendant, NavigableString):
-                    descendant.replace_with(
-                        descendant.string.upper()  # pyright: ignore[reportArgumentType]
-                    )
+                    descendant.replace_with(descendant.string.upper())
             small_caps.unwrap()
         for bold in verse_node.select('b, h4'):
             bold.insert_before('__BOLD__')
@@ -70,7 +68,7 @@ class BibleGateway(BaseService):
             number.string = f'{number.string.strip()}.'  # pyright: ignore[reportOptionalMemberAccess]
             number.unwrap()
         for br in verse_node.select('br'):
-            br.replace_with('\n')  # pyright: ignore[reportArgumentType]
+            br.replace_with('\n')
         for italic in verse_node.select('.selah, i, h3'):
             italic.insert_before('__ITALIC__')
             italic.insert_after('__ITALIC__')

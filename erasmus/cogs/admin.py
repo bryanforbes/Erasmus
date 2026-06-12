@@ -17,7 +17,7 @@ from ..erasmus import Erasmus, _extensions as _extension_names
 from ..types import Refreshable
 
 if TYPE_CHECKING:
-    from collections.abc import AsyncIterator, Iterator
+    from collections.abc import AsyncGenerator, Iterator
 
 _available_extensions: Final = {f'erasmus.cogs.{name}' for name in _extension_names}
 
@@ -115,7 +115,7 @@ class _EvalModal(discord.ui.Modal, title='Evaluate Python Code'):
 @asynccontextmanager
 async def operation_guard(
     itx: discord.Interaction, success_message: str, /
-) -> AsyncIterator[None]:
+) -> AsyncGenerator[None]:
     try:
         await itx.response.defer()
         yield

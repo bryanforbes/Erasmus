@@ -40,7 +40,7 @@ _roman_re: Final = re.group(
 )
 
 _number_formatters: Final[dict[NumberingType, Callable[[int], str]]] = {
-    NumberingType.ARABIC: lambda n: str(n),
+    NumberingType.ARABIC: str,
     NumberingType.ROMAN: int_to_roman,
     NumberingType.ALPHA: int_to_alpha,
 }

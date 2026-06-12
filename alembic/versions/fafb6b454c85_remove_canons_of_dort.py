@@ -22,7 +22,7 @@ branch_labels = None
 depends_on = None
 
 with (Path(__file__).resolve().parent / f'{down_revision}_dort.json').open() as f:
-    dort_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
+    dort_data = load(f, object_pairs_hook=OrderedDict)
 
 metadata = sa.MetaData()
 

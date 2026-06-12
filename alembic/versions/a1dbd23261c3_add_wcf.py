@@ -22,7 +22,7 @@ branch_labels = None
 depends_on = None
 
 with (Path(__file__).resolve().parent / f'{revision}_wcf.json').open() as f:
-    wcf_data = load(f, object_pairs_hook=lambda x: OrderedDict(x))
+    wcf_data = load(f, object_pairs_hook=OrderedDict)
 
 metadata = sa.MetaData()
 
