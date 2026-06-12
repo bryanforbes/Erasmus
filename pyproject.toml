@@ -9,7 +9,7 @@ license = "BSD-3-Clause"
 requires-python = ">=3.13,<3.14"
 dependencies = [
   'alembic ==1.18.4',
-  'attrs ==25.4.0',
+  'attrs ==26.1.0',
   'beautifulsoup4 ==4.15.0',
   'botus_receptus[uvloop,sqlalchemy] @ git+https://github.com/bryanforbes/botus_receptus.git@v25.6.1',
   'discord.py[speed] ==2.7.1',
