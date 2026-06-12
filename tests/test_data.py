@@ -6,6 +6,7 @@ from typing import TYPE_CHECKING, Any, TypedDict
 
 import orjson
 import pytest
+from more_itertools import unique
 
 from erasmus import data
 from erasmus.data import Book, Passage, SearchResults, SectionFlag, Verse, VerseRange
@@ -89,12 +90,14 @@ class TestBook:
     @pytest.mark.parametrize(
         'book_name,expected_osis',
         list(
-            chain.from_iterable(
-                [
-                    (name, book['osis'])
-                    for name in ([book['name'], book['osis']] + book['alt'])
-                ]
-                for book in _book_data
+            unique(
+                chain.from_iterable(
+                    [
+                        (name, book['osis'])
+                        for name in ([book['name'], book['osis'], *book['alt']])
+                    ]
+                    for book in _book_data
+                )
             )
         ),
     )
